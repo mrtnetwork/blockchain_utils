@@ -94,8 +94,7 @@ class SecretWallet {
   );
 
   /// Creates a new wallet wrapping the specified [credentials] by encrypting
-  /// the private key with the [password]. The [random] instance, which should
-  /// be cryptographically secure, is used to generate encryption keys.
+  /// the private key with the [password]
   /// You can configure the parameter N of the scrypt algorithm if you need to.
   /// The default value for [scryptN] is 8192. Be aware that this N must be a
   /// power of two.

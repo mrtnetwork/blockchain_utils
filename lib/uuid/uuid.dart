@@ -1,3 +1,11 @@
+/// UUID Library
+///
+/// This library provides utility functions and classes for working with
+/// Universally Unique Identifiers (UUIDs). UUIDs are commonly used in
+/// various applications to uniquely identify entities or resources.
+///
+/// The `UUID` class within this library allows for the generation UUID V4
+
 library uuid;
 
 import 'dart:math' as math;

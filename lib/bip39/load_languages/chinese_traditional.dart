@@ -1,3 +1,4 @@
+// Chinese (Traditional)
 const List<String> chineseTraditional = [
   "的",
   "一",

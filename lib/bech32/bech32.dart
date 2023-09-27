@@ -1,3 +1,22 @@
+/// Bech32 Encoding and Decoding Library
+///
+/// This library provides functions for encoding and decoding data using the
+/// Bech32 encoding scheme. Bech32 is a specialized encoding format used in
+/// blockchain applications, such as Bitcoin and Bitcoin-like cryptocurrencies,
+/// to represent addresses and data in a human-readable and error-checking format.
+///
+/// Modules and Exports:
+///
+/// - `encodeBech32`, `decodeBech32`: Exported from 'package:blockchain_utils/bech32/bech32.dart'.
+///   These functions provide Bech32 encoding and decoding capabilities, allowing
+///   developers to work with Bech32-encoded data.
+///
+/// Usage:
+///
+/// Developers can import this library to access Bech32 encoding and decoding
+/// functions based on their specific requirements. For example:
+library bech32;
+
 import 'dart:typed_data';
 
 import 'package:blockchain_utils/formating/bytes_num_formating.dart';

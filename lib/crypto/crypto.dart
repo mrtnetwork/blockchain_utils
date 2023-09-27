@@ -1,5 +1,3 @@
-library bitcoin_crypto;
-
 import 'dart:convert';
 import 'package:pointycastle/export.dart';
 import "dart:typed_data";

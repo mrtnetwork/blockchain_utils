@@ -1,3 +1,54 @@
+/// BIP39 Multilanguage Support Library
+///
+/// This library provides comprehensive language support for the BIP39 mnemonic
+/// phrase standard, which is commonly used in cryptocurrency wallets to generate
+/// and recover wallets and their associated keys. It offers translations and
+/// resources for multiple languages, enabling users to create and work with
+/// BIP39 mnemonics in their preferred language.
+///
+/// Modules and Exports:
+///
+/// - `BIP39`: Exported from 'package:blockchain_utils/bip39/bip39.dart'.
+///   This class provides core functionality for generating and validating
+///   BIP39 mnemonics, along with various language-specific options.
+///
+/// - `Bip39Language`, `Bip39WordLength`: Exported from 'package:blockchain_utils/bip39/bip39.dart'.
+///   These enumerations define supported BIP39 languages and word lengths,
+///   making it easier to choose the desired language for mnemonic phrases.
+///
+/// Key Methods:
+///
+/// - `generateMnemonic`: Generates a new BIP39 mnemonic phrase using the specified language.
+///   Example:
+///   ```dart
+///   final mnemonic = bip39.generateMnemonic();
+///   ```
+///
+/// - `toSeed`: Converts a BIP39 mnemonic phrase into a binary seed.
+///   Example:
+///   ```dart
+///   final seed = bip39.toSeed(mnemonic);
+///   ```
+///
+/// - `entropyToMnemonic`: Converts entropy bytes into a BIP39 mnemonic phrase.
+///   Example:
+///   ```dart
+///   final entropy = bip39.mnemonicToEntropy(mnemonic);
+///   ```
+///
+/// - `validateMnemonic`: Validates a BIP39 mnemonic phrase to check its correctness.
+///   Example:
+///   ```dart
+///   final isValid = bip39.validateMnemonic(mnemonic);
+///   ```
+///
+/// - `mnemonicToEntropy`: Converts a BIP39 mnemonic phrase back into its entropy bytes.
+///   Example:
+///   ```dart
+///   final entropy = bip39.mnemonicToEntropy(mnemonic);
+///   ```
+library bip39;
+
 import 'dart:typed_data';
 import 'package:blockchain_utils/crypto/crypto.dart';
 import 'package:blockchain_utils/formating/bytes_num_formating.dart';
