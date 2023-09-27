@@ -1,4 +1,4 @@
-// Japanese
+/// Japanese
 const List<String> japanese = [
   "あいこくしん",
   "あいさつ",

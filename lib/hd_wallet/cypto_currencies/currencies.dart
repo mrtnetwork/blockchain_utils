@@ -1,4 +1,4 @@
-// copied from https://github.com/meherett/python-hdwallet/blob/master/hdwallet/cryptocurrencies.py
+/// copied from https://github.com/meherett/python-hdwallet/blob/master/hdwallet/cryptocurrencies.py
 
 part of 'package:blockchain_utils/hd_wallet/cypto_currencies/cyrpto_currency.dart';
 

@@ -10,7 +10,7 @@ import 'package:pointycastle/key_derivators/scrypt.dart' as scrypt;
 
 enum SecretWalletEncoding { base64, json }
 
-// Abstract class for key derivators.
+/// Abstract class for key derivators.
 abstract class _KeyDerivator {
   Uint8List deriveKey(Uint8List password);
 
@@ -18,7 +18,7 @@ abstract class _KeyDerivator {
   Map<String, dynamic> encode();
 }
 
-// Implementation of PBKDF2 key derivator.
+/// Implementation of PBKDF2 key derivator.
 class _PBDKDF2KeyDerivator extends _KeyDerivator {
   _PBDKDF2KeyDerivator(this.iterations, this.salt, this.dklen);
   final int iterations;
@@ -49,7 +49,7 @@ class _PBDKDF2KeyDerivator extends _KeyDerivator {
   final String name = 'pbkdf2';
 }
 
-// Implementation of Scrypt key derivator.
+/// Implementation of Scrypt key derivator.
 class _ScryptKeyDerivator extends _KeyDerivator {
   _ScryptKeyDerivator(this.dklen, this.n, this.r, this.p, this.salt);
   final int dklen;
@@ -108,19 +108,19 @@ class SecretWallet {
   }) {
     final passwordBytes = Uint8List.fromList(utf8.encode(password));
 
-    // Generate a random salt for key derivation.
+    /// Generate a random salt for key derivation.
     final salt = generateRandom(size: 32);
 
-    // Create a Scrypt key derivator with specified parameters.
+    /// Create a Scrypt key derivator with specified parameters.
     final derivator = _ScryptKeyDerivator(32, scryptN, 8, p, salt);
 
-    // Generate a random UUID and convert it to a buffer.
+    /// Generate a random UUID and convert it to a buffer.
     final uuid = UUID.toBuffer(UUID.generateUUIDv4());
 
-    // Generate a random initialization vector (IV) for encryption.
+    /// Generate a random initialization vector (IV) for encryption.
     final iv = generateRandom(size: 128 ~/ 8);
 
-    // Create a SecretWallet instance with the provided parameters.
+    /// Create a SecretWallet instance with the provided parameters.
     return SecretWallet._(credentials, derivator, passwordBytes, iv, uuid);
   }
 
@@ -147,7 +147,7 @@ class SecretWallet {
 
     final data = _toJsonEcoded(encoded);
 
-    // Ensure version is 3, only version that we support at the moment
+    /// Ensure version is 3, only version that we support at the moment
     final version = data['version'];
     if (version != 3) {
       throw ArgumentError.value(
@@ -197,7 +197,7 @@ class SecretWallet {
         );
     }
 
-    // Now that we have the derivator, let's obtain the aes key:
+    /// Now that we have the derivator, let's obtain the aes key:
     final encodedPassword = Uint8List.fromList(utf8.encode(password));
     final derivedKey = derivator.deriveKey(encodedPassword);
     final aesKey = Uint8List.fromList(derivedKey.sublist(0, 16));
@@ -212,7 +212,7 @@ class SecretWallet {
       );
     }
 
-    // We only support this mode at the moment
+    /// We only support this mode at the moment
     if (crypto['cipher'] != 'aes-128-ctr') {
       throw ArgumentError(
         'Wallet file uses ${crypto["cipher"]} as cipher, but only aes-128-ctr is supported.',
@@ -266,17 +266,17 @@ class SecretWallet {
     return base64Encode(utf8.encode(toString));
   }
 
-// Generates a message authentication code (MAC) for the encrypted data.
+  /// Generates a message authentication code (MAC) for the encrypted data.
   static String _generateMac(List<int> dk, List<int> ciphertext) {
-    // Create a MAC body by concatenating the second half of the derived key (dk)
-    // with the ciphertext.
+    /// Create a MAC body by concatenating the second half of the derived key (dk)
+    /// with the ciphertext.
     final macBody = <int>[...dk.sublist(16, 32), ...ciphertext];
 
-    // Calculate the MAC using the keccak256 hash function.
+    /// Calculate the MAC using the keccak256 hash function.
     return bytesToHex(keccak256(Uint8List.fromList(macBody)));
   }
 
-  // Initializes a counter (CTR) stream cipher with the given key and IV.
+  /// Initializes a counter (CTR) stream cipher with the given key and IV.
   static CTRStreamCipher _initCipher(
     bool forEncryption,
     Uint8List key,
@@ -286,18 +286,18 @@ class SecretWallet {
       ..init(forEncryption, ParametersWithIV(KeyParameter(key), iv));
   }
 
-// Encrypts the private key.
+  /// Encrypts the private key.
   List<int> _encryptPrivateKey() {
-    // Derive a key using the key derivator and the provided password.
+    /// Derive a key using the key derivator and the provided password.
     final derived = _derivator.deriveKey(_password);
 
-    // Extract the first 16 bytes of the derived key as the AES encryption key.
+    /// Extract the first 16 bytes of the derived key as the AES encryption key.
     final aesKey = Uint8List.view(derived.buffer, 0, 16);
 
-    // Initialize an AES cipher in encryption mode with the derived key and IV.
+    /// Initialize an AES cipher in encryption mode with the derived key and IV.
     final aes = _initCipher(true, aesKey, _iv);
 
-    // Encrypt the credentials using AES encryption.
+    /// Encrypt the credentials using AES encryption.
     return aes.process(Uint8List.fromList(utf8.encode(credentials)));
   }
 }

@@ -27,12 +27,12 @@ class UUID {
   /// Example:
   /// ```dart
   /// final uuid = generateUUIDv4();
-  /// print(uuid); // Output: "550e8400-e29b-41d4-a716-446655440000"
+  /// print(uuid); /// Output: "550e8400-e29b-41d4-a716-446655440000"
   /// ```
   static String generateUUIDv4() {
     final random = math.Random.secure();
 
-    // Generate random bytes for the UUIDv4.
+    /// Generate random bytes for the UUIDv4.
     final bytes = List<int>.generate(16, (i) {
       if (i == 6) {
         return (random.nextInt(16) & 0x0f) | 0x40;
@@ -43,13 +43,13 @@ class UUID {
       }
     });
 
-    // Set the 6th high-order bit of the 6th byte to indicate version 4.
+    /// Set the 6th high-order bit of the 6th byte to indicate version 4.
     bytes[6] = (bytes[6] & 0x0f) | 0x40;
 
-    // Set the 7th high-order bit of the 8th byte to indicate variant RFC4122.
+    /// Set the 7th high-order bit of the 8th byte to indicate variant RFC4122.
     bytes[8] = (bytes[8] & 0x3f) | 0x80;
 
-    // Convert bytes to a hexadecimal string with hyphen-separated groups.
+    /// Convert bytes to a hexadecimal string with hyphen-separated groups.
     final List<String> hexBytes =
         bytes.map((byte) => byte.toRadixString(16).padLeft(2, '0')).toList();
 
@@ -75,7 +75,7 @@ class UUID {
   /// ```dart
   /// final uuid = '550e8400-e29b-41d4-a716-446655440000';
   /// final buffer = toBuffer(uuid);
-  /// print(buffer); // Output: [85, 14, 132, 0, 226, 155, 65, 212, 167, 22, 68, 102, 85, 68, 0, 0]
+  /// print(buffer); /// Output: [85, 14, 132, 0, 226, 155, 65, 212, 167, 22, 68, 102, 85, 68, 0, 0]
   /// ```
   static Uint8List toBuffer(String uuidString) {
     if (!isValidUUIDv4(uuidString)) {
@@ -83,11 +83,11 @@ class UUID {
     }
     final buffer = Uint8List(16);
 
-    // Remove dashes and convert the hexadecimal string to bytes
+    /// Remove dashes and convert the hexadecimal string to bytes
     final cleanUuidString = uuidString.replaceAll('-', '');
     final bytes = hexToBytes(cleanUuidString);
 
-    // Copy the bytes into the buffer
+    /// Copy the bytes into the buffer
     for (var i = 0; i < 16; i++) {
       buffer[i] = bytes[i];
     }
@@ -111,7 +111,7 @@ class UUID {
   /// ```dart
   /// final buffer = Uint8List.fromList([85, 14, 132, 0, 226, 155, 65, 212, 167, 22, 68, 102, 85, 68, 0, 0]);
   /// final uuid = fromBuffer(buffer);
-  /// print(uuid); // Output: '550e8400-e29b-41d4-a716-446655440000'
+  /// print(uuid); /// Output: '550e8400-e29b-41d4-a716-446655440000'
   /// ```
   ///
   /// Throws:
@@ -129,18 +129,18 @@ class UUID {
     final List<String> hexBytes =
         buffer.map((byte) => byte.toRadixString(16).padLeft(2, '0')).toList();
 
-    // Insert dashes at appropriate positions to form a UUIDv4 string
+    /// Insert dashes at appropriate positions to form a UUIDv4 string
     return '${hexBytes.sublist(0, 4).join('')}-${hexBytes.sublist(4, 6).join('')}-${hexBytes.sublist(6, 8).join('')}-${hexBytes.sublist(8, 10).join('')}-${hexBytes.sublist(10).join('')}';
   }
 
-  // Validates whether a string is a valid UUIDv4.
+  /// Validates whether a string is a valid UUIDv4.
   static bool isValidUUIDv4(String uuid) {
-    // Regular expression pattern for UUIDv4
+    /// Regular expression pattern for UUIDv4
     final pattern = RegExp(
       r'^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$',
     );
 
-    // Check if the input string matches the pattern
+    /// Check if the input string matches the pattern
     return pattern.hasMatch(uuid);
   }
 }

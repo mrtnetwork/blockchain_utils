@@ -54,13 +54,13 @@ import 'package:blockchain_utils/crypto/crypto.dart';
 import 'package:blockchain_utils/formating/bytes_num_formating.dart';
 import 'load_languages/languages.dart' as languages;
 
-// Enum representing supported BIP-39 mnemonic word languages.
+/// Enum representing supported BIP-39 mnemonic word languages.
 class Bip39Language {
   final String value;
 
   const Bip39Language._(this.value);
 
-  // Supported BIP-39 languages
+  /// Supported BIP-39 languages
   static const Bip39Language english = Bip39Language._("english");
   static const Bip39Language spanish = Bip39Language._("spanish");
   static const Bip39Language portuguese = Bip39Language._("portuguese");
@@ -101,12 +101,13 @@ class Bip39Language {
   }
 }
 
-// Enum representing supported BIP-39 mnemonic word lengths.
+/// Enum representing supported BIP-39 mnemonic word lengths.
 class Bip39WordLength {
   final int value;
 
   const Bip39WordLength._(this.value);
-  // Supported BIP-39 word lengths
+
+  /// Supported BIP-39 word lengths
   static const Bip39WordLength words12 = Bip39WordLength._(128);
   static const Bip39WordLength words15 = Bip39WordLength._(160);
   static const Bip39WordLength words18 = Bip39WordLength._(192);
@@ -114,17 +115,17 @@ class Bip39WordLength {
   static const Bip39WordLength words24 = Bip39WordLength._(256);
 }
 
-// Class for handling BIP-39 mnemonic generation and validation.
+/// Class for handling BIP-39 mnemonic generation and validation.
 class BIP39 {
   BIP39({this.language = Bip39Language.english});
 
-  // List of BIP-39 mnemonic words for the selected language.
-  // List<String> _words = [];
+  /// List of BIP-39 mnemonic words for the selected language.
+  /// List<String> _words = [];
 
-  // Selected BIP-39 word language.
+  /// Selected BIP-39 word language.
   final Bip39Language language;
 
-  // Helper function to derive checksum bits from entropy.
+  /// Helper function to derive checksum bits from entropy.
   /// Derives the checksum bits from the given entropy bytes.
   ///
   /// The method calculates the checksum bits for a mnemonic phrase by taking the
@@ -145,7 +146,7 @@ class BIP39 {
     return bytesToBinary(hash).substring(0, cs);
   }
 
-  // Generates a BIP-39 mnemonic phrase with the specified strength.
+  /// Generates a BIP-39 mnemonic phrase with the specified strength.
   /// Generates a random BIP-39 mnemonic phrase of a specified word length.
   ///
   /// This method generates a random entropy of the specified size (in bytes)
@@ -200,7 +201,7 @@ class BIP39 {
   String entropyToMnemonic(String entropyString) {
     final entropy = Uint8List.fromList(hexToBytes(entropyString));
 
-    // Validate the entropy length and format.
+    /// Validate the entropy length and format.
     if (entropy.length < 16 || entropy.length > 32 || entropy.length % 4 != 0) {
       throw ArgumentError("Invalid entropy");
     }
@@ -209,7 +210,7 @@ class BIP39 {
     final checksumBits = _deriveChecksumBits(entropy);
     final bits = entropyBits + checksumBits;
 
-    // Split bits into groups of 11 and map to corresponding BIP-39 words.
+    /// Split bits into groups of 11 and map to corresponding BIP-39 words.
     final regex = RegExp(r".{1,11}", caseSensitive: false, multiLine: false);
     final chunks = regex
         .allMatches(bits)
@@ -224,7 +225,7 @@ class BIP39 {
     return words;
   }
 
-  // Validates a BIP-39 mnemonic phrase.
+  /// Validates a BIP-39 mnemonic phrase.
   /// Validates a BIP-39 mnemonic phrase.
   ///
   /// This method checks whether a given BIP-39 mnemonic phrase is valid. A valid
@@ -241,14 +242,20 @@ class BIP39 {
   ///
   bool validateMnemonic(String mnemonic) {
     try {
-      // Attempt to convert the mnemonic back to entropy.
+      /// Attempt to convert the mnemonic back to entropy.
       mnemonicToEntropy(mnemonic);
     } on Exception {
-      rethrow; // Rethrow exceptions to be caught by the caller.
+      rethrow;
+
+      /// Rethrow exceptions to be caught by the caller.
     } catch (e) {
-      return false; // Catch other errors and return false.
+      return false;
+
+      /// Catch other errors and return false.
     }
-    return true; // If no exceptions or errors occur, the mnemonic is valid.
+    return true;
+
+    /// If no exceptions or errors occur, the mnemonic is valid.
   }
 
   /// Converts a BIP-39 mnemonic phrase to entropy bytes.
@@ -268,13 +275,13 @@ class BIP39 {
   ///   phrase is of an incorrect length.
   /// - [StateError]: If the entropy or checksum is invalid.
   String mnemonicToEntropy(String mnemonic) {
-    // Split the mnemonic into individual words.
+    /// Split the mnemonic into individual words.
     List<String> words = mnemonic.split(' ');
     if (words.length % 3 != 0) {
       throw ArgumentError('Invalid mnemonic');
     }
 
-    // Convert word indices to 11-bit binary strings.
+    /// Convert word indices to 11-bit binary strings.
     final bits = words.map((word) {
       final index = language.words.indexOf(word);
       if (index == -1) {
@@ -283,12 +290,12 @@ class BIP39 {
       return index.toRadixString(2).padLeft(11, '0');
     }).join('');
 
-    // Divide bits into entropy and checksum sections.
+    /// Divide bits into entropy and checksum sections.
     final dividerIndex = (bits.length / 33).floor() * 32;
     final entropyBits = bits.substring(0, dividerIndex);
     final checksumBits = bits.substring(dividerIndex);
 
-    // Convert entropy bits back to bytes and perform validation checks.
+    /// Convert entropy bits back to bytes and perform validation checks.
     final regex = RegExp(r".{1,8}");
     final entropyBytes = Uint8List.fromList(regex
         .allMatches(entropyBits)
@@ -304,13 +311,13 @@ class BIP39 {
       throw StateError("Invalid entropy");
     }
 
-    // Verify the checksum.
+    /// Verify the checksum.
     final newChecksum = _deriveChecksumBits(entropyBytes);
     if (newChecksum != checksumBits) {
       throw StateError("Invalid mnemonic checksum");
     }
 
-    // Convert valid entropy bytes back to hexadecimal.
+    /// Convert valid entropy bytes back to hexadecimal.
     return entropyBytes.map((byte) {
       return byte.toRadixString(16).padLeft(2, '0');
     }).join('');

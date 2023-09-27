@@ -1,4 +1,4 @@
-// Korean
+/// Korean
 const List<String> korean = [
   "가격",
   "가끔",

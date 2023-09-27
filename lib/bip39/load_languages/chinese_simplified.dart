@@ -1,4 +1,4 @@
-// Chinese (Simplified)
+/// Chinese (Simplified)
 const List<String> chineseSimplified = [
   "的",
   "一",

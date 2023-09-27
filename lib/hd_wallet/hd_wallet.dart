@@ -143,10 +143,10 @@ class BIP32HWallet extends HdWallet {
   /// [key] is the key used for hashing (default is the Bitcoin seed key).
   factory BIP32HWallet.fromMnemonic(String mnemonic,
       {String passphrase = "", String key = _bitcoinKey}) {
-    // Generate a seed from the mnemonic and passphrase using BIP-39.
+    /// Generate a seed from the mnemonic and passphrase using BIP-39.
     final seed = BIP39.toSeed(mnemonic, passphrase: passphrase);
 
-    // Validate the length of the generated seed.
+    /// Validate the length of the generated seed.
     if (seed.length < 16) {
       throw ArgumentError("Seed should be at least 128 bits");
     }
@@ -154,14 +154,14 @@ class BIP32HWallet extends HdWallet {
       throw ArgumentError("Seed should be at most 512 bits");
     }
 
-    // Compute the HMAC-SHA512 hash of the seed using the provided key.
+    /// Compute the HMAC-SHA512 hash of the seed using the provided key.
     final hash = hmacSHA512(utf8.encode(key) as Uint8List, seed);
 
-    // Extract the private key (first 32 bytes) and chain code (remaining bytes).
+    /// Extract the private key (first 32 bytes) and chain code (remaining bytes).
     final private = hash.sublist(0, 32);
     final chainCode = hash.sublist(32);
 
-    // Create and return a BIP32 hierarchical wallet from the private key and chain code.
+    /// Create and return a BIP32 hierarchical wallet from the private key and chain code.
     final wallet =
         BIP32HWallet._fromPrivateKey(privateKey: private, chainCode: chainCode);
     return wallet;
@@ -195,13 +195,13 @@ class BIP32HWallet extends HdWallet {
   ///
   /// Returns a new BIP32 hierarchical wallet instance representing the derived path.
   BIP32HWallet _addDrive(int index) {
-    // Check if the index is a valid UInt32.
+    /// Check if the index is a valid UInt32.
     if (index > _maxUint32 || index < 0) throw ArgumentError("Expected UInt32");
 
-    // Determine if the derivation is for a hardened key.
+    /// Determine if the derivation is for a hardened key.
     final isHardened = index >= _highBit;
 
-    // Create a Uint8List to hold the data.
+    /// Create a Uint8List to hold the data.
     Uint8List data = Uint8List(37);
 
     if (isHardened) {
@@ -216,35 +216,35 @@ class BIP32HWallet extends HdWallet {
       data.buffer.asByteData().setUint32(33, index);
     }
 
-    // Compute the master key using HMAC-SHA512.
+    /// Compute the master key using HMAC-SHA512.
     final masterKey = hmacSHA512(_chainCode, data);
 
-    // Extract the derived key and chain code.
+    /// Extract the derived key and chain code.
     final key = masterKey.sublist(0, 32);
     final chain = masterKey.sublist(32);
 
-    // Check if the derived key is not private (i.e., not a valid key).
+    /// Check if the derived key is not private (i.e., not a valid key).
     if (!isPrivate(key)) {
       return _addDrive(index + 1);
     }
 
-    // Calculate the child depth and index.
+    /// Calculate the child depth and index.
     final childDepth = depth + 1;
     final childIndex = index;
 
-    // Calculate the fingerprint for the derived path.
+    /// Calculate the fingerprint for the derived path.
     final finger = hash160(publicKey).sublist(0, 4);
 
     if (_fromXpub) {
-      // Create a new public key based on the derived path.
+      /// Create a new public key based on the derived path.
       final newPoint = pointAddScalar(_ecPublic, key, true);
 
-      // Check if the new point is valid.
+      /// Check if the new point is valid.
       if (newPoint == null) {
         return _addDrive(index + 1);
       }
 
-      // Return a new BIP32 hierarchical wallet from the derived public key.
+      /// Return a new BIP32 hierarchical wallet from the derived public key.
       return BIP32HWallet._fromPublicKey(
           public: newPoint,
           chainCode: chain,
@@ -252,10 +252,10 @@ class BIP32HWallet extends HdWallet {
           index: childIndex,
           fingerPrint: finger);
     } else {
-      // Generate a new private key based on the derived path.
+      /// Generate a new private key based on the derived path.
       final newPrivate = generateTweek(_private, key);
 
-      // Return a new BIP32 hierarchical wallet from the derived private key.
+      /// Return a new BIP32 hierarchical wallet from the derived private key.
       return BIP32HWallet._fromPrivateKey(
           privateKey: newPrivate!,
           chainCode: chain,
@@ -271,10 +271,10 @@ class BIP32HWallet extends HdWallet {
   ///
   /// Returns true if the [path] is valid, otherwise false.
   static bool isValidPath(String path) {
-    // Define a regular expression to match valid BIP32 derivation paths.
+    /// Define a regular expression to match valid BIP32 derivation paths.
     final regex = RegExp(r"^(m\/)?(\d+'?\/)*\d+'?$");
 
-    // Check if the [path] matches the regular expression.
+    /// Check if the [path] matches the regular expression.
     return regex.hasMatch(path);
   }
 
@@ -288,36 +288,36 @@ class BIP32HWallet extends HdWallet {
   static (bool, Uint8List) isRootKey(
       String xPrivateKey, Cryptocurrency cryptocurrency,
       {bool isPublicKey = false}) {
-    // Decode the extended key from base58 format.
+    /// Decode the extended key from base58 format.
     final dec = bs.decodeCheck(xPrivateKey);
 
-    // Check if the decoded key has the expected length (78 bytes).
+    /// Check if the decoded key has the expected length (78 bytes).
     if (dec.length != 78) {
       throw ArgumentError("Invalid xPrivateKey");
     }
 
-    // Extract the first 4 bytes (semantic) of the decoded key.
+    /// Extract the first 4 bytes (semantic) of the decoded key.
     final semantic = dec.sublist(0, 4);
 
-    // Determine the key type based on whether it's a public or private key.
+    /// Determine the key type based on whether it's a public or private key.
     final type = isPublicKey
         ? cryptocurrency.extendedPublicKey.getExtendedType(semantic)
         : cryptocurrency.extendedPrivateKey.getExtendedType(semantic);
 
-    // If the key type is null, it's invalid for the given network.
+    /// If the key type is null, it's invalid for the given network.
     if (type == null) {
       throw ArgumentError("Invalid network");
     }
 
-    // Get the expected network prefix for the key type.
+    /// Get the expected network prefix for the key type.
     final networkPrefix = isPublicKey
         ? cryptocurrency.extendedPublicKey.getExtended(type)
         : cryptocurrency.extendedPrivateKey.getExtended(type);
 
-    // Create the expected prefix for network identification.
+    /// Create the expected prefix for network identification.
     final prefix = hexToBytes("${networkPrefix}000000000000000000");
 
-    // Check if the prefix of the decoded key matches the expected prefix.
+    /// Check if the prefix of the decoded key matches the expected prefix.
     return (bytesListEqual(prefix, dec.sublist(0, prefix.length)), dec);
   }
 
@@ -330,10 +330,10 @@ class BIP32HWallet extends HdWallet {
   /// Returns a BIP32 hierarchical wallet instance.
   factory BIP32HWallet.fromXPrivateKey(String xPrivateKey,
       {bool? foreRootKey, CurrencySymbol currencySymbol = CurrencySymbol.btc}) {
-    // Get the cryptocurrency configuration based on the currency symbol.
+    /// Get the cryptocurrency configuration based on the currency symbol.
     final currency = Cryptocurrency.fromSymbol(currencySymbol);
 
-    // Check if the key is a root key, and optionally verify if it's expected to be a root key.
+    /// Check if the key is a root key, and optionally verify if it's expected to be a root key.
     final check = isRootKey(xPrivateKey, currency);
     if (foreRootKey != null) {
       if (check.$1 != foreRootKey) {
@@ -342,14 +342,14 @@ class BIP32HWallet extends HdWallet {
       }
     }
 
-    // Decode the key to extract relevant information.
+    /// Decode the key to extract relevant information.
     final decode = _decodeXKeys(check.$2);
     final chain = decode[4];
     final private = decode[5];
     final index = intFromBytes(decode[3], Endian.big);
     final depth = intFromBytes(decode[1], Endian.big);
 
-    // Create a BIP32 hierarchical wallet from the decoded key components.
+    /// Create a BIP32 hierarchical wallet from the decoded key components.
     return BIP32HWallet._fromPrivateKey(
         privateKey: private,
         chainCode: chain,
@@ -366,12 +366,24 @@ class BIP32HWallet extends HdWallet {
   /// Returns a list containing the decoded key components.
   static List<Uint8List> _decodeXKeys(Uint8List xKey, {bool isPublic = false}) {
     return [
-      xKey.sublist(0, 4), // Semantic
-      xKey.sublist(4, 5), // Depth
-      xKey.sublist(5, 9), // Fingerprint
-      xKey.sublist(9, 13), // Child index
-      xKey.sublist(13, 45), // Chain code
-      xKey.sublist(isPublic ? 45 : 46) // Public or private key
+      xKey.sublist(0, 4),
+
+      /// Semantic
+      xKey.sublist(4, 5),
+
+      /// Depth
+      xKey.sublist(5, 9),
+
+      /// Fingerprint
+      xKey.sublist(9, 13),
+
+      /// Child index
+      xKey.sublist(13, 45),
+
+      /// Chain code
+      xKey.sublist(isPublic ? 45 : 46)
+
+      /// Public or private key
     ];
   }
 
@@ -384,26 +396,26 @@ class BIP32HWallet extends HdWallet {
   String toXpublicKey(
       {ExtendedKeyType semantic = ExtendedKeyType.p2pkh,
       CurrencySymbol currencySymbol = CurrencySymbol.btc}) {
-    // Get the cryptocurrency configuration based on the currency symbol.
+    /// Get the cryptocurrency configuration based on the currency symbol.
     final currency = Cryptocurrency.fromSymbol(currencySymbol);
 
-    // Retrieve the semantic version hex for the given extended key type.
+    /// Retrieve the semantic version hex for the given extended key type.
     final versionHex = currency.extendedPublicKey.getExtended(semantic);
 
-    // Check if the network supports the specified semantic version.
+    /// Check if the network supports the specified semantic version.
     if (versionHex == null) {
       throw ArgumentError("Network does not support this semantic version");
     }
 
-    // Convert the version hex to bytes.
+    /// Convert the version hex to bytes.
     final version = hexToBytes(versionHex);
 
-    // Convert depth, fingerprint, and index to bytes.
+    /// Convert depth, fingerprint, and index to bytes.
     final depthBytes = Uint8List.fromList([depth]);
     final fingerPrintBytes = _fingerPrint;
     final indexBytes = packUint32BE(index);
 
-    // Combine all key components into a single byte list.
+    /// Combine all key components into a single byte list.
     final data = publicKey;
     final result = Uint8List.fromList([
       ...version,
@@ -414,7 +426,7 @@ class BIP32HWallet extends HdWallet {
       ...data
     ]);
 
-    // Encode the result into a base58 check-encoded string.
+    /// Encode the result into a base58 check-encoded string.
     final check = bs.encodeCheck(result);
 
     return check;
@@ -430,13 +442,13 @@ class BIP32HWallet extends HdWallet {
   factory BIP32HWallet.fromXpublicKey(String xPublicKey,
       {CurrencySymbol currencySymbol = CurrencySymbol.btc,
       bool? forceRootKey}) {
-    // Get the cryptocurrency configuration based on the currency symbol.
+    /// Get the cryptocurrency configuration based on the currency symbol.
     final Cryptocurrency currency = Cryptocurrency.fromSymbol(currencySymbol);
 
-    // Check if the provided xPublicKey is a valid root key.
+    /// Check if the provided xPublicKey is a valid root key.
     final check = isRootKey(xPublicKey, currency, isPublicKey: true);
 
-    // If forceRootKey is specified, verify that the key matches the expected type.
+    /// If forceRootKey is specified, verify that the key matches the expected type.
     if (forceRootKey != null) {
       if (check.$1 != forceRootKey) {
         throw ArgumentError(
@@ -444,16 +456,16 @@ class BIP32HWallet extends HdWallet {
       }
     }
 
-    // Decode the components of the extended public key.
+    /// Decode the components of the extended public key.
     final decode = _decodeXKeys(check.$2, isPublic: true);
 
-    // Extract chain code, public key, index, and depth from the decoded components.
+    /// Extract chain code, public key, index, and depth from the decoded components.
     final chain = decode[4];
     final publicKey = decode[5];
     final index = intFromBytes(decode[3], Endian.big);
     final deph = intFromBytes(decode[1], Endian.big);
 
-    // Create and return a BIP32 hierarchical wallet from the extracted components.
+    /// Create and return a BIP32 hierarchical wallet from the extracted components.
     return BIP32HWallet._fromPublicKey(
         public: publicKey,
         chainCode: chain,
@@ -474,33 +486,34 @@ class BIP32HWallet extends HdWallet {
   String toXpriveKey(
       {ExtendedKeyType semantic = ExtendedKeyType.p2pkh,
       CurrencySymbol currencySymbol = CurrencySymbol.btc}) {
-    // Check if the wallet is derived from an extended public key (xPub).
+    /// Check if the wallet is derived from an extended public key (xPub).
     if (_fromXpub) {
       throw ArgumentError("Cannot access private key from a publicKey wallet");
     }
 
-    // Get the cryptocurrency configuration based on the currency symbol.
+    /// Get the cryptocurrency configuration based on the currency symbol.
     final n = Cryptocurrency.fromSymbol(currencySymbol);
 
-    // Retrieve the semantic version for the extended private key.
+    /// Retrieve the semantic version for the extended private key.
     final versionHex = n.extendedPrivateKey.getExtended(semantic);
 
-    // Ensure that the network supports the specified semantic version.
+    /// Ensure that the network supports the specified semantic version.
     if (versionHex == null) {
       throw ArgumentError("Network does not support this semantic version");
     }
 
-    // Convert the version to bytes.
+    /// Convert the version to bytes.
     final version = hexToBytes(versionHex);
 
-    // Create bytes for depth, fingerprint, index, and private key data.
+    /// Create bytes for depth, fingerprint, index, and private key data.
     final depthBytes = Uint8List.fromList([depth]);
     final fingerPrintBytes = _fingerPrint;
     final indexBytes = packUint32BE(index);
-    final data = Uint8List.fromList(
-        [0, ..._private]); // Prepend 0 to indicate private key.
+    final data = Uint8List.fromList([0, ..._private]);
 
-    // Combine all bytes to create the extended private key.
+    /// Prepend 0 to indicate private key.
+
+    /// Combine all bytes to create the extended private key.
     final result = Uint8List.fromList([
       ...version,
       ...depthBytes,
@@ -510,7 +523,7 @@ class BIP32HWallet extends HdWallet {
       ...data
     ]);
 
-    // Encode and return the extended private key as a string with a checksum.
+    /// Encode and return the extended private key as a string with a checksum.
     final check = bs.encodeCheck(result);
     return check;
   }
@@ -526,22 +539,22 @@ class BIP32HWallet extends HdWallet {
   /// Throws [ArgumentError] if attempting to derive a hardened path from a public wallet.
   /// Throws [ArgumentError] if the path contains an invalid index or exceeds maximum index value.
   static BIP32HWallet drivePath(BIP32HWallet masterWallet, String path) {
-    // Check if the provided BIP32 path is valid.
+    /// Check if the provided BIP32 path is valid.
     if (!isValidPath(path)) {
       throw ArgumentError("Invalid BIP32 Path");
     }
 
-    // Split the path into individual segments and remove the leading "m" or "M" if present.
+    /// Split the path into individual segments and remove the leading "m" or "M" if present.
     List<String> splitPath = path.split("/");
     if (splitPath[0] == "m" || splitPath[0] == "M") {
       splitPath = splitPath.sublist(1);
     }
 
-    // Use fold to iteratively drive the hierarchical wallet along the path.
+    /// Use fold to iteratively drive the hierarchical wallet along the path.
     return splitPath.fold(masterWallet, (BIP32HWallet prevHd, String indexStr) {
       int index;
       if (indexStr.endsWith("'")) {
-        // Handle hardened path segment.
+        /// Handle hardened path segment.
         if (masterWallet._fromXpub) {
           throw ArgumentError(
               "Cannot drive hardened path from a public wallet");
@@ -550,13 +563,15 @@ class BIP32HWallet extends HdWallet {
         if (index > _maxUint31 || index < 0) {
           throw ArgumentError("Invalid index");
         }
-        // Derive a new hierarchical wallet with a hardened index.
+
+        /// Derive a new hierarchical wallet with a hardened index.
         final newDrive = prevHd._addDrive(index + _highBit);
         return newDrive;
       } else {
-        // Handle non-hardened path segment.
+        /// Handle non-hardened path segment.
         index = int.parse(indexStr);
-        // Derive a new hierarchical wallet with a non-hardened index.
+
+        /// Derive a new hierarchical wallet with a non-hardened index.
         final newDrive = prevHd._addDrive(index);
         return newDrive;
       }

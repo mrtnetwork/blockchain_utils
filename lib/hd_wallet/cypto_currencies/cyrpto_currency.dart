@@ -2,7 +2,7 @@ import 'dart:typed_data';
 import 'package:blockchain_utils/formating/bytes_num_formating.dart';
 part 'currencies.dart';
 
-// Currecy Symbols
+/// Currecy Symbols
 enum CurrencySymbol {
   anon,
   agm,

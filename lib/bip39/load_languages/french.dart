@@ -1,4 +1,4 @@
-// French
+/// French
 const List<String> french = [
   "abaisser",
   "abandon",
