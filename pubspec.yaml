@@ -1,8 +1,8 @@
 name: blockchain_utils
 description: Blockchain Utils is a comprehensive Dart package designed to simplify blockchain-related development tasks. With support for a wide range of encoding and decoding formats, multi-language BIP39 mnemonics, Web3 secret storage management, and Bip32 wallets, this package empowers developers to work seamlessly with blockchain technologies.
 version: 0.1.0
-homepage: "https://github.com/mrtnetwork/bitcoin_base"
-repository: "https://github.com/mrtnetwork/bitcoin_base"
+homepage: "https://github.com/mrtnetwork/blockchain_utils"
+repository: "https://github.com/mrtnetwork/blockchain_utils"
 
 environment:
   sdk: '>=3.1.1 <4.0.0'
