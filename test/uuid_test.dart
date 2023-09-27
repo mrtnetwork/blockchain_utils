@@ -1,8 +1,6 @@
 import 'package:blockchain_utils/uuid/uuid.dart';
-
 import 'dart:typed_data';
-
-import 'package:flutter_test/flutter_test.dart';
+import 'package:test/test.dart';
 
 void main() {
   // Sample UUIDv4 buffers as lists of integers

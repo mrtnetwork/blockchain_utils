@@ -1,5 +1,5 @@
 import 'package:blockchain_utils/bip39/bip39.dart';
-import 'package:flutter_test/flutter_test.dart';
+import 'package:test/test.dart';
 
 void main() {
   // Test case for generating and validating BIP-39 mnemonic phrases.

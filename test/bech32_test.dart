@@ -1,6 +1,6 @@
 import 'package:blockchain_utils/formating/bytes_num_formating.dart';
-import 'package:flutter_test/flutter_test.dart';
 import 'package:blockchain_utils/bech32/bech32.dart' as bech32;
+import 'package:test/test.dart';
 
 // This main function contains tests for encoding and decoding Bech32 addresses
 // using the 'bech32' package. Two Bech32 addresses are tested: one for the 'tb'

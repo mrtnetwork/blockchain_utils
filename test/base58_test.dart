@@ -1,6 +1,6 @@
 import 'package:blockchain_utils/formating/bytes_num_formating.dart';
-import 'package:flutter_test/flutter_test.dart';
 import 'package:blockchain_utils/base58/base58.dart' as base58;
+import 'package:test/test.dart';
 
 // This main function contains tests for Base58 encoding and decoding.
 // It defines four Base58-encoded strings (t1, t2, t3, t4) and their corresponding

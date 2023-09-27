@@ -1,6 +1,6 @@
 import 'package:blockchain_utils/blockchain_utils.dart';
 import 'package:blockchain_utils/hd_wallet/cypto_currencies/cyrpto_currency.dart';
-import 'package:flutter_test/flutter_test.dart';
+import 'package:test/test.dart';
 
 void main() {
   // Bitcoin-related tests
