@@ -41,4 +41,15 @@ void main() {
     expect(bytesToHex(decodedx.data), decodedHex);
     expect(decodedx.hrp, "ltc");
   });
+  test('Decode Bech32 Address', () {
+    final decoded = bech32.decodeBech32(address1);
+    expect(decoded?.version, 1);
+    expect(bytesToHex(decoded!.data), decode1Hex);
+    expect(decoded.hrp, "tb");
+
+    final decodedx = bech32.decodeBech32(address2);
+    expect(decodedx!.version, 0);
+    expect(bytesToHex(decodedx.data), decodedHex);
+    expect(decodedx.hrp, "ltc");
+  });
 }
