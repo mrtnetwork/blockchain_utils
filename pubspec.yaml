@@ -6,7 +6,6 @@ repository: "https://github.com/mrtnetwork/blockchain_utils"
 
 environment:
   sdk: '>=3.1.1 <4.0.0'
-  flutter: ">=1.17.0"
 
 dependencies:
   pointycastle: ^3.7.3
