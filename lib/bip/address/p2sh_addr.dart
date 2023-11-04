@@ -1,6 +1,6 @@
 import 'package:blockchain_utils/base58/base58.dart';
 import 'package:blockchain_utils/bech32/bch_bech32.dart';
-import 'package:blockchain_utils/bip/address/P2PKH_addr.dart';
+import 'package:blockchain_utils/bip/address/p2pkh_addr.dart';
 import 'package:blockchain_utils/bip/address/addr_key_validator.dart';
 import 'package:blockchain_utils/bip/address/decoder.dart';
 import 'package:blockchain_utils/bip/address/encoder.dart';
