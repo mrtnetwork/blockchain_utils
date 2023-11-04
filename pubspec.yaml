@@ -1,5 +1,5 @@
 name: blockchain_utils
-description: Simplify blockchain dev with Base58, Bech32, BIP39 mnemonics, Web3 storage, and BIP32 HD wallets in one package.
+description: Comprehensive Crypto & Blockchain Toolkit, Pure Dart, Cross-Platform, Encoding, Cryptography, Addresses, Mnemonics, & More.
 version: 1.0.0
 homepage: "https://github.com/mrtnetwork/blockchain_utils"
 repository: "https://github.com/mrtnetwork/blockchain_utils"
