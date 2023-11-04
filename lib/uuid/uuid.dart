@@ -9,9 +9,8 @@
 library uuid;
 
 import 'dart:math' as math;
-import 'dart:typed_data';
 
-import 'package:blockchain_utils/formating/bytes_num_formating.dart';
+import 'package:blockchain_utils/binary/utils.dart';
 
 class UUID {
   /// Generates a version 4 (random) UUID (Universally Unique Identifier).
@@ -69,7 +68,7 @@ class UUID {
   /// - [uuidString]: The UUID string to convert to a binary buffer.
   ///
   /// Returns:
-  /// A binary buffer (Uint8List) representing the UUID.
+  /// A binary buffer (List<int>) representing the UUID.
   ///
   /// Example:
   /// ```dart
@@ -77,15 +76,15 @@ class UUID {
   /// final buffer = toBuffer(uuid);
   /// print(buffer); /// Output: [85, 14, 132, 0, 226, 155, 65, 212, 167, 22, 68, 102, 85, 68, 0, 0]
   /// ```
-  static Uint8List toBuffer(String uuidString) {
+  static List<int> toBuffer(String uuidString) {
     if (!isValidUUIDv4(uuidString)) {
       throw ArgumentError("invalid uuid");
     }
-    final buffer = Uint8List(16);
+    final buffer = List<int>.filled(16, 0);
 
     /// Remove dashes and convert the hexadecimal string to bytes
     final cleanUuidString = uuidString.replaceAll('-', '');
-    final bytes = hexToBytes(cleanUuidString);
+    final bytes = BytesUtils.fromHexString(cleanUuidString);
 
     /// Copy the bytes into the buffer
     for (var i = 0; i < 16; i++) {
@@ -102,14 +101,14 @@ class UUID {
   /// UUIDv4 string is commonly used to represent unique identifiers.
   ///
   /// Parameters:
-  /// - [buffer]: The binary buffer (Uint8List) representing the UUID.
+  /// - [buffer]: The binary buffer (List<int>) representing the UUID.
   ///
   /// Returns:
   /// A UUIDv4 string.
   ///
   /// Example:
   /// ```dart
-  /// final buffer = Uint8List.fromList([85, 14, 132, 0, 226, 155, 65, 212, 167, 22, 68, 102, 85, 68, 0, 0]);
+  /// final buffer = List<int>.from([85, 14, 132, 0, 226, 155, 65, 212, 167, 22, 68, 102, 85, 68, 0, 0]);
   /// final uuid = fromBuffer(buffer);
   /// print(uuid); /// Output: '550e8400-e29b-41d4-a716-446655440000'
   /// ```
@@ -120,9 +119,9 @@ class UUID {
   ///
   /// Note:
   /// This method assumes that the input buffer contains valid UUIDv4 data.
-  static String fromBuffer(Uint8List buffer) {
+  static String fromBuffer(List<int> buffer) {
     if (buffer.length != 16) {
-      throw Exception(
+      throw ArgumentError(
           'Invalid buffer length. UUIDv4 buffers must be 16 bytes long.');
     }
 

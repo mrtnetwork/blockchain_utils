@@ -1,45 +1,60 @@
-/// Blockchain Utilities Library
-///
-/// This library provides a collection of utility functions and classes for
-/// working with blockchain-related operations and cryptographic tasks.
-/// Developers can use these utilities to simplify tasks such as encoding and
-/// decoding data, generating BIP39 mnemonics, working with HD wallets,
-/// and more in the context of blockchain applications.
-///
-/// Modules and Exports:
-///
-/// - `base58`: Exported from 'package:blockchain_utils/base58/base58.dart'.
-///   Provides functions for Base58 encoding and decoding.
-///
-/// - `bech32`: Exported from 'package:blockchain_utils/bech32/bech32.dart'.
-///   Provides functions for encoding and decoding Bech32 data.
-///
-/// - `bip39`: Exported from 'package:blockchain_utils/bip39/bip39.dart'.
-///   Includes classes and utilities for working with BIP39 mnemonics and
-///   related functionality.
-///
-/// - `hd_wallet`: Exported from 'package:blockchain_utils/hd_wallet/hd_wallet.dart'.
-///   Offers support for HD wallets using the BIP32 specification.
-///
-/// - `crypto_currencies`: Exported from 'package:blockchain_utils/hd_wallet/cypto_currencies/cyrpto_currency.dart'.
-///   Provides information about cryptocurrency symbols and related data.
-///
-/// - `secret_wallet`: Exported from 'package:blockchain_utils/secret_wallet/secret_wallet.dart'.
-///   Includes utilities for creating and encoding secret wallets.
-
+/// The `blockchain_utils` library provides a collection of utilities and tools
+/// for working with various aspects of blockchain and cryptocurrency technologies.
 library blockchain_utils;
 
-export 'package:blockchain_utils/base58/base58.dart';
+/// Export for Base32 encoding and decoding utilities.
+export 'base32/base32.dart';
 
-export 'package:blockchain_utils/bech32/bech32.dart'
-    show encodeBech32, decodeBech32;
+/// Export for Base58 encoding and decoding utilities.
+export 'base58/base58.dart';
 
-export 'package:blockchain_utils/bip39/bip39.dart'
-    show BIP39, Bip39Language, Bip39WordLength;
+/// Export for Bech32 encoding and decoding utilities.
+export 'bech32/bech32.dart';
 
-export 'package:blockchain_utils/hd_wallet/hd_wallet.dart' show BIP32HWallet;
-export 'package:blockchain_utils/hd_wallet/cypto_currencies/cyrpto_currency.dart'
-    show CurrencySymbol, Cryptocurrency;
+/// Export for CBOR (Concise Binary Object Representation) utilities.
+export 'cbor/cbor.dart';
 
-export 'package:blockchain_utils/secret_wallet/secret_wallet.dart'
-    show SecretWallet, SecretWalletEncoding;
+/// Export for various cryptographic functions and utilities.
+export 'crypto/crypto/crypto.dart';
+
+/// Export for quick cryptographic operations.
+export 'crypto/quick_crypto.dart';
+
+/// Export for hexadecimal encoding and decoding utilities.
+export 'hex/hex.dart';
+
+/// Export for tools related to managing secret wallets.
+export 'secret_wallet/secret_wallet.dart';
+
+/// Export for SS58 (Substrate/Polkadot/Stash encoding) utilities.
+export 'ss58/ss58.dart';
+
+/// Export for UUID (Universally Unique Identifier) generation and manipulation.
+export 'uuid/uuid.dart';
+
+/// Export for cryptocurrency address encoding utilities.
+export 'bip/address/encoders.dart';
+
+/// Export for cryptocurrency address decoding utilities.
+export 'bip/address/decoders.dart';
+
+/// Export for Algorand blockchain-specific utilities.
+export 'bip/algorand/algorand.dart';
+
+/// Export for BIP (Bitcoin Improvement Proposals) utilities.
+export 'bip/bip/bip.dart';
+
+/// Export for Cardano blockchain-specific utilities.
+export 'bip/cardano/cardano.dart';
+
+/// Export for Electrum wallet and mnemonic utilities.
+export 'bip/electrum/electrum.dart';
+
+/// Export for Monero-specific utilities, including mnemonics.
+export 'bip/monero/monero.dart';
+
+/// Export for Substrate blockchain-specific utilities.
+export 'bip/substrate/substrate.dart';
+
+/// Export for Wallet Import Format (WIF) encoding and decoding utilities.
+export 'bip/wif/wif.dart';

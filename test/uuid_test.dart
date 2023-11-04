@@ -1,5 +1,9 @@
-import 'package:blockchain_utils/uuid/uuid.dart';
+// ignore_for_file: depend_on_referenced_packages
+
 import 'dart:typed_data';
+
+import 'package:blockchain_utils/uuid/uuid.dart';
+
 import 'package:test/test.dart';
 
 void main() {
