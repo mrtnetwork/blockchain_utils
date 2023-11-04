@@ -1,173 +1,126 @@
 # blockchain_utils
 
-Blockchain Utils is a comprehensive Dart package that provides a wide range of utilities and functionalities for working with blockchain-related tasks. It offers support for various encoding and decoding formats, Web3 secret storage management, and BIP39 hierarchical wallets, including xPrive and xPub generation. Here's a description of its key features
+Discover a versatile and powerful cryptographic toolkit, carefully crafted in pure Dart to serve developers, businesses, and blockchain enthusiasts across multiple platforms. This package offers a wide array of essential features, including encoding/decoding for various data formats, support for numerous blockchain addresses, robust cryptographic algorithms, mnemonic management, and more – all without relying on external dependencies. Whether you're securing private keys, interacting with blockchain networks, or ensuring data integrity, this cross-platform solution simplifies your crypto journey. Experience a comprehensive set of tools designed to meet your diverse encoding, cryptography, and blockchain needs on iOS, Android, the web, Linux, and beyond.
 
 ## Features
 
-### Base58 Encoding/Decoding
-Blockchain Utils includes utilities for encoding and decoding data using the Base58 format. Base58 encoding is commonly used in blockchain networks for representing data like addresses and private keys.
+**Encoding and Decoding:**
 
-### Base58Check Encoding/Decoding
-In addition to basic Base58 encoding, the package also supports Base58Check encoding and decoding. Base58Check is used for creating and verifying checksums in blockchain-related data to prevent errors.
+1. **Base32 Encoding/Decoding:** Represent binary data with custom character sets for various encoding needs.
 
-### Bech32 Encoding/Decoding
-Bech32 encoding and decoding support is provided, simplifying the handling of data in Bech32 format. This feature is especially beneficial when working with native SegWit addresses in blockchain networks like Bitcoin.
+2. **SS58 Encoding/Decoding:** Encode Substrate-based blockchain addresses and public keys in a compact and human-readable format.
 
-### Multi-Language BIP39 Mnemonics
-The package offers comprehensive support for BIP39 mnemonics, which enable the generation of deterministic wallets from mnemonic phrases (seed phrases). Developers can generate mnemonics in multiple languages, ensuring flexibility and accessibility.
+3. **Base58 and Base58 XMR Encoding/Decoding:** Efficiently encode binary data, with Base58 XMR tailored for Monero addresses.
 
-### Web3 Secret Storage Definition
-- JSON Format: Private keys are stored in a JSON (JavaScript Object Notation) format, making it easy to work with in various programming languages.
-- Encryption: The private key is encrypted using the user's chosen password. This ensures that even if the JSON file is compromised, an attacker cannot access the private key without the password.
-- Key Derivation: The user's password is typically used to derive an encryption key using a key derivation function (KDF). This derived key is then used to encrypt the private key.
-- Scrypt Algorithm: The Scrypt algorithm is commonly used for key derivation, as it is computationally intensive and resistant to brute-force attacks.
-- Checksum: A checksum is often included in the JSON file to help detect errors in the password.
-- Initialization Vector (IV): An IV is typically used to add an extra layer of security to the encryption process.
-- Versioning: The JSON file may include a version field to indicate which version of the encryption and storage format is being used.
-- Metadata: Additional metadata, such as the address associated with the private key, may be included in the JSON file.
+4. **Base58Check Encoding/Decoding:** Supports checksum creation and verification in blockchain-related data.
 
-### BIP32 HD (Hierarchical Deterministic) wallet
-It supports the generation of extended private (xPrv) and public (xPub) keys, enabling hierarchical deterministic wallet functionality for blockchain applications.
+5. **Bech32 Encoding/Decoding:** Including Bech32 for Bitcoin Cash (BCH) and Bech32 SegWit addresses, offering improved error detection and readability for blockchain addresses.
 
-### Multi-Currency Support
-With support for encoding and decoding xPrv and xPub keys across more than 160 different blockchain currencies, Blockchain Utils ensures compatibility with a wide variety of blockchain networks. This extensive support streamlines cross-network development efforts.
+6. **Hex Encoding/Decoding:** Encode binary data as hexadecimal and decode it back.
 
-## EXAMPLES
+7. **Web3 Secret Storage Definition:** Securely store and manage private keys using the Web3 Secret Storage format.
 
-### Base58 Encoding/Decoding
-```
-// Decode a Base58 encoded string using the Bitcoin alphabet.
-final btcDecode = base58.decode("n4bkvTyU1dVdzsrhWBqBw8fEMbHjJvtmJR", alphabet: base58.bitcoin);
+8. **UUIDv4 Generation:** Generate random UUIDs (Universally Unique Identifiers) following the UUIDv4 standard.
 
-// Decode a Base58 encoded string using the Ripple alphabet.
-final rplDecode = base58.decode("ragbHLSHyQzWraW46nBiyHuXgVNwCHHoBM", alphabet: base58.ripple);
+**Blockchain Address Encoding/Decoding:**
+   - Zilliqa (ZIL)
+   - Tezos (XTZ)
+   - Ripple (XRP)
+   - Monero (XMR)
+   - Substrate address
+   - Solana (SOL)
+   - P2WPKH
+   - P2TR
+   - P2SH
+   - Bitcoin Cash P2PKH
+   - Harmony (ONE)
+   - OKEx
+   - Neo
+   - NEAR
+   - Nano
+   - Injective
+   - ICON
+   - Filecoin
+   - Ethereum
+   - Ergo
+   - EOS
+   - Elrond
+   - AVAX
+   - Atom
+   - Aptos
+   - Algorand
+   - Ada Shelley
+   - Ada Byron
 
-// Encode the decoded Bitcoin data back to Base58 using the Bitcoin alphabet.
-final btcEncode = base58.encode(btcDecode, alphabet: base58.bitcoin);
+**Binary Data:**
 
-// Encode the decoded Ripple data back to Base58 using the Ripple alphabet.
-final rplEncode = base58.encode(rplDecode, alphabet: base58.ripple);
-```
-### Base58Check Encoding/Decoding
-```
-// Decode a Base58Check encoded string using the Bitcoin alphabet.
-final btcDecode = base58.decodeCheck("n4bkvTyU1dVdzsrhWBqBw8fEMbHjJvtmJR", alphabet: base58.bitcoin);
+9. **CBOR Encoding/Decoding:** Compact representation of structured data with cross-language compatibility.
 
-// Decode a Base58Check encoded string using the Ripple alphabet.
-final rplDecode = base58.decodeCheck("ragbHLSHyQzWraW46nBiyHuXgVNwCHHoBM", alphabet: base58.ripple);
+**Cryptographic Algorithms:**
 
-// Encode the decoded Bitcoin data back to Base58Check using the Bitcoin alphabet.
-final btcEncode = base58.encodeCheck(btcDecode, alphabet: base58.bitcoin);
+10. **Cryptographic Algorithms and Operations:**
+    - AES (Advanced Encryption Standard)
+    - ChaCha
+    - ChaCha20Poly1305
+    - CRC32 (Cyclic Redundancy Check)
+    - CTR mode (Counter mode)
+    - ECB mode (Electronic Codebook mode)
+    - GCM (Galois/Counter Mode)
+    - HMAC (Hash-based Message Authentication Code)
+    - PBKDF2 (Password-Based Key Derivation Function 2)
+    - Poly1305
+    - scrypt (Password-based Key Derivation Function)
+    - XModem CRC
+    - Blake2b
+    - Keccak
+    - MD4 (Message Digest 4)
+    - MD5 (Message Digest 5)
+    - Rijndael (AES)
+    - SHA (Secure Hash Algorithm)
+    - SHA224
+    - SHA256
+    - SHA384
+    - SHA512
 
-// Encode the decoded Ripple data back to Base58Check using the Ripple alphabet.
-final rplEncode = base58.encodeCheck(rplDecode, alphabet: base58.ripple);
-```
+   These algorithms provide a wide range of cryptographic functions, including encryption, decryption, message authentication, hashing, and more, to enhance security and data integrity in applications.
 
-### Bech32 Encoding/Decoding
-```
-// Encode data as Bech32 with the human-readable part "tb" and a version of 1.
-final encodedBitcoin = bech32.encodeBech32("tb", addressBytes, 1);
+**Protocols:**
 
-// Decode a Bech32 encoded Litecoin address.
-final decodedLitecoin = bech32.decodeBech32("ltc1qyrrmwf3zl7e2h8u2pjkxc4pwym8r0vu26yczn9");
+11. **Strobe Protocol:** A framework for cryptographic protocols, providing simplicity and compatibility for a variety of devices.
 
-// Get the human-readable part (HRP) from the decoded Bech32 data.
-decodedLitecoin.hrp;
+**Zero-Knowledge Proofs:**
 
-// Get the version from the decoded Bech32 data.
-decodedLitecoin.version;
+12. **Merlin Transcript:** A STROBE-based transcript construction for zero-knowledge proofs.
 
-// Get the data payload from the decoded Bech32 data.
-decodedLitecoin.data;
+**Schnorrkel-based Cryptography:**
 
-```
-### Multi-Language BIP39 Mnemonics
-```
-// Create a new BIP39 instance with the Japanese language setting.
-final bip = BIP39(language: Bip39Language.japanese);
+13. **Schnorrkel-based Cryptographic Operations:** Includes Schnorrkel for signing, verification, key management, and more.
 
-// Generate a BIP39 mnemonic phrase with a strength of 24 words.
-final mnemonic = bip.generateMnemonic(strength: Bip39WordLength.words24);
+**Blockchain Support:**
 
-// Validate the generated BIP39 mnemonic to ensure its correctness.
-bip.validateMnemonic(mnemonic);
+14. **BIP39 Mnemonic Generation and Management:** Generate BIP39-compliant mnemonic phrases and manage cryptographic keys derived from them.
 
-// Convert the BIP39 mnemonic to its corresponding entropy.
-final toEntropy = bip.mnemonicToEntropy(mnemonic);
+15. **Substrate Key, Address, and Coin Management:** Efficiently manage keys and addresses in Substrate-based blockchains.
 
-// Convert the entropy back to a BIP39 mnemonic phrase.
-final toMnemonic = bip.entropyToMnemonic(toEntropy);
+16. **Monero Key, Address, and Coin Management:** Handle Monero cryptocurrency with support for key management, address derivation, and Monero mnemonics.
 
-```
-### Web3 Secret Storage Definition
-```
-// The data to be encrypted (replace "......." with your actual data).
-final String data = ".......";
+17. **BIP32 Multi-Curve Key Derivation and Address Management:** Derive keys across multiple cryptographic curves with BIP32 compliance.
 
-// The password used for encryption and decryption.
-final String password = "password";
+18. **SLIP10 Key Derivation and Management:** Advanced key derivation capabilities.
 
-// Encode the data using SecretWallet with specified parameters (p: 1, scryptN: 8192).
-final secureStorage = SecretWallet.encode(data, password, p: 1, scryptN: 8192);
+19. **BIP38 Secure Paper Wallets:** Encrypt private keys to safeguard cryptocurrency assets.
 
-// Encrypt the wallet data and obtain the result in JSON format.
-final encryptWallet = secureStorage.encrypt(encoding: SecretWalletEncoding.json);
+20. **BIP44 Key, Address, and Coin Management:** Manage keys, derive addresses, and handle various coins in compliance with the BIP44 standard.
 
-// The encrypted wallet data is represented in JSON format.
-// {"crypto":{"cipher":"aes-128-ctr","cipherparams":{"iv":"ce5920c1e72d4f85e59a0ead72de35c0"},"ciphertext":"6cc6dcf3ed72c7","kdf":"scrypt","kdfparams": 
-// {"dklen":32,"n":8192,"r":8,"p":1,"salt":"439eb03eb26157d105a4440365bb339dcd6a9802be64343ababc7fe3b6e146ca"},"mac":"8123f9b0404d5ab17b2c335119a2d8aef5454f41b85c9f41157f67bdf43bdc35"},"id":"dae7548d-3547-4c03-89b4- // // // // 
-// 26ada925059f","version":3}
+21. **BIP49 Key, Address, and Coin Management:** Similar to BIP44, with compliance to the BIP49 standard.
 
-// Decode the encrypted wallet data using the provided password.
-final decodeWallet = SecretWallet.decode(encryptWallet, password);
-```
+22. **BIP84 Key, Address, and Coin Management:** Manage keys, derive addresses, and handle various coins, complying with the BIP84 standard.
 
-### BIP32 HD (Hierarchical Deterministic) wallet
-```
-// Define the cryptocurrency symbol as "doge" (referring to Dogecoin).
-// Supports 160 currencies (e.g., BTC, LTC, DOGE, BTCTestnet, etc.)
-const CurrencySymbol symbol = CurrencySymbol.doge;
+23. **BIP86 Key, Address, and Coin Management:** Manage keys, derive addresses, and handle various coins, complying with the BIP84 standard.
 
-// Define the extended key type as "p2sh" (Pay-to-Script-Hash).
-const ExtendedKeyType keyType = ExtendedKeyType.p2sh;
+24. **Electrum Mnemonic V1 and V2 with Key and Address Management:** Support for both Electrum Mnemonic V1 and V2, including SegWit and Standard transactions.
 
-// Create a Cryptocurrency instance by initializing it with the specified symbol.
-final Cryptocurrency cryptocurrency = Cryptocurrency.fromSymbol(symbol);
-// Explanation: This step defines the cryptocurrency you want to work with, in this case, Dogecoin.
-
-// Create a master wallet by generating it from a BIP39 mnemonic.
-final masterWallet = BIP32HWallet.fromMnemonic(mnemonic);
-// Explanation: This step generates a hierarchical deterministic (HD) wallet from a BIP39 mnemonic phrase.
-
-// Create a drive wallet by deriving it from the master wallet using the default path for the specified cryptocurrency.
-final driveWallet = BIP32HWallet.drivePath(masterWallet, cryptocurrency.defaultPath);
-// Explanation: This step derives a child wallet from the master wallet using a specific derivation path.
-
-// Generate the extended private key (xPrive) for the chosen cryptocurrency and key type.
-final xPrive = driveWallet.toXpriveKey(currencySymbol: symbol, semantic: keyType);
-// Explanation: This step generates the extended private key for the specified cryptocurrency and key type.
-
-// Generate the extended public key (xPub) for the chosen cryptocurrency and key type.
-final xPub = driveWallet.toXpublicKey(currencySymbol: symbol, semantic: keyType);
-// Explanation: This step generates the extended public key for the specified cryptocurrency and key type.
-
-// Create a public wallet by generating it from the extended public key (xPub) and specifying the cryptocurrency symbol.
-final publicWallet = BIP32HWallet.fromXpublicKey(xPub, currencySymbol: symbol);
-// Explanation: This step generates a public wallet from the given extended public key and associates it with the specified cryptocurrency.
-
-// Create a private wallet by generating it from the extended private key (Xprv) and specifying the cryptocurrency symbol.
-final privateWallet = BIP32HWallet.fromXPrivateKey(xPrive, currencySymbol: symbol);
-// Explanation: This step generates a private wallet from the given extended private key and associates it with the specified cryptocurrency.
-
-// Convert the public wallet into a secure storage format using the specified password and encoding.
-final toSecureStorage = publicWallet.toSecretStorage("password", encoding: SecretWalletEncoding.base64);
-// Explanation: This step converts the public wallet into a secure storage format (encrypted) using a password for protection. The encoding is set to base64.
-
-// Retrieve a wallet from secure storage by decoding it using the provided password.
-final fromSecureStorage = BIP32HWallet.fromSecretStorage(toSecureStorage, "password");
-// Explanation: This step decodes the wallet previously stored in secure storage using the provided password, resulting in a wallet instance.
-
-```
+These features make your package a comprehensive solution for encoding, cryptography, blockchain management, BIP39 mnemonic support, and diverse blockchain address encoding and decoding needs.
 
 ## Contributing
 
