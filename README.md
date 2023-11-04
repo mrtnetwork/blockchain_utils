@@ -122,6 +122,11 @@ Discover a versatile and powerful cryptographic toolkit, carefully crafted in pu
 
 These features make your package a comprehensive solution for encoding, cryptography, blockchain management, BIP39 mnemonic support, and diverse blockchain address encoding and decoding needs.
 
+**Example: Explore Our Toolkit**
+
+Discover the capabilities of our comprehensive crypto and blockchain toolkit through interactive tests. Visit our [test page](https://github.com/mrtnetwork/blockchain_utils/tree/main/test) to access thousands of examples, showcasing pure Dart's cross-platform functionality. Learn encoding, cryptography, address management, mnemonics, and more.
+
+
 ## Contributing
 
 Contributions are welcome! Please follow these guidelines:
