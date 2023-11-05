@@ -34,9 +34,8 @@ class Bip32Slip10Ed25519 extends Bip32Base {
       required super.pubKey});
 
   /// constructor for creating a key from a seed.
-  Bip32Slip10Ed25519.fromSeed(List<int> seedBytes,
-      [Bip32KeyNetVersions? keyNetVer])
-      : super.fromSeed(seedBytes, keyNetVer);
+  Bip32Slip10Ed25519.fromSeed(super.seedBytes, [super.keyNetVer])
+      : super.fromSeed();
 
   /// constructor for creating a key from a private key.
   Bip32Slip10Ed25519.fromPrivateKey(List<int> privKey,
@@ -49,9 +48,8 @@ class Bip32Slip10Ed25519 extends Bip32Base {
       : super.fromPublicKey(pubkey, keyData, keyNetVer);
 
   /// constructor for creating a key from an extended key string.
-  Bip32Slip10Ed25519.fromExtendedKey(String exKeyStr,
-      [Bip32KeyNetVersions? keyNetVer])
-      : super.fromExtendedKey(exKeyStr, keyNetVer);
+  Bip32Slip10Ed25519.fromExtendedKey(super.exKeyStr, [super.keyNetVer])
+      : super.fromExtendedKey();
 
   /// Derives a child key from the current key, based on the provided index.
   ///

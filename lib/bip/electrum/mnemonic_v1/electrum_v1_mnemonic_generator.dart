@@ -44,10 +44,12 @@ class ElectrumV1MnemonicGenerator {
     } on StateError {
       throw ArgumentError("invalid words num");
     }
+    final wNum = ElectrumV1WordsNum.values
+        .firstWhere((element) => element.value == wordsNum);
 
     /// Get the corresponding entropy bit length
     int entropyBitLen =
-        ElectrumV1MnemonicGeneratorConst.wordsNumToEntropyLen[wordsNum]!;
+        ElectrumV1MnemonicGeneratorConst.wordsNumToEntropyLen[wNum]!;
 
     /// Generate entropy bytes with the specified bit length
     final entropyBytes =

@@ -103,8 +103,6 @@ class MD5 implements SerializableHash {
 
   static int _cc(int Function(int, int, int) f, int k, int a, int x, int y,
       int z, int m, int s) {
-    (a + f(x, y, z) + m + k);
-
     return (add32(rotl32(add32(add32(add32(a, f(x, y, z)), m), k), s), x));
   }
 

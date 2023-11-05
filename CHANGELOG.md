@@ -1,4 +1,4 @@
-## Changelog for Major Release 1.0.2
+## Changelog for Major Release 1.0.3
 
 We're excited to present our biggest update yet, introducing a wide range of new features and enhancements to our toolkit. In this release, we've expanded our offering to include comprehensive support for various data encoding formats, blockchain addresses, advanced cryptographic algorithms, and cross-platform capabilities. Here's what you can expect:
 

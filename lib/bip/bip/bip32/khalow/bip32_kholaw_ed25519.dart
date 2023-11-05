@@ -35,14 +35,12 @@ class Bip32KholawEd25519 extends Bip32Base {
       : super.fromPrivateKey(privKey, keyData, keyNetVer);
 
   /// Creates a Bip32 key pair from an extended key.
-  Bip32KholawEd25519.fromExtendedKey(String exKeyStr,
-      [Bip32KeyNetVersions? keyNetVer])
-      : super.fromExtendedKey(exKeyStr, keyNetVer);
+  Bip32KholawEd25519.fromExtendedKey(super.exKeyStr, [super.keyNetVer])
+      : super.fromExtendedKey();
 
   /// Creates a Bip32 key pair from a seed.
-  Bip32KholawEd25519.fromSeed(List<int> seedBytes,
-      [Bip32KeyNetVersions? keyNetVer])
-      : super.fromSeed(seedBytes, keyNetVer);
+  Bip32KholawEd25519.fromSeed(super.seedBytes, [super.keyNetVer])
+      : super.fromSeed();
 
   /// Creates a Bip32 key pair from a public key.
   Bip32KholawEd25519.fromPublicKey(List<int> pubkey,

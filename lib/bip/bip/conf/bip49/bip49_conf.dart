@@ -1,5 +1,3 @@
-/// Bitcoin key net version for main net (ypub / yprv)
-
 import 'package:blockchain_utils/bip/address/p2sh_addr.dart';
 import 'package:blockchain_utils/bip/bip/bip32/bip32_key_net_ver.dart';
 import 'package:blockchain_utils/bip/bip/conf/bip_bitcoin_cash_conf.dart';

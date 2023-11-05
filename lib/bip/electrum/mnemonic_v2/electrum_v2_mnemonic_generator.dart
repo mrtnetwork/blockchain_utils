@@ -45,10 +45,11 @@ class ElectrumV2MnemonicGenerator {
     } on StateError {
       throw ArgumentError('Words number for mnemonic ($wordsNum) is not valid');
     }
-
+    final wNum = ElectrumV2WordsNum.values
+        .firstWhere((element) => element.value == wordsNum);
     // Get entropy length in bit from words number
     final entropyBitLen =
-        ElectrumV2MnemonicGeneratorConst.wordsNumToEntropyLen[wordsNum]!;
+        ElectrumV2MnemonicGeneratorConst.wordsNumToEntropyLen[wNum]!;
     // Generate entropy
     final entropyBytes = ElectrumV2EntropyGenerator(entropyBitLen).generate();
 

@@ -1,5 +1,3 @@
-/// Bitcoin key net version for main net (same as BIP32)
-
 import 'package:blockchain_utils/bip/address/ada_byron_addr.dart';
 import 'package:blockchain_utils/bip/address/algo_addr.dart';
 import 'package:blockchain_utils/bip/address/aptos_addr.dart';

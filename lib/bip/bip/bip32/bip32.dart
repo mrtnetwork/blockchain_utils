@@ -1,6 +1,7 @@
 /// The 'bip32' library provides a comprehensive set of tools for working with
 /// BIP-32 Hierarchical Deterministic Wallets, which are commonly used in
 /// cryptocurrencies to manage and derive keys.
+library bip32;
 
 /// Export statements for Khalow-based BIP-32 components:
 /// Export the Khalow BIP-32 implementation for Ed25519.

@@ -154,19 +154,10 @@ class ProjectiveECCPoint extends AbstractPoint {
 
   /// equal operation
   @override
-  bool operator ==(Object other) {
-    // Check if it's the same instance.
-    if (identical(this, other)) {
-      return true;
-    }
-
-    // Check if 'other' is a valid point (either AffinePointt or ProjectiveECCPoint).
-    if (other is! AffinePointt && other is! ProjectiveECCPoint) {
+  bool operator ==(other) {
+    if (other is! AbstractPoint) {
       return false;
     }
-    // Cast 'other' to an AbstractPoint.
-    other as AbstractPoint;
-
     // Extract coordinates for the current point.
     final BigInt x1 = _coords[0];
     final BigInt y1 = _coords[1];
@@ -177,6 +168,11 @@ class ProjectiveECCPoint extends AbstractPoint {
 
     // Calculate the square of z1 modulo p.
     final zz1 = (z1 * z1) % p;
+
+    // Check if 'other' is a valid point (either AffinePointt or ProjectiveECCPoint).
+    if (other is! ProjectiveECCPoint && other is! AffinePointt) {
+      return false;
+    }
 
     // If 'other' represents an infinity point, check if this point is also at infinity.
     if (other.isInfinity) {
@@ -191,11 +187,12 @@ class ProjectiveECCPoint extends AbstractPoint {
       x2 = other.x;
       y2 = other.y;
       z2 = BigInt.one;
-    } else {
-      (other as ProjectiveECCPoint);
+    } else if (other is ProjectiveECCPoint) {
       x2 = other._coords[0];
       y2 = other._coords[1];
       z2 = other._coords[2];
+    } else {
+      return false;
     }
 
     // Ensure both points belong to the same curve.

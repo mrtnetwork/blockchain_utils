@@ -1,5 +1,3 @@
-/// Main net
-
 import 'package:blockchain_utils/bip/slip/slip173/slip173.dart';
 import 'package:blockchain_utils/bip/coin_conf/coins_name.dart';
 

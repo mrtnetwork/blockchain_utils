@@ -95,9 +95,8 @@ class MoneroMnemonicConst {
 /// list of mnemonic words.
 class MoneroMnemonic extends Mnemonic {
   /// Constructs a MoneroMnemonic from a mnemonic string.
-  MoneroMnemonic.fromString(String mnemonicStr) : super.fromString(mnemonicStr);
+  MoneroMnemonic.fromString(super.mnemonicStr) : super.fromString();
 
   /// Constructs a MoneroMnemonic from a list of mnemonic words.
-  MoneroMnemonic.fromList(List<String> mnemonicList)
-      : super.fromList(mnemonicList);
+  MoneroMnemonic.fromList(super.mnemonicList) : super.fromList();
 }
