@@ -34,7 +34,7 @@ class IcxAddrDecoder implements BlockchainAddressDecoder {
     /// Remove the ICON address prefix.
     String addrNoPrefix = AddrDecUtils.validateAndRemovePrefix(
       addr,
-      CoinsConf.icon.getParam("addr_prefix"),
+      CoinsConf.icon.params.addrPrefix!,
     );
 
     /// Convert the remaining string to a List<int> and validate its length.
@@ -74,7 +74,7 @@ class IcxAddrEncoder implements BlockchainAddressEncoder {
         .sublist(pubKeyHashBytes.length - IcxAddrConst.keyHashByteLen);
 
     /// Add the ICON address prefix to the hash.
-    return CoinsConf.icon.getParam("addr_prefix") +
+    return CoinsConf.icon.params.addrPrefix! +
         BytesUtils.toHexString(pubKeyHashBytes);
   }
 }

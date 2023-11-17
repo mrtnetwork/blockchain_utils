@@ -4,7 +4,7 @@ import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
 import 'package:blockchain_utils/bip/coin_conf/coins_name.dart';
 
 /// A class representing the configuration for Litecoin (LTC) based on the BIP framework.
-class BipLitecoinConf extends BipCoinConf {
+class BipLitecoinConf extends CoinConfig {
   /// Configuration properties specific to Litecoin.
   final Bip32KeyNetVersions altKeyNetVer;
   final bool useDeprAddress;

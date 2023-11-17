@@ -24,7 +24,7 @@ class EgldAddrDecoder implements BlockchainAddressDecoder {
     try {
       /// Decode the Bech32 address with the specified Human-Readable Part (HRP)
       final addrDecBytes =
-          Bech32Decoder.decode(CoinsConf.elrond.getParam("addr_hrp"), addr);
+          Bech32Decoder.decode(CoinsConf.elrond.params.addrHrp!, addr);
 
       /// Validate the length of the decoded address
       AddrDecUtils.validateBytesLength(
@@ -57,7 +57,7 @@ class EgldAddrEncoder implements BlockchainAddressEncoder {
 
     /// Encode the Egld address using the provided HRP and the raw compressed public key
     return Bech32Encoder.encode(
-      CoinsConf.elrond.getParam("addr_hrp"),
+      CoinsConf.elrond.params.addrHrp!,
       pubKeyObj.compressed.sublist(1),
     );
   }

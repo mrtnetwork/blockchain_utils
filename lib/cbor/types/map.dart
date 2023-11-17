@@ -6,23 +6,18 @@ import 'package:blockchain_utils/cbor/core/cbor.dart';
 /// A class representing a CBOR (Concise Binary Object Representation) Map value.
 class CborMapValue<K, V> implements CborObject {
   /// Constructor for creating a CborMapValue instance with the provided parameters.
-  /// It accepts the Map with all cbor encodable key and value and an optional list of CBOR tags.
-  CborMapValue.fixedLength(this.value, [this.tags = const []])
-      : _isFixedLength = true;
+  /// It accepts the Map with all cbor encodable key and value.
+  CborMapValue.fixedLength(this.value) : _isFixedLength = true;
 
   /// Constructor for creating a CborMapValue instance with the provided parameters.
-  /// It accepts the Map with all cbor encodable key and value and an optional list of CBOR tags.
+  /// It accepts the Map with all cbor encodable key and value.
   /// this method encode values with indefinite tag.
-  CborMapValue.dynamicLength(this.value, [this.tags = const []])
-      : _isFixedLength = false;
+  CborMapValue.dynamicLength(this.value) : _isFixedLength = false;
 
   /// value as Map
   @override
   final Map<K, V> value;
 
-  /// List of CBOR tags associated with the URL value.
-  @override
-  final List<int> tags;
   final bool _isFixedLength;
 
   /// check is fixedLength or inifinitie
@@ -32,7 +27,6 @@ class CborMapValue<K, V> implements CborObject {
   @override
   List<int> encode() {
     final bytes = CborBytesTracker();
-    bytes.pushTags(tags);
     if (isFixedLength) {
       bytes.pushInt(MajorTags.map, value.length);
     } else {

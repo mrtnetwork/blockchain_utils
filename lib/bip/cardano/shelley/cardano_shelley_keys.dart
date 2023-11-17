@@ -6,7 +6,7 @@ import 'package:blockchain_utils/bip/bip/conf/bip_coin_conf.dart';
 class CardanoShelleyPublicKeys {
   final Bip32PublicKey pubAddrKey;
   final Bip32PublicKey pubSkKey;
-  final BipCoinConf coinConf;
+  final CoinConfig coinConf;
 
   /// Constructor to create a Cardano Shelley Public Keys instance.
   ///
@@ -56,7 +56,7 @@ class CardanoShelleyPublicKeys {
 class CardanoShelleyPrivateKeys {
   final Bip32PrivateKey privAddrKey;
   final Bip32PrivateKey privSkKey;
-  final BipCoinConf coinConf;
+  final CoinConfig coinConf;
 
   /// Constructor to create a Cardano Shelley Private Keys instance.
   ///

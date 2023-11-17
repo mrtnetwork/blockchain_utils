@@ -47,7 +47,7 @@ class Secp256k1PublicKeyEcdsa implements IPublicKey {
   /// accsess to public key point.
   @override
   ProjectiveECCPoint get point {
-    return publicKey.point as ProjectiveECCPoint;
+    return publicKey.point;
   }
 
   /// public key compressed bytes.

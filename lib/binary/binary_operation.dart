@@ -31,6 +31,11 @@ int readUint32LE(List<int> array, [int offset = 0]) {
       mask32;
 }
 
+/// Reads a 16-bit unsigned integer value in little-endian byte order from a list.
+int readUint16LE(List<int> array, [int offset = 0]) {
+  return ((array[offset + 1] << 8) | array[offset]) & mask32;
+}
+
 /// Writes a 32-bit unsigned integer value in big-endian byte order to a list.
 void writeUint32BE(int value, List<int> out, [int offset = 0]) {
   out[offset + 0] = (value >> 24) & mask8;

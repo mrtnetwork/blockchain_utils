@@ -52,7 +52,9 @@ class _ErgoAddrUtils {
   /// Returns a List<int> representing the encoded prefix.
   static List<int> encodePrefix(
       ErgoAddressTypes addrType, ErgoNetworkTypes netType) {
-    final prefix = IntUtils.toBytes(addrType.value + netType.value);
+    final prefixInt = addrType.value + netType.value;
+    final prefix = IntUtils.toBytes(prefixInt,
+        length: IntUtils.bitlengthInBytes(prefixInt));
     return prefix;
   }
 }
@@ -98,8 +100,6 @@ class ErgoP2PKHAddrDecoder implements BlockchainAddressDecoder {
     final pubKeyBytes = AddrDecUtils.validateAndRemovePrefixBytes(
         addrWithPrefix,
         _ErgoAddrUtils.encodePrefix(ErgoAddressTypes.p2pkh, netType));
-    // Validate public key
-    // AddrDecUtils.validatePubKey(pubKeyBytes, Secp256k1PublicKey);
 
     return pubKeyBytes;
   }

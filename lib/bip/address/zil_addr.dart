@@ -35,7 +35,7 @@ class ZilAddrDecoder implements BlockchainAddressDecoder {
     try {
       /// Decode the Zilliqa address using the specified Human Readable Part (HRP).
       final addrDecBytes = Bech32Decoder.decode(
-        CoinsConf.zilliqa.getParam('addr_hrp'),
+        CoinsConf.zilliqa.params.addrHrp!,
         addr,
       );
       return addrDecBytes;
@@ -73,7 +73,7 @@ class ZilAddrEncoder implements BlockchainAddressEncoder {
     final keyHash = QuickCrypto.sha256Hash(pubKeyObj.compressed);
 
     /// Encode the Zilliqa blockchain address using Bech32 encoding.
-    return Bech32Encoder.encode(CoinsConf.zilliqa.getParam('addr_hrp'),
+    return Bech32Encoder.encode(CoinsConf.zilliqa.params.addrHrp!,
         keyHash.sublist(keyHash.length - ZilAddrConst.sha256ByteLen));
   }
 }

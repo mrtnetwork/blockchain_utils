@@ -75,7 +75,8 @@ class SS58Encoder {
     List<int> ss58FormatBytes;
 
     if (ss58Format <= _Ss58Const.simpleAccountFormatMaxVal) {
-      ss58FormatBytes = IntUtils.toBytesLength(ss58Format);
+      ss58FormatBytes = IntUtils.toBytes(ss58Format,
+          length: IntUtils.bitlengthInBytes(ss58Format));
     } else {
       ss58FormatBytes = List<int>.from([
         ((ss58Format & 0x00FC) >> 2) | 0x0040,

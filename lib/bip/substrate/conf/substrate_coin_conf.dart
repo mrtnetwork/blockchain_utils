@@ -22,7 +22,7 @@ class SubstrateCoinConf {
   factory SubstrateCoinConf.fromCoinConf(CoinConf coinConf) {
     return SubstrateCoinConf(
         coinNames: coinConf.coinName,
-        ss58Format: coinConf.getParam("addr_ss58_format"));
+        ss58Format: coinConf.params.addrSs58Format!);
   }
 
   /// Get the Substrate-specific address parameters as a map.

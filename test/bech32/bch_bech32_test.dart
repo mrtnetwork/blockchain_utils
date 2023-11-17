@@ -39,9 +39,7 @@ void main() {
       expect(BytesUtils.toHexString(decode.$2), i["raw"]);
       expect(
           bytesEqual(
-              decode.$1,
-              CoinsConf.bitcoinCashMainNet
-                  .getParam<List<int>>("p2pkh_std_net_ver")),
+              decode.$1, CoinsConf.bitcoinCashMainNet.params.p2pkhStdNetVer),
           true);
     }
   });
@@ -50,8 +48,7 @@ void main() {
       final hrp = i["encode"]!.substring(0, i["encode"]!.indexOf(":"));
       final decode = BchBech32Encoder.encode(
           hrp,
-          CoinsConf.bitcoinCashMainNet
-              .getParam<List<int>>("p2pkh_std_net_ver")!,
+          CoinsConf.bitcoinCashMainNet.params.p2pkhStdNetVer!,
           BytesUtils.fromHexString(i["raw"]!));
       expect(decode, i["encode"]);
     }

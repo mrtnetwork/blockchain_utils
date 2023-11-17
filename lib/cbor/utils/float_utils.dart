@@ -85,7 +85,6 @@ class FloatUtils {
 
   static int _toBits(double value, [Endian? endian]) {
     List<int> toBytes = Float64List.fromList([value]).buffer.asUint8List();
-    // readUint64LE([value]);
     if ((endian ?? Endian.big) == Endian.big) {
       toBytes = List<int>.from(toBytes.reversed, growable: false);
     }

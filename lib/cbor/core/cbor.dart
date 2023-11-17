@@ -1,3 +1,4 @@
+import 'package:blockchain_utils/binary/utils.dart';
 import 'package:blockchain_utils/cbor/utils/cbor_utils.dart';
 import 'package:blockchain_utils/cbor/types/bigint.dart';
 import 'package:blockchain_utils/cbor/types/bytes.dart';
@@ -18,9 +19,6 @@ abstract class CborObject {
   /// Convert the object's CBOR representation to a hexadecimal string.
   String toCborHex();
 
-  /// An abstract property representing a list of tags associated with the CBOR object.
-  abstract final List<int> tags;
-
   /// An abstract property representing the dynamic value contained in the CBOR object.
   abstract final dynamic value;
 
@@ -29,29 +27,34 @@ abstract class CborObject {
     return CborUtils.decodeCbor(cborBytes);
   }
 
+  /// Create a new CborObject by decoding the given CBOR-encoded hex
+  factory CborObject.fromCborHex(String cborHex) {
+    return CborUtils.decodeCbor(BytesUtils.fromHexString(cborHex));
+  }
+
   /// Create a new CborObject from a dynamic value and an optional list of CBOR tags.
   factory CborObject.fromDynamic(dynamic value, [List<int> tags = const []]) {
     if (value is CborObject) {
       return value;
     } else if (value is int) {
-      return CborIntValue(value, tags);
+      return CborIntValue(value);
     } else if (value is double) {
       return CborFloatValue(value);
     } else if (value is BigInt) {
-      return CborBigIntValue(value, tags);
+      return CborBigIntValue(value);
     } else if (value is String) {
-      return CborStringValue(value, tags);
+      return CborStringValue(value);
     } else if (value is List<String>) {
-      return CborIndefiniteStringValue(value, tags);
+      return CborIndefiniteStringValue(value);
     } else if (value is List<int>) {
-      return CborBytesValue(value, tags);
+      return CborBytesValue(value);
     } else if (value is List<List<int>>) {
-      return CborDynamicBytesValue(value, tags);
+      return CborDynamicBytesValue(value);
     } else if (value is Map) {
-      return CborMapValue.fixedLength(value, tags);
+      return CborMapValue.fixedLength(value);
     } else if (value is List<dynamic>) {
       return CborListValue.fixedLength(
-          value.map((e) => CborObject.fromDynamic(e)).toList(), tags);
+          value.map((e) => CborObject.fromDynamic(e)).toList());
     }
     throw UnimplementedError("does not supported");
   }

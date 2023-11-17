@@ -1,5 +1,3 @@
-// ignore_for_file: avoid_print
-
 import 'package:example/test/address/ada_shelly/ada_shelly_test.dart';
 import 'package:example/test/address/algo/algo_test.dart';
 import 'package:example/test/address/aptos/aptos_test.dart';
@@ -15,6 +13,7 @@ import 'package:example/test/address/fil/fil_test.dart';
 import 'package:example/test/address/icx/icx_test.dart';
 import 'package:example/test/address/inj/inj_test.dart';
 import 'package:example/test/address/nano/nano_test.dart';
+import 'package:example/test/address/near/near_test.dart';
 import 'package:example/test/address/neo/neo_test.dart';
 import 'package:example/test/address/okex/okex_test.dart';
 import 'package:example/test/address/one/one_test.dart';
@@ -93,11 +92,6 @@ import 'package:example/test/uuid_test.dart';
 import 'package:example/test/wif/wif_test.dart';
 import 'package:flutter/foundation.dart';
 
-import 'test/address/near/near_test.dart';
-
-/// for test in different ENV
-/// The package is created in Pure Dart and this test contains thousands of tests,
-/// it may take a long time (5-10) minutes.
 void main() {
   _testAll();
 }
@@ -118,9 +112,9 @@ void _web() {
 void _test(String name, TestMethod process) {
   try {
     process();
-    print("test pass $name");
+    print("pass $name");
   } catch (e) {
-    print("test error $name $e");
+    throw Exception();
   }
 }
 
@@ -185,7 +179,6 @@ void _testAll() async {
   _test("cbor test", cborTest);
 
   _web();
-  // print("test done");
 }
 
 void _encodeDecodeAddrTest() {

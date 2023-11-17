@@ -245,4 +245,9 @@ abstract class AbstractPoint {
 
     return (x, y);
   }
+
+  @override
+  String toString() {
+    return "($x, $y)";
+  }
 }

@@ -36,14 +36,14 @@ void bchBech32Test() {
     final hrp = i["encode"]!.substring(0, i["encode"]!.indexOf(":"));
     final decode = BchBech32Decoder.decode(hrp, i["encode"]!);
     assert(decode.$2.toHex() == i["raw"]);
-    assert(bytesEqual(decode.$1,
-        CoinsConf.bitcoinCashMainNet.getParam<List<int>>("p2pkh_std_net_ver")));
+    assert(bytesEqual(
+        decode.$1, CoinsConf.bitcoinCashMainNet.params.p2pkhStdNetVer));
   }
   for (final i in _testVect) {
     final hrp = i["encode"]!.substring(0, i["encode"]!.indexOf(":"));
     final decode = BchBech32Encoder.encode(
         hrp,
-        CoinsConf.bitcoinCashMainNet.getParam<List<int>>("p2pkh_std_net_ver")!,
+        CoinsConf.bitcoinCashMainNet.params.p2pkhStdNetVer!,
         BytesUtils.fromHexString(i["raw"]!));
     assert(decode == i["encode"]);
   }

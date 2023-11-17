@@ -62,7 +62,7 @@ import 'package:blockchain_utils/bip/coin_conf/coins_name.dart';
 typedef AddrEncoder = BlockchainAddressEncoder Function([dynamic kwargs]);
 
 /// A base class representing configuration parameters for a cryptocurrency coin.
-class BipCoinConf {
+class CoinConfig {
   /// Returns the address encoder for this coin configuration.
   BlockchainAddressEncoder encoder() {
     return addressEncoder();
@@ -79,8 +79,8 @@ class BipCoinConf {
   final Map<String, dynamic> addrParams;
   final EllipticCurveTypes type;
 
-  /// Creates a copy of the BipCoinConf object with optional properties updated.
-  BipCoinConf copy({
+  /// Creates a copy of the CoinConfig object with optional properties updated.
+  CoinConfig copy({
     CoinNames? coinNames,
     int? coinIdx,
     bool? isTestnet,
@@ -91,7 +91,7 @@ class BipCoinConf {
     EllipticCurveTypes? type,
     AddrEncoder? addressEncoder,
   }) {
-    return BipCoinConf(
+    return CoinConfig(
         coinNames: coinNames ?? this.coinNames,
         coinIdx: coinIdx ?? this.coinIdx,
         isTestnet: isTestnet ?? this.isTestnet,
@@ -103,8 +103,8 @@ class BipCoinConf {
         addressEncoder: addressEncoder ?? this.addressEncoder);
   }
 
-  /// Constructor for BipCoinConf.
-  const BipCoinConf({
+  /// Constructor for CoinConfig.
+  const CoinConfig({
     required this.coinNames,
     required this.coinIdx,
     required this.isTestnet,

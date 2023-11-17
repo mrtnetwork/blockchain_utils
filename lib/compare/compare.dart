@@ -61,3 +61,14 @@ bool iterableIsEqual<T>(Iterable<T>? a, Iterable<T>? b) {
   /// If no differences were found, the lists are equal.
   return true;
 }
+
+bool isLessThanBytes(List<int> thashedA, List<int> thashedB) {
+  for (int i = 0; i < thashedA.length && i < thashedB.length; i++) {
+    if (thashedA[i] < thashedB[i]) {
+      return true;
+    } else if (thashedA[i] > thashedB[i]) {
+      return false;
+    }
+  }
+  return thashedA.length < thashedB.length;
+}

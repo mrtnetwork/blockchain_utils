@@ -12,6 +12,9 @@ enum StringEncoding {
   /// which is a variable-length character encoding that supports a wide range of characters,
   /// including those from various languages and symbols.
   utf8,
+
+  /// The base64 encoding option
+  base64,
 }
 
 /// A utility class for working with strings and common string operations.
@@ -48,6 +51,8 @@ class StringUtils {
     switch (type) {
       case StringEncoding.utf8:
         return utf8.encode(value);
+      case StringEncoding.base64:
+        return base64Decode(value);
       default:
         return ascii.encode(value);
     }
@@ -67,8 +72,25 @@ class StringUtils {
     switch (type) {
       case StringEncoding.utf8:
         return utf8.decode(value);
+      case StringEncoding.base64:
+        return base64Encode(value);
       default:
         return ascii.decode(value);
     }
+  }
+
+  /// Converts a Dart object represented as a Map to a JSON-encoded string.
+  ///
+  /// The input [data] is a Map representing the Dart object.
+  static String fromJson(Map<String, dynamic> data) {
+    return jsonEncode(data);
+  }
+
+  /// Converts a JSON-encoded string to a Dart object represented as a Map.
+  ///
+  /// The input [data] is a JSON-encoded string.
+  /// Returns a Map representing the Dart object.
+  static Map<String, dynamic> toJson(String data) {
+    return jsonDecode(data);
   }
 }

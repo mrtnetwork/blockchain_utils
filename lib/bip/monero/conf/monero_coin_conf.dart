@@ -20,9 +20,9 @@ class MoneroCoinConf {
   factory MoneroCoinConf.fromCoinConf(CoinConf coinConf) {
     return MoneroCoinConf._(
       coinConf.coinName,
-      coinConf.getParam("addr_net_ver"),
-      coinConf.getParam("addr_int_net_ver"),
-      coinConf.getParam("subaddr_net_ver"),
+      coinConf.params.addrNetVer!,
+      coinConf.params.addrIntNetVer!,
+      coinConf.params.subaddrNetVer!,
     );
   }
 }

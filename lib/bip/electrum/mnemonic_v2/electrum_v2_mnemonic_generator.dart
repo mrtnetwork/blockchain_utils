@@ -70,7 +70,8 @@ class ElectrumV2MnemonicGenerator {
     if (ElectrumV2EntropyGenerator.areEntropyBitsEnough(entropyInt)) {
       for (int i = 0; i < ElectrumV2MnemonicGeneratorConst.maxAttempts; i++) {
         final newEntropyInt = entropyInt + BigInt.from(i);
-        final toBytes = BigintUtils.toBytes(newEntropyInt);
+        final toBytes = BigintUtils.toBytes(newEntropyInt,
+            length: BigintUtils.orderLen(newEntropyInt));
 
         try {
           final encode = encoder.encode(toBytes);

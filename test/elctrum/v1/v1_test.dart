@@ -13,7 +13,7 @@ void main() {
       final seed = BytesUtils.fromHexString(i["seed"]);
       final elc = ElectrumV1.fromSeed(seed);
       final prv = WifEncoder.encode(elc.privateKey!.raw,
-          netVer: CoinsConf.bitcoinMainNet.getParam("wif_net_ver"),
+          netVer: CoinsConf.bitcoinMainNet.params.wifNetVer!,
           pubKeyMode: WifPubKeyModes.uncompressed);
       expect(prv, i["private"]);
 
@@ -24,7 +24,7 @@ void main() {
         final addressIndex = c["address_index"];
         final cPrv = WifEncoder.encode(
             elc.getPrivateKey(changeIndex, addressIndex).raw,
-            netVer: CoinsConf.bitcoinMainNet.getParam("wif_net_ver"),
+            netVer: CoinsConf.bitcoinMainNet.params.wifNetVer!,
             pubKeyMode: WifPubKeyModes.uncompressed);
         expect(cPrv, c["private"]);
         final cPub =

@@ -27,6 +27,7 @@ void electrumMnemonicTest() {
     assert(mn.toStr() == i["mnemonic"]);
     final decode = ElectrumV2MnemonicDecoder(mnemonicType: type, language: lang)
         .decode(mn.toStr());
+
     assert(bytesEqual(decode, entropy));
     final seed = ElectrumV2SeedGenerator(mn, lang).generate("MRT");
     assert(bytesEqual(seed, BytesUtils.fromHexString(i["seed"])));

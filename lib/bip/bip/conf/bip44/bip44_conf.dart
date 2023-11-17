@@ -26,10 +26,8 @@ import 'package:blockchain_utils/bip/address/xtz_addr.dart';
 import 'package:blockchain_utils/bip/address/zil_addr.dart';
 import 'package:blockchain_utils/bip/bip/bip32/bip32_const.dart';
 import 'package:blockchain_utils/bip/bip/bip32/bip32_key_net_ver.dart';
-import 'package:blockchain_utils/bip/bip/conf/bip44/bip44_coins.dart';
 import 'package:blockchain_utils/bip/bip/conf/bip_bitcoin_cash_conf.dart';
 import 'package:blockchain_utils/bip/bip/conf/bip_coin_conf.dart';
-import 'package:blockchain_utils/bip/bip/conf/bip_coins.dart';
 import 'package:blockchain_utils/bip/bip/conf/bip_conf_const.dart';
 import 'package:blockchain_utils/bip/bip/conf/bip_litecoin_conf.dart';
 import 'package:blockchain_utils/bip/coin_conf/coins_conf.dart';
@@ -37,7 +35,7 @@ import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
 import 'package:blockchain_utils/bip/slip/slip44/slip44.dart';
 
 /// A configuration class for BIP44 coins that defines the key network versions and
-/// maps each supported BIP44Coin to its corresponding BipCoinConf.
+/// maps each supported BIP44Coin to its corresponding CoinConfig.
 class Bip44Conf {
   /// The key network version for the mainnet of Bitcoin.
   static final Bip32KeyNetVersions bip44BtcKeyNetVerMain =
@@ -47,100 +45,8 @@ class Bip44Conf {
   static final Bip32KeyNetVersions bip44BtcKeyNetVerTest =
       Bip32Const.testNetKeyNetVersions;
 
-  /// Retrieves the BipCoinConf for the given BIP44Coin. If the provided coin
-  /// is not an instance of Bip44Coins, an error is thrown.
-  static BipCoinConf getCoin(BipCoins coin) {
-    if (coin is! Bip44Coins) {
-      throw ArgumentError("Coin type is not an enumerative of Bip44Coins");
-    }
-
-    return coinToConf[coin.value]!;
-  }
-
-  /// A mapping that associates each BIP44Coin (enum) with its corresponding
-  /// BipCoinConf configuration.
-  static Map<Bip44Coins, BipCoinConf> coinToConf = {
-    Bip44Coins.akashNetwork: Bip44Conf.akashNetwork,
-    Bip44Coins.algorand: Bip44Conf.algorand,
-    Bip44Coins.aptos: Bip44Conf.aptos,
-    Bip44Coins.avaxCChain: Bip44Conf.avaxCChain,
-    Bip44Coins.avaxPChain: Bip44Conf.avaxPChain,
-    Bip44Coins.avaxXChain: Bip44Conf.avaxXChain,
-    Bip44Coins.axelar: Bip44Conf.axelar,
-    Bip44Coins.bandProtocol: Bip44Conf.bandProtocol,
-    Bip44Coins.binanceChain: Bip44Conf.binanceChain,
-    Bip44Coins.binanceSmartChain: Bip44Conf.binanceSmartChain,
-    Bip44Coins.bitcoin: Bip44Conf.bitcoinMainNet,
-    Bip44Coins.bitcoinTestnet: Bip44Conf.bitcoinTestNet,
-    Bip44Coins.bitcoinCash: Bip44Conf.bitcoinCashMainNet,
-    Bip44Coins.bitcoinCashTestnet: Bip44Conf.bitcoinCashTestNet,
-    Bip44Coins.bitcoinCashSlp: Bip44Conf.bitcoinCashSlpMainNet,
-    Bip44Coins.bitcoinCashSlpTestnet: Bip44Conf.bitcoinCashSlpTestNet,
-    Bip44Coins.bitcoinSv: Bip44Conf.bitcoinSvMainNet,
-    Bip44Coins.bitcoinSvTestnet: Bip44Conf.bitcoinSvTestNet,
-    Bip44Coins.cardanoByronIcarus: Bip44Conf.cardanoByronIcarus,
-    Bip44Coins.cardanoByronLedger: Bip44Conf.cardanoByronLedger,
-    Bip44Coins.celo: Bip44Conf.celo,
-    Bip44Coins.certik: Bip44Conf.certik,
-    Bip44Coins.chihuahua: Bip44Conf.chihuahua,
-    Bip44Coins.cosmos: Bip44Conf.cosmos,
-    Bip44Coins.dash: Bip44Conf.dashMainNet,
-    Bip44Coins.dashTestnet: Bip44Conf.dashTestNet,
-    Bip44Coins.dogecoin: Bip44Conf.dogecoinMainNet,
-    Bip44Coins.dogecoinTestnet: Bip44Conf.dogecoinTestNet,
-    Bip44Coins.ecash: Bip44Conf.ecashMainNet,
-    Bip44Coins.ecashTestnet: Bip44Conf.ecashTestNet,
-    Bip44Coins.elrond: Bip44Conf.elrond,
-    Bip44Coins.eos: Bip44Conf.eos,
-    Bip44Coins.ergo: Bip44Conf.ergoMainNet,
-    Bip44Coins.ergoTestnet: Bip44Conf.ergoTestNet,
-    Bip44Coins.ethereum: Bip44Conf.ethereum,
-    Bip44Coins.ethereumClassic: Bip44Conf.ethereumClassic,
-    Bip44Coins.fantomOpera: Bip44Conf.fantomOpera,
-    Bip44Coins.filecoin: Bip44Conf.filecoin,
-    Bip44Coins.harmonyOneAtom: Bip44Conf.harmonyOneAtom,
-    Bip44Coins.harmonyOneEth: Bip44Conf.harmonyOneEth,
-    Bip44Coins.harmonyOneMetamask: Bip44Conf.harmonyOneMetamask,
-    Bip44Coins.huobiChain: Bip44Conf.huobiChain,
-    Bip44Coins.icon: Bip44Conf.icon,
-    Bip44Coins.injective: Bip44Conf.injective,
-    Bip44Coins.irisNet: Bip44Conf.irisNet,
-    Bip44Coins.kava: Bip44Conf.kava,
-    Bip44Coins.kusamaEd25519Slip: Bip44Conf.kusamaEd25519Slip,
-    Bip44Coins.litecoin: Bip44Conf.litecoinMainNet,
-    Bip44Coins.litecoinTestnet: Bip44Conf.litecoinTestNet,
-    Bip44Coins.moneroEd25519Slip: Bip44Conf.moneroEd25519Slip,
-    Bip44Coins.moneroSecp256k1: Bip44Conf.moneroSecp256k1,
-    Bip44Coins.nano: Bip44Conf.nano,
-    Bip44Coins.nearProtocol: Bip44Conf.nearProtocol,
-    Bip44Coins.neo: Bip44Conf.neo,
-    Bip44Coins.nineChroniclesGold: Bip44Conf.nineChroniclesGold,
-    Bip44Coins.okexChainAtom: Bip44Conf.okexChainAtom,
-    Bip44Coins.okexChainAtomOld: Bip44Conf.okexChainAtomOld,
-    Bip44Coins.okexChainEth: Bip44Conf.okexChainEth,
-    Bip44Coins.ontology: Bip44Conf.ontology,
-    Bip44Coins.osmosis: Bip44Conf.osmosis,
-    Bip44Coins.piNetwork: Bip44Conf.piNetwork,
-    Bip44Coins.polkadotEd25519Slip: Bip44Conf.polkadotEd25519Slip,
-    Bip44Coins.polygon: Bip44Conf.polygon,
-    Bip44Coins.ripple: Bip44Conf.ripple,
-    Bip44Coins.secretNetworkOld: Bip44Conf.secretNetworkOld,
-    Bip44Coins.secretNetworkNew: Bip44Conf.secretNetworkNew,
-    Bip44Coins.solana: Bip44Conf.solana,
-    Bip44Coins.stellar: Bip44Conf.stellar,
-    Bip44Coins.terra: Bip44Conf.terra,
-    Bip44Coins.tezos: Bip44Conf.tezos,
-    Bip44Coins.theta: Bip44Conf.theta,
-    Bip44Coins.tron: Bip44Conf.tron,
-    Bip44Coins.vechain: Bip44Conf.vechain,
-    Bip44Coins.verge: Bip44Conf.verge,
-    Bip44Coins.zcash: Bip44Conf.zcashMainNet,
-    Bip44Coins.zcashTestnet: Bip44Conf.zcashTestNet,
-    Bip44Coins.zilliqa: Bip44Conf.zilliqa,
-  };
-
   /// Configuration for Akash Network
-  static final BipCoinConf akashNetwork = BipCoinConf(
+  static final CoinConfig akashNetwork = CoinConfig(
     coinNames: CoinsConf.akashNetwork.coinName,
     coinIdx: Slip44.atom,
     isTestnet: false,
@@ -150,12 +56,12 @@ class Bip44Conf {
     type: EllipticCurveTypes.secp256k1,
     addressEncoder: ([dynamic kwargs]) => AtomAddrEncoder(),
     addrParams: {
-      "hrp": CoinsConf.akashNetwork.getParam("addr_hrp"),
+      "hrp": CoinsConf.akashNetwork.params.addrHrp!,
     },
   );
 
   /// Configuration for Algorand
-  static final BipCoinConf algorand = BipCoinConf(
+  static final CoinConfig algorand = CoinConfig(
     coinNames: CoinsConf.algorand.coinName,
     addressEncoder: ([dynamic kwargs]) => AlgoAddrEncoder(),
     coinIdx: Slip44.algorand,
@@ -168,7 +74,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Aptos
-  static final BipCoinConf aptos = BipCoinConf(
+  static final CoinConfig aptos = CoinConfig(
     coinNames: CoinsConf.aptos.coinName,
     coinIdx: Slip44.aptos,
     isTestnet: false,
@@ -181,7 +87,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Avax C-Chain
-  static final BipCoinConf avaxCChain = BipCoinConf(
+  static final CoinConfig avaxCChain = CoinConfig(
     coinNames: CoinsConf.avaxCChain.coinName,
     coinIdx: Slip44.ethereum,
     isTestnet: false,
@@ -194,7 +100,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Avax P-Chain
-  static final BipCoinConf avaxPChain = BipCoinConf(
+  static final CoinConfig avaxPChain = CoinConfig(
     coinNames: CoinsConf.avaxPChain.coinName,
     coinIdx: Slip44.avalanche,
     isTestnet: false,
@@ -207,7 +113,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Avax X-Chain
-  static final BipCoinConf avaxXChain = BipCoinConf(
+  static final CoinConfig avaxXChain = CoinConfig(
     coinNames: CoinsConf.avaxXChain.coinName,
     coinIdx: Slip44.avalanche,
     isTestnet: false,
@@ -220,7 +126,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Axelar
-  static final BipCoinConf axelar = BipCoinConf(
+  static final CoinConfig axelar = CoinConfig(
     coinNames: CoinsConf.axelar.coinName,
     coinIdx: Slip44.atom,
     isTestnet: false,
@@ -230,12 +136,12 @@ class Bip44Conf {
     type: EllipticCurveTypes.secp256k1,
     addressEncoder: ([dynamic kwargs]) => AtomAddrEncoder(),
     addrParams: {
-      "hrp": CoinsConf.axelar.getParam("addr_hrp"),
+      "hrp": CoinsConf.axelar.params.addrHrp!,
     },
   );
 
   /// Configuration for Band Protocol
-  static final BipCoinConf bandProtocol = BipCoinConf(
+  static final CoinConfig bandProtocol = CoinConfig(
     coinNames: CoinsConf.bandProtocol.coinName,
     coinIdx: Slip44.bandProtocol,
     isTestnet: false,
@@ -245,12 +151,12 @@ class Bip44Conf {
     type: EllipticCurveTypes.secp256k1,
     addressEncoder: ([dynamic kwargs]) => AtomAddrEncoder(),
     addrParams: {
-      "hrp": CoinsConf.bandProtocol.getParam("addr_hrp"),
+      "hrp": CoinsConf.bandProtocol.params.addrHrp!,
     },
   );
 
   /// Configuration for Binance Chain
-  static final BipCoinConf binanceChain = BipCoinConf(
+  static final CoinConfig binanceChain = CoinConfig(
     coinNames: CoinsConf.binanceChain.coinName,
     coinIdx: Slip44.binanceChain,
     isTestnet: false,
@@ -260,12 +166,12 @@ class Bip44Conf {
     type: EllipticCurveTypes.secp256k1,
     addressEncoder: ([dynamic kwargs]) => AtomAddrEncoder(),
     addrParams: {
-      "hrp": CoinsConf.binanceChain.getParam("addr_hrp"),
+      "hrp": CoinsConf.binanceChain.params.addrHrp!,
     },
   );
 
   /// Configuration for Binance Smart Chain
-  static final BipCoinConf binanceSmartChain = BipCoinConf(
+  static final CoinConfig binanceSmartChain = CoinConfig(
     coinNames: CoinsConf.binanceSmartChain.coinName,
     coinIdx: Slip44.ethereum,
     isTestnet: false,
@@ -278,32 +184,32 @@ class Bip44Conf {
   );
 
   /// Configuration for Bitcoin main net
-  static final BipCoinConf bitcoinMainNet = BipCoinConf(
+  static final CoinConfig bitcoinMainNet = CoinConfig(
     coinNames: CoinsConf.bitcoinMainNet.coinName,
     coinIdx: Slip44.bitcoin,
     isTestnet: false,
     defPath: derPathNonHardenedFull,
     keyNetVer: bip44BtcKeyNetVerMain,
-    wifNetVer: CoinsConf.bitcoinMainNet.getParam("wif_net_ver"),
+    wifNetVer: CoinsConf.bitcoinMainNet.params.wifNetVer,
     type: EllipticCurveTypes.secp256k1,
     addressEncoder: ([dynamic kwargs]) => P2PKHAddrEncoder(),
     addrParams: {
-      "net_ver": CoinsConf.bitcoinMainNet.getParam("p2pkh_net_ver"),
+      "net_ver": CoinsConf.bitcoinMainNet.params.p2pkhNetVer!,
     },
   );
 
   /// Configuration for Bitcoin test net
-  static final BipCoinConf bitcoinTestNet = BipCoinConf(
+  static final CoinConfig bitcoinTestNet = CoinConfig(
     coinNames: CoinsConf.bitcoinTestNet.coinName,
     coinIdx: Slip44.testnet,
     isTestnet: true,
     defPath: derPathNonHardenedFull,
     keyNetVer: bip44BtcKeyNetVerTest,
-    wifNetVer: CoinsConf.bitcoinTestNet.getParam("wif_net_ver"),
+    wifNetVer: CoinsConf.bitcoinTestNet.params.wifNetVer,
     type: EllipticCurveTypes.secp256k1,
     addressEncoder: ([dynamic kwargs]) => P2PKHAddrEncoder(),
     addrParams: {
-      "net_ver": CoinsConf.bitcoinTestNet.getParam("p2pkh_net_ver"),
+      "net_ver": CoinsConf.bitcoinTestNet.params.p2pkhNetVer,
     },
   );
 
@@ -314,7 +220,7 @@ class Bip44Conf {
     isTestnet: false,
     defPath: derPathNonHardenedFull,
     keyNetVer: bip44BtcKeyNetVerMain,
-    wifNetVer: CoinsConf.bitcoinCashMainNet.getParam("wif_net_ver"),
+    wifNetVer: CoinsConf.bitcoinCashMainNet.params.wifNetVer,
     type: EllipticCurveTypes.secp256k1,
     addressEncoder: ([dynamic legacy]) {
       if (legacy == true) {
@@ -324,12 +230,11 @@ class Bip44Conf {
     },
     addrParams: {
       "std": {
-        "net_ver": CoinsConf.bitcoinCashMainNet.getParam("p2pkh_std_net_ver"),
-        "hrp": CoinsConf.bitcoinCashMainNet.getParam("p2pkh_std_hrp"),
+        "net_ver": CoinsConf.bitcoinCashMainNet.params.p2pkhStdNetVer!,
+        "hrp": CoinsConf.bitcoinCashMainNet.params.p2pkhStdHrp!,
       },
       "legacy": {
-        "net_ver":
-            CoinsConf.bitcoinCashMainNet.getParam("p2pkh_legacy_net_ver"),
+        "net_ver": CoinsConf.bitcoinCashMainNet.params.p2pkhLegacyNetVer!,
       }
     },
   );
@@ -347,16 +252,15 @@ class Bip44Conf {
       return BchP2PKHAddrEncoder();
     },
     keyNetVer: bip44BtcKeyNetVerTest,
-    wifNetVer: CoinsConf.bitcoinCashTestNet.getParam("wif_net_ver"),
+    wifNetVer: CoinsConf.bitcoinCashTestNet.params.wifNetVer,
     type: EllipticCurveTypes.secp256k1,
     addrParams: {
       "std": {
-        "net_ver": CoinsConf.bitcoinCashTestNet.getParam("p2pkh_std_net_ver"),
-        "hrp": CoinsConf.bitcoinCashTestNet.getParam("p2pkh_std_hrp"),
+        "net_ver": CoinsConf.bitcoinCashTestNet.params.p2pkhStdNetVer!,
+        "hrp": CoinsConf.bitcoinCashTestNet.params.p2pkhStdHrp!,
       },
       "legacy": {
-        "net_ver":
-            CoinsConf.bitcoinCashTestNet.getParam("p2pkh_legacy_net_ver"),
+        "net_ver": CoinsConf.bitcoinCashTestNet.params.p2pkhLegacyNetVer!,
       }
     },
   );
@@ -368,7 +272,7 @@ class Bip44Conf {
     isTestnet: false,
     defPath: derPathNonHardenedFull,
     keyNetVer: bip44BtcKeyNetVerMain,
-    wifNetVer: CoinsConf.bitcoinCashSlpMainNet.getParam("wif_net_ver"),
+    wifNetVer: CoinsConf.bitcoinCashSlpMainNet.params.wifNetVer,
     type: EllipticCurveTypes.secp256k1,
     addressEncoder: ([dynamic legacy]) {
       if (legacy == true) {
@@ -378,13 +282,11 @@ class Bip44Conf {
     },
     addrParams: {
       "std": {
-        "net_ver":
-            CoinsConf.bitcoinCashSlpMainNet.getParam("p2pkh_std_net_ver"),
-        "hrp": CoinsConf.bitcoinCashSlpMainNet.getParam("p2pkh_std_hrp"),
+        "net_ver": CoinsConf.bitcoinCashSlpMainNet.params.p2pkhStdNetVer,
+        "hrp": CoinsConf.bitcoinCashSlpMainNet.params.p2pkhStdHrp,
       },
       "legacy": {
-        "net_ver":
-            CoinsConf.bitcoinCashSlpMainNet.getParam("p2pkh_legacy_net_ver"),
+        "net_ver": CoinsConf.bitcoinCashSlpMainNet.params.p2pkhLegacyNetVer!,
       }
     },
   );
@@ -396,7 +298,7 @@ class Bip44Conf {
     isTestnet: true,
     defPath: derPathNonHardenedFull,
     keyNetVer: bip44BtcKeyNetVerTest,
-    wifNetVer: CoinsConf.bitcoinCashSlpTestNet.getParam("wif_net_ver"),
+    wifNetVer: CoinsConf.bitcoinCashSlpTestNet.params.wifNetVer,
     type: EllipticCurveTypes.secp256k1,
     addressEncoder: ([dynamic legacy]) {
       if (legacy == true) {
@@ -406,50 +308,48 @@ class Bip44Conf {
     },
     addrParams: {
       "std": {
-        "net_ver":
-            CoinsConf.bitcoinCashSlpTestNet.getParam("p2pkh_std_net_ver"),
-        "hrp": CoinsConf.bitcoinCashSlpTestNet.getParam("p2pkh_std_hrp"),
+        "net_ver": CoinsConf.bitcoinCashSlpTestNet.params.p2pkhStdNetVer!,
+        "hrp": CoinsConf.bitcoinCashSlpTestNet.params.p2pkhStdHrp!,
       },
       "legacy": {
-        "net_ver":
-            CoinsConf.bitcoinCashSlpTestNet.getParam("p2pkh_legacy_net_ver"),
+        "net_ver": CoinsConf.bitcoinCashSlpTestNet.params.p2pkhLegacyNetVer!,
       }
     },
   );
 
   /// Configuration for BitcoinSV main net
-  static final BipCoinConf bitcoinSvMainNet = BipCoinConf(
+  static final CoinConfig bitcoinSvMainNet = CoinConfig(
     coinNames: CoinsConf.bitcoinSvMainNet.coinName,
     coinIdx: Slip44.bitcoinSv,
     isTestnet: false,
     defPath: derPathNonHardenedFull,
     keyNetVer: bip44BtcKeyNetVerMain,
-    wifNetVer: CoinsConf.bitcoinSvMainNet.getParam("wif_net_ver"),
+    wifNetVer: CoinsConf.bitcoinSvMainNet.params.wifNetVer,
     type: EllipticCurveTypes.secp256k1,
     addressEncoder: ([dynamic legacy]) {
       return P2PKHAddrEncoder();
     },
     addrParams: {
-      "net_ver": CoinsConf.bitcoinSvMainNet.getParam("p2pkh_net_ver"),
+      "net_ver": CoinsConf.bitcoinSvMainNet.params.p2pkhNetVer!,
     },
   );
 
   /// Configuration for BitcoinSV test net
-  static final BipCoinConf bitcoinSvTestNet = BipCoinConf(
+  static final CoinConfig bitcoinSvTestNet = CoinConfig(
     coinNames: CoinsConf.bitcoinSvTestNet.coinName,
     coinIdx: Slip44.testnet,
     isTestnet: true,
     defPath: derPathNonHardenedFull,
     keyNetVer: bip44BtcKeyNetVerTest,
-    wifNetVer: CoinsConf.bitcoinSvTestNet.getParam("wif_net_ver"),
+    wifNetVer: CoinsConf.bitcoinSvTestNet.params.wifNetVer,
     type: EllipticCurveTypes.secp256k1,
     addressEncoder: ([dynamic kwargs]) => P2PKHAddrEncoder(),
     addrParams: {
-      "net_ver": CoinsConf.bitcoinSvTestNet.getParam("p2pkh_net_ver"),
+      "net_ver": CoinsConf.bitcoinSvTestNet.params.p2pkhNetVer!,
     },
   );
 
-  static final BipCoinConf cardanoByronIcarus = BipCoinConf(
+  static final CoinConfig cardanoByronIcarus = CoinConfig(
     coinNames: CoinsConf.cardanoMainNet.coinName,
     coinIdx: Slip44.cardano,
     isTestnet: false,
@@ -465,7 +365,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Cardano Byron (Ledger)
-  static final BipCoinConf cardanoByronLedger = BipCoinConf(
+  static final CoinConfig cardanoByronLedger = CoinConfig(
     coinNames: CoinsConf.cardanoMainNet.coinName,
     coinIdx: Slip44.cardano,
     isTestnet: false,
@@ -480,7 +380,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Celo
-  static final BipCoinConf celo = BipCoinConf(
+  static final CoinConfig celo = CoinConfig(
     coinNames: CoinsConf.celo.coinName,
     coinIdx: Slip44.celo,
     isTestnet: false,
@@ -493,7 +393,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Certik
-  static final BipCoinConf certik = BipCoinConf(
+  static final CoinConfig certik = CoinConfig(
     coinNames: CoinsConf.certik.coinName,
     coinIdx: Slip44.atom,
     isTestnet: false,
@@ -503,12 +403,12 @@ class Bip44Conf {
     type: EllipticCurveTypes.secp256k1,
     addressEncoder: ([dynamic kwargs]) => AtomAddrEncoder(),
     addrParams: {
-      "hrp": CoinsConf.certik.getParam("addr_hrp"),
+      "hrp": CoinsConf.certik.params.addrHrp!,
     },
   );
 
   /// Configuration for Chihuahua
-  static final BipCoinConf chihuahua = BipCoinConf(
+  static final CoinConfig chihuahua = CoinConfig(
     coinNames: CoinsConf.chihuahua.coinName,
     coinIdx: Slip44.atom,
     isTestnet: false,
@@ -518,12 +418,12 @@ class Bip44Conf {
     type: EllipticCurveTypes.secp256k1,
     addressEncoder: ([dynamic kwargs]) => AtomAddrEncoder(),
     addrParams: {
-      "hrp": CoinsConf.chihuahua.getParam("addr_hrp"),
+      "hrp": CoinsConf.chihuahua.params.addrHrp!,
     },
   );
 
   /// Configuration for Cosmos
-  static final BipCoinConf cosmos = BipCoinConf(
+  static final CoinConfig cosmos = CoinConfig(
     coinNames: CoinsConf.cosmos.coinName,
     coinIdx: Slip44.atom,
     isTestnet: false,
@@ -533,69 +433,69 @@ class Bip44Conf {
     type: EllipticCurveTypes.secp256k1,
     addressEncoder: ([dynamic kwargs]) => AtomAddrEncoder(),
     addrParams: {
-      "hrp": CoinsConf.cosmos.getParam("addr_hrp"),
+      "hrp": CoinsConf.cosmos.params.addrHrp!,
     },
   );
 
   /// Configuration for Dash main net
-  static final BipCoinConf dashMainNet = BipCoinConf(
+  static final CoinConfig dashMainNet = CoinConfig(
     coinNames: CoinsConf.dashMainNet.coinName,
     coinIdx: Slip44.dash,
     isTestnet: false,
     defPath: derPathNonHardenedFull,
     keyNetVer: bip44BtcKeyNetVerMain,
-    wifNetVer: CoinsConf.dashMainNet.getParam("wif_net_ver"),
+    wifNetVer: CoinsConf.dashMainNet.params.wifNetVer,
     type: EllipticCurveTypes.secp256k1,
     addressEncoder: ([dynamic kwargs]) => P2PKHAddrEncoder(),
     addrParams: {
-      "net_ver": CoinsConf.dashMainNet.getParam("p2pkh_net_ver"),
+      "net_ver": CoinsConf.dashMainNet.params.p2pkhNetVer!,
     },
   );
 
   /// Configuration for Dash test net
-  static final BipCoinConf dashTestNet = BipCoinConf(
+  static final CoinConfig dashTestNet = CoinConfig(
     coinNames: CoinsConf.dashTestNet.coinName,
     coinIdx: Slip44.testnet,
     isTestnet: true,
     defPath: derPathNonHardenedFull,
     keyNetVer: bip44BtcKeyNetVerTest,
-    wifNetVer: CoinsConf.dashTestNet.getParam("wif_net_ver"),
+    wifNetVer: CoinsConf.dashTestNet.params.wifNetVer,
     type: EllipticCurveTypes.secp256k1,
     addressEncoder: ([dynamic kwargs]) => P2PKHAddrEncoder(),
     addrParams: {
-      "net_ver": CoinsConf.dashTestNet.getParam("p2pkh_net_ver"),
+      "net_ver": CoinsConf.dashTestNet.params.p2pkhNetVer!,
     },
   );
 
   /// Configuration for Dogecoin main net
-  static final BipCoinConf dogecoinMainNet = BipCoinConf(
+  static final CoinConfig dogecoinMainNet = CoinConfig(
     coinNames: CoinsConf.dogecoinMainNet.coinName,
     coinIdx: Slip44.dogecoin,
     isTestnet: false,
     defPath: derPathNonHardenedFull,
     keyNetVer: Bip32KeyNetVersions(List<int>.from([0x02, 0xfa, 0xca, 0xfd]),
         List<int>.from([0x02, 0xfa, 0xc3, 0x98])),
-    wifNetVer: CoinsConf.dogecoinMainNet.getParam("wif_net_ver"),
+    wifNetVer: CoinsConf.dogecoinMainNet.params.wifNetVer,
     type: EllipticCurveTypes.secp256k1,
     addressEncoder: ([dynamic kwargs]) => P2PKHAddrEncoder(),
     addrParams: {
-      "net_ver": CoinsConf.dogecoinMainNet.getParam("p2pkh_net_ver"),
+      "net_ver": CoinsConf.dogecoinMainNet.params.p2pkhNetVer!,
     },
   );
 
   /// Configuration for Dogecoin test net
-  static final BipCoinConf dogecoinTestNet = BipCoinConf(
+  static final CoinConfig dogecoinTestNet = CoinConfig(
     coinNames: CoinsConf.dogecoinTestNet.coinName,
     coinIdx: Slip44.testnet,
     isTestnet: true,
     defPath: derPathNonHardenedFull,
     keyNetVer: Bip32KeyNetVersions(List<int>.from([0x04, 0x32, 0xa9, 0xa8]),
         List<int>.from([0x04, 0x32, 0xa2, 0x43])),
-    wifNetVer: CoinsConf.dogecoinTestNet.getParam("wif_net_ver"),
+    wifNetVer: CoinsConf.dogecoinTestNet.params.wifNetVer,
     type: EllipticCurveTypes.secp256k1,
     addressEncoder: ([dynamic kwargs]) => P2PKHAddrEncoder(),
     addrParams: {
-      "net_ver": CoinsConf.dogecoinTestNet.getParam("p2pkh_net_ver"),
+      "net_ver": CoinsConf.dogecoinTestNet.params.p2pkhNetVer!,
     },
   );
 
@@ -606,7 +506,7 @@ class Bip44Conf {
     isTestnet: false,
     defPath: derPathNonHardenedFull,
     keyNetVer: bip44BtcKeyNetVerMain,
-    wifNetVer: CoinsConf.ecashMainNet.getParam("wif_net_ver"),
+    wifNetVer: CoinsConf.ecashMainNet.params.wifNetVer,
     type: EllipticCurveTypes.secp256k1,
     addressEncoder: ([dynamic legacy]) {
       if (legacy == true) {
@@ -616,11 +516,11 @@ class Bip44Conf {
     },
     addrParams: {
       "std": {
-        "net_ver": CoinsConf.ecashMainNet.getParam("p2pkh_std_net_ver"),
-        "hrp": CoinsConf.ecashMainNet.getParam("p2pkh_std_hrp"),
+        "net_ver": CoinsConf.ecashMainNet.params.p2pkhStdNetVer!,
+        "hrp": CoinsConf.ecashMainNet.params.p2pkhStdHrp!,
       },
       "legacy": {
-        "net_ver": CoinsConf.ecashMainNet.getParam("p2pkh_legacy_net_ver"),
+        "net_ver": CoinsConf.ecashMainNet.params.p2pkhLegacyNetVer!,
       },
     },
   );
@@ -638,15 +538,15 @@ class Bip44Conf {
     },
     defPath: derPathNonHardenedFull,
     keyNetVer: bip44BtcKeyNetVerTest,
-    wifNetVer: CoinsConf.ecashTestNet.getParam("wif_net_ver"),
+    wifNetVer: CoinsConf.ecashTestNet.params.wifNetVer,
     type: EllipticCurveTypes.secp256k1,
     addrParams: {
       "std": {
-        "net_ver": CoinsConf.ecashTestNet.getParam("p2pkh_std_net_ver"),
-        "hrp": CoinsConf.ecashTestNet.getParam("p2pkh_std_hrp"),
+        "net_ver": CoinsConf.ecashTestNet.params.p2pkhStdNetVer!,
+        "hrp": CoinsConf.ecashTestNet.params.p2pkhStdHrp!,
       },
       "legacy": {
-        "net_ver": CoinsConf.ecashTestNet.getParam("p2pkh_legacy_net_ver"),
+        "net_ver": CoinsConf.ecashTestNet.params.p2pkhLegacyNetVer!,
       },
     },
 
@@ -654,7 +554,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Elrond
-  static final BipCoinConf elrond = BipCoinConf(
+  static final CoinConfig elrond = CoinConfig(
     coinNames: CoinsConf.elrond.coinName,
     coinIdx: Slip44.elrond,
     isTestnet: false,
@@ -667,7 +567,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Eos
-  static final BipCoinConf eos = BipCoinConf(
+  static final CoinConfig eos = CoinConfig(
     coinNames: CoinsConf.eos.coinName,
     coinIdx: Slip44.eos,
     isTestnet: false,
@@ -680,7 +580,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Ergo main net
-  static final BipCoinConf ergoMainNet = BipCoinConf(
+  static final CoinConfig ergoMainNet = CoinConfig(
     coinNames: CoinsConf.ergoMainNet.coinName,
     coinIdx: Slip44.ergo,
     isTestnet: false,
@@ -695,7 +595,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Ergo test net
-  static final BipCoinConf ergoTestNet = BipCoinConf(
+  static final CoinConfig ergoTestNet = CoinConfig(
     coinNames: CoinsConf.ergoTestNet.coinName,
     coinIdx: Slip44.ergo,
     isTestnet: true,
@@ -710,7 +610,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Ethereum
-  static final BipCoinConf ethereum = BipCoinConf(
+  static final CoinConfig ethereum = CoinConfig(
     coinNames: CoinsConf.ethereum.coinName,
     coinIdx: Slip44.ethereum,
     isTestnet: false,
@@ -723,7 +623,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Ethereum Classic
-  static final BipCoinConf ethereumClassic = BipCoinConf(
+  static final CoinConfig ethereumClassic = CoinConfig(
     coinNames: CoinsConf.ethereumClassic.coinName,
     coinIdx: Slip44.ethereumClassic,
     isTestnet: false,
@@ -736,7 +636,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Fantom Opera
-  static final BipCoinConf fantomOpera = BipCoinConf(
+  static final CoinConfig fantomOpera = CoinConfig(
     coinNames: CoinsConf.fantomOpera.coinName,
     coinIdx: Slip44.ethereum,
     isTestnet: false,
@@ -749,7 +649,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Filecoin
-  static final BipCoinConf filecoin = BipCoinConf(
+  static final CoinConfig filecoin = CoinConfig(
     coinNames: CoinsConf.filecoin.coinName,
     coinIdx: Slip44.filecoin,
     isTestnet: false,
@@ -762,7 +662,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Harmony One (Metamask address)
-  static final BipCoinConf harmonyOneMetamask = BipCoinConf(
+  static final CoinConfig harmonyOneMetamask = CoinConfig(
     coinNames: CoinsConf.harmonyOne.coinName,
     coinIdx: Slip44.ethereum,
     isTestnet: false,
@@ -775,7 +675,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Harmony One (Ethereum address)
-  static final BipCoinConf harmonyOneEth = BipCoinConf(
+  static final CoinConfig harmonyOneEth = CoinConfig(
     coinNames: CoinsConf.harmonyOne.coinName,
     coinIdx: Slip44.harmonyOne,
     isTestnet: false,
@@ -788,7 +688,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Harmony One (Atom address)
-  static final BipCoinConf harmonyOneAtom = BipCoinConf(
+  static final CoinConfig harmonyOneAtom = CoinConfig(
     coinNames: CoinsConf.harmonyOne.coinName,
     coinIdx: Slip44.harmonyOne,
     isTestnet: false,
@@ -801,7 +701,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Huobi Chain
-  static final BipCoinConf huobiChain = BipCoinConf(
+  static final CoinConfig huobiChain = CoinConfig(
     coinNames: CoinsConf.huobiChain.coinName,
     coinIdx: Slip44.ethereum,
     isTestnet: false,
@@ -814,7 +714,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Icon
-  static final BipCoinConf icon = BipCoinConf(
+  static final CoinConfig icon = CoinConfig(
     coinNames: CoinsConf.icon.coinName,
     coinIdx: Slip44.icon,
     isTestnet: false,
@@ -827,7 +727,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Injective
-  static final BipCoinConf injective = BipCoinConf(
+  static final CoinConfig injective = CoinConfig(
     coinNames: CoinsConf.injective.coinName,
     coinIdx: Slip44.ethereum,
     isTestnet: false,
@@ -840,7 +740,7 @@ class Bip44Conf {
   );
 
   /// Configuration for IRISnet
-  static final BipCoinConf irisNet = BipCoinConf(
+  static final CoinConfig irisNet = CoinConfig(
     coinNames: CoinsConf.irisNet.coinName,
     coinIdx: Slip44.atom,
     isTestnet: false,
@@ -850,12 +750,12 @@ class Bip44Conf {
     type: EllipticCurveTypes.secp256k1,
     addressEncoder: ([dynamic kwargs]) => AtomAddrEncoder(),
     addrParams: {
-      "hrp": CoinsConf.irisNet.getParam("addr_hrp"),
+      "hrp": CoinsConf.irisNet.params.addrHrp!,
     },
   );
 
   /// Configuration for Kava
-  static final BipCoinConf kava = BipCoinConf(
+  static final CoinConfig kava = CoinConfig(
     coinNames: CoinsConf.kava.coinName,
     coinIdx: Slip44.kava,
     isTestnet: false,
@@ -865,12 +765,12 @@ class Bip44Conf {
     type: EllipticCurveTypes.secp256k1,
     addressEncoder: ([dynamic kwargs]) => AtomAddrEncoder(),
     addrParams: {
-      "hrp": CoinsConf.kava.getParam("addr_hrp"),
+      "hrp": CoinsConf.kava.params.addrHrp!,
     },
   );
 
   /// Configuration for Kusama (ed25519 SLIP-0010)
-  static final BipCoinConf kusamaEd25519Slip = BipCoinConf(
+  static final CoinConfig kusamaEd25519Slip = CoinConfig(
     coinNames: CoinsConf.kusama.coinName,
     coinIdx: Slip44.kusama,
     isTestnet: false,
@@ -880,7 +780,7 @@ class Bip44Conf {
     type: EllipticCurveTypes.ed25519,
     addressEncoder: ([dynamic kwargs]) => SubstrateEd25519AddrEncoder(),
     addrParams: {
-      "ss58_format": CoinsConf.kusama.getParam("addr_ss58_format"),
+      "ss58_format": CoinsConf.kusama.params.addrSs58Format,
     },
   );
 
@@ -896,11 +796,11 @@ class Bip44Conf {
       List<int>.from([0x01, 0x9d, 0xa4, 0x62]),
       List<int>.from([0x01, 0x9d, 0x9c, 0xfe]),
     ),
-    wifNetVer: CoinsConf.litecoinMainNet.getParam("wif_net_ver"),
+    wifNetVer: CoinsConf.litecoinMainNet.params.wifNetVer,
     type: EllipticCurveTypes.secp256k1,
     addrParams: {
-      "std_net_ver": CoinsConf.litecoinMainNet.getParam("p2pkh_std_net_ver"),
-      "depr_net_ver": CoinsConf.litecoinMainNet.getParam("p2pkh_depr_net_ver"),
+      "std_net_ver": CoinsConf.litecoinMainNet.params.p2pkhStdNetVer!,
+      "depr_net_ver": CoinsConf.litecoinMainNet.params.p2pkhDeprNetVer,
     },
   );
 
@@ -918,17 +818,17 @@ class Bip44Conf {
       List<int>.from([0x04, 0x36, 0xf6, 0xe1]),
       List<int>.from([0x04, 0x36, 0xef, 0x7d]),
     ),
-    wifNetVer: CoinsConf.litecoinTestNet.getParam("wif_net_ver"),
+    wifNetVer: CoinsConf.litecoinTestNet.params.wifNetVer,
     type: EllipticCurveTypes.secp256k1,
     addressEncoder: ([dynamic kwargs]) => P2PKHAddrEncoder(),
     addrParams: {
-      "std_net_ver": CoinsConf.litecoinTestNet.getParam("p2pkh_std_net_ver"),
-      "depr_net_ver": CoinsConf.litecoinTestNet.getParam("p2pkh_depr_net_ver"),
+      "std_net_ver": CoinsConf.litecoinTestNet.params.p2pkhStdNetVer!,
+      "depr_net_ver": CoinsConf.litecoinTestNet.params.p2pkhDeprNetVer!,
     },
   );
 
   /// Configuration for Monero (ed25519 SLIP-0010)
-  static final BipCoinConf moneroEd25519Slip = BipCoinConf(
+  static final CoinConfig moneroEd25519Slip = CoinConfig(
     coinNames: CoinsConf.moneroMainNet.coinName,
     coinIdx: Slip44.monero,
     isTestnet: false,
@@ -941,7 +841,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Monero (secp256k1)
-  static final BipCoinConf moneroSecp256k1 = BipCoinConf(
+  static final CoinConfig moneroSecp256k1 = CoinConfig(
     coinNames: CoinsConf.moneroMainNet.coinName,
     coinIdx: Slip44.monero,
     isTestnet: false,
@@ -954,7 +854,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Nano
-  static final BipCoinConf nano = BipCoinConf(
+  static final CoinConfig nano = CoinConfig(
     coinNames: CoinsConf.nano.coinName,
     coinIdx: Slip44.nano,
     isTestnet: false,
@@ -967,7 +867,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Near Protocol
-  static final BipCoinConf nearProtocol = BipCoinConf(
+  static final CoinConfig nearProtocol = CoinConfig(
     coinNames: CoinsConf.nearProtocol.coinName,
     coinIdx: Slip44.nearProtocol,
     isTestnet: false,
@@ -980,7 +880,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Neo
-  static final BipCoinConf neo = BipCoinConf(
+  static final CoinConfig neo = CoinConfig(
     coinNames: CoinsConf.neo.coinName,
     coinIdx: Slip44.neo,
     isTestnet: false,
@@ -990,12 +890,12 @@ class Bip44Conf {
     type: EllipticCurveTypes.nist256p1,
     addressEncoder: ([dynamic kwargs]) => NeoAddrEncoder(),
     addrParams: {
-      "ver": CoinsConf.neo.getParam("addr_ver"),
+      "ver": CoinsConf.neo.params.addrVer!,
     },
   );
 
   /// Configuration for Nine Chronicles Gold
-  static final BipCoinConf nineChroniclesGold = BipCoinConf(
+  static final CoinConfig nineChroniclesGold = CoinConfig(
     coinNames: CoinsConf.nineChroniclesGold.coinName,
     coinIdx: Slip44.nineChronicles,
     isTestnet: false,
@@ -1008,7 +908,7 @@ class Bip44Conf {
   );
 
   /// Configuration for OKEx Chain (Ethereum address)
-  static final BipCoinConf okexChainEth = BipCoinConf(
+  static final CoinConfig okexChainEth = CoinConfig(
     coinNames: CoinsConf.okexChain.coinName,
     coinIdx: Slip44.ethereum,
     isTestnet: false,
@@ -1021,7 +921,7 @@ class Bip44Conf {
   );
 
   /// Configuration for OKEx Chain (Atom address)
-  static final BipCoinConf okexChainAtom = BipCoinConf(
+  static final CoinConfig okexChainAtom = CoinConfig(
     coinNames: CoinsConf.okexChain.coinName,
     coinIdx: Slip44.ethereum,
     isTestnet: false,
@@ -1034,7 +934,7 @@ class Bip44Conf {
   );
 
   /// Configuration for OKEx Chain (old Atom address)
-  static final BipCoinConf okexChainAtomOld = BipCoinConf(
+  static final CoinConfig okexChainAtomOld = CoinConfig(
     coinNames: CoinsConf.okexChain.coinName,
     coinIdx: Slip44.okexChain,
     isTestnet: false,
@@ -1047,7 +947,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Ontology
-  static final BipCoinConf ontology = BipCoinConf(
+  static final CoinConfig ontology = CoinConfig(
     coinNames: CoinsConf.ontology.coinName,
     coinIdx: Slip44.ontology,
     isTestnet: false,
@@ -1057,12 +957,12 @@ class Bip44Conf {
     type: EllipticCurveTypes.nist256p1,
     addressEncoder: ([dynamic kwargs]) => NeoAddrEncoder(),
     addrParams: {
-      "ver": CoinsConf.ontology.getParam("addr_ver"),
+      "ver": CoinsConf.ontology.params.addrVer!,
     },
   );
 
   /// Configuration for Osmosis
-  static final BipCoinConf osmosis = BipCoinConf(
+  static final CoinConfig osmosis = CoinConfig(
     coinNames: CoinsConf.osmosis.coinName,
     coinIdx: Slip44.atom,
     isTestnet: false,
@@ -1072,12 +972,12 @@ class Bip44Conf {
     type: EllipticCurveTypes.secp256k1,
     addressEncoder: ([dynamic kwargs]) => AtomAddrEncoder(),
     addrParams: {
-      "hrp": CoinsConf.osmosis.getParam("addr_hrp"),
+      "hrp": CoinsConf.osmosis.params.addrHrp!,
     },
   );
 
   /// Configuration for Pi Network
-  static final BipCoinConf piNetwork = BipCoinConf(
+  static final CoinConfig piNetwork = CoinConfig(
     coinNames: CoinsConf.piNetwork.coinName,
     coinIdx: Slip44.piNetwork,
     isTestnet: false,
@@ -1090,7 +990,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Polkadot (ed25519 SLIP-0010)
-  static final BipCoinConf polkadotEd25519Slip = BipCoinConf(
+  static final CoinConfig polkadotEd25519Slip = CoinConfig(
     coinNames: CoinsConf.polkadot.coinName,
     coinIdx: Slip44.polkadot,
     isTestnet: false,
@@ -1100,12 +1000,12 @@ class Bip44Conf {
     type: EllipticCurveTypes.ed25519,
     addressEncoder: ([dynamic kwargs]) => SubstrateEd25519AddrEncoder(),
     addrParams: {
-      "ss58_format": CoinsConf.polkadot.getParam("addr_ss58_format"),
+      "ss58_format": CoinsConf.polkadot.params.addrSs58Format!,
     },
   );
 
   /// Configuration for Polygon
-  static final BipCoinConf polygon = BipCoinConf(
+  static final CoinConfig polygon = CoinConfig(
     coinNames: CoinsConf.polygon.coinName,
     coinIdx: Slip44.ethereum,
     isTestnet: false,
@@ -1118,7 +1018,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Ripple
-  static final BipCoinConf ripple = BipCoinConf(
+  static final CoinConfig ripple = CoinConfig(
     coinNames: CoinsConf.ripple.coinName,
     coinIdx: Slip44.ripple,
     isTestnet: false,
@@ -1131,7 +1031,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Secret Network (old path)
-  static final BipCoinConf secretNetworkOld = BipCoinConf(
+  static final CoinConfig secretNetworkOld = CoinConfig(
     coinNames: CoinsConf.secretNetwork.coinName,
     coinIdx: Slip44.atom,
     isTestnet: false,
@@ -1141,12 +1041,12 @@ class Bip44Conf {
     type: EllipticCurveTypes.secp256k1,
     addressEncoder: ([dynamic kwargs]) => AtomAddrEncoder(),
     addrParams: {
-      "hrp": CoinsConf.secretNetwork.getParam("addr_hrp"),
+      "hrp": CoinsConf.secretNetwork.params.addrHrp!,
     },
   );
 
   /// Configuration for Secret Network (new path)
-  static final BipCoinConf secretNetworkNew = BipCoinConf(
+  static final CoinConfig secretNetworkNew = CoinConfig(
     coinNames: CoinsConf.secretNetwork.coinName,
     coinIdx: Slip44.secretNetwork,
     isTestnet: false,
@@ -1156,12 +1056,12 @@ class Bip44Conf {
     type: EllipticCurveTypes.secp256k1,
     addressEncoder: ([dynamic kwargs]) => AtomAddrEncoder(),
     addrParams: {
-      "hrp": CoinsConf.secretNetwork.getParam("addr_hrp"),
+      "hrp": CoinsConf.secretNetwork.params.addrHrp!,
     },
   );
 
   /// Configuration for Solana
-  static final BipCoinConf solana = BipCoinConf(
+  static final CoinConfig solana = CoinConfig(
     coinNames: CoinsConf.solana.coinName,
     coinIdx: Slip44.solana,
     isTestnet: false,
@@ -1174,7 +1074,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Stellar
-  static final BipCoinConf stellar = BipCoinConf(
+  static final CoinConfig stellar = CoinConfig(
     coinNames: CoinsConf.stellar.coinName,
     coinIdx: Slip44.stellar,
     isTestnet: false,
@@ -1187,7 +1087,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Terra
-  static final BipCoinConf terra = BipCoinConf(
+  static final CoinConfig terra = CoinConfig(
     coinNames: CoinsConf.terra.coinName,
     coinIdx: Slip44.terra,
     isTestnet: false,
@@ -1197,12 +1097,12 @@ class Bip44Conf {
     type: EllipticCurveTypes.secp256k1,
     addressEncoder: ([dynamic kwargs]) => AtomAddrEncoder(),
     addrParams: {
-      "hrp": CoinsConf.terra.getParam("addr_hrp"),
+      "hrp": CoinsConf.terra.params.addrHrp!,
     },
   );
 
   /// Configuration for Tezos
-  static final BipCoinConf tezos = BipCoinConf(
+  static final CoinConfig tezos = CoinConfig(
     coinNames: CoinsConf.tezos.coinName,
     coinIdx: Slip44.tezos,
     isTestnet: false,
@@ -1215,7 +1115,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Theta
-  static final BipCoinConf theta = BipCoinConf(
+  static final CoinConfig theta = CoinConfig(
     coinNames: CoinsConf.theta.coinName,
     coinIdx: Slip44.theta,
     isTestnet: false,
@@ -1228,7 +1128,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Tron
-  static final BipCoinConf tron = BipCoinConf(
+  static final CoinConfig tron = CoinConfig(
     coinNames: CoinsConf.tron.coinName,
     coinIdx: Slip44.tron,
     isTestnet: false,
@@ -1241,7 +1141,7 @@ class Bip44Conf {
   );
 
   /// Configuration for VeChain
-  static final BipCoinConf vechain = BipCoinConf(
+  static final CoinConfig vechain = CoinConfig(
     coinNames: CoinsConf.veChain.coinName,
     coinIdx: Slip44.vechain,
     isTestnet: false,
@@ -1254,52 +1154,52 @@ class Bip44Conf {
   );
 
   /// Configuration for Verge
-  static final BipCoinConf verge = BipCoinConf(
+  static final CoinConfig verge = CoinConfig(
     coinNames: CoinsConf.verge.coinName,
     coinIdx: Slip44.verge,
     isTestnet: false,
     defPath: derPathNonHardenedFull,
     keyNetVer: bip44BtcKeyNetVerMain,
-    wifNetVer: CoinsConf.verge.getParam("wif_net_ver"),
+    wifNetVer: CoinsConf.verge.params.wifNetVer,
     type: EllipticCurveTypes.secp256k1,
     addressEncoder: ([dynamic kwargs]) => P2PKHAddrEncoder(),
     addrParams: {
-      "net_ver": CoinsConf.verge.getParam("p2pkh_net_ver"),
+      "net_ver": CoinsConf.verge.params.p2pkhNetVer!,
     },
   );
 
   /// Configuration for Zcash main net
-  static final BipCoinConf zcashMainNet = BipCoinConf(
+  static final CoinConfig zcashMainNet = CoinConfig(
     coinNames: CoinsConf.zcashMainNet.coinName,
     coinIdx: Slip44.zcash,
     isTestnet: false,
     defPath: derPathNonHardenedFull,
     keyNetVer: bip44BtcKeyNetVerMain,
-    wifNetVer: CoinsConf.zcashMainNet.getParam("wif_net_ver"),
+    wifNetVer: CoinsConf.zcashMainNet.params.wifNetVer,
     type: EllipticCurveTypes.secp256k1,
     addressEncoder: ([dynamic kwargs]) => P2PKHAddrEncoder(),
     addrParams: {
-      "net_ver": CoinsConf.zcashMainNet.getParam("p2pkh_net_ver"),
+      "net_ver": CoinsConf.zcashMainNet.params.p2pkhNetVer!,
     },
   );
 
   /// Configuration for Zcash test net
-  static final BipCoinConf zcashTestNet = BipCoinConf(
+  static final CoinConfig zcashTestNet = CoinConfig(
     coinNames: CoinsConf.zcashTestNet.coinName,
     coinIdx: Slip44.testnet,
     isTestnet: true,
     defPath: derPathNonHardenedFull,
     keyNetVer: bip44BtcKeyNetVerTest,
-    wifNetVer: CoinsConf.zcashTestNet.getParam("wif_net_ver"),
+    wifNetVer: CoinsConf.zcashTestNet.params.wifNetVer,
     type: EllipticCurveTypes.secp256k1,
     addressEncoder: ([dynamic kwargs]) => P2PKHAddrEncoder(),
     addrParams: {
-      "net_ver": CoinsConf.zcashTestNet.getParam("p2pkh_net_ver"),
+      "net_ver": CoinsConf.zcashTestNet.params.p2pkhNetVer!,
     },
   );
 
   /// Configuration for Zilliqa
-  static final BipCoinConf zilliqa = BipCoinConf(
+  static final CoinConfig zilliqa = CoinConfig(
     coinNames: CoinsConf.zilliqa.coinName,
     coinIdx: Slip44.zilliqa,
     isTestnet: false,

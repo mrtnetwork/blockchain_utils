@@ -161,6 +161,10 @@ class BchBech32Decoder extends Bech32DecoderBase {
           "Invalid format (HRP not valid, expected $hrp, got ${decode.$1})");
     }
     final convData = Bech32BaseUtils.convertFromBase32(decode.$2);
-    return (IntUtils.toBytesLength(convData[0]), convData.sublist(1));
+    final ver = convData[0];
+    return (
+      IntUtils.toBytes(ver, length: IntUtils.bitlengthInBytes(ver)),
+      convData.sublist(1)
+    );
   }
 }

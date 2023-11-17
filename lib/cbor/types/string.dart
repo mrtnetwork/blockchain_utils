@@ -10,10 +10,6 @@ abstract class CborString implements CborObject {
   @override
   abstract final dynamic value;
 
-  /// List of CBOR tags associated with the URL value.
-  @override
-  abstract final List<int> tags;
-
   List<int> _encode();
 
   /// Encode the value into CBOR bytes
@@ -33,20 +29,15 @@ abstract class CborString implements CborObject {
 class CborStringValue extends CborString {
   /// Constructor for creating a CborStringValue instance with the provided parameters.
   /// It accepts a string value and optional list of CBOR tags.
-  CborStringValue(this.value, [this.tags = const []]);
+  CborStringValue(this.value);
 
   /// value as string
   @override
   final String value;
 
-  /// List of CBOR tags associated with the URL value.
-  @override
-  final List<int> tags;
-
   @override
   List<int> _encode() {
     final bytes = CborBytesTracker();
-    bytes.pushTags(tags);
     final toBytes = StringUtils.encode(value);
     bytes.pushInt(MajorTags.utf8String, toBytes.length);
     bytes.pushBytes(toBytes);
@@ -57,7 +48,7 @@ class CborStringValue extends CborString {
   @override
   operator ==(other) {
     if (other is! CborStringValue) return false;
-    return value == other.value && bytesEqual(tags, other.tags);
+    return value == other.value;
   }
 
   /// override hashcode
@@ -68,16 +59,13 @@ class CborStringValue extends CborString {
 /// A class representing a CBOR (Concise Binary Object Representation) string value with indefinite tag length.
 class CborIndefiniteStringValue extends CborString {
   /// Constructor for creating a CborStringValue instance with the provided parameters.
-  /// It accepts a List<String> value and optional list of CBOR tags.
-  CborIndefiniteStringValue(this.value, [this.tags = const []]);
+  /// It accepts a List<String> value.
+  CborIndefiniteStringValue(this.value);
 
   /// value as List<String>
   @override
   final List<String> value;
 
-  /// List of CBOR tags associated with the URL value.
-  @override
-  final List<int> tags;
   @override
   List<int> _encode() {
     final bytes = CborBytesTracker();
@@ -101,8 +89,7 @@ class CborIndefiniteStringValue extends CborString {
   @override
   operator ==(other) {
     if (other is! CborIndefiniteStringValue) return false;
-    return iterableIsEqual<String>(value, other.value) &&
-        bytesEqual(tags, other.tags);
+    return iterableIsEqual<String>(value, other.value);
   }
 
   /// override hashcode

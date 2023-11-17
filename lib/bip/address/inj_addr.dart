@@ -28,7 +28,7 @@ class InjAddrDecoder implements BlockchainAddressDecoder {
     try {
       /// Decode the Bech32-encoded address using the INJ address human-readable part (hrp).
       final addrDecBytes = Bech32Decoder.decode(
-        CoinsConf.injective.getParam("addr_hrp"),
+        CoinsConf.injective.params.addrHrp!,
         addr,
       );
 
@@ -65,7 +65,7 @@ class InjAddrEncoder implements BlockchainAddressEncoder {
     final ethAddr = EthAddrEncoder().encodeKey(pubKey);
 
     /// Encode the ETH address using the INJ address human-readable part (hrp).
-    return Bech32Encoder.encode(CoinsConf.injective.getParam("addr_hrp"),
-        BytesUtils.fromHexString(ethAddr));
+    return Bech32Encoder.encode(
+        CoinsConf.injective.params.addrHrp!, BytesUtils.fromHexString(ethAddr));
   }
 }

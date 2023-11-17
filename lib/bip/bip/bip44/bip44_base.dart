@@ -1,7 +1,6 @@
 import 'package:blockchain_utils/bip/bip/bip44/base/bip44_base.dart';
 import 'package:blockchain_utils/bip/bip/bip44/base/bip44_base_ex.dart';
 import 'package:blockchain_utils/bip/bip/conf/bip44/bip44_coins.dart';
-import 'package:blockchain_utils/bip/bip/conf/bip44/bip44_conf.dart';
 import '../bip32/bip32_key_data.dart';
 
 /// Constants related to BIP-44 (Bitcoin Improvement Proposal 44).
@@ -19,22 +18,22 @@ class Bip44 extends Bip44Base {
 
   /// Constructor for creating a [Bip44] object from a seed and coin.
   Bip44.fromSeed(List<int> seedBytes, Bip44Coins coinType)
-      : super.fromSeed(seedBytes, Bip44Conf.getCoin(coinType));
+      : super.fromSeed(seedBytes, coinType.conf);
 
   /// Constructor for creating a [Bip44] object from a extended key and coin.
   Bip44.fromExtendedKey(String extendedKey, Bip44Coins coinType)
-      : super.fromExtendedKey(extendedKey, Bip44Conf.getCoin(coinType));
+      : super.fromExtendedKey(extendedKey, coinType.conf);
 
   /// Constructor for creating a [Bip44] object from a private key and coin.
   Bip44.fromPrivateKey(List<int> privateKeyBytes, Bip44Coins coinType,
       {Bip32KeyData? keyData})
-      : super.fromPrivateKey(privateKeyBytes, Bip44Conf.getCoin(coinType),
+      : super.fromPrivateKey(privateKeyBytes, coinType.conf,
             keyData: keyData ?? Bip32KeyData());
 
   /// Constructor for creating a [Bip44] object from a public key and coin.
   Bip44.fromPublicKey(List<int> pubkeyBytes, Bip44Coins coinType,
       {Bip32KeyData? keyData})
-      : super.fromPublicKey(pubkeyBytes, Bip44Conf.getCoin(coinType),
+      : super.fromPublicKey(pubkeyBytes, coinType.conf,
             keyData: keyData ??
                 Bip32KeyData(depth: Bip32Depth(Bip44Levels.account.value)));
 

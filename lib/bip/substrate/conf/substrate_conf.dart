@@ -9,7 +9,7 @@ import 'substrate_coin_conf.dart';
 class SubstrateConf {
   /// Retrieves the SubstrateCoinConf for the given SubstrateCoin. If the provided coin
   /// is not an instance of SubstrateCoins, an error is thrown.
-  static SubstrateCoinConf getCoin(BipCoins coin) {
+  static SubstrateCoinConf getCoin(CryptoCoins coin) {
     if (coin is! SubstrateCoins) {
       throw ArgumentError("Coin type is not an enumerative of SubstrateCoins");
     }

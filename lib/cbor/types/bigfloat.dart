@@ -10,15 +10,16 @@ import 'int64.dart';
 /// A class representing a CBOR (Concise Binary Object Representation) BigFloat value.
 class CborBigFloatValue implements CborObject {
   /// Constructor for creating a CborBigFloatValue instance with the provided parameters.
-  /// It accepts the Bigint exponent and mantissa value and an optional list of CBOR tags.
-  const CborBigFloatValue(this.exponent, this.mantissa, [this.tags = const []]);
+  /// It accepts the Bigint exponent and mantissa.
+  const CborBigFloatValue(this.exponent, this.mantissa);
 
   /// Create a CborBigFloatValue from two CborNumeric values representing the exponent and mantissa.
   factory CborBigFloatValue.fromCborNumeric(
-      CborNumeric exponent, CborNumeric mantissa,
-      [List<int> tags = const []]) {
+    CborNumeric exponent,
+    CborNumeric mantissa,
+  ) {
     return CborBigFloatValue(CborNumeric.getCborNumericValue(exponent),
-        CborNumeric.getCborNumericValue(mantissa), tags);
+        CborNumeric.getCborNumericValue(mantissa));
   }
 
   /// exponent value
@@ -31,15 +32,11 @@ class CborBigFloatValue implements CborObject {
   @override
   List<BigInt> get value => [exponent, mantissa];
 
-  /// List of CBOR tags associated with the URL value.
-  @override
-  final List<int> tags;
-
   /// Encode the value into CBOR bytes
   @override
   List<int> encode() {
     final bytes = CborBytesTracker();
-    bytes.pushTags(tags.isEmpty ? [CborTags.bigFloat] : tags);
+    bytes.pushTags([CborTags.bigFloat]);
     bytes.pushInt(MajorTags.array, 2);
     bytes.pushBytes(_encodeValue(exponent));
     bytes.pushBytes(_encodeValue(mantissa));
@@ -72,7 +69,7 @@ class CborBigFloatValue implements CborObject {
   operator ==(other) {
     if (other is! CborBigFloatValue) return false;
 
-    return iterableIsEqual(value, other.value) && bytesEqual(tags, other.tags);
+    return iterableIsEqual(value, other.value);
   }
 
   /// ovveride hash code

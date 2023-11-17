@@ -18,12 +18,12 @@ class Bip44PublicKey {
   final Bip32PublicKey pubKey;
 
   /// The coin configuration associated with this public key.
-  final BipCoinConf coinConf;
+  final CoinConfig coinConf;
 
   /// Factory constructor to create a [Bip44PublicKey] from a [Bip32PublicKey]
-  /// and a [BipCoinConf]. It verifies that the elliptic curve type of the public
+  /// and a [CoinConfig]. It verifies that the elliptic curve type of the public
   /// key matches the coin's configuration.
-  factory Bip44PublicKey(Bip32PublicKey pubKey, BipCoinConf coinConf) {
+  factory Bip44PublicKey(Bip32PublicKey pubKey, CoinConfig coinConf) {
     if (pubKey.curveType != coinConf.type) {
       throw ArgumentError(
         'The public key elliptic curve (${pubKey.curveType}) shall match '
@@ -90,12 +90,12 @@ class Bip44PrivateKey {
   final Bip32PrivateKey privKey;
 
   /// The coin configuration associated with this private key.
-  final BipCoinConf coinConf;
+  final CoinConfig coinConf;
 
   /// Factory constructor to create a [Bip44PrivateKey] from a [Bip32PrivateKey]
-  /// and a [BipCoinConf]. It verifies that the elliptic curve type of the private
+  /// and a [CoinConfig]. It verifies that the elliptic curve type of the private
   /// key matches the coin's configuration.
-  factory Bip44PrivateKey(Bip32PrivateKey privKey, BipCoinConf coinConf) {
+  factory Bip44PrivateKey(Bip32PrivateKey privKey, CoinConfig coinConf) {
     if (privKey.curveType != coinConf.type) {
       throw ArgumentError(
         'The private key elliptic curve (${privKey.curveType}) shall match the coin configuration one (${coinConf.type})',

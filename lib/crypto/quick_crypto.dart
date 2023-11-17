@@ -242,17 +242,19 @@ class QuickCrypto {
   /// A private field to hold the FortunaRandom instance for generating random numbers.
   static FortunaPRNG? _randomGenerator;
 
+  static GenerateRandom _generateRandom = (length) {
+    _randomGenerator ??= FortunaPRNG();
+    return _randomGenerator!.nextBytes(length);
+  };
+
   /// This function generates a random List<int> of the specified size (default is 32 bytes).
   static List<int> generateRandom([int size = 32, GenerateRandom? random]) {
     if (random != null) {
-      return random(size);
+      _generateRandom = random;
     }
 
-    /// Check if the _randomGenerator instance has been initialized.
-    _randomGenerator ??= FortunaPRNG();
-
     /// Generate the random bytes of the specified size using the _randomGenerator.
-    final r = _randomGenerator!.nextBytes(size);
+    final r = _generateRandom(size);
 
     /// Return the generated random bytes.
     return r;

@@ -3,27 +3,22 @@ import 'package:blockchain_utils/cbor/utils/dynamic_bytes.dart';
 import 'package:blockchain_utils/cbor/core/tags.dart';
 import 'package:blockchain_utils/cbor/core/cbor.dart';
 import 'package:blockchain_utils/cbor/types/string.dart';
-import 'package:blockchain_utils/compare/compare.dart';
 
 /// A class representing a CBOR (Concise Binary Object Representation) mime value.
 class CborMimeValue implements CborObject {
   /// Constructor for creating a CborMimeValue instance with the provided parameters.
-  /// It accepts the string value and an optional list of CBOR tags.
-  const CborMimeValue(this.value, [this.tags = const []]);
+  /// It accepts the string value.
+  const CborMimeValue(this.value);
 
   /// value as string
   @override
   final String value;
 
-  /// List of CBOR tags associated with the URL value.
-  @override
-  final List<int> tags;
-
   /// Encode the value into CBOR bytes
   @override
   List<int> encode() {
     final bytes = CborBytesTracker();
-    bytes.pushTags(tags.isEmpty ? [CborTags.mime] : tags);
+    bytes.pushTags([CborTags.mime]);
     final toBytes = CborStringValue(value);
     bytes.pushBytes(toBytes.encode());
     return bytes.toBytes();
@@ -45,7 +40,7 @@ class CborMimeValue implements CborObject {
   @override
   operator ==(other) {
     if (other is! CborMimeValue) return false;
-    return value == other.value && bytesEqual(tags, other.tags);
+    return value == other.value;
   }
 
   /// override hashcode

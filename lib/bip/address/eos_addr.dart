@@ -41,7 +41,7 @@ class EosAddrDecoder implements BlockchainAddressDecoder {
   List<int> decodeAddr(String addr, [Map<String, dynamic> kwargs = const {}]) {
     /// Remove the address prefix from the given address
     final addrNoPrefix = AddrDecUtils.validateAndRemovePrefix(
-        addr, CoinsConf.eos.getParam("addr_prefix"));
+        addr, CoinsConf.eos.params.addrPrefix!);
 
     /// Decode the remaining address bytes
     final addrDecBytes = Base58Decoder.decode(addrNoPrefix);
@@ -97,7 +97,7 @@ class EosAddrEncoder implements BlockchainAddressEncoder {
     final checksumBytes = _EosAddrUtils.computeChecksum(pubKeyBytes);
 
     /// Combine the address prefix, public key, and checksum to create the EOS address
-    return CoinsConf.eos.getParam("addr_prefix") +
+    return CoinsConf.eos.params.addrPrefix! +
         Base58Encoder.encode(List<int>.from(pubKeyBytes + checksumBytes));
   }
 }

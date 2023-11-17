@@ -109,7 +109,7 @@ class WifDecoder {
   static (List<int>, WifPubKeyModes) decode(String wif,
       {List<int> netVer = const []}) {
     List<int> privKeyBytes = Base58Decoder.checkDecode(wif);
-    if (privKeyBytes[0] != netVer[0]) {
+    if (netVer.isEmpty || privKeyBytes[0] != netVer[0]) {
       throw ArgumentError('Invalid net version');
     }
     privKeyBytes = privKeyBytes.sublist(1);

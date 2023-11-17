@@ -29,11 +29,11 @@ class OkexAddrDecoder implements BlockchainAddressDecoder {
     try {
       /// Decode the OKExChain address using the OKExChain configuration's HRP.
       List<int> addrDecBytes =
-          Bech32Decoder.decode(CoinsConf.okexChain.getParam('addr_hrp'), addr);
+          Bech32Decoder.decode(CoinsConf.okexChain.params.addrHrp!, addr);
 
       /// Decode the address again as an Ethereum address with a custom prefix.
       return EthAddrDecoder().decodeAddr(
-          CoinsConf.ethereum.getParam('addr_prefix') +
+          CoinsConf.ethereum.params.addrPrefix! +
               BytesUtils.toHexString(addrDecBytes),
           {"skip_chksum_enc": true});
     } catch (e) {
@@ -67,7 +67,7 @@ class OkexAddrEncoder implements BlockchainAddressEncoder {
 
     /// Encode the Ethereum address as an OKExChain address using Bech32 encoding.
     return Bech32Encoder.encode(
-      CoinsConf.okexChain.getParam('addr_hrp'),
+      CoinsConf.okexChain.params.addrHrp!,
       BytesUtils.fromHexString(ethAddr),
     );
   }

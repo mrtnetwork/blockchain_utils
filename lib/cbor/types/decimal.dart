@@ -10,16 +10,16 @@ import 'int64.dart';
 /// A class representing a CBOR (Concise Binary Object Representation) Dcecimal value.
 class CborDecimalFracValue implements CborObject {
   /// Constructor for creating a CborDecimalFracValue instance with the provided parameters.
-  /// It accepts the Bigint exponent and mantissa value and an optional list of CBOR tags.
-  const CborDecimalFracValue(this.exponent, this.mantissa,
-      [this.tags = const []]);
+  /// It accepts the Bigint exponent and mantissa value.
+  const CborDecimalFracValue(this.exponent, this.mantissa);
 
   /// Create a CborBigFloatValue from two CborNumeric values representing the exponent and mantissa.
   factory CborDecimalFracValue.fromCborNumeric(
-      CborNumeric exponent, CborNumeric mantissa,
-      [List<int> tags = const []]) {
+    CborNumeric exponent,
+    CborNumeric mantissa,
+  ) {
     return CborDecimalFracValue(CborNumeric.getCborNumericValue(exponent),
-        CborNumeric.getCborNumericValue(mantissa), tags);
+        CborNumeric.getCborNumericValue(mantissa));
   }
 
   /// exponent value
@@ -27,10 +27,6 @@ class CborDecimalFracValue implements CborObject {
 
   /// mantissa value
   final BigInt mantissa;
-
-  /// List of CBOR tags associated with the URL value.
-  @override
-  final List<int> tags;
 
   /// The decimal value as a list [exponent, mantissa].
   @override
@@ -40,7 +36,7 @@ class CborDecimalFracValue implements CborObject {
   @override
   List<int> encode() {
     final bytes = CborBytesTracker();
-    bytes.pushTags(tags.isEmpty ? [CborTags.decimalFrac] : tags);
+    bytes.pushTags([CborTags.decimalFrac]);
     bytes.pushInt(MajorTags.array, 2);
     bytes.pushBytes(_encodeValue(exponent));
     bytes.pushBytes(_encodeValue(mantissa));
@@ -73,7 +69,7 @@ class CborDecimalFracValue implements CborObject {
   @override
   operator ==(other) {
     if (other is! CborDecimalFracValue) return false;
-    return iterableIsEqual(value, other.value) && bytesEqual(tags, other.tags);
+    return iterableIsEqual(value, other.value);
   }
 
   /// ovveride hash code

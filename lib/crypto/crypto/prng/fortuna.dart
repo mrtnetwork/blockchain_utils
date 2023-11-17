@@ -1,9 +1,7 @@
 import 'dart:math';
-
 import 'package:blockchain_utils/crypto/crypto/aes/aes.dart';
 import 'package:blockchain_utils/crypto/crypto/ctr/ctr.dart';
 import 'package:blockchain_utils/crypto/crypto/hash/hash.dart';
-import 'package:blockchain_utils/crypto/crypto/scrypt/scrypt.dart';
 
 /// The `GenerateRandom` typedef defines a function signature for generating random data with a specified length.
 typedef GenerateRandom = List<int> Function(int length);
@@ -55,10 +53,11 @@ class FortunaPRNG {
   }
 
   void _initKey([List<int>? seed]) {
-    final sc = Scrypt(16384, 8, 1);
-    final k =
-        sc.derive(seed ?? SHA3.hash(_generateSeed(32)), _generateSeed(32), 32);
-    _key.setAll(0, k);
+    final k = SHAKE256();
+    k.update(seed ?? <int>[]);
+    k.update(_generateSeed(32));
+    _key.setAll(0, k.digest());
+    k.clean();
     _generateBlocks(_out, 1);
   }
 

@@ -66,7 +66,7 @@ class _FilAddrUtils {
   ///   - ArgumentError if the address format, length, or checksum is invalid.
   static List<int> decodeAddr(String addr, FillAddrTypes addrType) {
     String addrNoPrefix = AddrDecUtils.validateAndRemovePrefix(
-        addr, CoinsConf.filecoin.getParam("addr_prefix"));
+        addr, CoinsConf.filecoin.params.addrPrefix!);
     int addrTypeGot = addrNoPrefix[0].codeUnits.first - "0".codeUnits.first;
     if (addrType.value != addrTypeGot) {
       throw ArgumentError(
@@ -106,7 +106,7 @@ class _FilAddrUtils {
 
     String b32Enc = Base32Encoder.encodeNoPaddingBytes(
         bytesWithChecksum, FilAddrConst.base32Alphabet);
-    return CoinsConf.filecoin.getParam("addr_prefix") + addrTypeStr + b32Enc;
+    return CoinsConf.filecoin.params.addrPrefix! + addrTypeStr + b32Enc;
   }
 }
 

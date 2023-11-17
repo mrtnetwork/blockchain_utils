@@ -6,19 +6,13 @@ import 'package:blockchain_utils/cbor/core/cbor.dart';
 /// A class representing a CBOR (Concise Binary Object Representation) List value.
 class CborListValue<T> implements CborObject {
   /// Constructor for creating a CborListValue instance with the provided parameters.
-  /// It accepts the List of all cbor encodable value and an optional list of CBOR tags.
-  CborListValue.fixedLength(this.value, [this.tags = const []])
-      : _isFixedLength = true;
+  /// It accepts the List of all cbor encodable value.
+  CborListValue.fixedLength(this.value) : _isFixedLength = true;
 
   /// Constructor for creating a CborListValue instance with the provided parameters.
-  /// It accepts the List of all cbor encodable value and an optional list of CBOR tags.
+  /// It accepts the List of all cbor encodable value.
   /// this method encode values with indefinite tag.
-  CborListValue.dynamicLength(this.value, [this.tags = const []])
-      : _isFixedLength = false;
-
-  /// List of CBOR tags associated with the URL value.
-  @override
-  final List<int> tags;
+  CborListValue.dynamicLength(this.value) : _isFixedLength = false;
 
   /// value as List
   @override
@@ -33,7 +27,6 @@ class CborListValue<T> implements CborObject {
   @override
   List<int> encode() {
     final bytes = CborBytesTracker();
-    bytes.pushTags(tags);
     if (isFixedLength) {
       bytes.pushInt(MajorTags.array, value.length);
     } else {

@@ -13,7 +13,7 @@ void electrumV2Test() {
     final elc = ElectrumV2Standard.fromSeed(seed);
     final prv = WifEncoder.encode(
       elc.masterPrivateKey.raw,
-      netVer: CoinsConf.bitcoinMainNet.getParam("wif_net_ver"),
+      netVer: CoinsConf.bitcoinMainNet.params.wifNetVer!,
     );
     assert(prv == i["private"]);
 
@@ -24,7 +24,7 @@ void electrumV2Test() {
       final addressIndex = c["address_index"];
       final cPrv = WifEncoder.encode(
         elc.getPrivateKey(changeIndex, addressIndex).raw,
-        netVer: CoinsConf.bitcoinMainNet.getParam("wif_net_ver"),
+        netVer: CoinsConf.bitcoinMainNet.params.wifNetVer!,
       );
       assert(cPrv == c["private"]);
       final cPub =
@@ -39,7 +39,7 @@ void electrumV2Test() {
     final elc = ElectrumV2Segwit.fromSeed(seed);
     final prv = WifEncoder.encode(
       elc.masterPrivateKey.raw,
-      netVer: CoinsConf.bitcoinMainNet.getParam("wif_net_ver"),
+      netVer: CoinsConf.bitcoinMainNet.params.wifNetVer!,
     );
     assert(prv == i["private"]);
 
@@ -50,7 +50,7 @@ void electrumV2Test() {
       final addressIndex = c["address_index"];
       final cPrv = WifEncoder.encode(
         elc.getPrivateKey(changeIndex, addressIndex).raw,
-        netVer: CoinsConf.bitcoinMainNet.getParam("wif_net_ver"),
+        netVer: CoinsConf.bitcoinMainNet.params.wifNetVer!,
       );
       assert(cPrv == c["private"]);
       final cPub =

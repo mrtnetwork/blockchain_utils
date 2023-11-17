@@ -2,7 +2,6 @@ import 'package:blockchain_utils/binary/utils.dart';
 import 'package:blockchain_utils/cbor/utils/dynamic_bytes.dart';
 import 'package:blockchain_utils/cbor/core/tags.dart';
 import 'package:blockchain_utils/cbor/types/string.dart';
-import 'package:blockchain_utils/compare/compare.dart';
 
 /// An enum representing different types of base64 encoding used in CBOR.
 enum CborBase64Types {
@@ -42,15 +41,11 @@ enum CborBase64Types {
 class CborBaseUrlValue implements CborString {
   /// Constructor for creating a CborBaseUrlValue instance with the provided parameters.
   /// It accepts the URL value, type, and an optional list of CBOR tags.
-  const CborBaseUrlValue(this.value, this.type, [this.tags = const []]);
+  const CborBaseUrlValue(this.value, this.type);
 
   /// The base-URL value as a string.
   @override
   final String value;
-
-  /// List of CBOR tags associated with the URL value.
-  @override
-  final List<int> tags;
 
   /// The type of base64 encoding used in the URL value.
   final CborBase64Types type;
@@ -59,7 +54,7 @@ class CborBaseUrlValue implements CborString {
   @override
   List<int> encode() {
     final bytes = CborBytesTracker();
-    bytes.pushTags(tags.isEmpty ? [type.tag] : tags);
+    bytes.pushTags([type.tag]);
     final toBytes = CborStringValue(value);
     bytes.pushBytes(toBytes.encode());
     return bytes.toBytes();
@@ -82,9 +77,7 @@ class CborBaseUrlValue implements CborString {
   operator ==(other) {
     if (other is! CborBaseUrlValue) return false;
 
-    return value == other.value &&
-        type.tag == other.type.tag &&
-        bytesEqual(tags, other.tags);
+    return value == other.value && type.tag == other.type.tag;
   }
 
   /// ovveride hash code

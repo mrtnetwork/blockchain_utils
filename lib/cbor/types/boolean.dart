@@ -2,27 +2,21 @@ import 'package:blockchain_utils/binary/utils.dart';
 import 'package:blockchain_utils/cbor/utils/dynamic_bytes.dart';
 import 'package:blockchain_utils/cbor/core/tags.dart';
 import 'package:blockchain_utils/cbor/core/cbor.dart';
-import 'package:blockchain_utils/compare/compare.dart';
 
 /// A class representing a CBOR (Concise Binary Object Representation) boolean value.
 class CborBoleanValue implements CborObject {
   /// Constructor for creating a CborBoleanValue instance with the provided parameters.
-  /// It accepts the boolean value, and an optional list of CBOR tags.
-  const CborBoleanValue(this.value, [this.tags = const []]);
+  /// It accepts the boolean value.
+  const CborBoleanValue(this.value);
 
   /// The value as a boolean.
   @override
   final bool value;
 
-  /// List of CBOR tags associated with the URL value.
-  @override
-  final List<int> tags;
-
   /// Encode the value into CBOR bytes
   @override
   List<int> encode() {
     final bytes = CborBytesTracker();
-    bytes.pushTags(tags);
     bytes.pushInt(MajorTags.simpleOrFloat,
         value ? SimpleTags.simpleTrue : SimpleTags.simpleFalse);
     return bytes.toBytes();
@@ -45,7 +39,7 @@ class CborBoleanValue implements CborObject {
   operator ==(other) {
     if (other is! CborBoleanValue) return false;
 
-    return value == other.value && bytesEqual(tags, other.tags);
+    return value == other.value;
   }
 
   /// ovveride hash code

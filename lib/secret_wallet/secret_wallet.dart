@@ -1,19 +1,18 @@
-import 'dart:convert';
-import 'package:blockchain_utils/binary/utils.dart';
-import 'package:blockchain_utils/crypto/crypto/aes/aes.dart';
-import 'package:blockchain_utils/crypto/crypto/ctr/ctr.dart';
-import 'package:blockchain_utils/crypto/crypto/hash/hash.dart';
-import 'package:blockchain_utils/crypto/crypto/hmac/hmac.dart';
-import 'package:blockchain_utils/crypto/crypto/pbkdf2/pbkdf2.dart';
-import 'package:blockchain_utils/crypto/crypto/scrypt/scrypt.dart';
-import 'package:blockchain_utils/crypto/quick_crypto.dart';
-import 'package:blockchain_utils/string/string.dart';
-import 'package:blockchain_utils/uuid/uuid.dart';
+import 'package:blockchain_utils/blockchain_utils.dart';
+import 'package:blockchain_utils/compare/compare.dart';
+
+class _SecretStorageConst {
+  static const List<int> scryptTag = [180];
+  static const List<int> pbdkdf2Tag = [181];
+  static const List<int> tag = [200];
+  static const int version = 3;
+}
 
 /// Enum representing different encoding formats for secret wallets.
 enum SecretWalletEncoding {
   base64, // Base64 encoding
   json, // JSON encoding
+  cbor, // cbor encoding
 }
 
 /// Abstract class representing a key derivation strategy.
@@ -21,8 +20,22 @@ abstract class _Derivator {
   List<int> deriveKey(List<int> password);
 
   String get name; // The name of the key derivation strategy.
-  Map<String, dynamic>
-      encode(); // Method to encode the parameters of the strategy.
+  Map<String, dynamic> encode();
+  CborTagValue cborEncode();
+
+  static _Derivator fromCbor(CborObject cbor) {
+    if (cbor is! CborTagValue || cbor.value is! CborListValue) {
+      throw ArgumentError("invalid secret wallet cbor bytes");
+    }
+    if (bytesEqual(cbor.tags, _SecretStorageConst.pbdkdf2Tag)) {
+      final toObj = _PBDKDF2Derivator.fromCbor(cbor.value);
+      return toObj;
+    } else if (bytesEqual(cbor.tags, _SecretStorageConst.scryptTag)) {
+      return _ScryptDerivator.fromCbor(cbor.value);
+    } else {
+      throw ArgumentError("invalid secret wallet cbor bytes");
+    }
+  }
 }
 
 /// A class implementing key derivation using the PBKDF2 algorithm.
@@ -31,6 +44,17 @@ class _PBDKDF2Derivator extends _Derivator {
   final int iterations;
   final List<int> salt;
   final int dklen;
+
+  factory _PBDKDF2Derivator.fromCbor(CborListValue v) {
+    final int c = v.value[0].value;
+    final int dklen = v.value[1].value;
+    final String prf = v.value[2].value;
+    if (prf != 'hmac-sha256') {
+      throw ArgumentError('Invalid prf only support hmac-sha256');
+    }
+    final List<int> salt = v.value[3].value;
+    return _PBDKDF2Derivator(c, salt, dklen);
+  }
 
   @override
   List<int> deriveKey(List<int> password) {
@@ -52,12 +76,32 @@ class _PBDKDF2Derivator extends _Derivator {
   }
 
   @override
-  final String name = 'pbkdf2'; // Name of the PBKDF2 strategy.
+  final String name = 'pbkdf2';
+
+  @override
+  CborTagValue cborEncode() {
+    return CborTagValue(
+        CborListValue.fixedLength([
+          CborIntValue(iterations),
+          CborIntValue(dklen),
+          CborStringValue("hmac-sha256"),
+          CborBytesValue(salt)
+        ]),
+        _SecretStorageConst.pbdkdf2Tag);
+  }
 }
 
 /// A class implementing key derivation using the Scrypt algorithm.
 class _ScryptDerivator extends _Derivator {
   _ScryptDerivator(this.dklen, this.n, this.r, this.p, this.salt);
+  factory _ScryptDerivator.fromCbor(CborListValue v) {
+    final int dklen = v.value[0].value;
+    final int n = v.value[1].value;
+    final int r = v.value[2].value;
+    final int p = v.value[3].value;
+    final List<int> salt = v.value[4].value;
+    return _ScryptDerivator(dklen, n, r, p, salt);
+  }
   final int dklen;
   final int n;
   final int r;
@@ -81,7 +125,20 @@ class _ScryptDerivator extends _Derivator {
   }
 
   @override
-  final String name = 'scrypt'; // Name of the Scrypt strategy.
+  final String name = 'scrypt';
+
+  @override
+  CborTagValue cborEncode() {
+    return CborTagValue(
+        CborListValue.fixedLength([
+          CborIntValue(dklen),
+          CborIntValue(n),
+          CborIntValue(r),
+          CborIntValue(p),
+          CborBytesValue(salt)
+        ]),
+        _SecretStorageConst.scryptTag);
+  } // Name of the Scrypt strategy.
 }
 
 /// The `SecretWallet` class represents a secret wallet that stores sensitive credentials
@@ -122,12 +179,16 @@ class SecretWallet {
     return SecretWallet._(credentials, derivator, passwordBytes, iv, uuid);
   }
 
-  static Map<String, dynamic> _toJsonEcoded(String encoded) {
+  static Map<String, dynamic> _toJsonEcoded(String encoded,
+      {SecretWalletEncoding encoding = SecretWalletEncoding.json}) {
     try {
-      final bs64 = base64Decode(encoded);
-      return json.decode(StringUtils.decode(bs64));
+      if (encoding == SecretWalletEncoding.json) {
+        return StringUtils.toJson(encoded);
+      }
+      return StringUtils.toJson(StringUtils.decode(
+          StringUtils.encode(encoded, StringEncoding.base64)));
     } catch (e) {
-      return json.decode(encoded);
+      throw ArgumentError("invalid encoding");
     }
   }
 
@@ -138,8 +199,12 @@ class SecretWallet {
   ///
   /// Returns a `SecretWallet` instance decoded from the input data, or throws an error
   /// if decoding or password validation fails.
-  factory SecretWallet.decode(String encoded, String password) {
-    final data = _toJsonEcoded(encoded);
+  factory SecretWallet.decode(String encoded, String password,
+      {SecretWalletEncoding encoding = SecretWalletEncoding.json}) {
+    if (encoding == SecretWalletEncoding.cbor) {
+      return _decodeCbor(encoded, password);
+    }
+    final data = _toJsonEcoded(encoded, encoding: encoding);
 
     final version = data['version'];
     if (version != 3) {
@@ -205,6 +270,54 @@ class SecretWallet {
         StringUtils.decode(privateKey), derivator, encodedPassword, iv, id);
   }
 
+  static SecretWallet _decodeCbor(String encoded, String password) {
+    try {
+      final cborTag = CborObject.fromCborHex(encoded);
+      if (cborTag is! CborTagValue ||
+          cborTag.value is! CborListValue ||
+          cborTag.value.value.length != 3) {
+        throw ArgumentError("Invalid secret wallet cbor bytes");
+      }
+      if (!bytesEqual(cborTag.tags, _SecretStorageConst.tag)) {
+        throw ArgumentError("invalid secret wallet cbor tag");
+      }
+      final cbor = cborTag.value as CborListValue;
+      final int version = cbor.value[2].value;
+      if (version != _SecretStorageConst.version) {
+        throw ArgumentError(
+            "Library only supports version ${_SecretStorageConst.version}");
+      }
+
+      final List<int> uuid = cbor.value[1].value;
+      final params = cbor.value[0] as CborListValue;
+      final String cipher = params.value[0].value;
+      if (cipher != 'aes-128-ctr') {
+        throw ArgumentError("only cipher aes-128-ctr is supported.");
+      }
+      final List<int> iv = params.value[1].value;
+      final derivator = _Derivator.fromCbor(params.value[3]);
+      final List<int> ciphertext = params.value[2].value;
+      final String mac = params.value[4].value;
+      final encodedPassword = List<int>.from(StringUtils.encode(password));
+      final derivedKey = derivator.deriveKey(encodedPassword);
+      final aesKey = List<int>.from(derivedKey.sublist(0, 16));
+      final derivedMac = _generateMac(derivedKey, ciphertext);
+      if (derivedMac != mac) {
+        throw ArgumentError('wrong password or the file is corrupted');
+      }
+      final CTR ctr = CTR(AES(aesKey), iv);
+      final List<int> privateKey = List<int>.filled(ciphertext.length, 0);
+      ctr.streamXOR(ciphertext, privateKey);
+      ctr.clean();
+      return SecretWallet._(
+          StringUtils.decode(privateKey), derivator, encodedPassword, iv, uuid);
+    } on ArgumentError {
+      rethrow;
+    } catch (e) {
+      throw ArgumentError('invalid secret wallet cbor bytes');
+    }
+  }
+
   final String credentials;
 
   final _Derivator _derivator;
@@ -225,6 +338,9 @@ class SecretWallet {
   String encrypt({SecretWalletEncoding encoding = SecretWalletEncoding.json}) {
     // Encrypt the wallet data and obtain the ciphertext bytes.
     final ciphertextBytes = _encryptPassword();
+    if (encoding == SecretWalletEncoding.cbor) {
+      return _toCbor(ciphertextBytes);
+    }
 
     // Prepare the JSON representation of the encrypted data.
     final Map<String, dynamic> toJson = {
@@ -241,13 +357,32 @@ class SecretWallet {
     };
 
     // Convert the JSON to a string.
-    final toString = json.encode(toJson);
+    final toString = StringUtils.fromJson(toJson);
 
     // Based on the specified encoding format, return the encrypted data as a string.
     if (encoding == SecretWalletEncoding.json) {
       return toString;
     }
-    return base64Encode(StringUtils.encode(toString));
+    return StringUtils.decode(
+        StringUtils.encode(toString), StringEncoding.base64);
+  }
+
+  String _toCbor(List<int> ciphertextBytes) {
+    return CborTagValue(
+            CborListValue.dynamicLength([
+              CborListValue.fixedLength([
+                CborStringValue('aes-128-ctr'),
+                CborBytesValue(_iv),
+                CborBytesValue(ciphertextBytes),
+                _derivator.cborEncode(),
+                CborStringValue(_generateMac(
+                    _derivator.deriveKey(_password), ciphertextBytes)),
+              ]),
+              CborBytesValue(_id),
+              CborIntValue(3),
+            ]),
+            _SecretStorageConst.tag)
+        .toCborHex();
   }
 
   /// Generates a Message Authentication Code (MAC) for the provided derived key and ciphertext.

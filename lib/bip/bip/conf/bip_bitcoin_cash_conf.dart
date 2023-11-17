@@ -5,7 +5,7 @@ import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
 import 'package:blockchain_utils/bip/coin_conf/coins_name.dart';
 
 /// A class representing the configuration for Bitcoin Cash (BCH) based on the BIP framework.
-class BipBitcoinCashConf extends BipCoinConf {
+class BipBitcoinCashConf extends CoinConfig {
   /// Flag to indicate whether legacy address format should be used.
   final bool useLagacyAdder;
 

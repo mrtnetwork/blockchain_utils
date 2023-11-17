@@ -46,17 +46,27 @@ class ECDSASignature {
     final beta = ECDSAUtils.modularSquareRootPrime(alpha, curve.p);
     final y = (beta % BigInt.two == BigInt.zero) ? beta : (curve.p - beta);
 
-    final r1 =
+    final ProjectiveECCPoint r1 =
         ProjectiveECCPoint(curve: curve, x: x, y: y, z: BigInt.one, order: n);
-    final q1 =
-        (r1 * s) + (generator * (-e % n!)) * BigintUtils.inverseMod(r, n);
+    final ProjectiveECCPoint q1 =
+        (r1 * s) + (generator * (-e % n!)) * BigintUtils.inverseMod(r, n)
+            as ProjectiveECCPoint;
     final pk1 = ECDSAPublicKey(generator, q1);
 
     final r2 =
         ProjectiveECCPoint(curve: curve, x: x, y: -y, z: BigInt.one, order: n);
-    final q2 = (r2 * s) + (generator * (-e % n)) * BigintUtils.inverseMod(r, n);
+    final ProjectiveECCPoint q2 =
+        (r2 * s) + (generator * (-e % n)) * BigintUtils.inverseMod(r, n)
+            as ProjectiveECCPoint;
     final pk2 = ECDSAPublicKey(generator, q2);
 
     return [pk1, pk2];
+  }
+
+  List<int> toBytes(int baselen) {
+    final sBytes = BigintUtils.toBytes(s, length: baselen);
+    final rBytes = BigintUtils.toBytes(r, length: baselen);
+
+    return [...rBytes, ...sBytes];
   }
 }

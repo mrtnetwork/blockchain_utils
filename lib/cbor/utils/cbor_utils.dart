@@ -1,28 +1,7 @@
 import 'dart:typed_data';
-
-import 'package:blockchain_utils/numbers/bigint_utils.dart';
-import 'package:blockchain_utils/cbor/types/set.dart';
+import 'package:blockchain_utils/blockchain_utils.dart';
 import 'package:blockchain_utils/cbor/utils/float_utils.dart';
 import 'package:blockchain_utils/cbor/core/tags.dart';
-import 'package:blockchain_utils/cbor/types/base.dart';
-import 'package:blockchain_utils/cbor/types/bigfloat.dart';
-import 'package:blockchain_utils/cbor/types/bigint.dart';
-import 'package:blockchain_utils/cbor/types/boolean.dart';
-import 'package:blockchain_utils/cbor/types/bytes.dart';
-import 'package:blockchain_utils/cbor/core/cbor.dart';
-import 'package:blockchain_utils/cbor/types/datetime.dart';
-import 'package:blockchain_utils/cbor/types/decimal.dart';
-import 'package:blockchain_utils/cbor/types/double.dart';
-import 'package:blockchain_utils/cbor/types/int.dart';
-import 'package:blockchain_utils/cbor/types/int64.dart';
-import 'package:blockchain_utils/cbor/types/list.dart';
-import 'package:blockchain_utils/cbor/types/map.dart';
-import 'package:blockchain_utils/cbor/types/mime.dart';
-import 'package:blockchain_utils/cbor/types/null.dart';
-import 'package:blockchain_utils/cbor/types/regex.dart';
-import 'package:blockchain_utils/cbor/types/string.dart';
-import 'package:blockchain_utils/cbor/types/url.dart';
-import 'package:blockchain_utils/string/string.dart';
 
 class CborUtils {
   /// Decode a CBOR (Concise Binary Object Representation) data stream represented by a List<int>.
@@ -55,9 +34,9 @@ class CborUtils {
     final List<int> tags = [];
     for (int i = 0; i < cborBytes.length;) {
       final int first = cborBytes[i];
+
       final majorTag = first >> 5;
       final info = first & 0x1f;
-
       switch (majorTag) {
         case MajorTags.map:
           if (info == NumBytes.indefinite) {
@@ -71,6 +50,7 @@ class CborUtils {
           final data = _decodeLength(info, cborBytes.sublist(i));
           tags.add(data.$1);
           i += data.$2;
+
           continue;
         case MajorTags.byteString:
           return _decodeBytesString(info, i, cborBytes, tags);
@@ -90,14 +70,6 @@ class CborUtils {
     }
     throw ArgumentError("invalid or unsuported cbor tag");
   }
-
-  // static BigInt _BigintUtils.fromBytes(List<int> bytes) {
-  //   BigInt result = BigInt.zero;
-  //   for (int i = 0; i < bytes.length; i++) {
-  //     result = result << 8 | BigInt.from(readUint8(bytes, i));
-  //   }
-  //   return result;
-  // }
 
   static (List<int>, int) _parsBytes(int info, List<int> cborBytes) {
     final len = _decodeLength(info, cborBytes);
@@ -142,11 +114,18 @@ class CborUtils {
       int info, int i, List<int> cborBytes, List<int> tags) {
     if (info == NumBytes.indefinite) {
       final toList = _decodeDynamicArray(cborBytes, i, info, tags);
-      final stringList = toList.$1.value
+      final stringList = (toList.$1 as CborListValue)
+          .value
           .whereType<CborStringValue>()
           .map((e) => e.value)
           .toList();
-      return (CborIndefiniteStringValue(stringList, tags), toList.$2);
+      if (tags.isNotEmpty) {
+        return (
+          CborTagValue(CborIndefiniteStringValue(stringList), tags),
+          toList.$2
+        );
+      }
+      return (CborIndefiniteStringValue(stringList), toList.$2);
     }
 
     final bytes = _parsBytes(info, cborBytes.sublist(i));
@@ -156,29 +135,31 @@ class CborUtils {
 
   static CborObject _toStringObject(List<int> utf8Bytes, List<int> tags) {
     final toString = StringUtils.decode(utf8Bytes);
+    CborObject? toObj;
     if (tags.isEmpty) {
-      return CborStringValue(toString);
+      toObj = CborStringValue(toString);
     } else if (CborBase64Types.values
         .any((element) => tags.contains(element.tag))) {
       final baseType = CborBase64Types.values
           .firstWhere((element) => tags.contains(element.tag));
       tags.removeWhere((element) => element == baseType.tag);
-      return CborBaseUrlValue(toString, baseType, tags);
+      toObj = CborBaseUrlValue(toString, baseType);
     } else if (tags.contains(CborTags.mime)) {
       tags.removeWhere((element) => element == CborTags.mime);
-      return CborMimeValue(toString, tags);
+      toObj = CborMimeValue(toString);
     } else if (tags.contains(CborTags.uri)) {
       tags.removeWhere((element) => element == CborTags.uri);
-      return CborUriValue(toString, tags);
+      toObj = CborUriValue(toString);
     } else if (tags.contains(CborTags.regexp)) {
       tags.removeWhere((element) => element == CborTags.regexp);
-      return CborRegxpValue(toString, tags);
+      toObj = CborRegxpValue(toString);
     } else if (tags.contains(CborTags.dateString)) {
       tags.removeWhere((element) => element == CborTags.dateString);
       final time = parseRFC3339DateTime(toString);
-      return CborStringDateValue(time, tags);
+      toObj = CborStringDateValue(time);
     }
-    return CborStringValue(toString, tags);
+    toObj ??= CborStringValue(toString);
+    return tags.isEmpty ? toObj : CborTagValue(toObj, tags);
   }
 
   static (CborObject, int) _decodeBytesString(
@@ -189,7 +170,13 @@ class CborUtils {
           .whereType<CborBytesValue>()
           .map((e) => e.value)
           .toList();
-      return (CborDynamicBytesValue(bytesList, tags), toList.$2);
+      if (tags.isNotEmpty) {
+        return (
+          CborTagValue(CborDynamicBytesValue(bytesList), tags),
+          toList.$2
+        );
+      }
+      return (CborDynamicBytesValue(bytesList), toList.$2);
     }
     final bytes = _parsBytes(info, cborBytes.sublist(i));
     CborObject? val;
@@ -201,24 +188,30 @@ class CborUtils {
       }
       tags.removeWhere((element) =>
           element == CborTags.negBigInt || element == CborTags.posBigInt);
-      val = CborBigIntValue(big, tags);
+      val = CborBigIntValue(big);
     }
-    val ??= CborBytesValue(bytes.$1, tags);
-    return (val, bytes.$2 + i);
+    val ??= CborBytesValue(bytes.$1);
+    return (tags.isEmpty ? val : CborTagValue(val, tags), bytes.$2 + i);
   }
 
   static (CborObject, int) _decodeMap(
       List<int> cborBytes, int offset, int info, List<int> tags) {
-    int index = offset + 1;
+    // s
+    // int index = offset + 1;
+
+    final decodeLen = _decodeLength(info, cborBytes);
+    int index = offset + decodeLen.$2;
+    final int length = decodeLen.$1;
     Map<CborObject, CborObject> objects = {};
-    for (int lI = 0; lI < info; lI++) {
+    for (int lI = 0; lI < length; lI++) {
       final decodeKey = _decode(cborBytes.sublist(index));
       index += decodeKey.$2;
       final decodeValue = _decode(cborBytes.sublist(index));
       objects[decodeKey.$1] = decodeValue.$1;
       index += decodeValue.$2;
     }
-    return (CborMapValue.fixedLength(objects), index);
+    final toMap = CborMapValue.fixedLength(objects);
+    return (tags.isEmpty ? toMap : CborTagValue(toMap, tags), index);
   }
 
   static (CborObject, int) _decodeDynamicMap(
@@ -232,15 +225,17 @@ class CborUtils {
       objects[decodeKey.$1] = decodeValue.$1;
       index += decodeValue.$2;
     }
-
-    return (CborMapValue.dynamicLength(objects), index + 1);
+    final toMap = CborMapValue.dynamicLength(objects);
+    return (tags.isEmpty ? toMap : CborTagValue(toMap, tags), index + 1);
   }
 
   static (CborObject, int) _decodeArray(
       List<int> cborBytes, int offset, int info, List<int> tags) {
-    int index = offset + 1;
+    final decodeLen = _decodeLength(info, cborBytes);
+    int index = offset + decodeLen.$2;
+    final int length = decodeLen.$1;
     List<CborObject> objects = [];
-    for (int lI = 0; lI < info; lI++) {
+    for (int lI = 0; lI < length; lI++) {
       final decodeData = _decode(cborBytes.sublist(index));
       objects.add(decodeData.$1);
       index += decodeData.$2;
@@ -251,12 +246,14 @@ class CborUtils {
     }
     if (tags.contains(CborTags.set)) {
       tags.removeWhere((element) => element == CborTags.set);
-      return (CborSetValue(objects.toSet(), tags), index);
+      final toObj = CborSetValue(objects.toSet());
+      return (tags.isEmpty ? toObj : CborTagValue(toObj, tags), index);
     }
-    return (CborListValue.fixedLength(objects, tags), index);
+    final toObj = CborListValue.fixedLength(objects);
+    return (tags.isEmpty ? toObj : CborTagValue(toObj, tags), index);
   }
 
-  static (CborListValue, int) _decodeDynamicArray(
+  static (CborObject, int) _decodeDynamicArray(
       List<int> cborBytes, int offset, int info, List<int> tags) {
     int index = offset + 1;
     List<CborObject> objects = [];
@@ -265,7 +262,8 @@ class CborUtils {
       objects.add(decodeData.$1);
       index += decodeData.$2;
     }
-    return (CborListValue.dynamicLength(objects), index + 1);
+    final toObj = CborListValue.dynamicLength(objects);
+    return (tags.isEmpty ? toObj : CborTagValue(toObj, tags), index + 1);
   }
 
   static CborObject _decodeCborBigfloatOrDecimal(
@@ -276,27 +274,40 @@ class CborUtils {
     }
     if (tags.contains(CborTags.decimalFrac)) {
       tags.removeWhere((element) => element == CborTags.decimalFrac);
-      return CborDecimalFracValue.fromCborNumeric(
-          objects[0] as CborNumeric, objects[1] as CborNumeric, tags);
+      final toObj = CborDecimalFracValue.fromCborNumeric(
+          objects[0] as CborNumeric, objects[1] as CborNumeric);
+      return tags.isEmpty ? toObj : CborTagValue(toObj, tags);
     }
     tags.removeWhere((element) => element == CborTags.bigFloat);
-    return CborBigFloatValue.fromCborNumeric(
-        objects[0] as CborNumeric, objects[1] as CborNumeric, tags);
+    final toObj = CborBigFloatValue.fromCborNumeric(
+        objects[0] as CborNumeric, objects[1] as CborNumeric);
+    return tags.isEmpty ? toObj : CborTagValue(toObj, tags);
   }
 
   static (CborObject, int) _parseSimpleValue(
       int i, int info, List<int> bytes, List<int> tags) {
     int offset = i + 1;
+    CborObject? obj;
     switch (info) {
       case SimpleTags.simpleFalse:
-        return (CborBoleanValue(false, tags), offset);
+        obj = CborBoleanValue(false);
+        break;
       case SimpleTags.simpleTrue:
-        return (CborBoleanValue(true, tags), offset);
+        obj = CborBoleanValue(true);
+        break;
       case SimpleTags.simpleNull:
-        return (CborNullValue(tags), offset);
+        obj = CborNullValue();
+        break;
       case SimpleTags.simpleUndefined:
-        return (CborUndefinedValue(tags), offset);
+        obj = CborUndefinedValue();
+        break;
       default:
+    }
+    if (obj != null) {
+      if (tags.isEmpty) {
+        return (obj, offset);
+      }
+      return (CborTagValue(obj, tags), offset);
     }
 
     double val;
@@ -323,9 +334,10 @@ class CborUtils {
     if (tags.contains(CborTags.dateEpoch)) {
       final dt = DateTime.fromMillisecondsSinceEpoch((val * 1000).round());
       tags.removeWhere((element) => element == CborTags.dateEpoch);
-      return (CborEpochFloatValue(dt, tags), offset);
+      obj = CborEpochFloatValue(dt);
     }
-    return (CborFloatValue(val, tags), offset);
+    obj ??= CborFloatValue(val);
+    return (tags.isEmpty ? obj : CborTagValue(obj, tags), offset);
   }
 
   static (CborObject, int) _parseInt(
@@ -339,17 +351,20 @@ class CborUtils {
         throw StateError("invalid int value");
       }
       if (val.isValidInt) {
-        numericValue =
-            CborInt64Value(mt == MajorTags.negInt ? ~val : val, tags);
+        numericValue = CborInt64Value(mt == MajorTags.negInt ? ~val : val);
       }
     }
-    numericValue ??= CborIntValue(mt == MajorTags.negInt ? ~val : val, tags);
+    numericValue ??= CborIntValue(mt == MajorTags.negInt ? ~val : val);
     if (tags.contains(CborTags.dateEpoch)) {
       final dt =
           DateTime.fromMillisecondsSinceEpoch(numericValue.toInt() * 1000);
       tags.removeWhere((element) => element == CborTags.dateEpoch);
-      return (CborEpochIntValue(dt, tags), index);
+      final toObj = CborEpochIntValue(dt);
+      return (tags.isEmpty ? toObj : CborTagValue(toObj, tags), index);
     }
-    return (numericValue, index);
+    return (
+      tags.isEmpty ? numericValue : CborTagValue(numericValue, tags),
+      index
+    );
   }
 }

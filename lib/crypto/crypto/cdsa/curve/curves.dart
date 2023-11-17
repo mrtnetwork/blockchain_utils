@@ -32,15 +32,12 @@ class Curves {
 
   /// Define a curve for Secp256k1 elliptic cryptography
   static final curveSecp256k1 = CurveFp(
-      p: BigInt.parse(
-          "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFFFFFC2F",
-          radix: 16),
-      a: BigInt.zero,
-      b: BigInt.from(7),
-      h: BigInt.one,
-      order: BigInt.parse(
-          "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEBAAEDCE6AF48A03BBFD25E8CD0364141",
-          radix: 16));
+    p: BigInt.parse(
+        "115792089237316195423570985008687907853269984665640564039457584007908834671663"),
+    a: BigInt.zero,
+    b: BigInt.from(7),
+    h: BigInt.one,
+  );
 
   /// Define the generator point for Secp256k1
   static final generatorSecp256k1 = ProjectiveECCPoint(
@@ -54,20 +51,18 @@ class Curves {
       ),
       z: BigInt.one,
       order: BigInt.parse(
-          "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEBAAEDCE6AF48A03BBFD25E8CD0364141",
-          radix: 16),
+          "115792089237316195423570985008687907852837564279074904382605163141518161494337"),
       generator: true);
 
   /// Define a curve for the 192-bit prime field
   static final curve192 = CurveFp(
-      p: BigInt.parse(
-          "6277101735386680763835789423207666416083908700390324961279"),
-      a: BigInt.from(-3),
-      b: BigInt.parse(
-          "2455155546008943817740293915197451784769108058161191238065"),
-      h: BigInt.one,
-      order: BigInt.parse(
-          "6277101735386680763835789423176059013767194773182842284081"));
+    p: BigInt.parse(
+        "6277101735386680763835789423207666416083908700390324961279"),
+    a: BigInt.from(-3),
+    b: BigInt.parse(
+        "2455155546008943817740293915197451784769108058161191238065"),
+    h: BigInt.one,
+  );
 
   /// Define the generator point for the 192-bit prime field
   static final generator192 = ProjectiveECCPoint(
@@ -83,15 +78,13 @@ class Curves {
 
   /// Define a curve for the 224-bit prime field
   static final curve224 = CurveFp(
-      p: BigInt.parse(
-          "26959946667150639794667015087019630673557916260026308143510066298881"),
-      a: BigInt.from(-3),
-      b: BigInt.parse(
-          "B4050A850C04B3ABF54132565044B0B7D7BFD8BA270B39432355FFB4",
-          radix: 16),
-      h: BigInt.one,
-      order: BigInt.parse(
-          "26959946667150639794667015087019625940457807714424391721682722368061"));
+    p: BigInt.parse(
+        "26959946667150639794667015087019630673557916260026308143510066298881"),
+    a: BigInt.from(-3),
+    b: BigInt.parse("B4050A850C04B3ABF54132565044B0B7D7BFD8BA270B39432355FFB4",
+        radix: 16),
+    h: BigInt.one,
+  );
 
   /// Define the generator point for the 224-bit prime field
   static final generator224 = ProjectiveECCPoint(
@@ -135,15 +128,14 @@ class Curves {
 
   /// Define a curve for the 256-bit prime field
   static final CurveFp curve256 = CurveFp(
-      p: BigInt.parse(
-          "115792089210356248762697446949407573530086143415290314195533631308867097853951"),
-      a: BigInt.from(-3),
-      b: BigInt.parse(
-          "5AC635D8AA3A93E7B3EBBD55769886BC651D06B0CC53B0F63BCE3C3E27D2604B",
-          radix: 16),
-      h: BigInt.one,
-      order: BigInt.parse(
-          "115792089210356248762697446949407573529996955224135760342422259061068512044369"));
+    p: BigInt.parse(
+        "115792089210356248762697446949407573530086143415290314195533631308867097853951"),
+    a: BigInt.from(-3),
+    b: BigInt.parse(
+        "5AC635D8AA3A93E7B3EBBD55769886BC651D06B0CC53B0F63BCE3C3E27D2604B",
+        radix: 16),
+    h: BigInt.one,
+  );
 
   /// Define the generator point for the 256-bit prime field
   static final ProjectiveECCPoint generator256 = ProjectiveECCPoint(

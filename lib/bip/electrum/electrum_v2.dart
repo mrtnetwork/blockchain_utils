@@ -116,7 +116,7 @@ class ElectrumV2Standard extends ElectrumV2Base {
   String getAddress(int changeIndex, int addressIndex) {
     return P2PKHAddrEncoder().encodeKey(
         getPublicKey(changeIndex, addressIndex).compressed,
-        {"net_ver": CoinsConf.bitcoinMainNet.getParam('p2pkh_net_ver')});
+        {"net_ver": CoinsConf.bitcoinMainNet.params.p2pkhNetVer!});
   }
 
   /// Derive a key for a specific change and address index.
@@ -154,7 +154,7 @@ class ElectrumV2Segwit extends ElectrumV2Base {
   String getAddress(int changeIndex, int addressIndex) {
     return P2WPKHAddrEncoder()
         .encodeKey(getPublicKey(changeIndex, addressIndex).compressed, {
-      "hrp": CoinsConf.bitcoinMainNet.getParam("p2wpkh_hrp"),
+      "hrp": CoinsConf.bitcoinMainNet.params.p2wpkhHrp!,
     });
   }
 

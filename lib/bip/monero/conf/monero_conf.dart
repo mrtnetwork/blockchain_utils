@@ -4,11 +4,11 @@ import 'package:blockchain_utils/bip/monero/conf/monero_coin_conf.dart';
 import 'package:blockchain_utils/bip/monero/conf/monero_coins.dart';
 
 /// A configuration class for Monero that defines the key network versions and
-/// maps each supported MoneroCoins to its corresponding BipCoinConf.
+/// maps each supported MoneroCoins to its corresponding CoinConfig.
 class MoneroConf {
   /// Retrieves the MoneroCoinConf for the given MoneroCoins. If the provided coin
   /// is not an instance of MoneroCoins, an error is thrown.
-  static MoneroCoinConf getCoin(BipCoins coin) {
+  static MoneroCoinConf getCoin(CryptoCoins coin) {
     if (coin is! MoneroCoins) {
       throw ArgumentError("Coin type is not an enumerative of MoneroCoins");
     }

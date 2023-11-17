@@ -102,7 +102,7 @@ class Bip38EcUtils {
     final ownerSalt =
         QuickCrypto.generateRandom(Bip38EcConst.ownerSaltWithLotSeqByteLen);
 
-    final lotSequence = IntUtils.toBytesLength(
+    final lotSequence = IntUtils.toBytes(
         (lotNum * (Bip38EcConst.seqNumMaxVal + 1)) + sequenceNum,
         length: 4);
     return List<int>.from([...ownerSalt, ...lotSequence]);
@@ -382,7 +382,8 @@ class Bip38EcKeysGenerator {
     if (bytesEqual(magic, Bip38EcConst.intPassMagicWithLotSeq)) {
       flagbyteInt = BitUtils.setBit(flagbyteInt, Bip38EcConst.flagBitLotSeq);
     }
-    return IntUtils.toBytesLength(flagbyteInt);
+    return IntUtils.toBytes(flagbyteInt,
+        length: IntUtils.bitlengthInBytes(flagbyteInt));
   }
 }
 

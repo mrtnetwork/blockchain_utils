@@ -6,7 +6,7 @@ import 'package:blockchain_utils/crypto/crypto/cdsa/point/ec_projective_point.da
 /// Represents an ECDSA (Elliptic Curve Digital Signature Algorithm) public key.
 class ECDSAPublicKey {
   final ProjectiveECCPoint generator;
-  final AbstractPoint point;
+  final ProjectiveECCPoint point;
 
   /// Creates an ECDSA public key with a generator and a point.
   ///
@@ -72,11 +72,18 @@ class ECDSAPublicKey {
     final c = BigintUtils.inverseMod(s, n);
     final u1 = (hash * c) % n;
     final u2 = (r * c) % n;
+
     final xy = G.mulAdd(u1, point, u2);
+
     final v = xy.x % n;
+
     return v == r;
   }
 
   @override
   int get hashCode => generator.hashCode ^ point.hashCode;
+
+  List<int> toBytes([EncodeType encodeType = EncodeType.comprossed]) {
+    return point.toBytes(encodeType);
+  }
 }

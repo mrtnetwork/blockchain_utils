@@ -76,7 +76,7 @@ class SegwitBech32Decoder extends Bech32DecoderBase {
   ///
   /// Returns a tuple containing the SegWit version (witness version) and the
   /// decoded witness program as a List<int>.
-  static (int, List<int>) decode(String hrp, String addr) {
+  static (int, List<int>) decode(String? hrp, String addr) {
     final decoded = Bech32DecoderBase.decodeBech32(
         addr,
         SegwitBech32Const.separator,
@@ -86,7 +86,7 @@ class SegwitBech32Decoder extends Bech32DecoderBase {
     final data = decoded.$2;
 
     // Check HRP
-    if (hrp != hrpGot) {
+    if (hrp != null && hrp != hrpGot) {
       throw FormatException(
           'Invalid format (HRP not valid, expected $hrp, got $hrpGot)');
     }

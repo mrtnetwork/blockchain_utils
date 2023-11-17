@@ -1,13 +1,38 @@
 name: blockchain_utils
 description: Comprehensive Crypto & Blockchain Toolkit, Pure Dart, Cross-Platform, Encoding, Cryptography, Addresses, Mnemonics, & More.
-version: 1.0.3
+version: 1.0.4
 homepage: "https://github.com/mrtnetwork/blockchain_utils"
 repository: "https://github.com/mrtnetwork/blockchain_utils"
-
+Author: mrhaydari.t@gmailcom
+topics:
+  - Cryptography
+  - Strobe
+  - Schnorrkel
+  - BIP39
+  - Substrate
+  - Monero
+  - SLIP10
+  - BIP38
+  - BIP44
+  - BIP49
+  - BIP84
+  - Base32
+  - SS58
+  - Base58
+  - Base58Check
+  - Bech32
+  - Hex
+  - Web3 Secret Storage Definition
+  - UUIDv4
+  - Blockchain Address Encoding/Decoding
+  - CBOR
+  - BIP86
+  - Electrum 
 environment:
   sdk: '>=3.1.1 <4.0.0'
 
 dependencies:
+
 
 
 

@@ -62,8 +62,9 @@ class Bip32Slip10EcdsaDerivator implements IBip32KeyDerivator {
     final privKeyInt = BigintUtils.fromBytes(privKeyBytes);
     final generator = EllipticCurveGetter.generatorFromType(type);
     final scalar = (ilInt + privKeyInt) % generator.order!;
-    final newPrivKeyBytes = BigintUtils.toBytesLen(scalar,
-        order: Endian.little, length: privKey.privKey.length);
+    final newPrivKeyBytes = BigintUtils.toBytes(scalar,
+        order: Endian.big, length: privKey.privKey.length);
+
     return (newPrivKeyBytes, irBytes);
   }
 

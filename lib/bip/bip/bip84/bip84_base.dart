@@ -2,7 +2,6 @@ import 'package:blockchain_utils/bip/bip/bip32/bip32_key_data.dart';
 import 'package:blockchain_utils/bip/bip/bip44/base/bip44_base.dart';
 import 'package:blockchain_utils/bip/bip/bip44/base/bip44_base_ex.dart';
 import 'package:blockchain_utils/bip/bip/conf/bip84/bip84_coins.dart';
-import 'package:blockchain_utils/bip/bip/conf/bip84/bip84_conf.dart';
 
 /// Constants related to BIP-84 (Bitcoin Improvement Proposal 84).
 class Bip84Const {
@@ -19,22 +18,22 @@ class Bip84 extends Bip44Base {
 
   /// Constructor for creating a [Bip84] object from a seed and coin.
   Bip84.fromSeed(List<int> seedBytes, Bip84Coins coinType)
-      : super.fromSeed(seedBytes, Bip84Conf.getCoin(coinType));
+      : super.fromSeed(seedBytes, coinType.conf);
 
   /// Constructor for creating a [Bip84] object from a extended key and coin.
   Bip84.fromExtendedKey(String extendedKey, Bip84Coins coinType)
-      : super.fromExtendedKey(extendedKey, Bip84Conf.getCoin(coinType));
+      : super.fromExtendedKey(extendedKey, coinType.conf);
 
   /// Constructor for creating a [Bip84] object from a private key and coin.
   Bip84.fromPrivateKey(List<int> privateKeyBytes, Bip84Coins coinType,
       {Bip32KeyData? keyData})
-      : super.fromPrivateKey(privateKeyBytes, Bip84Conf.getCoin(coinType),
+      : super.fromPrivateKey(privateKeyBytes, coinType.conf,
             keyData: keyData ?? Bip32KeyData());
 
   /// Constructor for creating a [Bip84] object from a public key and coin.
   Bip84.fromPublicKey(List<int> pubkeyBytes, Bip84Coins coinType,
       {Bip32KeyData? keyData})
-      : super.fromPublicKey(pubkeyBytes, Bip84Conf.getCoin(coinType),
+      : super.fromPublicKey(pubkeyBytes, coinType.conf,
             keyData: keyData ??
                 Bip32KeyData(depth: Bip32Depth(Bip44Levels.account.value)));
 

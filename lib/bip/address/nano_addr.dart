@@ -59,7 +59,7 @@ class NanoAddrDecoder implements BlockchainAddressDecoder {
   List<int> decodeAddr(String addr, [Map<String, dynamic> kwargs = const {}]) {
     /// Validate and remove the Nano address prefix.
     final addrNoPrefix = AddrDecUtils.validateAndRemovePrefix(
-        addr, CoinsConf.nano.getParam("addr_prefix"));
+        addr, CoinsConf.nano.params.addrPrefix!);
 
     /// Decode the Base32-encoded payload using the custom Nano Base32 alphabet and padding.
     final addrDecBytes = Base32Decoder.decode(
@@ -132,7 +132,7 @@ class NanoAddrEncoder implements BlockchainAddressEncoder {
       payloadBytes,
       NanoAddrConst.base32Alphabet,
     );
-    return CoinsConf.nano.getParam("addr_prefix") +
+    return CoinsConf.nano.params.addrPrefix! +
         b32Enc.substring(NanoAddrConst.payloadPadEnc.length);
   }
 }

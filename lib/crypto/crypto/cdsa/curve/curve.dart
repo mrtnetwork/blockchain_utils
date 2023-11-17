@@ -3,12 +3,7 @@ import 'package:blockchain_utils/numbers/bigint_utils.dart';
 /// This class represents a finite field elliptic curve defined over a prime field (Fp).
 class CurveFp extends Curve {
   /// Prime field modulus
-  CurveFp(
-      {required this.p,
-      required this.a,
-      required this.b,
-      required this.h,
-      required BigInt order});
+  CurveFp({required this.p, required this.a, required this.b, required this.h});
 
   /// Prime field modulus
   @override

@@ -277,24 +277,26 @@ class _AdaByronAddr {
     if (addrBytes is! CborListValue || addrBytes.value.length != 2) {
       throw const FormatException("Invalid address encoding");
     }
-    if (addrBytes.value[0] is! CborBytesValue ||
+    if (addrBytes.value[0] is! CborTagValue ||
         addrBytes.value[1] is! CborIntValue) {
       throw const FormatException("Invalid address encoding");
     }
-    final decodeCbor = addrBytes.value[0] as CborBytesValue;
+    final decodeCbor = addrBytes.value[0] as CborTagValue;
     if (decodeCbor.tags.isEmpty ||
-        decodeCbor.tags.first != AdaByronAddrConst.payloadTag) {
+        decodeCbor.tags.first != AdaByronAddrConst.payloadTag ||
+        decodeCbor.value is! CborBytesValue) {
       throw const FormatException("Invalid CBOR tag");
     }
+
     final crcTag = (addrBytes.value[1] as CborIntValue).value;
-    // // Check CRC
-    final crc32Got = Crc32.quickIntDigest(decodeCbor.value);
+    final List<int> payloadBytes = decodeCbor.value.value;
+    final crc32Got = Crc32.quickIntDigest(payloadBytes);
     if (crc32Got != crcTag) {
       throw FormatException("Invalid CRC (expected: $crcTag, got: $crc32Got)");
     }
 
     return _AdaByronAddr(
-        payload: _AdaByronAddrPayload.deserialize(decodeCbor.value));
+        payload: _AdaByronAddrPayload.deserialize(payloadBytes));
   }
 
   List<int> serialize() {

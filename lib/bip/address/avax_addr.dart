@@ -93,8 +93,8 @@ class AvaxPChainAddrDecoder implements BlockchainAddressDecoder {
   List<int> decodeAddr(String addr, [Map<String, dynamic> kwargs = const {}]) {
     return _AvaxAddrUtils.decodeAddr(
       addr,
-      CoinsConf.avaxPChain.getParam('addr_prefix'),
-      CoinsConf.avaxPChain.getParam('addr_hrp'),
+      CoinsConf.avaxPChain.params.addrPrefix!,
+      CoinsConf.avaxPChain.params.addrHrp!,
     );
   }
 }
@@ -113,11 +113,11 @@ class AvaxPChainAddrEncoder implements BlockchainAddressEncoder {
   /// Returns the encoded Avax P-Chain address as a String.
   @override
   String encodeKey(List<int> pubKey, [Map<String, dynamic> kwargs = const {}]) {
-    String prefix = CoinsConf.avaxPChain.getParam("addr_prefix");
+    String prefix = CoinsConf.avaxPChain.params.addrPrefix!;
     return prefix +
         AtomAddrEncoder().encodeKey(
           pubKey,
-          {"hrp": CoinsConf.avaxPChain.getParam("addr_hrp")},
+          {"hrp": CoinsConf.avaxPChain.params.addrHrp!},
         );
   }
 }
@@ -138,8 +138,8 @@ class AvaxXChainAddrDecoder implements BlockchainAddressDecoder {
   List<int> decodeAddr(String addr, [Map<String, dynamic> kwargs = const {}]) {
     return _AvaxAddrUtils.decodeAddr(
       addr,
-      CoinsConf.avaxXChain.getParam("addr_prefix"),
-      CoinsConf.avaxXChain.getParam("addr_hrp"),
+      CoinsConf.avaxXChain.params.addrPrefix!,
+      CoinsConf.avaxXChain.params.addrHrp!,
     );
   }
 }
@@ -158,11 +158,11 @@ class AvaxXChainAddrEncoder implements BlockchainAddressEncoder {
   /// Returns the encoded Avax X-Chain address as a String.
   @override
   String encodeKey(List<int> pubKey, [Map<String, dynamic> kwargs = const {}]) {
-    String prefix = CoinsConf.avaxXChain.getParam("addr_prefix");
+    String prefix = CoinsConf.avaxXChain.params.addrPrefix!;
     return prefix +
         AtomAddrEncoder().encodeKey(
           pubKey,
-          {"hrp": CoinsConf.avaxXChain.getParam("addr_hrp")},
+          {"hrp": CoinsConf.avaxXChain.params.addrHrp!},
         );
   }
 }

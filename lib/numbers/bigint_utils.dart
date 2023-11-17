@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 import 'package:blockchain_utils/binary/utils.dart';
+import 'package:blockchain_utils/numbers/int_utils.dart';
 
 class BigintUtils {
   /// Converts a BigInt 'num' into a List<int> of bytes with a specified 'order'.
@@ -23,7 +24,7 @@ class BigintUtils {
     return BytesUtils.fromHexString(hexStr);
   }
 
-  static int lengthInBytes(BigInt value) {
+  static int bitlengthInBytes(BigInt value) {
     return (value.bitLength + 7) ~/ 8;
   }
 
@@ -227,80 +228,64 @@ class BigintUtils {
     return (div, mod);
   }
 
-  /// Converts a BigInt to a list of bytes with the specified byte order and optional length.
+  /// Converts a BigInt to a list of bytes with the specified length and byte order.
   ///
-  /// This method converts a BigInt into a list of bytes, with the option to specify the
-  /// desired byte order (Endian.big or Endian.little) and an optional length.
+  /// The [toBytes] method takes a BigInt [val], a required [length] parameter
+  /// representing the desired length of the resulting byte list, and an optional [order]
+  /// parameter (defaulting to big endian) specifying the byte order.
   ///
-  /// Parameters:
-  /// - `val`: The BigInt to be converted into bytes.
-  /// - `length`: The optional length of the resulting byte list (in bytes).
-  /// - `order`: The byte order (Endian) used for the byte representation.
+  /// If the BigInt is zero, a list filled with zeros of the specified length is returned.
+  /// Otherwise, the method converts the BigInt to a byte list, considering the specified
+  /// length and byte order.
   ///
-  /// Returns:
-  /// A list of bytes representing the BigInt value with the specified byte order and length.
-  ///
-  /// Example:
+  /// Example Usage:
   /// ```dart
-  /// BigInt number = BigInt.parse('123456789');
-  /// List<int> bytes = toBytes(number, order: Endian.big, length: 4);
+  /// BigInt value = BigInt.from(16909060);
+  /// List<int> byteList = BigIntUtils.toBytes(value, length: 4); // Result: [0x01, 0x02, 0x03, 0x04]
   /// ```
   ///
-  /// This method is useful for encoding BigInt values into byte arrays with control over
-  /// byte order and length.
-  ///
+  /// Parameters:
+  /// - [val]: The BigInt to be converted to a byte list.
+  /// - [length]: The desired length of the resulting byte list.
+  /// - [order]: The byte order to arrange the bytes in the resulting list (default is big endian).
+  /// Returns: A list of bytes representing the BigInt with the specified length and byte order.
   static List<int> toBytes(BigInt val,
-      {int? length, Endian order = Endian.big}) {
-    if (length == null) {
-      String byteData =
-          val.toRadixString(16).padLeft((val.bitLength / 4).ceil(), '0');
-      if (byteData.length.isOdd) {
-        byteData = "0$byteData"; // Add a leading "0" if the length is odd
-      }
-      List<int> byteList = <int>[];
-      for (var i = 0; i < byteData.length; i += 2) {
-        byteList.add(int.parse(byteData.substring(i, i + 2), radix: 16));
-      }
-
-      return List<int>.from(byteList);
+      {required int length, Endian order = Endian.big}) {
+    BigInt _bigMaskEight = BigInt.from(0xff);
+    if (val == BigInt.zero) {
+      return List.filled(length, 0);
     }
-    if (length == 0) {
-      return [];
-    }
-
-    final byteData = val.toRadixString(16).padLeft(length * 2, '0');
-    List<int> byteList = <int>[];
-    for (var i = 0; i < byteData.length; i += 2) {
-      byteList.add(int.parse(byteData.substring(i, i + 2), radix: 16));
+    var byteList = List<int>.filled(length, 0);
+    for (var i = 0; i < length; i++) {
+      byteList[length - i - 1] = (val & _bigMaskEight).toInt();
+      val = val >> 8;
     }
 
     if (order == Endian.little) {
       byteList = byteList.reversed.toList();
     }
-    assert(byteList.length == length);
+
     return List<int>.from(byteList);
   }
 
-  /// Converts a list of bytes to a BigInt using the specified byte order.
+  /// Converts a list of bytes to a BigInt, considering the specified byte order.
   ///
-  /// This method takes a list of bytes and converts it into a BigInt value,
-  /// considering the specified byte order (Endian.big or Endian.little).
+  /// The [fromBytes] method takes a list of bytes and an optional [byteOrder] parameter
+  /// (defaulting to big endian). It interprets the byte sequence as a non-negative integer,
+  /// considering the byte order, and returns the corresponding BigInt representation.
   ///
-  /// Parameters:
-  /// - `bytes`: The list of bytes to convert to a BigInt.
-  /// - `byteOrder`: The byte order (Endian) used when interpreting the byte sequence.
+  /// If the byte order is set to little endian, the input bytes are reversed before conversion.
   ///
-  /// Returns:
-  /// A BigInt representing the value of the provided byte sequence.
-  ///
-  /// Example:
+  /// Example Usage:
   /// ```dart
-  /// List<int> byteList = [0x12, 0x34, 0x56];
-  /// BigInt result = fromBytes(byteList, byteOrder: Endian.big);
+  /// List<int> bytes = [0x01, 0x02, 0x03, 0x04];
+  /// BigInt result = BigIntUtils.fromBytes(bytes); // Result: 16909060
   /// ```
   ///
-  /// This method is useful for decoding byte arrays into BigInt values with the desired byte order.
-  ///
+  /// Parameters:
+  /// - [bytes]: The list of bytes to be converted to a BigInt.
+  /// - [byteOrder]: The byte order to interpret the byte sequence (default is big endian).
+  /// Returns: The BigInt representation of the input byte sequence.
   static BigInt fromBytes(List<int> bytes, {Endian byteOrder = Endian.big}) {
     if (byteOrder == Endian.little) {
       bytes = List<int>.from(bytes.reversed.toList());
@@ -314,54 +299,81 @@ class BigintUtils {
     return result;
   }
 
-  /// Converts a BigInt to a list of bytes with the specified length and endianness.
+  /// Converts a list of BigInt values to DER-encoded bytes.
   ///
-  /// This method takes a BigInt and converts it into a list of bytes, ensuring
-  /// that the resulting byte list has the specified length and byte order.
+  /// The [toDer] method takes a list of BigInt values [bigIntList] and encodes them in DER format.
+  /// It returns a list of bytes representing the DER-encoded sequence of integers.
   ///
-  /// Parameters:
-  /// - `dataInt`: The BigInt to convert to bytes.
-  /// - `length`: The desired length of the byte list (in bytes). If not provided, it will be calculated.
-  /// - `order`: The byte order (Endian) of the resulting byte list (Endian.big or Endian.little).
-  ///
-  /// Returns:
-  /// A list of bytes representing the BigInt value.
-  ///
-  /// Throws:
-  /// - [ArgumentError] if attempting to convert a negative BigInt to bytes.
-  ///
-  /// Example:
+  /// Example Usage:
   /// ```dart
-  /// BigInt value = BigInt.from(12345);
-  /// List<int> bytes = toBytesLen(value, length: 2, order: Endian.big);
+  /// List<BigInt> values = [BigInt.from(123), BigInt.from(456)];
+  /// List<int> derBytes = DEREncoding.toDer(values);
   /// ```
   ///
-  /// This method is useful for converting BigInt values to byte arrays with specified properties.
+  /// Parameters:
+  /// - [bigIntList]: The list of BigInt values to be DER-encoded.
+  /// Returns: A list of bytes representing the DER-encoded sequence of integers.
+  static List<int> toDer(List<BigInt> bigIntList) {
+    List<List<int>> encodedIntegers = bigIntList.map((bi) {
+      List<int> bytes = _encodeInteger(bi);
+      return bytes;
+    }).toList();
+
+    List<int> lengthBytes =
+        _encodeLength(encodedIntegers.fold<int>(0, (sum, e) => sum + e.length));
+    List<int> contentBytes =
+        encodedIntegers.fold<List<int>>([], (prev, e) => [...prev, ...e]);
+    _encodeLength(200);
+    var derBytes = [
+      0x30, ...lengthBytes,
+
+      /// DER SEQUENCE tag and length
+      ...contentBytes,
+    ];
+
+    return derBytes;
+  }
+
+  /// Encodes the length of DER content.
   ///
-  static List<int> toBytesLen(
-    BigInt dataInt, {
-    int? length,
-    Endian order = Endian.big,
-  }) {
-    // Calculate the number of bytes needed to represent the BigInt
-    length = length ?? (dataInt.bitLength + 7) ~/ 8;
-    // Ensure the BigInt is non-negative
-    if (dataInt.isNegative) {
-      throw ArgumentError('Cannot convert negative BigInt to bytes');
+  /// The [_encodeLength] method takes an integer [length] and returns a list of bytes
+  /// representing the DER-encoded length for the content.
+  ///
+  /// Parameters:
+  /// - [length]: The length of the DER content.
+  /// Returns: A list of bytes representing the DER-encoded length.
+  static List<int> _encodeLength(int length) {
+    if (length < 128) {
+      return [length];
+    } else {
+      final encodeLen =
+          IntUtils.toBytes(length, length: IntUtils.bitlengthInBytes(length));
+      return [0x80 | encodeLen.length, ...encodeLen];
     }
+  }
 
-    List<int> byteList = [];
+  /// Encodes a BigInt as a DER-encoded integer.
+  ///
+  /// The [_encodeInteger] method takes a BigInt [r] and returns a list of bytes
+  /// representing the DER-encoded integer.
+  ///
+  /// Parameters:
+  /// - [r]: The BigInt value to be DER-encoded.
+  /// Returns: A list of bytes representing the DER-encoded integer.
+  static List<int> _encodeInteger(BigInt r) {
+    /// can't support negative numbers yet
+    assert(r >= BigInt.zero);
 
-    for (int i = 0; i < length; i++) {
-      final byte = dataInt.toUnsigned(8).toInt();
-      byteList.add(byte);
-      dataInt >>= 8;
+    List<int> s = BigintUtils.toBytes(r, length: BigintUtils.orderLen(r));
+
+    int num = s[0];
+    if (num <= 0x7F) {
+      return [0x02, ..._encodeLength(s.length), ...s];
+    } else {
+      /// DER integers are two's complement, so if the first byte is
+      /// 0x80-0xff then we need an extra 0x00 byte to prevent it from
+      /// looking negative.
+      return [0x02, ..._encodeLength(s.length + 1), 0x00, ...s];
     }
-
-    if (order == Endian.little) {
-      byteList = byteList.reversed.toList();
-    }
-
-    return byteList;
   }
 }

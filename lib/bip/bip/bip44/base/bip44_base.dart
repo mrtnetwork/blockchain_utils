@@ -57,10 +57,10 @@ enum Bip44Levels {
 /// Abstract base class for BIP-44 hierarchical deterministic wallets.
 abstract class Bip44Base {
   late final Bip32Base bip32;
-  late final BipCoinConf coinConf;
+  late final CoinConfig coinConf;
 
   /// Constructor for creating a [Bip44Base] object from a seed and coin.
-  Bip44Base.fromSeed(List<int> seedBytes, BipCoinConf coin) {
+  Bip44Base.fromSeed(List<int> seedBytes, CoinConfig coin) {
     Bip32Base bip;
     switch (coin.type) {
       case EllipticCurveTypes.secp256k1:
@@ -86,7 +86,7 @@ abstract class Bip44Base {
   }
 
   /// Constructor for creating a [Bip44Base] object from a extended key and coin.
-  Bip44Base.fromExtendedKey(String extendedKey, BipCoinConf coin) {
+  Bip44Base.fromExtendedKey(String extendedKey, CoinConfig coin) {
     Bip32Base bip;
 
     switch (coin.type) {
@@ -114,7 +114,7 @@ abstract class Bip44Base {
   }
 
   /// Constructor for creating a [Bip44Base] object from a private key and coin.
-  Bip44Base.fromPrivateKey(List<int> privateKeyBytes, BipCoinConf coin,
+  Bip44Base.fromPrivateKey(List<int> privateKeyBytes, CoinConfig coin,
       {Bip32KeyData? keyData}) {
     Bip32Base bip;
     switch (coin.type) {
@@ -147,7 +147,7 @@ abstract class Bip44Base {
   }
 
   /// Constructor for creating a [Bip44Base] object from a public key and coin.
-  Bip44Base.fromPublicKey(List<int> pubkeyBytes, BipCoinConf coin,
+  Bip44Base.fromPublicKey(List<int> pubkeyBytes, CoinConfig coin,
       {Bip32KeyData? keyData}) {
     Bip32Base bip;
     switch (coin.type) {
@@ -180,8 +180,8 @@ abstract class Bip44Base {
   }
 
   /// Internal validation method for checking the depth of the BIP object.
-  static (Bip32Base, BipCoinConf) _validate(
-      Bip32Base bip32Obj, BipCoinConf coinConf) {
+  static (Bip32Base, CoinConfig) _validate(
+      Bip32Base bip32Obj, CoinConfig coinConf) {
     int depth = bip32Obj.depth.depth;
 
     if (bip32Obj.isPublicOnly) {
@@ -200,7 +200,7 @@ abstract class Bip44Base {
     return (bip32Obj, coinConf);
   }
 
-  /// Constructor for creating a [Bip44Base] object from a bip32 [Bip32Base] and coin [BipCoinConf].
+  /// Constructor for creating a [Bip44Base] object from a bip32 [Bip32Base] and coin [CoinConfig].
   Bip44Base(this.bip32, this.coinConf) {
     _validate(bip32, coinConf);
   }

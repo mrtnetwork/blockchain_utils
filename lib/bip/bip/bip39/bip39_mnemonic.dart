@@ -26,6 +26,14 @@ enum Bip39WordsNum {
 
   /// Create an instance of the Bip39WordsNum with the specified numeric value.
   const Bip39WordsNum(this.value);
+
+  static Bip39WordsNum? fromValue(int value) {
+    try {
+      return values.firstWhere((element) => element.value == value);
+    } on StateError {
+      return null;
+    }
+  }
 }
 
 /// Enumeration representing the supported languages for BIP-39 mnemonic phrases.

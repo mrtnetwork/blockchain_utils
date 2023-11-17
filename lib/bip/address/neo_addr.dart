@@ -51,7 +51,8 @@ class NeoAddrDecoder implements BlockchainAddressDecoder {
         addrDecBytes, QuickCrypto.hash160DigestSize + verBytes.length);
 
     /// Retrieve the version byte from the decoded address and compare it with the expected version.
-    List<int> verGot = IntUtils.toBytesLength(addrDecBytes[0]);
+    List<int> verGot = IntUtils.toBytes(addrDecBytes[0],
+        length: IntUtils.bitlengthInBytes(addrDecBytes[0]));
     if (!bytesEqual(verGot, verBytes)) {
       throw ArgumentError(
           "Invalid version (expected ${BytesUtils.toHexString(verBytes)}, "

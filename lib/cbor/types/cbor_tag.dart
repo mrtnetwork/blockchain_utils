@@ -5,11 +5,9 @@ import 'package:blockchain_utils/cbor/core/cbor.dart';
 /// A class representing a CBOR (Concise Binary Object Representation) tag value.
 class CborTagValue<T> implements CborObject {
   /// Constructor for creating a CborBoleanValue instance with the provided parameters.
-  /// It accepts the all encodable cbor value, and an list of CBOR tags.
+  /// It accepts the all encodable cbor value.
   CborTagValue(this.value, this.tags);
 
-  /// List of CBOR tags associated with the URL value.
-  @override
   final List<int> tags;
 
   /// The value as a T.

@@ -1,21 +1,59 @@
 import 'dart:typed_data';
 
 import 'package:blockchain_utils/binary/binary_operation.dart';
+import 'package:blockchain_utils/numbers/bigint_utils.dart';
 
 /// Utility class for integer-related operations and conversions.
 class IntUtils {
-  /// Converts an integer to a byte list with the specified length and endianness.
-  ///
-  /// If the [length] is not provided, it is calculated based on the bit length
-  /// of the integer, ensuring minimal byte usage. The [endianness] determines
-  /// whether the most significant bytes are at the beginning (big-endian) or end
-  /// (little-endian) of the resulting byte list.
-  static List<int> toBytesLength(int dataInt,
-      {int? length, Endian endianness = Endian.big}) {
-    length = length ?? ((dataInt > 0 ? dataInt.bitLength : 1) + 7) ~/ 8;
-    List<int> bytes = toBytes(dataInt, length: length, byteOrder: endianness);
+  static (int, int) decodeVarint(List<int> byteint) {
+    int ni = byteint[0];
+    int size = 0;
 
-    return bytes;
+    if (ni < 253) {
+      return (ni, 1);
+    }
+
+    if (ni == 253) {
+      size = 2;
+    } else if (ni == 254) {
+      size = 4;
+    } else {
+      size = 8;
+    }
+
+    BigInt value = BigintUtils.fromBytes(byteint.sublist(1, 1 + size),
+        byteOrder: Endian.little);
+    if (!value.isValidInt) {
+      throw StateError("cannot read variable-length in this ENV");
+    }
+    return (value.toInt(), size + 1);
+  }
+
+  static List<int> encodeVarint(int i) {
+    if (i < 253) {
+      return [i];
+    } else if (i < 0x10000) {
+      final bytes = List<int>.filled(3, 0);
+      bytes[0] = 0xfd;
+      writeUint16LE(i, bytes, 1);
+      return bytes;
+    } else if (i < 0x100000000) {
+      final bytes = List<int>.filled(5, 0);
+      bytes[0] = 0xfe;
+      writeUint32LE(i, bytes, 1);
+      return bytes;
+    } else {
+      throw ArgumentError("Integer is too large: $i");
+    }
+  }
+
+  static List<int> prependVarint(List<int> data) {
+    final varintBytes = encodeVarint(data.length);
+    return [...varintBytes, ...data];
+  }
+
+  static int bitlengthInBytes(int val) {
+    return ((val > 0 ? val.bitLength : 1) + 7) ~/ 8;
   }
 
   /// Converts an integer to a byte list with the specified length and endianness.
@@ -25,8 +63,8 @@ class IntUtils {
   /// whether the most significant bytes are at the beginning (big-endian) or end
   /// (little-endian) of the resulting byte list.
   static List<int> toBytes(int val,
-      {int? length, Endian byteOrder = Endian.big}) {
-    length ??= (val.bitLength / 8).ceil();
+      {required int length, Endian byteOrder = Endian.big}) {
+    // length ??= (val.bitLength / 8).ceil();
     List<int> byteList = List<int>.filled(length, 0);
 
     for (var i = 0; i < length; i++) {

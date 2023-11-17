@@ -22,14 +22,15 @@ class TrxAddrDecoder implements BlockchainAddressDecoder {
     } on Base58ChecksumError catch (e) {
       throw ArgumentError('Invalid base58 checksum', e.toString());
     }
-    final tronPrefix = CoinsConf.tron.getParam<List<int>>('addr_prefix')!;
+    final tronPrefix =
+        BytesUtils.fromHexString(CoinsConf.tron.params.addrPrefix!);
     AddrDecUtils.validateBytesLength(
         addrDec, (EthAddrConst.addrLen ~/ 2) + tronPrefix.length);
     final addrNoPrefix =
         AddrDecUtils.validateAndRemovePrefixBytes(addrDec, tronPrefix);
 
     return EthAddrDecoder().decodeAddr(
-        CoinsConf.ethereum.getParam('addr_prefix') +
+        CoinsConf.ethereum.params.addrPrefix! +
             BytesUtils.toHexString(addrNoPrefix),
         {
           "skip_chksum_enc": true,
@@ -55,7 +56,7 @@ class TrxAddrEncoder implements BlockchainAddressEncoder {
   String encodeKey(List<int> pubKey, [Map<String, dynamic> kwargs = const {}]) {
     String ethAddr = EthAddrEncoder().encodeKey(pubKey).substring(2);
     return Base58Encoder.checkEncode(List<int>.from([
-      ...CoinsConf.tron.getParam("addr_prefix")!,
+      ...BytesUtils.fromHexString(CoinsConf.tron.params.addrPrefix!),
       ...BytesUtils.fromHexString(ethAddr)
     ]));
   }

@@ -2,34 +2,27 @@ import 'package:blockchain_utils/binary/utils.dart';
 import 'package:blockchain_utils/cbor/utils/dynamic_bytes.dart';
 import 'package:blockchain_utils/cbor/core/tags.dart';
 import 'package:blockchain_utils/cbor/core/cbor.dart';
-import 'package:blockchain_utils/compare/compare.dart';
 
 /// A class representing a CBOR (Concise Binary Object Representation) Bigint value.
 class CborBigIntValue implements CborNumeric {
   /// Constructor for creating a CborBigIntValue instance with the provided parameters.
-  /// It accepts the bigint value, and an optional list of CBOR tags.
-  const CborBigIntValue(this.value, [this.tags = const []]);
+  /// It accepts the bigint value.
+  const CborBigIntValue(this.value);
 
   /// The value as a bigint.
   @override
   final BigInt value;
-
-  /// List of CBOR tags associated with the URL value.
-  @override
-  final List<int> tags;
 
   /// Encode the value into CBOR bytes
   @override
   List<int> encode() {
     final bytes = CborBytesTracker();
     BigInt v = value;
-    if (tags.isEmpty) {
-      if (v.isNegative) {
-        bytes.pushTags([CborTags.negBigInt]);
-        v = ~v;
-      } else {
-        bytes.pushTags([CborTags.posBigInt]);
-      }
+    if (v.isNegative) {
+      bytes.pushTags([CborTags.negBigInt]);
+      v = ~v;
+    } else {
+      bytes.pushTags([CborTags.posBigInt]);
     }
     final b = List<int>.filled((v.bitLength + 7) ~/ 8, 0);
 
@@ -71,7 +64,7 @@ class CborBigIntValue implements CborNumeric {
   operator ==(other) {
     if (other is! CborBigIntValue) return false;
 
-    return value == other.value && bytesEqual(tags, other.tags);
+    return value == other.value;
   }
 
   /// ovveride hash code

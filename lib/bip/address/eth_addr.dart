@@ -70,7 +70,7 @@ class EthAddrDecoder implements BlockchainAddressDecoder {
     final skipChecksum = kwargs["skip_chksum_enc"] ?? false;
 
     String addrNoPrefix = AddrDecUtils.validateAndRemovePrefix(
-        addr, CoinsConf.ethereum.getParam("addr_prefix"));
+        addr, CoinsConf.ethereum.params.addrPrefix!);
     AddrDecUtils.validateLength(addrNoPrefix, EthAddrConst.addrLen);
     if (!skipChecksum &&
         addrNoPrefix != _EthAddrUtils.checksumEncode(addrNoPrefix)) {
@@ -105,7 +105,7 @@ class EthAddrEncoder implements BlockchainAddressEncoder {
     if (skipChecksum) {
       return addr;
     }
-    return CoinsConf.ethereum.getParam("addr_prefix") +
+    return CoinsConf.ethereum.params.addrPrefix! +
         _EthAddrUtils.checksumEncode(addr);
   }
 }

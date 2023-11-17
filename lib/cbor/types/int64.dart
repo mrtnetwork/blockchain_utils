@@ -2,27 +2,21 @@ import 'package:blockchain_utils/binary/utils.dart';
 import 'package:blockchain_utils/cbor/utils/dynamic_bytes.dart';
 import 'package:blockchain_utils/cbor/core/tags.dart';
 import 'package:blockchain_utils/cbor/core/cbor.dart';
-import 'package:blockchain_utils/compare/compare.dart';
 
 /// A class representing a CBOR (Concise Binary Object Representation) int (64-byte) value.
 class CborInt64Value implements CborNumeric {
   /// Constructor for creating a CborInt64Value instance with the provided parameters.
-  /// It accepts the Bigint value and an optional list of CBOR tags.
-  const CborInt64Value(this.value, [this.tags = const []]);
+  /// It accepts the Bigint value.
+  const CborInt64Value(this.value);
 
   /// value as bigint
   @override
   final BigInt value;
 
-  /// List of CBOR tags associated with the URL value.
-  @override
-  final List<int> tags;
-
   /// Encode the value into CBOR bytes
   @override
   List<int> encode() {
     final bytes = CborBytesTracker();
-    bytes.pushTags(tags);
     bytes.pushMajorTag(
         value.isNegative ? MajorTags.negInt : MajorTags.posInt, NumBytes.eight);
     bytes.pushBigint(value.isNegative ? ~value : value);
@@ -57,7 +51,7 @@ class CborInt64Value implements CborNumeric {
   @override
   operator ==(other) {
     if (other is! CborInt64Value) return false;
-    return value == other.value && bytesEqual(tags, other.tags);
+    return value == other.value;
   }
 
   /// override hashcode

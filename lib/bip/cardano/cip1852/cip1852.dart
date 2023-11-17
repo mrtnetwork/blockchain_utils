@@ -56,7 +56,6 @@ import 'package:blockchain_utils/bip/bip/bip32/bip32_key_data.dart';
 import 'package:blockchain_utils/bip/bip/bip44/base/bip44_base.dart';
 import 'package:blockchain_utils/bip/bip/bip44/base/bip44_base_ex.dart';
 import 'package:blockchain_utils/bip/cardano/cip1852/conf/cip1852_coins.dart';
-import 'package:blockchain_utils/bip/cardano/cip1852/conf/cip1852_conf.dart';
 
 /// Constants related to CIP-1852 (Cardano Improvement Proposal 1852).
 class Cip1852Const {
@@ -76,22 +75,22 @@ class Cip1852 extends Bip44Base {
 
   /// Constructor for creating a [Cip1852] object from a seed and coin.
   Cip1852.fromSeed(List<int> seedBytes, Cip1852Coins coinType)
-      : super.fromSeed(seedBytes, Cip1852Conf.getCoin(coinType));
+      : super.fromSeed(seedBytes, coinType.conf);
 
   /// Constructor for creating a [Cip1852] object from a extended key and coin.
   Cip1852.fromExtendedKey(String extendedKey, Cip1852Coins coinType)
-      : super.fromExtendedKey(extendedKey, Cip1852Conf.getCoin(coinType));
+      : super.fromExtendedKey(extendedKey, coinType.conf);
 
   /// Constructor for creating a [Cip1852] object from a private key and coin.
   Cip1852.fromPrivateKey(List<int> privateKeyBytes, Cip1852Coins coinType,
       {Bip32KeyData? keyData})
-      : super.fromPrivateKey(privateKeyBytes, Cip1852Conf.getCoin(coinType),
+      : super.fromPrivateKey(privateKeyBytes, coinType.conf,
             keyData: keyData ?? Bip32KeyData());
 
   /// Constructor for creating a [Cip1852] object from a public key and coin.
   Cip1852.fromPublicKey(List<int> pubkeyBytes, Cip1852Coins coinType,
       {Bip32KeyData? keyData})
-      : super.fromPublicKey(pubkeyBytes, Cip1852Conf.getCoin(coinType),
+      : super.fromPublicKey(pubkeyBytes, coinType.conf,
             keyData: keyData ??
                 Bip32KeyData(depth: Bip32Depth(Bip44Levels.account.value)));
 

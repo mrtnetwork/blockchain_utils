@@ -6,7 +6,6 @@ import 'package:blockchain_utils/cbor/core/cbor.dart';
 import 'package:blockchain_utils/cbor/types/double.dart';
 import 'package:blockchain_utils/cbor/types/int.dart';
 import 'package:blockchain_utils/cbor/types/string.dart';
-import 'package:blockchain_utils/compare/compare.dart';
 
 /// A class representing a CBOR (Concise Binary Object Representation) DateTime value.
 abstract class _CborDate implements CborObject {
@@ -14,12 +13,7 @@ abstract class _CborDate implements CborObject {
   @override
   abstract final DateTime value;
 
-  /// List of CBOR tags associated with the URL value.
-  @override
-  abstract final List<int> tags;
-
   List<int> _getTags() {
-    if (tags.isNotEmpty) return tags;
     if (this is CborStringDateValue) {
       return [CborTags.dateString];
     }
@@ -54,8 +48,7 @@ abstract class _CborDate implements CborObject {
   operator ==(other) {
     if (other is! _CborDate) return false;
     if (other.runtimeType != runtimeType) return false;
-    return value.microsecondsSinceEpoch == other.value.microsecondsSinceEpoch &&
-        bytesEqual(tags, other.tags);
+    return value.microsecondsSinceEpoch == other.value.microsecondsSinceEpoch;
   }
 
   /// ovveride hash code
@@ -66,16 +59,12 @@ abstract class _CborDate implements CborObject {
 /// A class representing a CBOR (Concise Binary Object Representation) String DateTime value.
 class CborStringDateValue extends _CborDate {
   /// Constructor for creating a CborStringDateValue instance with the provided parameters.
-  /// It accepts DateTime value, and an optional list of CBOR tags.
-  CborStringDateValue(this.value, [this.tags = const []]);
+  /// It accepts DateTime value.
+  CborStringDateValue(this.value);
 
   /// The value as a DateTime.
   @override
   final DateTime value;
-
-  /// List of CBOR tags associated with the URL value.
-  @override
-  final List<int> tags;
 
   @override
   List<int> _encode() {
@@ -88,16 +77,12 @@ class CborStringDateValue extends _CborDate {
 /// A class representing a CBOR (Concise Binary Object Representation) epoch float DateTime value.
 class CborEpochFloatValue extends _CborDate {
   /// Constructor for creating a CborEpochFloatValue instance with the provided parameters.
-  /// It accepts DateTime value, and an optional list of CBOR tags.
-  CborEpochFloatValue(this.value, [this.tags = const []]);
+  /// It accepts DateTime value.
+  CborEpochFloatValue(this.value);
 
   /// The value as a DateTime.
   @override
   final DateTime value;
-
-  /// List of CBOR tags associated with the URL value.
-  @override
-  final List<int> tags;
 
   @override
   List<int> _encode() {
@@ -110,16 +95,13 @@ class CborEpochFloatValue extends _CborDate {
 /// A class representing a CBOR (Concise Binary Object Representation) epoch int DateTime value.
 class CborEpochIntValue extends _CborDate {
   /// Constructor for creating a CborEpochIntValue instance with the provided parameters.
-  /// It accepts DateTime value, and an optional list of CBOR tags.
-  CborEpochIntValue(this.value, [this.tags = const []]);
+  /// It accepts DateTime value.
+  CborEpochIntValue(this.value);
 
   /// The value as a DateTime.
   @override
   final DateTime value;
 
-  /// List of CBOR tags associated with the URL value.
-  @override
-  final List<int> tags;
   @override
   List<int> _encode() {
     final toSecound = value.millisecondsSinceEpoch / 1000;

@@ -1,13 +1,9 @@
-// ignore_for_file: depend_on_referenced_packages
-
 import 'dart:typed_data';
-
+import 'package:blockchain_utils/blockchain_utils.dart';
 import 'package:blockchain_utils/uuid/uuid.dart';
-
 import 'package:test/test.dart';
 
 void main() {
-  // Sample UUIDv4 buffers as lists of integers
   Uint8List buffer1 = Uint8List.fromList(
       [174, 91, 168, 91, 107, 15, 78, 26, 181, 132, 151, 91, 160, 7, 157, 152]);
   Uint8List buffer2 = Uint8List.fromList([

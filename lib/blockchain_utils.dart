@@ -58,3 +58,21 @@ export 'bip/substrate/substrate.dart';
 
 /// Export for Wallet Import Format (WIF) encoding and decoding utilities.
 export 'bip/wif/wif.dart';
+
+/// Exports utility functions related to string operations.
+export 'string/string.dart';
+
+/// Exports utility functions related to binary operations.
+export 'binary/utils.dart';
+
+/// Exports the BitcoinSigner class for Bitcoin signing operations.
+export 'signer/bitcoin_signer.dart';
+
+/// Exports modules related to ECC (Elliptic Curve Cryptography) in the context of BIP.
+export 'bip/ecc/bip_ecc.dart';
+
+/// Exports utility functions related to BigInt operations.
+export 'numbers/bigint_utils.dart';
+
+/// Exports utility functions related to integer operations.
+export 'numbers/int_utils.dart';

@@ -50,3 +50,5 @@ export 'bip32_key_ser.dart';
 
 /// Export a collection of BIP-32 key-related functions and structures.
 export 'bip32_keys.dart';
+
+export 'bip32_key_data.dart';

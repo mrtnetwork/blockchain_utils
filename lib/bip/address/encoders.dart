@@ -67,7 +67,7 @@ export 'p2pkh_addr.dart' show BchP2PKHAddrEncoder, P2PKHAddrEncoder;
 export 'p2sh_addr.dart' show BchP2SHAddrEncoder, P2SHAddrEncoder;
 
 /// Export statement for Taproot (P2TR) address encoder.
-export 'p2tr_addr.dart' show P2TRAddrEncoder;
+export 'p2tr_addr.dart' show P2TRAddrEncoder, P2TRUtils;
 
 /// Export statement for Segregated Witness (P2WPKH) address encoder.
 export 'p2wpkh_addr.dart' show P2WPKHAddrEncoder;

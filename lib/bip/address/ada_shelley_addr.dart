@@ -34,19 +34,17 @@ class AdaShelleyAddrHeaderTypes {
 class AdaShelleyAddrConst {
   /// Maps Ada Shelley network tags to their corresponding address human-readable prefixes.
   static final Map<AdaShelleyAddrNetworkTags, String> networkTagToAddrHrp = {
-    AdaShelleyAddrNetworkTags.mainnet:
-        CoinsConf.cardanoMainNet.getParam("addr_hrp"),
-    AdaShelleyAddrNetworkTags.testnet:
-        CoinsConf.cardanoTestNet.getParam("addr_hrp"),
+    AdaShelleyAddrNetworkTags.mainnet: CoinsConf.cardanoMainNet.params.addrHrp!,
+    AdaShelleyAddrNetworkTags.testnet: CoinsConf.cardanoTestNet.params.addrHrp!,
   };
 
   /// Maps Ada Shelley network tags to their corresponding staking (reward) address human-readable prefixes.
   static final Map<AdaShelleyAddrNetworkTags, String>
       networkTagToRewardAddrHrp = {
     AdaShelleyAddrNetworkTags.mainnet:
-        CoinsConf.cardanoMainNet.getParam("staking_addr_hrp"),
+        CoinsConf.cardanoMainNet.params.stakingAddrHrp!,
     AdaShelleyAddrNetworkTags.testnet:
-        CoinsConf.cardanoTestNet.getParam("staking_addr_hrp"),
+        CoinsConf.cardanoTestNet.params.stakingAddrHrp!,
   };
 }
 
@@ -68,7 +66,8 @@ class _AdaShelleyAddrUtils {
   /// Returns:
   /// A byte array representing the address prefix.
   static List<int> encodePrefix(int hdrType, int netTag) {
-    return IntUtils.toBytesLength((hdrType << 4) + netTag);
+    final hdr = (hdrType << 4) + netTag;
+    return IntUtils.toBytes(hdr, length: IntUtils.bitlengthInBytes(hdr));
   }
 }
 

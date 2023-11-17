@@ -2,27 +2,21 @@ import 'package:blockchain_utils/binary/utils.dart';
 import 'package:blockchain_utils/cbor/utils/dynamic_bytes.dart';
 import 'package:blockchain_utils/cbor/core/tags.dart';
 import 'package:blockchain_utils/cbor/core/cbor.dart';
-import 'package:blockchain_utils/compare/compare.dart';
 
 /// A class representing a CBOR (Concise Binary Object Representation) int value.
 class CborIntValue implements CborNumeric {
   /// Constructor for creating a CborDecimalFracValue instance with the provided parameters.
-  /// It accepts the int value and an optional list of CBOR tags.
-  const CborIntValue(this.value, [this.tags = const []]);
+  /// It accepts the int value.
+  const CborIntValue(this.value);
 
   /// value as int
   @override
   final int value;
 
-  /// List of CBOR tags associated with the URL value.
-  @override
-  final List<int> tags;
-
   /// Encode the value into CBOR bytes
   @override
   List<int> encode() {
     final bytes = CborBytesTracker();
-    bytes.pushTags(tags);
     bytes.pushInt(value.isNegative ? MajorTags.negInt : MajorTags.posInt,
         value.isNegative ? ~value : value);
     return bytes.toBytes();
@@ -56,7 +50,7 @@ class CborIntValue implements CborNumeric {
   @override
   operator ==(other) {
     if (other is! CborIntValue) return false;
-    return value == other.value && bytesEqual(tags, other.tags);
+    return value == other.value;
   }
 
   /// ovveride hash code

@@ -7,12 +7,8 @@ import 'package:blockchain_utils/compare/compare.dart';
 /// A class representing a CBOR (Concise Binary Object Representation) Set value.
 class CborSetValue<T> implements CborObject {
   /// Constructor for creating a CborSetValue instance with the provided parameters.
-  /// It accepts a set of all encodable cbor object and optional list of CBOR tags.
-  CborSetValue(this.value, [this.tags = const []]);
-
-  /// List of CBOR tags associated with the URL value.
-  @override
-  final List<int> tags;
+  /// It accepts a set of all encodable cbor object.
+  CborSetValue(this.value);
 
   /// value as set
   @override
@@ -22,7 +18,7 @@ class CborSetValue<T> implements CborObject {
   @override
   List<int> encode() {
     final bytes = CborBytesTracker();
-    bytes.pushTags(tags.isEmpty ? [CborTags.set] : tags);
+    bytes.pushTags([CborTags.set]);
     bytes.pushInt(MajorTags.array, value.length);
     for (final v in value) {
       final obj = CborObject.fromDynamic(v);
@@ -48,7 +44,7 @@ class CborSetValue<T> implements CborObject {
   @override
   operator ==(other) {
     if (other is! CborSetValue) return false;
-    return iterableIsEqual(value, other.value) && bytesEqual(tags, other.tags);
+    return iterableIsEqual(value, other.value);
   }
 
   /// override hashcode

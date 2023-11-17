@@ -31,7 +31,7 @@ class XrpAddrDecoder implements BlockchainAddressDecoder {
   List<int> decodeAddr(String addr, [Map<String, dynamic> kwargs = const {}]) {
     /// Delegate the decoding process to P2PKHAddrDecoder with specific parameters.
     return P2PKHAddrDecoder().decodeAddr(addr, {
-      "net_ver": CoinsConf.ripple.getParam("p2pkh_net_ver"),
+      "net_ver": CoinsConf.ripple.params.p2pkhNetVer!,
       "base58_alph": Base58Alphabets.ripple,
     });
   }
@@ -63,7 +63,7 @@ class XrpAddrEncoder implements BlockchainAddressEncoder {
   @override
   String encodeKey(List<int> pubKey, [Map<String, dynamic> kwargs = const {}]) {
     return P2PKHAddrEncoder().encodeKey(pubKey, {
-      "net_ver": CoinsConf.ripple.getParam("p2pkh_net_ver"),
+      "net_ver": CoinsConf.ripple.params.p2pkhNetVer!,
       "base58_alph": Base58Alphabets.ripple,
     });
   }

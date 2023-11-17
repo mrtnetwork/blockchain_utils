@@ -101,7 +101,7 @@ class Nist256p1PublicKey implements IPublicKey {
   /// public key point.
   @override
   ProjectiveECCPoint get point {
-    return publicKey.point as ProjectiveECCPoint;
+    return publicKey.point;
   }
 
   /// public key compressed bytes.

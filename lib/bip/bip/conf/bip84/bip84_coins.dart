@@ -52,11 +52,13 @@
   OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+import 'package:blockchain_utils/bip/bip/conf/bip84/bip84_conf.dart';
+import 'package:blockchain_utils/bip/bip/conf/bip_coin_conf.dart';
 import 'package:blockchain_utils/bip/bip/conf/bip_coins.dart';
 
 /// An enumeration of supported cryptocurrencies for BIP84. It includes both main
 /// networks and test networks of various cryptocurrencies.
-enum Bip84Coins implements BipCoins {
+enum Bip84Coins implements CryptoCoins {
   // Main nets
   bitcoin,
   litecoin,
@@ -68,4 +70,29 @@ enum Bip84Coins implements BipCoins {
   Bip84Coins get value {
     return this;
   }
+
+  String get coinName {
+    return this.name;
+  }
+
+  CoinConfig get conf => _coinToConf[this]!;
+
+  static Bip84Coins? fromName(String name) {
+    try {
+      return values.firstWhere((element) => element.name == name);
+    } on StateError {
+      return null;
+    }
+  }
+
+  /// A mapping that associates each BIP84Coin (enum) with its corresponding
+  /// CoinConfig configuration.
+  static final Map<Bip84Coins, CoinConfig> _coinToConf = {
+    Bip84Coins.bitcoin: Bip84Conf.bitcoinMainNet,
+    Bip84Coins.bitcoinTestnet: Bip84Conf.bitcoinTestNet,
+    Bip84Coins.litecoin: Bip84Conf.litecoinMainNet,
+    Bip84Coins.litecoinTestnet: Bip84Conf.litecoinTestNet,
+  };
+
+  BipProposal get proposal => BipProposal.bip84;
 }

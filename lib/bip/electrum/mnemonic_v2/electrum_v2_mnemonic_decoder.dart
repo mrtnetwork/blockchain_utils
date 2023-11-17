@@ -66,6 +66,7 @@ class ElectrumV2MnemonicDecoder extends MnemonicDecoderBase {
     }
 
     /// Convert the BigInt to bytes and return the result
-    return BigintUtils.toBytes(entropyInt);
+    return BigintUtils.toBytes(entropyInt,
+        length: BigintUtils.orderLen(entropyInt));
   }
 }

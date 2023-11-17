@@ -83,7 +83,7 @@ class Bip38Addr {
   /// - Returns: A List<int> representing the calculated address hash.
   static List<int> addressHash(List<int> pubKey, Bip38PubKeyModes pubKeyMode) {
     final address = P2PKHAddrEncoder().encodeKey(pubKey, {
-      "net_ver": CoinsConf.bitcoinMainNet.getParam("p2pkh_net_ver"),
+      "net_ver": CoinsConf.bitcoinMainNet.params.p2pkhNetVer!,
       "pub_key_mode": pubKeyMode
     });
     return QuickCrypto.sha256DoubleHash(StringUtils.encode(address))

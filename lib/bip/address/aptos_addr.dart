@@ -37,7 +37,7 @@ class AptosAddrDecoder implements BlockchainAddressDecoder {
   List<int> decodeAddr(String addr, [Map<String, dynamic> kwargs = const {}]) {
     String addrNoPrefix = AddrDecUtils.validateAndRemovePrefix(
       addr,
-      CoinsConf.aptos.getParam("addr_prefix"),
+      CoinsConf.aptos.params.addrPrefix!,
     );
     addrNoPrefix = addrNoPrefix.padLeft(QuickCrypto.sha3256DigestSize * 2, "0");
     AddrDecUtils.validateLength(
@@ -87,7 +87,7 @@ class AptosAddrEncoder implements BlockchainAddressEncoder {
     final keyHashBytes = QuickCrypto.sha3256Hash(payloadBytes);
 
     /// Concatenate the address prefix and the hash bytes, removing leading zeros
-    return CoinsConf.aptos.getParam("addr_prefix") +
+    return CoinsConf.aptos.params.addrPrefix! +
         BytesUtils.toHexString(keyHashBytes).replaceFirst(RegExp('^0+'), '');
   }
 }

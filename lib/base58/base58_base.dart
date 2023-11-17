@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-
 import 'package:blockchain_utils/base58/base58_ex.dart';
 import 'package:blockchain_utils/binary/utils.dart';
 import 'package:blockchain_utils/numbers/bigint_utils.dart';
@@ -126,7 +124,9 @@ class Base58Decoder {
       val += BigInt.from(charIndex) * BigInt.from(Base58Const.radix).pow(i);
     }
 
-    final bytes = BigintUtils.toBytesLen(val, order: Endian.little);
+    final bytes =
+        BigintUtils.toBytes(val, length: BigintUtils.bitlengthInBytes(val));
+
     // Remove leading zeros from bytes
     var padLen = 0;
     for (var i = 0; i < data.length; i++) {

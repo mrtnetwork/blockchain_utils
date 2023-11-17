@@ -30,14 +30,14 @@ class OneAddrDecoder implements BlockchainAddressDecoder {
     try {
       /// Decode the Harmony ONE address using the ONE configuration's HRP.
       addrDecBytes =
-          Bech32Decoder.decode(CoinsConf.harmonyOne.getParam('addr_hrp'), addr);
+          Bech32Decoder.decode(CoinsConf.harmonyOne.params.addrHrp!, addr);
     } on Bech32ChecksumError catch (e) {
       throw ArgumentError('Invalid bech32 checksum $e');
     }
 
     /// Decode the address again as an Ethereum address with a custom prefix.
     return EthAddrDecoder().decodeAddr(
-        CoinsConf.ethereum.getParam('addr_prefix') +
+        CoinsConf.ethereum.params.addrPrefix! +
             BytesUtils.toHexString(addrDecBytes),
         {"skip_chksum_enc": true});
   }
@@ -65,7 +65,7 @@ class OneAddrEncoder implements BlockchainAddressEncoder {
 
     /// Encode the Ethereum address as a Harmony ONE address using Bech32 encoding.
     return Bech32Encoder.encode(
-      CoinsConf.harmonyOne.getParam('addr_hrp'),
+      CoinsConf.harmonyOne.params.addrHrp!,
       BytesUtils.fromHexString(ethAddr),
     );
   }
