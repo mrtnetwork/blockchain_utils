@@ -82,7 +82,7 @@ class StringUtils {
   /// Converts a Dart object represented as a Map to a JSON-encoded string.
   ///
   /// The input [data] is a Map representing the Dart object.
-  static String fromJson(Map<String, dynamic> data) {
+  static String fromJson(Object data) {
     return jsonEncode(data);
   }
 
@@ -90,7 +90,7 @@ class StringUtils {
   ///
   /// The input [data] is a JSON-encoded string.
   /// Returns a Map representing the Dart object.
-  static Map<String, dynamic> toJson(String data) {
+  static dynamic toJson(String data) {
     return jsonDecode(data);
   }
 }

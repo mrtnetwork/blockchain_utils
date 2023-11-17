@@ -1,4 +1,4 @@
-## 1.0.5
+## 1.0.6
 - Resolved issue with CBOR decoding of lists
 - Removed "tags" property from CBOR
 - Introduced a new class for CBOR tags
