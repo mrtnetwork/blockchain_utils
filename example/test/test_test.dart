@@ -112,7 +112,6 @@ void _web() {
 void _test(String name, TestMethod process) {
   try {
     process();
-    print("pass $name");
   } catch (e) {
     throw Exception();
   }
