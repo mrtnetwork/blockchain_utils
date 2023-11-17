@@ -27,6 +27,7 @@ class CoinConf {
     return name;
   }
 }
+
 /// The [CoinParams] class defines parameters for a specific cryptocurrency coin.
 class CoinParams {
   const CoinParams({

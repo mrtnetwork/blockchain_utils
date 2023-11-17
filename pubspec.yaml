@@ -1,6 +1,6 @@
 name: blockchain_utils
 description: Comprehensive Crypto & Blockchain Toolkit, Pure Dart, Cross-Platform, Encoding, Cryptography, Addresses, Mnemonics, & More.
-version: 1.0.4
+version: 1.0.5
 homepage: "https://github.com/mrtnetwork/blockchain_utils"
 repository: "https://github.com/mrtnetwork/blockchain_utils"
 Author: mrhaydari.t@gmail.com
