@@ -5,11 +5,11 @@ homepage: "https://github.com/mrtnetwork/blockchain_utils"
 repository: "https://github.com/mrtnetwork/blockchain_utils"
 Author: mrhaydari.t@gmail.com
 topics:
-  - cryptography-schnorrkel-strobe
-  - substrate-monero-electrum
-  - bip32-bip39-bip44-bip49-bip84
-  - cbor-base32-ss58-base58-bech32
+  - cryptography
+  - schnorrkel
+  - substrate
   - blockchain
+  - bip
   
 environment:
   sdk: '>=3.1.1 <4.0.0'
