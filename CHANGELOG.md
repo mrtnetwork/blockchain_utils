@@ -1,4 +1,4 @@
-## 1.2.0
+## 1.1.0
 - Implementing custom exception classes for more effective error handling.
 
 ## 1.0.6
