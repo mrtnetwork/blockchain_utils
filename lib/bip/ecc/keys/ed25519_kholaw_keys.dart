@@ -1,3 +1,4 @@
+import 'package:blockchain_utils/binary/utils.dart';
 import 'package:blockchain_utils/bip/ecc/keys/i_keys.dart';
 import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
 import 'package:blockchain_utils/bip/ecc/keys/ed25519_keys.dart';
@@ -5,6 +6,7 @@ import 'package:blockchain_utils/crypto/crypto/cdsa/curve/curves.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/eddsa/privatekey.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/eddsa/publickey.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/point/edwards.dart';
+import 'package:blockchain_utils/exception/exception.dart';
 
 /// Constants related to Ed25519-Kholaw keys, specifically the private key length in bytes.
 class Ed25519KholawKeysConst {
@@ -81,6 +83,10 @@ class Ed25519KholawPublicKey implements IPublicKey {
   List<int> get uncompressed {
     return compressed;
   }
+
+  String toHex() {
+    return BytesUtils.toHexString(compressed);
+  }
 }
 
 /// A class representing an Ed25519-Kholaw private key that implements the IPrivateKey interface.
@@ -97,7 +103,7 @@ class Ed25519KholawPrivateKey implements IPrivateKey {
   /// and stores any extended key data.
   factory Ed25519KholawPrivateKey.fromBytes(List<int> keyBytes) {
     if (keyBytes.length != Ed25519KholawKeysConst.privKeyByteLen) {
-      throw ArgumentError("invalid private key length");
+      throw ArgumentException("invalid private key length");
     }
     final edwardGenerator = Curves.generatorED25519;
     final eddsaPrivateKey = EDDSAPrivateKey.fromKhalow(
@@ -139,5 +145,9 @@ class Ed25519KholawPrivateKey implements IPrivateKey {
   @override
   List<int> get raw {
     return List<int>.from([...privateKey.privateKey, ..._extendKey]);
+  }
+
+  String toHex() {
+    return BytesUtils.toHexString(raw);
   }
 }

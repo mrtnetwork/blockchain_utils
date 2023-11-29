@@ -8,6 +8,7 @@ import 'package:blockchain_utils/cbor/types/int64.dart';
 import 'package:blockchain_utils/cbor/types/list.dart';
 import 'package:blockchain_utils/cbor/types/map.dart';
 import 'package:blockchain_utils/cbor/types/string.dart';
+import 'package:blockchain_utils/exception/exception.dart';
 
 /// An abstract class representing a CBOR (Concise Binary Object Representation) object.
 /// CBOR objects can hold various data types and optional tags, providing a flexible way
@@ -75,7 +76,7 @@ abstract class CborNumeric implements CborObject {
     } else if (val is CborInt64Value) {
       return val.value;
     }
-    throw ArgumentError("invalid cbornumeric");
+    throw ArgumentException("invalid cbornumeric");
   }
 
   /// Convert the CborNumeric object to an integer.

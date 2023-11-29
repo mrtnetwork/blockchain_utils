@@ -1,32 +1,26 @@
 import 'package:blockchain_utils/bip/address/addr_key_validator.dart';
 import 'package:blockchain_utils/bip/address/decoder.dart';
 import 'package:blockchain_utils/bip/address/encoder.dart';
-import 'package:blockchain_utils/bip/ecc/keys/i_keys.dart';
-import 'package:blockchain_utils/ss58/ss58_base.dart';
-import 'package:blockchain_utils/ss58/ss58_ex.dart';
+import 'package:blockchain_utils/blockchain_utils.dart';
 
 /// Utility class for decoding and working with Substrate addresses.
 class _SubstrateAddrUtils {
   static List<int> decodeAddr(
       String addr, int ss58Format, IPublicKey? pubKeyCls) {
-    try {
-      // Decode from SS58 (SS58Decoder.Decode also validates the length)
-      final decodedResult = SS58Decoder.decode(addr);
-      final ss58FormatGot = decodedResult.$1;
-      final addrDecBytes = decodedResult.$2;
+    // Decode from SS58 (SS58Decoder.Decode also validates the length)
+    final decodedResult = SS58Decoder.decode(addr);
+    final ss58FormatGot = decodedResult.$1;
+    final addrDecBytes = decodedResult.$2;
 
-      if (ss58Format != ss58FormatGot) {
-        throw FormatException(
-            "Invalid SS58 format (expected $ss58Format, got $ss58FormatGot)");
-      }
-
-      // Validate public key
-      // AddrDecUtils.validatePubKey(addrDecBytes, pubKeyCls);
-
-      return addrDecBytes;
-    } on SS58ChecksumError catch (e) {
-      throw FormatException("Invalid SS58 encoding", e);
+    if (ss58Format != ss58FormatGot) {
+      throw ArgumentException(
+          "Invalid SS58 format (expected $ss58Format, got $ss58FormatGot)");
     }
+
+    // Validate public key
+    // AddrDecUtils.validatePubKey(addrDecBytes, pubKeyCls);
+
+    return addrDecBytes;
   }
 }
 

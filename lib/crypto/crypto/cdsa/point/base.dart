@@ -5,6 +5,7 @@ import 'package:blockchain_utils/numbers/bigint_utils.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/curve/curve.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/point/edwards.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/utils/utils.dart';
+import 'package:blockchain_utils/exception/exception.dart';
 
 /// An enumeration representing different types of encoding for elliptic curve points.
 enum EncodeType { comprossed, hybrid, raw, uncompressed }
@@ -139,12 +140,12 @@ abstract class AbstractPoint {
         } else if (prefix == 0x06 || prefix == 0x07) {
           encodeType = EncodeType.hybrid;
         } else {
-          throw ArgumentError("invalid key length");
+          throw ArgumentException("invalid key length");
         }
       } else if (keyLen == rawEncodingLength ~/ 2 + 1) {
         encodeType = EncodeType.comprossed;
       } else {
-        throw ArgumentError("invalid key length");
+        throw ArgumentException("invalid key length");
       }
     }
     curve as CurveFp;
@@ -167,7 +168,7 @@ abstract class AbstractPoint {
     final expLen = (p.bitLength + 1 + 7) ~/ 8;
 
     if (data.length != expLen) {
-      throw ArgumentError("AffinePointt length doesn't match the curve.");
+      throw ArgumentException("AffinePointt length doesn't match the curve.");
     }
 
     final x0 = (data[expLen - 1] & 0x80) >> 7;
@@ -209,7 +210,7 @@ abstract class AbstractPoint {
   /// Creates an elliptic curve point from a compressed byte encoding.
   static (BigInt, BigInt) _fromCompressed(List<int> data, CurveFp curve) {
     if (data[0] != 0x02 && data[0] != 0x03) {
-      throw ArgumentError('Malformed compressed point encoding');
+      throw ArgumentException('Malformed compressed point encoding');
     }
 
     final isEven = data[0] == 0x02;
@@ -240,7 +241,7 @@ abstract class AbstractPoint {
     // Validate if it's self-consistent if we're asked to do that
     if (((prefix == BigInt.one && data[0] != 0x07) ||
         (prefix == BigInt.zero && data[0] != 0x06))) {
-      throw ArgumentError('Inconsistent hybrid point encoding');
+      throw ArgumentException('Inconsistent hybrid point encoding');
     }
 
     return (x, y);

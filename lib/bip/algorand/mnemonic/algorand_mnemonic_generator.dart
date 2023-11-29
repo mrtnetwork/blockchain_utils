@@ -2,6 +2,7 @@ import 'package:blockchain_utils/bip/algorand/mnemonic/algorand_entropy_generato
 import 'package:blockchain_utils/bip/algorand/mnemonic/algorand_mnemonic.dart';
 import 'package:blockchain_utils/bip/algorand/mnemonic/algorand_mnemonic_encoder.dart';
 import 'package:blockchain_utils/bip/mnemonic/mnemonic.dart';
+import 'package:blockchain_utils/exception/exception.dart';
 
 /// Constants related to Algorand mnemonic generation.
 ///
@@ -48,7 +49,8 @@ class AlgorandMnemonicGenerator {
   /// It ensures that the number of words is valid and consistent with the entropy bit length.
   Mnemonic fromWordsNumber(dynamic wordsNum) {
     if (!AlgorandMnemonicConst.mnemonicWordNum.contains(wordsNum)) {
-      throw ArgumentError('Words number for mnemonic ($wordsNum) is not valid');
+      throw ArgumentException(
+          'Words number for mnemonic ($wordsNum) is not valid');
     }
 
     if (wordsNum is int) {

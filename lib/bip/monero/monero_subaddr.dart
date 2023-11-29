@@ -1,4 +1,5 @@
 import 'dart:typed_data';
+import 'package:blockchain_utils/exception/exception.dart';
 
 import 'package:blockchain_utils/numbers/int_utils.dart';
 import 'package:blockchain_utils/numbers/bigint_utils.dart';
@@ -49,15 +50,15 @@ class MoneroSubaddress {
   /// Compute the subaddress keys based on minor and major indexes.
   ///
   /// This method calculates Monero subaddress keys using the provided [minorIndex] and [majorIdx].
-  /// If the indexes are out of valid range, it throws an `ArgumentError`.
+  /// If the indexes are out of valid range, it throws an `ArgumentException`.
   /// It returns a tuple of subaddress public spend key and subaddress public view key.
   (MoneroPublicKey, MoneroPublicKey) computeKeys(
       int minorIndex, int majorIndex) {
     if (minorIndex < 0 || minorIndex > MoneroSubaddressConst.subaddrMaxIdx) {
-      throw ArgumentError('Invalid minor index ($minorIndex)');
+      throw ArgumentException('Invalid minor index ($minorIndex)');
     }
     if (majorIndex < 0 || majorIndex > MoneroSubaddressConst.subaddrMaxIdx) {
-      throw ArgumentError('Invalid major index ($majorIndex)');
+      throw ArgumentException('Invalid major index ($majorIndex)');
     }
 
     if (minorIndex == 0 && majorIndex == 0) {

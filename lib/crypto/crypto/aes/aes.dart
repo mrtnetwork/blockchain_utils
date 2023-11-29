@@ -1,5 +1,6 @@
 import 'package:blockchain_utils/crypto/crypto/blockcipher/blockcipher.dart';
 import 'package:blockchain_utils/binary/binary_operation.dart';
+import 'package:blockchain_utils/exception/exception.dart';
 import 'aes_lib.dart' as aes_lib;
 
 /// Represents an Advanced Encryption Standard (AES) block cipher.
@@ -62,7 +63,7 @@ class AES implements BlockCipher {
   ///   by securely wiping the decryption key schedule.
   ///
   /// Throws:
-  /// - `ArgumentError` if the provided key size is invalid or if the instance was previously
+  /// - `ArgumentException` if the provided key size is invalid or if the instance was previously
   ///   initialized with a different key size.
   ///
   /// Returns:
@@ -70,10 +71,10 @@ class AES implements BlockCipher {
   @override
   AES setKey(List<int> key, [bool noDecryption = false]) {
     if (key.length != 16 && key.length != 24 && key.length != 32) {
-      throw ArgumentError("AES: wrong key size (must be 16, 24, or 32)");
+      throw ArgumentException("AES: wrong key size (must be 16, 24, or 32)");
     }
     if (_keyLen != key.length) {
-      throw ArgumentError("AES: initialized with different key size");
+      throw ArgumentException("AES: initialized with different key size");
     }
 
     _encKey ??= List<int>.filled(key.length + 28, 0, growable: false);
@@ -120,7 +121,7 @@ class AES implements BlockCipher {
   ///   a new block is created.
   ///
   /// Throws:
-  /// - `ArgumentError` if the source or destination block size is not 16 bytes.
+  /// - `ArgumentException` if the source or destination block size is not 16 bytes.
   /// - `StateError` if the encryption key is not available, indicating that the instance is not properly initialized.
   ///
   /// Returns:
@@ -129,14 +130,14 @@ class AES implements BlockCipher {
   List<int> encryptBlock(List<int> src, [List<int>? dst]) {
     final out = dst ?? List<int>.filled(blockSize, 0);
     if (src.length != blockSize) {
-      throw ArgumentError("AES: invalid source block size");
+      throw ArgumentException("AES: invalid source block size");
     }
     if (out.length != blockSize) {
-      throw ArgumentError("AES: invalid destination block size");
+      throw ArgumentException("AES: invalid destination block size");
     }
 
     if (_encKey == null) {
-      throw StateError("AES: encryption key is not available");
+      throw MessageException("AES: encryption key is not available");
     }
     _lib.encryptBlock(_encKey!, src, out);
 
@@ -153,7 +154,7 @@ class AES implements BlockCipher {
   ///   a new block is created.
   ///
   /// Throws:
-  /// - `ArgumentError` if the source or destination block size is not 16 bytes.
+  /// - `ArgumentException` if the source or destination block size is not 16 bytes.
   /// - `StateError` if the instance was created with the `noDecryption` option, indicating that
   ///   decryption is not supported by this instance.
   ///
@@ -163,14 +164,14 @@ class AES implements BlockCipher {
   List<int> decryptBlock(List<int> src, [List<int>? dst]) {
     final out = dst ?? List<int>.filled(blockSize, 0);
     if (src.length != blockSize) {
-      throw ArgumentError("AES: invaiid source block size");
+      throw ArgumentException("AES: invaiid source block size");
     }
     if (out.length != blockSize) {
-      throw ArgumentError("AES: invalid destination block size");
+      throw ArgumentException("AES: invalid destination block size");
     }
 
     if (_decKey == null) {
-      throw StateError(
+      throw MessageException(
           "AES: decrypting with an instance created with noDecryption option");
     } else {
       _lib.decryptBlock(_decKey!, src, out);

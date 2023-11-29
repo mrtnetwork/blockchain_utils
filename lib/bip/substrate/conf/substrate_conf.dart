@@ -1,6 +1,7 @@
 import 'package:blockchain_utils/bip/bip/conf/bip_coins.dart';
 import 'package:blockchain_utils/bip/coin_conf/coins_conf.dart';
 import 'package:blockchain_utils/bip/substrate/conf/substrate_coins.dart';
+import 'package:blockchain_utils/exception/exception.dart';
 
 import 'substrate_coin_conf.dart';
 
@@ -11,7 +12,8 @@ class SubstrateConf {
   /// is not an instance of SubstrateCoins, an error is thrown.
   static SubstrateCoinConf getCoin(CryptoCoins coin) {
     if (coin is! SubstrateCoins) {
-      throw ArgumentError("Coin type is not an enumerative of SubstrateCoins");
+      throw ArgumentException(
+          "Coin type is not an enumerative of SubstrateCoins");
     }
     return coinToConf[coin.value]!;
   }

@@ -1,11 +1,9 @@
 import 'dart:typed_data';
 
-import 'package:blockchain_utils/bip/monero/mnemonic/monero_entropy_generator.dart';
-import 'package:blockchain_utils/bip/monero/mnemonic/monero_mnemonic.dart';
-import 'package:blockchain_utils/bip/monero/mnemonic/monero_mnemonic_utils.dart';
 import 'package:blockchain_utils/bip/mnemonic/mnemonic.dart';
 import 'package:blockchain_utils/bip/mnemonic/mnemonic_encoder_base.dart';
 import 'package:blockchain_utils/bip/mnemonic/mnemonic_utils.dart';
+import 'package:blockchain_utils/blockchain_utils.dart';
 
 /// An abstract base class for encoding entropy into Monero mnemonics.
 ///
@@ -35,7 +33,8 @@ abstract class MoneroMnemonicEncoderBase extends MnemonicEncoderBase {
   List<String> _encodeToList(List<int> entropyBytes) {
     int entropyByteLen = entropyBytes.length;
     if (!MoneroEntropyGenerator.isValidEntropyByteLen(entropyByteLen)) {
-      throw Exception('Entropy byte length ($entropyByteLen) is not valid');
+      throw ArgumentException(
+          'Entropy byte length ($entropyByteLen) is not valid');
     }
     List<String> mnemonic = [];
     for (int i = 0; i < entropyByteLen ~/ 4; i++) {

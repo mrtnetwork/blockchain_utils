@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:blockchain_utils/binary/binary_operation.dart';
+import 'package:blockchain_utils/exception/exception.dart';
 import 'package:blockchain_utils/numbers/bigint_utils.dart';
 
 /// Utility class for integer-related operations and conversions.
@@ -24,7 +25,7 @@ class IntUtils {
     BigInt value = BigintUtils.fromBytes(byteint.sublist(1, 1 + size),
         byteOrder: Endian.little);
     if (!value.isValidInt) {
-      throw StateError("cannot read variable-length in this ENV");
+      throw MessageException("cannot read variable-length in this ENV");
     }
     return (value.toInt(), size + 1);
   }
@@ -43,7 +44,7 @@ class IntUtils {
       writeUint32LE(i, bytes, 1);
       return bytes;
     } else {
-      throw ArgumentError("Integer is too large: $i");
+      throw ArgumentException("Integer is too large: $i");
     }
   }
 

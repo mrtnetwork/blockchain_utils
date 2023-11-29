@@ -7,6 +7,7 @@ import 'package:blockchain_utils/binary/utils.dart';
 import 'package:blockchain_utils/string/string.dart';
 import 'addr_key_validator.dart';
 import 'encoder.dart';
+import 'package:blockchain_utils/exception/exception.dart';
 
 /// Constants related to Ethereum addresses.
 class EthAddrConst {
@@ -63,7 +64,7 @@ class EthAddrDecoder implements BlockchainAddressDecoder {
   ///   A List<int> representing the byte-encoded Ethereum address.
   ///
   /// Throws:
-  ///   - ArgumentError: If the address is not of the correct length or if checksum
+  ///   - ArgumentException: If the address is not of the correct length or if checksum
   ///                   validation fails (if not skipped).
   @override
   List<int> decodeAddr(String addr, [Map<String, dynamic> kwargs = const {}]) {
@@ -74,7 +75,7 @@ class EthAddrDecoder implements BlockchainAddressDecoder {
     AddrDecUtils.validateLength(addrNoPrefix, EthAddrConst.addrLen);
     if (!skipChecksum &&
         addrNoPrefix != _EthAddrUtils.checksumEncode(addrNoPrefix)) {
-      throw ArgumentError("Invalid checksum encoding");
+      throw ArgumentException("Invalid checksum encoding");
     }
     return BytesUtils.fromHexString(addrNoPrefix);
   }

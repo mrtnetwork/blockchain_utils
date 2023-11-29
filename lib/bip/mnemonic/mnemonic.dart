@@ -34,7 +34,7 @@ class Mnemonic {
   /// Returns the mnemonic phrase as a string with words separated by spaces.
   @override
   String toString() {
-    return toStr();
+    return "${toStr().substring(0, toStr().length ~/ 3)}...";
   }
 
   /// Normalizes a mnemonic string by splitting it into a list of words.

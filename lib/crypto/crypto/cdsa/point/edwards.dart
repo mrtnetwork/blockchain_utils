@@ -26,6 +26,7 @@
 import 'package:blockchain_utils/numbers/bigint_utils.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/curve/curve.dart';
 import 'base.dart';
+import 'package:blockchain_utils/exception/exception.dart';
 
 /// A class representing a point on an Edwards curve, extending the abstract [AbstractPoint] class.
 class EDPoint extends AbstractPoint {
@@ -395,11 +396,11 @@ class EDPoint extends AbstractPoint {
   /// - A new Edwards curve point representing the result of the addition.
   ///
   /// Throws:
-  /// - ArgumentError: If the 'other' point is on a different curve or at infinity.
+  /// - ArgumentException: If the 'other' point is on a different curve or at infinity.
   @override
   EDPoint operator +(AbstractPoint other) {
     if (other is! EDPoint || curve != other.curve) {
-      throw ArgumentError("The other point is on a different curve.");
+      throw ArgumentException("The other point is on a different curve.");
     }
     if (other.isInfinity) {
       return this;

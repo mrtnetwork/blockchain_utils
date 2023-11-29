@@ -1,4 +1,5 @@
 import 'package:blockchain_utils/binary/binary_operation.dart';
+import 'package:blockchain_utils/exception/exception.dart';
 
 class ChaCha20 {
   static void _quarterround(List<int> output, int a, int b, int c, int d) {
@@ -95,7 +96,7 @@ class ChaCha20 {
       len--;
     }
     if (carry > 0) {
-      throw Exception("ChaCha: counter overflow");
+      throw MessageException("ChaCha: counter overflow");
     }
   }
 
@@ -115,7 +116,7 @@ class ChaCha20 {
   ///   (0 for no counter, 16 bytes if a counter is included in the nonce).
   ///
   /// Throws:
-  /// - `ArgumentError` if the key size is not 32 bytes, if the destination is shorter than the source, or if
+  /// - `ArgumentException` if the key size is not 32 bytes, if the destination is shorter than the source, or if
   ///   the nonce length is invalid.
   ///
   /// Returns:
@@ -127,11 +128,11 @@ class ChaCha20 {
       {int nonceInplaceCounterLength = 0}) {
     // We only support 256-bit keys.
     if (key.length != 32) {
-      throw ArgumentError("ChaCha: key size must be 32 bytes");
+      throw ArgumentException("ChaCha: key size must be 32 bytes");
     }
 
     if (dst.length < src.length) {
-      throw ArgumentError("ChaCha: destination is shorter than source");
+      throw ArgumentException("ChaCha: destination is shorter than source");
     }
 
     List<int> nc;
@@ -139,14 +140,14 @@ class ChaCha20 {
 
     if (nonceInplaceCounterLength == 0) {
       if (nonce.length != 8 && nonce.length != 12) {
-        throw ArgumentError("ChaCha nonce must be 8 or 12 bytes");
+        throw ArgumentException("ChaCha nonce must be 8 or 12 bytes");
       }
       nc = List<int>.filled(16, 0);
       counterLength = nc.length - nonce.length;
       nc.setAll(counterLength, nonce);
     } else {
       if (nonce.length != 16) {
-        throw ArgumentError("ChaCha nonce with counter must be 16 bytes");
+        throw ArgumentException("ChaCha nonce with counter must be 16 bytes");
       }
       nc = nonce;
       counterLength = nonceInplaceCounterLength;

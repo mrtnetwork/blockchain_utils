@@ -6,6 +6,7 @@ import 'package:blockchain_utils/crypto/crypto/cdsa/eddsa/publickey.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/point/edwards.dart';
 import 'package:blockchain_utils/crypto/crypto/hash/hash.dart';
 import 'package:blockchain_utils/compare/compare.dart';
+import 'package:blockchain_utils/exception/exception.dart';
 
 /// Represents an EdDSA private key and provides methods for key operations.
 class EDDSAPrivateKey {
@@ -28,7 +29,7 @@ class EDDSAPrivateKey {
   ///   - hashMethod: A serializable hash function for key generation.
   ///
   /// Throws:
-  ///   - ArgumentError: If the private key size is invalid.
+  ///   - ArgumentException: If the private key size is invalid.
   ///
   EDDSAPrivateKey(
     this.generator,
@@ -37,7 +38,7 @@ class EDDSAPrivateKey {
   )   : baselen = (generator.curve.p.bitLength + 1 + 7) ~/ 8,
         isKhalow = false {
     if (privateKey.length != baselen) {
-      throw ArgumentError(
+      throw ArgumentException(
           'Incorrect size of private key, expected: $baselen bytes');
     }
 
@@ -58,7 +59,7 @@ class EDDSAPrivateKey {
   ///   - privateKey: The private key bytes for Khalow curves.
   ///
   /// Throws:
-  ///   - ArgumentError: If the private key size is invalid.
+  ///   - ArgumentException: If the private key size is invalid.
   ///
   EDDSAPrivateKey.fromKhalow(
     this.generator,
@@ -66,7 +67,7 @@ class EDDSAPrivateKey {
   )   : baselen = (generator.curve.p.bitLength + 1 + 7) ~/ 8,
         isKhalow = true {
     if (privateKey.length != baselen) {
-      throw ArgumentError(
+      throw ArgumentException(
           'Incorrect size of private key, expected: $baselen bytes');
     }
     _privateKey = privateKey;
@@ -94,7 +95,7 @@ class EDDSAPrivateKey {
     } else if (h == BigInt.from(8)) {
       hLog = 3;
     } else {
-      throw ArgumentError('Only cofactor 4 and 8 curves are supported');
+      throw ArgumentException('Only cofactor 4 and 8 curves are supported');
     }
     key[0] &= ~((1 << hLog) - 1);
 

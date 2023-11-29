@@ -5,6 +5,7 @@ import 'package:blockchain_utils/crypto/crypto/cdsa/curve/curves.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/point/edwards.dart';
 import 'package:blockchain_utils/crypto/crypto/hash/hash.dart';
 import 'package:blockchain_utils/compare/compare.dart';
+import 'package:blockchain_utils/exception/exception.dart';
 
 /// Represents an EdDSA public key in the Edwards curve format.
 class EDDSAPublicKey {
@@ -34,7 +35,7 @@ class EDDSAPublicKey {
   ///   - publicPoint: An optional Edwards curve point (if already available).
   ///
   /// Throws:
-  ///   - ArgumentError: If the size of the encoded public key does not match the
+  ///   - ArgumentException: If the size of the encoded public key does not match the
   ///     expected size based on the generator's curve.
   ///
   /// Details:
@@ -52,7 +53,7 @@ class EDDSAPublicKey {
     baselen = (generator.curve.p.bitLength + 1 + 7) ~/ 8;
 
     if (publicKey.length != baselen) {
-      throw ArgumentError(
+      throw ArgumentException(
           'Incorrect size of the public key, expected: $baselen bytes');
     }
 
@@ -72,7 +73,7 @@ class EDDSAPublicKey {
   ///   - publicPoint: An existing Edwards curve public point.
   ///
   /// Throws:
-  ///   - ArgumentError: If the size of the encoded public key extracted from the public
+  ///   - ArgumentException: If the size of the encoded public key extracted from the public
   ///     point does not match the expected size based on the generator's curve.
   ///
   /// Details:
@@ -90,7 +91,7 @@ class EDDSAPublicKey {
     baselen = (generator.curve.p.bitLength + 1 + 7) ~/ 8;
 
     if (_encoded.length != baselen) {
-      throw ArgumentError(
+      throw ArgumentException(
           'Incorrect size of the public key, expected: $baselen bytes');
     }
 
@@ -130,7 +131,7 @@ class EDDSAPublicKey {
   ///   - bool: True if the signature is valid; otherwise, false.
   ///
   /// Throws:
-  ///   - ArgumentError: If the signature length is invalid or if the signature is
+  ///   - ArgumentException: If the signature length is invalid or if the signature is
   ///     found to be invalid during the verification process.
   ///
   /// Details:
@@ -148,7 +149,7 @@ class EDDSAPublicKey {
     SerializableHash Function() hashMethod,
   ) {
     if (signature.length != 2 * baselen) {
-      throw ArgumentError(
+      throw ArgumentException(
           'Invalid signature length, expected: ${2 * baselen} bytes');
     }
 
@@ -158,7 +159,7 @@ class EDDSAPublicKey {
         byteOrder: Endian.little);
 
     if (S >= generator.order!) {
-      throw ArgumentError('Invalid signature');
+      throw ArgumentException('Invalid signature');
     }
 
     List<int> dom = List.empty();
@@ -170,7 +171,7 @@ class EDDSAPublicKey {
     h.update(List<int>.from([...dom, ...R.toBytes(), ..._encoded, ...data]));
     final k = BigintUtils.fromBytes(h.digest(), byteOrder: Endian.little);
     if (generator * S != _point * k + R) {
-      throw ArgumentError('Invalid signature');
+      throw ArgumentException('Invalid signature');
     }
 
     return true;

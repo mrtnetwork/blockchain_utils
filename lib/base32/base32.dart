@@ -53,6 +53,7 @@
 */
 
 import 'package:blockchain_utils/string/string.dart';
+import 'package:blockchain_utils/exception/exception.dart';
 
 /// Constants and data structures used for Base32 encoding and decoding.
 class _Base32Const {
@@ -200,7 +201,7 @@ class Base32Decoder {
       return List<int>.from(decodedBytes);
     } catch (ex) {
       /// Handle exceptions by throwing an error for invalid Base32 strings.
-      throw ArgumentError('Invalid Base32 string');
+      throw ArgumentException('Invalid Base32 string');
     }
   }
 }

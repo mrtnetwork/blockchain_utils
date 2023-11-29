@@ -5,6 +5,7 @@ import 'package:blockchain_utils/crypto/crypto/hash/hash.dart';
 import 'package:blockchain_utils/crypto/crypto/hmac/hmac.dart';
 import 'package:blockchain_utils/crypto/crypto/pbkdf2/pbkdf2.dart';
 import 'package:blockchain_utils/crypto/crypto/prng/fortuna.dart';
+import 'package:blockchain_utils/exception/exception.dart';
 
 /// QuickCrypto provides a set of utility methods for cryptographic operations.
 ///
@@ -218,7 +219,7 @@ class QuickCrypto {
     if (decrypt != null) {
       return decrypt;
     }
-    throw StateError("ChaCha20-Poly1305 decryption fail");
+    throw MessageException("ChaCha20-Poly1305 decryption fail");
   }
 
   /// Encrypt data using the ChaCha20-Poly1305 authenticated encryption algorithm.

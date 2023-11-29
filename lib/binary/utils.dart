@@ -1,4 +1,5 @@
 import 'package:blockchain_utils/binary/binary_operation.dart';
+import 'package:blockchain_utils/exception/exception.dart';
 import 'package:blockchain_utils/numbers/bigint_utils.dart';
 import 'package:blockchain_utils/string/string.dart';
 
@@ -56,5 +57,13 @@ class BytesUtils {
   /// the input list is represented as an 8-bit integer.
   static List<int> toBytes(List<int> bytes) {
     return bytes.map((e) => e & mask8).toList();
+  }
+
+  static void validateBytes(List<int> bytes) {
+    for (final int i in bytes) {
+      if (i < 0 || i > mask8) {
+        throw ArgumentException("invalid bytes $i");
+      }
+    }
   }
 }

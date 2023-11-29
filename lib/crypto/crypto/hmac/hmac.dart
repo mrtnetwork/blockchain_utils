@@ -1,6 +1,7 @@
 import 'package:blockchain_utils/binary/binary_operation.dart';
 
 import 'package:blockchain_utils/crypto/crypto/hash/hash.dart';
+import 'package:blockchain_utils/exception/exception.dart';
 
 /// The `HMAC` class represents a Hash-based Message Authentication Code.
 ///
@@ -97,7 +98,7 @@ class HMAC implements SerializableHash {
   @override
   HMAC reset() {
     if (_inner is! SerializableHash || _outer is! SerializableHash) {
-      throw StateError(
+      throw MessageException(
           "hmac: can't reset() because hash doesn't implement restoreState()");
     }
     // Restore keyed states of inner and outer hashes.
@@ -186,7 +187,7 @@ class HMAC implements SerializableHash {
   @override
   HashState saveState() {
     if (_inner is! SerializableHash) {
-      throw StateError(
+      throw MessageException(
           "hmac: can't saveState() because hash doesn't implement it");
     }
     return (_inner as SerializableHash).saveState();
@@ -205,7 +206,7 @@ class HMAC implements SerializableHash {
   @override
   HMAC restoreState(dynamic savedState) {
     if (_inner is! SerializableHash || _outer is! SerializableHash) {
-      throw StateError(
+      throw MessageException(
           "hmac: can't restoreState() because hash doesn't implement it");
     }
 
@@ -224,7 +225,7 @@ class HMAC implements SerializableHash {
   @override
   void cleanSavedState(dynamic savedState) {
     if (_inner is! SerializableHash) {
-      throw StateError(
+      throw MessageException(
           "hmac: can't cleanSavedState() because hash doesn't implement it");
     }
 

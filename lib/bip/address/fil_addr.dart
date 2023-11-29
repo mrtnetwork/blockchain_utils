@@ -5,6 +5,7 @@ import 'package:blockchain_utils/bip/address/decoder.dart';
 import 'package:blockchain_utils/bip/address/encoder.dart';
 import 'package:blockchain_utils/bip/coin_conf/coins_conf.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
+import 'package:blockchain_utils/exception/exception.dart';
 
 /// Enum representing different address types for Filecoin (FIL) addresses.
 enum FillAddrTypes {
@@ -62,14 +63,14 @@ class _FilAddrUtils {
   ///   A List<int> representing the decoded public key hash.
   ///
   /// Throws:
-  ///   - ArgumentError if the address type doesn't match the expected type.
-  ///   - ArgumentError if the address format, length, or checksum is invalid.
+  ///   - ArgumentException if the address type doesn't match the expected type.
+  ///   - ArgumentException if the address format, length, or checksum is invalid.
   static List<int> decodeAddr(String addr, FillAddrTypes addrType) {
     String addrNoPrefix = AddrDecUtils.validateAndRemovePrefix(
         addr, CoinsConf.filecoin.params.addrPrefix!);
     int addrTypeGot = addrNoPrefix[0].codeUnits.first - "0".codeUnits.first;
     if (addrType.value != addrTypeGot) {
-      throw ArgumentError(
+      throw ArgumentException(
           "Invalid address type (expected ${addrType.index}, got $addrTypeGot)");
     }
     List<int> addrDecBytes = Base32Decoder.decode(

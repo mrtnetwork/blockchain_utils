@@ -11,6 +11,7 @@ library uuid;
 import 'dart:math' as math;
 
 import 'package:blockchain_utils/binary/utils.dart';
+import 'package:blockchain_utils/exception/exception.dart';
 
 class UUID {
   /// Generates a version 4 (random) UUID (Universally Unique Identifier).
@@ -78,7 +79,7 @@ class UUID {
   /// ```
   static List<int> toBuffer(String uuidString) {
     if (!isValidUUIDv4(uuidString)) {
-      throw ArgumentError("invalid uuid");
+      throw ArgumentException("invalid uuid");
     }
     final buffer = List<int>.filled(16, 0);
 
@@ -121,7 +122,7 @@ class UUID {
   /// This method assumes that the input buffer contains valid UUIDv4 data.
   static String fromBuffer(List<int> buffer) {
     if (buffer.length != 16) {
-      throw ArgumentError(
+      throw ArgumentException(
           'Invalid buffer length. UUIDv4 buffers must be 16 bytes long.');
     }
 

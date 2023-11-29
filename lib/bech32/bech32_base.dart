@@ -1,4 +1,5 @@
 import 'bech32_utils.dart';
+import 'package:blockchain_utils/exception/exception.dart';
 
 /// An enumeration representing different Bech32 encodings.
 enum Bech32Encodings {
@@ -117,7 +118,7 @@ class Bech32Decoder extends Bech32DecoderBase {
   ///
   /// Returns the decoded byte array.
   ///
-  /// Throws an ArgumentError if the decoding fails or if the HRP doesn't match.
+  /// Throws an ArgumentException if the decoding fails or if the HRP doesn't match.
   static List<int> decode(String hrp, String address) {
     final decode = Bech32DecoderBase.decodeBech32(
         address,
@@ -125,7 +126,7 @@ class Bech32Decoder extends Bech32DecoderBase {
         Bech32Const.checksumStrLen,
         Bech32Utils.verifyChecksum);
     if (hrp != decode.$1) {
-      throw ArgumentError(
+      throw ArgumentException(
           "Invalid format (HRP not valid, expected {$hrp}, got {${decode.$1}})");
     }
     final result = Bech32BaseUtils.convertFromBase32(decode.$2);

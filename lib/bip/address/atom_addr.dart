@@ -1,10 +1,8 @@
 import 'package:blockchain_utils/bech32/bech32_base.dart';
-import 'package:blockchain_utils/bech32/bech32_ex.dart';
 import 'package:blockchain_utils/bip/address/addr_dec_utils.dart';
 import 'package:blockchain_utils/bip/address/addr_key_validator.dart';
 import 'package:blockchain_utils/bip/address/encoder.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
-
 import 'decoder.dart';
 
 /// Implementation of the [BlockchainAddressDecoder] for Atom (ATOM) address.
@@ -24,12 +22,7 @@ class AtomAddrDecoder implements BlockchainAddressDecoder {
   List<int> decodeAddr(String addr, [Map<String, dynamic> kwargs = const {}]) {
     AddrKeyValidator.validateAddressArgs<String>(kwargs, "hrp");
     String hrp = kwargs['hrp'];
-    List<int> addrDecBytes;
-    try {
-      addrDecBytes = Bech32Decoder.decode(hrp, addr);
-    } on Bech32ChecksumError catch (e) {
-      throw ArgumentError('Invalid bech32 checksum $e');
-    }
+    List<int> addrDecBytes = Bech32Decoder.decode(hrp, addr);
 
     AddrDecUtils.validateBytesLength(
         addrDecBytes, QuickCrypto.hash160DigestSize);

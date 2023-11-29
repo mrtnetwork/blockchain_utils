@@ -1,6 +1,5 @@
 import 'package:blockchain_utils/bip/bip/bip.dart';
 import 'package:blockchain_utils/bip/bip/conf/bip_coin_conf.dart';
-import 'package:blockchain_utils/bip/cardano/cardano.dart';
 
 /// An abstract class representing a collection of cryptocurrency coins.
 ///
@@ -16,24 +15,43 @@ abstract class CryptoCoins {
 
   CoinConfig get conf;
 
-  static CryptoCoins? fromName(String name) {
-    CryptoCoins? coin = Bip44Coins.fromName(name);
-    coin ??= Bip49Coins.fromName(name);
-    coin ??= Bip84Coins.fromName(name);
-    coin ??= Bip86Coins.fromName(name);
-    coin ??= Cip1852Coins.fromName(name);
-    return coin;
+  static CryptoCoins? getCoin(String name, CryptoProposal proposal) {
+    if (proposal is BipProposal) {
+      switch (proposal) {
+        case BipProposal.bip44:
+          return Bip44Coins.fromName(name);
+        case BipProposal.bip49:
+          return Bip49Coins.fromName(name);
+        case BipProposal.bip84:
+          return Bip84Coins.fromName(name);
+        default:
+          return Bip86Coins.fromName(name);
+      }
+    }
+    return null;
   }
 
-  BipProposal get proposal;
+  CryptoProposal get proposal;
+}
+
+abstract class CryptoProposal {
+  String get specName;
+  CryptoProposal get value;
+
+  static CryptoProposal fromName(String name) {
+    return BipProposal.values.firstWhere((element) => element.name == name);
+  }
 }
 
 /// Enum representing different BIP proposals.
-enum BipProposal {
+enum BipProposal implements CryptoProposal {
   bip44,
   bip49,
   bip84,
   bip86;
+
+  String get specName => this.name;
+  BipProposal get value => this;
 
   /// Extension method to get the corresponding [Bip32KeyIndex.purpose] for each [BipProposal].
   Bip32KeyIndex get purpose {

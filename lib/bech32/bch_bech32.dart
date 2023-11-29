@@ -55,6 +55,7 @@
 import 'package:blockchain_utils/numbers/int_utils.dart';
 
 import 'bech32_utils.dart';
+import 'package:blockchain_utils/exception/exception.dart';
 
 /// A utility class containing constants used for Bitcoin Cash (BCH) Bech32 encoding and decoding.
 class BchBech32Const {
@@ -149,7 +150,7 @@ class BchBech32Decoder extends Bech32DecoderBase {
   /// A tuple (pair) containing the network version bytes and data.
   ///
   /// Throws:
-  /// - ArgumentError: If the decoded HRP does not match the expected HRP.
+  /// - ArgumentException: If the decoded HRP does not match the expected HRP.
   static (List<int>, List<int>) decode(String hrp, String address) {
     final decode = Bech32DecoderBase.decodeBech32(
         address,
@@ -157,7 +158,7 @@ class BchBech32Decoder extends Bech32DecoderBase {
         BchBech32Const.checksumStrLen,
         _BchBech32Utils.verifyChecksum);
     if (decode.$1 != hrp) {
-      throw ArgumentError(
+      throw ArgumentException(
           "Invalid format (HRP not valid, expected $hrp, got ${decode.$1})");
     }
     final convData = Bech32BaseUtils.convertFromBase32(decode.$2);

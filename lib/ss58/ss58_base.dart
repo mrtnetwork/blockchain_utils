@@ -2,6 +2,7 @@ import 'package:blockchain_utils/base58/base58_base.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
 import 'package:blockchain_utils/binary/utils.dart';
 import 'package:blockchain_utils/numbers/int_utils.dart';
+import 'package:blockchain_utils/exception/exception.dart';
 
 import 'ss58_ex.dart';
 
@@ -59,17 +60,17 @@ class SS58Encoder {
   /// Returns:
   /// A Base58-encoded SS58 address string.
   ///
-  /// Throws an [ArgumentError] if the input parameters are invalid, such as incorrect data length, out-of-range SS58 format, or using reserved formats.
+  /// Throws an [ArgumentException] if the input parameters are invalid, such as incorrect data length, out-of-range SS58 format, or using reserved formats.
   static String encode(List<int> dataBytes, int ss58Format) {
     // Check parameters
     if (dataBytes.length != _Ss58Const.dataByteLen) {
-      throw ArgumentError('Invalid data length (${dataBytes.length})');
+      throw ArgumentException('Invalid data length (${dataBytes.length})');
     }
     if (ss58Format < 0 || ss58Format > _Ss58Const.formatMaxVal) {
-      throw ArgumentError('Invalid SS58 format ($ss58Format)');
+      throw ArgumentException('Invalid SS58 format ($ss58Format)');
     }
     if (_Ss58Const.reservedFormats.contains(ss58Format)) {
-      throw ArgumentError('Invalid SS58 format ($ss58Format)');
+      throw ArgumentException('Invalid SS58 format ($ss58Format)');
     }
 
     List<int> ss58FormatBytes;
@@ -102,7 +103,7 @@ class SS58Decoder {
   /// Returns:
   /// A tuple containing the SS58 format (address type) and the data bytes of the SS58 address.
   ///
-  /// Throws an [ArgumentError] or [SS58ChecksumError] if the input string is invalid, contains an invalid format, or fails the checksum verification.
+  /// Throws an [ArgumentException] or [SS58ChecksumError] if the input string is invalid, contains an invalid format, or fails the checksum verification.
   static (int, List<int>) decode(String dataStr) {
     final decBytes = Base58Decoder.decode(dataStr);
 
@@ -120,7 +121,7 @@ class SS58Decoder {
     }
 
     if (_Ss58Const.reservedFormats.contains(ss58Format)) {
-      throw ArgumentError('Invalid SS58 format ($ss58Format)');
+      throw ArgumentException('Invalid SS58 format ($ss58Format)');
     }
 
     final dataBytes = List<int>.from(decBytes.sublist(
@@ -129,7 +130,7 @@ class SS58Decoder {
         decBytes.sublist(decBytes.length - _Ss58Const.checksumByteLen));
 
     if (dataBytes.length != _Ss58Const.dataByteLen) {
-      throw ArgumentError('Invalid data length (${dataBytes.length})');
+      throw ArgumentException('Invalid data length (${dataBytes.length})');
     }
 
     final checksumBytesGot = _Ss58Utils.computeChecksum(List<int>.from(

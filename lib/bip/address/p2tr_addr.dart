@@ -1,6 +1,6 @@
-import 'package:blockchain_utils/bech32/bech32_ex.dart';
 import 'package:blockchain_utils/bech32/segwit_bech32.dart';
 import 'package:blockchain_utils/compare/compare.dart';
+import 'package:blockchain_utils/exception/exception.dart';
 import 'package:blockchain_utils/numbers/bigint_utils.dart';
 import 'package:blockchain_utils/bip/address/addr_dec_utils.dart';
 import 'package:blockchain_utils/bip/address/addr_key_validator.dart';
@@ -12,7 +12,6 @@ import 'package:blockchain_utils/binary/utils.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/curve/curves.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/point/ec_projective_point.dart';
 import 'package:blockchain_utils/numbers/int_utils.dart';
-
 import '../../string/string.dart';
 
 /// Constants related to P2TR (Pay-to-Taproot) addresses.
@@ -47,10 +46,10 @@ class P2TRUtils {
   ///   A List<int> representing the tagged hash.
   ///
   /// Throws:
-  ///   - ArgumentError if the tag is not a string or bytes.
+  ///   - ArgumentException if the tag is not a string or bytes.
   static List<int> taggedHash(dynamic tag, List<int> dataBytes) {
     if (tag! is String && tag! is List<int>) {
-      throw ArgumentError("tag must be bytes or string");
+      throw ArgumentException("tag must be bytes or string");
     }
     List<int> tagHash =
         tag is String ? QuickCrypto.sha256Hash(StringUtils.encode(tag)) : tag;
@@ -91,12 +90,12 @@ class P2TRUtils {
     final BigInt p = Curves.curveSecp256k1.p;
     final BigInt x = pubKeyPoint.x;
     if (x >= p) {
-      throw Exception("Unable to compute LiftX point");
+      throw MessageException("Unable to compute LiftX point");
     }
     final ySq = (x.modPow(BigInt.from(3), p) + BigInt.from(7)) % p;
     final y = ySq.modPow((p + BigInt.one) ~/ BigInt.from(4), p);
     if (y.modPow(BigInt.two, p) != ySq) {
-      throw Exception("Unable to compute LiftX point");
+      throw MessageException("Unable to compute LiftX point");
     }
     BigInt result = (y & BigInt.one) == BigInt.zero ? y : p - y;
     return ProjectiveECCPoint(
@@ -141,7 +140,7 @@ class P2TRUtils {
       final tap = _tapBranchTaggedHash(left, right);
       return tap;
     }
-    throw ArgumentError("List cannot have more than 2 branches.");
+    throw ArgumentException("List cannot have more than 2 branches.");
   }
 
   /// _calculateTweek computes and returns the TapTweak value based on the ECPublic key
@@ -203,35 +202,31 @@ class P2TRAddrDecoder implements BlockchainAddressDecoder {
   ///   A List<int> containing the decoded P2TR address bytes.
   ///
   /// Throws:
-  ///   - ArgumentError if the provided address has an incorrect witness version,
+  ///   - ArgumentException if the provided address has an incorrect witness version,
   ///     or if the Bech32 checksum is invalid.
   @override
   List<int> decodeAddr(String addr, [Map<String, dynamic> kwargs = const {}]) {
-    try {
-      /// Validate address arguments and retrieve the Human-Readable Part (HRP).
-      AddrKeyValidator.validateAddressArgs<String>(kwargs, "hrp");
-      final String hrp = kwargs["hrp"];
+    /// Validate address arguments and retrieve the Human-Readable Part (HRP).
+    AddrKeyValidator.validateAddressArgs<String>(kwargs, "hrp");
+    final String hrp = kwargs["hrp"];
 
-      /// Decode the Bech32-encoded P2TR address and validate its length.
-      final decode = SegwitBech32Decoder.decode(hrp, addr);
-      final witVerGot = decode.$1;
-      final addrDecBytes = decode.$2;
+    /// Decode the Bech32-encoded P2TR address and validate its length.
+    final decode = SegwitBech32Decoder.decode(hrp, addr);
+    final witVerGot = decode.$1;
+    final addrDecBytes = decode.$2;
 
-      /// Validate the byte length of the decoded address.
-      AddrDecUtils.validateBytesLength(
-          addrDecBytes, EcdsaKeysConst.pubKeyCompressedByteLen - 1);
+    /// Validate the byte length of the decoded address.
+    AddrDecUtils.validateBytesLength(
+        addrDecBytes, EcdsaKeysConst.pubKeyCompressedByteLen - 1);
 
-      /// Check the witness version.
-      if (witVerGot != P2TRConst.witnessVer) {
-        throw ArgumentError(
-            'Invalid witness version (expected ${P2TRConst.witnessVer}, got $witVerGot)');
-      }
-
-      /// Return the decoded P2TR address as a List<int>.
-      return addrDecBytes;
-    } on Bech32ChecksumError catch (e) {
-      throw ArgumentError('Invalid bech32 checksum', e.toString());
+    /// Check the witness version.
+    if (witVerGot != P2TRConst.witnessVer) {
+      throw ArgumentException(
+          'Invalid witness version (expected ${P2TRConst.witnessVer}, got $witVerGot)');
     }
+
+    /// Return the decoded P2TR address as a List<int>.
+    return addrDecBytes;
   }
 }
 

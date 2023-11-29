@@ -1,4 +1,5 @@
 import 'dart:typed_data';
+import 'package:blockchain_utils/exception/exception.dart';
 import 'package:blockchain_utils/numbers/bigint_utils.dart';
 import 'substrate_scale_enc_base.dart';
 
@@ -11,7 +12,7 @@ abstract class SubstrateScaleUintEncoder extends SubstrateScaleEncoderBase {
     final v = BigInt.parse(value);
     final maxVal = (BigInt.one << (bytesLen * 8)) - BigInt.one;
     if (v < BigInt.zero || v > maxVal) {
-      throw ArgumentError('Invalid integer value ($value)');
+      throw ArgumentException('Invalid integer value ($value)');
     }
 
     return BigintUtils.toBytes(v,

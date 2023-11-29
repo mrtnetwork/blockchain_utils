@@ -1,3 +1,6 @@
+## 1.2.0
+- Implementing custom exception classes for more effective error handling.
+
 ## 1.0.6
 - Resolved issue with CBOR decoding of lists
 - Removed "tags" property from CBOR

@@ -20,7 +20,7 @@ class CborUtils {
       // Split the string into the date and offset parts
       final parts = dateTimeString.split('+');
       if (parts.length != 2) {
-        throw FormatException("Invalid format: $dateTimeString");
+        throw MessageException("Invalid format: $dateTimeString");
       }
       final datePart = DateTime.parse(parts[0]);
       return datePart;
@@ -64,11 +64,11 @@ class CborUtils {
           }
           return _decodeArray(cborBytes, i, info, tags);
         default:
-          throw ArgumentError(
+          throw ArgumentException(
               "invalid or unsuported cbor tag major: $majorTag ");
       }
     }
-    throw ArgumentError("invalid or unsuported cbor tag");
+    throw ArgumentException("invalid or unsuported cbor tag");
   }
 
   static (List<int>, int) _parsBytes(int info, List<int> cborBytes) {
@@ -106,7 +106,7 @@ class CborUtils {
         }
         return ((f * shift32) + g, 9);
       default:
-        throw ArgumentError('Invalid additional info for int: $info');
+        throw ArgumentException('Invalid additional info for int: $info');
     }
   }
 
@@ -270,7 +270,7 @@ class CborUtils {
       List<CborObject> objects, List<int> tags) {
     objects = objects.whereType<CborNumeric>().toList();
     if (objects.length != 2) {
-      throw StateError("invalid bigFloat array length");
+      throw MessageException("invalid bigFloat array length");
     }
     if (tags.contains(CborTags.decimalFrac)) {
       tags.removeWhere((element) => element == CborTags.decimalFrac);
@@ -329,7 +329,7 @@ class CborUtils {
         offset = offset + 8;
         break;
       default:
-        throw StateError("Invalid simpleOrFloatTags");
+        throw MessageException("Invalid simpleOrFloatTags");
     }
     if (tags.contains(CborTags.dateEpoch)) {
       final dt = DateTime.fromMillisecondsSinceEpoch((val * 1000).round());
@@ -348,7 +348,7 @@ class CborUtils {
     final index = data.$2 + i;
     if (val is BigInt) {
       if (val.bitLength > 64) {
-        throw StateError("invalid int value");
+        throw MessageException("invalid int value");
       }
       if (val.isValidInt) {
         numericValue = CborInt64Value(mt == MajorTags.negInt ? ~val : val);

@@ -2,6 +2,7 @@ import 'package:blockchain_utils/bip/bip/bip32/base/ibip32_mst_key_generator.dar
 import 'package:blockchain_utils/bip/ecc/keys/i_keys.dart';
 import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
+import 'package:blockchain_utils/exception/exception.dart';
 
 /// Constants used by the Slip-10-based master key generator.
 ///
@@ -81,18 +82,18 @@ class Bip32Slip10MstKeyGeneratorConst {
 ///
 /// Throws:
 /// - `Bip32KeyError`: If the seed is not suitable for master key generation.
-/// - `ArgumentError`: If the seed length is not valid.
+/// - `ArgumentException`: If the seed length is not valid.
 class _Bip32Slip10MstKeyGenerator {
   /// Generates a master key from the specified seed and HMAC key, and returns a tuple
   /// containing private key bytes and chain code bytes.
   ///
   /// Throws:
   /// - `Bip32KeyError`: If the seed is not suitable for master key generation.
-  /// - `ArgumentError`: If the seed length is not valid.
+  /// - `ArgumentException`: If the seed length is not valid.
   static (List<int>, List<int>) generateFromSeed(List<int> seedBytes,
       List<int> hmacKeyBytes, EllipticCurveTypes curveType) {
     if (seedBytes.length < Bip32Slip10MstKeyGeneratorConst.seedMinByteLen) {
-      throw ArgumentError('Invalid seed length (${seedBytes.length})');
+      throw ArgumentException('Invalid seed length (${seedBytes.length})');
     }
     const hmacHalfLen = QuickCrypto.hmacSha512DigestSize ~/ 2;
     List<int> hmac = List.empty();
@@ -122,7 +123,7 @@ class Bip32Slip10Ed25519MstKeyGenerator implements IBip32MstKeyGenerator {
   ///
   /// Throws:
   /// - `Bip32KeyError`: If the seed is not suitable for master key generation.
-  /// - `ArgumentError`: If the seed length is not valid.
+  /// - `ArgumentException`: If the seed length is not valid.
   @override
   (List<int>, List<int>) generateFromSeed(List<int> seedBytes) {
     return _Bip32Slip10MstKeyGenerator.generateFromSeed(
@@ -141,7 +142,7 @@ class Bip32Slip10Nist256p1MstKeyGenerator implements IBip32MstKeyGenerator {
   ///
   /// Throws:
   /// - `Bip32KeyError`: If the seed is not suitable for master key generation.
-  /// - `ArgumentError`: If the seed length is not valid.
+  /// - `ArgumentException`: If the seed length is not valid.
   @override
   (List<int>, List<int>) generateFromSeed(List<int> seedBytes) {
     return _Bip32Slip10MstKeyGenerator.generateFromSeed(
@@ -160,7 +161,7 @@ class Bip32Slip10Secp256k1MstKeyGenerator extends IBip32MstKeyGenerator {
   ///
   /// Throws:
   /// - `Bip32KeyError`: If the seed is not suitable for master key generation.
-  /// - `ArgumentError`: If the seed length is not valid.
+  /// - `ArgumentException`: If the seed length is not valid.
   @override
   (List<int>, List<int>) generateFromSeed(List<int> seedBytes) {
     return _Bip32Slip10MstKeyGenerator.generateFromSeed(

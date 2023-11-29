@@ -1,9 +1,9 @@
-import 'package:blockchain_utils/bech32/bech32_ex.dart';
 import 'package:blockchain_utils/bech32/segwit_bech32.dart';
 import 'package:blockchain_utils/bip/address/addr_key_validator.dart';
 import 'package:blockchain_utils/bip/address/decoder.dart';
 import 'package:blockchain_utils/bip/address/encoder.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
+import 'package:blockchain_utils/exception/exception.dart';
 
 /// Constants related to P2WPKH (Pay-to-Witness-Public-Key-Hash) addresses.
 class P2WPKHAddrConst {
@@ -31,30 +31,26 @@ class P2WPKHAddrDecoder implements BlockchainAddressDecoder {
   ///
   /// Throws:
   ///   - FormatException if the provided address has an incorrect witness version.
-  ///   - ArgumentError if the Bech32 checksum is invalid.
+  ///   - ArgumentException if the Bech32 checksum is invalid.
   @override
   List<int> decodeAddr(String addr, [Map<String, dynamic> kwargs = const {}]) {
     /// Validate address arguments and retrieve the Human-Readable Part (HRP)
     AddrKeyValidator.validateAddressArgs<String>(kwargs, "hrp");
     final String hrp = kwargs['hrp'];
 
-    try {
-      /// Decode the Bech32-encoded P2WPKH address, and validate its length.
-      final decoded = SegwitBech32Decoder.decode(hrp, addr);
-      final witVerGot = decoded.$1;
-      final addrDecBytes = decoded.$2;
+    /// Decode the Bech32-encoded P2WPKH address, and validate its length.
+    final decoded = SegwitBech32Decoder.decode(hrp, addr);
+    final witVerGot = decoded.$1;
+    final addrDecBytes = decoded.$2;
 
-      /// Check the witness version.
-      if (witVerGot != P2WPKHAddrConst.witnessVer) {
-        throw FormatException(
-            'Invalid witness version (expected ${P2WPKHAddrConst.witnessVer}, got $witVerGot)');
-      }
-
-      /// Return the decoded P2WPKH address as a List<int>.
-      return List<int>.from(addrDecBytes);
-    } on Bech32ChecksumError catch (e) {
-      throw ArgumentError('Invalid bech32 checksum $e');
+    /// Check the witness version.
+    if (witVerGot != P2WPKHAddrConst.witnessVer) {
+      throw MessageException(
+          'Invalid witness version (expected ${P2WPKHAddrConst.witnessVer}, got $witVerGot)');
     }
+
+    /// Return the decoded P2WPKH address as a List<int>.
+    return List<int>.from(addrDecBytes);
   }
 }
 

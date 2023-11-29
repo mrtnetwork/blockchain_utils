@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 import 'package:blockchain_utils/bip/mnemonic/mnemonic.dart';
+import 'package:blockchain_utils/exception/exception.dart';
 import 'package:blockchain_utils/numbers/int_utils.dart';
 
 /// An abstract class representing different languages for mnemonic phrases.
@@ -100,7 +101,7 @@ class MnemonicWordsList {
   int getWordIdx(String word) {
     final index = _idxToWords.indexOf(word);
     if (index < 0) {
-      throw StateError("Unable to find word $word");
+      throw MessageException("Unable to find word $word");
     }
     return index;
   }
@@ -135,7 +136,7 @@ abstract class MnemonicWordsListGetterBase {
   /// Subclasses may use this method when implementing `getByLanguage`.
   MnemonicWordsList loadWordsList(MnemonicLanguages language, int wordsNum) {
     if (language.wordList.length != wordsNum) {
-      throw ArgumentError(
+      throw ArgumentException(
           "Number of loaded words list (${language.wordList.length}) is not valid");
     }
     return MnemonicWordsList(language.wordList);

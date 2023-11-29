@@ -4,6 +4,7 @@ import 'package:blockchain_utils/bip/monero/mnemonic/monero_mnemonic.dart';
 import 'package:blockchain_utils/bip/monero/mnemonic/monero_mnemonic_utils.dart';
 import 'package:blockchain_utils/bip/mnemonic/mnemonic_decoder_base.dart';
 import 'package:blockchain_utils/bip/mnemonic/mnemonic_utils.dart';
+import 'package:blockchain_utils/exception/exception.dart';
 
 import '../../mnemonic/mnemonic_ex.dart';
 
@@ -37,7 +38,7 @@ class MoneroMnemonicDecoder extends MnemonicDecoderBase {
       MoneroMnemonicConst.mnemonicWordNum
           .where((element) => element.value == wcount);
     } on StateError {
-      throw StateError("Mnemonic words count is not valid ($wcount)");
+      throw ArgumentException("Mnemonic words count is not valid ($wcount)");
     }
     final lang = findLanguage(mn);
     final words = mn.toList();

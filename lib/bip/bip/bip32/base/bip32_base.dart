@@ -7,6 +7,7 @@ import 'package:blockchain_utils/bip/bip/bip32/bip32_keys.dart';
 import 'package:blockchain_utils/bip/bip/bip32/bip32_path.dart';
 
 import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
+import 'package:blockchain_utils/exception/exception.dart';
 
 import 'ibip32_mst_key_generator.dart';
 
@@ -125,7 +126,7 @@ abstract class Bip32Base {
     final pathInstance = Bip32PathParser.parse(path);
 
     if (depth.depth > 0 && pathInstance.isAbsolute) {
-      throw ArgumentError(
+      throw ArgumentException(
           'Absolute paths can only be derived from a master key, not child ones');
     }
     Bip32Base derivedObject = this;

@@ -6,6 +6,7 @@ import 'package:blockchain_utils/bip/ecc/keys/i_keys.dart';
 import 'package:blockchain_utils/bip/ecc/keys/ed25519_keys.dart';
 
 import 'package:blockchain_utils/crypto/crypto/x_modem_crc/x_modem_crc.dart';
+import 'package:blockchain_utils/exception/exception.dart';
 
 import 'encoder.dart';
 
@@ -62,7 +63,7 @@ class XlmAddrDecoder implements BlockchainAddressDecoder {
     /// - [kwargs]: A map of optional keyword arguments.
     ///   - [addr_type]: The address type, either XlmAddrTypes.pubKey or XlmAddrTypes.privKey.
     ///
-    /// Throws an [ArgumentError] if the address type is not valid or if there's a validation error.
+    /// Throws an [ArgumentException] if the address type is not valid or if there's a validation error.
     ///
     /// Example usage:
     /// ```dart
@@ -72,7 +73,8 @@ class XlmAddrDecoder implements BlockchainAddressDecoder {
     /// ```
     final addrType = kwargs['addr_type'] ?? XlmAddrTypes.pubKey;
     if (addrType is! XlmAddrTypes) {
-      throw ArgumentError('Address type is not an enumerative of XlmAddrTypes');
+      throw ArgumentException(
+          'Address type is not an enumerative of XlmAddrTypes');
     }
 
     final addrDecBytes = Base32Decoder.decode(addr);
@@ -89,7 +91,7 @@ class XlmAddrDecoder implements BlockchainAddressDecoder {
 
     final addrTypeGot = payloadBytes[0];
     if (addrType.value != addrTypeGot) {
-      throw ArgumentError(
+      throw ArgumentException(
           'Invalid address type (expected ${addrType.value}, got $addrTypeGot)');
     }
 
@@ -113,7 +115,7 @@ class XlmAddrEncoder implements BlockchainAddressEncoder {
   /// - [kwargs]: A map of optional keyword arguments.
   ///   - [addr_type]: The address type, either XlmAddrTypes.pubKey or XlmAddrTypes.privKey.
   ///
-  /// Throws an [ArgumentError] if the address type is not valid or if there's a validation error.
+  /// Throws an [ArgumentException] if the address type is not valid or if there's a validation error.
   ///
   /// Example usage:
   /// ```dart
@@ -125,7 +127,8 @@ class XlmAddrEncoder implements BlockchainAddressEncoder {
   String encodeKey(List<int> pubKey, [Map<String, dynamic> kwargs = const {}]) {
     final addrType = kwargs['addr_type'] ?? XlmAddrTypes.pubKey;
     if (addrType is! XlmAddrTypes) {
-      throw ArgumentError('Address type is not an enumerative of XlmAddrTypes');
+      throw ArgumentException(
+          'Address type is not an enumerative of XlmAddrTypes');
     }
 
     IPublicKey pubKeyObj = AddrKeyValidator.validateAndGetEd25519Key(pubKey);

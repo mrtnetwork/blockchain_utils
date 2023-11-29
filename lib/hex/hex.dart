@@ -2,6 +2,7 @@
 // MIT License. See LICENSE file for details.
 
 import 'package:blockchain_utils/binary/binary_operation.dart';
+import 'package:blockchain_utils/exception/exception.dart';
 
 // ignore: library_private_types_in_public_api
 const _Hex hex = _Hex();
@@ -67,7 +68,7 @@ class _Hex {
     for (int i = 0; i < data.length; i++) {
       final byte = data[i];
       if (byte < 0 || byte > mask8) {
-        throw FormatException("invalid byte ${byte.abs().toRadixString(16)}");
+        throw ArgumentException("invalid byte ${byte.abs().toRadixString(16)}");
       }
       s += enc(data[i] >> 4);
       s += enc(data[i] & 0x0F);
@@ -86,7 +87,8 @@ class _Hex {
       return List.empty();
     }
     if (!hex.length.isEven) {
-      throw const FormatException("Hex input string must be divisible by two");
+      throw const ArgumentException(
+          "Hex input string must be divisible by two");
     }
     final result = List<int>.filled(hex.length ~/ 2, 0);
     int haveBad = 0;
@@ -98,7 +100,7 @@ class _Hex {
       haveBad |= v1 & _invalidHexNibble;
     }
     if (haveBad != 0) {
-      throw const FormatException("Incorrect characters for hex decoding");
+      throw const ArgumentException("Incorrect characters for hex decoding");
     }
     return result;
   }

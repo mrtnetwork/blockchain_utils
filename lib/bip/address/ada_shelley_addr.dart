@@ -1,5 +1,4 @@
 import 'package:blockchain_utils/bech32/bech32_base.dart';
-import 'package:blockchain_utils/bech32/bech32_ex.dart';
 import 'package:blockchain_utils/bip/address/addr_dec_utils.dart';
 import 'package:blockchain_utils/bip/address/addr_key_validator.dart';
 import 'package:blockchain_utils/bip/address/decoder.dart';
@@ -7,6 +6,7 @@ import 'package:blockchain_utils/bip/address/encoder.dart';
 import 'package:blockchain_utils/bip/coin_conf/coins_conf.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
 import 'package:blockchain_utils/numbers/int_utils.dart';
+import 'package:blockchain_utils/exception/exception.dart';
 
 /// An enumeration of Ada Shelley address network tags.
 enum AdaShelleyAddrNetworkTags {
@@ -82,27 +82,22 @@ class AdaShelleyAddrDecoder implements BlockchainAddressDecoder {
 
     /// Check if the provided network tag is a valid enum value.
     if (netTag is! AdaShelleyAddrNetworkTags) {
-      throw ArgumentError(
+      throw ArgumentException(
           'Address type is not an enumerative of AdaShelleyAddrNetworkTags');
     }
 
     // Decode the provided Bech32 address.
-    try {
-      final addrDecBytes = Bech32Decoder.decode(
-          AdaShelleyAddrConst.networkTagToAddrHrp[netTag]!, addr);
+    final addrDecBytes = Bech32Decoder.decode(
+        AdaShelleyAddrConst.networkTagToAddrHrp[netTag]!, addr);
 
-      /// Validate the byte length of the decoded address.
-      AddrDecUtils.validateBytesLength(
-          addrDecBytes, (QuickCrypto.blake2b224DigestSize * 2) + 1);
+    /// Validate the byte length of the decoded address.
+    AddrDecUtils.validateBytesLength(
+        addrDecBytes, (QuickCrypto.blake2b224DigestSize * 2) + 1);
 
-      /// Encode the address prefix based on the payment header type and network tag.
-      final prefixByte = _AdaShelleyAddrUtils.encodePrefix(
-          AdaShelleyAddrHeaderTypes.payment, netTag.value);
-      return AddrDecUtils.validateAndRemovePrefixBytes(
-          addrDecBytes, prefixByte);
-    } on Bech32ChecksumError catch (e) {
-      throw ArgumentError('Invalid bech32 checksum $e');
-    }
+    /// Encode the address prefix based on the payment header type and network tag.
+    final prefixByte = _AdaShelleyAddrUtils.encodePrefix(
+        AdaShelleyAddrHeaderTypes.payment, netTag.value);
+    return AddrDecUtils.validateAndRemovePrefixBytes(addrDecBytes, prefixByte);
   }
 }
 
@@ -123,7 +118,7 @@ class AdaShelleyAddrEncoder implements BlockchainAddressEncoder {
 
     /// Check if the provided network tag is a valid enum value.
     if (netTag is! AdaShelleyAddrNetworkTags) {
-      throw ArgumentError(
+      throw ArgumentException(
           'Address type is not an enumerative of AdaShelleyAddrNetworkTags');
     }
 
@@ -159,29 +154,24 @@ class AdaShelleyStakingAddrDecoder implements BlockchainAddressDecoder {
 
     /// Check if the provided network tag is a valid enum value.
     if (netTag is! AdaShelleyAddrNetworkTags) {
-      throw ArgumentError(
+      throw ArgumentException(
           'Address type is not an enumerative of AdaShelleyAddrNetworkTags');
     }
 
-    try {
-      /// Decode the provided address using the staking network tag's address prefix.
-      final addrDecBytes = Bech32Decoder.decode(
-          AdaShelleyAddrConst.networkTagToRewardAddrHrp[netTag]!, addr);
+    /// Decode the provided address using the staking network tag's address prefix.
+    final addrDecBytes = Bech32Decoder.decode(
+        AdaShelleyAddrConst.networkTagToRewardAddrHrp[netTag]!, addr);
 
-      /// Validate the length of the decoded bytes and remove the prefix.
-      AddrDecUtils.validateBytesLength(
-          addrDecBytes, QuickCrypto.blake2b224DigestSize + 1);
+    /// Validate the length of the decoded bytes and remove the prefix.
+    AddrDecUtils.validateBytesLength(
+        addrDecBytes, QuickCrypto.blake2b224DigestSize + 1);
 
-      /// Encode the address prefix based on the reward header type and network tag.
-      final prefixByte = _AdaShelleyAddrUtils.encodePrefix(
-          AdaShelleyAddrHeaderTypes.reward, netTag.value);
+    /// Encode the address prefix based on the reward header type and network tag.
+    final prefixByte = _AdaShelleyAddrUtils.encodePrefix(
+        AdaShelleyAddrHeaderTypes.reward, netTag.value);
 
-      /// Return the final decoded address by removing the prefix and converting it to bytes.
-      return AddrDecUtils.validateAndRemovePrefixBytes(
-          addrDecBytes, prefixByte);
-    } on Bech32ChecksumError catch (e) {
-      throw ArgumentError('Invalid bech32 checksum $e');
-    }
+    /// Return the final decoded address by removing the prefix and converting it to bytes.
+    return AddrDecUtils.validateAndRemovePrefixBytes(addrDecBytes, prefixByte);
   }
 }
 
@@ -196,7 +186,7 @@ class AdaShelleyStakingAddrEncoder implements BlockchainAddressEncoder {
 
     /// Check if the provided network tag is a valid enum value.
     if (netTag is! AdaShelleyAddrNetworkTags) {
-      throw ArgumentError(
+      throw ArgumentException(
           'Address type is not an enumerative of AdaShelleyAddrNetworkTags');
     }
 

@@ -1,5 +1,4 @@
 import 'package:blockchain_utils/base58/base58.dart';
-import 'package:blockchain_utils/base58/base58_ex.dart';
 import 'package:blockchain_utils/bip/address/addr_dec_utils.dart';
 import 'package:blockchain_utils/bip/address/eth_addr.dart';
 import 'package:blockchain_utils/bip/address/decoder.dart';
@@ -17,11 +16,7 @@ class TrxAddrDecoder implements BlockchainAddressDecoder {
   @override
   List<int> decodeAddr(String addr, [Map<String, dynamic> kwargs = const {}]) {
     List<int> addrDec;
-    try {
-      addrDec = Base58Decoder.checkDecode(addr);
-    } on Base58ChecksumError catch (e) {
-      throw ArgumentError('Invalid base58 checksum', e.toString());
-    }
+    addrDec = Base58Decoder.checkDecode(addr);
     final tronPrefix =
         BytesUtils.fromHexString(CoinsConf.tron.params.addrPrefix!);
     AddrDecUtils.validateBytesLength(

@@ -2,6 +2,7 @@ import 'package:blockchain_utils/bip/electrum/mnemonic_v1/electrum_v1_entropy_ge
 import 'package:blockchain_utils/bip/electrum/mnemonic_v1/electrum_v1_mnemonic.dart';
 import 'package:blockchain_utils/bip/electrum/mnemonic_v1/electrum_v1_mnemonic_encoder.dart';
 import 'package:blockchain_utils/bip/mnemonic/mnemonic.dart';
+import 'package:blockchain_utils/exception/exception.dart';
 
 /// Constants related to Electrum V1 mnemonic generation, mapping the number of words to entropy length.
 class ElectrumV1MnemonicGeneratorConst {
@@ -31,7 +32,7 @@ class ElectrumV1MnemonicGenerator {
   /// the corresponding entropy length. It validates the words number and then uses an `ElectrumV1EntropyGenerator`
   /// to generate the required entropy bytes. Finally, it creates an Electrum V1 mnemonic from the generated entropy.
   ///
-  /// Throws an ArgumentError if the words number is invalid.
+  /// Throws an ArgumentException if the words number is invalid.
   ///
   /// Returns an Electrum V1 mnemonic with the specified number of words.
   ///
@@ -42,7 +43,7 @@ class ElectrumV1MnemonicGenerator {
       ElectrumV1WordsNum.values
           .firstWhere((element) => element.value == wordsNum);
     } on StateError {
-      throw ArgumentError("invalid words num");
+      throw ArgumentException("invalid words num");
     }
     final wNum = ElectrumV1WordsNum.values
         .firstWhere((element) => element.value == wordsNum);

@@ -1,5 +1,6 @@
 import 'package:blockchain_utils/crypto/crypto/aes/aes.dart';
 import 'package:blockchain_utils/crypto/crypto/aes/padding.dart';
+import 'package:blockchain_utils/exception/exception.dart';
 
 /// Electronic Codebook (ECB) mode for AES encryption and decryption.
 ///
@@ -27,7 +28,7 @@ class ECB extends AES {
   /// - The encrypted data block.
   ///
   /// Throws:
-  /// - `ArgumentError` if the source data size is not a multiple of the block size or if the destination size
+  /// - `ArgumentException` if the source data size is not a multiple of the block size or if the destination size
   ///   does not match the source size.
   /// - Exceptions related to padding, if padding is applied.
   ///
@@ -39,7 +40,7 @@ class ECB extends AES {
       PaddingAlgorithm? paddingStyle = PaddingAlgorithm.pkcs7]) {
     if (paddingStyle == null) {
       if ((src.length % blockSize) != 0) {
-        throw ArgumentError("src size must be a multiple of $blockSize");
+        throw ArgumentException("src size must be a multiple of $blockSize");
       }
     }
     List<int> input = List<int>.from(src);
@@ -49,7 +50,7 @@ class ECB extends AES {
 
     final out = dst ?? List<int>.filled(input.length, 0);
     if (out.length != input.length) {
-      throw ArgumentError(
+      throw ArgumentException(
           "The destination size does not match with source size");
     }
     final numBlocks = input.length ~/ blockSize;
@@ -78,7 +79,7 @@ class ECB extends AES {
   /// - The decrypted data block.
   ///
   /// Throws:
-  /// - `ArgumentError` if the source data size is not a multiple of the block size or if the destination size
+  /// - `ArgumentException` if the source data size is not a multiple of the block size or if the destination size
   ///   is too small.
   /// - Exceptions related to padding, if padding is applied.
   ///
@@ -89,7 +90,7 @@ class ECB extends AES {
       [List<int>? dst,
       PaddingAlgorithm? paddingStyle = PaddingAlgorithm.pkcs7]) {
     if ((src.length % blockSize) != 0) {
-      throw ArgumentError("src size must be a multiple of $blockSize");
+      throw ArgumentException("src size must be a multiple of $blockSize");
     }
     List<int> out = List<int>.filled(src.length, 0);
 
@@ -105,7 +106,7 @@ class ECB extends AES {
     }
     if (dst != null) {
       if (dst.length < out.length) {
-        throw ArgumentError("Destination size is small");
+        throw ArgumentException("Destination size is small");
       }
       dst.setAll(0, out);
       return dst;

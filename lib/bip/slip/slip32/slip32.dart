@@ -2,6 +2,7 @@ import 'package:blockchain_utils/bech32/bech32_base.dart';
 import 'package:blockchain_utils/bip/bip/bip32/bip32_key_data.dart';
 import 'package:blockchain_utils/bip/bip/bip32/bip32_path.dart';
 import 'package:blockchain_utils/bip/ecc/keys/i_keys.dart';
+import 'package:blockchain_utils/exception/exception.dart';
 
 import 'slip32_key_net_ver.dart';
 
@@ -162,7 +163,7 @@ class Slip32KeyDeserializer {
         keyNetVer.private) {
       return false;
     } else {
-      throw ArgumentError("Invalid extended key (wrong net version)");
+      throw ArgumentException("Invalid extended key (wrong net version)");
     }
   }
 
@@ -192,7 +193,7 @@ class Slip32KeyDeserializer {
     // If private key, the first byte shall be zero and shall be removed
     if (!isPublic) {
       if (keyBytes[0] != 0) {
-        throw ArgumentError(
+        throw ArgumentException(
             "Invalid extended private key (wrong secret: ${keyBytes[0]})");
       }
       keyBytes = keyBytes.sublist(1);

@@ -2,6 +2,7 @@ import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
 import 'package:blockchain_utils/bip/ecc/keys/i_keys.dart';
 import 'package:blockchain_utils/binary/utils.dart';
 import 'package:blockchain_utils/compare/compare.dart';
+import 'package:blockchain_utils/exception/exception.dart';
 
 /// Class for decode address utility functions.
 class AddrDecUtils {
@@ -13,7 +14,7 @@ class AddrDecUtils {
     final prefixGot = addr.sublist(0, prefix.length);
 
     if (!bytesEqual(prefix, prefixGot)) {
-      throw ArgumentError(
+      throw ArgumentException(
         'Invalid prefix (expected $prefix, got $prefixGot)',
       );
     }
@@ -29,7 +30,7 @@ class AddrDecUtils {
     final prefixGot = addr.substring(0, prefix.length);
 
     if (prefix != prefixGot) {
-      throw ArgumentError(
+      throw ArgumentException(
         'Invalid prefix (expected $prefix, got $prefixGot)',
       );
     }
@@ -43,7 +44,7 @@ class AddrDecUtils {
     int lenExp,
   ) {
     if (addr.length != lenExp) {
-      throw ArgumentError(
+      throw ArgumentException(
         'Invalid length (expected $lenExp, got ${addr.length})',
       );
     }
@@ -55,7 +56,7 @@ class AddrDecUtils {
     int lenExp,
   ) {
     if (addr.length != lenExp) {
-      throw ArgumentError(
+      throw ArgumentException(
         'Invalid length (expected $lenExp, got ${addr.length})',
       );
     }
@@ -69,9 +70,8 @@ class AddrDecUtils {
     try {
       IPublicKey.fromBytes(pubKeyBytes, curveType);
     } catch (e) {
-      throw ArgumentError(
-          "Invalid $curveType public key (${BytesUtils.toHexString(pubKeyBytes)})",
-          e.toString());
+      throw ArgumentException(
+          "Invalid $curveType public key (${BytesUtils.toHexString(pubKeyBytes)})");
     }
   }
 
@@ -84,7 +84,7 @@ class AddrDecUtils {
     final checksumBytesGot = checksumFct(payloadBytes);
 
     if (!bytesEqual(checksumBytesExp, checksumBytesGot)) {
-      throw ArgumentError(
+      throw ArgumentException(
         'Invalid checksum',
       );
     }

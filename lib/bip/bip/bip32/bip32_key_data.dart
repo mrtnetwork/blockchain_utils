@@ -4,6 +4,7 @@ import 'package:blockchain_utils/binary/bit_utils.dart';
 import 'package:blockchain_utils/binary/utils.dart';
 import 'package:blockchain_utils/compare/compare.dart';
 import 'package:blockchain_utils/numbers/int_utils.dart';
+import 'package:blockchain_utils/exception/exception.dart';
 
 /// Class container for BIP32 key data constants.
 class Bip32KeyDataConst {
@@ -54,7 +55,7 @@ class Bip32FingerPrint {
   factory Bip32FingerPrint([List<int>? fprint]) {
     fprint ??= List<int>.from(Bip32KeyDataConst.fingerprintMasterKey);
     if (fprint.length < fixedLength()) {
-      throw ArgumentError("Invalid fingerprint length");
+      throw ArgumentException("Invalid fingerprint length");
     }
     fprint = fprint.sublist(0, fixedLength());
     return Bip32FingerPrint._(fprint);
@@ -88,7 +89,7 @@ class Bip32Depth {
     /// Construct class.
 
     if (depth < 0) {
-      throw ArgumentError("Invalid depth ($depth)");
+      throw ArgumentException("Invalid depth ($depth)");
     }
     _depth = depth;
   }
@@ -152,7 +153,7 @@ class Bip32KeyIndex {
 
   Bip32KeyIndex(int index) {
     if (index < 0 || index > Bip32KeyDataConst.keyIndexMaxVal) {
-      throw ArgumentError("Invalid key index ($index)");
+      throw ArgumentException("Invalid key index ($index)");
     }
     _index = index;
   }

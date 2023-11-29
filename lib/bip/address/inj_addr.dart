@@ -1,5 +1,4 @@
 import 'package:blockchain_utils/bech32/bech32_base.dart';
-import 'package:blockchain_utils/bech32/bech32_ex.dart';
 import 'package:blockchain_utils/bip/address/addr_dec_utils.dart';
 import 'package:blockchain_utils/bip/address/eth_addr.dart';
 import 'package:blockchain_utils/bip/address/decoder.dart';
@@ -25,22 +24,18 @@ class InjAddrDecoder implements BlockchainAddressDecoder {
   ///   A List<int> containing the decoded INJ address.
   @override
   List<int> decodeAddr(String addr, [Map<String, dynamic> kwargs = const {}]) {
-    try {
-      /// Decode the Bech32-encoded address using the INJ address human-readable part (hrp).
-      final addrDecBytes = Bech32Decoder.decode(
-        CoinsConf.injective.params.addrHrp!,
-        addr,
-      );
+    /// Decode the Bech32-encoded address using the INJ address human-readable part (hrp).
+    final addrDecBytes = Bech32Decoder.decode(
+      CoinsConf.injective.params.addrHrp!,
+      addr,
+    );
 
-      /// Validate the length of the decoded address.
-      AddrDecUtils.validateBytesLength(
-        addrDecBytes,
-        EthAddrConst.addrLen ~/ 2,
-      );
-      return addrDecBytes;
-    } on Bech32ChecksumError catch (e) {
-      throw ArgumentError("Invalid bech32 checksum $e");
-    }
+    /// Validate the length of the decoded address.
+    AddrDecUtils.validateBytesLength(
+      addrDecBytes,
+      EthAddrConst.addrLen ~/ 2,
+    );
+    return addrDecBytes;
   }
 }
 

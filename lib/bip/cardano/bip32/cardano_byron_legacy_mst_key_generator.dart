@@ -2,6 +2,7 @@ import 'package:blockchain_utils/bip/bip/bip32/base/ibip32_mst_key_generator.dar
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
 import 'package:blockchain_utils/binary/bit_utils.dart';
 import 'package:blockchain_utils/cbor/types/bytes.dart';
+import 'package:blockchain_utils/exception/exception.dart';
 
 /// A class that holds constants related to the Cardano Byron legacy master key generation process.
 class CardanoByronLegacyMstKeyGeneratorConst {
@@ -19,7 +20,7 @@ class CardanoByronLegacyMstKeyGenerator extends IBip32MstKeyGenerator {
   (List<int>, List<int>) generateFromSeed(List<int> seedBytes) {
     if (seedBytes.length !=
         CardanoByronLegacyMstKeyGeneratorConst.seedByteLen) {
-      throw ArgumentError('Invalid seed length (${seedBytes.length})');
+      throw ArgumentException('Invalid seed length (${seedBytes.length})');
     }
     return _hashRepeatedly(CborBytesValue(seedBytes).encode(), 1);
   }

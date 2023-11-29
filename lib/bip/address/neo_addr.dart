@@ -1,5 +1,4 @@
 import 'package:blockchain_utils/base58/base58_base.dart';
-import 'package:blockchain_utils/base58/base58_ex.dart';
 import 'package:blockchain_utils/bip/address/addr_dec_utils.dart';
 import 'package:blockchain_utils/bip/address/addr_key_validator.dart';
 import 'package:blockchain_utils/bip/address/decoder.dart';
@@ -8,6 +7,7 @@ import 'package:blockchain_utils/crypto/quick_crypto.dart';
 import 'package:blockchain_utils/binary/utils.dart';
 import 'package:blockchain_utils/compare/compare.dart';
 import 'package:blockchain_utils/numbers/int_utils.dart';
+import 'package:blockchain_utils/exception/exception.dart';
 
 /// A class that defines constants for Neo (NEO) addresses.
 class NeoAddrConst {
@@ -38,13 +38,7 @@ class NeoAddrDecoder implements BlockchainAddressDecoder {
     /// Validate the version argument.
     AddrKeyValidator.validateAddressArgs<List<int>>(kwargs, "ver");
     List<int> verBytes = kwargs["ver"];
-    List<int> addrDecBytes;
-    try {
-      /// Decode the Base58 address and retrieve the decoded bytes.
-      addrDecBytes = Base58Decoder.checkDecode(addr);
-    } on Base58ChecksumError catch (e) {
-      throw ArgumentError("Invalid base58 checksum $e");
-    }
+    List<int> addrDecBytes = Base58Decoder.checkDecode(addr);
 
     /// Validate the length of the decoded address.
     AddrDecUtils.validateBytesLength(
@@ -54,7 +48,7 @@ class NeoAddrDecoder implements BlockchainAddressDecoder {
     List<int> verGot = IntUtils.toBytes(addrDecBytes[0],
         length: IntUtils.bitlengthInBytes(addrDecBytes[0]));
     if (!bytesEqual(verGot, verBytes)) {
-      throw ArgumentError(
+      throw ArgumentException(
           "Invalid version (expected ${BytesUtils.toHexString(verBytes)}, "
           "got ${BytesUtils.toHexString(verGot)})");
     }

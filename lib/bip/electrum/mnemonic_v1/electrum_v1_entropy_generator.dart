@@ -1,4 +1,5 @@
 import 'package:blockchain_utils/bip/mnemonic/entropy_generator.dart';
+import 'package:blockchain_utils/exception/exception.dart';
 
 /// Constants related to Electrum V1 entropy bit lengths.
 class ElectrumV1EntropyBitLen {
@@ -25,7 +26,7 @@ class ElectrumV1EntropyGenerator extends EntropyGenerator {
       {int bitLength = ElectrumV1EntropyBitLen.bitLen128})
       : super(bitLength) {
     if (!isValidEntropyBitLength(bitLength)) {
-      throw ArgumentError('Entropy bit length is not valid ($bitLength)');
+      throw ArgumentException('Entropy bit length is not valid ($bitLength)');
     }
   }
 

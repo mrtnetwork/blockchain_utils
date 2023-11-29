@@ -1,4 +1,5 @@
 import 'package:blockchain_utils/bip/mnemonic/entropy_generator.dart';
+import 'package:blockchain_utils/exception/exception.dart';
 
 /// Contains constants representing different bit lengths for generating entropy.
 class MoneroEntropyBitLen {
@@ -23,7 +24,7 @@ class MoneroEntropyGenerator extends EntropyGenerator {
   /// Creates a Monero entropy generator with the given bit length.
   MoneroEntropyGenerator(int bitLen) : super(bitLen) {
     if (!isValidEntropyBitLen(bitLen)) {
-      throw ArgumentError('Entropy bit length is not valid ($bitLen)');
+      throw ArgumentException('Entropy bit length is not valid ($bitLen)');
     }
   }
 

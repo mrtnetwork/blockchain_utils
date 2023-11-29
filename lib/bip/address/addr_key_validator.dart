@@ -1,12 +1,13 @@
 import 'package:blockchain_utils/bip/ecc/keys/i_keys.dart';
 import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
+import 'package:blockchain_utils/exception/exception.dart';
 
 /// Class for address utility functions.
 class AddrKeyValidator {
   /// validate argrument by key
   static void validateAddressArgs<T>(Map<String, dynamic> kwargs, String key) {
     if (!kwargs.containsKey(key) || kwargs[key] is! T) {
-      throw ArgumentError('Missing required parameters: $key');
+      throw ArgumentException('Missing required parameters: $key');
     }
   }
 

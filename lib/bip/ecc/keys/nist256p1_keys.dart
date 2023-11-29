@@ -52,6 +52,7 @@
   OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+import 'package:blockchain_utils/binary/utils.dart';
 import 'package:blockchain_utils/bip/ecc/keys/ecdsa_keys.dart';
 import 'package:blockchain_utils/bip/ecc/keys/i_keys.dart';
 import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
@@ -120,6 +121,10 @@ class Nist256p1PublicKey implements IPublicKey {
   int get uncompressedLength {
     return EcdsaKeysConst.pubKeyUncompressedByteLen;
   }
+
+  String toHex() {
+    return BytesUtils.toHexString(compressed);
+  }
 }
 
 /// A class representing a NIST P-256 private key that implements the IPrivateKey interface.
@@ -167,5 +172,9 @@ class Nist256p1PrivateKey implements IPrivateKey {
   @override
   List<int> get raw {
     return privateKey.toBytes();
+  }
+
+  String toHex() {
+    return BytesUtils.toHexString(raw);
   }
 }

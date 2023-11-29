@@ -3,6 +3,7 @@ import 'package:blockchain_utils/bip/substrate/conf/substrate_conf.dart';
 import 'package:blockchain_utils/bip/substrate/substrate_ex.dart';
 import 'package:blockchain_utils/bip/substrate/substrate_keys.dart';
 import 'package:blockchain_utils/crypto/crypto/schnorrkel/keys/keys.dart';
+import 'package:blockchain_utils/exception/exception.dart';
 
 import 'conf/substrate_coins.dart';
 import 'substrate_path.dart';
@@ -34,7 +35,7 @@ class Substrate {
   /// Create a Substrate context from a seed and coin type.
   factory Substrate.fromSeed(List<int> seedBytes, SubstrateCoins coinType) {
     if (seedBytes.length < SubstrateConst.seedMinByteLen) {
-      throw ArgumentError(
+      throw ArgumentException(
         'Seed length is too small, it shall be at least ${SubstrateConst.seedMinByteLen} bytes',
       );
     }

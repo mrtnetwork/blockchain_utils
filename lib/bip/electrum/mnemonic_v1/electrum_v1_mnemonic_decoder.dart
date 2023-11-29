@@ -5,6 +5,7 @@ import 'package:blockchain_utils/bip/electrum/mnemonic_v1/electrum_v1_mnemonic.d
 import 'package:blockchain_utils/bip/electrum/mnemonic_v1/electrum_v1_mnemonic_utils.dart';
 import 'package:blockchain_utils/bip/mnemonic/mnemonic_decoder_base.dart';
 import 'package:blockchain_utils/bip/mnemonic/mnemonic_utils.dart';
+import 'package:blockchain_utils/exception/exception.dart';
 
 /// A class for decoding Electrum V1 mnemonics, extending the MnemonicDecoderBase class.
 class ElectrumV1MnemonicDecoder extends MnemonicDecoderBase {
@@ -24,7 +25,7 @@ class ElectrumV1MnemonicDecoder extends MnemonicDecoderBase {
   /// the language if it was not specified during construction. Then, it converts the mnemonic
   /// words into entropy bytes by considering 3 words at a time, where 3 words represent 4 bytes.
   ///
-  /// Throws an ArgumentError if the mnemonic words count is not valid.
+  /// Throws an ArgumentException if the mnemonic words count is not valid.
   ///
   /// Returns a List<int> containing the decoded entropy bytes.
   ///
@@ -42,7 +43,7 @@ class ElectrumV1MnemonicDecoder extends MnemonicDecoderBase {
       ElectrumV1MnemonicConst.mnemonicWordNum
           .firstWhere((element) => element.value == wCount);
     } on StateError {
-      throw ArgumentError('Mnemonic words count is not valid ($wCount)');
+      throw ArgumentException('Mnemonic words count is not valid ($wCount)');
     }
 
     // Detect language if it was not specified at construction

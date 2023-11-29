@@ -5,6 +5,7 @@ import 'package:blockchain_utils/bip/bip/bip32/bip32_key_data.dart';
 import 'package:blockchain_utils/bip/bip/bip32/bip32_keys.dart';
 import 'package:blockchain_utils/bip/bip/conf/bip_coin_conf.dart';
 import 'package:blockchain_utils/bip/wif/wif.dart';
+import 'package:blockchain_utils/exception/exception.dart';
 
 /// Represents a BIP44 public key for a specific cryptocurrency coin. This class
 /// ensures that the elliptic curve type of the public key matches the coin's
@@ -25,7 +26,7 @@ class Bip44PublicKey {
   /// key matches the coin's configuration.
   factory Bip44PublicKey(Bip32PublicKey pubKey, CoinConfig coinConf) {
     if (pubKey.curveType != coinConf.type) {
-      throw ArgumentError(
+      throw ArgumentException(
         'The public key elliptic curve (${pubKey.curveType}) shall match '
         'the coin configuration one (${coinConf.type})',
       );
@@ -66,12 +67,12 @@ class Bip44PublicKey {
   String get toAddress {
     BlockchainAddressEncoder encoder = coinConf.encoder();
     if (encoder is AdaShelleyAddrEncoder) {
-      throw ArgumentError(
+      throw ArgumentException(
           'Use the CardanoShelley class to get Cardano Shelley addresses');
     }
     // Exception for Monero
     if (encoder is XmrAddrEncoder) {
-      throw ArgumentError('Use the Monero class to get Monero addresses');
+      throw ArgumentException('Use the Monero class to get Monero addresses');
     }
     return encoder.encodeKey(
         pubKey.pubKey.compressed, coinConf.getParams(pubKey));
@@ -97,7 +98,7 @@ class Bip44PrivateKey {
   /// key matches the coin's configuration.
   factory Bip44PrivateKey(Bip32PrivateKey privKey, CoinConfig coinConf) {
     if (privKey.curveType != coinConf.type) {
-      throw ArgumentError(
+      throw ArgumentException(
         'The private key elliptic curve (${privKey.curveType}) shall match the coin configuration one (${coinConf.type})',
       );
     }

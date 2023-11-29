@@ -1,5 +1,4 @@
-import 'bech32_base.dart';
-import 'bech32_utils.dart';
+import 'package:blockchain_utils/blockchain_utils.dart';
 
 /// A utility class containing constants used for segwit Bech32 encoding and decoding.
 class SegwitBech32Const {
@@ -87,7 +86,7 @@ class SegwitBech32Decoder extends Bech32DecoderBase {
 
     // Check HRP
     if (hrp != null && hrp != hrpGot) {
-      throw FormatException(
+      throw ArgumentException(
           'Invalid format (HRP not valid, expected $hrp, got $hrpGot)');
     }
 
@@ -97,21 +96,21 @@ class SegwitBech32Decoder extends Bech32DecoderBase {
     // Check data length
     if (convData.length < SegwitBech32Const.witnessProgMinByteLen ||
         convData.length > SegwitBech32Const.witnessProgMaxByteLen) {
-      throw FormatException(
+      throw ArgumentException(
           'Invalid format (witness program length not valid: ${convData.length})');
     }
 
     // Check witness version
     final witVer = data[0];
     if (witVer > SegwitBech32Const.witnessVerMaxVal) {
-      throw FormatException(
+      throw ArgumentException(
           'Invalid format (witness version not valid: $witVer)');
     }
 
     if (witVer == 0 &&
         !SegwitBech32Const.witnessVerZeroDataByteLen
             .contains(convData.length)) {
-      throw FormatException(
+      throw ArgumentException(
           'Invalid format (length not valid: ${convData.length})');
     }
 

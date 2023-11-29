@@ -1,3 +1,4 @@
+import 'package:blockchain_utils/binary/utils.dart';
 import 'package:blockchain_utils/bip/ecc/keys/i_keys.dart';
 import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/point/ristretto_point.dart';
@@ -69,6 +70,10 @@ class Sr25519PublicKey implements IPublicKey {
   int get uncompressedLength {
     return length;
   }
+
+  String toHex() {
+    return BytesUtils.toHexString(compressed);
+  }
 }
 
 /// A class representing an Sr25519 private key that implements the IPrivateKey interface.
@@ -115,5 +120,9 @@ class Sr25519PrivateKey implements IPrivateKey {
   @override
   List<int> get raw {
     return secretKey.toBytes();
+  }
+
+  String toHex() {
+    return BytesUtils.toHexString(raw);
   }
 }

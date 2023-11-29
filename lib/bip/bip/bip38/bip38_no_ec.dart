@@ -6,6 +6,7 @@ import 'package:blockchain_utils/binary/utils.dart';
 import 'package:blockchain_utils/crypto/crypto/scrypt/scrypt.dart';
 import 'package:blockchain_utils/compare/compare.dart';
 import 'package:blockchain_utils/string/string.dart';
+import 'package:blockchain_utils/exception/exception.dart';
 
 import 'bip38_ec.dart';
 
@@ -196,7 +197,7 @@ class Bip38NoEcDecrypter {
     final privKeyEncBytes = Base58Decoder.checkDecode(privKeyEnc);
 
     if (privKeyEncBytes.length != Bip38NoEcConst.encKeyByteLen) {
-      throw ArgumentError(
+      throw ArgumentException(
           'Invalid encrypted key length (${privKeyEncBytes.length})');
     }
 
@@ -208,11 +209,12 @@ class Bip38NoEcDecrypter {
 
     // Check prefix and flagbyte
     if (!bytesEqual(prefix, Bip38NoEcConst.encKeyPrefix)) {
-      throw ArgumentError('Invalid prefix (${BytesUtils.toHexString(prefix)})');
+      throw ArgumentException(
+          'Invalid prefix (${BytesUtils.toHexString(prefix)})');
     }
     if (flagbyte[0] != Bip38NoEcConst.flagbyteCompressed.first &&
         flagbyte[0] != Bip38NoEcConst.flagbyteUncompressed.first) {
-      throw ArgumentError(
+      throw ArgumentException(
           'Invalid flagbyte (${BytesUtils.toHexString(flagbyte)})');
     }
 
@@ -235,7 +237,7 @@ class Bip38NoEcDecrypter {
     // Verify the address hash
     final addressHashGot = Bip38NoEcUtils.addressHash(privKeyBytes, pubKeyMode);
     if (!bytesEqual(addressHash, addressHashGot)) {
-      throw ArgumentError(
+      throw ArgumentException(
           'Invalid address hash (expected: ${BytesUtils.toHexString(addressHash)}, '
           'got: ${BytesUtils.toHexString(addressHashGot)})');
     }

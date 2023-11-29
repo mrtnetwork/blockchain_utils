@@ -1,5 +1,6 @@
 import 'package:blockchain_utils/bip/electrum/mnemonic_v2/electrum_v2_mnemonic.dart';
 import 'package:blockchain_utils/bip/mnemonic/entropy_generator.dart';
+import 'package:blockchain_utils/exception/exception.dart';
 
 /// Constants representing bit lengths for Electrum V2 entropy.
 class ElectrumV2EntropyBitLen {
@@ -28,8 +29,7 @@ class ElectrumV2EntropyGenerator extends EntropyGenerator {
   /// [bitLen]: The desired bit length for generating Electrum V2 entropy.
   ElectrumV2EntropyGenerator(int bitLen) : super(bitLen) {
     if (!isValidEntropyBitLen(bitLen)) {
-      throw ArgumentError.value(
-          bitLen, 'bitLen', 'Entropy bit length is not valid');
+      throw ArgumentException('Entropy bit length is not valid');
     }
   }
 

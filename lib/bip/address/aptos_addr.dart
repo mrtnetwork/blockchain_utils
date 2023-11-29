@@ -29,7 +29,7 @@ class AptosAddrDecoder implements BlockchainAddressDecoder {
   /// - A List<int> containing the decoded address bytes.
   ///
   /// Throws:
-  /// - ArgumentError if the provided string is not a valid hex encoding.
+  /// - ArgumentException if the provided string is not a valid hex encoding.
   ///
   /// This method is used to convert an Aptos blockchain address from its string
   /// representation to its binary format for further processing.
@@ -43,11 +43,7 @@ class AptosAddrDecoder implements BlockchainAddressDecoder {
     AddrDecUtils.validateLength(
         addrNoPrefix, QuickCrypto.sha3256DigestSize * 2);
 
-    try {
-      return BytesUtils.fromHexString(addrNoPrefix);
-    } on FormatException catch (e) {
-      throw ArgumentError("Invalid hex encoding $e");
-    }
+    return BytesUtils.fromHexString(addrNoPrefix);
   }
 }
 

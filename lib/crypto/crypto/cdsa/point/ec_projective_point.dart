@@ -27,6 +27,7 @@ import 'package:blockchain_utils/numbers/bigint_utils.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/curve/curve.dart';
 import 'base.dart';
 import 'point.dart';
+import 'package:blockchain_utils/exception/exception.dart';
 
 /// Represents a point in projective coordinates on an elliptic curve.
 class ProjectiveECCPoint extends AbstractPoint {
@@ -363,7 +364,7 @@ class ProjectiveECCPoint extends AbstractPoint {
   factory ProjectiveECCPoint.fromAffine(AbstractPoint point,
       {bool generator = false}) {
     if (point is! ProjectiveECCPoint && point is! AffinePointt) {
-      throw ArgumentError("invalid Affine point");
+      throw ArgumentException("invalid Affine point");
     }
     return ProjectiveECCPoint._(
         point.curve as CurveFp, [point.x, point.y, BigInt.one],
@@ -642,7 +643,7 @@ class ProjectiveECCPoint extends AbstractPoint {
       other = ProjectiveECCPoint.fromAffine(other);
     }
     if (curve != other.curve) {
-      throw ArgumentError("The other point is on a different curve");
+      throw ArgumentException("The other point is on a different curve");
     }
     other as ProjectiveECCPoint;
 

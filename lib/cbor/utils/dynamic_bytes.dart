@@ -1,3 +1,4 @@
+import 'package:blockchain_utils/blockchain_utils.dart';
 import 'package:blockchain_utils/cbor/core/tags.dart';
 import 'package:blockchain_utils/binary/binary_operation.dart';
 
@@ -44,7 +45,7 @@ class CborBytesTracker {
   void pushBytes(List<int> chunk) {
     for (final i in chunk) {
       if (i < 0 || i > 0xff) {
-        throw FormatException(
+        throw ArgumentException(
             "invalid byte ${chunk[i] < 0 ? "-" : ""}0x${chunk[i].abs().toRadixString(16)}");
       }
     }

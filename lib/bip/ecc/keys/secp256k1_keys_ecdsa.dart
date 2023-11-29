@@ -1,3 +1,4 @@
+import 'package:blockchain_utils/binary/utils.dart';
 import 'package:blockchain_utils/bip/ecc/keys/ecdsa_keys.dart';
 import 'package:blockchain_utils/bip/ecc/keys/i_keys.dart';
 import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
@@ -67,6 +68,10 @@ class Secp256k1PublicKeyEcdsa implements IPublicKey {
   int get uncompressedLength {
     return EcdsaKeysConst.pubKeyUncompressedByteLen;
   }
+
+  String toHex() {
+    return BytesUtils.toHexString(compressed);
+  }
 }
 
 /// A class representing a Secp256k1 private key using the ECDSA algorithm that implements the IPrivateKey interface.
@@ -114,5 +119,9 @@ class Secp256k1PrivateKeyEcdsa implements IPrivateKey {
   @override
   List<int> get raw {
     return privateKey.toBytes();
+  }
+
+  String toHex() {
+    return BytesUtils.toHexString(raw);
   }
 }

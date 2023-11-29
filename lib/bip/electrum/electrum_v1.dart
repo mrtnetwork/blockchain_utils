@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:blockchain_utils/exception/exception.dart';
 import 'package:blockchain_utils/numbers/bigint_utils.dart';
 import 'package:blockchain_utils/bip/address/p2pkh_addr.dart';
 import 'package:blockchain_utils/bip/bip/bip32/bip32_key_data.dart';
@@ -44,7 +45,8 @@ class ElectrumV1 {
   /// Get the master private key, throwing an exception if it's a public-only key.
   IPrivateKey get masterPrivateKey {
     if (isPublicOnly) {
-      throw Exception('Public-only deterministic keys have no private half');
+      throw MessageException(
+          'Public-only deterministic keys have no private half');
     }
     return privateKey!;
   }
@@ -57,7 +59,8 @@ class ElectrumV1 {
   /// Get a private key for a specific change and address index, throwing an exception if it's a public-only key.
   IPrivateKey getPrivateKey(int changeIndex, int addrIndex) {
     if (isPublicOnly) {
-      throw Exception('Public-only deterministic keys have no private half');
+      throw MessageException(
+          'Public-only deterministic keys have no private half');
     }
     return _derivePrivateKey(changeIndex, addrIndex);
   }

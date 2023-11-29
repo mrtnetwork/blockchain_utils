@@ -11,6 +11,7 @@ import 'package:blockchain_utils/crypto/crypto/cdsa/utils/ristretto_utils.dart'
 import 'package:blockchain_utils/crypto/crypto/schnorrkel/merlin/transcript.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
 import 'package:blockchain_utils/compare/compare.dart';
+import 'package:blockchain_utils/exception/exception.dart';
 
 /// The `ExpansionMode` enum defines different expansion modes used in Schnorr signatures (Schnorrkel).
 ///
@@ -77,7 +78,7 @@ class VRFProof {
     final c = bytes.sublist(0, 32);
     final s = bytes.sublist(32);
     if (!_KeyUtils.isCanonical(c) || !_KeyUtils.isCanonical(s)) {
-      throw ArgumentError("invalid VRF proof bytes");
+      throw ArgumentException("invalid VRF proof bytes");
     }
     return VRFProof._(c, s);
   }
@@ -138,7 +139,7 @@ class _KeyUtils {
   /// - `name`: A descriptive name for the byte data, used in error messages.
   static void _checkKeysBytes(List<int> bytes, int expected, String name) {
     if (bytes.length != expected) {
-      throw ArgumentError(
+      throw ArgumentException(
           "invalid $name bytes length expected $expected but ${bytes.length}");
     }
   }
@@ -320,7 +321,7 @@ class SchnorrkelSecretKey {
   /// A `SchnorrkelSecretKey` instance if the input components are valid and in canonical form.
   ///
   /// Throws:
-  /// - An `ArgumentError` if the input components are invalid or not in canonical form.
+  /// - An `ArgumentException` if the input components are invalid or not in canonical form.
   factory SchnorrkelSecretKey(List<int> key, List<int> nonce) {
     _KeyUtils._checkKeysBytes(
         key, SchnorrkelKeyCost.miniSecretLength, "mini secret key");
@@ -328,7 +329,7 @@ class SchnorrkelSecretKey {
     if (_KeyUtils.isCanonical(key)) {
       return SchnorrkelSecretKey._(key, nonce);
     }
-    throw ArgumentError("invalid key");
+    throw ArgumentException("invalid key");
   }
 
   /// Creates a `SchnorrkelSecretKey` instance from a byte representation of a secret key.
@@ -340,7 +341,7 @@ class SchnorrkelSecretKey {
   /// A `SchnorrkelSecretKey` instance derived from the provided byte representation.
   ///
   /// Throws:
-  /// - An `ArgumentError` if the byte array does not have the correct length for a secret key.
+  /// - An `ArgumentException` if the byte array does not have the correct length for a secret key.
   factory SchnorrkelSecretKey.fromBytes(List<int> secretKeyBytes) {
     _KeyUtils._checkKeysBytes(
         secretKeyBytes, SchnorrkelKeyCost.secretKeyLength, "secret key");
@@ -360,7 +361,7 @@ class SchnorrkelSecretKey {
   /// A `SchnorrkelSecretKey` instance derived from the provided Ed25519 secret key representation.
   ///
   /// Throws:
-  /// - An `ArgumentError` if the byte array does not have the correct length for a secret key.
+  /// - An `ArgumentException` if the byte array does not have the correct length for a secret key.
   factory SchnorrkelSecretKey.fromEd25519(List<int> secretKeyBytes) {
     _KeyUtils._checkKeysBytes(
         secretKeyBytes, SchnorrkelKeyCost.secretKeyLength, "secret key");
@@ -503,7 +504,7 @@ class SchnorrkelSecretKey {
     final derivePub = publicKey()._deriveScalarAndChainCode(chainCode, message);
     final nonce = nonceGenerator?.call(32) ?? QuickCrypto.generateRandom(32);
     if (nonce.length != 32) {
-      throw ArgumentError("invalid random bytes length");
+      throw ArgumentException("invalid random bytes length");
     }
     final newKey = ristretto_tools.add(key(), derivePub.$1);
     final combine = List<int>.from([...newKey, ...nonce]);
@@ -541,7 +542,7 @@ class SchnorrkelSecretKey {
     final nonceRand =
         nonceGenerator?.call(64) ?? QuickCrypto.generateRandom(64);
     if (nonceRand.length != 64) {
-      throw ArgumentError("invalid random bytes length");
+      throw ArgumentException("invalid random bytes length");
     }
     final nonceBytes = Ed25519Utils.scalarReduce(nonceRand);
     final nonceBigint =
@@ -622,7 +623,7 @@ class SchnorrkelSecretKey {
     }
     final nonce = nonceGenerator?.call(64) ?? QuickCrypto.generateRandom(64);
     if (nonce.length != 64) {
-      throw ArgumentError("invalid random bytes length");
+      throw ArgumentException("invalid random bytes length");
     }
     final n = Ed25519Utils.scalarReduce(nonce);
     final scalar = BigintUtils.fromBytes(n, byteOrder: Endian.little);
@@ -988,14 +989,14 @@ class SchnorrkelSignature {
     final r = signatureBytes.sublist(0, 32);
     final s = signatureBytes.sublist(32, SchnorrkelKeyCost.signatureLength);
     if (s[31] & 128 == 0) {
-      throw ArgumentError(
+      throw ArgumentException(
           "Signature not marked as schnorrkel, maybe try ed25519 instead.");
     }
 
     if (_KeyUtils.isCanonical(s)) {
       return SchnorrkelSignature._(s, r);
     }
-    throw ArgumentError("invalid signature");
+    throw ArgumentException("invalid signature");
   }
 
   /// private constructor

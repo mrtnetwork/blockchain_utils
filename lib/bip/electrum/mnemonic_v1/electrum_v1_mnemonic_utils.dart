@@ -1,6 +1,7 @@
 import 'package:blockchain_utils/bip/electrum/mnemonic_v1/electrum_v1_mnemonic.dart';
 import 'package:blockchain_utils/bip/mnemonic/mnemonic.dart';
 import 'package:blockchain_utils/bip/mnemonic/mnemonic_utils.dart';
+import 'package:blockchain_utils/exception/exception.dart';
 
 /// A class responsible for fetching Electrum V1 mnemonic word lists based on language.
 class ElectrumV1WordsListGetter extends MnemonicWordsListGetterBase {
@@ -11,7 +12,7 @@ class ElectrumV1WordsListGetter extends MnemonicWordsListGetterBase {
   /// is compatible with Electrum V1 mnemonics. It then uses the `loadWordsList` function to load the appropriate
   /// word list based on the language and the predefined words list number.
   ///
-  /// Throws an ArgumentError if the provided language is not compatible with Electrum V1 mnemonics.
+  /// Throws an ArgumentException if the provided language is not compatible with Electrum V1 mnemonics.
   ///
   /// Returns the Electrum V1 mnemonic word list for the specified language.
   ///
@@ -19,7 +20,8 @@ class ElectrumV1WordsListGetter extends MnemonicWordsListGetterBase {
   @override
   MnemonicWordsList getByLanguage(MnemonicLanguages language) {
     if (language is! ElectrumV1Languages) {
-      throw ArgumentError("Language is not an enumerative of Bip39Languages");
+      throw ArgumentException(
+          "Language is not an enumerative of Bip39Languages");
     }
     return loadWordsList(language, ElectrumV1MnemonicConst.wordsListNum);
   }
@@ -48,10 +50,10 @@ class ElectrumV1WordsListFinder extends MnemonicWordsListFinderBase {
           wordsList.getWordIdx(word);
         }
         return (wordsList, lang);
-      } on StateError {
+      } on MessageException {
         continue;
       }
     }
-    throw StateError("cannot find language for ${mnemonic.toStr()}");
+    throw MessageException("cannot find language for $mnemonic");
   }
 }

@@ -3,6 +3,7 @@ import 'package:blockchain_utils/bip/bip/bip39/bip39_mnemonic_utils.dart';
 import 'package:blockchain_utils/bip/electrum/mnemonic_v2/electrum_v2_mnemonic.dart';
 import 'package:blockchain_utils/bip/electrum/mnemonic_v2/electrum_v2_mnemonic_utils.dart';
 import 'package:blockchain_utils/bip/mnemonic/mnemonic_decoder_base.dart';
+import 'package:blockchain_utils/exception/exception.dart';
 
 /// A class for decoding Electrum V2 mnemonics, extending the MnemonicDecoderBase class.
 class ElectrumV2MnemonicDecoder extends MnemonicDecoderBase {
@@ -44,12 +45,12 @@ class ElectrumV2MnemonicDecoder extends MnemonicDecoderBase {
       ElectrumV2MnemonicConst.mnemonicWordNum
           .firstWhere((element) => element.value == wCount);
     } on StateError {
-      throw ArgumentError('Mnemonic words count is not valid ($wCount)');
+      throw ArgumentException('Mnemonic words count is not valid ($wCount)');
     }
 
     /// Check the validity of the mnemonic for the specified mnemonic type
     if (!ElectrumV2MnemonicUtils.isValidMnemonic(mnemonicObj, mnemonicType)) {
-      throw ArgumentError('Invalid mnemonic');
+      throw ArgumentException('Invalid mnemonic');
     }
 
     /// Get the list of words from the mnemonic

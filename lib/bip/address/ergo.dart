@@ -6,6 +6,7 @@ import 'package:blockchain_utils/bip/address/encoder.dart';
 import 'package:blockchain_utils/bip/ecc/keys/ecdsa_keys.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
 import 'package:blockchain_utils/numbers/int_utils.dart';
+import 'package:blockchain_utils/exception/exception.dart';
 
 /// An enumeration representing different Ergo address types.
 enum ErgoAddressTypes {
@@ -68,14 +69,14 @@ class ErgoP2PKHAddrDecoder implements BlockchainAddressDecoder {
   ///   - [net_type]: The network type for the Ergo address (mainnet or testnet).
   ///
   /// Returns a List<int> representing the public key bytes decoded from the address.
-  /// Throws an ArgumentError if the address type is not of ErgoNetworkTypes.
+  /// Throws an ArgumentException if the address type is not of ErgoNetworkTypes.
   @override
   List<int> decodeAddr(String addr, [Map<String, dynamic> kwargs = const {}]) {
     final netType = kwargs['net_type'] ?? ErgoNetworkTypes.mainnet;
 
     /// Validate network type
     if (netType is! ErgoNetworkTypes) {
-      throw ArgumentError(
+      throw ArgumentException(
           'Address type is not an enumerative of ErgoNetworkTypes');
     }
     final addrDecBytes = Base58Decoder.decode(addr);
@@ -114,14 +115,14 @@ class ErgoP2PKHAddrEncoder implements BlockchainAddressEncoder {
   ///   - [net_type]: The network type for the Ergo address (mainnet or testnet).
   ///
   /// Returns an Ergo address as a string.
-  /// Throws an ArgumentError if the address type is not of ErgoNetworkTypes.
+  /// Throws an ArgumentException if the address type is not of ErgoNetworkTypes.
   @override
   String encodeKey(List<int> pubKey, [Map<String, dynamic> kwargs = const {}]) {
     final netType = kwargs['net_type'] ?? ErgoNetworkTypes.mainnet;
 
     /// Validate network type
     if (netType is! ErgoNetworkTypes) {
-      throw ArgumentError(
+      throw ArgumentException(
           'Address type is not an enumerative of ErgoNetworkTypes');
     }
 

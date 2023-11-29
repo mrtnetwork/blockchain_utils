@@ -4,6 +4,7 @@ import 'package:blockchain_utils/bip/bip/bip39/bip39_mnemonic_utils.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
 import 'package:blockchain_utils/binary/utils.dart';
 import 'package:blockchain_utils/bip/mnemonic/mnemonic_encoder_base.dart';
+import 'package:blockchain_utils/exception/exception.dart';
 
 /// BIP39 Mnemonic Encoder for generating mnemonic phrases.
 ///
@@ -37,7 +38,8 @@ class Bip39MnemonicEncoder extends MnemonicEncoderBase {
   Bip39Mnemonic encode(List<int> entropyBytes) {
     final entropyByteLen = entropyBytes.length;
     if (!Bip39EntropyGenerator.isValidEntropyByteLen(entropyByteLen)) {
-      throw ArgumentError('Entropy byte length ($entropyByteLen) is not valid');
+      throw ArgumentException(
+          'Entropy byte length ($entropyByteLen) is not valid');
     }
 
     final entropyBinStr =

@@ -6,6 +6,7 @@ import 'package:blockchain_utils/crypto/crypto/cdsa/rfc6979/rfc6979.dart';
 import 'package:blockchain_utils/crypto/crypto/hash/hash.dart';
 import 'package:blockchain_utils/numbers/bigint_utils.dart';
 import 'dart:math' as math;
+import 'package:blockchain_utils/exception/exception.dart';
 
 /// The [EcdsaSigningKey] class represents a key pair for ECDSA (Elliptic Curve Digital Signature Algorithm) signing.
 /// It encapsulates the private key and provides methods for signing digests and generating deterministic signatures.
@@ -21,14 +22,14 @@ class EcdsaSigningKey {
 
   /// Truncates and converts a digest into a BigInt, based on the provided [generator].
   ///
-  /// Throws an [ArgumentError] if the digest length exceeds the curve's base length when [truncate] is false.
+  /// Throws an [ArgumentException] if the digest length exceeds the curve's base length when [truncate] is false.
   static BigInt _truncateAndConvertDigest(
       List<int> digest, ProjectiveECCPoint generator,
       {bool truncate = false}) {
     List<int> digestBytes = List.from(digest);
     if (!truncate) {
       if (digest.length > generator.curve.baselen) {
-        throw ArgumentError("this curve is too short for digest length");
+        throw ArgumentException("this curve is too short for digest length");
       }
     } else {
       digestBytes = digest.sublist(0, generator.curve.baselen);

@@ -2,6 +2,7 @@ import 'package:blockchain_utils/bip/monero/mnemonic/monero_mnemonic.dart';
 import 'package:blockchain_utils/bip/mnemonic/mnemonic.dart';
 import 'package:blockchain_utils/bip/mnemonic/mnemonic_utils.dart';
 import 'package:blockchain_utils/crypto/crypto/crc32/crc32.dart';
+import 'package:blockchain_utils/exception/exception.dart';
 import 'package:blockchain_utils/string/string.dart';
 
 /// A class that retrieves Monero mnemonic word lists by language.
@@ -16,13 +17,14 @@ class MoneroWordsListGetter extends MnemonicWordsListGetterBase {
   /// Then, it loads the Monero mnemonic word list corresponding to the specified language
   /// using `loadWordsList` and the number of word lists defined in `MoneroMnemonicConst`.
   ///
-  /// Throws an `ArgumentError` if the language is not a valid Monero language.
+  /// Throws an `ArgumentException` if the language is not a valid Monero language.
   ///
   /// [language]: The Monero language for which to retrieve the word list.
   @override
   MnemonicWordsList getByLanguage(MnemonicLanguages language) {
     if (language is! MoneroLanguages) {
-      throw ArgumentError("Language is not an enumerative of MoneroLanguages");
+      throw ArgumentException(
+          "Language is not an enumerative of MoneroLanguages");
     }
     return loadWordsList(language, MoneroMnemonicConst.wordsListNum);
   }
@@ -52,11 +54,11 @@ class MoneroWordsListFinder extends MnemonicWordsListFinderBase {
           wordsList.getWordIdx(word);
         }
         return (wordsList, lang);
-      } on StateError {
+      } on MessageException {
         continue;
       }
     }
-    throw StateError("cannot find language for ${mnemonic.toStr()}");
+    throw MessageException("cannot find language for $mnemonic");
   }
 }
 

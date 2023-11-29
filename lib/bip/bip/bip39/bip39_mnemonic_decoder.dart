@@ -7,6 +7,7 @@ import 'package:blockchain_utils/bip/mnemonic/mnemonic.dart';
 import 'package:blockchain_utils/bip/mnemonic/mnemonic_decoder_base.dart';
 import 'package:blockchain_utils/bip/mnemonic/mnemonic_ex.dart';
 import 'package:blockchain_utils/bip/mnemonic/mnemonic_utils.dart';
+import 'package:blockchain_utils/exception/exception.dart';
 
 /// BIP39 (Bitcoin Improvement Proposal 39) mnemonic decoder class.
 ///
@@ -108,7 +109,7 @@ class Bip39MnemonicDecoder extends MnemonicDecoderBase {
       Bip39MnemonicConst.mnemonicWordNum
           .firstWhere((element) => element.value == wCount);
     } on StateError {
-      throw ArgumentError('Mnemonic words count is not valid ($wCount)');
+      throw ArgumentException('Mnemonic words count is not valid ($wCount)');
     }
     final wordsList = findLanguage(mnemonicObj).$1;
     final mnemonicBinStr = _mnemonicToBinaryStr(mnemonicObj, wordsList);

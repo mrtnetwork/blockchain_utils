@@ -4,6 +4,7 @@ import 'package:blockchain_utils/bip/bip/bip39/bip39_mnemonic_utils.dart';
 import 'package:blockchain_utils/bip/mnemonic/mnemonic_decoder_base.dart';
 import 'package:blockchain_utils/bip/mnemonic/mnemonic_ex.dart';
 import 'package:blockchain_utils/bip/mnemonic/mnemonic_utils.dart';
+import 'package:blockchain_utils/exception/exception.dart';
 
 /// Decodes Algorand mnemonics to obtain the corresponding entropy.
 class AlgorandMnemonicDecoder extends MnemonicDecoderBase {
@@ -28,7 +29,7 @@ class AlgorandMnemonicDecoder extends MnemonicDecoderBase {
       AlgorandMnemonicConst.mnemonicWordNum
           .firstWhere((element) => element.value == wLength);
     } on StateError {
-      throw ArgumentError('Mnemonic words count is not valid ($wLength)');
+      throw ArgumentException('Mnemonic words count is not valid ($wLength)');
     }
 
     final words = mnemonicObj.toList();

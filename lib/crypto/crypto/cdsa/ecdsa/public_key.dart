@@ -2,6 +2,7 @@ import 'package:blockchain_utils/numbers/bigint_utils.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/ecdsa/signature.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/point/base.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/point/ec_projective_point.dart';
+import 'package:blockchain_utils/exception/exception.dart';
 
 /// Represents an ECDSA (Elliptic Curve Digital Signature Algorithm) public key.
 class ECDSAPublicKey {
@@ -23,19 +24,19 @@ class ECDSAPublicKey {
 
     if (!(BigInt.zero <= point.x && point.x < p) ||
         !(BigInt.zero <= point.y && point.y < p)) {
-      throw ArgumentError("The public point has x or y out of range.");
+      throw ArgumentException("The public point has x or y out of range.");
     }
 
     if (verify && !curve.containsPoint(point.x, point.y)) {
-      throw ArgumentError("AffinePointt does not lay on the curve");
+      throw ArgumentException("AffinePointt does not lay on the curve");
     }
 
     if (n == null) {
-      throw ArgumentError("Generator point must have order.");
+      throw ArgumentException("Generator point must have order.");
     }
 
     if (verify && curve.cofactor() != BigInt.one && !(point * n).isInfinity) {
-      throw ArgumentError("Generator point order is bad.");
+      throw ArgumentException("Generator point order is bad.");
     }
   }
 

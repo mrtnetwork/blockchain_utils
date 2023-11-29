@@ -2,6 +2,7 @@ import 'package:blockchain_utils/bip/address/ada_shelley_addr.dart';
 import 'package:blockchain_utils/bip/bip/bip44/base/bip44_base.dart';
 import 'package:blockchain_utils/bip/cardano/cip1852/cip1852.dart';
 import 'package:blockchain_utils/bip/cardano/shelley/cardano_shelley_keys.dart';
+import 'package:blockchain_utils/exception/exception.dart';
 
 /// A class that represents a Cardano Shelley wallet, including both public and private keys.
 class CardanoShelley {
@@ -13,10 +14,10 @@ class CardanoShelley {
   /// Parameters:
   /// - `bipObj`: The Cip1852 Bip44 object used to initialize the wallet.
   ///
-  /// Throws an `ArgumentError` if the provided Bip object is not a Cip1852 instance.
+  /// Throws an `ArgumentException` if the provided Bip object is not a Cip1852 instance.
   factory CardanoShelley.fromCip1852Object(Bip44Base bip) {
     if (bip is! Cip1852) {
-      throw ArgumentError("The Bip object shall be a Cip1852 instance");
+      throw ArgumentException("The Bip object shall be a Cip1852 instance");
     }
     return CardanoShelley(bip, __deriveStakingKeys(bip));
   }
@@ -27,13 +28,13 @@ class CardanoShelley {
   /// - `bip`: The Bip44 Bip object for the wallet's address keys.
   /// - `bipSk`: The Bip44 Bip object for the wallet's staking keys.
   ///
-  /// Throws an `ArgumentError` if the provided Bip object is below the account level or if `bipSk` is not at the address index level.
+  /// Throws an `ArgumentException` if the provided Bip object is below the account level or if `bipSk` is not at the address index level.
   CardanoShelley(Bip44Base bip, Bip44Base bipSk) {
     if (bip.level.value < Bip44Levels.account.value) {
-      throw ArgumentError("The bipObj shall not be below account level");
+      throw ArgumentException("The bipObj shall not be below account level");
     }
     if (bipSk.level != Bip44Levels.addressIndex) {
-      throw ArgumentError("The bipSkObj shall be of address index level");
+      throw ArgumentException("The bipSkObj shall be of address index level");
     }
     bip44 = bip;
     bip44Sk = bipSk;

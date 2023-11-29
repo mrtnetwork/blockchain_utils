@@ -1,5 +1,6 @@
 import 'package:blockchain_utils/binary/binary_operation.dart';
 import 'package:blockchain_utils/crypto/crypto/hash/hash.dart';
+import 'package:blockchain_utils/exception/exception.dart';
 
 enum StobeSecParam {
   /// 128-bit security level
@@ -116,7 +117,7 @@ class Strobe {
   /// A new Strobe instance configured with the provided `customizationString` and `security` level.
   ///
   /// Throws:
-  /// - `ArgumentError` if the `security` level is not 128 or 256 bits, indicating an invalid security level.
+  /// - `ArgumentException` if the `security` level is not 128 or 256 bits, indicating an invalid security level.
   ///
   /// Example Usage:
   /// ```dart
@@ -152,7 +153,8 @@ class Strobe {
   void _run() {
     if (_initialized) {
       if (_buffer.length > strober) {
-        throw Exception("strobe: buffer is never supposed to reach strobeR");
+        throw MessageException(
+            "strobe: buffer is never supposed to reach strobeR");
       }
       _buffer.add(_posBegin);
       _buffer.add(0x04);
@@ -269,19 +271,20 @@ class Strobe {
             (StrobeFlags.I | StrobeFlags.T)) &&
         ((flags & (StrobeFlags.I | StrobeFlags.A)) != StrobeFlags.A)) {
       if (length == 0) {
-        throw Exception("A length should be set for this operation.");
+        throw MessageException("A length should be set for this operation.");
       }
       data = List<int>.filled(length, 0);
     } else {
       if (length != 0) {
-        throw Exception(
+        throw MessageException(
             "Output length must be zero except for PRF, send_MAC, and RATCHET operations.");
       }
       data = List<int>.from(dataConst);
     }
     if (more) {
       if (flags != _curFlags) {
-        throw Exception("Flag should be the same when streaming operations.");
+        throw MessageException(
+            "Flag should be the same when streaming operations.");
       }
     } else {
       // If `more` isn't set, this is a new operation. Do the begin_op sequence
@@ -303,7 +306,7 @@ class Strobe {
     } else if ((flags & (StrobeFlags.I | StrobeFlags.A | StrobeFlags.T)) ==
         (StrobeFlags.I | StrobeFlags.T)) {
       if (more) {
-        throw Exception(
+        throw MessageException(
             "Not supposed to check a MAC with the 'more' streaming option");
       }
       int failures = 0;

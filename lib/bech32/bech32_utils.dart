@@ -53,6 +53,7 @@
 */
 
 import 'package:blockchain_utils/bech32/bech32_ex.dart';
+import 'package:blockchain_utils/exception/exception.dart';
 
 /// A utility class containing constants for Bech32 encoding and decoding.
 class Bech32BaseConst {
@@ -71,11 +72,12 @@ class Bech32BaseUtils {
   /// A List<int> containing the data in base32 encoding.
   ///
   /// Throws:
-  /// - ArgumentError: If the data cannot be converted to base32.
+  /// - ArgumentException: If the data cannot be converted to base32.
   static List<int> convertToBase32(List<int> data) {
     List<int>? convData = _convertBits(data, 8, 5);
     if (convData == null) {
-      throw ArgumentError('Invalid data, cannot perform conversion to base32');
+      throw ArgumentException(
+          'Invalid data, cannot perform conversion to base32');
     }
 
     return convData;
@@ -90,11 +92,11 @@ class Bech32BaseUtils {
   /// A List<int> containing the data converted from base32 encoding.
   ///
   /// Throws:
-  /// - ArgumentError: If the data cannot be converted from base32.
+  /// - ArgumentException: If the data cannot be converted from base32.
   static List<int> convertFromBase32(List<int> data) {
     List<int>? convData = _convertBits(data, 5, 8, pad: false);
     if (convData == null) {
-      throw ArgumentError(
+      throw ArgumentException(
           'Invalid data, cannot perform conversion from base32');
     }
 
@@ -182,7 +184,7 @@ abstract class Bech32DecoderBase {
   /// A tuple containing the Human-Readable Part (HRP) and the data part of the Bech32-encoded string.
   ///
   /// Throws:
-  /// - ArgumentError: If the input string is mixed case, lacks a separator, HRP is invalid, or the checksum is invalid.
+  /// - ArgumentException: If the input string is mixed case, lacks a separator, HRP is invalid, or the checksum is invalid.
   ///
   static (String, List<int>) decodeBech32(
       String bechStr,
@@ -190,19 +192,19 @@ abstract class Bech32DecoderBase {
       int checksumLen,
       bool Function(String hrp, List<int> data) verifyChecksum) {
     if (_isStringMixed(bechStr)) {
-      throw ArgumentError('Invalid bech32 format (string is mixed case)');
+      throw ArgumentException('Invalid bech32 format (string is mixed case)');
     }
 
     bechStr = bechStr.toLowerCase();
 
     final sepPos = bechStr.lastIndexOf(sep);
     if (sepPos == -1) {
-      throw ArgumentError('Invalid bech32 format (no separator found)');
+      throw ArgumentException('Invalid bech32 format (no separator found)');
     }
 
     final hrp = bechStr.substring(0, sepPos);
     if (hrp.isEmpty || hrp.codeUnits.any((x) => x < 33 || x > 126)) {
-      throw ArgumentError('Invalid bech32 format (HRP not valid: $hrp)');
+      throw ArgumentException('Invalid bech32 format (HRP not valid: $hrp)');
     }
 
     final dataPart = bechStr.substring(sepPos + 1);
@@ -210,7 +212,7 @@ abstract class Bech32DecoderBase {
     if (dataPart.length < checksumLen + 1 ||
         dataPart.codeUnits.any(
             (x) => !Bech32BaseConst.charset.contains(String.fromCharCode(x)))) {
-      throw ArgumentError('Invalid bech32 format (data part not valid)');
+      throw ArgumentException('Invalid bech32 format (data part not valid)');
     }
 
     final intData = dataPart.codeUnits

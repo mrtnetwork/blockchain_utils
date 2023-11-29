@@ -24,6 +24,8 @@ abstract class Bip32KeyBase {
 
   /// Gets the extended representation of the BIP32 key.
   String get toExtended;
+
+  String toHex();
 }
 
 /// Represents a BIP32 public key with associated data such as the elliptic curve type,
@@ -87,6 +89,11 @@ class Bip32PublicKey extends Bip32KeyBase {
       keyNetVer,
     );
   }
+
+  @override
+  String toHex() {
+    return pubKey.toHex();
+  }
 }
 
 /// Represents a BIP32 private key with associated data such as the elliptic curve type,
@@ -138,5 +145,10 @@ class Bip32PrivateKey extends Bip32KeyBase {
       keyData,
       keyNetVer,
     );
+  }
+
+  @override
+  String toHex() {
+    return privKey.toHex();
   }
 }

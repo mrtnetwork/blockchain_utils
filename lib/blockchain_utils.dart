@@ -76,3 +76,7 @@ export 'numbers/bigint_utils.dart';
 
 /// Exports utility functions related to integer operations.
 export 'numbers/int_utils.dart';
+
+export 'numbers/big_rational.dart';
+
+export 'exception/exception.dart';

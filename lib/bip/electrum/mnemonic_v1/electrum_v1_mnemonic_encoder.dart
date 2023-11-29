@@ -6,6 +6,7 @@ import 'package:blockchain_utils/bip/electrum/mnemonic_v1/electrum_v1_mnemonic_u
 import 'package:blockchain_utils/bip/mnemonic/mnemonic.dart';
 import 'package:blockchain_utils/bip/mnemonic/mnemonic_encoder_base.dart';
 import 'package:blockchain_utils/bip/mnemonic/mnemonic_utils.dart';
+import 'package:blockchain_utils/exception/exception.dart';
 
 /// A class for encoding data into Electrum V1 mnemonics, extending the MnemonicEncoderBase class.
 class ElectrumV1MnemonicEncoder extends MnemonicEncoderBase {
@@ -23,7 +24,7 @@ class ElectrumV1MnemonicEncoder extends MnemonicEncoderBase {
   ///
   /// This method takes a List<int> of entropy bytes as input and generates an Electrum V1 mnemonic by
   /// dividing the entropy into 4-byte chunks and converting each chunk into a list of mnemonic words.
-  /// It checks the validity of the entropy byte length and throws an ArgumentError if it's not valid.
+  /// It checks the validity of the entropy byte length and throws an ArgumentException if it's not valid.
   ///
   /// Returns an Electrum V1 mnemonic representing the encoded data.
   ///
@@ -33,7 +34,8 @@ class ElectrumV1MnemonicEncoder extends MnemonicEncoderBase {
     // Check entropy length
     int entropyByteLen = entropyBytes.length;
     if (!ElectrumV1EntropyGenerator.isValidEntropyByteLength(entropyByteLen)) {
-      throw ArgumentError('Entropy byte length ($entropyByteLen) is not valid');
+      throw ArgumentException(
+          'Entropy byte length ($entropyByteLen) is not valid');
     }
 
     // Build mnemonic

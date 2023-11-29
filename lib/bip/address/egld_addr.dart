@@ -1,11 +1,9 @@
 import 'package:blockchain_utils/bech32/bech32_base.dart';
-import 'package:blockchain_utils/bech32/bech32_ex.dart';
 import 'package:blockchain_utils/bip/address/addr_dec_utils.dart';
 import 'package:blockchain_utils/bip/address/addr_key_validator.dart';
 import 'package:blockchain_utils/bip/address/decoder.dart';
 import 'package:blockchain_utils/bip/coin_conf/coins_conf.dart';
 import 'package:blockchain_utils/bip/ecc/keys/ed25519_keys.dart';
-
 import 'encoder.dart';
 
 /// Implementation of the [BlockchainAddressDecoder] for Egld (Elrond) address.
@@ -21,21 +19,17 @@ class EgldAddrDecoder implements BlockchainAddressDecoder {
   /// Returns a List<int> containing the decoded Egld address.
   @override
   List<int> decodeAddr(String addr, [Map<String, dynamic> kwargs = const {}]) {
-    try {
-      /// Decode the Bech32 address with the specified Human-Readable Part (HRP)
-      final addrDecBytes =
-          Bech32Decoder.decode(CoinsConf.elrond.params.addrHrp!, addr);
+    /// Decode the Bech32 address with the specified Human-Readable Part (HRP)
+    final addrDecBytes =
+        Bech32Decoder.decode(CoinsConf.elrond.params.addrHrp!, addr);
 
-      /// Validate the length of the decoded address
-      AddrDecUtils.validateBytesLength(
-        addrDecBytes,
-        Ed25519KeysConst.pubKeyByteLen,
-      );
+    /// Validate the length of the decoded address
+    AddrDecUtils.validateBytesLength(
+      addrDecBytes,
+      Ed25519KeysConst.pubKeyByteLen,
+    );
 
-      return List<int>.from(addrDecBytes);
-    } on Bech32ChecksumError catch (e) {
-      throw ArgumentError("Invalid bech32 checksum $e");
-    }
+    return List<int>.from(addrDecBytes);
   }
 }
 

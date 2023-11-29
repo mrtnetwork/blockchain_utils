@@ -1,3 +1,4 @@
+import 'package:blockchain_utils/binary/utils.dart';
 import 'package:blockchain_utils/bip/ecc/keys/i_keys.dart';
 import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
 import 'package:blockchain_utils/bip/ecc/keys/ed25519_keys.dart';
@@ -109,6 +110,10 @@ class MoneroPublicKey implements IPublicKey {
   AbstractPoint get point {
     return pubKey.point;
   }
+
+  String toHex() {
+    return BytesUtils.toHexString(compressed);
+  }
 }
 
 /// A class representing a Monero private key that implements the IPrivateKey interface.
@@ -178,5 +183,9 @@ class MoneroPrivateKey implements IPrivateKey {
   @override
   int get length {
     return privKey.length;
+  }
+
+  String toHex() {
+    return BytesUtils.toHexString(raw);
   }
 }

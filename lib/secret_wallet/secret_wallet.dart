@@ -25,7 +25,7 @@ abstract class _Derivator {
 
   static _Derivator fromCbor(CborObject cbor) {
     if (cbor is! CborTagValue || cbor.value is! CborListValue) {
-      throw ArgumentError("invalid secret wallet cbor bytes");
+      throw ArgumentException("invalid secret wallet cbor bytes");
     }
     if (bytesEqual(cbor.tags, _SecretStorageConst.pbdkdf2Tag)) {
       final toObj = _PBDKDF2Derivator.fromCbor(cbor.value);
@@ -33,7 +33,7 @@ abstract class _Derivator {
     } else if (bytesEqual(cbor.tags, _SecretStorageConst.scryptTag)) {
       return _ScryptDerivator.fromCbor(cbor.value);
     } else {
-      throw ArgumentError("invalid secret wallet cbor bytes");
+      throw ArgumentException("invalid secret wallet cbor bytes");
     }
   }
 }
@@ -50,7 +50,7 @@ class _PBDKDF2Derivator extends _Derivator {
     final int dklen = v.value[1].value;
     final String prf = v.value[2].value;
     if (prf != 'hmac-sha256') {
-      throw ArgumentError('Invalid prf only support hmac-sha256');
+      throw ArgumentException('Invalid prf only support hmac-sha256');
     }
     final List<int> salt = v.value[3].value;
     return _PBDKDF2Derivator(c, salt, dklen);
@@ -188,7 +188,7 @@ class SecretWallet {
       return StringUtils.toJson(StringUtils.decode(
           StringUtils.encode(encoded, StringEncoding.base64)));
     } catch (e) {
-      throw ArgumentError("invalid encoding");
+      throw ArgumentException("invalid encoding");
     }
   }
 
@@ -208,7 +208,7 @@ class SecretWallet {
 
     final version = data['version'];
     if (version != 3) {
-      throw ArgumentError("Library only supports version 3");
+      throw ArgumentException("Library only supports version 3");
     }
 
     final params = data['crypto'] ?? data['Crypto'];
@@ -221,7 +221,7 @@ class SecretWallet {
         final derParams = params['kdfparams'] as Map<String, dynamic>;
 
         if (derParams['prf'] != 'hmac-sha256') {
-          throw ArgumentError('Invalid prf only support hmac-sha256');
+          throw ArgumentException('Invalid prf only support hmac-sha256');
         }
 
         derivator = _PBDKDF2Derivator(
@@ -242,7 +242,7 @@ class SecretWallet {
         );
         break;
       default:
-        throw ArgumentError(
+        throw ArgumentException(
           '$kdf which is not supported.',
         );
     }
@@ -253,11 +253,11 @@ class SecretWallet {
     final encryptedPrivateKey = BytesUtils.fromHexString(params['ciphertext']);
     final derivedMac = _generateMac(derivedKey, encryptedPrivateKey);
     if (derivedMac != params['mac']) {
-      throw ArgumentError('wrong password or the file is corrupted');
+      throw ArgumentException('wrong password or the file is corrupted');
     }
 
     if (params['cipher'] != 'aes-128-ctr') {
-      throw ArgumentError("only cipher aes-128-ctr is supported.");
+      throw ArgumentException("only cipher aes-128-ctr is supported.");
     }
     final iv = BytesUtils.fromHexString(params['cipherparams']['iv']);
     final encryptText = List<int>.from(encryptedPrivateKey);
@@ -276,15 +276,15 @@ class SecretWallet {
       if (cborTag is! CborTagValue ||
           cborTag.value is! CborListValue ||
           cborTag.value.value.length != 3) {
-        throw ArgumentError("Invalid secret wallet cbor bytes");
+        throw ArgumentException("Invalid secret wallet cbor bytes");
       }
       if (!bytesEqual(cborTag.tags, _SecretStorageConst.tag)) {
-        throw ArgumentError("invalid secret wallet cbor tag");
+        throw ArgumentException("invalid secret wallet cbor tag");
       }
       final cbor = cborTag.value as CborListValue;
       final int version = cbor.value[2].value;
       if (version != _SecretStorageConst.version) {
-        throw ArgumentError(
+        throw ArgumentException(
             "Library only supports version ${_SecretStorageConst.version}");
       }
 
@@ -292,7 +292,7 @@ class SecretWallet {
       final params = cbor.value[0] as CborListValue;
       final String cipher = params.value[0].value;
       if (cipher != 'aes-128-ctr') {
-        throw ArgumentError("only cipher aes-128-ctr is supported.");
+        throw ArgumentException("only cipher aes-128-ctr is supported.");
       }
       final List<int> iv = params.value[1].value;
       final derivator = _Derivator.fromCbor(params.value[3]);
@@ -303,7 +303,7 @@ class SecretWallet {
       final aesKey = List<int>.from(derivedKey.sublist(0, 16));
       final derivedMac = _generateMac(derivedKey, ciphertext);
       if (derivedMac != mac) {
-        throw ArgumentError('wrong password or the file is corrupted');
+        throw ArgumentException('wrong password or the file is corrupted');
       }
       final CTR ctr = CTR(AES(aesKey), iv);
       final List<int> privateKey = List<int>.filled(ciphertext.length, 0);
@@ -311,10 +311,10 @@ class SecretWallet {
       ctr.clean();
       return SecretWallet._(
           StringUtils.decode(privateKey), derivator, encodedPassword, iv, uuid);
-    } on ArgumentError {
+    } on ArgumentException {
       rethrow;
     } catch (e) {
-      throw ArgumentError('invalid secret wallet cbor bytes');
+      throw ArgumentException('invalid secret wallet cbor bytes');
     }
   }
 

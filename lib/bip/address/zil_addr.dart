@@ -1,5 +1,4 @@
 import 'package:blockchain_utils/bech32/bech32_base.dart';
-import 'package:blockchain_utils/bech32/bech32_ex.dart';
 import 'package:blockchain_utils/bip/address/addr_key_validator.dart';
 import 'package:blockchain_utils/bip/address/decoder.dart';
 import 'package:blockchain_utils/bip/address/encoder.dart';
@@ -18,7 +17,7 @@ class ZilAddrDecoder implements BlockchainAddressDecoder {
   ///
   /// Given a Zilliqa address string [addr], this method decodes it using the
   /// specified Human Readable Part (HRP) from the Zilliqa configuration. If the
-  /// provided address has an invalid bech32 checksum, it raises an [ArgumentError]
+  /// provided address has an invalid bech32 checksum, it raises an [ArgumentException]
   /// with a descriptive error message.
   ///
   /// Parameters:
@@ -29,19 +28,15 @@ class ZilAddrDecoder implements BlockchainAddressDecoder {
   /// - A [List<int>] representing the decoded Zilliqa address in bytes.
   ///
   /// Throws:
-  /// - An [ArgumentError] with an error message if the bech32 checksum is invalid.
+  /// - An [ArgumentException] with an error message if the bech32 checksum is invalid.
   @override
   List<int> decodeAddr(String addr, [Map<String, dynamic> kwargs = const {}]) {
-    try {
-      /// Decode the Zilliqa address using the specified Human Readable Part (HRP).
-      final addrDecBytes = Bech32Decoder.decode(
-        CoinsConf.zilliqa.params.addrHrp!,
-        addr,
-      );
-      return addrDecBytes;
-    } on Bech32ChecksumError catch (e) {
-      throw ArgumentError('Invalid bech32 checksum ${e.message ?? ""}');
-    }
+    /// Decode the Zilliqa address using the specified Human Readable Part (HRP).
+    final addrDecBytes = Bech32Decoder.decode(
+      CoinsConf.zilliqa.params.addrHrp!,
+      addr,
+    );
+    return addrDecBytes;
   }
 }
 
@@ -62,7 +57,7 @@ class ZilAddrEncoder implements BlockchainAddressEncoder {
   /// Returns the Zilliqa blockchain address as a string.
   ///
   /// Throws:
-  /// - [ArgumentError] if the public key validation fails or if there is an issue with Bech32 encoding.
+  /// - [ArgumentException] if the public key validation fails or if there is an issue with Bech32 encoding.
   ///
   @override
   String encodeKey(List<int> pubKey, [Map<String, dynamic> kwargs = const {}]) {

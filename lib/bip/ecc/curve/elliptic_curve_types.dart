@@ -19,5 +19,9 @@ enum EllipticCurveTypes {
   secp256k1,
 
   /// Schnorr over Ristretto255 curve
-  sr25519,
+  sr25519;
+
+  static EllipticCurveTypes fromName(String name) {
+    return values.firstWhere((element) => element.name == name);
+  }
 }

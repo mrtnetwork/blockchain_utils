@@ -1,12 +1,12 @@
 import 'package:blockchain_utils/base58/base58.dart';
 import 'package:blockchain_utils/bech32/bch_bech32.dart';
-import 'package:blockchain_utils/bech32/bech32_ex.dart';
 import 'package:blockchain_utils/bip/address/addr_dec_utils.dart';
 import 'package:blockchain_utils/bip/address/addr_key_validator.dart';
 import 'package:blockchain_utils/bip/address/encoder.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
 import 'package:blockchain_utils/compare/compare.dart';
 import 'decoder.dart';
+import 'package:blockchain_utils/exception/exception.dart';
 
 /// Enumeration representing different modes for public keys used in P2PKH addresses.
 ///
@@ -79,11 +79,11 @@ class P2PKHAddrEncoder implements BlockchainAddressEncoder {
     final List<int> netVerBytes = kwargs["net_ver"];
     final alphabet = kwargs["base58_alph"] ?? Base58Alphabets.bitcoin;
     if (alphabet is! Base58Alphabets) {
-      throw ArgumentError("invalid base58 alphabet");
+      throw ArgumentException("invalid base58 alphabet");
     }
     final pubKeyModes = kwargs["pub_key_mode"] ?? P2PKHPubKeyModes.compressed;
     if (pubKeyModes is! P2PKHPubKeyModes) {
-      throw ArgumentError("invalid pub key modesx");
+      throw ArgumentException("invalid pub key modesx");
     }
 
     /// Validate and process the public key as a Secp256k1 key.
@@ -123,27 +123,23 @@ class BchP2PKHAddrDecoder implements BlockchainAddressDecoder {
     /// Validate network version and HRP arguments.
     AddrKeyValidator.validateAddressArgs<List<int>>(kwargs, "net_ver");
     AddrKeyValidator.validateAddressArgs<String>(kwargs, "hrp");
-    try {
-      final String hrp = kwargs["hrp"];
-      final List<int> netVerBytes = kwargs["net_ver"];
+    final String hrp = kwargs["hrp"];
+    final List<int> netVerBytes = kwargs["net_ver"];
 
-      /// Decode the Bech32 address and retrieve network version and decoded bytes.
-      final result = BchBech32Decoder.decode(hrp, addr);
-      List<int> netVerBytesGot = result.$1;
-      List<int> addrDecBytes = result.$2;
+    /// Decode the Bech32 address and retrieve network version and decoded bytes.
+    final result = BchBech32Decoder.decode(hrp, addr);
+    List<int> netVerBytesGot = result.$1;
+    List<int> addrDecBytes = result.$2;
 
-      /// Validate that the decoded network version matches the expected network version.
-      if (!bytesEqual(netVerBytes, netVerBytesGot)) {
-        throw ArgumentError("Invalid net version");
-      }
-
-      /// Validate the length of the decoded address.
-      AddrDecUtils.validateBytesLength(
-          addrDecBytes, QuickCrypto.hash160DigestSize);
-      return addrDecBytes;
-    } on Bech32ChecksumError {
-      throw ArgumentError("Invalid bech32 checksum");
+    /// Validate that the decoded network version matches the expected network version.
+    if (!bytesEqual(netVerBytes, netVerBytesGot)) {
+      throw ArgumentException("Invalid net version");
     }
+
+    /// Validate the length of the decoded address.
+    AddrDecUtils.validateBytesLength(
+        addrDecBytes, QuickCrypto.hash160DigestSize);
+    return addrDecBytes;
   }
 }
 

@@ -1,4 +1,5 @@
 import 'package:blockchain_utils/crypto/crypto/cdsa/utils/exp.dart';
+import 'package:blockchain_utils/exception/exception.dart';
 
 class ECDSAUtils {
   /// Computes the modular exponentiation of a polynomial represented by [base]
@@ -90,7 +91,7 @@ class ECDSAUtils {
       }
     }
 
-    throw Exception("No suitable 'b' found.");
+    throw MessageException("No suitable 'b' found.");
   }
 
   /// Multiply two polynomials represented by lists 'm1' and 'm2', reducing modulo 'polymod' and prime 'p'.

@@ -25,6 +25,7 @@
 import 'package:blockchain_utils/numbers/bigint_utils.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/curve/curve.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/point/ec_projective_point.dart';
+import 'package:blockchain_utils/exception/exception.dart';
 
 import 'base.dart';
 
@@ -87,7 +88,7 @@ class AffinePointt extends AbstractPoint {
   @override
   AbstractPoint operator +(AbstractPoint other) {
     if (other is! AffinePointt && other is! ProjectiveECCPoint) {
-      throw ArgumentError("cannot add with ${other.runtimeType} point");
+      throw ArgumentException("cannot add with ${other.runtimeType} point");
     }
     if (other is ProjectiveECCPoint) {
       return other + this;

@@ -5,6 +5,7 @@ import 'package:blockchain_utils/bip/electrum/mnemonic_v2/electrum_v2_mnemonic.d
 import 'package:blockchain_utils/bip/electrum/mnemonic_v2/electrum_v2_mnemonic_utils.dart';
 import 'package:blockchain_utils/bip/mnemonic/mnemonic.dart';
 import 'package:blockchain_utils/bip/mnemonic/mnemonic_encoder_base.dart';
+import 'package:blockchain_utils/exception/exception.dart';
 
 /// A class for encoding data into Electrum V2 mnemonics, extending the MnemonicEncoderBase class.
 class ElectrumV2MnemonicEncoder extends MnemonicEncoderBase {
@@ -36,7 +37,7 @@ class ElectrumV2MnemonicEncoder extends MnemonicEncoderBase {
 
     /// Check if the entropy bits are sufficient for a valid mnemonic
     if (!ElectrumV2EntropyGenerator.areEntropyBitsEnough(entropyInt)) {
-      throw ArgumentError(
+      throw ArgumentException(
           'Entropy bit length is not enough for generating a valid mnemonic');
     }
 
@@ -56,7 +57,7 @@ class ElectrumV2MnemonicEncoder extends MnemonicEncoderBase {
 
     /// Check if the resulting mnemonic is valid for the specified mnemonic type
     if (!ElectrumV2MnemonicUtils.isValidMnemonic(mnemonicObj, mnemonicType)) {
-      throw ArgumentError(
+      throw ArgumentException(
           'Entropy bytes are not suitable for generating a valid mnemonic');
     }
     return mnemonicObj;

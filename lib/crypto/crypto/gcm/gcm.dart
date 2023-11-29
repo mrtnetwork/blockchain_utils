@@ -3,6 +3,8 @@ import 'package:blockchain_utils/crypto/crypto/aead/aead.dart';
 import 'package:blockchain_utils/crypto/crypto/blockcipher/blockcipher.dart';
 import 'package:blockchain_utils/crypto/crypto/ctr/ctr.dart';
 import 'package:blockchain_utils/binary/binary_operation.dart';
+import 'package:blockchain_utils/exception/exception.dart';
+
 import 'dart:math' as math;
 
 /// Galois/Counter Mode (GCM) implementation for authenticated encryption with associated data (AEAD).
@@ -24,10 +26,10 @@ class GCM implements AEAD {
   /// - `cipher`: The block cipher with a 16-byte block size to be used for GCM encryption and decryption.
   ///
   /// Throws:
-  /// - `ArgumentError` if the provided block cipher does not have a 16-byte block size.
+  /// - `ArgumentException` if the provided block cipher does not have a 16-byte block size.
   GCM(BlockCipher cipher) {
     if (cipher.blockSize != 16) {
-      throw ArgumentError("GCM supports only 16-byte block cipher");
+      throw ArgumentException("GCM supports only 16-byte block cipher");
     }
     _cipher = cipher;
 
@@ -50,7 +52,7 @@ class GCM implements AEAD {
   /// - The encrypted data with the appended authentication tag.
   ///
   /// Throws:
-  /// - `ArgumentError` if the provided nonce has an incorrect length or if the destination size is incorrect.
+  /// - `ArgumentException` if the provided nonce has an incorrect length or if the destination size is incorrect.
   ///
   /// Note: This method performs GCM encryption by combining nonce, plaintext, and optional associated data,
   /// and generating an authentication tag for data integrity verification.
@@ -58,7 +60,7 @@ class GCM implements AEAD {
   List<int> encrypt(List<int> nonce, List<int> plaintext,
       {List<int>? associatedData, List<int>? dst}) {
     if (nonce.length != nonceLength) {
-      throw ArgumentError("GCM: incorrect nonce length");
+      throw ArgumentException("GCM: incorrect nonce length");
     }
 
     final blockSize = _cipher.blockSize;
@@ -66,7 +68,7 @@ class GCM implements AEAD {
     final resultLength = plaintext.length + tagLength;
     List<int> result = dst ?? List<int>.filled(resultLength, 0);
     if (result.length != resultLength) {
-      throw ArgumentError("GCM: incorrect destination length");
+      throw ArgumentException("GCM: incorrect destination length");
     }
 
     final counter = List<int>.filled(blockSize, 0);
@@ -106,14 +108,14 @@ class GCM implements AEAD {
   /// - The decrypted data if authentication succeeds; otherwise, returns null if authentication fails.
   ///
   /// Throws:
-  /// - `ArgumentError` if the provided nonce has an incorrect length, if the destination size is incorrect, or if the authentication tag verification fails.
+  /// - `ArgumentException` if the provided nonce has an incorrect length, if the destination size is incorrect, or if the authentication tag verification fails.
   ///
   /// Note: This method performs GCM decryption, verifying the authentication tag and ensuring the data's integrity and authenticity.
   @override
   List<int>? decrypt(List<int> nonce, List<int> sealed,
       {List<int>? associatedData, List<int>? dst}) {
     if (nonce.length != nonceLength) {
-      throw ArgumentError("GCM: incorrect nonce length");
+      throw ArgumentException("GCM: incorrect nonce length");
     }
 
     if (sealed.length < tagLength) {
@@ -143,7 +145,7 @@ class GCM implements AEAD {
     final resultLength = sealed.length - tagLength;
     List<int> result = dst ?? List<int>.filled(resultLength, 0);
     if (result.length != resultLength) {
-      throw ArgumentError("GCM: incorrect destination length");
+      throw ArgumentException("GCM: incorrect destination length");
     }
     final ctr = CTR(_cipher, counter);
     ctr.streamXOR(sealed.sublist(0, sealed.length - tagLength), result);

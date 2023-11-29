@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:blockchain_utils/exception/exception.dart';
 import 'package:blockchain_utils/numbers/bigint_utils.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/curve/curve.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/curve/curves.dart';
@@ -74,7 +75,7 @@ class RistrettoPoint extends EDPoint {
   ///   - RistrettoPoint: A RistrettoPoint instance created from the input bytes.
   ///
   /// Throws:
-  ///   - ArgumentError: If the input bytes result in an invalid RistrettoPoint.
+  ///   - ArgumentException: If the input bytes result in an invalid RistrettoPoint.
   ///   - Exception: If the RistrettoPoint creation fails any validity checks.
   factory RistrettoPoint.fromBytes(List<int> bytes, {CurveED? curveEdTw}) {
     List<int> hex = bytes;
@@ -84,7 +85,7 @@ class RistrettoPoint extends EDPoint {
     final P = c.p;
     final s = BigintUtils.fromBytes(hex, byteOrder: Endian.little);
     if (ristretto_tools.isOdd(s, P)) {
-      throw ArgumentError("Invalid RistrettoPoint");
+      throw ArgumentException("Invalid RistrettoPoint");
     }
     final s2 = ristretto_tools.positiveMod(s * s, P);
     final u1 = ristretto_tools.positiveMod(BigInt.one + a * s2, P);
@@ -105,7 +106,7 @@ class RistrettoPoint extends EDPoint {
     final y = ristretto_tools.positiveMod(u1 * y2, P);
     final t = ristretto_tools.positiveMod(x * y, P);
     if (!invSqrt.$1 || ristretto_tools.isOdd(t, P) || y == BigInt.zero) {
-      throw Exception("Invalid RistrettoPoint");
+      throw ArgumentException("Invalid RistrettoPoint");
     }
     return RistrettoPoint.fromEdwardsPoint(
         EDPoint(curve: c, x: x, y: y, z: BigInt.one, t: t));

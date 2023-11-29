@@ -3,6 +3,7 @@ import 'package:blockchain_utils/bip/electrum/mnemonic_v2/electrum_v2_entropy_ge
 import 'package:blockchain_utils/bip/electrum/mnemonic_v2/electrum_v2_mnemonic.dart';
 import 'package:blockchain_utils/bip/electrum/mnemonic_v2/electrum_v2_mnemonic_encoder.dart';
 import 'package:blockchain_utils/bip/mnemonic/mnemonic.dart';
+import 'package:blockchain_utils/exception/exception.dart';
 
 /// Constants related to Electrum V2 mnemonic generation.
 class ElectrumV2MnemonicGeneratorConst {
@@ -43,7 +44,8 @@ class ElectrumV2MnemonicGenerator {
       ElectrumV2MnemonicConst.mnemonicWordNum
           .firstWhere((element) => element.value == wordsNum);
     } on StateError {
-      throw ArgumentError('Words number for mnemonic ($wordsNum) is not valid');
+      throw ArgumentException(
+          'Words number for mnemonic ($wordsNum) is not valid');
     }
     final wNum = ElectrumV2WordsNum.values
         .firstWhere((element) => element.value == wordsNum);
@@ -77,13 +79,13 @@ class ElectrumV2MnemonicGenerator {
           final encode = encoder.encode(toBytes);
 
           return encode;
-        } on ArgumentError {
+        } on ArgumentException {
           /// Continue to the next attempt if encoding fails
           continue;
         }
       }
     }
 
-    throw ArgumentError('Unable to generate a valid mnemonic');
+    throw ArgumentException('Unable to generate a valid mnemonic');
   }
 }

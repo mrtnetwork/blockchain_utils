@@ -1,5 +1,4 @@
 import 'package:blockchain_utils/bech32/bech32_base.dart';
-import 'package:blockchain_utils/bech32/bech32_ex.dart';
 import 'package:blockchain_utils/bip/address/eth_addr.dart';
 import 'package:blockchain_utils/bip/address/decoder.dart';
 import 'package:blockchain_utils/bip/address/encoder.dart';
@@ -26,14 +25,8 @@ class OneAddrDecoder implements BlockchainAddressDecoder {
   ///   A List<int> containing the decoded Ethereum address bytes derived from the Harmony ONE address.
   @override
   List<int> decodeAddr(String addr, [Map<String, dynamic> kwargs = const {}]) {
-    List<int> addrDecBytes;
-    try {
-      /// Decode the Harmony ONE address using the ONE configuration's HRP.
-      addrDecBytes =
-          Bech32Decoder.decode(CoinsConf.harmonyOne.params.addrHrp!, addr);
-    } on Bech32ChecksumError catch (e) {
-      throw ArgumentError('Invalid bech32 checksum $e');
-    }
+    List<int> addrDecBytes =
+        Bech32Decoder.decode(CoinsConf.harmonyOne.params.addrHrp!, addr);
 
     /// Decode the address again as an Ethereum address with a custom prefix.
     return EthAddrDecoder().decodeAddr(

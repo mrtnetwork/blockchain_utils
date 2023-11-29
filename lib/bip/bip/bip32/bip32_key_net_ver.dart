@@ -1,3 +1,5 @@
+import 'package:blockchain_utils/exception/exception.dart';
+
 /// Contains constants related to BIP32 key network versions.
 class Bip32KeyNetVersionsConst {
   /// The byte length of a BIP32 key network version.
@@ -11,7 +13,7 @@ class Bip32KeyNetVersions {
   /// constractur for Bip32KeyNetVersions
   Bip32KeyNetVersions(List<int> pubNetVer, List<int> privNetVer) {
     if (pubNetVer.length != length || privNetVer.length != length) {
-      throw ArgumentError("Invalid key net version length");
+      throw ArgumentException("Invalid key net version length");
     }
 
     _pubNetVer = pubNetVer;

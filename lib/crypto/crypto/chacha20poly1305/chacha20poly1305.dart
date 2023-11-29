@@ -4,6 +4,7 @@ import 'package:blockchain_utils/crypto/crypto/aead/aead.dart';
 import 'package:blockchain_utils/crypto/crypto/chacha/chacha.dart';
 import 'package:blockchain_utils/crypto/crypto/poly1305/poly1305.dart';
 import 'package:blockchain_utils/binary/binary_operation.dart';
+import 'package:blockchain_utils/exception/exception.dart';
 
 const int _nonceLength = 12;
 const int _tagLength = 16;
@@ -24,7 +25,7 @@ class ChaCha20Poly1305 implements AEAD {
   /// Creates a ChaCha20-Poly1305 instance with the given 32-byte encryption key.
   ChaCha20Poly1305(List<int> key) {
     if (key.length != _keyLength) {
-      throw ArgumentError("ChaCha20Poly1305 needs a 32-byte key");
+      throw ArgumentException("ChaCha20Poly1305 needs a 32-byte key");
     }
     _key = BytesUtils.toBytes(key);
   }
@@ -43,7 +44,7 @@ class ChaCha20Poly1305 implements AEAD {
   /// - `dst`: An optional destination `List<int>` where the encrypted data and tag will be written.
   ///
   /// Throws:
-  /// - `ArgumentError` if the provided nonce length is incorrect or if the destination length is incorrect.
+  /// - `ArgumentException` if the provided nonce length is incorrect or if the destination length is incorrect.
   ///
   /// Returns:
   /// - The `List<int>` containing the encrypted data and authentication tag.
@@ -54,7 +55,7 @@ class ChaCha20Poly1305 implements AEAD {
   List<int> encrypt(List<int> nonce, List<int> plaintext,
       {List<int>? associatedData, List<int>? dst}) {
     if (nonce.length > 16) {
-      throw ArgumentError("ChaCha20Poly1305: incorrect nonce length");
+      throw ArgumentException("ChaCha20Poly1305: incorrect nonce length");
     }
 
     final counter = List<int>.filled(16, 0);
@@ -69,7 +70,7 @@ class ChaCha20Poly1305 implements AEAD {
 
     List<int> result = dst ?? List<int>.filled(resultLength, 0);
     if (result.length != resultLength) {
-      throw ArgumentError("ChaCha20Poly1305: incorrect destination length");
+      throw ArgumentException("ChaCha20Poly1305: incorrect destination length");
     }
 
     ChaCha20.streamXOR(_key, counter, BytesUtils.toBytes(plaintext), result,
@@ -98,7 +99,7 @@ class ChaCha20Poly1305 implements AEAD {
   /// - `dst`: An optional destination `List<int>` where the decrypted plaintext will be written.
   ///
   /// Throws:
-  /// - `ArgumentError` if the provided nonce length is incorrect or if the destination length is incorrect.
+  /// - `ArgumentException` if the provided nonce length is incorrect or if the destination length is incorrect.
   ///
   /// Returns:
   /// - The `List<int>` containing the decrypted plaintext data, or `null` if decryption fails.
@@ -110,7 +111,7 @@ class ChaCha20Poly1305 implements AEAD {
   List<int>? decrypt(List<int> nonce, List<int> sealed,
       {List<int>? associatedData, List<int>? dst}) {
     if (nonce.length > 16) {
-      throw ArgumentError("ChaCha20Poly1305: incorrect nonce length");
+      throw ArgumentException("ChaCha20Poly1305: incorrect nonce length");
     }
 
     if (sealed.length < tagLength) {
@@ -135,7 +136,7 @@ class ChaCha20Poly1305 implements AEAD {
 
     List<int> result = dst ?? List<int>.filled(resultLength, 0);
     if (result.length != resultLength) {
-      throw ArgumentError("ChaCha20Poly1305: incorrect destination length");
+      throw ArgumentException("ChaCha20Poly1305: incorrect destination length");
     }
 
     ChaCha20.streamXOR(

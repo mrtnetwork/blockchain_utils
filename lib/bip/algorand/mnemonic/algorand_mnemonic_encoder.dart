@@ -4,6 +4,7 @@ import 'package:blockchain_utils/bip/algorand/mnemonic/algorand_mnemonic_utils.d
 import 'package:blockchain_utils/bip/bip/bip39/bip39_mnemonic_utils.dart';
 import 'package:blockchain_utils/bip/mnemonic/mnemonic.dart';
 import 'package:blockchain_utils/bip/mnemonic/mnemonic_encoder_base.dart';
+import 'package:blockchain_utils/exception/exception.dart';
 
 /// Algorand mnemonic encoder class.
 ///
@@ -22,7 +23,8 @@ class AlgorandMnemonicEncoder extends MnemonicEncoderBase {
   Mnemonic encode(List<int> entropyBytes) {
     final entropyByteLen = entropyBytes.length;
     if (!AlgorandEntropyGenerator.isValidEntropyByteLen(entropyByteLen)) {
-      throw ArgumentError('Entropy byte length ($entropyByteLen) is not valid');
+      throw ArgumentException(
+          'Entropy byte length ($entropyByteLen) is not valid');
     }
 
     final chksumWordIdx =

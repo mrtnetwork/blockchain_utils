@@ -17,6 +17,7 @@ import 'dart:math' as math;
 import 'dart:typed_data';
 
 import 'package:blockchain_utils/cbor/core/tags.dart';
+import 'package:blockchain_utils/exception/exception.dart';
 
 // Enum representing different floating-point formats and their characteristics.
 enum FloatLength {
@@ -224,13 +225,13 @@ class FloatUtils {
     switch (decodFloatType) {
       case FloatLength.bytes16:
         if (!isLessThan16) {
-          throw ArgumentError("overflow bytes");
+          throw ArgumentException("overflow bytes");
         }
         bytes = _encodeFloat16(endianness);
         break;
       case FloatLength.bytes32:
         if (!isLessThan32) {
-          throw ArgumentError("overflow bytes");
+          throw ArgumentException("overflow bytes");
         }
         bytes = _encodeFloat32(endianness);
         break;
@@ -244,7 +245,7 @@ class FloatUtils {
   /// Decode a 16-bit floating-point value from a byte array and return it as a double.
   static double floatFromBytes16(List<int> bytes) {
     if (bytes.length != 2) {
-      throw ArgumentError(
+      throw ArgumentException(
           'Input byte array must be exactly 2 bytes long for Float16');
     }
 

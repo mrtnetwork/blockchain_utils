@@ -19,6 +19,8 @@ import 'package:blockchain_utils/binary/binary_operation.dart';
 import 'package:blockchain_utils/binary/utils.dart';
 import 'dart:math' as math;
 
+import 'package:blockchain_utils/exception/exception.dart';
+
 /// Export statement for the 'sha224' part, providing the SHA-224 hash algorithm.
 part 'sha224/sha224.dart';
 

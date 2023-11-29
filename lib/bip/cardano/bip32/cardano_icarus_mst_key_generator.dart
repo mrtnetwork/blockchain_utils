@@ -6,6 +6,7 @@ import 'package:blockchain_utils/crypto/crypto/hash/hash.dart';
 import 'package:blockchain_utils/crypto/crypto/hmac/hmac.dart';
 import 'package:blockchain_utils/crypto/crypto/pbkdf2/pbkdf2.dart';
 import 'package:blockchain_utils/string/string.dart';
+import 'package:blockchain_utils/exception/exception.dart';
 
 /// A class that holds constants related to the Cardano Icarus master key generation process.
 class CardanoIcarusMasterKeyGeneratorConst {
@@ -25,7 +26,7 @@ class CardanoIcarusMstKeyGenerator implements IBip32MstKeyGenerator {
   @override
   (List<int>, List<int>) generateFromSeed(List<int> seedBytes) {
     if (seedBytes.length < Bip32Slip10MstKeyGeneratorConst.seedMinByteLen) {
-      throw ArgumentError('Invalid seed length (${seedBytes.length})');
+      throw ArgumentException('Invalid seed length (${seedBytes.length})');
     }
 
     List<int> keyBytes = PBKDF2.deriveKey(

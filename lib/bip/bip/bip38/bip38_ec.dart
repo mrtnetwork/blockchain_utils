@@ -12,6 +12,7 @@ import 'package:blockchain_utils/crypto/crypto/cdsa/curve/curves.dart';
 import 'package:blockchain_utils/crypto/crypto/scrypt/scrypt.dart';
 import 'package:blockchain_utils/compare/compare.dart';
 import 'package:blockchain_utils/string/string.dart';
+import 'package:blockchain_utils/exception/exception.dart';
 
 typedef Bip38PubKeyModes = P2PKHPubKeyModes;
 
@@ -92,11 +93,11 @@ class Bip38EcUtils {
   static List<int> ownerEntropyWithLotSeq(int lotNum, int sequenceNum) {
     if (lotNum < Bip38EcConst.lotNumMinVal ||
         lotNum > Bip38EcConst.lotNumMaxVal) {
-      throw ArgumentError('Invalid lot number ($lotNum)');
+      throw ArgumentException('Invalid lot number ($lotNum)');
     }
     if (sequenceNum < Bip38EcConst.seqNumMinVal ||
         sequenceNum > Bip38EcConst.seqNumMaxVal) {
-      throw ArgumentError('Invalid sequence number ($sequenceNum)');
+      throw ArgumentException('Invalid sequence number ($sequenceNum)');
     }
 
     final ownerSalt =
@@ -286,7 +287,7 @@ class Bip38EcKeysGenerator {
 
     /// Ensure the length of the intermediate code is valid.
     if (intPassphraseBytes.length != Bip38EcConst.intPassEncByteLen) {
-      throw ArgumentError(
+      throw ArgumentException(
           'Invalid intermediate code length (${intPassphraseBytes.length})');
     }
 
@@ -299,7 +300,8 @@ class Bip38EcKeysGenerator {
     /// Check if the magic number is valid.
     if (!bytesEqual(magic, Bip38EcConst.intPassMagicNoLotSeq) &&
         !bytesEqual(magic, Bip38EcConst.intPassMagicWithLotSeq)) {
-      throw ArgumentError('Invalid magic (${BytesUtils.toHexString(magic)})');
+      throw ArgumentException(
+          'Invalid magic (${BytesUtils.toHexString(magic)})');
     }
 
     /// Generate a random seed for seedb and derive a new point.
@@ -409,7 +411,7 @@ class Bip38EcDecrypter {
 
     /// Check if the length of the encrypted private key is valid.
     if (privKeyEncBytes.length != Bip38EcConst.encByteLen) {
-      throw ArgumentError(
+      throw ArgumentException(
           'Invalid encrypted length (${privKeyEncBytes.length})');
     }
 
@@ -423,7 +425,8 @@ class Bip38EcDecrypter {
 
     /// Verify the prefix of the encrypted private key.
     if (!bytesEqual(prefix, Bip38EcConst.encKeyPrefix)) {
-      throw ArgumentError('Invalid prefix (${BytesUtils.toHexString(prefix)})');
+      throw ArgumentException(
+          'Invalid prefix (${BytesUtils.toHexString(prefix)})');
     }
 
     /// Extract flag options based on the flag byte.
@@ -448,7 +451,7 @@ class Bip38EcDecrypter {
 
     /// Verify the extracted address hash matches the expected value.
     if (!bytesEqual(addressHash, addressHashGot)) {
-      throw ArgumentError(
+      throw ArgumentException(
           'Invalid address hash (expected: ${BytesUtils.toHexString(addressHash)}, got: ${BytesUtils.toHexString(addressHashGot)})');
     }
 
@@ -532,7 +535,7 @@ class Bip38EcDecrypter {
 
     /// Verify that 'flagbyteInt' is zero; otherwise, it's an invalid 'flagbyte'.
     if (flagbyteInt != 0) {
-      throw ArgumentError(
+      throw ArgumentException(
           'Invalid flagbyte (${BytesUtils.toHexString(flagbyte)})');
     }
 

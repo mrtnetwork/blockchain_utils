@@ -46,7 +46,7 @@ class SubstratePublicKey {
   static Sr25519PublicKey _keyFromBytes(List<int> keyBytes) {
     try {
       return Sr25519PublicKey.fromBytes(keyBytes);
-    } on Exception {
+    } catch (e) {
       throw const SubstrateKeyError('Invalid public key');
     }
   }
@@ -90,7 +90,7 @@ class SubstratePrivateKey {
   static Sr25519PrivateKey _keyFromBytes(List<int> keyBytes) {
     try {
       return Sr25519PrivateKey.fromBytes(keyBytes);
-    } on Exception {
+    } catch (e) {
       throw const SubstrateKeyError('Invalid private key');
     }
   }

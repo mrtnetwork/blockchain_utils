@@ -255,7 +255,7 @@ class MD5 implements SerializableHash {
   @override
   Hash update(List<int> data) {
     if (_finished) {
-      throw StateError("SHA512: can't update because hash was finished.");
+      throw MessageException("SHA512: can't update because hash was finished.");
     }
     _lengthInBytes += data.length;
     _buffer.addAll(BytesUtils.toBytes(data));

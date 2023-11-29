@@ -1,8 +1,5 @@
 import 'dart:typed_data';
-
-import 'package:blockchain_utils/numbers/int_utils.dart';
-import 'package:blockchain_utils/numbers/bigint_utils.dart';
-import 'package:blockchain_utils/bip/substrate/scale/substrate_scale_enc_base.dart';
+import 'package:blockchain_utils/blockchain_utils.dart';
 
 /// Constants related to Substrate SCALE Compact Uint (CUint) encoding.
 class SubstrateScaleCUintEncoderConst {
@@ -49,6 +46,6 @@ class SubstrateScaleCUintEncoder extends SubstrateScaleEncoderBase {
       return List<int>.from([...lenBytes, ...valueBytes]);
     }
 
-    throw FormatException("Out of range integer value ($value)");
+    throw ArgumentException("Out of range integer value ($value)");
   }
 }

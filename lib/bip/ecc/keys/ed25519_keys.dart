@@ -1,9 +1,11 @@
+import 'package:blockchain_utils/binary/utils.dart';
 import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/curve/curves.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/eddsa/privatekey.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/eddsa/publickey.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/point/edwards.dart';
 import 'package:blockchain_utils/crypto/crypto/hash/hash.dart';
+import 'package:blockchain_utils/exception/exception.dart';
 
 import 'i_keys.dart';
 
@@ -87,6 +89,10 @@ class Ed25519PublicKey implements IPublicKey {
   List<int> get uncompressed {
     return compressed;
   }
+
+  String toHex() {
+    return BytesUtils.toHexString(compressed);
+  }
 }
 
 /// A class representing an Ed25519 private key that implements the IPrivateKey interface.
@@ -100,7 +106,7 @@ class Ed25519PrivateKey implements IPrivateKey {
   /// Then, it initializes an EdDSA private key using the Edward generator and SHA512 hash function.
   factory Ed25519PrivateKey.fromBytes(List<int> keyBytes) {
     if (keyBytes.length != Ed25519KeysConst.privKeyByteLen) {
-      throw ArgumentError("invalid private key length");
+      throw ArgumentException("invalid private key length");
     }
     final edwardGenerator = Curves.generatorED25519;
     final eddsaPrivateKey =
@@ -141,5 +147,9 @@ class Ed25519PrivateKey implements IPrivateKey {
   @override
   List<int> get raw {
     return privateKey.privateKey;
+  }
+
+  String toHex() {
+    return BytesUtils.toHexString(raw);
   }
 }

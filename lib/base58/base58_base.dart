@@ -1,7 +1,5 @@
 import 'package:blockchain_utils/base58/base58_ex.dart';
-import 'package:blockchain_utils/binary/utils.dart';
-import 'package:blockchain_utils/numbers/bigint_utils.dart';
-import 'package:blockchain_utils/crypto/quick_crypto.dart';
+import 'package:blockchain_utils/blockchain_utils.dart';
 import 'package:blockchain_utils/compare/compare.dart';
 
 enum Base58Alphabets {
@@ -119,7 +117,7 @@ class Base58Decoder {
       final c = data[data.length - 1 - i];
       final charIndex = alphabet.indexOf(c);
       if (charIndex == -1) {
-        throw const FormatException("Invalid character in Base58 string");
+        throw const MessageException("Invalid character in Base58 string");
       }
       val += BigInt.from(charIndex) * BigInt.from(Base58Const.radix).pow(i);
     }

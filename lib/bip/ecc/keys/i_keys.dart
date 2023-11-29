@@ -63,6 +63,8 @@ abstract class IPublicKey {
 
   /// Get the abstract point representation of the public key.
   AbstractPoint get point;
+
+  String toHex();
 }
 
 /// An abstract class representing a generic private key interface for different elliptic curve types.
@@ -110,4 +112,6 @@ abstract class IPrivateKey {
         return Secp256k1PrivateKeyEcdsa.isValidBytes(keyBytes);
     }
   }
+
+  String toHex();
 }

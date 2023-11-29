@@ -10,6 +10,7 @@ import 'package:blockchain_utils/crypto/crypto/cdsa/point/base.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/point/ec_projective_point.dart';
 import 'package:blockchain_utils/crypto/crypto/hash/hash.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
+import 'package:blockchain_utils/exception/exception.dart';
 import 'package:blockchain_utils/numbers/bigint_utils.dart';
 import 'package:blockchain_utils/numbers/int_utils.dart';
 import 'package:blockchain_utils/signer/ecdsa_signing_key.dart';
@@ -63,7 +64,7 @@ class BitcoinSignerUtils {
   static List<int> magicMessage(List<int> message, String messagePrefix) {
     final prefixBytes = StringUtils.encode(messagePrefix);
     if (prefixBytes[0] != BitcoinSignerUtils.safeBitcoinMessagePrefix) {
-      throw ArgumentError(
+      throw ArgumentException(
           "invalid message prefix. message prefix should start with 0x18");
     }
     final magic = _magicPrefix(message, prefixBytes);
@@ -106,7 +107,7 @@ class BitcoinSigner {
     final verify = verifyKey.verifyMessage(message, messagePrefix,
         newSignature.toBytes(BitcoinSignerUtils.baselen));
     if (!verify) {
-      throw const FormatException(
+      throw const MessageException(
           'The created signature does not pass verification.');
     }
     return newSignature.toBytes(BitcoinSignerUtils.baselen);
@@ -165,7 +166,7 @@ class BitcoinSigner {
 
     final verify = verifyKey.verifyTransaction(digest, signature);
     if (!verify) {
-      throw const FormatException(
+      throw const MessageException(
           'The created signature does not pass verification.');
     }
     return signature;
@@ -175,7 +176,7 @@ class BitcoinSigner {
   List<int> signSchnorrTransaction(List<int> digest,
       {required List<dynamic> tapScripts, required bool tweak}) {
     if (digest.length != 32) {
-      throw ArgumentError("The message must be a 32-byte array.");
+      throw ArgumentException("The message must be a 32-byte array.");
     }
     List<int> byteKey = <int>[];
     if (tweak) {
@@ -191,7 +192,7 @@ class BitcoinSigner {
     final d0 = BigintUtils.fromBytes(byteKey);
 
     if (!(BigInt.one <= d0 && d0 <= BitcoinSignerUtils._order - BigInt.one)) {
-      throw ArgumentError(
+      throw ArgumentException(
           "The secret key must be an integer in the range 1..n-1.");
     }
     final P = Curves.generatorSecp256k1 * d0;
@@ -215,7 +216,7 @@ class BitcoinSigner {
     final k0 = BigintUtils.fromBytes(kHash) % BitcoinSignerUtils._order;
 
     if (k0 == BigInt.zero) {
-      throw const FormatException(
+      throw const MessageException(
           'Failure. This happens only with negligible probability.');
     }
     final R = (Curves.generatorSecp256k1 * k0);
@@ -244,7 +245,7 @@ class BitcoinSigner {
         tapleafScripts: tapScripts, isTweak: tweak);
 
     if (!verify) {
-      throw const FormatException(
+      throw const MessageException(
           'The created signature does not pass verification.');
     }
     return sig;
@@ -290,11 +291,11 @@ class BitcoinVerifier {
   bool verifySchnorr(List<int> message, List<int> signature,
       {List<dynamic>? tapleafScripts, required bool isTweak}) {
     if (message.length != 32) {
-      throw ArgumentError("The message must be a 32-byte array.");
+      throw ArgumentException("The message must be a 32-byte array.");
     }
 
     if (signature.length != 64 && signature.length != 65) {
-      throw ArgumentError(
+      throw ArgumentException(
           "The signature must be a 64-byte array or 65-bytes with sighash");
     }
 
@@ -342,7 +343,7 @@ class BitcoinVerifier {
   bool verifyMessage(
       List<int> message, String messagePrefix, List<int> signature) {
     if (signature.length != 64 && signature.length != 65) {
-      throw ArgumentError(
+      throw ArgumentException(
           "bitcoin signature must be 64 bytes without recover-id or 65 bytes with recover-id");
     }
     final List<int> messgaeHash = QuickCrypto.sha256Hash(

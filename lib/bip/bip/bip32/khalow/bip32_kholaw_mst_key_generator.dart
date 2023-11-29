@@ -1,6 +1,7 @@
 import 'package:blockchain_utils/bip/bip/bip32/base/ibip32_mst_key_generator.dart';
 import 'package:blockchain_utils/bip/bip/bip32/slip10/bip32_slip10_mst_key_generator.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
+import 'package:blockchain_utils/exception/exception.dart';
 
 /// Constants for generating master keys for Bip32KholawEd25519 keys.
 ///
@@ -27,7 +28,7 @@ class Bip32KholawEd25519MstKeyGenerator implements IBip32MstKeyGenerator {
   /// 1. The master private key bytes.
   /// 2. The chain code bytes associated with the master key.
   ///
-  /// Throws an `ArgumentError` if the seed length is less than the required minimum.
+  /// Throws an `ArgumentException` if the seed length is less than the required minimum.
   ///
   /// The generation process involves repeated hashing of the seed and HMAC-SHA256 computations.
   ///
@@ -42,7 +43,7 @@ class Bip32KholawEd25519MstKeyGenerator implements IBip32MstKeyGenerator {
   @override
   (List<int>, List<int>) generateFromSeed(List<int> seedBytes) {
     if (seedBytes.length < Bip32KholawMstKeyGeneratorConst.seedMinByteLen) {
-      throw ArgumentError("Invalid seed length");
+      throw ArgumentException("Invalid seed length");
     }
     final hashDigest = _hashRepeatedly(seedBytes,
         List<int>.from(Bip32KholawMstKeyGeneratorConst.masterKeyHmacKey));

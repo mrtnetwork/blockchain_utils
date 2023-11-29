@@ -1,7 +1,5 @@
-import 'package:blockchain_utils/bip/monero/mnemonic/monero_entropy_generator.dart';
-import 'package:blockchain_utils/bip/monero/mnemonic/monero_mnemonic.dart';
-import 'package:blockchain_utils/bip/monero/mnemonic/monero_mnemonic_encoder.dart';
 import 'package:blockchain_utils/bip/mnemonic/mnemonic.dart';
+import 'package:blockchain_utils/blockchain_utils.dart';
 
 /// A class containing constants related to Monero mnemonic generation.
 ///
@@ -43,7 +41,8 @@ class MoneroMnemonicGenerator {
   /// [wordsNum]: The desired word count for the mnemonic.
   Mnemonic fromWordsNumber(MoneroWordsNum wordsNum) {
     if (!MoneroMnemonicConst.mnemonicWordNum.contains(wordsNum)) {
-      throw Exception('Words number for mnemonic ($wordsNum) is not valid');
+      throw ArgumentException(
+          'Words number for mnemonic ($wordsNum) is not valid');
     }
 
     int entropyBitLen =

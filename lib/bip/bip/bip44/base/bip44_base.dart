@@ -10,6 +10,7 @@ import 'package:blockchain_utils/bip/bip/bip44/base/bip44_base_ex.dart';
 import 'package:blockchain_utils/bip/bip/conf/bip_coin_conf.dart';
 import 'package:blockchain_utils/bip/cardano/bip32/cardano_icarus_bip32.dart';
 import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
+import 'package:blockchain_utils/exception/exception.dart';
 
 import 'bip44_keys.dart';
 
@@ -78,7 +79,7 @@ abstract class Bip44Base {
       case EllipticCurveTypes.nist256p1:
         bip = Bip32Slip10Nist256p1.fromSeed(seedBytes, coin.keyNetVer);
       default:
-        throw ArgumentError("invaid type");
+        throw ArgumentException("invaid type");
     }
     final validate = _validate(bip, coin);
     bip32 = validate.$1;
@@ -106,7 +107,7 @@ abstract class Bip44Base {
       case EllipticCurveTypes.nist256p1:
         bip = Bip32Slip10Nist256p1.fromExtendedKey(extendedKey, coin.keyNetVer);
       default:
-        throw ArgumentError("invaid type");
+        throw ArgumentException("invaid type");
     }
     final validate = _validate(bip, coin);
     bip32 = validate.$1;
@@ -139,7 +140,7 @@ abstract class Bip44Base {
         bip = Bip32Slip10Nist256p1.fromPrivateKey(privateKeyBytes,
             keyData: keyData, keyNetVer: coin.keyNetVer);
       default:
-        throw ArgumentError("invaid type");
+        throw ArgumentException("invaid type");
     }
     final validate = _validate(bip, coin);
     bip32 = validate.$1;
@@ -172,7 +173,7 @@ abstract class Bip44Base {
         bip = Bip32Slip10Nist256p1.fromPublicKey(pubkeyBytes,
             keyData: keyData, keyNetVer: coin.keyNetVer);
       default:
-        throw ArgumentError("invaid type");
+        throw ArgumentException("invaid type");
     }
     final validate = _validate(bip, coin);
     bip32 = validate.$1;
