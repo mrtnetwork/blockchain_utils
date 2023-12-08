@@ -66,11 +66,11 @@ class MoneroSubaddress {
     }
 
     List<int> majorIdxBytes = IntUtils.toBytes(majorIndex,
-        length: MoneroSubaddressConst.subaddrIdxByteLen);
-    List<int> minorIdxBytes = IntUtils.toBytes(
-      minorIndex,
-      length: MoneroSubaddressConst.subaddrIdxByteLen,
-    );
+        length: MoneroSubaddressConst.subaddrIdxByteLen,
+        byteOrder: Endian.little);
+    List<int> minorIdxBytes = IntUtils.toBytes(minorIndex,
+        length: MoneroSubaddressConst.subaddrIdxByteLen,
+        byteOrder: Endian.little);
 
     List<int> privVKeyBytes = privVKey.raw;
 

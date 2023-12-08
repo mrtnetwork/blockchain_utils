@@ -40,8 +40,8 @@ class BytesUtils {
   /// Converts a list of bytes to a hexadecimal string representation.
   ///
   /// Converts the input list of bytes to a hexadecimal string using the `hex` library.
-  static String toHexString(List<int> dataBytes) {
-    return hex.hex.encode(dataBytes);
+  static String toHexString(List<int> dataBytes, [bool lowerCase = true]) {
+    return hex.hex.encode(dataBytes, lowerCase);
   }
 
   /// Converts a hexadecimal string to a list of bytes.
@@ -65,5 +65,26 @@ class BytesUtils {
         throw ArgumentException("invalid bytes $i");
       }
     }
+  }
+
+  /// Compare two Uint8Lists lexicographically.
+  static int compareBytes(List<int> a, List<int> b) {
+    final length = a.length < b.length ? a.length : b.length;
+
+    for (var i = 0; i < length; i++) {
+      if (a[i] < b[i]) {
+        return -1;
+      } else if (a[i] > b[i]) {
+        return 1;
+      }
+    }
+
+    if (a.length < b.length) {
+      return -1;
+    } else if (a.length > b.length) {
+      return 1;
+    }
+
+    return 0;
   }
 }

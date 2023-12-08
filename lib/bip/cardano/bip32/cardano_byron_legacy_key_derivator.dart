@@ -47,6 +47,6 @@ class CardanoByronLegacyKeyDerivator
   /// Serializes a Bip32KeyIndex object to bytes.
   @override
   List<int> serializeIndex(Bip32KeyIndex index) {
-    return index.toBytes(endianness: Endian.little);
+    return index.toBytes();
   }
 }

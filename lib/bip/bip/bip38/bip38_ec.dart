@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:blockchain_utils/base58/base58.dart';
 import 'package:blockchain_utils/numbers/int_utils.dart';
 import 'package:blockchain_utils/numbers/bigint_utils.dart';
@@ -105,7 +107,8 @@ class Bip38EcUtils {
 
     final lotSequence = IntUtils.toBytes(
         (lotNum * (Bip38EcConst.seqNumMaxVal + 1)) + sequenceNum,
-        length: 4);
+        length: 4,
+        byteOrder: Endian.little);
     return List<int>.from([...ownerSalt, ...lotSequence]);
   }
 
@@ -385,7 +388,8 @@ class Bip38EcKeysGenerator {
       flagbyteInt = BitUtils.setBit(flagbyteInt, Bip38EcConst.flagBitLotSeq);
     }
     return IntUtils.toBytes(flagbyteInt,
-        length: IntUtils.bitlengthInBytes(flagbyteInt));
+        length: IntUtils.bitlengthInBytes(flagbyteInt),
+        byteOrder: Endian.little);
   }
 }
 

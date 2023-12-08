@@ -93,6 +93,7 @@ class Bip32Slip10Ed25519 extends Bip32Base {
             privKey: result.$1,
             pubKey: null);
       }
+
       return Bip32Slip10Ed25519(
           keyData: Bip32KeyData(
             chainCode: Bip32ChainCode(result.$2),

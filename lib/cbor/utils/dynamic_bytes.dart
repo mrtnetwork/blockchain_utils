@@ -1,6 +1,5 @@
 import 'package:blockchain_utils/blockchain_utils.dart';
 import 'package:blockchain_utils/cbor/core/tags.dart';
-import 'package:blockchain_utils/binary/binary_operation.dart';
 
 /// A class for tracking and building a sequence of bytes (List<int>) for CBOR encoding.
 class CborBytesTracker {
@@ -8,14 +7,11 @@ class CborBytesTracker {
   CborBytesTracker();
 
   /// A buffer used to accumulate the bytes for CBOR encoding.
-  final List<int> _buffer = List.empty(growable: true);
-
-  /// bytes length
-  int get length => _buffer.length;
+  final DynamicByteTracker _buffer = DynamicByteTracker();
 
   /// Retrieve the accumulated bytes as a List<int> from the buffer.
   List<int> toBytes() {
-    return List<int>.from(_buffer);
+    return _buffer.toBytes();
   }
 
   /// Append a single UInt8 value to the byte sequence in the buffer.
@@ -44,12 +40,12 @@ class CborBytesTracker {
   /// Append a list of integer values (chunk) to the byte sequence in the buffer.
   void pushBytes(List<int> chunk) {
     for (final i in chunk) {
-      if (i < 0 || i > 0xff) {
+      if (i < 0 || i > mask8) {
         throw ArgumentException(
             "invalid byte ${chunk[i] < 0 ? "-" : ""}0x${chunk[i].abs().toRadixString(16)}");
       }
     }
-    _buffer.addAll(chunk);
+    _buffer.add(chunk);
   }
 
   /// Append a list of CBOR tags to the byte sequence in the buffer.

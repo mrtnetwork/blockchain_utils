@@ -1,13 +1,18 @@
 import 'package:blockchain_utils/exception/exception.dart';
 
+/// Represents a rational number with arbitrary precision using BigInt for the numerator and denominator.
 class BigRational {
+  static final BigRational zero = BigRational.from(0);
+  static final BigRational ten = BigRational.from(10);
   final BigInt numerator;
   final BigInt denominator;
   static final _one = BigInt.one;
   static final _zero = BigInt.zero;
   static final _ten = BigInt.from(10);
+
   BigRational._(this.numerator, this.denominator);
 
+  /// Constructs a BigRational instance from the given numerator and optional denominator.
   factory BigRational(BigInt numerator, [BigInt? denominator]) {
     if (denominator == null) {
       return BigRational._(numerator, _one);
@@ -20,9 +25,13 @@ class BigRational {
     }
     return _reduce(numerator, denominator);
   }
+
+  /// Constructs a BigRational instance from the given numerator and optional denominator as integers.
   factory BigRational.from(int numerator, [int? denominator]) {
     return BigRational(BigInt.from(numerator), BigInt.from(denominator ?? 1));
   }
+
+  /// Finds the greatest common divisor of two BigInt numbers a and b.
   static BigInt _gcd(BigInt a, BigInt b) {
     BigInt t;
     while (b != _zero) {
@@ -33,12 +42,20 @@ class BigRational {
     return a;
   }
 
+  /// Finds the least common multiple of two BigInt numbers a and b.
   static BigInt _lcm(BigInt a, BigInt b) {
     return (a * b) ~/ _gcd(a, b);
   }
 
-  factory BigRational.parseDecimal(String n) {
-    List<String> parts = n.split(RegExp(r'e', caseSensitive: false));
+  /// Parses a decimal string and constructs a BigRational instance from it.
+  ///
+  /// This method parses the given decimal string and constructs a BigRational representing the decimal value it contains.
+  /// It supports parsing decimal strings in scientific, floating point, and integer notation.
+  ///
+  /// [decimal] The decimal string to be parsed.
+  /// returns A BigRational instance representing the parsed decimal value.
+  factory BigRational.parseDecimal(String decimal) {
+    List<String> parts = decimal.split(RegExp(r'e', caseSensitive: false));
     if (parts.length > 2) {
       throw ArgumentException("Invalid input: too many 'e' tokens");
     }
@@ -62,7 +79,7 @@ class BigRational {
       }
     }
 
-    parts = n.trim().split(".");
+    parts = decimal.trim().split(".");
     if (parts.length > 2) {
       throw ArgumentException("Invalid input: too many '.' tokens");
     }
@@ -83,44 +100,23 @@ class BigRational {
       return intPart;
     }
 
-    return BigRational._(BigInt.parse(n), _one);
+    return BigRational._(BigInt.parse(decimal), _one);
   }
-  factory BigRational.parse(String v) {
-    List<String> texts = v.split("/");
-    if (texts.length > 2) {
-      throw ArgumentException("Invalid input: too many '/' tokens");
-    }
 
-    if (texts.length > 1) {
-      final List<String> parts = texts[0].split("_");
-      if (parts.length > 2) {
-        throw ArgumentException("Invalid input: too many '_' tokens");
-      }
-
-      if (parts.length > 1) {
-        final bool isPositive = parts[0][0] != "-";
-        BigInt numerator = BigInt.parse(parts[0]) * BigInt.parse(texts[1]);
-        if (isPositive) {
-          numerator += BigInt.parse(parts[1]);
-        } else {
-          numerator -= BigInt.parse(parts[1]);
-        }
-        return _reduce(numerator, BigInt.parse(texts[1]));
-      }
-
-      return _reduce(BigInt.parse(texts[0]), BigInt.parse(texts[1]));
-    }
-
-    return BigRational.parseDecimal(v);
-  }
+  /// Converts the BigRational to a BigInt.
   BigInt toBigInt() {
     return _truncate;
   }
 
+  /// Converts the BigRational to a double.
   double toDouble() {
     return numerator / denominator;
   }
 
+  /// Adds the given BigRational to this BigRational and returns the result.
+  ///
+  /// [other] The BigRational to be added.
+  /// returns A new BigRational representing the sum of this BigRational and the given BigRational.
   BigRational operator +(BigRational other) {
     final BigInt multiple = _lcm(denominator, other.denominator);
     BigInt a = multiple ~/ denominator;
@@ -132,6 +128,10 @@ class BigRational {
     return _reduce(a + b, multiple);
   }
 
+  /// Multiplies this BigRational by the given BigRational and returns the result.
+  ///
+  /// [other] The BigRational to be multiplied by.
+  /// returns A new BigRational representing the product of this BigRational and the given BigRational.
   BigRational operator *(BigRational other) {
     final BigInt resultNumerator = numerator * other.numerator;
     final BigInt resultDenominator = denominator * other.denominator;
@@ -139,6 +139,10 @@ class BigRational {
     return _reduce(resultNumerator, resultDenominator);
   }
 
+  /// Divides this BigRational by the given BigRational and returns the result.
+  ///
+  /// [other] The BigRational to divide by.
+  /// returns A new BigRational representing the quotient of this BigRational and the given BigRational.
   BigRational operator /(BigRational other) {
     final BigInt resultNumerator = numerator * other.denominator;
     final BigInt resultDenominator = denominator * other.numerator;
@@ -146,14 +150,23 @@ class BigRational {
     return _reduce(resultNumerator, resultDenominator);
   }
 
+  /// Negates this BigRational and returns the result.
   BigRational operator -() {
     return BigRational._(-numerator, denominator);
   }
 
+  /// Subtracts the given BigRational from this BigRational and returns the result.
+  ///
+  /// [other] The BigRational to be subtracted.
+  /// returns A new BigRational representing the difference between this BigRational and the given BigRational.
   BigRational operator -(BigRational other) {
     return this + ~other;
   }
 
+  /// Computes the remainder of dividing this BigRational by the given BigRational and returns the result.
+  ///
+  /// [other] The divisor BigRational.
+  /// returns A new BigRational representing the remainder of the division operation.
   BigRational operator %(BigRational other) {
     BigRational re = remainder(other);
     if (isNegative) {
@@ -162,22 +175,42 @@ class BigRational {
     return re;
   }
 
+  /// Compares this BigRational with the given BigRational and returns true if this BigRational is less than the given BigRational.
+  ///
+  /// [other] The BigRational to compare with.
+  /// returns true if this BigRational is less than the given BigRational; otherwise, false.
   bool operator <(BigRational other) {
     return compareTo(other) < 0;
   }
 
+  /// Checks if this BigRational is less than or equal to the given BigRational.
+  ///
+  /// [other] The BigRational to compare with.
+  /// returns true if this BigRational is less than or equal to the given BigRational; otherwise, false.
   bool operator <=(BigRational other) {
     return compareTo(other) <= 0;
   }
 
+  /// Checks if this BigRational is greater than the given BigRational.
+  ///
+  /// [other] The BigRational to compare with.
+  /// returns true if this BigRational is greater than the given BigRational; otherwise, false.
   bool operator >(BigRational other) {
     return compareTo(other) > 0;
   }
 
+  /// Checks if this BigRational is greater than or equal to the given BigRational.
+  ///
+  /// [other] The BigRational to compare with.
+  /// returns true if this BigRational is greater than or equal to the given BigRational; otherwise, false.
   bool operator >=(BigRational other) {
     return compareTo(other) >= 0;
   }
 
+  /// Performs integer division on this BigRational by the given BigRational and returns the result as a BigRational.
+  ///
+  /// [other] The divisor BigRational.
+  /// Returns a new BigRational representing the integer division of this BigRational by the given BigRational.
   BigRational operator ~/(BigRational other) {
     BigInt divmod = _truncate;
     BigInt rminder = _remainder;
@@ -191,6 +224,7 @@ class BigRational {
     return BigRational._(floor, _one);
   }
 
+  /// Rounds this BigRational towards zero and returns the result as a BigRational.
   BigRational operator ~() {
     if (denominator.isNegative) {
       return BigRational._(numerator, -denominator);
@@ -198,12 +232,19 @@ class BigRational {
     return BigRational._(-numerator, denominator);
   }
 
+  /// Raises this BigRational to the power of n and returns the result as a BigRational.
+  ///
+  /// [n] The exponent.
+  /// Returns a new BigRational representing the result of raising this BigRational to the power of n.
   BigRational pow(int n) {
     final BigInt num = numerator.pow(n);
     final BigInt denom = denominator.pow(n);
     return _reduce(num, denom);
   }
 
+  /// Rounds this BigRational towards positive infinity and returns the result as a BigRational.
+  ///
+  /// Returns a new BigRational representing the ceiling of this BigRational.
   BigRational ceil(toBigInt) {
     BigInt divmod = _truncate;
     BigInt remind = _remainder;
@@ -218,6 +259,10 @@ class BigRational {
     return BigRational._(ceil, _one);
   }
 
+  /// Compares this BigRational with the given BigRational and returns an integer representing the result.
+  ///
+  /// [v] The BigRational to compare with.
+  /// Returns 0 if this BigRational is equal to the given BigRational, 1 if this BigRational is greater, and -1 if this BigRational is less.
   int compareTo(BigRational v) {
     if (denominator == v.denominator) {
       return numerator.compareTo(v.numerator);
@@ -233,16 +278,25 @@ class BigRational {
     return ~this;
   }
 
+  /// Checks if this BigRational is negative.
+  ///
+  /// Returns true if this BigRational is negative; otherwise, false.
   bool get isNegative {
     return (numerator.isNegative != denominator.isNegative) &&
         numerator != _zero;
   }
 
+  /// Checks if this BigRational is positive.
+  ///
+  /// Returns true if this BigRational is positive; otherwise, false.
   bool get isPositive {
     return (numerator.isNegative == denominator.isNegative) &&
         numerator != _zero;
   }
 
+  /// Checks if this BigRational is zero.
+  ///
+  /// Returns true if this BigRational is zero; otherwise, false.
   bool get isZero {
     return numerator == _zero;
   }
@@ -258,19 +312,34 @@ class BigRational {
     return BigRational._(num, denom);
   }
 
+// Returns the remainder of division of this BigRational by the given BigRational.
+  ///
+  /// [other] The divisor
+  /// Returns a new BigRational representing the remainder of the division.
   BigRational remainder(BigRational other) {
     return this - (this ~/ other) * other;
   }
 
+  /// Gets the remainder of the division of the numerator by the denominator.
+  ///
+  /// Returns the remainder of the division as a BigInt.
   BigInt get _remainder {
     return numerator.remainder(denominator);
   }
 
+  /// Gets the result of truncating the division of the numerator by the denominator.
+  ///
+  /// Returns the truncated division result as a BigInt.
   BigInt get _truncate {
     return numerator ~/ denominator;
   }
 
-  String toDecimal({int digits = 10}) {
+  /// Converts this BigRational to its decimal representation.
+  ///
+  /// [digits] The number of digits after the decimal point (default is the scale of the BigRational).
+  /// Returns a string representing the decimal value, with the specified number of digits after the decimal point.
+  String toDecimal({int? digits}) {
+    digits ??= scale;
     final BigInt nDive = _truncate;
     final BigInt nReminder = _remainder;
     String intPart = nDive.abs().toString();
@@ -304,6 +373,35 @@ class BigRational {
   }
 
   @override
+  String toString() {
+    if (denominator == _one) {
+      return toDecimal();
+    }
+    return '$numerator/$denominator';
+  }
+
+  /// Gets the precision of this BigRational, which is the total number of significant digits.
+  ///
+  /// Returns an integer representing the precision of this BigRational.
+  int get precision {
+    final toAbs = abs();
+    return toAbs.scale + toAbs.toBigInt().toString().length;
+  }
+
+  /// Gets the scale of this BigRational, which is the number of decimal places.
+  ///
+  /// Returns an integer representing the scale of this BigRational.
+  int get scale {
+    int scale = 0;
+    BigRational r = this;
+    while (r.denominator != BigInt.one) {
+      scale++;
+      r *= ten;
+    }
+    return scale;
+  }
+
+  @override
   bool operator ==(other) {
     return other is BigRational &&
         other.denominator == denominator &&
@@ -312,11 +410,4 @@ class BigRational {
 
   @override
   int get hashCode => Object.hash(numerator, denominator);
-  @override
-  String toString() {
-    if (denominator == _one) {
-      return toDecimal();
-    }
-    return '$numerator/$denominator';
-  }
 }

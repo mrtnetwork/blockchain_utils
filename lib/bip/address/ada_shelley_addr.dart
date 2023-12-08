@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:blockchain_utils/bech32/bech32_base.dart';
 import 'package:blockchain_utils/bip/address/addr_dec_utils.dart';
 import 'package:blockchain_utils/bip/address/addr_key_validator.dart';
@@ -67,7 +69,8 @@ class _AdaShelleyAddrUtils {
   /// A byte array representing the address prefix.
   static List<int> encodePrefix(int hdrType, int netTag) {
     final hdr = (hdrType << 4) + netTag;
-    return IntUtils.toBytes(hdr, length: IntUtils.bitlengthInBytes(hdr));
+    return IntUtils.toBytes(hdr,
+        length: IntUtils.bitlengthInBytes(hdr), byteOrder: Endian.little);
   }
 }
 

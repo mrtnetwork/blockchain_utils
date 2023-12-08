@@ -182,9 +182,8 @@ class Bip32KeyIndex {
   }
 
   /// Get the key index as bytes.
-  List<int> toBytes({Endian endianness = Endian.big}) {
-    return IntUtils.toBytes(index,
-        length: fixedLength(), byteOrder: endianness);
+  List<int> toBytes([Endian endian = Endian.big]) {
+    return IntUtils.toBytes(index, length: fixedLength(), byteOrder: endian);
   }
 
   /// Get the key index as an integer.

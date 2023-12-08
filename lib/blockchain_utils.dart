@@ -63,10 +63,13 @@ export 'bip/wif/wif.dart';
 export 'string/string.dart';
 
 /// Exports utility functions related to binary operations.
-export 'binary/utils.dart';
+export 'binary/binary.dart';
 
 /// Exports the BitcoinSigner class for Bitcoin signing operations.
 export 'signer/bitcoin_signer.dart';
+
+/// Exports the XrpSigner class for XRP signing operations.
+export 'signer/xrp_signer.dart';
 
 /// Exports modules related to ECC (Elliptic Curve Cryptography) in the context of BIP.
 export 'bip/ecc/bip_ecc.dart';
@@ -74,9 +77,8 @@ export 'bip/ecc/bip_ecc.dart';
 /// Exports utility functions related to BigInt operations.
 export 'numbers/bigint_utils.dart';
 
-/// Exports utility functions related to integer operations.
-export 'numbers/int_utils.dart';
+/// Exports utility functions related to numbers operations.
+export 'numbers/numbers.dart';
 
-export 'numbers/big_rational.dart';
-
+/// Exceptions
 export 'exception/exception.dart';

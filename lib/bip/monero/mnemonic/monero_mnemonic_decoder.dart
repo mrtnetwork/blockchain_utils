@@ -50,7 +50,7 @@ class MoneroMnemonicDecoder extends MnemonicDecoderBase {
       String word3 = words[i * 3 + 2];
       List<int> chunkBytes = MnemonicUtils.wordsToBytesChunk(
           word1, word2, word3, lang.$1,
-          endian: Endian.big);
+          endian: Endian.little);
       entropyBytes = List<int>.from([...entropyBytes, ...chunkBytes]);
     }
     return entropyBytes;

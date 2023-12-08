@@ -147,6 +147,22 @@ class QuickCrypto {
     return SHA512.hash(data);
   }
 
+  /// Gets the length of the SHA512 digest.
+  static int sha512DeigestLength = SHA512.digestLength;
+
+  /// Computes the SHA512 hash of the input data and returns its halves.
+  ///
+  /// This method computes the SHA512 hash of the provided data and returns the first
+  /// half and the second half of the hash as a tuple.
+  ///
+  /// [data] The input data for which the hash is to be computed.
+  /// returns A tuple containing the first and second halves of the SHA512 hash.
+  static (List<int>, List<int>) sha512HashHalves(List<int> data) {
+    final hash = SHA512.hash(data);
+    final halvesLength = sha512DeigestLength ~/ 2;
+    return (hash.sublist(0, halvesLength), hash.sublist(halvesLength));
+  }
+
   /// Calculate the Keccak-256 hash of the input data
   static List<int> keccack256Hash(List<int> data) {
     return Keccack.hash(data, 32);

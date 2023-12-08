@@ -1027,7 +1027,20 @@ class Bip44Conf {
     wifNetVer: null,
     type: EllipticCurveTypes.secp256k1,
     addressEncoder: ([dynamic kwargs]) => XrpAddrEncoder(),
-    addrParams: {},
+    addrParams: {"prefix": CoinsConf.ripple.params.addrNetVer!},
+  );
+
+  /// Configuration for Ripple testnet
+  static final CoinConfig rippleTestnet = CoinConfig(
+    coinNames: CoinsConf.ripple.coinName,
+    coinIdx: Slip44.ripple,
+    isTestnet: false,
+    defPath: derPathNonHardenedFull,
+    keyNetVer: bip44BtcKeyNetVerMain,
+    wifNetVer: null,
+    type: EllipticCurveTypes.secp256k1,
+    addressEncoder: ([dynamic kwargs]) => XrpAddrEncoder(),
+    addrParams: {"prefix": CoinsConf.rippleTestNet.params.addrNetVer!},
   );
 
   /// Configuration for Secret Network (old path)

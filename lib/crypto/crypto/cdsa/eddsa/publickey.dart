@@ -171,7 +171,7 @@ class EDDSAPublicKey {
     h.update(List<int>.from([...dom, ...R.toBytes(), ..._encoded, ...data]));
     final k = BigintUtils.fromBytes(h.digest(), byteOrder: Endian.little);
     if (generator * S != _point * k + R) {
-      throw ArgumentException('Invalid signature');
+      return false;
     }
 
     return true;

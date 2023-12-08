@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:blockchain_utils/base58/base58_base.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
 import 'package:blockchain_utils/binary/utils.dart';
@@ -77,7 +79,8 @@ class SS58Encoder {
 
     if (ss58Format <= _Ss58Const.simpleAccountFormatMaxVal) {
       ss58FormatBytes = IntUtils.toBytes(ss58Format,
-          length: IntUtils.bitlengthInBytes(ss58Format));
+          length: IntUtils.bitlengthInBytes(ss58Format),
+          byteOrder: Endian.little);
     } else {
       ss58FormatBytes = List<int>.from([
         ((ss58Format & 0x00FC) >> 2) | 0x0040,

@@ -29,10 +29,10 @@ export 'slip10/bip32_slip10_key_derivator.dart';
 /// Export the master key generator for Slip-10-based BIP-32.
 export 'slip10/bip32_slip10_mst_key_generator.dart';
 
-/// Export the Slip-10 BIP-32 implementation for NIST P-256 (secp256r1).
+/// Export the Slip-10 BIP-32 implementation for NIST P-256 .
 export 'slip10/bip32_slip10_nist256p1.dart';
 
-/// Export the Slip-10 BIP-32 implementation for SECG P-256k1 (secp256k1).
+/// Export the Slip-10 BIP-32 implementation for SECG P-256k1.
 export 'slip10/bip32_slip10_secp256k1.dart';
 
 /// Export statements for general BIP-32 components:

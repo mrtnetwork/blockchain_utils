@@ -52,6 +52,8 @@
   OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+import 'dart:typed_data';
+
 import 'package:blockchain_utils/numbers/int_utils.dart';
 
 import 'bech32_utils.dart';
@@ -164,7 +166,8 @@ class BchBech32Decoder extends Bech32DecoderBase {
     final convData = Bech32BaseUtils.convertFromBase32(decode.$2);
     final ver = convData[0];
     return (
-      IntUtils.toBytes(ver, length: IntUtils.bitlengthInBytes(ver)),
+      IntUtils.toBytes(ver,
+          length: IntUtils.bitlengthInBytes(ver), byteOrder: Endian.little),
       convData.sublist(1)
     );
   }

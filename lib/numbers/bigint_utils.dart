@@ -346,8 +346,8 @@ class BigintUtils {
     if (length < 128) {
       return [length];
     } else {
-      final encodeLen =
-          IntUtils.toBytes(length, length: IntUtils.bitlengthInBytes(length));
+      final encodeLen = IntUtils.toBytes(length,
+          length: IntUtils.bitlengthInBytes(length), byteOrder: Endian.little);
       return [0x80 | encodeLen.length, ...encodeLen];
     }
   }

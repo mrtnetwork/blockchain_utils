@@ -1,6 +1,4 @@
 import 'dart:core';
-import 'dart:typed_data';
-
 import 'package:blockchain_utils/bip/electrum/mnemonic_v1/electrum_v1_mnemonic.dart';
 import 'package:blockchain_utils/bip/electrum/mnemonic_v1/electrum_v1_mnemonic_utils.dart';
 import 'package:blockchain_utils/bip/mnemonic/mnemonic_decoder_base.dart';
@@ -60,8 +58,12 @@ class ElectrumV1MnemonicDecoder extends MnemonicDecoderBase {
       final word3 = words[i * 3 + 2];
       entropyBytes = List<int>.from([
         ...entropyBytes,
-        ...MnemonicUtils.wordsToBytesChunk(word1, word2, word3, wordsList,
-            endian: Endian.little)
+        ...MnemonicUtils.wordsToBytesChunk(
+          word1,
+          word2,
+          word3,
+          wordsList,
+        )
       ]);
     }
 

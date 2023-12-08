@@ -47,11 +47,10 @@ class Bip32Slip10EcdsaDerivator implements IBip32KeyDerivator {
       dataBytes = List<int>.from([
         ...Bip32Slip10DerivatorConst.priveKeyPrefix,
         ...privKeyBytes,
-        ...index.toBytes(endianness: Endian.little)
+        ...index.toBytes()
       ]);
     } else {
-      dataBytes = List<int>.from(
-          [...pubKey.compressed, ...index.toBytes(endianness: Endian.little)]);
+      dataBytes = List<int>.from([...pubKey.compressed, ...index.toBytes()]);
     }
     final hmacHalves = QuickCrypto.hmacSha512HashHalves(
         privKey.chainCode.toBytes(), dataBytes);
@@ -85,8 +84,8 @@ class Bip32Slip10EcdsaDerivator implements IBip32KeyDerivator {
   @override
   (List<int>, List<int>) ckdPub(
       Bip32PublicKey pubKey, Bip32KeyIndex index, EllipticCurveTypes type) {
-    final dataBytes = List<int>.from(
-        [...pubKey.compressed, ...index.toBytes(endianness: Endian.little)]);
+    final dataBytes =
+        List<int>.from([...pubKey.compressed, ...index.toBytes()]);
     final hmacHalves =
         QuickCrypto.hmacSha512HashHalves(pubKey.chainCode.toBytes(), dataBytes);
 
@@ -128,7 +127,7 @@ class Bip32Slip10Ed25519Derivator implements IBip32KeyDerivator {
     final dataBytes = List<int>.from([
       ...Bip32Slip10DerivatorConst.priveKeyPrefix,
       ...privKey.raw,
-      ...index.toBytes(endianness: Endian.little)
+      ...index.toBytes()
     ]);
     return QuickCrypto.hmacSha512HashHalves(
         privKey.chainCode.toBytes(), dataBytes);

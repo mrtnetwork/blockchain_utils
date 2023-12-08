@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-
 import 'package:blockchain_utils/binary/utils.dart';
 import 'package:blockchain_utils/bip/address/p2tr_addr.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/curve/curves.dart';
@@ -124,8 +122,7 @@ class BitcoinSigner {
     int lengthR = signature[3];
 
     while (lengthR == 33) {
-      final attemptBytes =
-          IntUtils.toBytes(attempt, length: 32, byteOrder: Endian.little);
+      final attemptBytes = IntUtils.toBytes(attempt, length: 32);
 
       ecdsaSign = signingKey.signDigestDeterminstic(
           digest: digest, hashFunc: () => SHA256(), extraEntropy: attemptBytes);

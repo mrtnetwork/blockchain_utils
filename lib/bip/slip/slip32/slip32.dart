@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:blockchain_utils/bech32/bech32_base.dart';
 import 'package:blockchain_utils/bip/bip/bip32/bip32_key_data.dart';
 import 'package:blockchain_utils/bip/bip/bip32/bip32_path.dart';
@@ -34,7 +36,7 @@ class Slip32KeySerializer {
 
     // Serialize key
     final serKey = List<int>.from([
-      ...Bip32Depth(path.length()).toBytes(),
+      ...Bip32Depth(path.length()).toBytes(Endian.little),
       ..._serializePath(path),
       ...chainCode.toBytes(),
       ...keyBytes,
@@ -49,7 +51,8 @@ class Slip32KeySerializer {
   static List<int> _serializePath(Bip32Path path) {
     List<int> pathBytes = List.empty();
     for (final pathElem in path.elems) {
-      pathBytes = List<int>.from([...pathBytes, ...pathElem.toBytes()]);
+      pathBytes =
+          List<int>.from([...pathBytes, ...pathElem.toBytes(Endian.little)]);
     }
     return pathBytes;
   }

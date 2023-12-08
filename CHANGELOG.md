@@ -1,3 +1,8 @@
+## 1.2.0
+- Fixed several bugs to enhance the stability and reliability of the code.
+- Added utility functions to handle XRP X-address format for improved compatibility.
+- Resolved an issue with byte order in the method IntUtils.toBytes for more consistent behavior.
+
 ## 1.1.0
 - Implementing custom exception classes for more effective error handling.
 

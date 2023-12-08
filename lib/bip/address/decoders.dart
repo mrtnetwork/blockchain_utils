@@ -85,7 +85,7 @@ export 'xlm_addr.dart' show XlmAddrDecoder;
 export 'xmr_addr.dart' show XmrAddrDecoder, XmrIntegratedAddrDecoder;
 
 /// Export statement for Ripple (XRP) address decoder.
-export 'xrp_addr.dart' show XrpAddrDecoder;
+export 'xrp_addr.dart' show XrpAddrDecoder, XrpXAddrDecoder, XRPAddressUtils;
 
 /// Export statement for Tezos (XTZ) address decoder.
 export 'xtz_addr.dart' show XtzAddrDecoder;

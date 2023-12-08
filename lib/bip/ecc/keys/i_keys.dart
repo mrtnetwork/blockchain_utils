@@ -41,6 +41,7 @@ abstract class IPublicKey {
         return Ed25519KholawPublicKey.isValidBytes(keyBytes);
       case EllipticCurveTypes.ed25519Blake2b:
         return Ed25519Blake2bPublicKey.isValidBytes(keyBytes);
+
       default:
         return Secp256k1PublicKeyEcdsa.isValidBytes(keyBytes);
     }
@@ -104,6 +105,7 @@ abstract class IPrivateKey {
         return Nist256p1PrivateKey.isValidBytes(keyBytes);
       case EllipticCurveTypes.ed25519:
         return Ed25519PrivateKey.isValidBytes(keyBytes);
+
       case EllipticCurveTypes.ed25519Kholaw:
         return Ed25519KholawPrivateKey.isValidBytes(keyBytes);
       case EllipticCurveTypes.ed25519Blake2b:

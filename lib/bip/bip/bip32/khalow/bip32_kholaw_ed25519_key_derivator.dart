@@ -17,7 +17,7 @@ class Bip32KholawEd25519KeyDerivator
   /// Implement the 'serializeIndex' method for serializing a 'Bip32KeyIndex'.
   @override
   List<int> serializeIndex(Bip32KeyIndex index) {
-    return index.toBytes();
+    return index.toBytes(Endian.little);
   }
 
   /// Computes the new left part of the private key based on ZL bytes, KL bytes, and the elliptic curve type.

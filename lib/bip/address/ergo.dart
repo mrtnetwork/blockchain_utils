@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:blockchain_utils/base58/base58_base.dart';
 import 'package:blockchain_utils/bip/address/addr_dec_utils.dart';
 import 'package:blockchain_utils/bip/address/addr_key_validator.dart';
@@ -55,7 +57,7 @@ class _ErgoAddrUtils {
       ErgoAddressTypes addrType, ErgoNetworkTypes netType) {
     final prefixInt = addrType.value + netType.value;
     final prefix = IntUtils.toBytes(prefixInt,
-        length: IntUtils.bitlengthInBytes(prefixInt));
+        length: IntUtils.bitlengthInBytes(prefixInt), byteOrder: Endian.little);
     return prefix;
   }
 }

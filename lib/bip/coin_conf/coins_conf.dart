@@ -580,7 +580,14 @@ class CoinsConf {
   /// Configuration for Ripple
   static const CoinConf ripple = CoinConf(
       coinName: CoinNames("Ripple", "XRP"),
-      params: CoinParams(p2pkhNetVer: btcP2PKHNetVerMn));
+      params: CoinParams(
+          p2pkhNetVer: btcP2PKHNetVerMn, addrNetVer: const [0x05, 0x44]));
+
+  /// Configuration for RippleTestNet
+  static const CoinConf rippleTestNet = CoinConf(
+      coinName: CoinNames("Ripple", "XRP"),
+      params: CoinParams(
+          p2pkhNetVer: btcP2PKHNetVerMn, addrNetVer: const [0x04, 0x93]));
 
   /// Configuration for Secret Network
   static const CoinConf secretNetwork = CoinConf(

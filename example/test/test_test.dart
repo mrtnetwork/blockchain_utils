@@ -112,9 +112,7 @@ void _web() {
 void _test(String name, TestMethod process) {
   try {
     process();
-    print("done $name");
   } catch (e) {
-    print("error $e");
     throw Exception();
   }
 }

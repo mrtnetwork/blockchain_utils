@@ -29,9 +29,9 @@ class _Bip32KeySerializer {
       List<int> keyBytes, Bip32KeyData keyData, List<int> keyNetVerBytes) {
     List<int> serKey = List<int>.from([
       ...keyNetVerBytes,
-      ...keyData.depth.toBytes(Endian.little),
+      ...keyData.depth.toBytes(),
       ...keyData.parentFingerPrint.toBytes(),
-      ...keyData.index.toBytes(endianness: Endian.little),
+      ...keyData.index.toBytes(),
       ...keyData.chainCode.toBytes(),
       ...keyBytes
     ]);

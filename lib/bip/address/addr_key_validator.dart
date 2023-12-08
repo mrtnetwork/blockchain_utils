@@ -5,10 +5,11 @@ import 'package:blockchain_utils/exception/exception.dart';
 /// Class for address utility functions.
 class AddrKeyValidator {
   /// validate argrument by key
-  static void validateAddressArgs<T>(Map<String, dynamic> kwargs, String key) {
+  static T validateAddressArgs<T>(Map<String, dynamic> kwargs, String key) {
     if (!kwargs.containsKey(key) || kwargs[key] is! T) {
       throw ArgumentException('Missing required parameters: $key');
     }
+    return kwargs[key] as T;
   }
 
   /// Validate and get an ed25519 public key.

@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:blockchain_utils/base58/base58_base.dart';
 import 'package:blockchain_utils/bip/address/addr_dec_utils.dart';
 import 'package:blockchain_utils/bip/address/addr_key_validator.dart';
@@ -46,7 +48,8 @@ class NeoAddrDecoder implements BlockchainAddressDecoder {
 
     /// Retrieve the version byte from the decoded address and compare it with the expected version.
     List<int> verGot = IntUtils.toBytes(addrDecBytes[0],
-        length: IntUtils.bitlengthInBytes(addrDecBytes[0]));
+        length: IntUtils.bitlengthInBytes(addrDecBytes[0]),
+        byteOrder: Endian.little);
     if (!bytesEqual(verGot, verBytes)) {
       throw ArgumentException(
           "Invalid version (expected ${BytesUtils.toHexString(verBytes)}, "

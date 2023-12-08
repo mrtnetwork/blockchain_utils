@@ -1,5 +1,6 @@
 import 'package:blockchain_utils/binary/utils.dart';
 import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
+import 'package:blockchain_utils/compare/compare.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/curve/curves.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/eddsa/privatekey.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/eddsa/publickey.dart';
@@ -19,6 +20,9 @@ class Ed25519KeysConst {
 
   /// Private key length in bytes: The length of an Ed25519 private key.
   static const int privKeyByteLen = 32;
+
+  /// Public key prefix for xrp: A list of bytes that indicates a public key.
+  static const List<int> xrpPubKeyPrefix = [0xed];
 }
 
 /// A class representing an Ed25519 public key that implements the IPublicKey interface.
@@ -33,10 +37,12 @@ class Ed25519PublicKey implements IPublicKey {
   /// If the keyBytes include a public key prefix, it removes it before creating the instance.
   factory Ed25519PublicKey.fromBytes(List<int> keyBytes) {
     if (keyBytes.length ==
-            Ed25519KeysConst.pubKeyByteLen +
-                Ed25519KeysConst.pubKeyPrefix.length &&
-        keyBytes[0] == Ed25519KeysConst.pubKeyPrefix[0]) {
-      keyBytes = keyBytes.sublist(1);
+        Ed25519KeysConst.pubKeyByteLen + Ed25519KeysConst.pubKeyPrefix.length) {
+      final prefix = keyBytes.sublist(0, Ed25519KeysConst.pubKeyPrefix.length);
+      if (bytesEqual(prefix, Ed25519KeysConst.pubKeyPrefix) ||
+          bytesEqual(prefix, Ed25519KeysConst.xrpPubKeyPrefix)) {
+        keyBytes = keyBytes.sublist(1);
+      }
     }
     return Ed25519PublicKey._(
         EDDSAPublicKey(Curves.generatorED25519, keyBytes));

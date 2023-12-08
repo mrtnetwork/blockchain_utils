@@ -83,7 +83,7 @@ class P2PKHAddrEncoder implements BlockchainAddressEncoder {
     }
     final pubKeyModes = kwargs["pub_key_mode"] ?? P2PKHPubKeyModes.compressed;
     if (pubKeyModes is! P2PKHPubKeyModes) {
-      throw ArgumentException("invalid pub key modesx");
+      throw ArgumentException("invalid pub key mode");
     }
 
     /// Validate and process the public key as a Secp256k1 key.

@@ -60,7 +60,7 @@ class MnemonicUtils {
   /// The method allows for encoding three words as a chunk of bytes for various mnemonic systems.
   static List<int> wordsToBytesChunk(
       String word1, String word2, String word3, MnemonicWordsList wordsList,
-      {Endian endian = Endian.little}) {
+      {Endian endian = Endian.big}) {
     final n = wordsList.length();
     final word1Idx = wordsList.getWordIdx(word1);
     final word2Idx = wordsList.getWordIdx(word2) % n;
