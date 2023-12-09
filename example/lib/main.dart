@@ -91,7 +91,7 @@ import 'package:example/test/substrate/scale_test.dart';
 import 'package:example/test/substrate/substrate_test.dart';
 import 'package:example/test/uuid_test.dart';
 import 'package:example/test/wif/wif_test.dart';
-import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 
 import 'test/address/near/near_test.dart';
 
@@ -99,7 +99,20 @@ import 'test/address/near/near_test.dart';
 /// The package is created in Pure Dart and this test contains thousands of tests,
 /// it may take a long time (5-10) minutes.
 void main() {
-  _testAll();
+  runApp(MaterialApp(
+    home: Scaffold(
+      body: Column(
+        children: [
+          FilledButton(
+              onPressed: () {
+                _testAll();
+              },
+              child: const Text("start test"))
+        ],
+      ),
+    ),
+  ));
+  // _testAll();
 }
 
 typedef TestMethod = void Function();
@@ -107,7 +120,7 @@ typedef TestMethod = void Function();
 /// its very slow in web debugging
 /// if you want to test this method on the web  should remove the condition
 void _web() {
-  if (kIsWeb) return;
+  // if (kIsWeb) return;
   _test("bip38 No Ecdsa", bip38NoEcdsaTest);
   _test("bip38 ECDSA", bip38ECDSATest);
   _test("scrypt", testScrypt);
