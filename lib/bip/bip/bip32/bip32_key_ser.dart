@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-
 import 'package:blockchain_utils/base58/base58.dart';
 import 'package:blockchain_utils/bip/bip/bip32/bip32_const.dart';
 import 'package:blockchain_utils/bip/bip/bip32/bip32_ex.dart';
@@ -147,8 +145,7 @@ class Bip32KeyDeserializer {
 
     final keyData = Bip32KeyData(
         depth: Bip32Depth(depth),
-        index: Bip32KeyIndex(
-            IntUtils.fromBytes(keyIndexBytes, byteOrder: Endian.little)),
+        index: Bip32KeyIndex(IntUtils.fromBytes(keyIndexBytes)),
         chainCode: Bip32ChainCode(chainCodeBytes),
         parentFingerPrint: Bip32FingerPrint(fprintBytes));
 

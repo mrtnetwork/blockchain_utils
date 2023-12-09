@@ -40,7 +40,7 @@ abstract class MoneroMnemonicEncoderBase extends MnemonicEncoderBase {
     for (int i = 0; i < entropyByteLen ~/ 4; i++) {
       mnemonic.addAll(MnemonicUtils.bytesChunkToWords(
           entropyBytes.sublist(i * 4, (i * 4) + 4), wordsList,
-          endian: Endian.big));
+          endian: Endian.little));
     }
 
     return mnemonic;

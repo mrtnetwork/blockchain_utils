@@ -119,9 +119,8 @@ class IntUtils {
 
     int result = 0;
     for (var i = 0; i < bytes.length; i++) {
-      result |= (bytes[i] << (8 * i));
+      result |= (bytes[bytes.length - i - 1] << (8 * i));
     }
-
     return result;
   }
 }

@@ -43,7 +43,7 @@ class ElectrumV1MnemonicEncoder extends MnemonicEncoderBase {
     for (int i = 0; i < entropyBytes.length ~/ 4; i++) {
       mnemonic.addAll(MnemonicUtils.bytesChunkToWords(
           entropyBytes.sublist(i * 4, (i * 4) + 4), wordsList,
-          endian: Endian.little));
+          endian: Endian.big));
     }
 
     return ElectrumV1Mnemonic.fromList(mnemonic);

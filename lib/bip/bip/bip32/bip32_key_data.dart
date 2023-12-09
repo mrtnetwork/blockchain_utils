@@ -158,7 +158,7 @@ class Bip32KeyIndex {
     _index = index;
   }
   Bip32KeyIndex.fromBytes(List<int> bytes) {
-    _index = IntUtils.fromBytes(bytes);
+    _index = IntUtils.fromBytes(bytes, byteOrder: Endian.little);
   }
 
   /// Get the fixed length in bytes.

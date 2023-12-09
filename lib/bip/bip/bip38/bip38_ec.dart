@@ -520,7 +520,7 @@ class Bip38EcDecrypter {
   /// - Returns: A tuple (pair) containing the selected public key mode and a boolean
   ///   indicating the presence of lot and sequence numbers.
   static (Bip38PubKeyModes, bool) _getFlagbyteOptions(List<int> flagbyte) {
-    int flagbyteInt = IntUtils.fromBytes(flagbyte);
+    int flagbyteInt = IntUtils.fromBytes(flagbyte, byteOrder: Endian.little);
 
     /// Check if the lot and sequence number bit is set.
     final hasLotSeq =
