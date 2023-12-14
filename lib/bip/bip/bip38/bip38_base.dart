@@ -1,6 +1,7 @@
 import 'package:blockchain_utils/bip/bip/bip38/bip38_no_ec.dart';
 
 import 'bip38_ec.dart';
+import 'package:blockchain_utils/tuple/tuple.dart';
 
 /// Helper class for BIP38 encryption and decryption operations.
 ///
@@ -68,7 +69,7 @@ class Bip38Decrypter {
   /// - [passphrase]: The passphrase for decryption.
   /// - Returns: A tuple (pair) containing the decrypted private key as a List<int>
   ///   and the selected public key mode (compressed or uncompressed).
-  static (List<int>, Bip38PubKeyModes) decryptNoEc(
+  static Tuple<List<int>, Bip38PubKeyModes> decryptNoEc(
       String privKeyEnc, String passphrase) {
     return Bip38NoEcDecrypter.decrypt(privKeyEnc, passphrase);
   }
@@ -84,7 +85,7 @@ class Bip38Decrypter {
   /// - [passphrase]: The passphrase for decryption.
   /// - Returns: A tuple (pair) containing the decrypted private key as a List<int>
   ///   and the selected public key mode (compressed or uncompressed).
-  static (List<int>, Bip38PubKeyModes) decryptEc(
+  static Tuple<List<int>, Bip38PubKeyModes> decryptEc(
       String privKeyEnc, String passphrase) {
     return Bip38EcDecrypter.decrypt(privKeyEnc, passphrase);
   }

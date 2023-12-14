@@ -118,8 +118,8 @@ class EDPoint extends AbstractPoint {
   factory EDPoint.fromBytes(
       {required CurveED curve, required List<int> data, BigInt? order}) {
     final coords = AbstractPoint.fromBytes(curve, data);
-    final x = coords.$1;
-    final y = coords.$2;
+    final x = coords.item1;
+    final y = coords.item2;
     final t = x * y;
     return EDPoint(
         curve: curve,

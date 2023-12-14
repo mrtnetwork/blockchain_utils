@@ -68,6 +68,7 @@ import 'package:blockchain_utils/cbor/types/list.dart';
 import 'package:blockchain_utils/cbor/types/map.dart';
 import 'package:blockchain_utils/crypto/crypto/crc32/crc32.dart';
 import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/tuple/tuple.dart';
 
 /// Enum representing different address types used in the Ada Byron era.
 ///
@@ -354,12 +355,12 @@ class AdaByronAddrDecoder implements BlockchainAddressDecoder {
   /// and encrypted HD path.
   ///
   /// Returns a tuple containing two [List<int>] elements: address root hash and encrypted HD path.
-  static (List<int>, List<int>) splitDecodedBytes(List<int> decBytes) {
+  static Tuple<List<int>, List<int>> splitDecodedBytes(List<int> decBytes) {
     final addressRootHash =
         List<int>.from(decBytes.sublist(0, QuickCrypto.blake2b224DigestSize));
     final encryptedHdPath =
         List<int>.from(decBytes.sublist(QuickCrypto.blake2b224DigestSize));
-    return (addressRootHash, encryptedHdPath);
+    return Tuple(addressRootHash, encryptedHdPath);
   }
 
   /// Decodes an Ada Byron address and returns its components.

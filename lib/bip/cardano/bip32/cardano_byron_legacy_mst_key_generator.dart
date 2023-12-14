@@ -3,6 +3,7 @@ import 'package:blockchain_utils/crypto/quick_crypto.dart';
 import 'package:blockchain_utils/binary/bit_utils.dart';
 import 'package:blockchain_utils/cbor/types/bytes.dart';
 import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/tuple/tuple.dart';
 
 /// A class that holds constants related to the Cardano Byron legacy master key generation process.
 class CardanoByronLegacyMstKeyGeneratorConst {
@@ -17,7 +18,7 @@ class CardanoByronLegacyMstKeyGeneratorConst {
 class CardanoByronLegacyMstKeyGenerator extends IBip32MstKeyGenerator {
   /// Generates master keys from the provided seed bytes.
   @override
-  (List<int>, List<int>) generateFromSeed(List<int> seedBytes) {
+  Tuple<List<int>, List<int>> generateFromSeed(List<int> seedBytes) {
     if (seedBytes.length !=
         CardanoByronLegacyMstKeyGeneratorConst.seedByteLen) {
       throw ArgumentException('Invalid seed length (${seedBytes.length})');
@@ -26,7 +27,7 @@ class CardanoByronLegacyMstKeyGenerator extends IBip32MstKeyGenerator {
   }
 
   /// Recursively hashes and tweaks the provided data bytes to derive master keys.
-  (List<int>, List<int>) _hashRepeatedly(List<int> dataBytes, int itrNum) {
+  Tuple<List<int>, List<int>> _hashRepeatedly(List<int> dataBytes, int itrNum) {
     final halves = QuickCrypto.hmacSha512HashHalves(
         dataBytes,
         List<int>.from([
@@ -34,11 +35,12 @@ class CardanoByronLegacyMstKeyGenerator extends IBip32MstKeyGenerator {
                   itrNum.toString())
               .codeUnits,
         ]));
-    List<int> keyBytes = _tweakMasterKeyBits(QuickCrypto.sha512Hash(halves.$1));
+    List<int> keyBytes =
+        _tweakMasterKeyBits(QuickCrypto.sha512Hash(halves.item1));
     if (BitUtils.areBitsSet(keyBytes[31], 0x20)) {
       return _hashRepeatedly(dataBytes, itrNum + 1);
     }
-    return (keyBytes, halves.$2);
+    return Tuple(keyBytes, halves.item2);
   }
 
   /// Tweaks the master key bits as part of the derivation process.

@@ -233,7 +233,7 @@ class XrpVerifier {
       {bool hashMessage = true}) {
     if (_edsaVerifyKey != null) {
       final messagaeHash =
-          hashMessage ? QuickCrypto.sha512HashHalves(digest).$1 : digest;
+          hashMessage ? QuickCrypto.sha512HashHalves(digest).item1 : digest;
       return _verifyEcdsa(messagaeHash, signature);
     }
     return _verifyEddsa(digest, signature);

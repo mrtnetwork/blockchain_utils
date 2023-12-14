@@ -9,8 +9,8 @@ class _SubstrateAddrUtils {
       String addr, int ss58Format, IPublicKey? pubKeyCls) {
     // Decode from SS58 (SS58Decoder.Decode also validates the length)
     final decodedResult = SS58Decoder.decode(addr);
-    final ss58FormatGot = decodedResult.$1;
-    final addrDecBytes = decodedResult.$2;
+    final ss58FormatGot = decodedResult.item1;
+    final addrDecBytes = decodedResult.item2;
 
     if (ss58Format != ss58FormatGot) {
       throw ArgumentException(

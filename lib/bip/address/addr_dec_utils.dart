@@ -3,6 +3,7 @@ import 'package:blockchain_utils/bip/ecc/keys/i_keys.dart';
 import 'package:blockchain_utils/binary/utils.dart';
 import 'package:blockchain_utils/compare/compare.dart';
 import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/tuple/tuple.dart';
 
 /// Class for decode address utility functions.
 class AddrDecUtils {
@@ -91,13 +92,13 @@ class AddrDecUtils {
   }
 
   /// Split address into two parts, considering the checksum at the end of it.
-  static (List<int>, List<int>) splitPartsByChecksum(
+  static Tuple<List<int>, List<int>> splitPartsByChecksum(
     List<int> addrBytes,
     int checksumLen,
   ) {
     final checksumBytes = addrBytes.sublist(addrBytes.length - checksumLen);
     final payloadBytes = addrBytes.sublist(0, addrBytes.length - checksumLen);
 
-    return (payloadBytes, checksumBytes);
+    return Tuple(payloadBytes, checksumBytes);
   }
 }

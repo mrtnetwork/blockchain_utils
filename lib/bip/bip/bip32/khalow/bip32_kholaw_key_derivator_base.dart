@@ -5,6 +5,7 @@ import 'package:blockchain_utils/bip/bip/bip32/bip32_keys.dart';
 import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/point/edwards.dart';
+import 'package:blockchain_utils/tuple/tuple.dart';
 
 /// Define an abstract class 'Bip32KholawEd25519KeyDerivatorBase' that implements the 'IBip32KeyDerivator' interface.
 /// This class provides a base for deriving Ed25519 keys with the Kholaw scheme.
@@ -26,8 +27,8 @@ abstract class Bip32KholawEd25519KeyDerivatorBase
   // The 'type' parameter defines the elliptic curve type.
   // Returns a tuple containing the child private key bytes and the updated chain code.
   @override
-  (List<int>, List<int>) ckdPriv(Bip32PrivateKey privKey, Bip32PublicKey pubKey,
-      Bip32KeyIndex index, EllipticCurveTypes type) {
+  Tuple<List<int>, List<int>> ckdPriv(Bip32PrivateKey privKey,
+      Bip32PublicKey pubKey, Bip32KeyIndex index, EllipticCurveTypes type) {
     /// Serialize the 'index' to bytes.
     List<int> indexBytes = serializeIndex(index);
 
@@ -48,7 +49,7 @@ abstract class Bip32KholawEd25519KeyDerivatorBase
 
       /// Update the chain code using HMAC-SHA512 with specific data.
       chainCodeBytes = QuickCrypto.hmacSha512HashHalves(chainCodeBytes,
-          List<int>.from([0x01, ...privKeyBytes, ...indexBytes])).$2;
+          List<int>.from([0x01, ...privKeyBytes, ...indexBytes])).item2;
     } else {
       /// If not hardened, compute 'zBytes' using HMAC-SHA512 with different data.
       zBytes = QuickCrypto.hmacSha512Hash(chainCodeBytes,
@@ -56,7 +57,7 @@ abstract class Bip32KholawEd25519KeyDerivatorBase
 
       /// Update the chain code using HMAC-SHA512 with different data.
       chainCodeBytes = QuickCrypto.hmacSha512HashHalves(chainCodeBytes,
-          List<int>.from([0x03, ...pubKeyBytes, ...indexBytes])).$2;
+          List<int>.from([0x03, ...pubKeyBytes, ...indexBytes])).item2;
     }
 
     /// Compute left and right part of private key
@@ -67,14 +68,14 @@ abstract class Bip32KholawEd25519KeyDerivatorBase
         zBytes.sublist(hmacHalfLen), privKeyBytes.sublist(hmacHalfLen));
 
     /// Return the child private key bytes and the updated chain code.
-    return (List<int>.from([...pLBytes, ...pRBytes]), chainCodeBytes);
+    return Tuple(List<int>.from([...pLBytes, ...pRBytes]), chainCodeBytes);
   }
 
   /// Derive a child public key from the given 'pubKey' using the specified 'index'.
   /// The 'type' parameter defines the elliptic curve type.
   /// Returns a tuple containing the child public key bytes and the updated chain code.
   @override
-  (List<int>, List<int>) ckdPub(
+  Tuple<List<int>, List<int>> ckdPub(
       Bip32PublicKey pubKey, Bip32KeyIndex index, EllipticCurveTypes type) {
     /// Serialize the 'index' to bytes.
     List<int> indexBytes = serializeIndex(index);
@@ -89,7 +90,7 @@ abstract class Bip32KholawEd25519KeyDerivatorBase
     List<int> zBytes = QuickCrypto.hmacSha512Hash(
         chainCodeBytes, List<int>.from([0x02, ...pubKeyBytes, ...indexBytes]));
     chainCodeBytes = QuickCrypto.hmacSha512HashHalves(chainCodeBytes,
-        List<int>.from([0x03, ...pubKeyBytes, ...indexBytes])).$2;
+        List<int>.from([0x03, ...pubKeyBytes, ...indexBytes])).item2;
 
     /// Compute the new public key point based on 'pubKey' and 'zBytes'.
     const hmacHalfLen = QuickCrypto.hmacSha512DigestSize ~/ 2;
@@ -103,7 +104,7 @@ abstract class Bip32KholawEd25519KeyDerivatorBase
     }
 
     /// Return the child public key bytes and the updated chain code.
-    return (newPubKeyPoint.toBytes(), chainCodeBytes);
+    return Tuple(newPubKeyPoint.toBytes(), chainCodeBytes);
   }
 
   /// check if support public derivation

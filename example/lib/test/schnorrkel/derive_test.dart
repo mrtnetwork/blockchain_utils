@@ -12,7 +12,7 @@ void schnoorTestDerive() {
     final child = List.from(i["child"]);
     for (int c = 0; c < child.length; c++) {
       final chainCode = BytesUtils.fromHexString(child[c]["chain_code"]);
-      publicKey = publicKey.derive(chainCode).$1;
+      publicKey = publicKey.derive(chainCode).item1;
       assert(publicKey.toBytes().toHex() == child[c]["public_key"]);
     }
   }
@@ -28,10 +28,10 @@ void schnoorTestDerive() {
       final chainCode = BytesUtils.fromHexString(child[c]["chain_code"]);
       if (isHard) {
         final deriveHard = secretKey.hardDerive(chainCode);
-        secretKey = deriveHard.$1;
+        secretKey = deriveHard.item1;
       } else {
         final deriveSoft = secretKey.softDerive(chainCode);
-        secretKey = deriveSoft.$1;
+        secretKey = deriveSoft.item1;
       }
       assert(secretKey.publicKey().toBytes().toHex() == child[c]["public_key"]);
       if (isHard) {

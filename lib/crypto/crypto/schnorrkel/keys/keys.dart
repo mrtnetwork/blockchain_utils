@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:blockchain_utils/tuple/tuple.dart';
 import 'package:blockchain_utils/numbers/bigint_utils.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/utils/ed25519_utils.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/curve/curves.dart';
@@ -461,7 +462,7 @@ class SchnorrkelSecretKey {
   /// The `hardDerive` method follows the Schnorrkel RistrettoPoint HDKD scheme to derive a new Schnorrkel secret key and chain code.
   /// It combines the current secret key, chain code, and an optional message to compute the new secret key and chain code.
   /// The `mode` parameter allows specifying the expansion mode for converting the mini-secret key.
-  (SchnorrkelSecretKey, List<int>) hardDerive(List<int> chainCode,
+  Tuple<SchnorrkelSecretKey, List<int>> hardDerive(List<int> chainCode,
       {List<int>? message, ExpansionMode mode = ExpansionMode.ed25519}) {
     final script = MerlinTranscript("SchnorrRistrettoHDKD");
     script.additionalData('sign-bytes'.codeUnits, message ?? List.empty());
@@ -469,10 +470,8 @@ class SchnorrkelSecretKey {
     script.additionalData("secret-key".codeUnits, key());
     final newSecret = script.toBytes("HDKD-hard".codeUnits, 32);
     final newChainCode = script.toBytes("HDKD-chaincode".codeUnits, 32);
-    return (
-      SchnorrkelMiniSecretKey.fromBytes(newSecret).toSecretKey(mode),
-      newChainCode
-    );
+    return Tuple(SchnorrkelMiniSecretKey.fromBytes(newSecret).toSecretKey(mode),
+        newChainCode);
   }
 
   /// Derives a new Schnorrkel secret key and chain code from the current secret key, chain code, and an optional message.
@@ -499,16 +498,16 @@ class SchnorrkelSecretKey {
   /// The `softDerive` method follows the Schnorrkel RistrettoPoint HDKD scheme to derive a new Schnorrkel secret key and chain code.
   /// It combines the current secret key, chain code, and an optional message to compute the new secret key and chain code.
   /// The `nonceGenerator` parameter allows specifying a custom function to generate a nonce.
-  (SchnorrkelSecretKey, List<int>) softDerive(List<int> chainCode,
+  Tuple<SchnorrkelSecretKey, List<int>> softDerive(List<int> chainCode,
       {List<int>? message, GenerateRandom? nonceGenerator}) {
     final derivePub = publicKey()._deriveScalarAndChainCode(chainCode, message);
     final nonce = nonceGenerator?.call(32) ?? QuickCrypto.generateRandom(32);
     if (nonce.length != 32) {
       throw ArgumentException("invalid random bytes length");
     }
-    final newKey = ristretto_tools.add(key(), derivePub.$1);
+    final newKey = ristretto_tools.add(key(), derivePub.item1);
     final combine = List<int>.from([...newKey, ...nonce]);
-    return (SchnorrkelSecretKey.fromBytes(combine), derivePub.$2);
+    return Tuple(SchnorrkelSecretKey.fromBytes(combine), derivePub.item2);
   }
 
   /// Signs a message using the Schnorrkel secret key and a specified signing context script.
@@ -578,16 +577,14 @@ class SchnorrkelSecretKey {
   ///
   /// The `vrfSign` method generates a VRF output and its proof for a given transcript using the secret key and context-specific information.
   /// It returns a tuple with the VRF output and its proof.
-  (VRFInOut, VRFProof) vrfSign(MerlinTranscript script,
+  Tuple<VRFInOut, VRFProof> vrfSign(MerlinTranscript script,
       {GenerateRandom? nonceGenerator, bool kusamaVRF = true}) {
     final publicHashPoint = publicKey().vrfHash(script);
     final keyBig = BigintUtils.fromBytes(key(), byteOrder: Endian.little);
     final mul = publicHashPoint * keyBig;
     final vrf = VRFInOut._(publicHashPoint.toBytes(), mul.toBytes());
-    return (
-      vrf,
-      dleqProve(vrf, nonceGenerator: nonceGenerator, kusamaVRF: kusamaVRF)
-    );
+    return Tuple(vrf,
+        dleqProve(vrf, nonceGenerator: nonceGenerator, kusamaVRF: kusamaVRF));
   }
 
   /// Generates a Discrete Logarithm Equality Proof (DLEQ) for a Verifiable Random Function (VRF) output.
@@ -714,7 +711,7 @@ class SchnorrkelPublicKey {
   ///
   /// The `_deriveScalarAndChainCode` method is used for hierarchical deterministic key derivation (HDKD)
   /// and returns a tuple with the derived scalar and chain code.
-  (List<int>, List<int>) _deriveScalarAndChainCode(List<int> chainCode,
+  Tuple<List<int>, List<int>> _deriveScalarAndChainCode(List<int> chainCode,
       [List<int>? message]) {
     final script = MerlinTranscript("SchnorrRistrettoHDKD");
     script.additionalData('sign-bytes'.codeUnits, message ?? List.empty());
@@ -722,7 +719,7 @@ class SchnorrkelPublicKey {
     script.additionalData("public-key".codeUnits, toBytes());
     final newKey = script.toBytesWithReduceScalar("HDKD-scalar".codeUnits, 64);
     final newChainCode = script.toBytes("HDKD-chaincode".codeUnits, 32);
-    return (newKey, newChainCode);
+    return Tuple(newKey, newChainCode);
   }
 
   /// Derives a new Schnorrkel public key and chain code using hierarchical deterministic key derivation (HDKD).
@@ -747,13 +744,13 @@ class SchnorrkelPublicKey {
   ///
   /// The `derive` method is used for hierarchical deterministic key derivation (HDKD)
   /// and returns a tuple with the derived Schnorrkel public key and chain code.
-  (SchnorrkelPublicKey, List<int>) derive(List<int> chainCode,
+  Tuple<SchnorrkelPublicKey, List<int>> derive(List<int> chainCode,
       [List<int>? message]) {
     final derive = _deriveScalarAndChainCode(chainCode, message);
     final newKeyBigint =
-        BigintUtils.fromBytes(derive.$1, byteOrder: Endian.little);
+        BigintUtils.fromBytes(derive.item1, byteOrder: Endian.little);
     final p = toPoint() + (Curves.generatorED25519 * newKeyBigint);
-    return (SchnorrkelPublicKey(p.toBytes()), derive.$2);
+    return Tuple(SchnorrkelPublicKey(p.toBytes()), derive.item2);
   }
 
   /// Converts the Schnorrkel public key to a RistrettoPoint point.

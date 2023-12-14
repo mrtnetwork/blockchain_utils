@@ -87,7 +87,7 @@ class XlmAddrDecoder implements BlockchainAddressDecoder {
 
     final payloadBytes = AddrDecUtils.splitPartsByChecksum(
             addrDecBytes, XlmAddrConst.checksumByteLen)
-        .$1;
+        .item1;
 
     final addrTypeGot = payloadBytes[0];
     if (addrType.value != addrTypeGot) {

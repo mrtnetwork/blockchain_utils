@@ -60,8 +60,8 @@ class Base58Encoder {
     while (val > BigInt.zero) {
       /// Perform division by Base58 radix and get remainder for encoding.
       final result = BigintUtils.divmod(val, Base58Const.radix);
-      val = result.$1;
-      final mod = result.$2;
+      val = result.item1;
+      final mod = result.item2;
       enc = alphabet[mod.toInt()] + enc;
     }
 

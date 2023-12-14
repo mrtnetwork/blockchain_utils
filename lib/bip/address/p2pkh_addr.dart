@@ -128,8 +128,8 @@ class BchP2PKHAddrDecoder implements BlockchainAddressDecoder {
 
     /// Decode the Bech32 address and retrieve network version and decoded bytes.
     final result = BchBech32Decoder.decode(hrp, addr);
-    List<int> netVerBytesGot = result.$1;
-    List<int> addrDecBytes = result.$2;
+    List<int> netVerBytesGot = result.item1;
+    List<int> addrDecBytes = result.item2;
 
     /// Validate that the decoded network version matches the expected network version.
     if (!bytesEqual(netVerBytes, netVerBytesGot)) {

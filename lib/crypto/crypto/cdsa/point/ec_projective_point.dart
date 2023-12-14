@@ -60,8 +60,8 @@ class ProjectiveECCPoint extends AbstractPoint {
   factory ProjectiveECCPoint.fromBytes(
       {required CurveFp curve, required List<int> data, BigInt? order}) {
     final coords = AbstractPoint.fromBytes(curve, data);
-    final x = coords.$1;
-    final y = coords.$2;
+    final x = coords.item1;
+    final y = coords.item2;
     return ProjectiveECCPoint(
         curve: curve,
         x: x,

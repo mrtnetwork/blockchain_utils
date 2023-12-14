@@ -11,6 +11,7 @@ import 'package:blockchain_utils/bip/bip/conf/bip_coin_conf.dart';
 import 'package:blockchain_utils/bip/cardano/bip32/cardano_icarus_bip32.dart';
 import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
 import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/tuple/tuple.dart';
 
 import 'bip44_keys.dart';
 
@@ -66,24 +67,29 @@ abstract class Bip44Base {
     switch (coin.type) {
       case EllipticCurveTypes.secp256k1:
         bip = Bip32Slip10Secp256k1.fromSeed(seedBytes, coin.keyNetVer);
+        break;
       case EllipticCurveTypes.ed25519:
         bip = Bip32Slip10Ed25519.fromSeed(seedBytes, coin.keyNetVer);
+        break;
       case EllipticCurveTypes.ed25519Kholaw:
         if (coin.addrParams["is_icarus"] == true) {
           bip = CardanoIcarusBip32.fromSeed(seedBytes, coin.keyNetVer);
           break;
         }
         bip = Bip32KholawEd25519.fromSeed(seedBytes, coin.keyNetVer);
+        break;
       case EllipticCurveTypes.ed25519Blake2b:
         bip = Bip32Slip10Ed25519Blake2b.fromSeed(seedBytes, coin.keyNetVer);
+        break;
       case EllipticCurveTypes.nist256p1:
         bip = Bip32Slip10Nist256p1.fromSeed(seedBytes, coin.keyNetVer);
+        break;
       default:
         throw ArgumentException("invaid type");
     }
     final validate = _validate(bip, coin);
-    bip32 = validate.$1;
-    coinConf = validate.$2;
+    bip32 = validate.item1;
+    coinConf = validate.item2;
   }
 
   /// Constructor for creating a [Bip44Base] object from a extended key and coin.
@@ -93,25 +99,31 @@ abstract class Bip44Base {
     switch (coin.type) {
       case EllipticCurveTypes.secp256k1:
         bip = Bip32Slip10Secp256k1.fromExtendedKey(extendedKey, coin.keyNetVer);
+        break;
       case EllipticCurveTypes.ed25519:
         bip = Bip32Slip10Ed25519.fromExtendedKey(extendedKey, coin.keyNetVer);
+        break;
       case EllipticCurveTypes.ed25519Kholaw:
         if (coin.addrParams["is_icarus"] == true) {
           bip = CardanoIcarusBip32.fromExtendedKey(extendedKey, coin.keyNetVer);
+
           break;
         }
         bip = Bip32KholawEd25519.fromExtendedKey(extendedKey, coin.keyNetVer);
+        break;
       case EllipticCurveTypes.ed25519Blake2b:
         bip = Bip32Slip10Ed25519Blake2b.fromExtendedKey(
             extendedKey, coin.keyNetVer);
+        break;
       case EllipticCurveTypes.nist256p1:
         bip = Bip32Slip10Nist256p1.fromExtendedKey(extendedKey, coin.keyNetVer);
+        break;
       default:
         throw ArgumentException("invaid type");
     }
     final validate = _validate(bip, coin);
-    bip32 = validate.$1;
-    coinConf = validate.$2;
+    bip32 = validate.item1;
+    coinConf = validate.item2;
   }
 
   /// Constructor for creating a [Bip44Base] object from a private key and coin.
@@ -122,9 +134,11 @@ abstract class Bip44Base {
       case EllipticCurveTypes.secp256k1:
         bip = Bip32Slip10Secp256k1.fromPrivateKey(privateKeyBytes,
             keyData: keyData, keyNetVer: coin.keyNetVer);
+        break;
       case EllipticCurveTypes.ed25519:
         bip = Bip32Slip10Ed25519.fromPrivateKey(privateKeyBytes,
             keyData: keyData, keyNetVer: coin.keyNetVer);
+        break;
       case EllipticCurveTypes.ed25519Kholaw:
         if (coin.addrParams["is_icarus"] == true) {
           bip = CardanoIcarusBip32.fromPrivateKey(privateKeyBytes,
@@ -133,18 +147,21 @@ abstract class Bip44Base {
         }
         bip = Bip32KholawEd25519.fromPrivateKey(privateKeyBytes,
             keyData: keyData, keyNetVer: coin.keyNetVer);
+        break;
       case EllipticCurveTypes.ed25519Blake2b:
         bip = Bip32Slip10Ed25519Blake2b.fromPrivateKey(privateKeyBytes,
             keyData: keyData, keyNetVer: coin.keyNetVer);
+        break;
       case EllipticCurveTypes.nist256p1:
         bip = Bip32Slip10Nist256p1.fromPrivateKey(privateKeyBytes,
             keyData: keyData, keyNetVer: coin.keyNetVer);
+        break;
       default:
         throw ArgumentException("invaid type");
     }
     final validate = _validate(bip, coin);
-    bip32 = validate.$1;
-    coinConf = validate.$2;
+    bip32 = validate.item1;
+    coinConf = validate.item2;
   }
 
   /// Constructor for creating a [Bip44Base] object from a public key and coin.
@@ -155,12 +172,15 @@ abstract class Bip44Base {
       case EllipticCurveTypes.secp256k1:
         bip = Bip32Slip10Secp256k1.fromPublicKey(pubkeyBytes,
             keyData: keyData, keyNetVer: coin.keyNetVer);
+        break;
       case EllipticCurveTypes.ed25519:
         bip = Bip32Slip10Ed25519.fromPublicKey(pubkeyBytes,
             keyData: keyData, keyNetVer: coin.keyNetVer);
+        break;
       case EllipticCurveTypes.ed25519Blake2b:
         bip = Bip32Slip10Ed25519Blake2b.fromPublicKey(pubkeyBytes,
             keyData: keyData, keyNetVer: coin.keyNetVer);
+        break;
       case EllipticCurveTypes.ed25519Kholaw:
         if (coin.addrParams["is_icarus"] == true) {
           bip = CardanoIcarusBip32.fromPublicKey(pubkeyBytes,
@@ -169,19 +189,21 @@ abstract class Bip44Base {
         }
         bip = Bip32KholawEd25519.fromPublicKey(pubkeyBytes,
             keyData: keyData, keyNetVer: coin.keyNetVer);
+        break;
       case EllipticCurveTypes.nist256p1:
         bip = Bip32Slip10Nist256p1.fromPublicKey(pubkeyBytes,
             keyData: keyData, keyNetVer: coin.keyNetVer);
+        break;
       default:
         throw ArgumentException("invaid type");
     }
     final validate = _validate(bip, coin);
-    bip32 = validate.$1;
-    coinConf = validate.$2;
+    bip32 = validate.item1;
+    coinConf = validate.item2;
   }
 
   /// Internal validation method for checking the depth of the BIP object.
-  static (Bip32Base, CoinConfig) _validate(
+  static Tuple<Bip32Base, CoinConfig> _validate(
       Bip32Base bip32Obj, CoinConfig coinConf) {
     int depth = bip32Obj.depth.depth;
 
@@ -198,7 +220,7 @@ abstract class Bip44Base {
       }
     }
 
-    return (bip32Obj, coinConf);
+    return Tuple(bip32Obj, coinConf);
   }
 
   /// Constructor for creating a [Bip44Base] object from a bip32 [Bip32Base] and coin [CoinConfig].

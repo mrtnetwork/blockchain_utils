@@ -5,6 +5,7 @@ import 'package:blockchain_utils/crypto/quick_crypto.dart';
 import 'package:blockchain_utils/binary/utils.dart';
 import 'package:blockchain_utils/numbers/int_utils.dart';
 import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/tuple/tuple.dart';
 
 import 'ss58_ex.dart';
 
@@ -107,7 +108,7 @@ class SS58Decoder {
   /// A tuple containing the SS58 format (address type) and the data bytes of the SS58 address.
   ///
   /// Throws an [ArgumentException] or [SS58ChecksumError] if the input string is invalid, contains an invalid format, or fails the checksum verification.
-  static (int, List<int>) decode(String dataStr) {
+  static Tuple<int, List<int>> decode(String dataStr) {
     final decBytes = Base58Decoder.decode(dataStr);
 
     int ss58Format;
@@ -146,6 +147,6 @@ class SS58Decoder {
           'got ${BytesUtils.toHexString(checksumBytes)})');
     }
 
-    return (ss58Format, dataBytes);
+    return Tuple(ss58Format, dataBytes);
   }
 }

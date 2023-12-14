@@ -57,7 +57,7 @@ class ElectrumV2MnemonicDecoder extends MnemonicDecoderBase {
     final words = mnemonicObj.toList();
 
     /// Detect the language if it was not specified during construction
-    final wordsList = findLanguage(mnemonicObj).$1;
+    final wordsList = findLanguage(mnemonicObj).item1;
 
     /// Decode the words into entropy as a BigInt
     final n = BigInt.from(wordsList.length());

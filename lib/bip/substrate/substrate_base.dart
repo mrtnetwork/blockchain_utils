@@ -141,9 +141,9 @@ class Substrate {
     SchnorrkelSecretKey result;
 
     if (pathElem.isHard) {
-      result = secret.hardDerive(pathElem.chainCode).$1;
+      result = secret.hardDerive(pathElem.chainCode).item1;
     } else {
-      result = secret.softDerive(pathElem.chainCode).$1;
+      result = secret.softDerive(pathElem.chainCode).item1;
     }
     return Substrate._(
       SubstratePrivateKey.fromBytes(result.toBytes(), coinConf),
@@ -160,7 +160,7 @@ class Substrate {
           'Public child derivation cannot be used to create a hardened child key');
     }
     final pubKeyBytes =
-        publicKey.pubKey.publicKey.derive(pathElem.chainCode).$1;
+        publicKey.pubKey.publicKey.derive(pathElem.chainCode).item1;
     return Substrate._(
       null,
       SubstratePublicKey.fromBytes(pubKeyBytes.toBytes(), coinConf),

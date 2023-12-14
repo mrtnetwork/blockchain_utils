@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 import 'package:blockchain_utils/binary/utils.dart';
+import 'package:blockchain_utils/tuple/tuple.dart';
 import 'package:blockchain_utils/numbers/int_utils.dart';
 
 class BigintUtils {
@@ -222,10 +223,10 @@ class BigintUtils {
   ///
   /// This method is useful for performing division and obtaining both the quotient and the remainder.
   ///
-  static (BigInt, BigInt) divmod(BigInt value, int radix) {
+  static Tuple<BigInt, BigInt> divmod(BigInt value, int radix) {
     final div = value ~/ BigInt.from(radix);
     final mod = value % BigInt.from(radix);
-    return (div, mod);
+    return Tuple(div, mod);
   }
 
   /// Converts a BigInt to a list of bytes with the specified length and byte order.

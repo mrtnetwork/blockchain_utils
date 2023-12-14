@@ -6,6 +6,7 @@ import 'package:blockchain_utils/crypto/crypto/hmac/hmac.dart';
 import 'package:blockchain_utils/crypto/crypto/pbkdf2/pbkdf2.dart';
 import 'package:blockchain_utils/crypto/crypto/prng/fortuna.dart';
 import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/tuple/tuple.dart';
 
 /// QuickCrypto provides a set of utility methods for cryptographic operations.
 ///
@@ -157,10 +158,10 @@ class QuickCrypto {
   ///
   /// [data] The input data for which the hash is to be computed.
   /// returns A tuple containing the first and second halves of the SHA512 hash.
-  static (List<int>, List<int>) sha512HashHalves(List<int> data) {
+  static Tuple<List<int>, List<int>> sha512HashHalves(List<int> data) {
     final hash = SHA512.hash(data);
     final halvesLength = sha512DeigestLength ~/ 2;
-    return (hash.sublist(0, halvesLength), hash.sublist(halvesLength));
+    return Tuple(hash.sublist(0, halvesLength), hash.sublist(halvesLength));
   }
 
   /// Calculate the Keccak-256 hash of the input data
@@ -195,13 +196,11 @@ class QuickCrypto {
 
   /// Calculate the HMAC-SHA-512 hash of the input data using the provided key and
   /// split the result into two halves. Return a tuple containing both halves
-  static (List<int>, List<int>) hmacSha512HashHalves(
+  static Tuple<List<int>, List<int>> hmacSha512HashHalves(
       List<int> key, List<int> data) {
     final bytes = hmacSha512Hash(key, data);
-    return (
-      bytes.sublist(0, hmacSha512DigestSize ~/ 2),
-      bytes.sublist(hmacSha512DigestSize ~/ 2)
-    );
+    return Tuple(bytes.sublist(0, hmacSha512DigestSize ~/ 2),
+        bytes.sublist(hmacSha512DigestSize ~/ 2));
   }
 
   /// Encrypt the input data using AES in Cipher Block Chaining (CBC) mode with the provided key.

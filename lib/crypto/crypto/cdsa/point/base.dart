@@ -6,6 +6,7 @@ import 'package:blockchain_utils/crypto/crypto/cdsa/curve/curve.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/point/edwards.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/utils/utils.dart';
 import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/tuple/tuple.dart';
 
 /// An enumeration representing different types of encoding for elliptic curve points.
 enum EncodeType { comprossed, hybrid, raw, uncompressed }
@@ -119,7 +120,7 @@ abstract class AbstractPoint {
   AbstractPoint doublePoint();
 
   /// Creates an elliptic curve point from its byte representation.
-  static (BigInt, BigInt) fromBytes(
+  static Tuple<BigInt, BigInt> fromBytes(
     Curve curve,
     List<int> data, {
     bool validateEncoding = true,
@@ -162,7 +163,7 @@ abstract class AbstractPoint {
   }
 
   /// Creates an elliptic curve point from a byte representation using the Edwards curve.
-  static (BigInt, BigInt) _fromEdwards(CurveED curve, List<int> data) {
+  static Tuple<BigInt, BigInt> _fromEdwards(CurveED curve, List<int> data) {
     data = List<int>.from(data);
     final p = curve.p;
     final expLen = (p.bitLength + 1 + 7) ~/ 8;
@@ -187,11 +188,11 @@ abstract class AbstractPoint {
       x = (-x) % p;
     }
 
-    return (x, y);
+    return Tuple(x, y);
   }
 
   /// Creates an elliptic curve point from a raw byte encoding.
-  static (BigInt, BigInt) _fromRawEncoding(
+  static Tuple<BigInt, BigInt> _fromRawEncoding(
       List<int> data, int rawEncodingLength) {
     assert(data.length == rawEncodingLength);
 
@@ -204,11 +205,11 @@ abstract class AbstractPoint {
     final coordX = BigintUtils.fromBytes(xs);
     final coordY = BigintUtils.fromBytes(ys);
 
-    return (coordX, coordY);
+    return Tuple(coordX, coordY);
   }
 
   /// Creates an elliptic curve point from a compressed byte encoding.
-  static (BigInt, BigInt) _fromCompressed(List<int> data, CurveFp curve) {
+  static Tuple<BigInt, BigInt> _fromCompressed(List<int> data, CurveFp curve) {
     if (data[0] != 0x02 && data[0] != 0x03) {
       throw ArgumentException('Malformed compressed point encoding');
     }
@@ -223,20 +224,21 @@ abstract class AbstractPoint {
     final betaEven = (beta & BigInt.one == BigInt.zero) ? false : true;
     if (isEven == betaEven) {
       final y = p - beta;
-      return (x, y);
+      return Tuple(x, y);
     } else {
-      return (x, beta);
+      return Tuple(x, beta);
     }
   }
 
   /// Creates an elliptic curve point from a hybrid byte encoding.
-  static (BigInt, BigInt) _fromHybrid(List<int> data, int rawEncodingLength) {
+  static Tuple<BigInt, BigInt> _fromHybrid(
+      List<int> data, int rawEncodingLength) {
     assert(data[0] == 0x06 || data[0] == 0x07);
 
     // Primarily use the uncompressed as it's easiest to handle
     final result = _fromRawEncoding(data.sublist(1), rawEncodingLength);
-    final x = result.$1;
-    final y = result.$2;
+    final x = result.item1;
+    final y = result.item2;
     final prefix = y & BigInt.one;
     // Validate if it's self-consistent if we're asked to do that
     if (((prefix == BigInt.one && data[0] != 0x07) ||
@@ -244,7 +246,7 @@ abstract class AbstractPoint {
       throw ArgumentException('Inconsistent hybrid point encoding');
     }
 
-    return (x, y);
+    return Tuple(x, y);
   }
 
   @override

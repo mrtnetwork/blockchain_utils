@@ -6,6 +6,7 @@ class BigRational {
   static final BigRational ten = BigRational.from(10);
   final BigInt numerator;
   final BigInt denominator;
+  String? _inDecimal;
   static final _one = BigInt.one;
   static final _zero = BigInt.zero;
   static final _ten = BigInt.from(10);
@@ -45,6 +46,14 @@ class BigRational {
   /// Finds the least common multiple of two BigInt numbers a and b.
   static BigInt _lcm(BigInt a, BigInt b) {
     return (a * b) ~/ _gcd(a, b);
+  }
+
+  static BigRational? tryParseDecimaal(String decimal) {
+    try {
+      return BigRational.parseDecimal(decimal);
+    } catch (e) {
+      return null;
+    }
   }
 
   /// Parses a decimal string and constructs a BigRational instance from it.
@@ -339,6 +348,9 @@ class BigRational {
   /// [digits] The number of digits after the decimal point (default is the scale of the BigRational).
   /// Returns a string representing the decimal value, with the specified number of digits after the decimal point.
   String toDecimal({int? digits}) {
+    if (_inDecimal != null) {
+      return _inDecimal!;
+    }
     digits ??= scale;
     final BigInt nDive = _truncate;
     final BigInt nReminder = _remainder;
@@ -372,12 +384,12 @@ class BigRational {
     return '$intPart${decPart < _zero ? '' : '.'}$decPartStr';
   }
 
+  bool get isDecimal => denominator != _one;
+
   @override
   String toString() {
-    if (denominator == _one) {
-      return toDecimal();
-    }
-    return '$numerator/$denominator';
+    _inDecimal ??= toDecimal();
+    return _inDecimal!;
   }
 
   /// Gets the precision of this BigRational, which is the total number of significant digits.

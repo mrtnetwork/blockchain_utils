@@ -66,8 +66,8 @@ void main() {
   test("decrypt ec", () {
     for (final i in _testVectorDec) {
       final dec = Bip38Decrypter.decryptEc(i["encrypted"], i["passphrase"]);
-      expect(dec.$1.toHex(), i["priv_key_bytes"]);
-      expect(dec.$2, i["pub_key_mode"]);
+      expect(dec.item1.toHex(), i["priv_key_bytes"]);
+      expect(dec.item2, i["pub_key_mode"]);
     }
   });
   test("encrypt", () {
@@ -79,7 +79,7 @@ void main() {
 
       final decrypt = Bip38Decrypter.decryptEc(enc, i["passphrase"]);
 
-      expect(decrypt.$2, i["pub_key_mode"]);
+      expect(decrypt.item2, i["pub_key_mode"]);
     }
   });
 }

@@ -39,8 +39,8 @@ final List<Map<String, dynamic>> _testVector = [
 void ss58Test() {
   for (final i in _testVector) {
     final dec = SS58Decoder.decode(i["encode"]);
-    assert(dec.$1 == i["ss58_format"]);
-    assert(dec.$2.toHex() == i["raw"]);
+    assert(dec.item1 == i["ss58_format"]);
+    assert(dec.item2.toHex() == i["raw"]);
   }
   for (final i in _testVector) {
     final dec = SS58Encoder.encode(

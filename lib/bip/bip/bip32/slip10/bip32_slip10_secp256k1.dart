@@ -115,13 +115,13 @@ class Bip32Slip10Secp256k1 extends Bip32Base {
 
       return Bip32Slip10Secp256k1._(
           keyData: Bip32KeyData(
-            chainCode: Bip32ChainCode(result.$2),
+            chainCode: Bip32ChainCode(result.item2),
             depth: depth.increase(),
             index: index,
             parentFingerPrint: fingerPrint,
           ),
           keyNetVer: keyNetVersions,
-          privKey: result.$1,
+          privKey: result.item1,
           pubKey: null);
     }
 
@@ -136,13 +136,13 @@ class Bip32Slip10Secp256k1 extends Bip32Base {
     final result = keyDerivator.ckdPub(publicKey, index, curveType);
     return Bip32Slip10Secp256k1._(
         keyData: Bip32KeyData(
-          chainCode: Bip32ChainCode(result.$2),
+          chainCode: Bip32ChainCode(result.item2),
           depth: depth.increase(),
           index: index,
           parentFingerPrint: fingerPrint,
         ),
         keyNetVer: keyNetVersions,
         privKey: null,
-        pubKey: result.$1);
+        pubKey: result.item1);
   }
 }

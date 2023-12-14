@@ -15,6 +15,7 @@ import 'package:blockchain_utils/crypto/crypto/scrypt/scrypt.dart';
 import 'package:blockchain_utils/compare/compare.dart';
 import 'package:blockchain_utils/string/string.dart';
 import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/tuple/tuple.dart';
 
 typedef Bip38PubKeyModes = P2PKHPubKeyModes;
 
@@ -208,7 +209,7 @@ class Bip38EcUtils {
   /// - [addressHash]: The address hash to be combined in key derivation.
   /// - [ownerEntropy]: The owner entropy used in key derivation.
   /// - Returns: A tuple (pair) of List<int>s representing the two derived key halves.
-  static (List<int>, List<int>) deriveKeyHalves(
+  static Tuple<List<int>, List<int>> deriveKeyHalves(
       List<int> passpoint, List<int> addressHash, List<int> ownerEntropy) {
     /// Derive a key using Scrypt with combined data.
     final key = Scrypt.deriveKey(
@@ -226,7 +227,7 @@ class Bip38EcUtils {
     final derivedHalf2 =
         List<int>.from(key.sublist(Bip38EcConst.scryptHalvesKeyLen ~/ 2));
 
-    return (derivedHalf1, derivedHalf2);
+    return Tuple(derivedHalf1, derivedHalf2);
   }
 }
 
@@ -321,15 +322,15 @@ class Bip38EcKeysGenerator {
 
     /// Encrypt seedb and create the BIP38-encrypted private key.
     final encryptedParts =
-        _encryptSeedb(seedb, derivedHalves.$1, derivedHalves.$2);
+        _encryptSeedb(seedb, derivedHalves.item1, derivedHalves.item2);
     final flagbyte = _setFlagbyteBits(magic, pubKeyMode);
     final encKeyBytes = List<int>.from([
       ...Bip38EcConst.encKeyPrefix,
       ...flagbyte,
       ...addressHash,
       ...ownerEntropy,
-      ...encryptedParts.$1.sublist(0, 8),
-      ...encryptedParts.$2
+      ...encryptedParts.item1.sublist(0, 8),
+      ...encryptedParts.item2
     ]);
 
     return Base58Encoder.checkEncode(encKeyBytes);
@@ -346,7 +347,7 @@ class Bip38EcKeysGenerator {
   /// - [derivedHalf1]: The first derived key half.
   /// - [derivedHalf2]: The second derived key half.
   /// - Returns: A tuple (pair) of List<int>s representing the two encrypted parts.
-  static (List<int>, List<int>) _encryptSeedb(
+  static Tuple<List<int>, List<int>> _encryptSeedb(
       List<int> seedb, List<int> derivedHalf1, List<int> derivedHalf2) {
     /// Encrypt the first part of 'seedb'.
     final encryptedPart1 = QuickCrypto.aesCbcEncrypt(derivedHalf2,
@@ -360,7 +361,7 @@ class Bip38EcKeysGenerator {
                 [...encryptedPart1.sublist(8), ...seedb.sublist(16)]),
             derivedHalf1.sublist(16)));
 
-    return (encryptedPart1, encryptedPart2);
+    return Tuple(encryptedPart1, encryptedPart2);
   }
 
   /// Set flag bits in the 'flagbyte' based on public key mode and magic number.
@@ -409,7 +410,7 @@ class Bip38EcDecrypter {
   /// - [passphrase]: The passphrase used for decryption.
   /// - Returns: A tuple (pair) containing the decrypted private key bytes and
   ///   the associated public key mode.
-  static (List<int>, Bip38PubKeyModes) decrypt(
+  static Tuple<List<int>, Bip38PubKeyModes> decrypt(
       String privKeyEnc, String passphrase) {
     final privKeyEncBytes = Base58Decoder.checkDecode(privKeyEnc);
 
@@ -438,20 +439,20 @@ class Bip38EcDecrypter {
 
     /// Derive the pass factor and key halves for decryption.
     final passfactor =
-        Bip38EcUtils.passFactor(passphrase, ownerEntropy, flagOptions.$2);
+        Bip38EcUtils.passFactor(passphrase, ownerEntropy, flagOptions.item2);
 
     final derivedHalves = Bip38EcUtils.deriveKeyHalves(
         Bip38EcUtils.passPoint(passfactor), addressHash, ownerEntropy);
 
     /// Decrypt 'factorb' and compute the private key.
     final factorb = _decryptAndGetFactorb(encryptedPart1Lower, encryptedPart2,
-        derivedHalves.$1, derivedHalves.$2);
+        derivedHalves.item1, derivedHalves.item2);
     final privateKeyBytes = _computePrivateKey(passfactor, factorb);
 
     /// Create a public key from the private key and calculate address hash.
     final toPub = Secp256k1PrivateKeyEcdsa.fromBytes(privateKeyBytes);
-    final addressHashGot =
-        Bip38Addr.addressHash(toPub.publicKey.point.toBytes(), flagOptions.$1);
+    final addressHashGot = Bip38Addr.addressHash(
+        toPub.publicKey.point.toBytes(), flagOptions.item1);
 
     /// Verify the extracted address hash matches the expected value.
     if (!bytesEqual(addressHash, addressHashGot)) {
@@ -459,7 +460,7 @@ class Bip38EcDecrypter {
           'Invalid address hash (expected: ${BytesUtils.toHexString(addressHash)}, got: ${BytesUtils.toHexString(addressHashGot)})');
     }
 
-    return (privateKeyBytes, flagOptions.$1);
+    return Tuple(privateKeyBytes, flagOptions.item1);
   }
 
   /// Decrypt and obtain the 'factorb' from encrypted parts.
@@ -519,7 +520,7 @@ class Bip38EcDecrypter {
   /// - [flagbyte]: The 'flagbyte' value extracted from the BIP38-encrypted private key.
   /// - Returns: A tuple (pair) containing the selected public key mode and a boolean
   ///   indicating the presence of lot and sequence numbers.
-  static (Bip38PubKeyModes, bool) _getFlagbyteOptions(List<int> flagbyte) {
+  static Tuple<Bip38PubKeyModes, bool> _getFlagbyteOptions(List<int> flagbyte) {
     int flagbyteInt = IntUtils.fromBytes(flagbyte, byteOrder: Endian.little);
 
     /// Check if the lot and sequence number bit is set.
@@ -543,6 +544,6 @@ class Bip38EcDecrypter {
           'Invalid flagbyte (${BytesUtils.toHexString(flagbyte)})');
     }
 
-    return (pubKeyMode, hasLotSeq);
+    return Tuple(pubKeyMode, hasLotSeq);
   }
 }

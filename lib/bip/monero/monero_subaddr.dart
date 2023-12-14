@@ -9,6 +9,7 @@ import 'package:blockchain_utils/bip/monero/monero_keys.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/curve/curves.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/point/edwards.dart';
+import 'package:blockchain_utils/tuple/tuple.dart';
 
 /// A class containing constants related to Monero subaddresses.
 class MoneroSubaddressConst {
@@ -52,7 +53,7 @@ class MoneroSubaddress {
   /// This method calculates Monero subaddress keys using the provided [minorIndex] and [majorIdx].
   /// If the indexes are out of valid range, it throws an `ArgumentException`.
   /// It returns a tuple of subaddress public spend key and subaddress public view key.
-  (MoneroPublicKey, MoneroPublicKey) computeKeys(
+  Tuple<MoneroPublicKey, MoneroPublicKey> computeKeys(
       int minorIndex, int majorIndex) {
     if (minorIndex < 0 || minorIndex > MoneroSubaddressConst.subaddrMaxIdx) {
       throw ArgumentException('Invalid minor index ($minorIndex)');
@@ -62,7 +63,7 @@ class MoneroSubaddress {
     }
 
     if (minorIndex == 0 && majorIndex == 0) {
-      return (pubSKey, pubVKey);
+      return Tuple(pubSKey, pubVKey);
     }
 
     List<int> majorIdxBytes = IntUtils.toBytes(majorIndex,
@@ -91,7 +92,7 @@ class MoneroSubaddress {
                 BigintUtils.fromBytes(privVKey.raw, byteOrder: Endian.little))
             as EDPoint);
 
-    return (subaddrPubSKey, subaddrPubVKey);
+    return Tuple(subaddrPubSKey, subaddrPubVKey);
   }
 
   /// Compute and encode Monero subaddress keys into a string representation.
@@ -105,7 +106,7 @@ class MoneroSubaddress {
       int minorIndex, int majorIndex, List<int> netVer) {
     final keys = computeKeys(minorIndex, majorIndex);
 
-    return XmrAddrEncoder().encodeKey(keys.$1.compressed,
-        {"pub_vkey": keys.$2.compressed, "net_ver": netVer});
+    return XmrAddrEncoder().encodeKey(keys.item1.compressed,
+        {"pub_vkey": keys.item2.compressed, "net_ver": netVer});
   }
 }

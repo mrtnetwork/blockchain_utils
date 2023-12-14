@@ -36,10 +36,10 @@ void main() {
     for (final i in _testVect) {
       final hrp = i["encode"]!.substring(0, i["encode"]!.indexOf(":"));
       final decode = BchBech32Decoder.decode(hrp, i["encode"]!);
-      expect(BytesUtils.toHexString(decode.$2), i["raw"]);
+      expect(BytesUtils.toHexString(decode.item2), i["raw"]);
       expect(
           bytesEqual(
-              decode.$1, CoinsConf.bitcoinCashMainNet.params.p2pkhStdNetVer),
+              decode.item1, CoinsConf.bitcoinCashMainNet.params.p2pkhStdNetVer),
           true);
     }
   });

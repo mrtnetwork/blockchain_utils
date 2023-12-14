@@ -111,7 +111,7 @@ class Bip39MnemonicDecoder extends MnemonicDecoderBase {
     } on StateError {
       throw ArgumentException('Mnemonic words count is not valid ($wCount)');
     }
-    final wordsList = findLanguage(mnemonicObj).$1;
+    final wordsList = findLanguage(mnemonicObj).item1;
     final mnemonicBinStr = _mnemonicToBinaryStr(mnemonicObj, wordsList);
     final checksumBinStr = mnemonicBinStr
         .substring(mnemonicBinStr.length - _getChecksumLen(mnemonicBinStr));

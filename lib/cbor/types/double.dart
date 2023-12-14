@@ -48,8 +48,8 @@ class CborFloatValue implements CborObject {
     }
     final toBytes = _decodFloat.toBytes(_decodFloatType);
 
-    bytes.pushMajorTag(MajorTags.simpleOrFloat, toBytes.$2.numBytes);
-    bytes.pushBytes(toBytes.$1);
+    bytes.pushMajorTag(MajorTags.simpleOrFloat, toBytes.item2.numBytes);
+    bytes.pushBytes(toBytes.item1);
     return bytes.toBytes();
   }
 

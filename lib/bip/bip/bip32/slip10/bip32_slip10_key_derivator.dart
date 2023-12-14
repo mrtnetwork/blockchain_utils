@@ -7,6 +7,7 @@ import 'package:blockchain_utils/bip/bip/bip32/bip32_keys.dart';
 import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_getter.dart';
 import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
+import 'package:blockchain_utils/tuple/tuple.dart';
 
 /// Constants related to the Bip32 Slip10 Derivator.
 class Bip32Slip10DerivatorConst {
@@ -39,8 +40,8 @@ class Bip32Slip10EcdsaDerivator implements IBip32KeyDerivator {
   /// Returns:
   /// A tuple containing the derived child private key and the chain code.
   @override
-  (List<int>, List<int>) ckdPriv(Bip32PrivateKey privKey, Bip32PublicKey pubKey,
-      Bip32KeyIndex index, EllipticCurveTypes type) {
+  Tuple<List<int>, List<int>> ckdPriv(Bip32PrivateKey privKey,
+      Bip32PublicKey pubKey, Bip32KeyIndex index, EllipticCurveTypes type) {
     final privKeyBytes = privKey.raw;
     List<int> dataBytes;
     if (index.isHardened) {
@@ -55,8 +56,8 @@ class Bip32Slip10EcdsaDerivator implements IBip32KeyDerivator {
     final hmacHalves = QuickCrypto.hmacSha512HashHalves(
         privKey.chainCode.toBytes(), dataBytes);
 
-    final ilBytes = hmacHalves.$1;
-    final irBytes = hmacHalves.$2;
+    final ilBytes = hmacHalves.item1;
+    final irBytes = hmacHalves.item2;
     final ilInt = BigintUtils.fromBytes(ilBytes);
     final privKeyInt = BigintUtils.fromBytes(privKeyBytes);
     final generator = EllipticCurveGetter.generatorFromType(type);
@@ -64,7 +65,7 @@ class Bip32Slip10EcdsaDerivator implements IBip32KeyDerivator {
     final newPrivKeyBytes = BigintUtils.toBytes(scalar,
         order: Endian.big, length: privKey.privKey.length);
 
-    return (newPrivKeyBytes, irBytes);
+    return Tuple(newPrivKeyBytes, irBytes);
   }
 
   /// Derive a child public key from the given parent public key using the provided
@@ -82,20 +83,20 @@ class Bip32Slip10EcdsaDerivator implements IBip32KeyDerivator {
   /// Returns:
   /// A tuple containing the derived child public key point and the chain code.
   @override
-  (List<int>, List<int>) ckdPub(
+  Tuple<List<int>, List<int>> ckdPub(
       Bip32PublicKey pubKey, Bip32KeyIndex index, EllipticCurveTypes type) {
     final dataBytes =
         List<int>.from([...pubKey.compressed, ...index.toBytes()]);
     final hmacHalves =
         QuickCrypto.hmacSha512HashHalves(pubKey.chainCode.toBytes(), dataBytes);
 
-    final ilBytes = hmacHalves.$1;
-    final irBytes = hmacHalves.$2;
+    final ilBytes = hmacHalves.item1;
+    final irBytes = hmacHalves.item2;
     final ilInt = BigintUtils.fromBytes(ilBytes);
     final generator = EllipticCurveGetter.generatorFromType(type);
 
     final newPubKeyPoint = pubKey.point + (generator * ilInt);
-    return (newPubKeyPoint.toBytes(), irBytes);
+    return Tuple(newPubKeyPoint.toBytes(), irBytes);
   }
 }
 
@@ -122,8 +123,8 @@ class Bip32Slip10Ed25519Derivator implements IBip32KeyDerivator {
   ///
   /// Returns a tuple containing the new private key bytes and the chain code bytes.
   @override
-  (List<int>, List<int>) ckdPriv(Bip32PrivateKey privKey, Bip32PublicKey pubKey,
-      Bip32KeyIndex index, EllipticCurveTypes type) {
+  Tuple<List<int>, List<int>> ckdPriv(Bip32PrivateKey privKey,
+      Bip32PublicKey pubKey, Bip32KeyIndex index, EllipticCurveTypes type) {
     final dataBytes = List<int>.from([
       ...Bip32Slip10DerivatorConst.priveKeyPrefix,
       ...privKey.raw,
@@ -136,7 +137,7 @@ class Bip32Slip10Ed25519Derivator implements IBip32KeyDerivator {
   /// public derivation
   /// [Bip32Slip10Ed25519Derivator] does not support public key derivation
   @override
-  (List<int>, List<int>) ckdPub(
+  Tuple<List<int>, List<int>> ckdPub(
       Bip32PublicKey pubKey, Bip32KeyIndex index, EllipticCurveTypes type) {
     throw UnimplementedError("$type does not support public key derivation");
   }

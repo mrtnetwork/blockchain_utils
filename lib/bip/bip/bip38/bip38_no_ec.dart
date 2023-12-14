@@ -7,6 +7,7 @@ import 'package:blockchain_utils/crypto/crypto/scrypt/scrypt.dart';
 import 'package:blockchain_utils/compare/compare.dart';
 import 'package:blockchain_utils/string/string.dart';
 import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/tuple/tuple.dart';
 
 import 'bip38_ec.dart';
 
@@ -73,7 +74,7 @@ class Bip38NoEcUtils {
   /// - [passphrase]: The passphrase for key derivation.
   /// - [addressHash]: The address hash as input for key derivation.
   /// - Returns: A tuple (pair) containing the two derived key halves as List<int>s.
-  static (List<int>, List<int>) deriveKeyHalves(
+  static Tuple<List<int>, List<int>> deriveKeyHalves(
       String passphrase, List<int> addressHash) {
     final key = Scrypt.deriveKey(
       StringUtils.encode(passphrase),
@@ -87,7 +88,7 @@ class Bip38NoEcUtils {
     final derivedHalf1 = key.sublist(0, Bip38NoEcConst.scryptKeyLen ~/ 2);
     final derivedHalf2 = key.sublist(Bip38NoEcConst.scryptKeyLen ~/ 2);
 
-    return (derivedHalf1, derivedHalf2);
+    return Tuple(derivedHalf1, derivedHalf2);
   }
 }
 
@@ -119,16 +120,16 @@ class Bip38NoEcEncrypter {
         Bip38NoEcUtils.deriveKeyHalves(passphrase, addressHash);
 
     /// Extract the derived key halves.
-    final derivedHalf1 = derivedHalves.$1;
-    final derivedHalf2 = derivedHalves.$2;
+    final derivedHalf1 = derivedHalves.item1;
+    final derivedHalf2 = derivedHalves.item2;
 
     /// Encrypt the private key using the derived halves.
     final encryptedHalves =
         _encryptPrivateKey(privKey, derivedHalf1, derivedHalf2);
 
     /// Extract the encrypted halves.
-    final encryptedHalf1 = encryptedHalves.$1;
-    final encryptedHalf2 = encryptedHalves.$2;
+    final encryptedHalf1 = encryptedHalves.item1;
+    final encryptedHalf2 = encryptedHalves.item2;
 
     /// Determine the flagbyte based on the public key mode.
     final flagbyte = pubKeyMode == Bip38PubKeyModes.compressed
@@ -158,7 +159,7 @@ class Bip38NoEcEncrypter {
   /// - [derivedHalf2]: The second derived key half.
   /// - Returns: A tuple (pair) containing the two encrypted private key halves
   ///   as List<int>s.
-  static (List<int>, List<int>) _encryptPrivateKey(
+  static Tuple<List<int>, List<int>> _encryptPrivateKey(
       List<int> privKeyBytes, List<int> derivedHalf1, List<int> derivedHalf2) {
     /// Encrypt the first half of the private key.
     final encryptedHalf1 = QuickCrypto.aesCbcEncrypt(
@@ -170,7 +171,7 @@ class Bip38NoEcEncrypter {
     final encryptedHalf2 = QuickCrypto.aesCbcEncrypt(derivedHalf2,
         BytesUtils.xor(privKeyBytes.sublist(16), derivedHalf1.sublist(16)));
 
-    return (encryptedHalf1, encryptedHalf2);
+    return Tuple(encryptedHalf1, encryptedHalf2);
   }
 }
 
@@ -192,7 +193,7 @@ class Bip38NoEcDecrypter {
   /// - [passphrase]: The passphrase for decryption.
   /// - Returns: A tuple (pair) containing the decrypted private key as a List<int>
   ///   and the selected public key mode (compressed or uncompressed).
-  static (List<int>, Bip38PubKeyModes) decrypt(
+  static Tuple<List<int>, Bip38PubKeyModes> decrypt(
       String privKeyEnc, String passphrase) {
     final privKeyEncBytes = Base58Decoder.checkDecode(privKeyEnc);
 
@@ -222,8 +223,8 @@ class Bip38NoEcDecrypter {
     final derivedHalves =
         Bip38NoEcUtils.deriveKeyHalves(passphrase, addressHash);
 
-    final derivedHalf1 = derivedHalves.$1;
-    final derivedHalf2 = derivedHalves.$2;
+    final derivedHalf1 = derivedHalves.item1;
+    final derivedHalf2 = derivedHalves.item2;
 
     // Get the private key back by decrypting
     final privKeyBytes = _decryptAndGetPrivKey(
@@ -242,7 +243,7 @@ class Bip38NoEcDecrypter {
           'got: ${BytesUtils.toHexString(addressHashGot)})');
     }
 
-    return (privKeyBytes, pubKeyMode);
+    return Tuple(privKeyBytes, pubKeyMode);
   }
 
   /// Decrypt and return the Bitcoin private key.

@@ -19,12 +19,14 @@ void main() {
       script.additionalData("sign-bytes".codeUnits, message);
       final vrfout = secret.vrfSign(script);
 
-      final VRFProof vrproof = vrfout.$2;
+      final VRFProof vrproof = vrfout.item2;
       final verifyScript = MerlinTranscript("SigningContext");
       verifyScript.additionalData("".codeUnits, signingContext);
       verifyScript.additionalData("sign-bytes".codeUnits, message);
       expect(
-          secret.publicKey().vrfVerify(verifyScript, vrfout.$1.output, vrproof),
+          secret
+              .publicKey()
+              .vrfVerify(verifyScript, vrfout.item1.output, vrproof),
           true);
     }
   });
@@ -38,7 +40,7 @@ void main() {
       final script = MerlinTranscript("SigningContext");
       script.additionalData("".codeUnits, "yo!".codeUnits);
       script.additionalData("sign-bytes".codeUnits, "meow".codeUnits);
-      final vrfout = keyPair.secretKey().vrfSign(script).$1;
+      final vrfout = keyPair.secretKey().vrfSign(script).item1;
 
       expect(vrfout.input.toHex().toUpperCase(), i["input"]);
       expect(vrfout.output.toHex().toUpperCase(), i["output"]);

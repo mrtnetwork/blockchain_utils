@@ -45,7 +45,7 @@ class ElectrumV1MnemonicDecoder extends MnemonicDecoderBase {
     }
 
     // Detect language if it was not specified at construction
-    final wordsList = findLanguage(mnemonicObj).$1;
+    final wordsList = findLanguage(mnemonicObj).item1;
 
     // Get words from the mnemonic
     final words = mnemonicObj.toList();

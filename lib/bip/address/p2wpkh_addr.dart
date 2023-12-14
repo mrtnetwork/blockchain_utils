@@ -40,8 +40,8 @@ class P2WPKHAddrDecoder implements BlockchainAddressDecoder {
 
     /// Decode the Bech32-encoded P2WPKH address, and validate its length.
     final decoded = SegwitBech32Decoder.decode(hrp, addr);
-    final witVerGot = decoded.$1;
-    final addrDecBytes = decoded.$2;
+    final witVerGot = decoded.item1;
+    final addrDecBytes = decoded.item2;
 
     /// Check the witness version.
     if (witVerGot != P2WPKHAddrConst.witnessVer) {

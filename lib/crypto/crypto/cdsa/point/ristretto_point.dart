@@ -95,8 +95,8 @@ class RistrettoPoint extends EDPoint {
     final v = ristretto_tools.positiveMod(a * d * u1_2 - u2_2, P);
     final invSqrt = ristretto_tools.sqrtUV(
         BigInt.one, ristretto_tools.positiveMod(v * u2_2, P));
-    final x2 = ristretto_tools.positiveMod(invSqrt.$2 * u2, P);
-    final y2 = ristretto_tools.positiveMod(invSqrt.$2 * x2 * v, P);
+    final x2 = ristretto_tools.positiveMod(invSqrt.item2 * u2, P);
+    final y2 = ristretto_tools.positiveMod(invSqrt.item2 * x2 * v, P);
 
     BigInt x = ristretto_tools.positiveMod((s + s) * x2, P);
     if (ristretto_tools.isOdd(x, P)) {
@@ -105,7 +105,7 @@ class RistrettoPoint extends EDPoint {
 
     final y = ristretto_tools.positiveMod(u1 * y2, P);
     final t = ristretto_tools.positiveMod(x * y, P);
-    if (!invSqrt.$1 || ristretto_tools.isOdd(t, P) || y == BigInt.zero) {
+    if (!invSqrt.item1 || ristretto_tools.isOdd(t, P) || y == BigInt.zero) {
       throw ArgumentException("Invalid RistrettoPoint");
     }
     return RistrettoPoint.fromEdwardsPoint(
@@ -146,8 +146,8 @@ class RistrettoPoint extends EDPoint {
 
     final uvRatio = ristretto_tools.sqrtUV(numeratorS, D);
 
-    final useSecondRoot = uvRatio.$1;
-    BigInt sValue = uvRatio.$2;
+    final useSecondRoot = uvRatio.item1;
+    BigInt sValue = uvRatio.item2;
 
     BigInt sComputed = ristretto_tools.positiveMod(sValue * r0, primeP);
 
@@ -310,7 +310,7 @@ class RistrettoPoint extends EDPoint {
     final u2Squared = ristretto_tools.positiveMod(u2 * u2, primeP);
     final invSqrt = ristretto_tools
         .sqrtUV(BigInt.one, ristretto_tools.positiveMod(u1 * u2Squared, primeP))
-        .$2;
+        .item2;
     final d1 = ristretto_tools.positiveMod(invSqrt * u1, primeP);
     final d2 = ristretto_tools.positiveMod(invSqrt * u2, primeP);
     final zInverse = ristretto_tools.positiveMod(d1 * d2 * t, primeP);

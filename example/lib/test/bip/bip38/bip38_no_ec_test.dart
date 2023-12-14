@@ -41,8 +41,8 @@ void bip38NoEcdsaTest() {
         pubKeyMode: i["pub_key_mode"]);
     assert(enc == i["encrypted"]);
     final dec = Bip38Decrypter.decryptNoEc(i["encrypted"], i["passphrase"]);
-    assert(i["priv_key_bytes"] == dec.$1.toHex());
-    assert(i["pub_key_mode"] == dec.$2);
+    assert(i["priv_key_bytes"] == dec.item1.toHex());
+    assert(i["pub_key_mode"] == dec.item2);
 
     // this method use scrypt with parameters 16384N  8P and 8R . very slow on web debug!! :-ss
     if (kIsWeb) break;

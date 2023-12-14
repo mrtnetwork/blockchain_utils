@@ -124,7 +124,8 @@ void wifTest() {
   for (final i in _testVector) {
     final dec = WifDecoder.decode(i["encode"], netVer: i["net_ver"]);
     assert(
-        dec.$1.toHex() == i["key_bytes"] && dec.$2 == i["pub_key_mode"], true);
+        dec.item1.toHex() == i["key_bytes"] && dec.item2 == i["pub_key_mode"],
+        true);
   }
   for (final i in _testVector) {
     final encode = WifEncoder.encode(BytesUtils.fromHexString(i["key_bytes"]),

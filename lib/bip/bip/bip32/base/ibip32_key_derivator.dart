@@ -1,6 +1,7 @@
 import 'package:blockchain_utils/bip/bip/bip32/bip32_key_data.dart';
 import 'package:blockchain_utils/bip/bip/bip32/bip32_keys.dart';
 import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
+import 'package:blockchain_utils/tuple/tuple.dart';
 
 /// An abstract class that defines methods for BIP-32 key derivation.
 ///
@@ -14,14 +15,14 @@ abstract class IBip32KeyDerivator {
   ///
   /// The [privKey] parameter represents the parent private key, [pubKey] is the
   /// parent public key, [index] specifies the child key index, and [type] is the
-  /// elliptic curve type.
-  (List<int>, List<int>) ckdPriv(Bip32PrivateKey privKey, Bip32PublicKey pubKey,
-      Bip32KeyIndex index, EllipticCurveTypes type);
+  /// elliptic curve type.Tuple
+  Tuple<List<int>, List<int>> ckdPriv(Bip32PrivateKey privKey,
+      Bip32PublicKey pubKey, Bip32KeyIndex index, EllipticCurveTypes type);
 
   /// Derives a child public key from the given public key.
   ///
   /// The [pubKey] parameter represents the parent public key, [index] specifies
   /// the child key index, and [type] is the elliptic curve type.
-  (List<int>, List<int>) ckdPub(
+  Tuple<List<int>, List<int>> ckdPub(
       Bip32PublicKey pubKey, Bip32KeyIndex index, EllipticCurveTypes type);
 }

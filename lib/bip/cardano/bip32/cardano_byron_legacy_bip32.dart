@@ -78,13 +78,13 @@ class CardanoByronLegacyBip32 extends Bip32Base {
 
       return CardanoByronLegacyBip32._(
           keyData: Bip32KeyData(
-            chainCode: Bip32ChainCode(result.$2),
+            chainCode: Bip32ChainCode(result.item2),
             depth: depth.increase(),
             index: index,
             parentFingerPrint: fingerPrint,
           ),
           keyNetVer: keyNetVersions,
-          privKey: result.$1,
+          privKey: result.item1,
           pubKey: null);
     }
 
@@ -99,14 +99,14 @@ class CardanoByronLegacyBip32 extends Bip32Base {
     final result = keyDerivator.ckdPub(publicKey, index, curveType);
     return CardanoByronLegacyBip32._(
         keyData: Bip32KeyData(
-          chainCode: Bip32ChainCode(result.$2),
+          chainCode: Bip32ChainCode(result.item2),
           depth: depth.increase(),
           index: index,
           parentFingerPrint: fingerPrint,
         ),
         keyNetVer: keyNetVersions,
         privKey: null,
-        pubKey: result.$1);
+        pubKey: result.item1);
   }
 
   /// Returns the elliptic curve type associated with this Bip32 key.

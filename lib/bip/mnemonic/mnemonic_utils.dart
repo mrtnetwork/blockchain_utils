@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 import 'package:blockchain_utils/bip/mnemonic/mnemonic.dart';
+import 'package:blockchain_utils/tuple/tuple.dart';
 import 'package:blockchain_utils/exception/exception.dart';
 import 'package:blockchain_utils/numbers/int_utils.dart';
 
@@ -161,5 +162,5 @@ abstract class MnemonicWordsListFinderBase {
   /// final foundList = result.item1;
   /// final foundLanguage = result.item2;
   /// ```
-  (MnemonicWordsList, MnemonicLanguages) findLanguage(Mnemonic mnemonic);
+  Tuple<MnemonicWordsList, MnemonicLanguages> findLanguage(Mnemonic mnemonic);
 }

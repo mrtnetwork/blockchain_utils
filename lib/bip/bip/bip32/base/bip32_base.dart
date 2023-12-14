@@ -69,11 +69,11 @@ abstract class Bip32Base {
   Bip32Base.fromSeed(List<int> seedBytes, [Bip32KeyNetVersions? keyNetVer]) {
     keyNetVer ??= defaultKeyNetVersion;
     final result = masterKeyGenerator.generateFromSeed(seedBytes);
-    final keyData = Bip32KeyData(chainCode: Bip32ChainCode(result.$2));
-    _privKey =
-        _initializePrivateKey(result.$1, null, keyData, keyNetVer, curveType);
+    final keyData = Bip32KeyData(chainCode: Bip32ChainCode(result.item2));
+    _privKey = _initializePrivateKey(
+        result.item1, null, keyData, keyNetVer, curveType);
     _pubKey =
-        _initializePublicKey(result.$1, null, keyData, keyNetVer, curveType);
+        _initializePublicKey(result.item1, null, keyData, keyNetVer, curveType);
   }
 
   /// Creates a BIP-32 key from a private key.

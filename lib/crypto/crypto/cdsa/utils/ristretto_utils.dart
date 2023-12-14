@@ -1,4 +1,6 @@
 import 'package:blockchain_utils/binary/utils.dart';
+import 'package:blockchain_utils/tuple/tuple.dart';
+
 import 'package:blockchain_utils/crypto/crypto/cdsa/curve/curves.dart';
 
 /// Helper methods for Ristretto255 operations.
@@ -116,7 +118,7 @@ bool isOdd(BigInt num, BigInt modulo) {
 }
 
 /// sqrt u/v
-(bool, BigInt) sqrtUV(BigInt u, BigInt v) {
+Tuple<bool, BigInt> sqrtUV(BigInt u, BigInt v) {
   final P = Curves.curveEd25519.p;
   final v3 = positiveMod(v * v * v, P);
   final v7 = positiveMod(v3 * v3 * v, P);
@@ -140,7 +142,7 @@ bool isOdd(BigInt num, BigInt modulo) {
   if (isOdd(x, P)) {
     x = positiveMod(-x, P);
   }
-  return (useRoot1 || useRoot2, x);
+  return Tuple(useRoot1 || useRoot2, x);
 }
 
 /// Constants for scalar arithmetic operations

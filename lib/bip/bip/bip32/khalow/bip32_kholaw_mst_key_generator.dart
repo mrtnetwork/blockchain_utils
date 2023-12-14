@@ -2,6 +2,7 @@ import 'package:blockchain_utils/bip/bip/bip32/base/ibip32_mst_key_generator.dar
 import 'package:blockchain_utils/bip/bip/bip32/slip10/bip32_slip10_mst_key_generator.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
 import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/tuple/tuple.dart';
 
 /// Constants for generating master keys for Bip32KholawEd25519 keys.
 ///
@@ -41,28 +42,28 @@ class Bip32KholawEd25519MstKeyGenerator implements IBip32MstKeyGenerator {
   /// Returns:
   /// A tuple of two `List<int>` values - the master private key and the chain code.
   @override
-  (List<int>, List<int>) generateFromSeed(List<int> seedBytes) {
+  Tuple<List<int>, List<int>> generateFromSeed(List<int> seedBytes) {
     if (seedBytes.length < Bip32KholawMstKeyGeneratorConst.seedMinByteLen) {
       throw ArgumentException("Invalid seed length");
     }
     final hashDigest = _hashRepeatedly(seedBytes,
         List<int>.from(Bip32KholawMstKeyGeneratorConst.masterKeyHmacKey));
-    final tweak = _tweakMasterKeyBits(hashDigest.$1);
+    final tweak = _tweakMasterKeyBits(hashDigest.item1);
     final chainCode = QuickCrypto.hmacsha256Hash(
         List<int>.from(Bip32KholawMstKeyGeneratorConst.masterKeyHmacKey),
         List<int>.from([0x01, ...seedBytes]));
 
-    return (List<int>.from([...tweak, ...hashDigest.$2]), chainCode);
+    return Tuple(List<int>.from([...tweak, ...hashDigest.item2]), chainCode);
   }
 
   /// Repeatedly hashing
-  static (List<int>, List<int>) _hashRepeatedly(
+  static Tuple<List<int>, List<int>> _hashRepeatedly(
       List<int> dataBytes, List<int> hmacKeyBytes) {
     final halves = QuickCrypto.hmacSha512HashHalves(hmacKeyBytes, dataBytes);
 
-    if ((halves.$1[31] & 0x20) != 0) {
+    if ((halves.item1[31] & 0x20) != 0) {
       return _hashRepeatedly(
-          List<int>.from([...halves.$1, ...halves.$2]), hmacKeyBytes);
+          List<int>.from([...halves.item1, ...halves.item2]), hmacKeyBytes);
     }
 
     return halves;

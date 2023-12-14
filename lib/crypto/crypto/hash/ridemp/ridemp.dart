@@ -975,6 +975,7 @@ class _RidempUtils {
         state[5] = 0xfedcba98;
         state[6] = 0x89abcdef;
         state[7] = 0x01234567;
+        break;
       case 40:
         state[4] = 0xc3d2e1f0;
         state[5] = 0x76543210;

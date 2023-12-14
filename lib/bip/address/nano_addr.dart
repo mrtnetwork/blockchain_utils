@@ -82,8 +82,8 @@ class NanoAddrDecoder implements BlockchainAddressDecoder {
     );
 
     /// Retrieve the public key bytes and checksum bytes.
-    final pubKeyBytes = decode.$1;
-    final checksumBytes = decode.$2;
+    final pubKeyBytes = decode.item1;
+    final checksumBytes = decode.item2;
 
     /// Validate the address checksum using the computed checksum function.
     AddrDecUtils.validateChecksum(

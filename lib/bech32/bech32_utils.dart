@@ -54,6 +54,7 @@
 
 import 'package:blockchain_utils/bech32/bech32_ex.dart';
 import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/tuple/tuple.dart';
 
 /// A utility class containing constants for Bech32 encoding and decoding.
 class Bech32BaseConst {
@@ -186,7 +187,7 @@ abstract class Bech32DecoderBase {
   /// Throws:
   /// - ArgumentException: If the input string is mixed case, lacks a separator, HRP is invalid, or the checksum is invalid.
   ///
-  static (String, List<int>) decodeBech32(
+  static Tuple<String, List<int>> decodeBech32(
       String bechStr,
       String sep,
       int checksumLen,
@@ -222,10 +223,8 @@ abstract class Bech32DecoderBase {
       throw const Bech32ChecksumError('Invalid bech32 checksum');
     }
 
-    return (
-      hrp,
-      List<int>.from(intData.sublist(0, intData.length - checksumLen))
-    );
+    return Tuple(
+        hrp, List<int>.from(intData.sublist(0, intData.length - checksumLen)));
   }
 
   static bool _isStringMixed(String str) {

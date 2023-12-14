@@ -1,6 +1,7 @@
 import 'package:blockchain_utils/bip/electrum/mnemonic_v1/electrum_v1_mnemonic.dart';
 import 'package:blockchain_utils/bip/mnemonic/mnemonic.dart';
 import 'package:blockchain_utils/bip/mnemonic/mnemonic_utils.dart';
+import 'package:blockchain_utils/tuple/tuple.dart';
 import 'package:blockchain_utils/exception/exception.dart';
 
 /// A class responsible for fetching Electrum V1 mnemonic word lists based on language.
@@ -42,14 +43,14 @@ class ElectrumV1WordsListFinder extends MnemonicWordsListFinderBase {
   ///
   /// [mnemonic]: The Electrum V1 mnemonic for which to find the language and word list.
   @override
-  (MnemonicWordsList, MnemonicLanguages) findLanguage(Mnemonic mnemonic) {
+  Tuple<MnemonicWordsList, MnemonicLanguages> findLanguage(Mnemonic mnemonic) {
     for (final lang in ElectrumV1Languages.values) {
       final wordsList = MnemonicWordsList(lang.wordList);
       try {
         for (final word in mnemonic.toList()) {
           wordsList.getWordIdx(word);
         }
-        return (wordsList, lang);
+        return Tuple(wordsList, lang);
       } on MessageException {
         continue;
       }

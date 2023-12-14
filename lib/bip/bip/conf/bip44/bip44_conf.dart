@@ -1033,8 +1033,8 @@ class Bip44Conf {
   /// Configuration for Ripple testnet
   static final CoinConfig rippleTestnet = CoinConfig(
     coinNames: CoinsConf.ripple.coinName,
-    coinIdx: Slip44.ripple,
-    isTestnet: false,
+    coinIdx: Slip44.testnet,
+    isTestnet: true,
     defPath: derPathNonHardenedFull,
     keyNetVer: bip44BtcKeyNetVerMain,
     wifNetVer: null,

@@ -112,16 +112,16 @@ void _web() {
 void _test(String name, TestMethod process) {
   try {
     process();
- 
+    print("done name $name");
   } catch (e) {
-  
+    print("erroooooooooor $name $e");
     throw Exception();
   }
 }
 
 void _testAll() async {
+  final DateTime start = DateTime.now();
   _encodeDecodeAddrTest();
-
   _test("UUID", testUUID);
   _test("bech32", bech32Test);
   _test("wif", wifTest);
@@ -178,8 +178,9 @@ void _testAll() async {
   _test("modemCrc", testModemCrc);
   _test("shake digest", testShakeDigest);
   _test("cbor test", cborTest);
-
   _web();
+  final DateTime end = DateTime.now();
+  print("end: ${end.difference(start).inMilliseconds}");
 }
 
 void _encodeDecodeAddrTest() {

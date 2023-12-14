@@ -51,8 +51,8 @@ void main() {
     for (final i in _testVectors) {
       final hrp = i["encode"]!.substring(0, i["encode"]!.indexOf("1"));
       final decode = SegwitBech32Decoder.decode(hrp, i["encode"]!);
-      expect(decode.$1, 0);
-      expect(BytesUtils.toHexString(decode.$2), i["raw"]);
+      expect(decode.item1, 0);
+      expect(BytesUtils.toHexString(decode.item2), i["raw"]);
     }
   });
   test("test encode", () {

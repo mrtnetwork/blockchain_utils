@@ -18,12 +18,13 @@ void vrfSignTest() {
     script.additionalData("".codeUnits, signingContext);
     script.additionalData("sign-bytes".codeUnits, message);
     final vrfout = secret.vrfSign(script);
-    final VRFProof vrproof = vrfout.$2;
+    final VRFProof vrproof = vrfout.item2;
     final verifyScript = MerlinTranscript("SigningContext");
     verifyScript.additionalData("".codeUnits, signingContext);
     verifyScript.additionalData("sign-bytes".codeUnits, message);
-    assert(
-        secret.publicKey().vrfVerify(verifyScript, vrfout.$1.output, vrproof));
+    assert(secret
+        .publicKey()
+        .vrfVerify(verifyScript, vrfout.item1.output, vrproof));
   }
 
   /// test vrf sign
@@ -34,7 +35,7 @@ void vrfSignTest() {
     final script = MerlinTranscript("SigningContext");
     script.additionalData("".codeUnits, "yo!".codeUnits);
     script.additionalData("sign-bytes".codeUnits, "meow".codeUnits);
-    final vrfout = keyPair.secretKey().vrfSign(script).$1;
+    final vrfout = keyPair.secretKey().vrfSign(script).item1;
 
     assert(vrfout.input.toHex().toUpperCase() == i["input"]);
     assert(vrfout.output.toHex().toUpperCase() == i["output"]);

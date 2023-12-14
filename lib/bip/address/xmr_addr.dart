@@ -89,8 +89,8 @@ class _XmrAddrUtils {
     final addrDecBytes = Base58XmrDecoder.decode(addr);
     final parts = AddrDecUtils.splitPartsByChecksum(
         addrDecBytes, XmrAddrConst.checksumByteLen);
-    final payloadBytes = parts.$1;
-    final checksumBytes = parts.$2;
+    final payloadBytes = parts.item1;
+    final checksumBytes = parts.item2;
 
     /// Validate checksum
     AddrDecUtils.validateChecksum(payloadBytes, checksumBytes, computeChecksum);

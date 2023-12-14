@@ -58,8 +58,8 @@ class EosAddrDecoder implements BlockchainAddressDecoder {
       EosAddrConst.checksumByteLen,
     );
 
-    final pubKeyBytes = parts.$1;
-    final checksumBytes = parts.$2;
+    final pubKeyBytes = parts.item1;
+    final checksumBytes = parts.item2;
 
     /// Validate the checksum
     AddrDecUtils.validateChecksum(

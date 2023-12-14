@@ -125,8 +125,8 @@ void main() {
     for (final i in _testVector) {
       final dec = WifDecoder.decode(i["encode"], netVer: i["net_ver"]);
       expect(
-          BytesUtils.toHexString(dec.$1) == i["key_bytes"] &&
-              dec.$2 == i["pub_key_mode"],
+          BytesUtils.toHexString(dec.item1) == i["key_bytes"] &&
+              dec.item2 == i["pub_key_mode"],
           true);
     }
   });

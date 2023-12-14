@@ -62,8 +62,8 @@ final List<Map<String, dynamic>> _testVectEnc = [
 void bip38ECDSATest() {
   for (final i in _testVectorDec) {
     final dec = Bip38Decrypter.decryptEc(i["encrypted"], i["passphrase"]);
-    assert(dec.$1.toHex() == i["priv_key_bytes"]);
-    assert(dec.$2 == i["pub_key_mode"]);
+    assert(dec.item1.toHex() == i["priv_key_bytes"]);
+    assert(dec.item2 == i["pub_key_mode"]);
     if (kIsWeb) break;
   }
   for (final i in _testVectEnc) {
@@ -72,7 +72,7 @@ void bip38ECDSATest() {
         lotNum: i["lot_num"],
         sequenceNum: i["seq_num"]);
     final decrypt = Bip38Decrypter.decryptEc(enc, i["passphrase"]);
-    assert(decrypt.$2 == i["pub_key_mode"]);
+    assert(decrypt.item2 == i["pub_key_mode"]);
     if (kIsWeb) break;
   }
 }

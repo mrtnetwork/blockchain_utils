@@ -7,6 +7,7 @@ import 'package:blockchain_utils/crypto/crypto/hmac/hmac.dart';
 import 'package:blockchain_utils/crypto/crypto/pbkdf2/pbkdf2.dart';
 import 'package:blockchain_utils/string/string.dart';
 import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/tuple/tuple.dart';
 
 /// A class that holds constants related to the Cardano Icarus master key generation process.
 class CardanoIcarusMasterKeyGeneratorConst {
@@ -24,7 +25,7 @@ class CardanoIcarusMasterKeyGeneratorConst {
 class CardanoIcarusMstKeyGenerator implements IBip32MstKeyGenerator {
   /// Generates master keys from the provided seed bytes.
   @override
-  (List<int>, List<int>) generateFromSeed(List<int> seedBytes) {
+  Tuple<List<int>, List<int>> generateFromSeed(List<int> seedBytes) {
     if (seedBytes.length < Bip32Slip10MstKeyGeneratorConst.seedMinByteLen) {
       throw ArgumentException('Invalid seed length (${seedBytes.length})');
     }
@@ -40,7 +41,7 @@ class CardanoIcarusMstKeyGenerator implements IBip32MstKeyGenerator {
 
     keyBytes = _tweakMasterKeyBits(keyBytes);
 
-    return (
+    return Tuple(
       keyBytes.sublist(0, Ed25519KholawKeysConst.privKeyByteLen),
       keyBytes.sublist(Ed25519KholawKeysConst.privKeyByteLen),
     );

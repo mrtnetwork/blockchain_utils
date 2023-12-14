@@ -7,6 +7,7 @@ import 'package:blockchain_utils/bip/ecc/keys/i_keys.dart';
 import 'package:blockchain_utils/binary/utils.dart';
 import 'package:blockchain_utils/compare/compare.dart';
 import 'package:blockchain_utils/numbers/int_utils.dart';
+import 'package:blockchain_utils/tuple/tuple.dart';
 
 /// The `Bip32KeySerConst` class contains constants related to the serialization
 /// of Bip32 keys. These constants specify the length of serialized public and
@@ -109,7 +110,7 @@ class Bip32KeyDeserializer {
     // Get parts back
     final keyParts = _getPartsFromBytes(serKeyBytes, isPublic);
 
-    return Bip32DeserializedKey(keyParts.$1, keyParts.$2, isPublic);
+    return Bip32DeserializedKey(keyParts.item1, keyParts.item2, isPublic);
   }
 
   /// Get if the key is public.
@@ -128,7 +129,7 @@ class Bip32KeyDeserializer {
   }
 
   /// Get back key parts from serialized key bytes.
-  static (List<int>, Bip32KeyData) _getPartsFromBytes(
+  static Tuple<List<int>, Bip32KeyData> _getPartsFromBytes(
       List<int> serKeyBytes, bool isPublic) {
     final depthIdx = Bip32KeyNetVersions.length;
     final fprintIdx = depthIdx + Bip32Depth.fixedLength();
@@ -158,6 +159,6 @@ class Bip32KeyDeserializer {
       keyBytes = keyBytes.sublist(1);
     }
 
-    return (keyBytes, keyData);
+    return Tuple(keyBytes, keyData);
   }
 }

@@ -75,14 +75,14 @@ class SegwitBech32Decoder extends Bech32DecoderBase {
   ///
   /// Returns a tuple containing the SegWit version (witness version) and the
   /// decoded witness program as a List<int>.
-  static (int, List<int>) decode(String? hrp, String addr) {
+  static Tuple<int, List<int>> decode(String? hrp, String addr) {
     final decoded = Bech32DecoderBase.decodeBech32(
         addr,
         SegwitBech32Const.separator,
         SegwitBech32Const.checksumStrLen,
         _verifyChecksum);
-    final hrpGot = decoded.$1;
-    final data = decoded.$2;
+    final hrpGot = decoded.item1;
+    final data = decoded.item2;
 
     // Check HRP
     if (hrp != null && hrp != hrpGot) {
@@ -114,7 +114,7 @@ class SegwitBech32Decoder extends Bech32DecoderBase {
           'Invalid format (length not valid: ${convData.length})');
     }
 
-    return (witVer, convData);
+    return Tuple(witVer, convData);
   }
 
   static bool _verifyChecksum(String hrp, List<int> data) {

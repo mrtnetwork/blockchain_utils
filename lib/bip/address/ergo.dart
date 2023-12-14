@@ -92,8 +92,8 @@ class ErgoP2PKHAddrDecoder implements BlockchainAddressDecoder {
         addrDecBytes, ErgoAddrConst.checksumByteLen);
 
     /// Extract checksum and public key bytes
-    final addrWithPrefix = decode.$1;
-    final checksumBytes = decode.$2;
+    final addrWithPrefix = decode.item1;
+    final checksumBytes = decode.item2;
 
     /// Validate checksum
     AddrDecUtils.validateChecksum(addrWithPrefix, checksumBytes,

@@ -80,10 +80,10 @@ class _FilAddrUtils {
 
     final split = AddrDecUtils.splitPartsByChecksum(
         addrDecBytes, QuickCrypto.blake2b32DigestSize);
-    AddrDecUtils.validateChecksum(split.$1, split.$2,
+    AddrDecUtils.validateChecksum(split.item1, split.item2,
         (pubKeyBytes) => computeChecksum(pubKeyBytes, addrType));
 
-    return split.$1;
+    return split.item1;
   }
 
   /// Encodes a Filecoin address based on its constituent parts.

@@ -1,5 +1,6 @@
 import 'package:blockchain_utils/bip/mnemonic/mnemonic.dart';
 import 'package:blockchain_utils/bip/mnemonic/mnemonic_utils.dart';
+import 'package:blockchain_utils/blockchain_utils.dart';
 
 /// An abstract base class for mnemonic phrase decoding in various languages and word lists.
 ///
@@ -32,10 +33,10 @@ abstract class MnemonicDecoderBase {
   ///
   /// If a language is specified, it is used. Otherwise, the [wordsListFinder] is used to determine
   /// the appropriate language and word list for decoding.
-  (MnemonicWordsList, MnemonicLanguages) findLanguage(Mnemonic mnemonic) {
+  Tuple<MnemonicWordsList, MnemonicLanguages> findLanguage(Mnemonic mnemonic) {
     if (language == null || wordsList == null) {
       return wordsListFinder.findLanguage(mnemonic);
     }
-    return (wordsList!, language!);
+    return Tuple(wordsList!, language!);
   }
 }

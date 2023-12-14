@@ -18,6 +18,7 @@ import 'dart:typed_data';
 
 import 'package:blockchain_utils/cbor/core/tags.dart';
 import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/tuple/tuple.dart';
 
 // Enum representing different floating-point formats and their characteristics.
 enum FloatLength {
@@ -52,10 +53,10 @@ class FloatUtils {
   FloatUtils(this.value);
   final double value;
   late final _isLess = _isLessThan(value);
-  bool get isLessThan32 => _isLess.$2;
-  bool get isLessThan16 => _isLess.$1;
+  bool get isLessThan32 => _isLess.item2;
+  bool get isLessThan16 => _isLess.item1;
 
-  static (int, int, bool) _decodeBits(int bits) {
+  static Tuple<int, int> _decodeBits(int bits) {
     const int mantissaBitLength = 52;
     const int exponentBitLength = 11;
     const exponentBias = (1 << (exponentBitLength - 1)) - 1;
@@ -81,7 +82,7 @@ class FloatUtils {
       mantissa >>= 1;
       exponent += 1;
     }
-    return (mantissa, exponent, sign);
+    return Tuple(mantissa, exponent);
   }
 
   static int _toBits(double value, [Endian? endian]) {
@@ -106,20 +107,20 @@ class FloatUtils {
     return _dobuleLessThan(bits, type);
   }
 
-  static (bool, bool) _isLessThan(double value, [Endian? endian]) {
+  static Tuple<bool, bool> _isLessThan(double value, [Endian? endian]) {
     if (value.isNaN || value.isInfinite) {
-      return (true, true);
+      return Tuple(true, true);
     }
     final int bits = _toBits(value, endian);
     final isLesThan16 = _dobuleLessThan(bits, FloatLength.bytes16);
     if (isLesThan16) {
-      return (true, true);
+      return Tuple(true, true);
     }
     final isLessThan32 = _dobuleLessThan(bits, FloatLength.bytes32);
     if (isLessThan32) {
-      return (false, true);
+      return Tuple(false, true);
     }
-    return (false, false);
+    return Tuple(false, false);
   }
 
   static bool _dobuleLessThan(int bits, FloatLength type) {
@@ -127,17 +128,17 @@ class FloatUtils {
     final int exponentBitLength = type.exponentBitLength;
     final exponentBias = type.exponentBias;
     final de = _decodeBits(bits);
-    if (de.$1 == 0) {
+    if (de.item1 == 0) {
       return true;
     }
-    if (mantissaBitLength + 1 < de.$1.bitLength) {
+    if (mantissaBitLength + 1 < de.item1.bitLength) {
       return false;
     }
 
-    final exponent = de.$2 +
+    final exponent = de.item2 +
         mantissaBitLength +
         exponentBias +
-        (de.$1.bitLength - (mantissaBitLength + 1));
+        (de.item1.bitLength - (mantissaBitLength + 1));
 
     if (exponent >= ((1 << exponentBitLength) - 1)) {
       return false;
@@ -148,7 +149,8 @@ class FloatUtils {
     }
 
     final subnormalExp = -(exponentBias - 1 + mantissaBitLength);
-    final subnormalMantissaLength = de.$1.bitLength + de.$2 - subnormalExp;
+    final subnormalMantissaLength =
+        de.item1.bitLength + de.item2 - subnormalExp;
 
     return subnormalMantissaLength > 0 &&
         subnormalMantissaLength <= mantissaBitLength;
@@ -211,15 +213,15 @@ class FloatUtils {
 
   /// Encode the floating-point value into a byte representation using the specified floating-point format.
   /// Returns a tuple containing the encoded bytes and the format used.
-  (List<int>, FloatLength) toBytes(FloatLength? decodFloatType,
+  Tuple<List<int>, FloatLength> toBytes(FloatLength? decodFloatType,
       [Endian? endianness]) {
     if (decodFloatType == null) {
       if (isLessThan16) {
-        return (_encodeFloat16(endianness), FloatLength.bytes16);
+        return Tuple(_encodeFloat16(endianness), FloatLength.bytes16);
       } else if (isLessThan32) {
-        return (_encodeFloat32(endianness), FloatLength.bytes32);
+        return Tuple(_encodeFloat32(endianness), FloatLength.bytes32);
       }
-      return (_encodeFloat64(endianness), FloatLength.bytes64);
+      return Tuple(_encodeFloat64(endianness), FloatLength.bytes64);
     }
     final List<int> bytes;
     switch (decodFloatType) {
@@ -239,7 +241,7 @@ class FloatUtils {
         bytes = _encodeFloat64(endianness);
         break;
     }
-    return (bytes, decodFloatType);
+    return Tuple(bytes, decodFloatType);
   }
 
   /// Decode a 16-bit floating-point value from a byte array and return it as a double.

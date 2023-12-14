@@ -115,8 +115,8 @@ class AlgoAddrDecoder implements BlockchainAddressDecoder {
     AddrDecUtils.validateBytesLength(addrDecBytes, expectedLength);
     final parts = AddrDecUtils.splitPartsByChecksum(
         addrDecBytes, AlgoAddrConst.checksumByteLen);
-    final pubKeyBytes = parts.$1;
-    final checksumBytes = parts.$2;
+    final pubKeyBytes = parts.item1;
+    final checksumBytes = parts.item2;
     AddrDecUtils.validateChecksum(
         pubKeyBytes, checksumBytes, _AlgoAddrUtils.computeChecksum);
 

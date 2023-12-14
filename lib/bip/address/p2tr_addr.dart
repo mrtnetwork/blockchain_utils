@@ -212,8 +212,8 @@ class P2TRAddrDecoder implements BlockchainAddressDecoder {
 
     /// Decode the Bech32-encoded P2TR address and validate its length.
     final decode = SegwitBech32Decoder.decode(hrp, addr);
-    final witVerGot = decode.$1;
-    final addrDecBytes = decode.$2;
+    final witVerGot = decode.item1;
+    final addrDecBytes = decode.item2;
 
     /// Validate the byte length of the decoded address.
     AddrDecUtils.validateBytesLength(

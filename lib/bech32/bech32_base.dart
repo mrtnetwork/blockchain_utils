@@ -125,11 +125,11 @@ class Bech32Decoder extends Bech32DecoderBase {
         Bech32Const.separator,
         Bech32Const.checksumStrLen,
         Bech32Utils.verifyChecksum);
-    if (hrp != decode.$1) {
+    if (hrp != decode.item1) {
       throw ArgumentException(
-          "Invalid format (HRP not valid, expected {$hrp}, got {${decode.$1}})");
+          "Invalid format (HRP not valid, expected {$hrp}, got {${decode.item1}})");
     }
-    final result = Bech32BaseUtils.convertFromBase32(decode.$2);
+    final result = Bech32BaseUtils.convertFromBase32(decode.item2);
     return result;
   }
 }

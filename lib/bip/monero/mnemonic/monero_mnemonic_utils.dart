@@ -4,6 +4,7 @@ import 'package:blockchain_utils/bip/mnemonic/mnemonic_utils.dart';
 import 'package:blockchain_utils/crypto/crypto/crc32/crc32.dart';
 import 'package:blockchain_utils/exception/exception.dart';
 import 'package:blockchain_utils/string/string.dart';
+import 'package:blockchain_utils/tuple/tuple.dart';
 
 /// A class that retrieves Monero mnemonic word lists by language.
 ///
@@ -46,14 +47,14 @@ class MoneroWordsListFinder extends MnemonicWordsListFinderBase {
   /// [mnemonic]: The Monero mnemonic from which to identify the language.
   /// Returns a tuple containing the MnemonicWordsList and the identified MoneroLanguages.
   @override
-  (MnemonicWordsList, MnemonicLanguages) findLanguage(Mnemonic mnemonic) {
+  Tuple<MnemonicWordsList, MnemonicLanguages> findLanguage(Mnemonic mnemonic) {
     for (final lang in MoneroLanguages.values) {
       final wordsList = MnemonicWordsList(lang.wordList);
       try {
         for (final word in mnemonic.toList()) {
           wordsList.getWordIdx(word);
         }
-        return (wordsList, lang);
+        return Tuple(wordsList, lang);
       } on MessageException {
         continue;
       }

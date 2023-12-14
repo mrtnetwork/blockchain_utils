@@ -138,6 +138,7 @@ void _test(String name, TestMethod process) {
 }
 
 void _testAll() async {
+  final DateTime start = DateTime.now();
   _encodeDecodeAddrTest();
 
   _test("UUID", testUUID);
@@ -198,7 +199,8 @@ void _testAll() async {
   _test("cbor test", cborTest);
 
   _web();
-  // print("test done");
+  final DateTime end = DateTime.now();
+  print("end: ${end.difference(start).inMilliseconds}");
 }
 
 void _encodeDecodeAddrTest() {

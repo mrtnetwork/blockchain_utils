@@ -85,7 +85,7 @@ class XRPAddressUtils {
   /// [prefix] The optional prefix representing the network type (mainnet or testnet).
   /// returns A tuple containing the address hash and an optional tag extracted from the X-Address.
   /// throws ArgumentException if the decoded address has invalid length, prefix mismatch, or an invalid tag.
-  static (List<int>, int?) decodeXAddress(String addr, List<int>? prefix) {
+  static Tuple<List<int>, int?> decodeXAddress(String addr, List<int>? prefix) {
     List<int> addrDecBytes =
         Base58Decoder.checkDecode(addr, Base58Alphabets.ripple);
 
@@ -131,7 +131,7 @@ class XRPAddressUtils {
       tag = readUint32LE(tagBytes);
     }
 
-    return (addrHash, tag);
+    return Tuple(addrHash, tag);
   }
 
   /// Converts a classic XRP address to an X-Address.
@@ -183,7 +183,7 @@ class XRPAddressUtils {
         return decode;
       } catch (e) {
         final xAddr = decodeXAddress(address, xAddrPrefix);
-        return xAddr.$1;
+        return xAddr.item1;
       }
     } catch (e) {
       throw ArgumentException("invalid ripple X or classic address");
@@ -233,7 +233,7 @@ class XRPAddressUtils {
     if (isClassicAddress(address)) {
       return address;
     }
-    final addrHash = decodeXAddress(address, null).$1;
+    final addrHash = decodeXAddress(address, null).item1;
     return hashToAddress(addrHash);
   }
 }
@@ -359,6 +359,6 @@ class XrpXAddrDecoder implements BlockchainAddressDecoder {
     final prefix =
         AddrKeyValidator.validateAddressArgs<List<int>>(kwargs, "prefix");
 
-    return XRPAddressUtils.decodeXAddress(addr, prefix).$1;
+    return XRPAddressUtils.decodeXAddress(addr, prefix).item1;
   }
 }

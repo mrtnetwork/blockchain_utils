@@ -55,6 +55,7 @@
 import 'dart:typed_data';
 
 import 'package:blockchain_utils/numbers/int_utils.dart';
+import 'package:blockchain_utils/tuple/tuple.dart';
 
 import 'bech32_utils.dart';
 import 'package:blockchain_utils/exception/exception.dart';
@@ -153,22 +154,21 @@ class BchBech32Decoder extends Bech32DecoderBase {
   ///
   /// Throws:
   /// - ArgumentException: If the decoded HRP does not match the expected HRP.
-  static (List<int>, List<int>) decode(String hrp, String address) {
+  static Tuple<List<int>, List<int>> decode(String hrp, String address) {
     final decode = Bech32DecoderBase.decodeBech32(
         address,
         BchBech32Const.separator,
         BchBech32Const.checksumStrLen,
         _BchBech32Utils.verifyChecksum);
-    if (decode.$1 != hrp) {
+    if (decode.item1 != hrp) {
       throw ArgumentException(
-          "Invalid format (HRP not valid, expected $hrp, got ${decode.$1})");
+          "Invalid format (HRP not valid, expected $hrp, got ${decode.item2})");
     }
-    final convData = Bech32BaseUtils.convertFromBase32(decode.$2);
+    final convData = Bech32BaseUtils.convertFromBase32(decode.item2);
     final ver = convData[0];
-    return (
-      IntUtils.toBytes(ver,
-          length: IntUtils.bitlengthInBytes(ver), byteOrder: Endian.little),
-      convData.sublist(1)
-    );
+    return Tuple(
+        IntUtils.toBytes(ver,
+            length: IntUtils.bitlengthInBytes(ver), byteOrder: Endian.little),
+        convData.sublist(1));
   }
 }

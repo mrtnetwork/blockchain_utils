@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:blockchain_utils/binary/binary_operation.dart';
+import 'package:blockchain_utils/tuple/tuple.dart';
 import 'package:blockchain_utils/exception/exception.dart';
 import 'package:blockchain_utils/numbers/bigint_utils.dart';
 
@@ -17,12 +18,12 @@ class IntUtils {
   /// If the first byte is 255, an 8-byte encoding is used, returning the value and consuming 8 bytes.
   ///
   /// Throws a MessageException if the decoded value cannot fit into an integer in the current environment.
-  static (int, int) decodeVarint(List<int> byteint) {
+  static Tuple<int, int> decodeVarint(List<int> byteint) {
     int ni = byteint[0];
     int size = 0;
 
     if (ni < 253) {
-      return (ni, 1);
+      return Tuple(ni, 1);
     }
 
     if (ni == 253) {
@@ -38,7 +39,7 @@ class IntUtils {
     if (!value.isValidInt) {
       throw MessageException("cannot read variable-length in this environment");
     }
-    return (value.toInt(), size + 1);
+    return Tuple(value.toInt(), size + 1);
   }
 
   /// Encodes an integer into a variable-length byte array according to Bitcoin's variable-length integer encoding scheme.

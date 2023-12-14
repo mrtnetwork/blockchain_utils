@@ -50,8 +50,8 @@ void segwitBech32Test() {
   for (final i in _testVectors) {
     final hrp = i["encode"]!.substring(0, i["encode"]!.indexOf("1"));
     final decode = SegwitBech32Decoder.decode(hrp, i["encode"]!);
-    assert(decode.$1 == 0);
-    assert(decode.$2.toHex() == i["raw"]);
+    assert(decode.item1 == 0);
+    assert(decode.item2.toHex() == i["raw"]);
   }
   for (final i in _testVectors) {
     final hrp = i["encode"]!.substring(0, i["encode"]!.indexOf("1"));

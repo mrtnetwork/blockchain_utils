@@ -1,3 +1,7 @@
+## 1.3.0
+- Updated DART SDK version from 3.1.1 to 2.17.1 to address compatibility issues and ensure smoother integration.
+- Added a new class for signing and verifying Ripple transactions.
+
 ## 1.2.1
 - Resolved an issue with byte order in the method IntUtils.toBytes for more consistent behavior.
 

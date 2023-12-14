@@ -55,6 +55,7 @@
 import 'package:blockchain_utils/base58/base58.dart';
 import 'package:blockchain_utils/bip/address/p2pkh_addr.dart';
 import 'package:blockchain_utils/bip/ecc/keys/secp256k1_keys_ecdsa.dart';
+import 'package:blockchain_utils/tuple/tuple.dart';
 import 'package:blockchain_utils/exception/exception.dart';
 
 /// A typedef for Wallet Import Format (WIF) public key modes.
@@ -107,7 +108,7 @@ class WifDecoder {
   /// Returns a tuple containing the decoded private key as a `List<int>` and
   /// the associated [WifPubKeyModes] representing the public key mode, where
   /// [WifPubKeyModes.compressed] indicates the compressed mode.
-  static (List<int>, WifPubKeyModes) decode(String wif,
+  static Tuple<List<int>, WifPubKeyModes> decode(String wif,
       {List<int> netVer = const []}) {
     List<int> privKeyBytes = Base58Decoder.checkDecode(wif);
     if (netVer.isEmpty || privKeyBytes[0] != netVer[0]) {
@@ -130,6 +131,6 @@ class WifDecoder {
       pubKeyMode = WifPubKeyModes.uncompressed;
     }
 
-    return (privKeyBytes, pubKeyMode);
+    return Tuple(privKeyBytes, pubKeyMode);
   }
 }

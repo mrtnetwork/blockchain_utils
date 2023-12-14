@@ -30,14 +30,14 @@ class Bip39WordsListGetter extends MnemonicWordsListGetterBase {
 class Bip39WordsListFinder extends MnemonicWordsListFinderBase {
   /// find language by mnemonic
   @override
-  (MnemonicWordsList, MnemonicLanguages) findLanguage(Mnemonic mnemonic) {
+  Tuple<MnemonicWordsList, MnemonicLanguages> findLanguage(Mnemonic mnemonic) {
     for (final lang in Bip39Languages.values) {
       final wordsList = MnemonicWordsList(lang.wordList);
       try {
         for (final word in mnemonic.toList()) {
           wordsList.getWordIdx(word);
         }
-        return (wordsList, lang);
+        return Tuple(wordsList, lang);
       } on MessageException {
         continue;
       }

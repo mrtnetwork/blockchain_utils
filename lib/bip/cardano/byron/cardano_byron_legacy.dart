@@ -119,7 +119,7 @@ class CardanoByronLegacy {
   Bip32Path hdPathFromAddress(String address) {
     final addrDecBytes = AdaByronAddrDecoder().decodeAddr(address);
     final hdPathDecBytes = AdaByronAddrDecoder.decryptHdPath(
-      AdaByronAddrDecoder.splitDecodedBytes(addrDecBytes).$2,
+      AdaByronAddrDecoder.splitDecodedBytes(addrDecBytes).item2,
       hdPathKey,
     );
     return hdPathDecBytes;
