@@ -27,7 +27,7 @@ class MerlinTranscript {
 
   /// The Strobe instance used for cryptographic operations.
   MerlinTranscript(String label)
-      : strobe = Strobe(merlinVersion, StobeSecParam.sec128) {
+      : strobe = Strobe(merlinVersion, StrobeSecParam.sec128) {
     additionalData("dom-sep".codeUnits, label.codeUnits);
   }
   final Strobe strobe;

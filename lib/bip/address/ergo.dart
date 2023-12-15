@@ -11,24 +11,34 @@ import 'package:blockchain_utils/numbers/int_utils.dart';
 import 'package:blockchain_utils/exception/exception.dart';
 
 /// An enumeration representing different Ergo address types.
-enum ErgoAddressTypes {
+class ErgoAddressTypes {
   /// Pay-to-Public-Key-Hash
-  p2pkh(0x01),
+  static const ErgoAddressTypes p2pkh = ErgoAddressTypes._(0x01);
 
   /// Pay-to-Script-Hash
-  p2sh(0x02);
+  static const ErgoAddressTypes p2sh = ErgoAddressTypes._(0x02);
 
   final int value;
-  const ErgoAddressTypes(this.value);
+
+  /// Constructor for ErgoAddressTypes.
+  const ErgoAddressTypes._(this.value);
 }
 
 /// An enumeration representing different Ergo network types.
-enum ErgoNetworkTypes {
-  mainnet(0x00),
-  testnet(0x10);
+class ErgoNetworkTypes {
+  /// Mainnet network type with a value of 0x00.
+  static const ErgoNetworkTypes mainnet = ErgoNetworkTypes._("mainnet", 0x00);
 
+  /// Testnet network type with a value of 0x10.
+  static const ErgoNetworkTypes testnet = ErgoNetworkTypes._("testnet", 0x10);
+
+  final String name;
   final int value;
-  const ErgoNetworkTypes(this.value);
+
+  /// Constructor for ErgoNetworkTypes.
+  const ErgoNetworkTypes._(this.name, this.value);
+
+  static const List<ErgoNetworkTypes> values = [mainnet, testnet];
 }
 
 /// Constants related to Ergo addresses.

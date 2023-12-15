@@ -8,18 +8,18 @@ import 'package:blockchain_utils/crypto/quick_crypto.dart';
 import 'package:blockchain_utils/exception/exception.dart';
 
 /// Enum representing different address types for Filecoin (FIL) addresses.
-enum FillAddrTypes {
+class FillAddrTypes {
   /// Address type using the secp256k1 curve.
-  secp256k1(1),
+  static const FillAddrTypes secp256k1 = FillAddrTypes._(1);
 
   /// Address type using the bls curve.
-  bls(3);
+  static const FillAddrTypes bls = FillAddrTypes._(3);
 
   /// The numerical value associated with each address type.
   final int value;
 
   /// Constructor to initialize each address type with its corresponding value.
-  const FillAddrTypes(this.value);
+  const FillAddrTypes._(this.value);
 }
 
 /// Constants related to Filecoin (FIL) addresses.
@@ -71,7 +71,7 @@ class _FilAddrUtils {
     int addrTypeGot = addrNoPrefix[0].codeUnits.first - "0".codeUnits.first;
     if (addrType.value != addrTypeGot) {
       throw ArgumentException(
-          "Invalid address type (expected ${addrType.index}, got $addrTypeGot)");
+          "Invalid address type (expected ${addrType.value}, got $addrTypeGot)");
     }
     List<int> addrDecBytes = Base32Decoder.decode(
         addrNoPrefix.substring(1), FilAddrConst.base32Alphabet);

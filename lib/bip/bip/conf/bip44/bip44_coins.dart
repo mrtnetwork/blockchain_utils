@@ -58,86 +58,249 @@ import 'package:blockchain_utils/bip/bip/conf/bip_coins.dart';
 
 /// An enumeration of supported cryptocurrencies for BIP44. It includes both main
 /// networks and test networks of various cryptocurrencies.
-enum Bip44Coins implements CryptoCoins {
-  akashNetwork,
-  algorand,
-  aptos,
-  avaxCChain,
-  avaxPChain,
-  avaxXChain,
-  axelar,
-  bandProtocol,
-  binanceChain,
-  binanceSmartChain,
-  bitcoin,
-  bitcoinCash,
-  bitcoinCashSlp,
-  bitcoinSv,
-  cardanoByronIcarus,
-  cardanoByronLedger,
-  celo,
-  certik,
-  chihuahua,
-  cosmos,
-  dash,
-  dogecoin,
-  ecash,
-  elrond,
-  eos,
-  ergo,
-  ethereum,
-  ethereumClassic,
-  fantomOpera,
-  filecoin,
-  harmonyOneAtom,
-  harmonyOneEth,
-  harmonyOneMetamask,
-  huobiChain,
-  icon,
-  injective,
-  irisNet,
-  kava,
-  kusamaEd25519Slip,
-  litecoin,
-  moneroEd25519Slip,
-  moneroSecp256k1,
-  nano,
-  nearProtocol,
-  neo,
-  nineChroniclesGold,
-  okexChainAtom,
-  okexChainAtomOld,
-  okexChainEth,
-  ontology,
-  osmosis,
-  piNetwork,
-  polkadotEd25519Slip,
-  polygon,
-  ripple,
-  rippleTestnet,
-  secretNetworkOld,
-  secretNetworkNew,
-  solana,
-  stellar,
-  terra,
-  tezos,
-  theta,
-  tron,
-  vechain,
-  verge,
-  zcash,
-  zilliqa,
+class Bip44Coins implements CryptoCoins {
+  // Named constants representing each coin
+  const Bip44Coins._(this.name);
+
+  final String name;
+
+  /// Akash Network
+  static const akashNetwork = Bip44Coins._('akashNetwork');
+
+  /// Algorand
+  static const algorand = Bip44Coins._('algorand');
+
+  /// Aptos
+  static const aptos = Bip44Coins._('aptos');
+
+  /// Avalanche C-Chain
+  static const avaxCChain = Bip44Coins._('avaxCChain');
+
+  /// Avalanche P-Chain
+  static const avaxPChain = Bip44Coins._('avaxPChain');
+
+  /// Avalanche X-Chain
+  static const avaxXChain = Bip44Coins._('avaxXChain');
+
+  /// Axelar
+  static const axelar = Bip44Coins._('axelar');
+
+  /// Band Protocol
+  static const bandProtocol = Bip44Coins._('bandProtocol');
+
+  /// Binance Chain
+  static const binanceChain = Bip44Coins._('binanceChain');
+
+  /// Binance Smart Chain
+  static const binanceSmartChain = Bip44Coins._('binanceSmartChain');
+
+  /// Bitcoin
+  static const bitcoin = Bip44Coins._('bitcoin');
+
+  /// Bitcoin Cash
+  static const bitcoinCash = Bip44Coins._('bitcoinCash');
+
+  /// Bitcoin Cash SLP
+  static const bitcoinCashSlp = Bip44Coins._('bitcoinCashSlp');
+
+  /// Bitcoin SV
+  static const bitcoinSv = Bip44Coins._('bitcoinSv');
+
+  /// Cardano Byron Icarus
+  static const cardanoByronIcarus = Bip44Coins._('cardanoByronIcarus');
+
+  /// Cardano Byron Ledger
+  static const cardanoByronLedger = Bip44Coins._('cardanoByronLedger');
+
+  /// Celo
+  static const celo = Bip44Coins._('celo');
+
+  /// Certik
+  static const certik = Bip44Coins._('certik');
+
+  /// Chihuahua
+  static const chihuahua = Bip44Coins._('chihuahua');
+
+  /// Cosmos
+  static const cosmos = Bip44Coins._('cosmos');
+
+  /// Dash
+  static const dash = Bip44Coins._('dash');
+
+  /// Dogecoin
+  static const dogecoin = Bip44Coins._('dogecoin');
+
+  /// eCash
+  static const ecash = Bip44Coins._('ecash');
+
+  /// Elrond
+  static const elrond = Bip44Coins._('elrond');
+
+  /// EOS
+  static const eos = Bip44Coins._('eos');
+
+  /// Ergo
+  static const ergo = Bip44Coins._('ergo');
+
+  /// Ethereum
+  static const ethereum = Bip44Coins._('ethereum');
+
+  /// Ethereum Classic
+  static const ethereumClassic = Bip44Coins._('ethereumClassic');
+
+  /// Fantom Opera
+  static const fantomOpera = Bip44Coins._('fantomOpera');
+
+  /// Filecoin
+  static const filecoin = Bip44Coins._('filecoin');
+
+  /// Harmony One Atom
+  static const harmonyOneAtom = Bip44Coins._('harmonyOneAtom');
+
+  /// Harmony One Eth
+  static const harmonyOneEth = Bip44Coins._('harmonyOneEth');
+
+  /// Harmony One Metamask
+  static const harmonyOneMetamask = Bip44Coins._('harmonyOneMetamask');
+
+  /// Huobi Chain
+  static const huobiChain = Bip44Coins._('huobiChain');
+
+  /// ICON
+  static const icon = Bip44Coins._('icon');
+
+  /// Injective
+  static const injective = Bip44Coins._('injective');
+
+  /// IrisNet
+  static const irisNet = Bip44Coins._('irisNet');
+
+  /// Kava
+  static const kava = Bip44Coins._('kava');
+
+  /// Kusama Ed25519 Slip
+  static const kusamaEd25519Slip = Bip44Coins._('kusamaEd25519Slip');
+
+  /// Litecoin
+  static const litecoin = Bip44Coins._('litecoin');
+
+  /// Monero Ed25519 Slip
+  static const moneroEd25519Slip = Bip44Coins._('moneroEd25519Slip');
+
+  /// Monero Secp256k1
+  static const moneroSecp256k1 = Bip44Coins._('moneroSecp256k1');
+
+  /// Nano
+  static const nano = Bip44Coins._('nano');
+
+  /// Near Protocol
+  static const nearProtocol = Bip44Coins._('nearProtocol');
+
+  /// NEO
+  static const neo = Bip44Coins._('neo');
+
+  /// Nine Chronicles Gold
+  static const nineChroniclesGold = Bip44Coins._('nineChroniclesGold');
+
+  /// OKEx Chain Atom
+  static const okexChainAtom = Bip44Coins._('okexChainAtom');
+
+  /// OKEx Chain Atom (Old)
+  static const okexChainAtomOld = Bip44Coins._('okexChainAtomOld');
+
+  /// OKEx Chain ETH
+  static const okexChainEth = Bip44Coins._('okexChainEth');
+
+  /// Ontology
+  static const ontology = Bip44Coins._('ontology');
+
+  /// Osmosis
+  static const osmosis = Bip44Coins._('osmosis');
+
+  /// Pi Network
+  static const piNetwork = Bip44Coins._('piNetwork');
+
+  /// Polkadot Ed25519 Slip
+  static const polkadotEd25519Slip = Bip44Coins._('polkadotEd25519Slip');
+
+  /// Polygon
+  static const polygon = Bip44Coins._('polygon');
+
+  /// Ripple
+  static const ripple = Bip44Coins._('ripple');
+
+  /// Ripple Testnet
+  static const rippleTestnet = Bip44Coins._('rippleTestnet');
+
+  /// Secret Network (Old)
+  static const secretNetworkOld = Bip44Coins._('secretNetworkOld');
+
+  /// Secret Network (New)
+  static const secretNetworkNew = Bip44Coins._('secretNetworkNew');
+
+  /// Solana
+  static const solana = Bip44Coins._('solana');
+
+  /// Stellar
+  static const stellar = Bip44Coins._('stellar');
+
+  /// Terra
+  static const terra = Bip44Coins._('terra');
+
+  /// Tezos
+  static const tezos = Bip44Coins._('tezos');
+
+  /// Theta
+  static const theta = Bip44Coins._('theta');
+
+  /// Tron
+  static const tron = Bip44Coins._('tron');
+
+  /// VeChain
+  static const vechain = Bip44Coins._('vechain');
+
+  /// Verge
+  static const verge = Bip44Coins._('verge');
+
+  /// Zcash
+  static const zcash = Bip44Coins._('zcash');
+
+  /// Zilliqa
+  static const zilliqa = Bip44Coins._('zilliqa');
+
   // Test nets
-  bitcoinCashTestnet,
-  bitcoinCashSlpTestnet,
-  bitcoinSvTestnet,
-  bitcoinTestnet,
-  dashTestnet,
-  dogecoinTestnet,
-  ecashTestnet,
-  ergoTestnet,
-  litecoinTestnet,
-  zcashTestnet;
+
+  /// Bitcoin Cash Testnet
+  static const bitcoinCashTestnet = Bip44Coins._('bitcoinCashTestnet');
+
+  /// Bitcoin Cash SLP Testnet
+  static const bitcoinCashSlpTestnet = Bip44Coins._('bitcoinCashSlpTestnet');
+
+  /// Bitcoin SV Testnet
+  static const bitcoinSvTestnet = Bip44Coins._('bitcoinSvTestnet');
+
+  /// Bitcoin Testnet
+  static const bitcoinTestnet = Bip44Coins._('bitcoinTestnet');
+
+  /// Dash Testnet
+  static const dashTestnet = Bip44Coins._('dashTestnet');
+
+  /// Dogecoin Testnet
+  static const dogecoinTestnet = Bip44Coins._('dogecoinTestnet');
+
+  /// eCash Testnet
+  static const ecashTestnet = Bip44Coins._('ecashTestnet');
+
+  /// Ergo Testnet
+  static const ergoTestnet = Bip44Coins._('ergoTestnet');
+
+  /// Litecoin Testnet
+  static const litecoinTestnet = Bip44Coins._('litecoinTestnet');
+
+  /// Zcash Testnet
+  static const zcashTestnet = Bip44Coins._('zcashTestnet');
+
+  // Fields and methods
 
   @override
   Bip44Coins get value {
@@ -152,11 +315,13 @@ enum Bip44Coins implements CryptoCoins {
 
   static Bip44Coins? fromName(String name) {
     try {
-      return values.firstWhere((element) => element.name == name);
+      return _coinToConf.keys.firstWhere((element) => element.name == name);
     } on StateError {
       return null;
     }
   }
+
+  static List<Bip44Coins> get values => _coinToConf.keys.toList();
 
   /// A mapping that associates each BIP44Coin (enum) with its corresponding
   /// CoinConfig configuration.

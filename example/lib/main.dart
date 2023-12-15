@@ -134,6 +134,7 @@ void _test(String name, TestMethod process) {
     print("test pass $name");
   } catch (e) {
     print("test error $name $e");
+    throw Exception();
   }
 }
 

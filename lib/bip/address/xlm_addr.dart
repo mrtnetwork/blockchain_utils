@@ -24,14 +24,19 @@ import 'encoder.dart';
 /// final addressType = XlmAddrTypes.pubKey;
 /// final addressValue = addressType.value; // Returns 48 (6 << 3)
 /// ```
-enum XlmAddrTypes {
-  pubKey(6 << 3),
-  privKey(18 << 3);
+class XlmAddrTypes {
+  /// Public key address type.
+  static const XlmAddrTypes pubKey = XlmAddrTypes._(6 << 3);
+
+  /// Private key address type.
+  static const XlmAddrTypes privKey = XlmAddrTypes._(18 << 3);
 
   final int value;
 
+  static const List<XlmAddrTypes> values = [pubKey, privKey];
+
   /// Constructor for XlmAddrTypes enum values.
-  const XlmAddrTypes(this.value);
+  const XlmAddrTypes._(this.value);
 }
 
 /// Constants related to Stellar (XLM) addresses.

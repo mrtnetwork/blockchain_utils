@@ -11,17 +11,22 @@ import 'package:blockchain_utils/numbers/int_utils.dart';
 import 'package:blockchain_utils/exception/exception.dart';
 
 /// An enumeration of Ada Shelley address network tags.
-enum AdaShelleyAddrNetworkTags {
+class AdaShelleyAddrNetworkTags {
   /// Mainnet network tag with a value of 1.
-  mainnet(1),
+  static const AdaShelleyAddrNetworkTags mainnet =
+      AdaShelleyAddrNetworkTags._("mainnet", 1);
 
   /// Testnet network tag with a value of 0.
-  testnet(0);
+  static const AdaShelleyAddrNetworkTags testnet =
+      AdaShelleyAddrNetworkTags._("testnet", 0);
 
   final int value;
+  final String name;
 
   /// Constants representing header types for Ada Shelley addresses.
-  const AdaShelleyAddrNetworkTags(this.value);
+  const AdaShelleyAddrNetworkTags._(this.name, this.value);
+
+  static const List<AdaShelleyAddrNetworkTags> values = [mainnet, testnet];
 }
 
 class AdaShelleyAddrHeaderTypes {

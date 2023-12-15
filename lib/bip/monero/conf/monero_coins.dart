@@ -3,13 +3,23 @@ import 'package:blockchain_utils/bip/bip/conf/bip_coins.dart';
 
 /// An enumeration of supported cryptocurrencies for Monero. It includes both main
 /// networks and test networks of various cryptocurrencies.
-enum MoneroCoins implements CryptoCoins {
+class MoneroCoins implements CryptoCoins {
   /// mainnets
-  moneroMainnet,
+  static const MoneroCoins moneroMainnet = MoneroCoins._('moneroMainnet');
 
   /// testnets
-  moneroStagenet,
-  moneroTestnet;
+  static const MoneroCoins moneroStagenet = MoneroCoins._('moneroStagenet');
+  static const MoneroCoins moneroTestnet = MoneroCoins._('moneroTestnet');
+
+  static const List<MoneroCoins> values = [
+    moneroMainnet,
+    moneroStagenet,
+    moneroTestnet
+  ];
+
+  final String name;
+
+  const MoneroCoins._(this.name);
 
   @override
   MoneroCoins get value {
@@ -17,7 +27,7 @@ enum MoneroCoins implements CryptoCoins {
   }
 
   String get coinName {
-    return this.name;
+    return name;
   }
 
   CoinConfig get conf => throw UnimplementedError();

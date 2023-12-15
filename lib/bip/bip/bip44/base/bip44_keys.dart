@@ -1,5 +1,6 @@
 import 'package:blockchain_utils/bip/address/ada_shelley_addr.dart';
 import 'package:blockchain_utils/bip/address/encoder.dart';
+import 'package:blockchain_utils/bip/address/p2pkh_addr.dart';
 import 'package:blockchain_utils/bip/address/xmr_addr.dart';
 import 'package:blockchain_utils/bip/bip/bip32/bip32_key_data.dart';
 import 'package:blockchain_utils/bip/bip/bip32/bip32_keys.dart';
@@ -134,7 +135,7 @@ class Bip44PrivateKey {
   /// [pubKeyMode]. It uses the coin's configuration to determine the network
   /// version. If the network version is not available, an empty string is
   /// returned.
-  String toWif({WifPubKeyModes pubKeyMode = WifPubKeyModes.compressed}) {
+  String toWif({PubKeyModes pubKeyMode = PubKeyModes.compressed}) {
     final wifNetVer = coinConf.wifNetVer;
 
     return wifNetVer != null

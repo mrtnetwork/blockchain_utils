@@ -58,28 +58,34 @@ import 'package:blockchain_utils/bip/bip/conf/bip_coins.dart';
 
 /// An enumeration of supported cryptocurrencies for BIP84. It includes both main
 /// networks and test networks of various cryptocurrencies.
-enum Bip84Coins implements CryptoCoins {
+class Bip84Coins implements CryptoCoins {
   // Main nets
-  bitcoin,
-  litecoin,
+  static const Bip84Coins bitcoin = Bip84Coins._('bitcoin');
+  static const Bip84Coins litecoin = Bip84Coins._('litecoin');
+
   // Test nets
-  bitcoinTestnet,
-  litecoinTestnet;
+  static const Bip84Coins bitcoinTestnet = Bip84Coins._('bitcoinTestnet');
+  static const Bip84Coins litecoinTestnet = Bip84Coins._('litecoinTestnet');
+  static const List<Bip84Coins> values = [
+    bitcoin,
+    litecoin,
+    bitcoinTestnet,
+    litecoinTestnet
+  ];
+  final String name;
+
+  const Bip84Coins._(this.name);
 
   @override
-  Bip84Coins get value {
-    return this;
-  }
+  Bip84Coins get value => this;
 
-  String get coinName {
-    return this.name;
-  }
+  String get coinName => name;
 
   CoinConfig get conf => _coinToConf[this]!;
 
   static Bip84Coins? fromName(String name) {
     try {
-      return values.firstWhere((element) => element.name == name);
+      return _coinToConf.keys.firstWhere((element) => element.name == name);
     } on StateError {
       return null;
     }

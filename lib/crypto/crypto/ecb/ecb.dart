@@ -11,7 +11,7 @@ class ECB extends AES {
   ///
   /// Parameters:
   /// - `key`: The encryption key used for ECB mode.
-  ECB(super.key);
+  ECB(List<int> key) : super(key);
 
   /// Encrypts a single data block using the Electronic Codebook (ECB) mode.
   ///

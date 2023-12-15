@@ -44,13 +44,19 @@ abstract class CryptoProposal {
 }
 
 /// Enum representing different BIP proposals.
-enum BipProposal implements CryptoProposal {
-  bip44,
-  bip49,
-  bip84,
-  bip86;
+class BipProposal implements CryptoProposal {
+  static const BipProposal bip44 = BipProposal._('bip44');
+  static const BipProposal bip49 = BipProposal._('bip49');
+  static const BipProposal bip84 = BipProposal._('bip84');
+  static const BipProposal bip86 = BipProposal._('bip86');
 
-  String get specName => this.name;
+  static const List<BipProposal> values = [bip44, bip49, bip84, bip86];
+
+  final String name;
+
+  const BipProposal._(this.name);
+
+  String get specName => name;
   BipProposal get value => this;
 
   /// Extension method to get the corresponding [Bip32KeyIndex.purpose] for each [BipProposal].

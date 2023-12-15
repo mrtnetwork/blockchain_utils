@@ -23,11 +23,15 @@ import 'bip32_kholaw_ed25519_key_derivator.dart';
 class Bip32KholawEd25519 extends Bip32Base {
   /// Private constructor for creating an instance with specified parameters.
   Bip32KholawEd25519._({
-    required super.keyData,
-    required super.keyNetVer,
-    required super.privKey,
-    required super.pubKey,
-  });
+    required Bip32KeyData keyData,
+    required Bip32KeyNetVersions keyNetVer,
+    required List<int>? privKey,
+    required List<int>? pubKey,
+  }) : super(
+            keyData: keyData,
+            keyNetVer: keyNetVer,
+            privKey: privKey,
+            pubKey: pubKey);
 
   /// Creates a Bip32 key pair from a private key.
   Bip32KholawEd25519.fromPrivateKey(List<int> privKey,
@@ -35,12 +39,14 @@ class Bip32KholawEd25519 extends Bip32Base {
       : super.fromPrivateKey(privKey, keyData, keyNetVer);
 
   /// Creates a Bip32 key pair from an extended key.
-  Bip32KholawEd25519.fromExtendedKey(super.exKeyStr, [super.keyNetVer])
-      : super.fromExtendedKey();
+  Bip32KholawEd25519.fromExtendedKey(String exKeyStr,
+      [Bip32KeyNetVersions? keyNetVer])
+      : super.fromExtendedKey(exKeyStr, keyNetVer);
 
   /// Creates a Bip32 key pair from a seed.
-  Bip32KholawEd25519.fromSeed(super.seedBytes, [super.keyNetVer])
-      : super.fromSeed();
+  Bip32KholawEd25519.fromSeed(List<int> seedBytes,
+      [Bip32KeyNetVersions? keyNetVer])
+      : super.fromSeed(seedBytes, keyNetVer);
 
   /// Creates a Bip32 key pair from a public key.
   Bip32KholawEd25519.fromPublicKey(List<int> pubkey,

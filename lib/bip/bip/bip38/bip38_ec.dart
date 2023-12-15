@@ -17,8 +17,7 @@ import 'package:blockchain_utils/string/string.dart';
 import 'package:blockchain_utils/exception/exception.dart';
 import 'package:blockchain_utils/tuple/tuple.dart';
 
-typedef Bip38PubKeyModes = P2PKHPubKeyModes;
-
+//
 /// Constants for BIP38 encryption and decryption operations.
 ///
 /// This class defines various constants used in BIP38 (Bitcoin Improvement
@@ -285,7 +284,7 @@ class Bip38EcKeysGenerator {
   /// - [pubKeyMode]: The public key mode specifying the address type.
   /// - Returns: A BIP38-encrypted private key.
   static String generatePrivateKey(
-      String intPassphrase, Bip38PubKeyModes pubKeyMode) {
+      String intPassphrase, PubKeyModes pubKeyMode) {
     /// Decode the intermediate passphrase into bytes.
     final intPassphraseBytes = Base58Decoder.checkDecode(intPassphrase);
 
@@ -374,12 +373,11 @@ class Bip38EcKeysGenerator {
   /// - [magic]: The magic number extracted from the intermediate passphrase.
   /// - [pubKeyMode]: The selected public key mode (compressed or uncompressed).
   /// - Returns: A List<int> representing the 'flagbyte' with set bits.
-  static List<int> _setFlagbyteBits(
-      List<int> magic, Bip38PubKeyModes pubKeyMode) {
+  static List<int> _setFlagbyteBits(List<int> magic, PubKeyModes pubKeyMode) {
     int flagbyteInt = 0;
 
     /// Set the 'compressed' bit if the public key mode is 'compressed'.
-    if (pubKeyMode == Bip38PubKeyModes.compressed) {
+    if (pubKeyMode == PubKeyModes.compressed) {
       flagbyteInt =
           BitUtils.setBit(flagbyteInt, Bip38EcConst.flagBitCompressed);
     }
@@ -410,7 +408,7 @@ class Bip38EcDecrypter {
   /// - [passphrase]: The passphrase used for decryption.
   /// - Returns: A tuple (pair) containing the decrypted private key bytes and
   ///   the associated public key mode.
-  static Tuple<List<int>, Bip38PubKeyModes> decrypt(
+  static Tuple<List<int>, PubKeyModes> decrypt(
       String privKeyEnc, String passphrase) {
     final privKeyEncBytes = Base58Decoder.checkDecode(privKeyEnc);
 
@@ -520,7 +518,7 @@ class Bip38EcDecrypter {
   /// - [flagbyte]: The 'flagbyte' value extracted from the BIP38-encrypted private key.
   /// - Returns: A tuple (pair) containing the selected public key mode and a boolean
   ///   indicating the presence of lot and sequence numbers.
-  static Tuple<Bip38PubKeyModes, bool> _getFlagbyteOptions(List<int> flagbyte) {
+  static Tuple<PubKeyModes, bool> _getFlagbyteOptions(List<int> flagbyte) {
     int flagbyteInt = IntUtils.fromBytes(flagbyte, byteOrder: Endian.little);
 
     /// Check if the lot and sequence number bit is set.
@@ -530,8 +528,8 @@ class Bip38EcDecrypter {
     /// Determine the public key mode (compressed or uncompressed).
     final pubKeyMode =
         BitUtils.intIsBitSet(flagbyteInt, Bip38EcConst.flagBitCompressed)
-            ? Bip38PubKeyModes.compressed
-            : Bip38PubKeyModes.uncompressed;
+            ? PubKeyModes.compressed
+            : PubKeyModes.uncompressed;
 
     /// Reset the flag bits and check if 'flagbyteInt' is now zero.
     flagbyteInt = BitUtils.resetBit(flagbyteInt, Bip38EcConst.flagBitLotSeq);

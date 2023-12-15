@@ -83,22 +83,28 @@ import 'package:blockchain_utils/tuple/tuple.dart';
 /// final addressType = AdaByronAddrTypes.publicKey;
 /// print('Address Type: $addressType'); // Output: Address Type: AdaByronAddrTypes.publicKey
 /// ```
-enum AdaByronAddrTypes {
+class AdaByronAddrTypes {
   /// Represents the address type for public keys.
-  publicKey(0),
+  static const AdaByronAddrTypes publicKey = AdaByronAddrTypes._(0);
 
   /// Represents the address type for redemption addresses.
-  redemption(2);
+  static const AdaByronAddrTypes redemption = AdaByronAddrTypes._(2);
 
   final int value;
 
   /// Constructor for AdaByronAddrTypes.
-  const AdaByronAddrTypes(this.value);
+  const AdaByronAddrTypes._(this.value);
 
   /// Factory method to create an AdaByronAddrTypes enum value from an integer value.
   factory AdaByronAddrTypes.fromValue(CborIntValue value) {
     return values.firstWhere((element) => element.value == value.value);
   }
+
+  // Enum values as a list for iteration
+  static const List<AdaByronAddrTypes> values = [
+    publicKey,
+    redemption,
+  ];
 }
 
 /// Constants related to Ada Byron era addresses in Cardano.

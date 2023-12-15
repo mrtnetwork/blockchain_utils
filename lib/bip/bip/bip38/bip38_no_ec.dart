@@ -1,4 +1,5 @@
 import 'package:blockchain_utils/base58/base58.dart';
+import 'package:blockchain_utils/bip/address/p2pkh_addr.dart';
 import 'package:blockchain_utils/bip/bip/bip38/bip38_addr.dart';
 import 'package:blockchain_utils/bip/ecc/keys/secp256k1_keys_ecdsa.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
@@ -8,8 +9,6 @@ import 'package:blockchain_utils/compare/compare.dart';
 import 'package:blockchain_utils/string/string.dart';
 import 'package:blockchain_utils/exception/exception.dart';
 import 'package:blockchain_utils/tuple/tuple.dart';
-
-import 'bip38_ec.dart';
 
 /// Constants for BIP38 encryption and decryption without ECDSA.
 ///
@@ -55,8 +54,7 @@ class Bip38NoEcUtils {
   /// - [privKeyBytes]: The private key bytes.
   /// - [pubKeyMode]: The selected public key mode.
   /// - Returns: The address hash as a List<int>.
-  static List<int> addressHash(
-      List<int> privKeyBytes, Bip38PubKeyModes pubKeyMode) {
+  static List<int> addressHash(List<int> privKeyBytes, PubKeyModes pubKeyMode) {
     final publicBytes = Secp256k1PrivateKeyEcdsa.fromBytes(privKeyBytes)
         .publicKey
         .point
@@ -111,7 +109,7 @@ class Bip38NoEcEncrypter {
   /// - [pubKeyMode]: The selected public key mode (compressed or uncompressed).
   /// - Returns: The BIP38-encrypted private key as a string.
   static String encrypt(
-      List<int> privKey, String passphrase, Bip38PubKeyModes pubKeyMode) {
+      List<int> privKey, String passphrase, PubKeyModes pubKeyMode) {
     /// Compute the address hash from the private key and public key mode.
     final addressHash = Bip38NoEcUtils.addressHash(privKey, pubKeyMode);
 
@@ -132,7 +130,7 @@ class Bip38NoEcEncrypter {
     final encryptedHalf2 = encryptedHalves.item2;
 
     /// Determine the flagbyte based on the public key mode.
-    final flagbyte = pubKeyMode == Bip38PubKeyModes.compressed
+    final flagbyte = pubKeyMode == PubKeyModes.compressed
         ? Bip38NoEcConst.flagbyteCompressed
         : Bip38NoEcConst.flagbyteUncompressed;
 
@@ -193,7 +191,7 @@ class Bip38NoEcDecrypter {
   /// - [passphrase]: The passphrase for decryption.
   /// - Returns: A tuple (pair) containing the decrypted private key as a List<int>
   ///   and the selected public key mode (compressed or uncompressed).
-  static Tuple<List<int>, Bip38PubKeyModes> decrypt(
+  static Tuple<List<int>, PubKeyModes> decrypt(
       String privKeyEnc, String passphrase) {
     final privKeyEncBytes = Base58Decoder.checkDecode(privKeyEnc);
 
@@ -232,8 +230,8 @@ class Bip38NoEcDecrypter {
 
     // Get public key mode
     final pubKeyMode = flagbyte[0] == Bip38NoEcConst.flagbyteCompressed.first
-        ? Bip38PubKeyModes.compressed
-        : Bip38PubKeyModes.uncompressed;
+        ? PubKeyModes.compressed
+        : PubKeyModes.uncompressed;
 
     // Verify the address hash
     final addressHashGot = Bip38NoEcUtils.addressHash(privKeyBytes, pubKeyMode);

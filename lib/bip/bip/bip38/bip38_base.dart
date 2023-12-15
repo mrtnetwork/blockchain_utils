@@ -1,3 +1,4 @@
+import 'package:blockchain_utils/bip/address/p2pkh_addr.dart';
 import 'package:blockchain_utils/bip/bip/bip38/bip38_no_ec.dart';
 
 import 'bip38_ec.dart';
@@ -19,10 +20,10 @@ class Bip38Encrypter {
   /// - [privKey]: The Bitcoin private key to be encrypted.
   /// - [passphrase]: The passphrase for encryption.
   /// - [pubKeyMode]: The selected public key mode (compressed or uncompressed).
-  ///   Defaults to [Bip38PubKeyModes.compressed].
+  ///   Defaults to [PubKeyModes.compressed].
   /// - Returns: The BIP38-encrypted private key as a string.
   static String encryptNoEc(List<int> privKey, String passphrase,
-      {Bip38PubKeyModes pubKeyMode = Bip38PubKeyModes.compressed}) {
+      {PubKeyModes pubKeyMode = PubKeyModes.compressed}) {
     return Bip38NoEcEncrypter.encrypt(privKey, passphrase, pubKeyMode);
   }
 
@@ -35,12 +36,12 @@ class Bip38Encrypter {
   ///
   /// - [passphrase]: The passphrase for encryption.
   /// - [pubKeyMode]: The selected public key mode (compressed or uncompressed).
-  ///   Defaults to [Bip38PubKeyModes.compressed].
+  ///   Defaults to [PubKeyModes.compressed].
   /// - [lotNum]: An optional lot number.
   /// - [sequenceNum]: An optional sequence number.
   /// - Returns: The BIP38-encrypted private key as a string.
   static String generatePrivateKeyEc(String passphrase,
-      {Bip38PubKeyModes pubKeyMode = Bip38PubKeyModes.compressed,
+      {PubKeyModes pubKeyMode = PubKeyModes.compressed,
       int? lotNum,
       int? sequenceNum}) {
     final intPass = Bip38EcKeysGenerator.generateIntermediatePassphrase(
@@ -69,7 +70,7 @@ class Bip38Decrypter {
   /// - [passphrase]: The passphrase for decryption.
   /// - Returns: A tuple (pair) containing the decrypted private key as a List<int>
   ///   and the selected public key mode (compressed or uncompressed).
-  static Tuple<List<int>, Bip38PubKeyModes> decryptNoEc(
+  static Tuple<List<int>, PubKeyModes> decryptNoEc(
       String privKeyEnc, String passphrase) {
     return Bip38NoEcDecrypter.decrypt(privKeyEnc, passphrase);
   }
@@ -85,7 +86,7 @@ class Bip38Decrypter {
   /// - [passphrase]: The passphrase for decryption.
   /// - Returns: A tuple (pair) containing the decrypted private key as a List<int>
   ///   and the selected public key mode (compressed or uncompressed).
-  static Tuple<List<int>, Bip38PubKeyModes> decryptEc(
+  static Tuple<List<int>, PubKeyModes> decryptEc(
       String privKeyEnc, String passphrase) {
     return Bip38EcDecrypter.decrypt(privKeyEnc, passphrase);
   }

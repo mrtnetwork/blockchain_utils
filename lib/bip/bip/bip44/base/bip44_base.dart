@@ -16,44 +16,66 @@ import 'package:blockchain_utils/tuple/tuple.dart';
 import 'bip44_keys.dart';
 
 /// Enumeration of BIP-44 changes (external and internal).
-enum Bip44Changes {
+class Bip44Changes {
+  // Named constants representing each change
+
   /// External chain for receiving funds
-  chainExt(0),
+  static const chainExt = Bip44Changes._(0);
 
   /// Internal chain for change addresses
-  chainInt(1);
+  static const chainInt = Bip44Changes._(1);
 
+  // The value associated with each instance
+
+  /// Constructor to associate a value with each instance
   final int value;
-  const Bip44Changes(this.value);
+  const Bip44Changes._(this.value);
 }
 
 /// Enumeration of BIP-44 levels in hierarchical deterministic wallets.
-enum Bip44Levels {
+class Bip44Levels {
+  // Named constants representing each level
+
   /// Master level
-  master(0),
+  static const master = Bip44Levels._(0);
 
   /// Purpose level
-  purpose(1),
+  static const purpose = Bip44Levels._(1);
 
   /// Coin level
-  coin(2),
+  static const coin = Bip44Levels._(2);
 
   /// Account level
-  account(3),
+  static const account = Bip44Levels._(3);
 
   /// Change level (external/internal)
-  change(4),
+  static const change = Bip44Levels._(4);
 
   /// Address index level
-  addressIndex(5);
+  static const addressIndex = Bip44Levels._(5);
 
+  // The value associated with each instance
+
+  /// Constructor to associate a value with each instance
   final int value;
-  const Bip44Levels(this.value);
+  const Bip44Levels._(this.value);
 
-  /// Factory method to create a [Bip44Levels] enum value from an integer.
+  /// Factory method to create a [Bip44Levels] instance from an integer.
+
+  /// Create a [Bip44Levels] instance from an integer value.
   factory Bip44Levels.fromInt(int value) {
     return values.firstWhere((e) => e.value == value);
   }
+
+  // List of all instances of Bip44Levels
+  static const List<Bip44Levels> values = [
+    master,
+    purpose,
+    coin,
+    account,
+    change,
+    addressIndex,
+  ];
 }
 
 /// Abstract base class for BIP-44 hierarchical deterministic wallets.

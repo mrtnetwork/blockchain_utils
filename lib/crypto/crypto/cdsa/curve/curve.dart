@@ -40,7 +40,7 @@ class CurveFp extends Curve {
 
   /// Calculate the hash code of the CurveFp object
   @override
-  int get hashCode => Object.hash(p, a, b, h);
+  int get hashCode => p.hashCode ^ a.hashCode ^ b.hashCode ^ h.hashCode;
 
   /// Get the length of the base point in the curve
   @override

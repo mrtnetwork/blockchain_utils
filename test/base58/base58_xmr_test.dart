@@ -2,6 +2,7 @@
 
 import 'package:blockchain_utils/base58/base58_xmr.dart';
 import 'package:blockchain_utils/binary/utils.dart';
+import 'package:blockchain_utils/exception/exception.dart';
 import 'package:test/test.dart';
 
 var _testVect = [
@@ -83,6 +84,6 @@ void main() {
   test("invalid decode", () {
     expect(() {
       Base58XmrDecoder.decode("237LSrYONUUar");
-    }, throwsA(isA<FormatException>()));
+    }, throwsA(isA<MessageException>()));
   });
 }

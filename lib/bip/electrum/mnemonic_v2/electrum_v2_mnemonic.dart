@@ -4,35 +4,45 @@ import 'package:blockchain_utils/bip/bip/bip39/word_list/languages.dart'
     as languages;
 
 /// Enumeration of word counts for Electrum V2 mnemonics.
-enum ElectrumV2WordsNum {
+/// An enumeration representing the number of words in an Electrum V2 mnemonic.
+class ElectrumV2WordsNum {
   /// Represents a 12-word Electrum V2 mnemonic.
-  wordsNum12(12),
+  static const ElectrumV2WordsNum wordsNum12 = ElectrumV2WordsNum._(12);
 
   /// Represents a 24-word Electrum V2 mnemonic.
-  wordsNum24(24);
+  static const ElectrumV2WordsNum wordsNum24 = ElectrumV2WordsNum._(24);
 
   /// The numeric value associated with each word count.
   final int value;
 
   /// Creates an instance of ElectrumV2WordsNum with the given numeric value.
-  const ElectrumV2WordsNum(this.value);
+  const ElectrumV2WordsNum._(this.value);
+
+  static const List<ElectrumV2WordsNum> values = [wordsNum12, wordsNum24];
 }
 
 /// Enumeration of languages supported by Electrum V2 mnemonics.
-enum ElectrumV2Languages implements MnemonicLanguages {
+class ElectrumV2Languages implements MnemonicLanguages {
   /// Represents the Chinese Simplified language.
-  chineseSimplified,
+  static const ElectrumV2Languages chineseSimplified =
+      ElectrumV2Languages._('chineseSimplified');
 
   /// Represents the English language.
-  english,
+  static const ElectrumV2Languages english = ElectrumV2Languages._('english');
 
   /// Represents the Portuguese language.
-  portuguese,
+  static const ElectrumV2Languages portuguese =
+      ElectrumV2Languages._('portuguese');
 
   /// Represents the Spanish language.
-  spanish;
+  static const ElectrumV2Languages spanish = ElectrumV2Languages._('spanish');
 
-  /// accsess to words list
+  final String name;
+
+  /// Constructor for creating an ElectrumV2Languages enum value with the specified string value.
+  const ElectrumV2Languages._(this.name);
+
+  /// Access to words list
   @override
   List<String> get wordList {
     switch (this) {
@@ -44,33 +54,56 @@ enum ElectrumV2Languages implements MnemonicLanguages {
         return languages.bip39WordList(Bip39Languages.portuguese);
       case ElectrumV2Languages.spanish:
         return languages.bip39WordList(Bip39Languages.spanish);
+      default:
+        throw UnimplementedError(
+            "ElectrumV2Languages does not support $name language wordlist");
     }
   }
 
-  /// accsess to all supported languagess
+  /// Access to all supported languages
   @override
   List<MnemonicLanguages> get languageValues => ElectrumV2Languages.values;
+
+  /// Represents the available language values for Electrum V2 mnemonics.
+  static const List<ElectrumV2Languages> values = [
+    chineseSimplified,
+    english,
+    portuguese,
+    spanish,
+  ];
 }
 
 /// Enumeration of Electrum V2 mnemonic types, representing different mnemonic modes.
-enum ElectrumV2MnemonicTypes {
+class ElectrumV2MnemonicTypes {
   /// Standard mnemonic type.
-  standard(0),
+  static const ElectrumV2MnemonicTypes standard =
+      ElectrumV2MnemonicTypes._("standard", 0);
 
   /// SegWit mnemonic type.
-  segwit(1),
+  static const ElectrumV2MnemonicTypes segwit =
+      ElectrumV2MnemonicTypes._("segwit", 1);
 
   /// Standard 2FA (Two-Factor Authentication) mnemonic type.
-  standard2FA(2),
+  static const ElectrumV2MnemonicTypes standard2FA =
+      ElectrumV2MnemonicTypes._("standard2FA", 2);
 
   /// SegWit 2FA (Two-Factor Authentication) mnemonic type.
-  segwit2FA(3);
+  static const ElectrumV2MnemonicTypes segwit2FA =
+      ElectrumV2MnemonicTypes._("segwit2FA", 3);
 
   /// The integer value associated with each mnemonic type.
   final int value;
+  final String name;
 
   /// Constructor for creating an Electrum V2 mnemonic type.
-  const ElectrumV2MnemonicTypes(this.value);
+  const ElectrumV2MnemonicTypes._(this.name, this.value);
+
+  static const List<ElectrumV2MnemonicTypes> values = [
+    standard,
+    segwit,
+    standard2FA,
+    segwit2FA
+  ];
 }
 
 /// Constants and configurations related to Electrum V2 mnemonics.
@@ -96,8 +129,8 @@ class ElectrumV2MnemonicConst {
 /// Electrum V2 mnemonic class, extending the Bip39Mnemonic class.
 class ElectrumV2Mnemonic extends Bip39Mnemonic {
   /// Constructs an Electrum V2 mnemonic from a string.
-  ElectrumV2Mnemonic.fromString(super.mnemonic) : super.fromString();
+  ElectrumV2Mnemonic.fromString(String mnemonic) : super.fromString(mnemonic);
 
   /// Constructs an Electrum V2 mnemonic from a list of words.
-  ElectrumV2Mnemonic.fromList(super.mnemonic) : super.fromList();
+  ElectrumV2Mnemonic.fromList(List<String> mnemonic) : super.fromList(mnemonic);
 }

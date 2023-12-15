@@ -53,7 +53,6 @@
 */
 
 import 'package:blockchain_utils/bip/address/p2pkh_addr.dart';
-import 'package:blockchain_utils/bip/bip/bip38/bip38_ec.dart';
 import 'package:blockchain_utils/bip/coin_conf/coins_conf.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
 import 'package:blockchain_utils/string/string.dart';
@@ -81,7 +80,7 @@ class Bip38Addr {
   /// - [pubKeyMode]: The public key mode that specifies the type of address
   ///   encoding.
   /// - Returns: A List<int> representing the calculated address hash.
-  static List<int> addressHash(List<int> pubKey, Bip38PubKeyModes pubKeyMode) {
+  static List<int> addressHash(List<int> pubKey, PubKeyModes pubKeyMode) {
     final address = P2PKHAddrEncoder().encodeKey(pubKey, {
       "net_ver": CoinsConf.bitcoinMainNet.params.p2pkhNetVer!,
       "pub_key_mode": pubKeyMode

@@ -4,25 +4,31 @@ import 'package:blockchain_utils/bip/cardano/cip1852/conf/cip1852_conf.dart';
 
 /// An enumeration of supported cryptocurrencies for CIP1852. It includes both main
 /// networks and test networks of various cryptocurrencies.
-enum Cip1852Coins implements CryptoCoins {
+class Cip1852Coins implements CryptoCoins {
   /// mainnets
-  cardanoIcarus,
-  cardanoLedger,
+  static const Cip1852Coins cardanoIcarus = Cip1852Coins._('cardanoIcarus');
+  static const Cip1852Coins cardanoLedger = Cip1852Coins._('cardanoLedger');
 
   /// testnets
-  cardanoIcarusTestnet,
-  cardanoLedgerTestnet;
+  static const Cip1852Coins cardanoIcarusTestnet =
+      Cip1852Coins._('cardanoIcarusTestnet');
+  static const Cip1852Coins cardanoLedgerTestnet =
+      Cip1852Coins._('cardanoLedgerTestnet');
+
+  final String name;
+
+  const Cip1852Coins._(this.name);
 
   @override
   Cip1852Coins get value => this;
 
   String get coinName {
-    return this.name;
+    return name;
   }
 
   static Cip1852Coins? fromName(String name) {
     try {
-      return values.firstWhere((element) => element.name == name);
+      return _coinToConf.keys.firstWhere((element) => element.name == name);
     } on StateError {
       return null;
     }
@@ -32,11 +38,12 @@ enum Cip1852Coins implements CryptoCoins {
 
   /// A mapping that associates each Cip1852Coins (enum) with its corresponding
   /// CoinConfig configuration.
-  static final Map<CryptoCoins, CoinConfig> _coinToConf = {
+  static final Map<Cip1852Coins, CoinConfig> _coinToConf = {
     Cip1852Coins.cardanoIcarus: Cip1852Conf.cardanoIcarusMainNet,
     Cip1852Coins.cardanoLedger: Cip1852Conf.cardanoLedgerMainNet,
     Cip1852Coins.cardanoIcarusTestnet: Cip1852Conf.cardanoIcarusTestNet,
     Cip1852Coins.cardanoLedgerTestnet: Cip1852Conf.cardanoLedgerTestNet,
   };
+
   BipProposal get proposal => throw UnimplementedError();
 }

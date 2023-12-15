@@ -1,5 +1,6 @@
 import 'package:blockchain_utils/bech32/bech32_base.dart';
 import 'package:blockchain_utils/binary/utils.dart';
+import 'package:blockchain_utils/exception/exception.dart';
 import 'package:test/test.dart';
 
 final List<Map<String, String>> _testVect = [
@@ -41,6 +42,6 @@ void main() {
     expect(() {
       Bech32Decoder.decode(
           "cosmos", "cosmis1w508d6qejxtdg4y5r3zarvary0c5xw7khxen85");
-    }, throwsA(isA<ArgumentError>()));
+    }, throwsA(isA<ArgumentException>()));
   });
 }

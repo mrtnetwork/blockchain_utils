@@ -18,17 +18,26 @@ class BipBitcoinCashConf extends CoinConfig {
   /// Constructor for BipBitcoinCashConf.
   @override
   const BipBitcoinCashConf({
-    required super.coinNames,
-    required super.coinIdx,
-    required super.isTestnet,
-    required super.defPath,
-    required super.keyNetVer,
-    required super.wifNetVer,
-    required super.type,
-    required super.addressEncoder,
-    required super.addrParams,
+    required CoinNames coinNames,
+    required int coinIdx,
+    required bool isTestnet,
+    required String defPath,
+    required Bip32KeyNetVersions keyNetVer,
+    required List<int>? wifNetVer,
+    required EllipticCurveTypes type,
+    required AddrEncoder addressEncoder,
+    required Map<String, dynamic> addrParams,
     this.useLagacyAdder = false,
-  });
+  }) : super(
+            addrParams: addrParams,
+            addressEncoder: addressEncoder,
+            coinIdx: coinIdx,
+            coinNames: coinNames,
+            defPath: defPath,
+            isTestnet: isTestnet,
+            keyNetVer: keyNetVer,
+            type: type,
+            wifNetVer: wifNetVer);
 
   /// Overrides the 'addrParams' getter to return the appropriate address parameters
   /// based on the 'useLagacyAdder' flag.

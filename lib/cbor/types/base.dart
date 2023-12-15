@@ -4,37 +4,39 @@ import 'package:blockchain_utils/cbor/core/tags.dart';
 import 'package:blockchain_utils/cbor/types/string.dart';
 
 /// An enum representing different types of base64 encoding used in CBOR.
-enum CborBase64Types {
+class CborBase64Types {
   /// Standard base64 encoding
-  base64,
+  static const CborBase64Types base64 = CborBase64Types._(CborTags.base64);
 
   /// URL-safe base64 encoding
-  base64Url,
+  static const CborBase64Types base64Url =
+      CborBase64Types._(CborTags.base64Url);
 
   /// Expected URL-safe base64 encoding
-  base64UrlExpected,
+  static const CborBase64Types base64UrlExpected =
+      CborBase64Types._(CborTags.base64UrlExpected);
 
   /// Expected standard base64 encoding
-  base64Expected,
+  static const CborBase64Types base64Expected =
+      CborBase64Types._(CborTags.base64Expected);
 
   /// Expected base16 (hexadecimal) encoding
-  base16Expected;
+  static const CborBase64Types base16Expected =
+      CborBase64Types._(CborTags.base16Expected);
 
   /// This property allows retrieving the CBOR tag associated with each CborBase64Types enum value.
-  int get tag {
-    switch (this) {
-      case CborBase64Types.base16Expected:
-        return CborTags.base16Expected;
-      case CborBase64Types.base64:
-        return CborTags.base64;
-      case CborBase64Types.base64Expected:
-        return CborTags.base64Expected;
-      case CborBase64Types.base64UrlExpected:
-        return CborTags.base64UrlExpected;
-      default:
-        return CborTags.base64Url;
-    }
-  }
+  final int tag;
+
+  /// Constructor for creating a CborBase64Types enum value with the specified CBOR tag.
+  const CborBase64Types._(this.tag);
+
+  static const List<CborBase64Types> values = [
+    base64,
+    base64Url,
+    base64UrlExpected,
+    base64Expected,
+    base16Expected
+  ];
 }
 
 /// A class representing a CBOR (Concise Binary Object Representation) Base-URL value.

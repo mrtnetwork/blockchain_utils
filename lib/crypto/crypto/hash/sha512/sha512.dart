@@ -416,7 +416,7 @@ class SHA512 implements SerializableHash {
   int _sigma1A(int ah4, int al4) {
     ah4 &= mask32;
     al4 &= mask32;
-    int one1 = (ah4 >>> 14);
+    int one1 = (ah4 >> 14);
     int one2 = al4 << (32 - 14);
     int one = (one1 | one2);
 

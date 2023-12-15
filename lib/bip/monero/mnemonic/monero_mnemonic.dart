@@ -4,20 +4,28 @@ import 'words_list/languages.dart' as languages;
 
 /// An enumeration representing the number of words in a Monero mnemonic.
 ///
-/// This enum defines the possible word counts for Monero mnemonics, along with an
+/// This class defines the possible word counts for Monero mnemonics, along with an
 /// associated integer value for each word count. Some word counts include a checksum
 /// for enhanced error detection and correction.
-enum MoneroWordsNum {
-  wordsNum12(12), // No checksum
-  wordsNum13(13), // With checksum
-  wordsNum24(24), // No checksum
-  wordsNum25(25); // With checksum
+/// An class representing the number of words in a Monero mnemonic.
+class MoneroWordsNum {
+  /// No checksum, 12 words
+  static const MoneroWordsNum wordsNum12 = MoneroWordsNum._(12);
+
+  /// With checksum, 13 words
+  static const MoneroWordsNum wordsNum13 = MoneroWordsNum._(13);
+
+  /// No checksum, 24 words
+  static const MoneroWordsNum wordsNum24 = MoneroWordsNum._(24);
+
+  /// With checksum, 25 words
+  static const MoneroWordsNum wordsNum25 = MoneroWordsNum._(25);
 
   /// The integer value associated with each word count.
   final int value;
 
   /// Constructs a MoneroWordsNum with the specified integer value.
-  const MoneroWordsNum(this.value);
+  const MoneroWordsNum._(this.value);
 }
 
 /// An enumeration of Monero-supported languages for mnemonics.
@@ -25,17 +33,42 @@ enum MoneroWordsNum {
 /// This enum lists the Monero-supported languages for generating Monero mnemonics.
 /// Each language is associated with a specific word list that is used during the
 /// mnemonic generation process.
-enum MoneroLanguages implements MnemonicLanguages {
-  chineseSimplified,
-  dutch,
-  english,
-  french,
-  german,
-  italian,
-  japanese,
-  portuguese,
-  spanish,
-  russian;
+class MoneroLanguages implements MnemonicLanguages {
+  /// Chinese Simplified language
+  static const MoneroLanguages chineseSimplified =
+      MoneroLanguages._('chineseSimplified');
+
+  /// Dutch language
+  static const MoneroLanguages dutch = MoneroLanguages._('dutch');
+
+  /// English language
+  static const MoneroLanguages english = MoneroLanguages._('english');
+
+  /// French language
+  static const MoneroLanguages french = MoneroLanguages._('french');
+
+  /// German language
+  static const MoneroLanguages german = MoneroLanguages._('german');
+
+  /// Italian language
+  static const MoneroLanguages italian = MoneroLanguages._('italian');
+
+  /// Japanese language
+  static const MoneroLanguages japanese = MoneroLanguages._('japanese');
+
+  /// Portuguese language
+  static const MoneroLanguages portuguese = MoneroLanguages._('portuguese');
+
+  /// Spanish language
+  static const MoneroLanguages spanish = MoneroLanguages._('spanish');
+
+  /// Russian language
+  static const MoneroLanguages russian = MoneroLanguages._('russian');
+
+  final String name;
+
+  /// Constructor for creating a MoneroLanguages enum value with the specified string value.
+  const MoneroLanguages._(this.name);
 
   /// Retrieves the word list associated with each Monero language.
   @override
@@ -43,9 +76,23 @@ enum MoneroLanguages implements MnemonicLanguages {
     return languages.moneroMnemonicWorsList(this);
   }
 
-  /// list of all supported languages
+  /// List of all supported languages
   @override
   List<MnemonicLanguages> get languageValues => MoneroLanguages.values;
+
+  /// Represents the available language values for Monero mnemonics.
+  static const List<MoneroLanguages> values = [
+    chineseSimplified,
+    dutch,
+    english,
+    french,
+    german,
+    italian,
+    japanese,
+    portuguese,
+    spanish,
+    russian,
+  ];
 }
 
 /// A class containing constants related to Monero mnemonics.
@@ -95,8 +142,8 @@ class MoneroMnemonicConst {
 /// list of mnemonic words.
 class MoneroMnemonic extends Mnemonic {
   /// Constructs a MoneroMnemonic from a mnemonic string.
-  MoneroMnemonic.fromString(super.mnemonicStr) : super.fromString();
+  MoneroMnemonic.fromString(String mnemonic) : super.fromString(mnemonic);
 
   /// Constructs a MoneroMnemonic from a list of mnemonic words.
-  MoneroMnemonic.fromList(super.mnemonicList) : super.fromList();
+  MoneroMnemonic.fromList(List<String> mnemonic) : super.fromList(mnemonic);
 }

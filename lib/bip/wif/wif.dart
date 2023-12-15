@@ -58,12 +58,6 @@ import 'package:blockchain_utils/bip/ecc/keys/secp256k1_keys_ecdsa.dart';
 import 'package:blockchain_utils/tuple/tuple.dart';
 import 'package:blockchain_utils/exception/exception.dart';
 
-/// A typedef for Wallet Import Format (WIF) public key modes.
-///
-/// The [WifPubKeyModes] type represents different modes for WIF public keys,
-/// and it is equivalent to [P2PKHPubKeyModes].
-typedef WifPubKeyModes = P2PKHPubKeyModes;
-
 /// Constants related to Wallet Import Format (WIF).
 class WifConst {
   /// Suffix value indicating compressed public key mode in a WIF.
@@ -83,12 +77,12 @@ class WifEncoder {
   /// Returns the WIF-encoded private key as a string.
   static String encode(List<int> privKey,
       {List<int> netVer = const [],
-      WifPubKeyModes pubKeyMode = WifPubKeyModes.compressed}) {
+      PubKeyModes pubKeyMode = PubKeyModes.compressed}) {
     final prv = Secp256k1PrivateKeyEcdsa.fromBytes(privKey);
 
     List<int> privKeyBytes = prv.raw;
 
-    if (pubKeyMode == WifPubKeyModes.compressed) {
+    if (pubKeyMode == PubKeyModes.compressed) {
       privKeyBytes =
           List<int>.from([...privKeyBytes, WifConst.comprPubKeySuffix]);
     }
@@ -108,14 +102,14 @@ class WifDecoder {
   /// Returns a tuple containing the decoded private key as a `List<int>` and
   /// the associated [WifPubKeyModes] representing the public key mode, where
   /// [WifPubKeyModes.compressed] indicates the compressed mode.
-  static Tuple<List<int>, WifPubKeyModes> decode(String wif,
+  static Tuple<List<int>, PubKeyModes> decode(String wif,
       {List<int> netVer = const []}) {
     List<int> privKeyBytes = Base58Decoder.checkDecode(wif);
     if (netVer.isEmpty || privKeyBytes[0] != netVer[0]) {
       throw ArgumentException('Invalid net version');
     }
     privKeyBytes = privKeyBytes.sublist(1);
-    WifPubKeyModes pubKeyMode;
+    PubKeyModes pubKeyMode;
     if (Secp256k1PrivateKeyEcdsa.isValidBytes(
         privKeyBytes.sublist(0, privKeyBytes.length - 1))) {
       // Check the compressed public key suffix
@@ -123,12 +117,12 @@ class WifDecoder {
         throw ArgumentException('Invalid compressed public key suffix');
       }
       privKeyBytes = privKeyBytes.sublist(0, privKeyBytes.length - 1);
-      pubKeyMode = WifPubKeyModes.compressed;
+      pubKeyMode = PubKeyModes.compressed;
     } else {
       if (!Secp256k1PrivateKeyEcdsa.isValidBytes(privKeyBytes)) {
         throw ArgumentException('Invalid decoded key');
       }
-      pubKeyMode = WifPubKeyModes.uncompressed;
+      pubKeyMode = PubKeyModes.uncompressed;
     }
 
     return Tuple(privKeyBytes, pubKeyMode);

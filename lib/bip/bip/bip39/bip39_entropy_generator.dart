@@ -4,26 +4,37 @@ import 'package:blockchain_utils/bip/mnemonic/entropy_generator.dart';
 ///
 /// This enum defines the possible bit lengths for BIP39 entropy values. It
 /// provides constants for bit lengths of 128, 160, 192, 224, and 256 bits.
-enum Bip39EntropyBitLen {
+class Bip39EntropyBitLen {
+  // Constants representing each entropy bit length
+
   /// 128 bit
-  bitLen128(128),
+  static const bitLen128 = Bip39EntropyBitLen._(128);
 
   /// 160 bit
-  bitLen160(160),
+  static const bitLen160 = Bip39EntropyBitLen._(160);
 
   /// 192 bit
-  bitLen192(192),
+  static const bitLen192 = Bip39EntropyBitLen._(192);
 
   /// 224 bit
-  bitLen224(224),
+  static const bitLen224 = Bip39EntropyBitLen._(224);
 
   /// 256 bit
-  bitLen256(256);
+  static const bitLen256 = Bip39EntropyBitLen._(256);
 
+  // The bit length value associated with each instance
   final int value;
 
-  /// Constructor to associate a bit length value with each enum constant.
-  const Bip39EntropyBitLen(this.value);
+  /// Constructor to associate a bit length value with each instance.
+  const Bip39EntropyBitLen._(this.value);
+
+  static const List<Bip39EntropyBitLen> values = [
+    bitLen128,
+    bitLen160,
+    bitLen192,
+    bitLen224,
+    bitLen256
+  ];
 }
 
 /// Constants related to BIP39 entropy generation.

@@ -10,7 +10,7 @@ void main() {
   test("p2pkh address test", () {
     for (final i in compresedTestVector) {
       final params = Map<String, dynamic>.from(i["params"]);
-      params["pub_key_mode"] = P2PKHPubKeyModes.compressed;
+      params["pub_key_mode"] = PubKeyModes.compressed;
       params["net_ver"] = BytesUtils.fromHexString(params["net_ver"]);
       final z = P2PKHAddrEncoder()
           .encodeKey(BytesUtils.fromHexString(i["public"]), params);
@@ -22,7 +22,7 @@ void main() {
   test("p2pkh uncompressed publickey address test", () {
     for (final i in uncompressedTestVector) {
       final params = Map<String, dynamic>.from(i["params"]);
-      params["pub_key_mode"] = P2PKHPubKeyModes.uncompressed;
+      params["pub_key_mode"] = PubKeyModes.uncompressed;
       params["net_ver"] = BytesUtils.fromHexString(params["net_ver"]);
       final z = P2PKHAddrEncoder()
           .encodeKey(BytesUtils.fromHexString(i["public"]), params);

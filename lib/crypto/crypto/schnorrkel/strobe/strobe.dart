@@ -2,15 +2,17 @@ import 'package:blockchain_utils/binary/binary_operation.dart';
 import 'package:blockchain_utils/crypto/crypto/hash/hash.dart';
 import 'package:blockchain_utils/exception/exception.dart';
 
-enum StobeSecParam {
+class StrobeSecParam {
   /// 128-bit security level
-  sec128(128),
+  static const StrobeSecParam sec128 = StrobeSecParam._(128);
 
   /// 256-bit security level
-  sec256(256);
+  static const StrobeSecParam sec256 = StrobeSecParam._(256);
 
   final int value;
-  const StobeSecParam(this.value);
+
+  /// Constructor for creating a StrobeSecParam enum value with the specified security level.
+  const StrobeSecParam._(this.value);
 }
 
 /// Class representing Strobe operation flags.
@@ -34,40 +36,48 @@ class StrobeFlags {
 }
 
 /// enum representing Strobe operations.
-enum StrobeOperation {
+class StrobeOperation {
   /// Provide associated data
-  ad(StrobeFlags.A),
+  static const StrobeOperation ad = StrobeOperation._(StrobeFlags.A);
 
   /// Provide cipher key
-  key(StrobeFlags.A | StrobeFlags.C),
+  static const StrobeOperation key =
+      StrobeOperation._(StrobeFlags.A | StrobeFlags.C);
 
   /// Pseudo-Random Function (I | A | C)
-  prf(StrobeFlags.I | StrobeFlags.A | StrobeFlags.C),
+  static const StrobeOperation prf =
+      StrobeOperation._(StrobeFlags.I | StrobeFlags.A | StrobeFlags.C);
 
   /// Send cleartext data
-  sendClr(StrobeFlags.A | StrobeFlags.T),
+  static const StrobeOperation sendClr =
+      StrobeOperation._(StrobeFlags.A | StrobeFlags.T);
 
   /// Receive cleartext data
-  recvClr(StrobeFlags.I | StrobeFlags.A | StrobeFlags.T),
+  static const StrobeOperation recvClr =
+      StrobeOperation._(StrobeFlags.I | StrobeFlags.A | StrobeFlags.T);
 
   /// Send encrypted data
-  sendEnc(StrobeFlags.A | StrobeFlags.C | StrobeFlags.T),
+  static const StrobeOperation sendEnc =
+      StrobeOperation._(StrobeFlags.A | StrobeFlags.C | StrobeFlags.T);
 
   /// Receive encrypted data
-  recvEnc(StrobeFlags.I | StrobeFlags.A | StrobeFlags.C | StrobeFlags.T),
+  static const StrobeOperation recvEnc = StrobeOperation._(
+      StrobeFlags.I | StrobeFlags.A | StrobeFlags.C | StrobeFlags.T);
 
   /// Send message authentication code
-  sendMac(StrobeFlags.C | StrobeFlags.T),
+  static const StrobeOperation sendMac =
+      StrobeOperation._(StrobeFlags.C | StrobeFlags.T);
 
   /// Receive message authentication code
-  recvMac(StrobeFlags.I | StrobeFlags.C | StrobeFlags.T),
+  static const StrobeOperation recvMac =
+      StrobeOperation._(StrobeFlags.I | StrobeFlags.C | StrobeFlags.T);
 
   /// Prevent rollback
-  ratchet(StrobeFlags.C);
+  static const StrobeOperation ratchet = StrobeOperation._(StrobeFlags.C);
 
   final int value;
 
-  const StrobeOperation(this.value);
+  const StrobeOperation._(this.value);
 }
 
 /// Strobe is a cryptographic framework for building secure, stateful, and authenticated cryptographic protocols.
@@ -125,7 +135,7 @@ class Strobe {
   /// ```
   ///
   /// This factory constructor ensures that the Strobe instance is properly initialized and configured based on the provided parameters, allowing it to be used for secure protocol operations.
-  factory Strobe(String customizationString, StobeSecParam security) {
+  factory Strobe(String customizationString, StrobeSecParam security) {
     final int rate = (1600 ~/ 8) - security.value ~/ 4;
     Strobe s = Strobe._(
       io: 2,

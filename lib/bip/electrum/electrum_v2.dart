@@ -91,7 +91,7 @@ abstract class ElectrumV2Base {
 
 /// Implementation of Electrum V2 for the standard type wallet.
 class ElectrumV2Standard extends ElectrumV2Base {
-  ElectrumV2Standard(super.bip32);
+  ElectrumV2Standard(Bip32Slip10Secp256k1 bip32) : super(bip32);
 
   /// Factory method to create an instance from a seed.
   factory ElectrumV2Standard.fromSeed(List<int> seedBytes) {
@@ -129,7 +129,9 @@ class ElectrumV2Standard extends ElectrumV2Base {
 class ElectrumV2Segwit extends ElectrumV2Base {
   final Bip32Base bip32Account;
 
-  ElectrumV2Segwit(super.bip32) : bip32Account = bip32.derivePath("m/0'");
+  ElectrumV2Segwit(Bip32Slip10Secp256k1 bip32)
+      : bip32Account = bip32.derivePath("m/0'"),
+        super(bip32);
 
   /// Factory method to create an instance from a seed.
   factory ElectrumV2Segwit.fromSeed(List<int> seedBytes) {

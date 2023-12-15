@@ -28,13 +28,21 @@ class RistrettoPoint extends EDPoint {
   ///   - super.generator: A flag indicating if the point is a generator (default is false).
   ///   - super.order: The order of the point in the group (optional).
   RistrettoPoint._(
-      {required super.curve,
-      required super.x,
-      required super.y,
-      required super.z,
-      required super.t,
-      super.generator = false,
-      super.order});
+      {required CurveED curve,
+      required BigInt x,
+      required BigInt y,
+      required BigInt z,
+      required BigInt t,
+      bool generator = false,
+      BigInt? order})
+      : super(
+            curve: curve,
+            t: t,
+            x: x,
+            y: y,
+            z: z,
+            generator: false,
+            order: order);
 
   /// Create a RistrettoPoint from an EdwardsPoint.
   ///

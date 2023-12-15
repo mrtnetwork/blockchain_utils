@@ -4,31 +4,40 @@ import 'package:blockchain_utils/bip/bip/bip39/word_list/languages.dart'
     as languages;
 
 /// Enum representing the number of words in an Algorand mnemonic phrase.
-enum AlgorandWordsNum {
-  wordsNum25(25);
+class AlgorandWordsNum {
+  /// Represents a 25-word Algorand mnemonic.
+  static const AlgorandWordsNum wordsNum25 = AlgorandWordsNum._(25);
 
   /// The value representing the number of words in the mnemonic phrase.
   final int value;
 
   /// Constructor to create an AlgorandWordsNum enum value with the specified word count.
-  const AlgorandWordsNum(this.value);
+  const AlgorandWordsNum._(this.value);
+
+  static const List<AlgorandWordsNum> values = [wordsNum25];
 }
 
 /// Enum representing languages for Algorand mnemonic phrases.
-enum AlgorandLanguages implements MnemonicLanguages {
+class AlgorandLanguages implements MnemonicLanguages {
   /// English language.
-  english;
+  static const AlgorandLanguages english = AlgorandLanguages._();
 
-  /// acsess to word list
+  const AlgorandLanguages._();
+
+  static const List<AlgorandLanguages> values = [english];
+
+  /// Access to word list.
   @override
   List<String> get wordList {
     switch (this) {
       case AlgorandLanguages.english:
         return languages.bip39WordList(Bip39Languages.english);
+      default:
+        throw UnimplementedError("AlgorandLanguages only support english");
     }
   }
 
-  /// acsess to languages
+  /// Access to languages.
   @override
   List<MnemonicLanguages> get languageValues => AlgorandLanguages.values;
 }
@@ -45,8 +54,8 @@ class AlgorandMnemonicConst {
 /// Represents Algorand mnemonic phrases, extending the Bip39Mnemonic class.
 class AlgorandMnemonic extends Bip39Mnemonic {
   /// Constructs an AlgorandMnemonic instance from a string mnemonic.
-  AlgorandMnemonic.fromString(super.mnemonic) : super.fromString();
+  AlgorandMnemonic.fromString(String mnemonic) : super.fromString(mnemonic);
 
   /// Constructs an AlgorandMnemonic instance from a list of mnemonic words.
-  AlgorandMnemonic.fromList(super.mnemonic) : super.fromList();
+  AlgorandMnemonic.fromList(List<String> mnemonic) : super.fromList(mnemonic);
 }

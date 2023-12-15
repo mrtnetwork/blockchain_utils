@@ -1,13 +1,14 @@
 import 'package:blockchain_utils/bip/mnemonic/entropy_generator.dart';
 
 /// Enumerates different bit lengths for Algorand entropy generation.
-enum AlgorandEntropyBitLen {
-  bitLen256(256);
+class AlgorandEntropyBitLen {
+  /// Bit length 256 for Algorand entropy.
+  static const AlgorandEntropyBitLen bitLen256 = AlgorandEntropyBitLen._(256);
 
   final int value;
 
   /// Creates an instance of AlgorandEntropyBitLen with the specified value.
-  const AlgorandEntropyBitLen(this.value);
+  const AlgorandEntropyBitLen._(this.value);
 }
 
 /// Constants related to Algorand entropy generation.

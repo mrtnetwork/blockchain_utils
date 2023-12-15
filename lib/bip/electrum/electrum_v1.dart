@@ -77,7 +77,7 @@ class ElectrumV1 {
     return P2PKHAddrEncoder()
         .encodeKey(getPublicKey(changeIndex, addressIndex).compressed, {
       "net_ver": CoinsConf.bitcoinMainNet.params.p2pkhNetVer,
-      "pub_key_mode": P2PKHPubKeyModes.uncompressed
+      "pub_key_mode": PubKeyModes.uncompressed
     });
   }
 

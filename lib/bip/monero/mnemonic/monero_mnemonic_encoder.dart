@@ -58,14 +58,16 @@ class MoneroMnemonicNoChecksumEncoder extends MoneroMnemonicEncoderBase {
   ///
   /// [language]: The Monero language to use for encoding. Defaults to the language
   /// specified in the superclass.
-  MoneroMnemonicNoChecksumEncoder([super.language]);
+  MoneroMnemonicNoChecksumEncoder(
+      [MoneroLanguages language = MoneroLanguages.english])
+      : super(language);
 
   /// Encodes the provided entropy bytes into a Monero mnemonic without a checksum.
   ///
   /// This method encodes the given entropy bytes into a Monero mnemonic without
   /// including a checksum. The resulting mnemonic may be less error-tolerant and
   /// should be handled with caution.
-  ///
+  ///s
   /// [entropyBytes]: The entropy bytes to encode.
   @override
   Mnemonic encode(List<int> entropyBytes) {
@@ -83,7 +85,9 @@ class MoneroMnemonicWithChecksumEncoder extends MoneroMnemonicEncoderBase {
   ///
   /// [language]: The Monero language to use for encoding. Defaults to the language
   /// specified in the superclass.
-  MoneroMnemonicWithChecksumEncoder([super.language]);
+  MoneroMnemonicWithChecksumEncoder(
+      [MoneroLanguages language = MoneroLanguages.english])
+      : super(language);
 
   /// Encodes the provided entropy bytes into a Monero mnemonic with a checksum.
   ///

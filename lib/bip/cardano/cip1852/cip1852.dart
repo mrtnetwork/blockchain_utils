@@ -52,9 +52,11 @@
   OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+import 'package:blockchain_utils/bip/bip/bip32/base/bip32_base.dart';
 import 'package:blockchain_utils/bip/bip/bip32/bip32_key_data.dart';
 import 'package:blockchain_utils/bip/bip/bip44/base/bip44_base.dart';
 import 'package:blockchain_utils/bip/bip/bip44/base/bip44_base_ex.dart';
+import 'package:blockchain_utils/bip/bip/conf/bip_coin_conf.dart';
 import 'package:blockchain_utils/bip/cardano/cip1852/conf/cip1852_coins.dart';
 
 /// Constants related to CIP-1852 (Cardano Improvement Proposal 1852).
@@ -68,10 +70,11 @@ class Cip1852Const {
 
 class Cip1852 extends Bip44Base {
   /// private constractor
-  Cip1852._(super.bip32Obj, super.coinConf);
+  Cip1852._(Bip32Base bip32Obj, CoinConfig coinConf)
+      : super(bip32Obj, coinConf);
 
   /// Constructor for creating a [Cip1852] object from a bip32 object and coin.
-  Cip1852.fromBip32(super.bip, super.coin);
+  Cip1852.fromBip32(Bip32Base bip, CoinConfig coin) : super(bip, coin);
 
   /// Constructor for creating a [Cip1852] object from a seed and coin.
   Cip1852.fromSeed(List<int> seedBytes, Cip1852Coins coinType)

@@ -622,7 +622,7 @@ class EDPoint extends AbstractPoint {
   /// Returns:
   /// - An integer representing the hash code of the Edwards curve point.
   @override
-  int get hashCode => Object.hash(x, y, order);
+  int get hashCode => x.hashCode ^ y.hashCode ^ order.hashCode;
 
   /// Checks if the Edwards curve point represents the point at infinity.
   ///

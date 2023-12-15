@@ -4,12 +4,18 @@ import 'package:blockchain_utils/bip/bip/conf/bip_coins.dart';
 
 /// An enumeration of supported cryptocurrencies for BIP86. It includes both main
 /// networks and test networks of various cryptocurrencies.
-enum Bip86Coins implements CryptoCoins {
+class Bip86Coins implements CryptoCoins {
   /// mainnets
-  bitcoin,
+  static const Bip86Coins bitcoin = Bip86Coins._('bitcoin');
 
   /// testnets
-  bitcoinTestnet;
+  static const Bip86Coins bitcoinTestnet = Bip86Coins._('bitcoinTestnet');
+
+  static const List<Bip86Coins> values = [bitcoin, bitcoinTestnet];
+
+  final String name;
+
+  const Bip86Coins._(this.name);
 
   @override
   Bip86Coins get value {
@@ -17,14 +23,14 @@ enum Bip86Coins implements CryptoCoins {
   }
 
   String get coinName {
-    return this.name;
+    return name;
   }
 
   CoinConfig get conf => _coinToConf[this]!;
 
   static Bip86Coins? fromName(String name) {
     try {
-      return values.firstWhere((element) => element.name == name);
+      return _coinToConf.keys.firstWhere((element) => element.name == name);
     } on StateError {
       return null;
     }

@@ -12,7 +12,7 @@ import 'package:blockchain_utils/exception/exception.dart';
 ///
 /// This enum defines different modes for public keys that can be used in P2PKH (Pay-to-Public-Key-Hash)
 /// addresses. These modes may include compressed and uncompressed public keys, among others.
-enum P2PKHPubKeyModes {
+enum PubKeyModes {
   compressed,
   uncompressed,
 }
@@ -81,8 +81,8 @@ class P2PKHAddrEncoder implements BlockchainAddressEncoder {
     if (alphabet is! Base58Alphabets) {
       throw ArgumentException("invalid base58 alphabet");
     }
-    final pubKeyModes = kwargs["pub_key_mode"] ?? P2PKHPubKeyModes.compressed;
-    if (pubKeyModes is! P2PKHPubKeyModes) {
+    final pubKeyModes = kwargs["pub_key_mode"] ?? PubKeyModes.compressed;
+    if (pubKeyModes is! PubKeyModes) {
       throw ArgumentException("invalid pub key mode");
     }
 
@@ -90,7 +90,7 @@ class P2PKHAddrEncoder implements BlockchainAddressEncoder {
     final publicKey = AddrKeyValidator.validateAndGetSecp256k1Key(pubKey);
 
     /// Determine the public key bytes based on the selected mode.
-    final List<int> pubKeyBytes = pubKeyModes == P2PKHPubKeyModes.compressed
+    final List<int> pubKeyBytes = pubKeyModes == PubKeyModes.compressed
         ? publicKey.compressed
         : publicKey.uncompressed;
 

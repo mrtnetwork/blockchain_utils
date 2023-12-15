@@ -1,3 +1,4 @@
+import 'package:blockchain_utils/bip/address/p2pkh_addr.dart';
 import 'package:blockchain_utils/bip/coin_conf/coins_conf.dart';
 import 'package:blockchain_utils/bip/electrum/electrum_v1.dart';
 import 'package:blockchain_utils/bip/wif/wif.dart';
@@ -12,7 +13,7 @@ void electrumV1Test() {
     final elc = ElectrumV1.fromSeed(seed);
     final prv = WifEncoder.encode(elc.privateKey!.raw,
         netVer: CoinsConf.bitcoinMainNet.params.wifNetVer!,
-        pubKeyMode: WifPubKeyModes.uncompressed);
+        pubKeyMode: PubKeyModes.uncompressed);
     assert(prv == i["private"]);
 
     final public = elc.publicKey.uncompressed.toHex();
@@ -23,7 +24,7 @@ void electrumV1Test() {
       final cPrv = WifEncoder.encode(
           elc.getPrivateKey(changeIndex, addressIndex).raw,
           netVer: CoinsConf.bitcoinMainNet.params.wifNetVer!,
-          pubKeyMode: WifPubKeyModes.uncompressed);
+          pubKeyMode: PubKeyModes.uncompressed);
       assert(cPrv == c["private"]);
       final cPub =
           elc.getPublicKey(changeIndex, addressIndex).uncompressed.toHex();

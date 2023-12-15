@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:example/test/address/ada_shelly/ada_shelly_test.dart';
 import 'package:example/test/address/algo/algo_test.dart';
 import 'package:example/test/address/aptos/aptos_test.dart';

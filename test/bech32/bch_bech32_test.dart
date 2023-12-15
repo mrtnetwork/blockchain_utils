@@ -1,7 +1,6 @@
-import 'package:blockchain_utils/bech32/bch_bech32.dart';
 import 'package:blockchain_utils/bip/coin_conf/coins_conf.dart';
+import 'package:blockchain_utils/blockchain_utils.dart';
 import 'package:blockchain_utils/compare/compare.dart';
-import 'package:blockchain_utils/binary/utils.dart';
 import 'package:test/test.dart';
 
 final List<Map<String, String>> _testVect = [
@@ -58,6 +57,6 @@ void main() {
     expect(() {
       BchBech32Decoder.decode("bitcoincash",
           "bitciincash:qq54jk3u0pmql6g0azpmjghn2wm8gswj35853zv6sr");
-    }, throwsA(isA<ArgumentError>()));
+    }, throwsA(isA<ArgumentException>()));
   });
 }

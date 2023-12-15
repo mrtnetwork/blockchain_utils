@@ -21,32 +21,47 @@ import 'addr_dec_utils.dart';
 /// final prefixBytes = prefix.value;
 /// final prefixName = prefix.name;
 /// ```
-enum XtzAddrPrefixes {
+class XtzAddrPrefixes {
   /// Address prefix for tz1 addresses.
-  tz1([0x06, 0xa1, 0x9f]),
+  static const XtzAddrPrefixes tz1 = XtzAddrPrefixes._([0x06, 0xa1, 0x9f]);
 
   /// Address prefix for tz2 addresses.
-  tz2([0x06, 0xa1, 0xa1]),
+  static const XtzAddrPrefixes tz2 = XtzAddrPrefixes._([0x06, 0xa1, 0xa1]);
 
   /// Address prefix for tz3 addresses.
-  tz3([0x06, 0xa1, 0xa4]);
+  static const XtzAddrPrefixes tz3 = XtzAddrPrefixes._([0x06, 0xa1, 0xa4]);
 
   /// The bytes that make up the address prefix.
   final List<int> value;
 
   /// Constructor to create an enum value with the specified prefix bytes.
-  const XtzAddrPrefixes(this.value);
+  const XtzAddrPrefixes._(this.value);
 
   /// Static method to retrieve an enum value based on its name.
   ///
   /// If the provided name is not found in the enum, it returns null.
-  static XtzAddrPrefixes? fromName(String name) {
-    try {
-      return XtzAddrPrefixes.values
-          .firstWhere((element) => element.name == name);
-    } on StateError {
-      return null;
+  // static XtzAddrPrefixes? fromName(String name) {
+  //   try {
+  //     return XtzAddrPrefixes.values
+  //         .firstWhere((element) => element.name == name);
+  //   } on StateError {
+  //     return null;
+  //   }
+  // }
+
+  // Enum values as a list for iteration
+  static const List<XtzAddrPrefixes> values = [
+    tz1,
+    tz2,
+    tz3,
+  ];
+
+  // Enum value accessor by index
+  static XtzAddrPrefixes getByIndex(int index) {
+    if (index >= 0 && index < values.length) {
+      return values[index];
     }
+    throw ArgumentError('Index out of bounds: $index');
   }
 }
 

@@ -56,5 +56,8 @@ List<String> moneroMnemonicWorsList(MoneroLanguages language) {
       return _spanish;
     case MoneroLanguages.russian:
       return _russian;
+    default:
+      throw UnimplementedError(
+          "monero mnemonic does not support ${language.name}");
   }
 }

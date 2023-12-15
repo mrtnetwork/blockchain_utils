@@ -421,5 +421,5 @@ class BigRational {
   }
 
   @override
-  int get hashCode => Object.hash(numerator, denominator);
+  int get hashCode => numerator.hashCode ^ denominator.hashCode;
 }

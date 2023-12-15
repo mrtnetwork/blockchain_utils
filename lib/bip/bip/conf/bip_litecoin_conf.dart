@@ -12,19 +12,28 @@ class BipLitecoinConf extends CoinConfig {
 
   /// Constructor for BipLitecoinConf.
   const BipLitecoinConf({
-    required super.coinNames,
-    required super.coinIdx,
-    required super.isTestnet,
-    required super.defPath,
-    required super.keyNetVer,
+    required CoinNames coinNames,
+    required int coinIdx,
+    required bool isTestnet,
+    required String defPath,
+    required Bip32KeyNetVersions keyNetVer,
+    required List<int>? wifNetVer,
+    required EllipticCurveTypes type,
+    required AddrEncoder addressEncoder,
+    required Map<String, dynamic> addrParams,
     required this.altKeyNetVer,
-    required super.wifNetVer,
-    required super.addrParams,
-    required super.addressEncoder,
-    required super.type,
     this.useAltKeyNetVer = false,
     this.useDeprAddress = false,
-  });
+  }) : super(
+            addrParams: addrParams,
+            addressEncoder: addressEncoder,
+            coinIdx: coinIdx,
+            coinNames: coinNames,
+            defPath: defPath,
+            isTestnet: isTestnet,
+            keyNetVer: keyNetVer,
+            type: type,
+            wifNetVer: wifNetVer);
 
   /// Overrides the 'addrParams' getter to return the appropriate address parameters
   /// based on the 'useDeprAddress' flag.
