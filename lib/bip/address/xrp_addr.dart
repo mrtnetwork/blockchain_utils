@@ -296,15 +296,21 @@ class XrpAddrEncoder implements BlockchainAddressEncoder {
   /// ```
   @override
   String encodeKey(List<int> pubKey, [Map<String, dynamic> kwargs = const {}]) {
-    try {
+    var publicType = kwargs["curve_type"] ?? EllipticCurveTypes.secp256k1;
+    if (publicType is! EllipticCurveTypes ||
+        (publicType != EllipticCurveTypes.secp256k1 &&
+            publicType != EllipticCurveTypes.ed25519)) {
+      throw ArgumentException(
+          'Missing required parameters: curve_type, curvetype must be EllipticCurveTypes.secp256k1 or EllipticCurveTypes.ed25519');
+    }
+    if (publicType == EllipticCurveTypes.secp256k1) {
       return P2PKHAddrEncoder().encodeKey(pubKey, {
         "net_ver": CoinsConf.ripple.params.p2pkhNetVer!,
         "base58_alph": Base58Alphabets.ripple,
       });
-    } catch (e) {
-      AddrKeyValidator.validateAndGetEd25519Key(pubKey);
-      return XRPAddressUtils._toAddress(pubKey);
     }
+    AddrKeyValidator.validateAndGetEd25519Key(pubKey);
+    return XRPAddressUtils._toAddress(pubKey);
   }
 }
 

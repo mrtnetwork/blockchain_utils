@@ -232,6 +232,12 @@ class Bip44Coins implements CryptoCoins {
   /// Ripple Testnet
   static const rippleTestnet = Bip44Coins._('rippleTestnet');
 
+  /// Ripple
+  static const rippleEd25519 = Bip44Coins._('rippleED25519');
+
+  /// Ripple Testnet
+  static const rippleTestnetED25519 = Bip44Coins._('rippleTestnetED25519');
+
   /// Secret Network (Old)
   static const secretNetworkOld = Bip44Coins._('secretNetworkOld');
 
@@ -391,6 +397,8 @@ class Bip44Coins implements CryptoCoins {
     Bip44Coins.polygon: Bip44Conf.polygon,
     Bip44Coins.ripple: Bip44Conf.ripple,
     Bip44Coins.rippleTestnet: Bip44Conf.rippleTestnet,
+    Bip44Coins.rippleEd25519: Bip44Conf.rippleEd25519,
+    Bip44Coins.rippleTestnetED25519: Bip44Conf.rippleTestnetEd25519,
     Bip44Coins.secretNetworkOld: Bip44Conf.secretNetworkOld,
     Bip44Coins.secretNetworkNew: Bip44Conf.secretNetworkNew,
     Bip44Coins.solana: Bip44Conf.solana,

@@ -22,6 +22,8 @@ class Bip32KeyDataConst {
   static const int keyIndexMaxVal = 4294967295; // 2^32 - 1
   // Key index hardened bit number
   static const int keyIndexHardenedBitNum = 31;
+  // harden Key index minimum value
+  static const int hardenKeyIndexMinValue = 2147483648; // 2^31 - 1
 }
 
 /// BIP32 chaincode class.

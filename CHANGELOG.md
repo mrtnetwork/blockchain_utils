@@ -1,3 +1,7 @@
+## 1.4.1
+- Corrected Ripple address encoding for ED25519
+- Added support for Ripple ED25519 coin
+
 ## 1.4.0
 - Downgrade DART SDK version from 2.17.1 to 2.15.0
 

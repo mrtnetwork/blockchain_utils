@@ -1043,7 +1043,37 @@ class Bip44Conf {
     addrParams: {"prefix": CoinsConf.rippleTestNet.params.addrNetVer!},
   );
 
-  /// Configuration for Secret Network (old path)
+  /// Configuration for Ripple
+  static final CoinConfig rippleEd25519 = CoinConfig(
+    coinNames: CoinsConf.ripple.coinName,
+    coinIdx: Slip44.ripple,
+    isTestnet: false,
+    defPath: derPathHardenedShort,
+    keyNetVer: bip44BtcKeyNetVerMain,
+    wifNetVer: null,
+    type: EllipticCurveTypes.ed25519,
+    addressEncoder: ([dynamic kwargs]) => XrpAddrEncoder(),
+    addrParams: {
+      "prefix": CoinsConf.ripple.params.addrNetVer!,
+      "curve_type": EllipticCurveTypes.ed25519
+    },
+  );
+
+  /// Configuration for Ripple testnet
+  static final CoinConfig rippleTestnetEd25519 = CoinConfig(
+    coinNames: CoinsConf.ripple.coinName,
+    coinIdx: Slip44.testnet,
+    isTestnet: true,
+    defPath: derPathHardenedShort,
+    keyNetVer: bip44BtcKeyNetVerMain,
+    wifNetVer: null,
+    type: EllipticCurveTypes.ed25519,
+    addressEncoder: ([dynamic kwargs]) => XrpAddrEncoder(),
+    addrParams: {
+      "prefix": CoinsConf.rippleTestNet.params.addrNetVer!,
+      "curve_type": EllipticCurveTypes.ed25519
+    },
+  );
   static final CoinConfig secretNetworkOld = CoinConfig(
     coinNames: CoinsConf.secretNetwork.coinName,
     coinIdx: Slip44.atom,

@@ -3,6 +3,7 @@ import 'package:blockchain_utils/exception/exception.dart';
 /// Represents a rational number with arbitrary precision using BigInt for the numerator and denominator.
 class BigRational {
   static final BigRational zero = BigRational.from(0);
+  static final BigRational one = BigRational.from(1);
   static final BigRational ten = BigRational.from(10);
   final BigInt numerator;
   final BigInt denominator;
