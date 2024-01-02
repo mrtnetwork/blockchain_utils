@@ -4,7 +4,6 @@ import 'package:blockchain_utils/bip/address/decoder.dart';
 import 'package:blockchain_utils/bip/address/encoder.dart';
 import 'package:blockchain_utils/bip/coin_conf/coins_conf.dart';
 import 'package:blockchain_utils/blockchain_utils.dart';
-import 'package:blockchain_utils/compare/compare.dart';
 
 /// Constants related to XRP (Ripple) addresses.
 class _XRPAddressConst {
@@ -29,7 +28,7 @@ class XRPAddressUtils {
   ///
   /// [addrHash] The address hash used to generate the XRP address.
   /// returns The generated XRP address as a Base58Check encoded string.
-  /// throws ArgumentError if the address hash length is not equal to QuickCrypto.hash160DigestSize.
+  /// throws ArgumentException if the address hash length is not equal to QuickCrypto.hash160DigestSize.
   static String hashToAddress(List<int> addrHash) {
     if (addrHash.length != QuickCrypto.hash160DigestSize) {
       throw ArgumentException(

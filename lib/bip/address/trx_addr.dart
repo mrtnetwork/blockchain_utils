@@ -6,6 +6,17 @@ import 'package:blockchain_utils/bip/address/encoder.dart';
 import 'package:blockchain_utils/bip/coin_conf/coins_conf.dart';
 import 'package:blockchain_utils/binary/utils.dart';
 
+class TrxAddressUtils {
+  static const List<int> prefix = [0x41];
+  static String fromHexBytes(List<int> bytes) {
+    final validateBytes =
+        AddrDecUtils.validateAndRemovePrefixBytes(bytes, prefix);
+    AddrDecUtils.validateBytesLength(validateBytes, EthAddrConst.addrLen ~/ 2);
+    return Base58Encoder.checkEncode(
+        List<int>.from([...prefix, ...validateBytes]));
+  }
+}
+
 /// Implementation of the [BlockchainAddressDecoder] for TRON (TRX) blockchain addresses.
 class TrxAddrDecoder implements BlockchainAddressDecoder {
   /// Decodes a Tron address from its encoded representation.
@@ -15,8 +26,7 @@ class TrxAddrDecoder implements BlockchainAddressDecoder {
   /// Returns the decoded address as a List<int>.
   @override
   List<int> decodeAddr(String addr, [Map<String, dynamic> kwargs = const {}]) {
-    List<int> addrDec;
-    addrDec = Base58Decoder.checkDecode(addr);
+    List<int> addrDec = Base58Decoder.checkDecode(addr);
     final tronPrefix =
         BytesUtils.fromHexString(CoinsConf.tron.params.addrPrefix!);
     AddrDecUtils.validateBytesLength(

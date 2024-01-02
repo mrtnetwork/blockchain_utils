@@ -145,6 +145,9 @@ class Bip44Coins implements CryptoCoins {
   /// Ethereum
   static const ethereum = Bip44Coins._('ethereum');
 
+  /// Ethereum
+  static const ethereumTestnet = Bip44Coins._('ethereumTestnet');
+
   /// Ethereum Classic
   static const ethereumClassic = Bip44Coins._('ethereumClassic');
 
@@ -262,6 +265,9 @@ class Bip44Coins implements CryptoCoins {
   /// Tron
   static const tron = Bip44Coins._('tron');
 
+  /// Tron
+  static const tronTestnet = Bip44Coins._('tronTestnet');
+
   /// VeChain
   static const vechain = Bip44Coins._('vechain');
 
@@ -367,6 +373,7 @@ class Bip44Coins implements CryptoCoins {
     Bip44Coins.ergo: Bip44Conf.ergoMainNet,
     Bip44Coins.ergoTestnet: Bip44Conf.ergoTestNet,
     Bip44Coins.ethereum: Bip44Conf.ethereum,
+    Bip44Coins.ethereumTestnet: Bip44Conf.ethereumTestnet,
     Bip44Coins.ethereumClassic: Bip44Conf.ethereumClassic,
     Bip44Coins.fantomOpera: Bip44Conf.fantomOpera,
     Bip44Coins.filecoin: Bip44Conf.filecoin,
@@ -407,6 +414,7 @@ class Bip44Coins implements CryptoCoins {
     Bip44Coins.tezos: Bip44Conf.tezos,
     Bip44Coins.theta: Bip44Conf.theta,
     Bip44Coins.tron: Bip44Conf.tron,
+    Bip44Coins.tronTestnet: Bip44Conf.tronTestnet,
     Bip44Coins.vechain: Bip44Conf.vechain,
     Bip44Coins.verge: Bip44Conf.verge,
     Bip44Coins.zcash: Bip44Conf.zcashMainNet,

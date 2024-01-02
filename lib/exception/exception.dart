@@ -31,7 +31,7 @@ class ArgumentException implements BlockchainUtilsException {
 /// This exception is used to represent errors related to messages in blockchain utility operations.
 class MessageException implements BlockchainUtilsException {
   /// Constructor to initialize the exception with a specific message.
-  const MessageException(this.message);
+  const MessageException(this.message, {this.details});
 
   /// Final field to store the exception message.
   final String message;
@@ -39,6 +39,8 @@ class MessageException implements BlockchainUtilsException {
   /// Override the 'toString' method to provide a custom string representation of the exception.
   @override
   String toString() {
-    return message;
+    return "$message $details";
   }
+
+  final Map<String, dynamic>? details;
 }

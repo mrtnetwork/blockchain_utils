@@ -1,11 +1,20 @@
-import 'package:blockchain_utils/numbers/bigint_utils.dart';
-import 'package:blockchain_utils/crypto/crypto/cdsa/ecdsa/public_key.dart';
-import 'package:blockchain_utils/crypto/crypto/cdsa/point/ec_projective_point.dart';
+import 'package:blockchain_utils/blockchain_utils.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/utils/utils.dart';
 
 /// Represents an ECDSA (Elliptic Curve Digital Signature Algorithm) signature
 /// containing `r` and `s` components.
 class ECDSASignature {
+  factory ECDSASignature.fromBytes(
+      List<int> bytes, ProjectiveECCPoint generator) {
+    if (bytes.length != generator.curve.baselen * 2) {
+      throw ArgumentException(
+          "incorrect signatureBytes length ${bytes.length}");
+    }
+    final r = BigintUtils.fromBytes(bytes.sublist(0, generator.curve.baselen));
+    final s = BigintUtils.fromBytes(
+        bytes.sublist(generator.curve.baselen, generator.curve.baselen * 2));
+    return ECDSASignature(r, s);
+  }
   final BigInt r;
   final BigInt s;
 
@@ -36,31 +45,45 @@ class ECDSASignature {
   List<ECDSAPublicKey> recoverPublicKeys(
       List<int> hash, ProjectiveECCPoint generator) {
     final curve = generator.curve;
-    final n = generator.order;
+    final order = generator.order!;
     final e = BigintUtils.fromBytes(hash);
-
-    final x = r;
-
     final alpha =
-        (x.modPow(BigInt.from(3), curve.p) + curve.a * x + curve.b) % curve.p;
+        (r.modPow(BigInt.from(3), curve.p) + curve.a * r + curve.b) % curve.p;
     final beta = ECDSAUtils.modularSquareRootPrime(alpha, curve.p);
     final y = (beta % BigInt.two == BigInt.zero) ? beta : (curve.p - beta);
-
-    final ProjectiveECCPoint r1 =
-        ProjectiveECCPoint(curve: curve, x: x, y: y, z: BigInt.one, order: n);
-    final ProjectiveECCPoint q1 =
-        (r1 * s) + (generator * (-e % n!)) * BigintUtils.inverseMod(r, n)
-            as ProjectiveECCPoint;
+    final ProjectiveECCPoint r1 = ProjectiveECCPoint(
+        curve: curve, x: r, y: y, z: BigInt.one, order: order);
+    final inverseR = BigintUtils.inverseMod(r, order);
+    final ProjectiveECCPoint q1 = ((r1 * s) + (generator * (-e % order))) *
+        inverseR as ProjectiveECCPoint;
     final pk1 = ECDSAPublicKey(generator, q1);
 
-    final r2 =
-        ProjectiveECCPoint(curve: curve, x: x, y: -y, z: BigInt.one, order: n);
-    final ProjectiveECCPoint q2 =
-        (r2 * s) + (generator * (-e % n)) * BigintUtils.inverseMod(r, n)
-            as ProjectiveECCPoint;
+    final r2 = ProjectiveECCPoint(
+        curve: curve, x: r, y: -y, z: BigInt.one, order: order);
+    final ProjectiveECCPoint q2 = ((r2 * s) + (generator * (-e % order))) *
+        inverseR as ProjectiveECCPoint;
     final pk2 = ECDSAPublicKey(generator, q2);
 
     return [pk1, pk2];
+  }
+
+  ECDSAPublicKey? recoverPublicKey(
+      List<int> hash, ProjectiveECCPoint generator, int recId) {
+    final curve = generator.curve;
+    final order = generator.order!;
+    final secret = BigintUtils.fromBytes(hash);
+    final alpha =
+        (r.modPow(BigInt.from(3), curve.p) + curve.a * r + curve.b) % curve.p;
+    final beta = ECDSAUtils.modularSquareRootPrime(alpha, curve.p);
+    BigInt y = (beta % BigInt.two == BigInt.zero) ? beta : (curve.p - beta);
+    if (recId > 0) {
+      y = -y;
+    }
+    final ProjectiveECCPoint r1 = ProjectiveECCPoint(
+        curve: curve, x: r, y: y, z: BigInt.one, order: order);
+    final ProjectiveECCPoint q1 = ((r1 * s) + (generator * (-secret % order))) *
+        BigintUtils.inverseMod(r, order) as ProjectiveECCPoint;
+    return ECDSAPublicKey(generator, q1);
   }
 
   List<int> toBytes(int baselen) {

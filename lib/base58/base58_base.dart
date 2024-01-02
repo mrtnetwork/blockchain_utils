@@ -1,6 +1,5 @@
 import 'package:blockchain_utils/base58/base58_ex.dart';
 import 'package:blockchain_utils/blockchain_utils.dart';
-import 'package:blockchain_utils/compare/compare.dart';
 
 enum Base58Alphabets {
   bitcoin,

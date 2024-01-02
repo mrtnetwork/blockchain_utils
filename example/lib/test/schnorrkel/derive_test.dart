@@ -3,7 +3,7 @@ import 'package:example/test/quick_hex.dart';
 import 'package:blockchain_utils/binary/utils.dart';
 
 import 'derive_test_vector.dart';
-import 'derive_public_test.dart';
+import 'derive_public_vector.dart';
 
 void schnoorTestDerive() {
   for (final i in derivePublicTestVector) {

@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:blockchain_utils/binary/binary.dart';
+
 /// An enumeration representing different string encoding options.
 enum StringEncoding {
   /// The ASCII encoding option.
@@ -19,6 +21,20 @@ enum StringEncoding {
 
 /// A utility class for working with strings and common string operations.
 class StringUtils {
+  static final RegExp _hexRegex = RegExp(r'\b(?:0[xX])?[0-9a-fA-F]+\b');
+
+  static bool isHex(String v) {
+    return _hexRegex.hasMatch(v);
+  }
+
+  static List<int> toBytes(String v) {
+    if (isHex(v)) {
+      return BytesUtils.fromHexString(v);
+    } else {
+      return encode(v);
+    }
+  }
+
   /// Removes the '0x' prefix from a hexadecimal string if it exists.
   ///
   /// If the input [value] starts with '0x', this method returns the
@@ -58,6 +74,16 @@ class StringUtils {
     }
   }
 
+  static List<int>? tryEncode(String? value,
+      [StringEncoding type = StringEncoding.utf8]) {
+    if (value == null) return null;
+    try {
+      return encode(value, type);
+    } catch (e) {
+      return null;
+    }
+  }
+
   /// Decodes a list of bytes [value] into a string using the specified [type].
   ///
   /// The [type] parameter determines the decoding type to use, with UTF-8 being the default.
@@ -76,6 +102,16 @@ class StringUtils {
         return base64Encode(value);
       default:
         return ascii.decode(value);
+    }
+  }
+
+  static String? tryDecode(List<int>? value,
+      [StringEncoding type = StringEncoding.utf8]) {
+    if (value == null) return null;
+    try {
+      return decode(value, type);
+    } catch (e) {
+      return null;
     }
   }
 

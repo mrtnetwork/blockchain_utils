@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:blockchain_utils/binary/binary_operation.dart';
+import 'package:blockchain_utils/string/string.dart';
 import 'package:blockchain_utils/tuple/tuple.dart';
 import 'package:blockchain_utils/exception/exception.dart';
 import 'package:blockchain_utils/numbers/bigint_utils.dart';
@@ -83,7 +84,8 @@ class IntUtils {
   /// [val] The integer value for which to calculate the bit length in bytes.
   /// Returns the number of bytes required to represent the bit length of the integer value.
   static int bitlengthInBytes(int val) {
-    return ((val > 0 ? val.bitLength : 1) + 7) ~/ 8;
+    final abs = val.abs();
+    return ((abs > 0 ? abs.bitLength : 1) + 7) ~/ 8;
   }
 
   /// Converts an integer to a byte list with the specified length and endianness.
@@ -113,7 +115,8 @@ class IntUtils {
   /// [bytes] The list of bytes representing the integer value.
   /// [byteOrder] The byte order, defaults to Endian.big.
   /// Returns the corresponding integer value.
-  static int fromBytes(List<int> bytes, {Endian byteOrder = Endian.big}) {
+  static int fromBytes(List<int> bytes,
+      {Endian byteOrder = Endian.big, bool sign = false}) {
     if (byteOrder == Endian.little) {
       bytes = List<int>.from(bytes.reversed.toList());
     }
@@ -122,6 +125,63 @@ class IntUtils {
     for (var i = 0; i < bytes.length; i++) {
       result |= (bytes[bytes.length - i - 1] << (8 * i));
     }
+    if (sign && (bytes[0] & 0x80) != 0) {
+      return result.toSigned(bitlengthInBytes(result) * 8);
+    }
+
     return result;
+  }
+
+  /// Parses a dynamic value [v] into an integer.
+  ///
+  /// Tries to convert the dynamic value [v] into an integer. It supports parsing
+  /// from int, BigInt, List<int>, and String types. If [v] is a String and
+  /// represents a hexadecimal number (prefixed with '0x' or not), it is parsed
+  /// accordingly.
+  ///
+  /// Parameters:
+  /// - [v]: The dynamic value to be parsed into an integer.
+  ///
+  /// Returns:
+  /// - An integer representation of the parsed value.
+  ///
+  static int parse(dynamic v) {
+    try {
+      if (v is int) return v;
+      if (v is BigInt) return v.toInt();
+      if (v is List<int>) {
+        return fromBytes(v, sign: true);
+      }
+      if (v is String) {
+        int? parse = int.tryParse(v);
+        if (parse == null && StringUtils.isHex(v)) {
+          parse = int.parse(v, radix: 16);
+        }
+        return parse!;
+      }
+      // ignore: empty_catches
+    } catch (e) {}
+    throw ArgumentException("invalid input for parse int");
+  }
+
+  /// Tries to parse a dynamic value [v] into an integer, returning null if parsing fails.
+  ///
+  /// If the input value [v] is null, directly returns null. Otherwise, attempts to
+  /// parse the dynamic value [v] into an integer using the [parse] method.
+  /// If successful, returns the resulting integer; otherwise, returns null.
+  ///
+  /// Parameters:
+  /// - [v]: The dynamic value to be parsed into an integer.
+  ///
+  /// Returns:
+  /// - An integer if parsing is successful; otherwise, returns null.
+  ///
+  static int? tryParse(dynamic v) {
+    if (v == null) return null;
+    try {
+      return parse(v);
+    } on ArgumentException {
+      return null;
+    }
   }
 }

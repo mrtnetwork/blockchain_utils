@@ -247,19 +247,6 @@ class Strobe {
     }
   }
 
-  // static void _xor(List<BigInt> state, List<int> b) {
-  //   print("b $b $state");
-  //   int n = b.length ~/ 8;
-  //   for (int i = 0; i < n; i++) {
-  //     BigInt a = BigInt.zero;
-  //     for (int j = 0; j < 8; j++) {
-  //       a |= BigInt.from((b[i * 8 + j] & 0xFF)) << (j * 8);
-  //     }
-  //     state[i] = (state[i] ^ a) & mask64;
-  //   }
-  //   print("estate $state");
-  //   throw Exception();
-  // }
   void _xor(List<int> state, List<int> b) {
     assert(b.length == 168);
     for (int i = 0; i < b.length; i++) {

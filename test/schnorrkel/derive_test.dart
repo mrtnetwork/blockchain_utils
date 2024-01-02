@@ -4,7 +4,7 @@ import 'package:test/test.dart';
 
 import '../quick_hex.dart';
 import 'derive_test_vector.dart';
-import 'derive_public_test.dart';
+import 'derive_public_vector.dart';
 
 void main() {
   test("shnorrkel public derive", () {

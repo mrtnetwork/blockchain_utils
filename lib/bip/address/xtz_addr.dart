@@ -1,8 +1,7 @@
-import 'package:blockchain_utils/base58/base58.dart';
 import 'package:blockchain_utils/bip/address/addr_key_validator.dart';
 import 'package:blockchain_utils/bip/address/decoder.dart';
 import 'package:blockchain_utils/bip/address/encoder.dart';
-import 'package:blockchain_utils/crypto/quick_crypto.dart';
+import 'package:blockchain_utils/blockchain_utils.dart';
 
 import 'addr_dec_utils.dart';
 
@@ -37,18 +36,6 @@ class XtzAddrPrefixes {
   /// Constructor to create an enum value with the specified prefix bytes.
   const XtzAddrPrefixes._(this.value);
 
-  /// Static method to retrieve an enum value based on its name.
-  ///
-  /// If the provided name is not found in the enum, it returns null.
-  // static XtzAddrPrefixes? fromName(String name) {
-  //   try {
-  //     return XtzAddrPrefixes.values
-  //         .firstWhere((element) => element.name == name);
-  //   } on StateError {
-  //     return null;
-  //   }
-  // }
-
   // Enum values as a list for iteration
   static const List<XtzAddrPrefixes> values = [
     tz1,
@@ -61,7 +48,7 @@ class XtzAddrPrefixes {
     if (index >= 0 && index < values.length) {
       return values[index];
     }
-    throw ArgumentError('Index out of bounds: $index');
+    throw MessageException('Index out of bounds', details: {"index": index});
   }
 }
 

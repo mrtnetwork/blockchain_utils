@@ -622,6 +622,19 @@ class Bip44Conf {
     addrParams: {},
   );
 
+  /// Configuration for EthereumTestnet
+  static final CoinConfig ethereumTestnet = CoinConfig(
+    coinNames: CoinsConf.ethereum.coinName,
+    coinIdx: Slip44.testnet,
+    isTestnet: true,
+    defPath: derPathNonHardenedFull,
+    keyNetVer: bip44BtcKeyNetVerMain,
+    wifNetVer: null,
+    type: EllipticCurveTypes.secp256k1,
+    addressEncoder: ([dynamic kwargs]) => EthAddrEncoder(),
+    addrParams: {},
+  );
+
   /// Configuration for Ethereum Classic
   static final CoinConfig ethereumClassic = CoinConfig(
     coinNames: CoinsConf.ethereumClassic.coinName,
@@ -1175,6 +1188,19 @@ class Bip44Conf {
     coinNames: CoinsConf.tron.coinName,
     coinIdx: Slip44.tron,
     isTestnet: false,
+    defPath: derPathNonHardenedFull,
+    keyNetVer: bip44BtcKeyNetVerMain,
+    wifNetVer: null,
+    type: EllipticCurveTypes.secp256k1,
+    addressEncoder: ([dynamic kwargs]) => TrxAddrEncoder(),
+    addrParams: {},
+  );
+
+  /// Configuration for Tron testnet
+  static final CoinConfig tronTestnet = CoinConfig(
+    coinNames: CoinsConf.tron.coinName,
+    coinIdx: Slip44.testnet,
+    isTestnet: true,
     defPath: derPathNonHardenedFull,
     keyNetVer: bip44BtcKeyNetVerMain,
     wifNetVer: null,

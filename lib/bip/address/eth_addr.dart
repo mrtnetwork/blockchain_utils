@@ -19,7 +19,7 @@ class EthAddrConst {
 }
 
 /// Utility class for Ethereum address-related operations.
-class _EthAddrUtils {
+class EthAddrUtils {
   /// Encodes an Ethereum address with checksum.
   ///
   /// This method takes an Ethereum address as input and calculates its checksum.
@@ -33,7 +33,7 @@ class _EthAddrUtils {
   ///
   /// Returns:
   ///   A string representing the Ethereum address with checksum.
-  static String checksumEncode(String addr) {
+  static String _checksumEncode(String addr) {
     String addrHexDigest = BytesUtils.toHexString(
         QuickCrypto.keccack256Hash(StringUtils.encode(addr.toLowerCase())));
     List<String> encAddr = addr.split("").asMap().entries.map((entry) {
@@ -44,6 +44,13 @@ class _EthAddrUtils {
     }).toList();
 
     return encAddr.join();
+  }
+
+  static String toChecksumAddress(String addr) {
+    final String wihtoutPrefix = StringUtils.strip0x(addr);
+    AddrDecUtils.validateLength(wihtoutPrefix, EthAddrConst.addrLen);
+    return CoinsConf.ethereum.params.addrPrefix! +
+        _checksumEncode(wihtoutPrefix);
   }
 }
 
@@ -74,7 +81,7 @@ class EthAddrDecoder implements BlockchainAddressDecoder {
         addr, CoinsConf.ethereum.params.addrPrefix!);
     AddrDecUtils.validateLength(addrNoPrefix, EthAddrConst.addrLen);
     if (!skipChecksum &&
-        addrNoPrefix != _EthAddrUtils.checksumEncode(addrNoPrefix)) {
+        addrNoPrefix != EthAddrUtils._checksumEncode(addrNoPrefix)) {
       throw ArgumentException("Invalid checksum encoding");
     }
     return BytesUtils.fromHexString(addrNoPrefix);
@@ -107,6 +114,6 @@ class EthAddrEncoder implements BlockchainAddressEncoder {
       return addr;
     }
     return CoinsConf.ethereum.params.addrPrefix! +
-        _EthAddrUtils.checksumEncode(addr);
+        EthAddrUtils._checksumEncode(addr);
   }
 }

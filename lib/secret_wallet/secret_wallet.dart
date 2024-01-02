@@ -1,5 +1,4 @@
 import 'package:blockchain_utils/blockchain_utils.dart';
-import 'package:blockchain_utils/compare/compare.dart';
 
 class _SecretStorageConst {
   static const List<int> scryptTag = [180];

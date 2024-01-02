@@ -60,7 +60,7 @@ class FloatLength {
     if (index >= 0 && index < values.length) {
       return values[index];
     }
-    throw ArgumentError('Index out of bounds: $index');
+    throw MessageException('Index out of bounds', details: {"input": index});
   }
 }
 

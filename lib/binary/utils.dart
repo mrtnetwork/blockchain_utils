@@ -37,28 +37,128 @@ class BytesUtils {
     return fromHexString(hexValue);
   }
 
-  /// Converts a list of bytes to a hexadecimal string representation.
+  /// Converts a List of integers representing bytes, [dataBytes], into a
+  /// hexadecimal string.
   ///
-  /// Converts the input list of bytes to a hexadecimal string using the `hex` library.
-  static String toHexString(List<int> dataBytes, [bool lowerCase = true]) {
-    return hex.hex.encode(dataBytes, lowerCase);
+  /// The method uses the `hex` library to encode the byte list into a
+  /// hexadecimal string. It allows customization of the string's case
+  /// (lowercase or uppercase) using the [lowerCase] parameter, and an optional
+  /// [prefix] string can be appended to the resulting hexadecimal string.
+  ///
+  /// Parameters:
+  /// - [dataBytes]: A List of integers representing bytes to be converted.
+  /// - [lowerCase]: Whether the resulting hexadecimal string should be in
+  ///   lowercase (default is true).
+  /// - [prefix]: An optional string to append as a prefix to the hexadecimal string.
+  ///
+  /// Returns:
+  /// - A hexadecimal string representation of [dataBytes].
+  ///
+  static String toHexString(List<int> dataBytes,
+      {bool lowerCase = true, String? prefix}) {
+    final String toHex = hex.hex.encode(dataBytes, lowerCase);
+    return "${prefix ?? ''}$toHex";
   }
 
-  /// Converts a hexadecimal string to a list of bytes.
+  /// Tries to convert a list of integers representing bytes, [dataBytes], into a
+  /// hexadecimal string.
   ///
-  /// Parses a hexadecimal string and converts it to a list of bytes using the `hex` library.
-  static List<int> fromHexString(String data) {
-    return hex.hex.decode(StringUtils.strip0x(data));
+  /// If [dataBytes] is null, returns null. Otherwise, attempts to convert the
+  /// byte list into a hexadecimal string using the [toHexString] function.
+  /// If successful, returns the resulting hexadecimal string; otherwise, returns null.
+  ///
+  /// Parameters:
+  /// - [dataBytes]: A List of integers representing bytes to be converted.
+  /// - [lowerCase]: Whether the resulting hexadecimal string should be in
+  ///   lowercase (default is true).
+  /// - [prefix]: An optional string to append as a prefix to the hexadecimal string.
+  ///
+  /// Returns:
+  /// - A hexadecimal string representation of [dataBytes], or null if conversion fails.
+  ///
+  static String? tryToHexString(List<int>? dataBytes,
+      {bool lowerCase = true, String? prefix}) {
+    if (dataBytes == null) return null;
+    try {
+      return toHexString(dataBytes, lowerCase: lowerCase, prefix: prefix);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  /// Converts a hexadecimal string [data] into a List of integers representing bytes.
+  ///
+  /// The method removes the '0x' prefix, strips leading zeros, and decodes the
+  /// resulting hexadecimal string into bytes. Optionally, it pads zero if the
+  /// string length is odd and the [paddingZero] parameter is set to true.
+  ///
+  /// Parameters:
+  /// - [data]: The hexadecimal string to be converted.
+  /// - [paddingZero]: Whether to pad a zero to the string if its length is odd
+  ///   (default is false).
+  ///
+  /// Returns:
+  /// - A List of integers representing bytes converted from the hexadecimal string.
+  ///
+  /// Throws:
+  /// - [ArgumentException] if the input is not a valid hexadecimal string.
+  ///
+  static List<int> fromHexString(String data, {bool paddingZero = false}) {
+    try {
+      String hexString = StringUtils.strip0x(data);
+      if (hexString.isEmpty) return [];
+      if (paddingZero && hexString.length.isOdd) {
+        hexString = "0$hexString";
+      }
+      return hex.hex.decode(hexString);
+    } catch (e) {
+      throw ArgumentException("invalid hex bytes");
+    }
+  }
+
+  /// Tries to convert a hexadecimal string [data] into a List of integers.
+  ///
+  /// If [data] is null, returns null. Otherwise, attempts to parse the
+  /// hexadecimal string using the [fromHexString] function. If successful,
+  /// returns the resulting List of integers; otherwise, returns null.
+  static List<int>? tryFromHexString(String? data) {
+    if (data == null) return null;
+    try {
+      return fromHexString(data);
+    } catch (e) {
+      return null;
+    }
   }
 
   /// Ensures that each byte is properly represented as an 8-bit integer.
   ///
   /// Performs a bitwise AND operation with a mask (`mask8`) to ensure that each byte in
   /// the input list is represented as an 8-bit integer.
-  static List<int> toBytes(List<int> bytes) {
-    return bytes.map((e) => e & mask8).toList();
+  static List<int> toBytes(List<int> bytes, {bool unmodifiable = false}) {
+    final toBytes = bytes.map((e) => e & mask8).toList();
+    if (unmodifiable) {
+      return List<int>.unmodifiable(toBytes);
+    }
+    return toBytes;
   }
 
+  static List<int>? tryToBytes(List<int>? bytes, {bool unmodifiable = false}) {
+    if (bytes == null) return null;
+    return toBytes(bytes, unmodifiable: unmodifiable);
+  }
+
+  /// Validates a list of integers representing bytes.
+  ///
+  /// Ensures that each integer in the provided [bytes] list falls within the
+  /// valid byte range (0 to 255). If any byte is outside this range,
+  /// throws an [ArgumentException] with a descriptive error message.
+  ///
+  /// Parameters:
+  /// - [bytes]: A List of integers representing bytes to be validated.
+  ///
+  /// Throws:
+  /// - [ArgumentException] if any byte is outside the valid range.
+  ///
   static void validateBytes(List<int> bytes) {
     for (final int i in bytes) {
       if (i < 0 || i > mask8) {

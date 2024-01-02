@@ -1,5 +1,7 @@
 import 'dart:typed_data';
 import 'package:blockchain_utils/binary/utils.dart';
+import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/string/string.dart';
 import 'package:blockchain_utils/tuple/tuple.dart';
 import 'package:blockchain_utils/numbers/int_utils.dart';
 
@@ -26,7 +28,7 @@ class BigintUtils {
   }
 
   static int bitlengthInBytes(BigInt value) {
-    return (value.bitLength + 7) ~/ 8;
+    return (value.abs().bitLength + 7) ~/ 8;
   }
 
   /// Converts a sequence of bits represented as a byte array to a BigInt integer.
@@ -287,14 +289,20 @@ class BigintUtils {
   /// - [bytes]: The list of bytes to be converted to a BigInt.
   /// - [byteOrder]: The byte order to interpret the byte sequence (default is big endian).
   /// Returns: The BigInt representation of the input byte sequence.
-  static BigInt fromBytes(List<int> bytes, {Endian byteOrder = Endian.big}) {
+  static BigInt fromBytes(List<int> bytes,
+      {Endian byteOrder = Endian.big, bool sign = false}) {
     if (byteOrder == Endian.little) {
       bytes = List<int>.from(bytes.reversed.toList());
     }
-    BigInt result = BigInt.from(0);
+    BigInt result = BigInt.zero;
     for (int i = 0; i < bytes.length; i++) {
       /// Add each byte to the result, considering its position and byte order.
       result += BigInt.from(bytes[bytes.length - i - 1]) << (8 * i);
+    }
+    if (result == BigInt.zero) return BigInt.zero;
+    if (sign && (bytes[0] & 0x80) != 0) {
+      final bitLength = bitlengthInBytes(result) * 8;
+      return result.toSigned(bitLength);
     }
 
     return result;
@@ -375,6 +383,60 @@ class BigintUtils {
       /// 0x80-0xff then we need an extra 0x00 byte to prevent it from
       /// looking negative.
       return [0x02, ..._encodeLength(s.length + 1), 0x00, ...s];
+    }
+  }
+
+  /// Parses a dynamic value [v] into a BigInt.
+  ///
+  /// Tries to convert the dynamic value [v] into a BigInt. It supports parsing
+  /// from BigInt, int, List<int>, and String types. If [v] is a String and
+  /// represents a hexadecimal number (prefixed with '0x' or not), it is parsed
+  /// accordingly.
+  ///
+  /// Parameters:
+  /// - [v]: The dynamic value to be parsed into a BigInt.
+  ///
+  /// Returns:
+  /// - A BigInt representation of the parsed value.
+  ///
+  /// Throws:
+  /// - [ArgumentException] if the input value cannot be parsed into a BigInt.
+  ///
+  static BigInt parse(dynamic v) {
+    try {
+      if (v is BigInt) return v;
+      if (v is int) return BigInt.from(v);
+      if (v is List<int>) {
+        return fromBytes(v, sign: true);
+      }
+      if (v is String) {
+        BigInt? parse = BigInt.tryParse(v);
+        if (parse == null && StringUtils.isHex(v)) {
+          parse = BigInt.parse(StringUtils.strip0x(v), radix: 16);
+        }
+        return parse!;
+      }
+      // ignore: empty_catches
+    } catch (e) {}
+    throw ArgumentException("invalid input for parse bigint");
+  }
+
+  /// Tries to parse a dynamic value [v] into a BigInt, returning null if parsing fails.
+  ///
+  /// Attempts to parse the dynamic value [v] into a BigInt using the [parse] method.
+  /// If successful, returns the resulting BigInt; otherwise, returns null.
+  ///
+  /// Parameters:
+  /// - [v]: The dynamic value to be parsed into a BigInt.
+  ///
+  /// Returns:
+  /// - A BigInt if parsing is successful; otherwise, returns null.
+  ///
+  static BigInt? tryParse(dynamic v) {
+    try {
+      return parse(v);
+    } on ArgumentException {
+      return null;
     }
   }
 }

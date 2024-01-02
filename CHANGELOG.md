@@ -1,3 +1,6 @@
+## 1.5.0
+- Added a new class for signing and verifying Ethereum and tron transactions.
+
 ## 1.4.1
 - Corrected Ripple address encoding for ED25519
 - Added support for Ripple ED25519 coin

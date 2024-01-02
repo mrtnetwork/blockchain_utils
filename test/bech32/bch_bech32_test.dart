@@ -1,6 +1,5 @@
 import 'package:blockchain_utils/bip/coin_conf/coins_conf.dart';
 import 'package:blockchain_utils/blockchain_utils.dart';
-import 'package:blockchain_utils/compare/compare.dart';
 import 'package:test/test.dart';
 
 final List<Map<String, String>> _testVect = [

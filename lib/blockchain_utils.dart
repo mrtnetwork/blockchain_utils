@@ -66,10 +66,7 @@ export 'string/string.dart';
 export 'binary/binary.dart';
 
 /// Exports the BitcoinSigner class for Bitcoin signing operations.
-export 'signer/bitcoin_signer.dart';
-
-/// Exports the XrpSigner class for XRP signing operations.
-export 'signer/xrp_signer.dart';
+export 'signer/signer.dart';
 
 /// Exports modules related to ECC (Elliptic Curve Cryptography) in the context of BIP.
 export 'bip/ecc/bip_ecc.dart';
@@ -84,3 +81,5 @@ export 'numbers/numbers.dart';
 export 'exception/exception.dart';
 
 export 'tuple/tuple.dart';
+
+export 'compare/compare.dart';

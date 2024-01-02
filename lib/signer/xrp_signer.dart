@@ -56,7 +56,7 @@ class XrpSigner {
         return XrpSigner._(null, EcdsaSigningKey(signingKey));
       default:
         // Throw an error if the curve type is not supported.
-        throw ArgumentError(
+        throw MessageException(
             "xrp signer support ${EllipticCurveTypes.secp256k1.name} or ${EllipticCurveTypes.ed25519} private key");
     }
   }
@@ -178,7 +178,7 @@ class XrpVerifier {
         final verifyingKey = ECDSAPublicKey(_XrpSignerConst.secp256, point);
         return XrpVerifier._(null, ECDSAVerifyKey(verifyingKey));
       default:
-        throw ArgumentError(
+        throw MessageException(
             "xrp signer support ${EllipticCurveTypes.secp256k1.name} or ${EllipticCurveTypes.ed25519} private key");
     }
   }
