@@ -18,7 +18,7 @@ class CborSetValue<T> implements CborObject {
   @override
   List<int> encode() {
     final bytes = CborBytesTracker();
-    bytes.pushTags([CborTags.set]);
+    bytes.pushTags(CborTags.set);
     bytes.pushInt(MajorTags.array, value.length);
     for (final v in value) {
       final obj = CborObject.fromDynamic(v);

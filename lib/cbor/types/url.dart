@@ -17,7 +17,7 @@ class CborUriValue implements CborString {
   @override
   List<int> encode() {
     final bytes = CborBytesTracker();
-    bytes.pushTags([CborTags.uri]);
+    bytes.pushTags(CborTags.uri);
     final toBytes = CborStringValue(value);
     bytes.pushBytes(toBytes.encode());
     return bytes.toBytes();

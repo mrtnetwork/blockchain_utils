@@ -154,8 +154,8 @@ class IntUtils {
       }
       if (v is String) {
         int? parse = int.tryParse(v);
-        if (parse == null && StringUtils.isHex(v)) {
-          parse = int.parse(v, radix: 16);
+        if (parse == null && StringUtils.ixHexaDecimalNumber(v)) {
+          parse = int.parse(StringUtils.strip0x(v), radix: 16);
         }
         return parse!;
       }

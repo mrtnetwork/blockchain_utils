@@ -411,7 +411,7 @@ class BigintUtils {
       }
       if (v is String) {
         BigInt? parse = BigInt.tryParse(v);
-        if (parse == null && StringUtils.isHex(v)) {
+        if (parse == null && StringUtils.ixHexaDecimalNumber(v)) {
           parse = BigInt.parse(StringUtils.strip0x(v), radix: 16);
         }
         return parse!;

@@ -1,21 +1,21 @@
 /// Constants representing CBOR tags
 class CborTags {
-  static const int dateString = 0;
-  static const int dateEpoch = 1;
-  static const int posBigInt = 2;
-  static const int negBigInt = 3;
-  static const int decimalFrac = 4;
-  static const int bigFloat = 5;
-  static const int base64UrlExpected = 21;
-  static const int base64Expected = 22;
-  static const int base16Expected = 23;
-  static const int cbor = 24;
-  static const int uri = 32;
-  static const int base64Url = 33;
-  static const int base64 = 34;
-  static const int regexp = 35;
-  static const int mime = 36;
-  static const int set = 258;
+  static const List<int> dateString = [0];
+  static const List<int> dateEpoch = [1];
+  static const List<int> posBigInt = [2];
+  static const List<int> negBigInt = [3];
+  static const List<int> decimalFrac = [4];
+  static const List<int> bigFloat = [5];
+  static const List<int> base64UrlExpected = [21];
+  static const List<int> base64Expected = [22];
+  static const List<int> base16Expected = [23];
+  static const List<int> cbor = [24];
+  static const List<int> uri = [32];
+  static const List<int> base64Url = [33];
+  static const List<int> base64 = [34];
+  static const List<int> regexp = [35];
+  static const List<int> mime = [36];
+  static const List<int> set = [258];
 }
 
 /// Constants representing major CBOR tags

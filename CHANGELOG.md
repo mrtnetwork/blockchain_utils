@@ -1,3 +1,8 @@
+## 1.6.0
+- Addressed an issue with Cbor decoding.
+- Enhanced secret storage definition to encrypt and decrypt bytes instead of strings. This resolves a compatibility issue with Ethereum keystore.
+
+
 ## 1.5.0
 - Added a new class for signing and verifying Ethereum and tron transactions.
 

@@ -1,13 +1,6 @@
 import 'package:blockchain_utils/binary/utils.dart';
+import 'package:blockchain_utils/cbor/types/types.dart';
 import 'package:blockchain_utils/cbor/utils/cbor_utils.dart';
-import 'package:blockchain_utils/cbor/types/bigint.dart';
-import 'package:blockchain_utils/cbor/types/bytes.dart';
-import 'package:blockchain_utils/cbor/types/double.dart';
-import 'package:blockchain_utils/cbor/types/int.dart';
-import 'package:blockchain_utils/cbor/types/int64.dart';
-import 'package:blockchain_utils/cbor/types/list.dart';
-import 'package:blockchain_utils/cbor/types/map.dart';
-import 'package:blockchain_utils/cbor/types/string.dart';
 import 'package:blockchain_utils/exception/exception.dart';
 
 /// An abstract class representing a CBOR (Concise Binary Object Representation) object.
@@ -37,6 +30,10 @@ abstract class CborObject {
   factory CborObject.fromDynamic(dynamic value, [List<int> tags = const []]) {
     if (value is CborObject) {
       return value;
+    } else if (value == null) {
+      return const CborNullValue();
+    } else if (value is bool) {
+      return CborBoleanValue(value);
     } else if (value is int) {
       return CborIntValue(value);
     } else if (value is double) {

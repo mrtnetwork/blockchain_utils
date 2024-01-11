@@ -21,17 +21,34 @@ enum StringEncoding {
 
 /// A utility class for working with strings and common string operations.
 class StringUtils {
-  static final RegExp _hexRegex = RegExp(r'\b(?:0[xX])?[0-9a-fA-F]+\b');
+  static final RegExp _hexBytesRegex = RegExp(r'^(0x|0X)?([0-9A-Fa-f]{2})+$');
+  static final RegExp _hexaDecimalRegex = RegExp(r'^(0x|0X)?[0-9A-Fa-f]+$');
+  static bool isHexBytes(String v) {
+    return _hexBytesRegex.hasMatch(v);
+  }
 
-  static bool isHex(String v) {
-    return _hexRegex.hasMatch(v);
+  static bool ixHexaDecimalNumber(String v) {
+    return _hexaDecimalRegex.hasMatch(v);
   }
 
   static List<int> toBytes(String v) {
-    if (isHex(v)) {
+    if (isHexBytes(v)) {
       return BytesUtils.fromHexString(v);
     } else {
       return encode(v);
+    }
+  }
+
+  static List<int>? tryToBytes(String? v) {
+    if (v == null) return null;
+    try {
+      if (isHexBytes(v)) {
+        return BytesUtils.fromHexString(v);
+      } else {
+        return encode(v);
+      }
+    } catch (e) {
+      return null;
     }
   }
 
@@ -47,7 +64,7 @@ class StringUtils {
   /// String original = StringUtils.strip0x("abcdef");  // Returns "abcdef"
   /// ```
   static String strip0x(String value) {
-    if (value.startsWith("0x")) {
+    if (value.toLowerCase().startsWith("0x")) {
       return value.substring(2);
     }
     return value;

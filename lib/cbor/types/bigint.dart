@@ -19,10 +19,10 @@ class CborBigIntValue implements CborNumeric {
     final bytes = CborBytesTracker();
     BigInt v = value;
     if (v.isNegative) {
-      bytes.pushTags([CborTags.negBigInt]);
+      bytes.pushTags(CborTags.negBigInt);
       v = ~v;
     } else {
-      bytes.pushTags([CborTags.posBigInt]);
+      bytes.pushTags(CborTags.posBigInt);
     }
     final b = List<int>.filled((v.bitLength + 7) ~/ 8, 0);
 

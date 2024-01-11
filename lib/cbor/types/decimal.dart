@@ -36,7 +36,7 @@ class CborDecimalFracValue implements CborObject {
   @override
   List<int> encode() {
     final bytes = CborBytesTracker();
-    bytes.pushTags([CborTags.decimalFrac]);
+    bytes.pushTags(CborTags.decimalFrac);
     bytes.pushInt(MajorTags.array, 2);
     bytes.pushBytes(_encodeValue(exponent));
     bytes.pushBytes(_encodeValue(mantissa));

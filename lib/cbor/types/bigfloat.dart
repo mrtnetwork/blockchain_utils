@@ -36,7 +36,7 @@ class CborBigFloatValue implements CborObject {
   @override
   List<int> encode() {
     final bytes = CborBytesTracker();
-    bytes.pushTags([CborTags.bigFloat]);
+    bytes.pushTags(CborTags.bigFloat);
     bytes.pushInt(MajorTags.array, 2);
     bytes.pushBytes(_encodeValue(exponent));
     bytes.pushBytes(_encodeValue(mantissa));

@@ -17,7 +17,7 @@ class CborRegxpValue implements CborString {
   @override
   List<int> encode() {
     final bytes = CborBytesTracker();
-    bytes.pushTags([CborTags.regexp]);
+    bytes.pushTags(CborTags.regexp);
     final toBytes = CborStringValue(value);
     bytes.pushBytes(toBytes.encode());
     return bytes.toBytes();

@@ -30,7 +30,7 @@ abstract class _Derivator {
       final toObj = _PBDKDF2Derivator.fromCbor(cbor.value);
       return toObj;
     } else if (bytesEqual(cbor.tags, _SecretStorageConst.scryptTag)) {
-      return _ScryptDerivator.fromCbor(cbor.value);
+      return _Scrypt.fromCbor(cbor.value);
     } else {
       throw ArgumentException("invalid secret wallet cbor bytes");
     }
@@ -91,15 +91,15 @@ class _PBDKDF2Derivator extends _Derivator {
 }
 
 /// A class implementing key derivation using the Scrypt algorithm.
-class _ScryptDerivator extends _Derivator {
-  _ScryptDerivator(this.dklen, this.n, this.r, this.p, this.salt);
-  factory _ScryptDerivator.fromCbor(CborListValue v) {
+class _Scrypt extends _Derivator {
+  _Scrypt(this.dklen, this.n, this.r, this.p, this.salt);
+  factory _Scrypt.fromCbor(CborListValue v) {
     final int dklen = v.value[0].value;
     final int n = v.value[1].value;
     final int r = v.value[2].value;
     final int p = v.value[3].value;
     final List<int> salt = v.value[4].value;
-    return _ScryptDerivator(dklen, n, r, p, salt);
+    return _Scrypt(dklen, n, r, p, salt);
   }
   final int dklen;
   final int n;
@@ -143,13 +143,13 @@ class _ScryptDerivator extends _Derivator {
 /// The `SecretWallet` class represents a secret wallet that stores sensitive credentials
 /// using a specified key derivation strategy.
 class SecretWallet {
-  const SecretWallet._(
-    this.credentials,
+  SecretWallet._(
+    List<int> data,
     this._derivator,
     this._password,
     this._iv,
     this._id,
-  );
+  ) : data = List<int>.unmodifiable(data);
 
   /// Factory method to create a `SecretWallet` with encoded credentials.
   ///
@@ -160,7 +160,7 @@ class SecretWallet {
   ///
   /// Returns a `SecretWallet` instance with the encoded credentials.
   factory SecretWallet.encode(
-    String credentials,
+    List<int> data,
     String password, {
     int scryptN = 8192,
     int p = 1,
@@ -169,13 +169,13 @@ class SecretWallet {
 
     final salt = QuickCrypto.generateRandom(32);
 
-    final derivator = _ScryptDerivator(32, scryptN, 8, p, salt);
+    final derivator = _Scrypt(32, scryptN, 8, p, salt);
 
     final uuid = UUID.toBuffer(UUID.generateUUIDv4());
 
     final iv = QuickCrypto.generateRandom(128 ~/ 8);
 
-    return SecretWallet._(credentials, derivator, passwordBytes, iv, uuid);
+    return SecretWallet._(data, derivator, passwordBytes, iv, uuid);
   }
 
   static Map<String, dynamic> _toJsonEcoded(String encoded,
@@ -232,7 +232,7 @@ class SecretWallet {
         break;
       case 'scrypt':
         final derParams = params['kdfparams'] as Map<String, dynamic>;
-        derivator = _ScryptDerivator(
+        derivator = _Scrypt(
           derParams['dklen'] as int,
           derParams['n'] as int,
           derParams['r'] as int,
@@ -249,8 +249,9 @@ class SecretWallet {
     final encodedPassword = List<int>.from(StringUtils.encode(password));
     final derivedKey = derivator.deriveKey(encodedPassword);
     final aesKey = List<int>.from(derivedKey.sublist(0, 16));
+    final List<int> macBytes = derivedKey.sublist(16, 32);
     final encryptedPrivateKey = BytesUtils.fromHexString(params['ciphertext']);
-    final derivedMac = _generateMac(derivedKey, encryptedPrivateKey);
+    final derivedMac = _mac(macBytes, encryptedPrivateKey);
     if (derivedMac != params['mac']) {
       throw ArgumentException('wrong password or the file is corrupted');
     }
@@ -265,8 +266,7 @@ class SecretWallet {
     ctr.streamXOR(encryptText, privateKey);
     ctr.clean();
     final id = UUID.toBuffer(data['id'] as String);
-    return SecretWallet._(
-        StringUtils.decode(privateKey), derivator, encodedPassword, iv, id);
+    return SecretWallet._(privateKey, derivator, encodedPassword, iv, id);
   }
 
   static SecretWallet _decodeCbor(String encoded, String password) {
@@ -299,8 +299,10 @@ class SecretWallet {
       final String mac = params.value[4].value;
       final encodedPassword = List<int>.from(StringUtils.encode(password));
       final derivedKey = derivator.deriveKey(encodedPassword);
+      final List<int> macBytes =
+          List<int>.unmodifiable(derivedKey.sublist(16, 32));
       final aesKey = List<int>.from(derivedKey.sublist(0, 16));
-      final derivedMac = _generateMac(derivedKey, ciphertext);
+      final derivedMac = _mac(macBytes, ciphertext);
       if (derivedMac != mac) {
         throw ArgumentException('wrong password or the file is corrupted');
       }
@@ -308,8 +310,7 @@ class SecretWallet {
       final List<int> privateKey = List<int>.filled(ciphertext.length, 0);
       ctr.streamXOR(ciphertext, privateKey);
       ctr.clean();
-      return SecretWallet._(
-          StringUtils.decode(privateKey), derivator, encodedPassword, iv, uuid);
+      return SecretWallet._(privateKey, derivator, encodedPassword, iv, uuid);
     } on ArgumentException {
       rethrow;
     } catch (e) {
@@ -317,7 +318,7 @@ class SecretWallet {
     }
   }
 
-  final String credentials;
+  final List<int> data;
 
   final _Derivator _derivator;
 
@@ -337,6 +338,7 @@ class SecretWallet {
   String encrypt({SecretWalletEncoding encoding = SecretWalletEncoding.json}) {
     // Encrypt the wallet data and obtain the ciphertext bytes.
     final ciphertextBytes = _encryptPassword();
+    // print("cipher ${BytesUtils.toHexString(ciphertextBytes)}");
     if (encoding == SecretWalletEncoding.cbor) {
       return _toCbor(ciphertextBytes);
     }
@@ -346,10 +348,10 @@ class SecretWallet {
       'crypto': {
         'cipher': 'aes-128-ctr',
         'cipherparams': {'iv': BytesUtils.toHexString(_iv)},
-        'ciphertext': BytesUtils.toHexString(ciphertextBytes),
+        'ciphertext': BytesUtils.toHexString(ciphertextBytes.item1),
         'kdf': _derivator.name,
         'kdfparams': _derivator.encode(),
-        'mac': _generateMac(_derivator.deriveKey(_password), ciphertextBytes),
+        'mac': _mac(ciphertextBytes.item2, ciphertextBytes.item1),
       },
       'id': uuid,
       'version': 3,
@@ -366,16 +368,16 @@ class SecretWallet {
         StringUtils.encode(toString), StringEncoding.base64);
   }
 
-  String _toCbor(List<int> ciphertextBytes) {
+  String _toCbor(Tuple<List<int>, List<int>> ciphertextBytes) {
     return CborTagValue(
             CborListValue.dynamicLength([
               CborListValue.fixedLength([
                 CborStringValue('aes-128-ctr'),
                 CborBytesValue(_iv),
-                CborBytesValue(ciphertextBytes),
+                CborBytesValue(ciphertextBytes.item1),
                 _derivator.cborEncode(),
-                CborStringValue(_generateMac(
-                    _derivator.deriveKey(_password), ciphertextBytes)),
+                CborStringValue(
+                    _mac(ciphertextBytes.item2, ciphertextBytes.item1)),
               ]),
               CborBytesValue(_id),
               CborIntValue(3),
@@ -390,9 +392,9 @@ class SecretWallet {
   /// - `ciphertext`: The encrypted ciphertext.
   ///
   /// Returns the MAC as a hexadecimal string.
-  static String _generateMac(List<int> dk, List<int> ciphertext) {
+  static String _mac(List<int> dk, List<int> ciphertext) {
     // Concatenate the derived key and ciphertext to form the input for the MAC calculation.
-    final mac = <int>[...dk.sublist(16, 32), ...ciphertext];
+    final mac = <int>[...dk, ...ciphertext];
 
     // Hash the concatenated data using Keccak.
     return BytesUtils.toHexString(Keccack.hash(List<int>.from(mac)));
@@ -401,18 +403,17 @@ class SecretWallet {
   /// Encrypts the wallet's sensitive credentials using AES-128-CTR encryption.
   ///
   /// Returns the encrypted ciphertext as a list of bytes.
-  List<int> _encryptPassword() {
+  Tuple<List<int>, List<int>> _encryptPassword() {
     // Derive the encryption key from the password.
-    final derived = _derivator.deriveKey(_password);
+    final derived = List<int>.unmodifiable(_derivator.deriveKey(_password));
+    final macBytes = List<int>.unmodifiable(derived.sublist(16, 32));
     final aesKey = List<int>.from(derived.sublist(0, 16));
-
-    // Convert the credentials to bytes and encrypt using AES-128-CTR.
-    final plainText = List<int>.from(StringUtils.encode(credentials));
+    // final plainText = List<int>.from(StringUtils.toBytes());
     final CTR ctr = CTR(AES(aesKey), _iv);
-    final encryptOut = List<int>.filled(plainText.length, 0);
-    ctr.streamXOR(plainText, encryptOut);
+    final encryptOut = List<int>.filled(data.length, 0);
+    ctr.streamXOR(data, encryptOut);
     ctr.clean();
 
-    return encryptOut;
+    return Tuple(encryptOut, macBytes);
   }
 }

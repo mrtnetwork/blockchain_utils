@@ -15,9 +15,9 @@ abstract class _CborDate implements CborObject {
 
   List<int> _getTags() {
     if (this is CborStringDateValue) {
-      return [CborTags.dateString];
+      return CborTags.dateString;
     }
-    return [CborTags.dateEpoch];
+    return CborTags.dateEpoch;
   }
 
   /// Encode the value into CBOR bytes an then to hex

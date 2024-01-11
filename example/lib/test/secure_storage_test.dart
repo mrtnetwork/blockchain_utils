@@ -2,64 +2,42 @@ import 'package:blockchain_utils/blockchain_utils.dart';
 import 'package:example/test/quick_hex.dart';
 
 void testSecureStorage() {
-  // Repeat the following test 5 times
+// Repeat the following test 100 times
   for (int i = 0; i < 5; i++) {
     // Generate a random password of length 32
     final password = QuickCrypto.generateRandom(32).toHex();
-
-    // Generate a random 24-word mnemonic
-    final mn = QuickCrypto.generateRandom(128);
+    final message = QuickCrypto.generateRandom(64);
 
     // Encode the mnemonic with the password and additional parameters
     final secureStorage =
-        SecretWallet.encode(mn.toHex(), password, p: 1, scryptN: 8192);
-    final toJson = secureStorage.encrypt(encoding: SecretWalletEncoding.base64);
+        SecretWallet.encode(message, password, p: 1, scryptN: 8192);
 
     // Decode the encoded secure storage using the password
-    final decodeWallet = SecretWallet.decode(toJson, password,
+    final decodeWallet = SecretWallet.decode(
+        secureStorage.encrypt(encoding: SecretWalletEncoding.base64), password,
         encoding: SecretWalletEncoding.base64);
 
     // Verify that the credentials in the secure storage match the decoded credentials
-    assert(secureStorage.credentials == decodeWallet.credentials);
+    assert(bytesEqual(secureStorage.data, decodeWallet.data), true);
+    assert(bytesEqual(decodeWallet.data, message), true);
   }
-  // Repeat the following test 5 times
+  // Repeat the following test 100 times
   for (int i = 0; i < 5; i++) {
     // Generate a random password of length 32
     final password = QuickCrypto.generateRandom(32).toHex();
-
-    // Generate a random 24-word mnemonic
-    final mn = QuickCrypto.generateRandom(128);
+    final message = QuickCrypto.generateRandom(64);
 
     // Encode the mnemonic with the password and additional parameters
     final secureStorage =
-        SecretWallet.encode(mn.toHex(), password, p: 1, scryptN: 8192);
-    final toJson = secureStorage.encrypt(encoding: SecretWalletEncoding.cbor);
+        SecretWallet.encode(message, password, p: 1, scryptN: 8192);
 
     // Decode the encoded secure storage using the password
-    final decodeWallet = SecretWallet.decode(toJson, password,
-        encoding: SecretWalletEncoding.cbor);
-
-    // Verify that the credentials in the secure storage match the decoded credentials
-    assert(secureStorage.credentials == decodeWallet.credentials);
-  }
-  // Repeat the following test 5 times
-  for (int i = 0; i < 5; i++) {
-    // Generate a random password of length 32
-    final password = QuickCrypto.generateRandom(32).toHex();
-
-    // Generate a random 24-word mnemonic
-    final mn = QuickCrypto.generateRandom(128);
-
-    // Encode the mnemonic with the password and additional parameters
-    final secureStorage =
-        SecretWallet.encode(mn.toHex(), password, p: 1, scryptN: 8192);
-    final toJson = secureStorage.encrypt(encoding: SecretWalletEncoding.json);
-
-    // Decode the encoded secure storage using the password
-    final decodeWallet = SecretWallet.decode(toJson, password,
+    final decodeWallet = SecretWallet.decode(
+        secureStorage.encrypt(encoding: SecretWalletEncoding.json), password,
         encoding: SecretWalletEncoding.json);
 
     // Verify that the credentials in the secure storage match the decoded credentials
-    assert(secureStorage.credentials == decodeWallet.credentials);
+    assert(bytesEqual(secureStorage.data, decodeWallet.data), true);
+    assert(bytesEqual(decodeWallet.data, message), true);
   }
 }

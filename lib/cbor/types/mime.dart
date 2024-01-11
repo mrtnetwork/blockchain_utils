@@ -18,7 +18,7 @@ class CborMimeValue implements CborObject {
   @override
   List<int> encode() {
     final bytes = CborBytesTracker();
-    bytes.pushTags([CborTags.mime]);
+    bytes.pushTags(CborTags.mime);
     final toBytes = CborStringValue(value);
     bytes.pushBytes(toBytes.encode());
     return bytes.toBytes();

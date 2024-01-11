@@ -25,7 +25,7 @@ class CborBase64Types {
       CborBase64Types._(CborTags.base16Expected);
 
   /// This property allows retrieving the CBOR tag associated with each CborBase64Types enum value.
-  final int tag;
+  final List<int> tag;
 
   /// Constructor for creating a CborBase64Types enum value with the specified CBOR tag.
   const CborBase64Types._(this.tag);
@@ -56,7 +56,7 @@ class CborBaseUrlValue implements CborString {
   @override
   List<int> encode() {
     final bytes = CborBytesTracker();
-    bytes.pushTags([type.tag]);
+    bytes.pushTags(type.tag);
     final toBytes = CborStringValue(value);
     bytes.pushBytes(toBytes.encode());
     return bytes.toBytes();
@@ -84,5 +84,5 @@ class CborBaseUrlValue implements CborString {
 
   /// ovveride hash code
   @override
-  int get hashCode => value.hashCode ^ type.tag;
+  int get hashCode => value.hashCode ^ type.tag.first.hashCode;
 }

@@ -50,7 +50,6 @@ class CborUtils {
           final data = _decodeLength(info, cborBytes.sublist(i));
           tags.add(data.item1);
           i += data.item2;
-
           continue;
         case MajorTags.byteString:
           return _decodeBytesString(info, i, cborBytes, tags);
@@ -137,22 +136,22 @@ class CborUtils {
     if (tags.isEmpty) {
       toObj = CborStringValue(toString);
     } else if (CborBase64Types.values
-        .any((element) => tags.contains(element.tag))) {
+        .any((element) => bytesEqual(tags, element.tag))) {
       final baseType = CborBase64Types.values
-          .firstWhere((element) => tags.contains(element.tag));
-      tags.removeWhere((element) => element == baseType.tag);
+          .firstWhere((element) => bytesEqual(tags, element.tag));
+      tags.clear();
       toObj = CborBaseUrlValue(toString, baseType);
-    } else if (tags.contains(CborTags.mime)) {
-      tags.removeWhere((element) => element == CborTags.mime);
+    } else if (bytesEqual(tags, CborTags.mime)) {
+      tags.clear();
       toObj = CborMimeValue(toString);
-    } else if (tags.contains(CborTags.uri)) {
-      tags.removeWhere((element) => element == CborTags.uri);
+    } else if (bytesEqual(tags, CborTags.uri)) {
+      tags.clear();
       toObj = CborUriValue(toString);
-    } else if (tags.contains(CborTags.regexp)) {
-      tags.removeWhere((element) => element == CborTags.regexp);
+    } else if (bytesEqual(tags, CborTags.regexp)) {
+      tags.clear();
       toObj = CborRegxpValue(toString);
-    } else if (tags.contains(CborTags.dateString)) {
-      tags.removeWhere((element) => element == CborTags.dateString);
+    } else if (bytesEqual(tags, CborTags.dateString)) {
+      tags.clear();
       final time = parseRFC3339DateTime(toString);
       toObj = CborStringDateValue(time);
     }
@@ -176,14 +175,13 @@ class CborUtils {
     }
     final bytes = _parsBytes(info, cborBytes.sublist(i));
     CborObject? val;
-    if (tags.contains(CborTags.negBigInt) ||
-        tags.contains(CborTags.posBigInt)) {
+    if (bytesEqual(tags, CborTags.negBigInt) ||
+        bytesEqual(tags, CborTags.posBigInt)) {
       BigInt big = BigintUtils.fromBytes(bytes.item1);
-      if (tags.contains(CborTags.negBigInt)) {
+      if (bytesEqual(tags, CborTags.negBigInt)) {
         big = ~big;
       }
-      tags.removeWhere((element) =>
-          element == CborTags.negBigInt || element == CborTags.posBigInt);
+      tags.clear();
       val = CborBigIntValue(big);
     }
     val ??= CborBytesValue(bytes.item1);
@@ -236,12 +234,12 @@ class CborUtils {
       objects.add(decodeData.item1);
       index += decodeData.item2;
     }
-    if (tags.contains(CborTags.bigFloat) ||
-        tags.contains(CborTags.decimalFrac)) {
+    if (bytesEqual(tags, CborTags.bigFloat) ||
+        bytesEqual(tags, CborTags.decimalFrac)) {
       return Tuple(_decodeCborBigfloatOrDecimal(objects, tags), index);
     }
-    if (tags.contains(CborTags.set)) {
-      tags.removeWhere((element) => element == CborTags.set);
+    if (bytesEqual(tags, CborTags.set)) {
+      tags.clear();
       final toObj = CborSetValue(objects.toSet());
       return Tuple(tags.isEmpty ? toObj : CborTagValue(toObj, tags), index);
     }
@@ -268,13 +266,13 @@ class CborUtils {
     if (objects.length != 2) {
       throw MessageException("invalid bigFloat array length");
     }
-    if (tags.contains(CborTags.decimalFrac)) {
-      tags.removeWhere((element) => element == CborTags.decimalFrac);
+    if (bytesEqual(tags, CborTags.decimalFrac)) {
+      tags.clear();
       final toObj = CborDecimalFracValue.fromCborNumeric(
           objects[0] as CborNumeric, objects[1] as CborNumeric);
       return tags.isEmpty ? toObj : CborTagValue(toObj, tags);
     }
-    tags.removeWhere((element) => element == CborTags.bigFloat);
+    tags.clear();
     final toObj = CborBigFloatValue.fromCborNumeric(
         objects[0] as CborNumeric, objects[1] as CborNumeric);
     return tags.isEmpty ? toObj : CborTagValue(toObj, tags);
@@ -327,9 +325,9 @@ class CborUtils {
       default:
         throw MessageException("Invalid simpleOrFloatTags");
     }
-    if (tags.contains(CborTags.dateEpoch)) {
+    if (bytesEqual(tags, CborTags.dateEpoch)) {
       final dt = DateTime.fromMillisecondsSinceEpoch((val * 1000).round());
-      tags.removeWhere((element) => element == CborTags.dateEpoch);
+      tags.clear();
       obj = CborEpochFloatValue(dt);
     }
     obj ??= CborFloatValue(val);
@@ -351,10 +349,10 @@ class CborUtils {
       }
     }
     numericValue ??= CborIntValue(mt == MajorTags.negInt ? ~val : val);
-    if (tags.contains(CborTags.dateEpoch)) {
+    if (bytesEqual(tags, CborTags.dateEpoch)) {
       final dt =
           DateTime.fromMillisecondsSinceEpoch(numericValue.toInt() * 1000);
-      tags.removeWhere((element) => element == CborTags.dateEpoch);
+      tags.clear();
       final toObj = CborEpochIntValue(dt);
       return Tuple(tags.isEmpty ? toObj : CborTagValue(toObj, tags), index);
     }
