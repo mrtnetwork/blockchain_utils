@@ -2,7 +2,7 @@
 
 Discover a versatile and powerful cryptographic toolkit, carefully crafted in pure Dart to serve developers, businesses, and blockchain enthusiasts across multiple platforms. This package offers a wide array of essential features, including encoding/decoding for various data formats, support for numerous blockchain addresses, robust cryptographic algorithms, mnemonic management, and more – all without relying on external dependencies. Whether you're securing private keys, interacting with blockchain networks, or ensuring data integrity, this cross-platform solution simplifies your crypto journey. Experience a comprehensive set of tools designed to meet your diverse encoding, cryptography, and blockchain needs on iOS, Android, the web, Linux, and beyond.
 
-This comprehensive package has been shaped by the influence of several key sources, culminating in its development for Dart. The contributing packages include:
+This comprehensive package has been shaped by the influence of several key sources, culminating in its development for Dart.
 
 - python [bip_utils](https://github.com/ebellocchia/bip_utils)
 - python [ecdsa](https://github.com/tlsfuzzer/python-ecdsa)
