@@ -18,6 +18,7 @@ class ArgumentException implements BlockchainUtilsException {
   const ArgumentException(this.message);
 
   /// Final field to store the exception message.
+  @override
   final String message;
 
   /// Override the 'toString' method to provide a custom string representation of the exception.
@@ -34,12 +35,13 @@ class MessageException implements BlockchainUtilsException {
   const MessageException(this.message, {this.details});
 
   /// Final field to store the exception message.
+  @override
   final String message;
 
   /// Override the 'toString' method to provide a custom string representation of the exception.
   @override
   String toString() {
-    return "$message $details";
+    return "$message${details == null ? '' : " $details"}";
   }
 
   final Map<String, dynamic>? details;

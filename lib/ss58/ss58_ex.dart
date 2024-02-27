@@ -4,6 +4,7 @@ import 'package:blockchain_utils/exception/exception.dart';
 ///
 /// The [message] field can contain additional information about the error.
 class SS58ChecksumError implements BlockchainUtilsException {
+  @override
   final String message;
 
   /// Creates a new [SS58ChecksumError] with an optional [message].

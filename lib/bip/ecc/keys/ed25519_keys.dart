@@ -96,6 +96,7 @@ class Ed25519PublicKey implements IPublicKey {
     return compressed;
   }
 
+  @override
   String toHex() {
     return BytesUtils.toHexString(compressed);
   }
@@ -155,6 +156,7 @@ class Ed25519PrivateKey implements IPrivateKey {
     return privateKey.privateKey;
   }
 
+  @override
   String toHex() {
     return BytesUtils.toHexString(raw);
   }

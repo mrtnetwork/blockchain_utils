@@ -130,6 +130,18 @@ This comprehensive package has been shaped by the influence of several key sourc
 
 These features make your package a comprehensive solution for encoding, cryptography, blockchain management, BIP39 mnemonic support, and diverse blockchain address encoding and decoding needs.
 
+25. **Sign and Verification:** Implements classes for signing and verifying transaction digests.
+   - Bitcoin (ECDSA, Schnorr)
+   - BitcoinCash (EDDSA)
+   - Dogecoin (EDDSA)
+   - Litecoin (EDDSA)
+   - Dash (EDDSA)
+   - BSV (EDDSA)
+   - Ethereum (EDDSA)
+   - Tron (EDDSA)
+   - Solana (EDDSA)
+   - XRP (EDDSA, ECDSA)
+
 **Example: Explore Our Toolkit**
 
 Discover the capabilities of our comprehensive crypto and blockchain toolkit through interactive tests. Visit our [test page](https://github.com/mrtnetwork/blockchain_utils/tree/main/test) to access thousands of examples, showcasing pure Dart's cross-platform functionality. Learn encoding, cryptography, address management, mnemonics, and more.

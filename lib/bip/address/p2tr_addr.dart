@@ -28,7 +28,7 @@ class P2TRConst {
   /// In the context of SegWit-based transactions and P2TR addresses, the witness version
   /// is typically set to 1.
   static const int witnessVer = 1;
-  static const int LEAF_VERSION_TAPSCRIPT = 0xc0;
+  static const int leafVersionTapScript = 0xc0;
 }
 
 /// Utility class for working with P2TR (Pay-to-Taproot) addresses and operations.
@@ -107,7 +107,7 @@ class P2TRUtils {
   static List<int> _tapleafTaggedHash(List<int> script) {
     final scriptBytes = IntUtils.prependVarint(script);
 
-    final part = [P2TRConst.LEAF_VERSION_TAPSCRIPT, ...scriptBytes];
+    final part = [P2TRConst.leafVersionTapScript, ...scriptBytes];
     return taggedHash('TapLeaf', part);
   }
 

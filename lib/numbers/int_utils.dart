@@ -96,6 +96,11 @@ class IntUtils {
   /// (little-endian) of the resulting byte list.
   static List<int> toBytes(int val,
       {required int length, Endian byteOrder = Endian.big}) {
+    assert(val.bitLength <= 32);
+    if (length > 4) {
+      return BigintUtils.toBytes(BigInt.from(val),
+          length: length, order: byteOrder);
+    }
     List<int> byteList = List<int>.filled(length, 0);
 
     for (var i = 0; i < length; i++) {
@@ -117,6 +122,11 @@ class IntUtils {
   /// Returns the corresponding integer value.
   static int fromBytes(List<int> bytes,
       {Endian byteOrder = Endian.big, bool sign = false}) {
+    assert(bytes.length <= 4);
+    if (bytes.length > 4) {
+      return BigintUtils.fromBytes(bytes, byteOrder: byteOrder, sign: sign)
+          .toInt();
+    }
     if (byteOrder == Endian.little) {
       bytes = List<int>.from(bytes.reversed.toList());
     }

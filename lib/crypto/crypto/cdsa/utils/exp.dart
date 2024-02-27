@@ -6,6 +6,7 @@ import 'package:blockchain_utils/exception/exception.dart';
 /// of a BigInt value within the defined constraints.
 ///
 class SquareRootError implements BlockchainUtilsException {
+  @override
   final String message;
 
   const SquareRootError(this.message);
@@ -22,6 +23,7 @@ class SquareRootError implements BlockchainUtilsException {
 /// for a pair of BigInt values within the defined constraints.
 ///
 class JacobiError implements BlockchainUtilsException {
+  @override
   final String message;
 
   const JacobiError(this.message);

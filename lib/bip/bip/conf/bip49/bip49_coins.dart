@@ -35,8 +35,10 @@ class Bip49Coins implements CryptoCoins {
   @override
   Bip49Coins get value => this;
 
+  @override
   String get coinName => name;
 
+  @override
   CoinConfig get conf => _coinToConf[this]!;
 
   static Bip49Coins? fromName(String name) {
@@ -71,5 +73,6 @@ class Bip49Coins implements CryptoCoins {
     Bip49Coins.zcash: Bip49Conf.zcashMainNet,
     Bip49Coins.zcashTestnet: Bip49Conf.zcashTestNet,
   };
+  @override
   BipProposal get proposal => BipProposal.bip49;
 }

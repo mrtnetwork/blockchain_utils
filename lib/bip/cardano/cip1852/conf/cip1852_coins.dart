@@ -22,6 +22,7 @@ class Cip1852Coins implements CryptoCoins {
   @override
   Cip1852Coins get value => this;
 
+  @override
   String get coinName {
     return name;
   }
@@ -34,6 +35,7 @@ class Cip1852Coins implements CryptoCoins {
     }
   }
 
+  @override
   CoinConfig get conf => _coinToConf[this]!;
 
   /// A mapping that associates each Cip1852Coins (enum) with its corresponding
@@ -45,5 +47,6 @@ class Cip1852Coins implements CryptoCoins {
     Cip1852Coins.cardanoLedgerTestnet: Cip1852Conf.cardanoLedgerTestNet,
   };
 
+  @override
   BipProposal get proposal => throw UnimplementedError();
 }

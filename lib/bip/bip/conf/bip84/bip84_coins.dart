@@ -79,8 +79,10 @@ class Bip84Coins implements CryptoCoins {
   @override
   Bip84Coins get value => this;
 
+  @override
   String get coinName => name;
 
+  @override
   CoinConfig get conf => _coinToConf[this]!;
 
   static Bip84Coins? fromName(String name) {
@@ -100,5 +102,6 @@ class Bip84Coins implements CryptoCoins {
     Bip84Coins.litecoinTestnet: Bip84Conf.litecoinTestNet,
   };
 
+  @override
   BipProposal get proposal => BipProposal.bip84;
 }

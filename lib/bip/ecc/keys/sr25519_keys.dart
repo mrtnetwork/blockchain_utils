@@ -71,6 +71,7 @@ class Sr25519PublicKey implements IPublicKey {
     return length;
   }
 
+  @override
   String toHex() {
     return BytesUtils.toHexString(compressed);
   }
@@ -122,6 +123,7 @@ class Sr25519PrivateKey implements IPrivateKey {
     return secretKey.toBytes();
   }
 
+  @override
   String toHex() {
     return BytesUtils.toHexString(raw);
   }

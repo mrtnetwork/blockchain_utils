@@ -4,6 +4,7 @@ import 'package:blockchain_utils/exception/exception.dart';
 ///
 /// This exception class is used to represent errors and exceptions related to Monero keys.
 class MoneroKeyError implements BlockchainUtilsException {
+  @override
   final String message;
 
   /// Constructs a MoneroKeyError with an optional error message.

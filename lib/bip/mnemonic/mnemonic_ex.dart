@@ -7,6 +7,7 @@ import 'package:blockchain_utils/exception/exception.dart';
 class MnemonicChecksumError implements BlockchainUtilsException {
   const MnemonicChecksumError(this.message);
 
+  @override
   final String message;
 
   @override

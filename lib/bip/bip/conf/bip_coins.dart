@@ -56,7 +56,9 @@ class BipProposal implements CryptoProposal {
 
   const BipProposal._(this.name);
 
+  @override
   String get specName => name;
+  @override
   BipProposal get value => this;
 
   /// Extension method to get the corresponding [Bip32KeyIndex.purpose] for each [BipProposal].

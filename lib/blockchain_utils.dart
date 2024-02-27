@@ -78,7 +78,7 @@ export 'numbers/bigint_utils.dart';
 export 'numbers/numbers.dart';
 
 /// Exceptions
-export 'exception/exception.dart';
+export 'exception/exceptions.dart';
 
 export 'tuple/tuple.dart';
 

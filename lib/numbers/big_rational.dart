@@ -1,4 +1,4 @@
-import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/blockchain_utils.dart';
 
 /// Represents a rational number with arbitrary precision using BigInt for the numerator and denominator.
 class BigRational {
@@ -11,6 +11,17 @@ class BigRational {
   static final _one = BigInt.one;
   static final _zero = BigInt.zero;
   static final _ten = BigInt.from(10);
+  List<int> encodeRational() {
+    // Convert numerator and denominator to bytes
+    final numeratorBytes = BigintUtils.toBytes(numerator, length: 2);
+    final denominatorBytes = BigintUtils.toBytes(denominator, length: 2);
+
+    // Concatenate numerator and denominator bytes
+    final bytes = List<int>.from(numeratorBytes)..addAll(denominatorBytes);
+
+    // Specify the endianness when converting to List<int>
+    return bytes;
+  }
 
   BigRational._(this.numerator, this.denominator);
 

@@ -254,13 +254,13 @@ class BigintUtils {
   /// Returns: A list of bytes representing the BigInt with the specified length and byte order.
   static List<int> toBytes(BigInt val,
       {required int length, Endian order = Endian.big}) {
-    BigInt _bigMaskEight = BigInt.from(0xff);
+    BigInt bigMaskEight = BigInt.from(0xff);
     if (val == BigInt.zero) {
       return List.filled(length, 0);
     }
     var byteList = List<int>.filled(length, 0);
     for (var i = 0; i < length; i++) {
-      byteList[length - i - 1] = (val & _bigMaskEight).toInt();
+      byteList[length - i - 1] = (val & bigMaskEight).toInt();
       val = val >> 8;
     }
 

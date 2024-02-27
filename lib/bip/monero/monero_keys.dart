@@ -111,6 +111,7 @@ class MoneroPublicKey implements IPublicKey {
     return pubKey.point;
   }
 
+  @override
   String toHex() {
     return BytesUtils.toHexString(compressed);
   }
@@ -185,6 +186,7 @@ class MoneroPrivateKey implements IPrivateKey {
     return privKey.length;
   }
 
+  @override
   String toHex() {
     return BytesUtils.toHexString(raw);
   }

@@ -131,6 +131,7 @@ class Ed25519Blake2bPublicKey implements IPublicKey {
     return compressed;
   }
 
+  @override
   String toHex() {
     return BytesUtils.toHexString(compressed);
   }
@@ -190,6 +191,7 @@ class Ed25519Blake2bPrivateKey implements IPrivateKey {
     return privateKey.privateKey;
   }
 
+  @override
   String toHex() {
     return BytesUtils.toHexString(raw);
   }

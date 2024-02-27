@@ -22,10 +22,12 @@ class Bip86Coins implements CryptoCoins {
     return this;
   }
 
+  @override
   String get coinName {
     return name;
   }
 
+  @override
   CoinConfig get conf => _coinToConf[this]!;
 
   static Bip86Coins? fromName(String name) {
@@ -43,5 +45,6 @@ class Bip86Coins implements CryptoCoins {
     Bip86Coins.bitcoinTestnet: Bip86Conf.bitcoinTestNet,
   };
 
+  @override
   BipProposal get proposal => BipProposal.bip86;
 }

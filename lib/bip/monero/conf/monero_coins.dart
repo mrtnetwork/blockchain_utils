@@ -26,10 +26,13 @@ class MoneroCoins implements CryptoCoins {
     return this;
   }
 
+  @override
   String get coinName {
     return name;
   }
 
+  @override
   CoinConfig get conf => throw UnimplementedError();
+  @override
   BipProposal get proposal => throw UnimplementedError();
 }

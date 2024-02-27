@@ -110,15 +110,18 @@ class StringUtils {
   /// ```dart
   /// String decodedString = StringUtils.decode([72, 101, 108, 108, 111, 44, 32, 87, 111, 114, 108, 100, 33]);
   /// ```
-  static String decode(List<int> value,
-      [StringEncoding type = StringEncoding.utf8]) {
+  static String decode(
+    List<int> value, [
+    StringEncoding type = StringEncoding.utf8,
+    bool allowInvalidOrMalformed = false,
+  ]) {
     switch (type) {
       case StringEncoding.utf8:
-        return utf8.decode(value);
+        return utf8.decode(value, allowMalformed: allowInvalidOrMalformed);
       case StringEncoding.base64:
         return base64Encode(value);
       default:
-        return ascii.decode(value);
+        return ascii.decode(value, allowInvalid: allowInvalidOrMalformed);
     }
   }
 

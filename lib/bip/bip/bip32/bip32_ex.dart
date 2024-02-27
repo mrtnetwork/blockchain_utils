@@ -6,6 +6,7 @@ import 'package:blockchain_utils/exception/exception.dart';
 /// can access the error message using the `toString()` method or the `message`
 /// property, if provided.
 class Bip32KeyError implements BlockchainUtilsException {
+  @override
   final String message;
 
   /// Creates a `Bip32KeyError` with an optional error message.
@@ -23,6 +24,7 @@ class Bip32KeyError implements BlockchainUtilsException {
 /// an optional error message to describe the specific issue. To access the error
 /// message, use the `toString()` method or the `message` property, if provided.
 class Bip32PathError implements BlockchainUtilsException {
+  @override
   final String message;
 
   /// Creates a `Bip32PathError` with an optional error message.

@@ -17,7 +17,7 @@ import 'package:blockchain_utils/string/string.dart';
 /// The [BitcoinSignerUtils] class provides utility methods related to Bitcoin signing operations.
 class BitcoinSignerUtils {
   /// Constant representing the Taproot signature hash type.
-  static const int TAPROOT_SIGHASH_ALL = 0x00;
+  static const int taprootSighashAll = 0x00;
 
   /// Constant representing the safe Bitcoin message prefix.
   static const int safeBitcoinMessagePrefix = 0x18;

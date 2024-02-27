@@ -25,11 +25,14 @@ class SubstrateCoins implements CryptoCoins {
   @override
   SubstrateCoins get value => this;
 
+  @override
   String get coinName {
     return name;
   }
 
+  @override
   CoinConfig get conf => throw UnimplementedError();
+  @override
   BipProposal get proposal => throw UnimplementedError();
 
   static const List<SubstrateCoins> values = [

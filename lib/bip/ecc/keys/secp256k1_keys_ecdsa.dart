@@ -69,6 +69,7 @@ class Secp256k1PublicKeyEcdsa implements IPublicKey {
     return EcdsaKeysConst.pubKeyUncompressedByteLen;
   }
 
+  @override
   String toHex() {
     return BytesUtils.toHexString(compressed);
   }
@@ -121,6 +122,7 @@ class Secp256k1PrivateKeyEcdsa implements IPrivateKey {
     return privateKey.toBytes();
   }
 
+  @override
   String toHex() {
     return BytesUtils.toHexString(raw);
   }

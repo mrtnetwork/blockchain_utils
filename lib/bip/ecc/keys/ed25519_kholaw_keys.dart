@@ -84,6 +84,7 @@ class Ed25519KholawPublicKey implements IPublicKey {
     return compressed;
   }
 
+  @override
   String toHex() {
     return BytesUtils.toHexString(compressed);
   }
@@ -147,6 +148,7 @@ class Ed25519KholawPrivateKey implements IPrivateKey {
     return List<int>.from([...privateKey.privateKey, ..._extendKey]);
   }
 
+  @override
   String toHex() {
     return BytesUtils.toHexString(raw);
   }

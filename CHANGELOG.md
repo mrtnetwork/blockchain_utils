@@ -1,3 +1,16 @@
+## 2.0.0
+- Implements classes for signing and verifying transaction digests.
+   - Bitcoin (ECDSA, Schnorr)
+   - BitcoinCash (ECDSA)
+   - Dogecoin (ECDSA)
+   - Litecoin (ECDSA)
+   - Dash (ECDSA)
+   - BSV (ECDSA)
+   - Ethereum (ECDSA)
+   - Tron (ECDSA)
+   - Solana (EDDSA)
+   - XRP (EDDSA, ECDSA)
+
 ## 1.6.0
 - Addressed an issue with Cbor decoding.
 - Enhanced secret storage definition to encrypt and decrypt bytes instead of strings. This resolves a compatibility issue with Ethereum keystore.

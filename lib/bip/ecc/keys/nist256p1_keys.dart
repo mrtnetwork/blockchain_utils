@@ -122,6 +122,7 @@ class Nist256p1PublicKey implements IPublicKey {
     return EcdsaKeysConst.pubKeyUncompressedByteLen;
   }
 
+  @override
   String toHex() {
     return BytesUtils.toHexString(compressed);
   }
@@ -174,6 +175,7 @@ class Nist256p1PrivateKey implements IPrivateKey {
     return privateKey.toBytes();
   }
 
+  @override
   String toHex() {
     return BytesUtils.toHexString(raw);
   }

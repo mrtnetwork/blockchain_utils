@@ -319,10 +319,12 @@ class Bip44Coins implements CryptoCoins {
     return this;
   }
 
+  @override
   String get coinName {
-    return this.name;
+    return name;
   }
 
+  @override
   CoinConfig get conf => _coinToConf[this]!;
 
   static Bip44Coins? fromName(String name) {
@@ -337,7 +339,7 @@ class Bip44Coins implements CryptoCoins {
 
   /// A mapping that associates each BIP44Coin (enum) with its corresponding
   /// CoinConfig configuration.
-  static Map<Bip44Coins, CoinConfig> _coinToConf = {
+  static final Map<Bip44Coins, CoinConfig> _coinToConf = {
     Bip44Coins.akashNetwork: Bip44Conf.akashNetwork,
     Bip44Coins.algorand: Bip44Conf.algorand,
     Bip44Coins.aptos: Bip44Conf.aptos,
@@ -421,5 +423,6 @@ class Bip44Coins implements CryptoCoins {
     Bip44Coins.zcashTestnet: Bip44Conf.zcashTestNet,
     Bip44Coins.zilliqa: Bip44Conf.zilliqa,
   };
+  @override
   BipProposal get proposal => BipProposal.bip44;
 }
