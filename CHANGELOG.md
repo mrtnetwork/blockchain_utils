@@ -1,3 +1,6 @@
+## 2.0.1
+   - dart format .
+
 ## 2.0.0
 - Implements classes for signing and verifying transaction digests.
    - Bitcoin (ECDSA, Schnorr)

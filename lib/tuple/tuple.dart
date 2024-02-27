@@ -8,5 +8,5 @@ class Tuple<T, R> {
   final R item2;
 
   /// Constructor to initialize the tuple with the provided values.
- const Tuple(this.item1, this.item2);
+  const Tuple(this.item1, this.item2);
 }

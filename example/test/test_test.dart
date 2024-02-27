@@ -218,4 +218,3 @@ void _encodeDecodeAddrTest() {
   _test("algo Address", algoAddressTest);
   _test("ada Shelly Address", adaShellyAddrTest);
 }
-
