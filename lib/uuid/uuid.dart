@@ -79,7 +79,7 @@ class UUID {
   /// ```
   static List<int> toBuffer(String uuidString) {
     if (!isValidUUIDv4(uuidString)) {
-      throw ArgumentException("invalid uuid");
+      throw ArgumentException("invalid uuid string.");
     }
     final buffer = List<int>.filled(16, 0);
 
@@ -133,14 +133,14 @@ class UUID {
     return '${hexBytes.sublist(0, 4).join('')}-${hexBytes.sublist(4, 6).join('')}-${hexBytes.sublist(6, 8).join('')}-${hexBytes.sublist(8, 10).join('')}-${hexBytes.sublist(10).join('')}';
   }
 
+  /// Regular expression pattern for UUIDv4
+  static final _pattern = RegExp(
+    r'^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$',
+  );
+
   /// Validates whether a string is a valid UUIDv4.
   static bool isValidUUIDv4(String uuid) {
-    /// Regular expression pattern for UUIDv4
-    final pattern = RegExp(
-      r'^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$',
-    );
-
     /// Check if the input string matches the pattern
-    return pattern.hasMatch(uuid);
+    return _pattern.hasMatch(uuid);
   }
 }

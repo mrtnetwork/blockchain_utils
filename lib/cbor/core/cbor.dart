@@ -70,7 +70,7 @@ abstract class CborNumeric implements CborObject {
       return BigInt.from(val.value);
     } else if (val is CborBigIntValue) {
       return val.value;
-    } else if (val is CborInt64Value) {
+    } else if (val is CborSafeIntValue) {
       return val.value;
     }
     throw ArgumentException("invalid cbornumeric");

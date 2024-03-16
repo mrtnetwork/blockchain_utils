@@ -1,4 +1,4 @@
-import 'package:blockchain_utils/bip/address/ada_byron_addr.dart';
+import 'package:blockchain_utils/bip/address/ada/ada_byron_addr.dart';
 import 'package:blockchain_utils/compare/compare.dart';
 import 'package:blockchain_utils/binary/utils.dart';
 import 'byron_test_vector.dart' as byron;

@@ -1,4 +1,4 @@
-import 'package:blockchain_utils/bip/address/ada_shelley_addr.dart';
+import 'package:blockchain_utils/bip/address/ada/ada_shelley_addr.dart';
 import 'package:blockchain_utils/bip/bip/bip44/base/bip44_base.dart';
 import 'package:blockchain_utils/bip/cardano/cip1852/cip1852.dart';
 import 'package:blockchain_utils/bip/cardano/shelley/cardano_shelley_keys.dart';

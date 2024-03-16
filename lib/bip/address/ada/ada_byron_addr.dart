@@ -53,6 +53,8 @@
 */
 
 import 'package:blockchain_utils/base58/base58_base.dart';
+import 'package:blockchain_utils/bech32/bech32_base.dart';
+import 'package:blockchain_utils/bip/address/ada/ada_shelley_addr.dart';
 import 'package:blockchain_utils/bip/address/addr_dec_utils.dart';
 import 'package:blockchain_utils/bip/address/addr_key_validator.dart';
 import 'package:blockchain_utils/bip/address/decoder.dart';
@@ -70,9 +72,11 @@ import 'package:blockchain_utils/crypto/crypto/crc32/crc32.dart';
 import 'package:blockchain_utils/exception/exception.dart';
 import 'package:blockchain_utils/tuple/tuple.dart';
 
+import 'network.dart';
+
 /// Enum representing different address types used in the Ada Byron era.
 ///
-/// The AdaByronAddrTypes enum defines two address types:
+/// The ADAByronAddrTypes enum defines two address types:
 /// - `publicKey`: Represents the address type for public keys.
 /// - `redemption`: Represents the address type for redemption addresses.
 ///
@@ -80,42 +84,58 @@ import 'package:blockchain_utils/tuple/tuple.dart';
 ///
 /// Example Usage:
 /// ```dart
-/// final addressType = AdaByronAddrTypes.publicKey;
-/// print('Address Type: $addressType'); // Output: Address Type: AdaByronAddrTypes.publicKey
+/// final addressType = ADAByronAddrTypes.publicKey;
+/// print('Address Type: $addressType'); // Output: Address Type: ADAByronAddrTypes.publicKey
 /// ```
-class AdaByronAddrTypes {
+class ADAByronAddrTypes {
   /// Represents the address type for public keys.
-  static const AdaByronAddrTypes publicKey = AdaByronAddrTypes._(0);
+  static const ADAByronAddrTypes publicKey =
+      ADAByronAddrTypes._(0, "publicKey");
+
+  /// Represents the address type for script addresses.
+  static const ADAByronAddrTypes script = ADAByronAddrTypes._(1, "script");
 
   /// Represents the address type for redemption addresses.
-  static const AdaByronAddrTypes redemption = AdaByronAddrTypes._(2);
+  static const ADAByronAddrTypes redemption =
+      ADAByronAddrTypes._(2, "redemption");
 
   final int value;
+  final String name;
 
-  /// Constructor for AdaByronAddrTypes.
-  const AdaByronAddrTypes._(this.value);
+  /// Constructor for ADAByronAddrTypes.
+  const ADAByronAddrTypes._(this.value, this.name);
 
-  /// Factory method to create an AdaByronAddrTypes enum value from an integer value.
-  factory AdaByronAddrTypes.fromValue(CborIntValue value) {
+  /// Factory method to create an ADAByronAddrTypes enum value from an integer value.
+  factory ADAByronAddrTypes.fromCbor(CborIntValue value) {
     return values.firstWhere((element) => element.value == value.value);
   }
 
   // Enum values as a list for iteration
-  static const List<AdaByronAddrTypes> values = [
+  static const List<ADAByronAddrTypes> values = [
     publicKey,
     redemption,
   ];
+
+  /// Factory method to create an ADAByronAddrTypes enum value from an integer value.
+  static ADAByronAddrTypes fromValue(int value) {
+    return values.firstWhere((element) => element.value == value);
+  }
+
+  @override
+  String toString() {
+    return "ADAByronAddrTypes.$name";
+  }
 }
 
 /// Constants related to Ada Byron era addresses in Cardano.
 ///
-/// The AdaByronAddrConst class contains various constants used for Ada Byron era addresses:
+/// The ADAByronAddrConst class contains various constants used for Ada Byron era addresses:
 /// - `chacha20Poly1305AssocData`: An empty List<int> used as associated data for encryption.
 /// - `chacha20Poly1305Nonce`: A predefined nonce used for encryption purposes.
 /// - `payloadTag`: An integer representing the payload tag for Ada Byron era addresses.
 ///
 /// These constants are essential for handling and processing Ada Byron era addresses.
-class AdaByronAddrConst {
+class ADAByronAddrConst {
   /// An empty List<int> used as associated data for encryption.
   static final List<int> chacha20Poly1305AssocData = List.empty();
 
@@ -131,8 +151,8 @@ class _AdaByronAddrHdPath {
   static Bip32Path decrypt(List<int> hdPathEncBytes, List<int> hdPathKeyBytes) {
     final plainTextBytes = QuickCrypto.chaCha20Poly1305Decrypt(
       key: hdPathKeyBytes,
-      nonce: AdaByronAddrConst.chacha20Poly1305Nonce,
-      assocData: AdaByronAddrConst.chacha20Poly1305AssocData,
+      nonce: ADAByronAddrConst.chacha20Poly1305Nonce,
+      assocData: ADAByronAddrConst.chacha20Poly1305AssocData,
       cipherText: hdPathEncBytes,
     );
     final decode = CborObject.fromCbor(plainTextBytes);
@@ -148,22 +168,21 @@ class _AdaByronAddrHdPath {
   static List<int> encrypt(Bip32Path hdPath, List<int> hdPathKeyBytes) {
     final result = QuickCrypto.chaCha20Poly1305Encrypt(
       key: hdPathKeyBytes,
-      nonce: AdaByronAddrConst.chacha20Poly1305Nonce,
-      assocData: AdaByronAddrConst.chacha20Poly1305AssocData,
+      nonce: ADAByronAddrConst.chacha20Poly1305Nonce,
+      assocData: ADAByronAddrConst.chacha20Poly1305AssocData,
       plainText: CborListValue.dynamicLength(hdPath.toList()).encode(),
     );
     return result;
   }
 }
 
-class _AdaByronAddrAttrs {
+class ADAByronAddrAttrs {
   final List<int>? hdPathEncBytes;
   final int? networkMagic;
 
-  _AdaByronAddrAttrs(
-      {required this.hdPathEncBytes, required this.networkMagic});
+  ADAByronAddrAttrs({required this.hdPathEncBytes, required this.networkMagic});
 
-  factory _AdaByronAddrAttrs.fromJson(CborMapValue cborValue) {
+  factory ADAByronAddrAttrs.fromCbor(CborMapValue cborValue) {
     const cborOne = CborIntValue(1);
     const cborTwo = CborIntValue(2);
     if (cborValue.value.length > 2 ||
@@ -179,13 +198,11 @@ class _AdaByronAddrAttrs {
         : null;
     final networkMagic = cborValue.value.containsKey(cborTwo)
         ? CborObject.fromCbor(
-                (cborValue.value[cborOne]! as CborBytesValue).value)
+                (cborValue.value[cborTwo]! as CborBytesValue).value)
             .value
         : null;
-    return _AdaByronAddrAttrs(
-      hdPathEncBytes: hdPath,
-      networkMagic: networkMagic,
-    );
+    return ADAByronAddrAttrs(
+        hdPathEncBytes: hdPath, networkMagic: networkMagic);
   }
 
   Map<int, List<int>> toJson() {
@@ -193,7 +210,8 @@ class _AdaByronAddrAttrs {
     if (hdPathEncBytes != null) {
       attrs[1] = CborBytesValue(hdPathEncBytes!).encode();
     }
-    if (networkMagic != null) {
+    if (networkMagic != null &&
+        networkMagic != ADANetwork.mainnet.protocolMagic) {
       attrs[2] = CborIntValue(networkMagic!).encode();
     }
     return attrs;
@@ -201,8 +219,8 @@ class _AdaByronAddrAttrs {
 }
 
 class _AdaByronAddrSpendingData {
-  AdaByronAddrTypes type;
-  List<int> keyBytes;
+  final ADAByronAddrTypes type;
+  final List<int> keyBytes;
 
   _AdaByronAddrSpendingData({required this.type, required this.keyBytes});
 }
@@ -210,9 +228,9 @@ class _AdaByronAddrSpendingData {
 class _AdaByronAddrRoot {
   _AdaByronAddrRoot(
       {required this.type, required this.spendingData, required this.attrs});
-  AdaByronAddrTypes type;
-  _AdaByronAddrSpendingData spendingData;
-  _AdaByronAddrAttrs attrs;
+  final ADAByronAddrTypes type;
+  final _AdaByronAddrSpendingData spendingData;
+  final ADAByronAddrAttrs attrs;
 
   List<int> hash() {
     return QuickCrypto.blake2b224Hash(QuickCrypto.sha3256Hash(serialize()));
@@ -228,15 +246,15 @@ class _AdaByronAddrRoot {
   }
 }
 
-class _AdaByronAddrPayload {
+class ADAByronAddrPayload {
   List<int> rootHashBytes;
-  _AdaByronAddrAttrs attrs;
-  AdaByronAddrTypes type;
+  final ADAByronAddrAttrs attrs;
+  final ADAByronAddrTypes type;
 
-  _AdaByronAddrPayload(
+  ADAByronAddrPayload(
       {required this.rootHashBytes, required this.attrs, required this.type});
 
-  factory _AdaByronAddrPayload.deserialize(List<int> serPayloadBytes) {
+  factory ADAByronAddrPayload.deserialize(List<int> serPayloadBytes) {
     final addrPayload = CborObject.fromCbor(serPayloadBytes);
     if (addrPayload is! CborListValue || addrPayload.value.length != 3) {
       throw const MessageException("Invalid address payload");
@@ -251,10 +269,10 @@ class _AdaByronAddrPayload {
     AddrDecUtils.validateBytesLength(
         cborBytes.value, QuickCrypto.blake2b224DigestSize);
 
-    return _AdaByronAddrPayload(
+    return ADAByronAddrPayload(
       rootHashBytes: cborBytes.value,
-      attrs: _AdaByronAddrAttrs.fromJson(addrPayload.value[1]),
-      type: AdaByronAddrTypes.fromValue(addrPayload.value[2]),
+      attrs: ADAByronAddrAttrs.fromCbor(addrPayload.value[1]),
+      type: ADAByronAddrTypes.fromCbor(addrPayload.value[2]),
     );
   }
 
@@ -267,20 +285,26 @@ class _AdaByronAddrPayload {
   }
 }
 
-class _AdaByronAddr {
-  _AdaByronAddrPayload payload;
+class ADAByronAddr {
+  final ADAByronAddrPayload payload;
 
-  _AdaByronAddr({required this.payload});
+  ADAByronAddr({required this.payload});
 
-  factory _AdaByronAddr.decode(String addr) {
-    return _AdaByronAddr.deserialize(Base58Decoder.decode(addr));
+  factory ADAByronAddr.decode(String addr) {
+    return ADAByronAddr.deserialize(Base58Decoder.decode(addr));
   }
 
   String encode() {
-    return Base58Encoder.encode(serialize());
+    return Base58Encoder.encode(toCbor().encode());
   }
 
-  factory _AdaByronAddr.deserialize(List<int> serAddrBytes) {
+  String toBech32() {
+    final network = ADANetwork.fromProtocolMagic(payload.attrs.networkMagic);
+    final hrp = AdaShelleyAddrConst.networkTagToAddrHrp[network]!;
+    return Bech32Encoder.encode(hrp, toCbor().encode());
+  }
+
+  factory ADAByronAddr.deserialize(List<int> serAddrBytes) {
     final addrBytes = CborObject.fromCbor(serAddrBytes);
     if (addrBytes is! CborListValue || addrBytes.value.length != 2) {
       throw const MessageException("Invalid address encoding");
@@ -291,7 +315,7 @@ class _AdaByronAddr {
     }
     final decodeCbor = addrBytes.value[0] as CborTagValue;
     if (decodeCbor.tags.isEmpty ||
-        decodeCbor.tags.first != AdaByronAddrConst.payloadTag ||
+        decodeCbor.tags.first != ADAByronAddrConst.payloadTag ||
         decodeCbor.value is! CborBytesValue) {
       throw const MessageException("Invalid CBOR tag");
     }
@@ -303,25 +327,24 @@ class _AdaByronAddr {
       throw MessageException("Invalid CRC (expected: $crcTag, got: $crc32Got)");
     }
 
-    return _AdaByronAddr(
-        payload: _AdaByronAddrPayload.deserialize(payloadBytes));
+    return ADAByronAddr(payload: ADAByronAddrPayload.deserialize(payloadBytes));
   }
 
-  List<int> serialize() {
+  CborObject toCbor() {
     final payloadBytes = payload.serialize();
     return CborListValue.fixedLength([
-      CborTagValue(payloadBytes, [AdaByronAddrConst.payloadTag]),
+      CborTagValue(payloadBytes, [ADAByronAddrConst.payloadTag]),
       CborIntValue(Crc32.quickIntDigest(payloadBytes)),
-    ]).encode();
+    ]);
   }
 }
 
 class _AdaByronAddrUtils {
-  static String encodeKey(List<int> pubKeyBytes, List<int> chainCodeBytes,
-      AdaByronAddrTypes addrType,
-      {List<int>? hdPathEncBytes}) {
-    final addrAttrs =
-        _AdaByronAddrAttrs(hdPathEncBytes: hdPathEncBytes, networkMagic: null);
+  static ADAByronAddr encodeKey(List<int> pubKeyBytes, List<int> chainCodeBytes,
+      ADAByronAddrTypes addrType,
+      {List<int>? hdPathEncBytes, int? networkMagic}) {
+    final addrAttrs = ADAByronAddrAttrs(
+        hdPathEncBytes: hdPathEncBytes, networkMagic: networkMagic);
 
     // Get address root
     final addrRoot = _AdaByronAddrRoot(
@@ -334,11 +357,9 @@ class _AdaByronAddrUtils {
     );
     final addrHash = addrRoot.hash();
     // Get address payload
-    final addrPayload = _AdaByronAddrPayload(
+    final addrPayload = ADAByronAddrPayload(
         rootHashBytes: addrHash, attrs: addrAttrs, type: addrType);
-    final encode = _AdaByronAddr(payload: addrPayload).encode();
-    // Add CRC32 and encode to base58
-    return encode;
+    return ADAByronAddr(payload: addrPayload);
   }
 }
 
@@ -369,11 +390,50 @@ class AdaByronAddrDecoder implements BlockchainAddressDecoder {
     return Tuple(addressRootHash, encryptedHdPath);
   }
 
+  ADAByronAddrPayload _decodeAddr(String addr,
+      [Map<String, dynamic> kwargs = const {}]) {
+    final addrType = kwargs["addr_type"];
+    if (addrType != null && addrType is! ADAByronAddrTypes) {
+      throw ArgumentException(
+          'Address type is not an enumerative of ADAByronAddrTypes');
+    }
+
+    /// Determine the network tag, defaulting to mainnet if not specified.
+    final netTag = kwargs["net_tag"];
+
+    /// Check if the provided network tag is a valid enum value.
+    if (netTag != null && netTag is! ADANetwork) {
+      throw ArgumentException(
+          'Address type is not an enumerative of ADANetwork');
+    }
+
+    final decAddr = ADAByronAddr.decode(addr);
+    if (addrType != null && decAddr.payload.type != addrType) {
+      throw ArgumentException('Invalid address type');
+    }
+    if (netTag != null) {
+      netTag as ADANetwork;
+      if (decAddr.payload.attrs.networkMagic != netTag.protocolMagic) {
+        if (decAddr.payload.attrs.networkMagic == null &&
+            netTag == ADANetwork.mainnet) {
+          return decAddr.payload;
+        }
+        throw MessageException("Invalid address network.");
+      }
+    }
+    return decAddr.payload;
+  }
+
+  ADAByronAddr decodeWithInfo(String addr,
+      [Map<String, dynamic> kwargs = const {}]) {
+    return ADAByronAddr.decode(addr);
+  }
+
   /// Decodes an Ada Byron address and returns its components.
   ///
   /// The [addr] parameter is the Ada Byron address to decode.
   /// The optional [kwargs] parameter is a map of additional arguments, where "addr_type" can be set to
-  /// specify the address type (default is `AdaByronAddrTypes.publicKey`).
+  /// specify the address type (default is `ADAByronAddrTypes.publicKey`).
   ///
   /// Returns a [List<int>] representing the decoded address components, including root hash and HD path if available.
   ///
@@ -381,20 +441,13 @@ class AdaByronAddrDecoder implements BlockchainAddressDecoder {
   /// address type in the decoded address does not match the expected type.
   @override
   List<int> decodeAddr(String addr, [Map<String, dynamic> kwargs = const {}]) {
-    final addrType = kwargs["addr_type"] ?? AdaByronAddrTypes.publicKey;
-    if (addrType is! AdaByronAddrTypes) {
-      throw ArgumentException(
-          'Address type is not an enumerative of AdaByronAddrTypes');
-    }
-
-    final decAddr = _AdaByronAddr.decode(addr);
-    if (decAddr.payload.type != addrType) {
-      throw ArgumentException('Invalid address type');
-    }
+    final args = Map<String, dynamic>.from(kwargs);
+    args["addr_type"] = args["addr_type"] ?? ADAByronAddrTypes.publicKey;
+    final decAddr = _decodeAddr(addr, args);
     return List<int>.from([
-      ...decAddr.payload.rootHashBytes,
-      if (decAddr.payload.attrs.hdPathEncBytes != null)
-        ...decAddr.payload.attrs.hdPathEncBytes!,
+      ...decAddr.rootHashBytes,
+      if (decAddr.attrs.hdPathEncBytes != null)
+        ...decAddr.attrs.hdPathEncBytes!,
     ]);
   }
 }
@@ -406,11 +459,20 @@ class AdaByronIcarusAddrEncoder implements BlockchainAddressEncoder {
   /// The [pubKey] parameter is the public key to be encoded.
   /// The optional [kwargs] parameter is a map of additional arguments, where "chain_code" can be set to specify the chain code.
   ///
-  /// Returns a string representing the encoded Ada Byron address.
+  /// Returns a ADAByronAddr representing the encoded Ada Byron address.
   ///
   /// Throws an [ArgumentException] if the provided chain code is invalid.
-  @override
-  String encodeKey(List<int> pubKey, [Map<String, dynamic> kwargs = const {}]) {
+
+  ADAByronAddr encodeKeyWithInfo(List<int> pubKey,
+      [Map<String, dynamic> kwargs = const {}]) {
+    /// Determine the network tag, defaulting to mainnet if not specified.
+    final netTag = kwargs["net_tag"] ?? ADANetwork.mainnet;
+
+    /// Check if the provided network tag is a valid enum value.
+    if (netTag is! ADANetwork) {
+      throw ArgumentException(
+          'Address type is not an enumerative of ADANetwork');
+    }
     List<int> chainCodeBytes;
     final chainCode = kwargs["chain_code"];
     if (chainCode is Bip32ChainCode) {
@@ -424,7 +486,21 @@ class AdaByronIcarusAddrEncoder implements BlockchainAddressEncoder {
         AddrKeyValidator.validateAndGetEd25519Key(pubKey).compressed;
 
     return _AdaByronAddrUtils.encodeKey(
-        pubkeyBytes, chainCodeBytes, AdaByronAddrTypes.publicKey);
+        pubkeyBytes, chainCodeBytes, ADAByronAddrTypes.publicKey,
+        networkMagic: netTag.protocolMagic);
+  }
+
+  /// Encodes an Ada Byron address with the provided public key and chain code.
+  ///
+  /// The [pubKey] parameter is the public key to be encoded.
+  /// The optional [kwargs] parameter is a map of additional arguments, where "chain_code" can be set to specify the chain code.
+  ///
+  /// Returns a string representing the encoded Ada Byron address.
+  ///
+  /// Throws an [ArgumentException] if the provided chain code is invalid.
+  @override
+  String encodeKey(List<int> pubKey, [Map<String, dynamic> kwargs = const {}]) {
+    return encodeKeyWithInfo(pubKey, kwargs).encode();
   }
 }
 
@@ -438,11 +514,20 @@ class AdaByronLegacyAddrEncoder implements BlockchainAddressEncoder {
   /// - "chain_code": A bytes or [Bip32ChainCode] representing the chain code.
   /// - "hd_path_key": An optional bytes for the HD path key (must be 32 bytes).
   ///
-  /// Returns a string representing the encoded Ada Byron Legacy address.
+  /// Returns a ADAByronAddr representing the encoded Ada Byron Legacy address.
   ///
   /// Throws an [ArgumentException] if the provided HD path, chain code, or HD path key is invalid.
-  @override
-  String encodeKey(List<int> pubKey, [Map<String, dynamic> kwargs = const {}]) {
+  ADAByronAddr encodeKeyWithInfo(List<int> pubKey,
+      [Map<String, dynamic> kwargs = const {}]) {
+    /// Determine the network tag, defaulting to mainnet if not specified.
+    final netTag = kwargs["net_tag"] ?? ADANetwork.mainnet;
+
+    /// Check if the provided network tag is a valid enum value.
+    if (netTag is! ADANetwork) {
+      throw ArgumentException(
+          'Address type is not an enumerative of ADANetwork');
+    }
+
     Bip32Path hdPath;
     if (kwargs["hd_path"] is String) {
       hdPath = Bip32PathParser.parse(kwargs["hd_path"]);
@@ -463,23 +548,36 @@ class AdaByronLegacyAddrEncoder implements BlockchainAddressEncoder {
       }
       chainCodeBytes = (kwargs["chain_code"] as Bip32ChainCode).toBytes();
     }
-    List<int>? hdPathKeyBytes;
-    if (kwargs["hd_path_key"] != null) {
-      if (kwargs["hd_path_key"] is! List<int>) {
-        throw ArgumentException("hd path key must be bytes");
-      }
-      hdPathKeyBytes = kwargs["hd_path_key"];
-      if (hdPathKeyBytes!.length != QuickCrypto.chacha20Polu1305Keysize) {
-        throw ArgumentException(
-            "HD path key shall be ${QuickCrypto.chacha20Polu1305Keysize}-byte long");
-      }
+    List<int> hdPathKeyBytes;
+    if (kwargs["hd_path_key"] is! List<int>) {
+      throw ArgumentException("hd path key must be bytes");
+    }
+    hdPathKeyBytes = kwargs["hd_path_key"];
+    if (hdPathKeyBytes.length != QuickCrypto.chacha20Polu1305Keysize) {
+      throw ArgumentException(
+          "HD path key shall be ${QuickCrypto.chacha20Polu1305Keysize}-byte long");
     }
     final pubKeyBytes =
         AddrKeyValidator.validateAndGetEd25519Key(pubKey).compressed;
     return _AdaByronAddrUtils.encodeKey(
-        pubKeyBytes, chainCodeBytes, AdaByronAddrTypes.publicKey,
-        hdPathEncBytes: hdPathKeyBytes == null
-            ? null
-            : _AdaByronAddrHdPath.encrypt(hdPath, hdPathKeyBytes));
+        pubKeyBytes, chainCodeBytes, ADAByronAddrTypes.publicKey,
+        hdPathEncBytes: _AdaByronAddrHdPath.encrypt(hdPath, hdPathKeyBytes),
+        networkMagic: netTag.protocolMagic);
+  }
+
+  /// Encodes an Ada Byron Legacy address with the provided public key, chain code, and optional HD path information.
+  ///
+  /// The [pubKey] parameter is the public key to be encoded.
+  /// The optional [kwargs] parameter is a map of additional arguments, including:
+  /// - "hd_path": A string or [Bip32Path] specifying the hierarchical deterministic (HD) path.
+  /// - "chain_code": A bytes or [Bip32ChainCode] representing the chain code.
+  /// - "hd_path_key": An for the HD path key (must be 32 bytes).
+  ///
+  /// Returns a string representing the encoded Ada Byron Legacy address.
+  ///
+  /// Throws an [ArgumentException] if the provided HD path, chain code, or HD path key is invalid.
+  @override
+  String encodeKey(List<int> pubKey, [Map<String, dynamic> kwargs = const {}]) {
+    return encodeKeyWithInfo(pubKey, kwargs).encode();
   }
 }

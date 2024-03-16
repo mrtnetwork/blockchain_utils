@@ -1,4 +1,4 @@
-import 'package:blockchain_utils/bip/address/ada_byron_addr.dart';
+import 'package:blockchain_utils/bip/address/ada/ada_byron_addr.dart';
 import 'package:blockchain_utils/bip/address/algo_addr.dart';
 import 'package:blockchain_utils/bip/address/aptos_addr.dart';
 import 'package:blockchain_utils/bip/address/atom_addr.dart';

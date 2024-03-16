@@ -10,17 +10,7 @@ import 'public_key.dart';
 class ECDSAPrivateKey {
   final ECDSAPublicKey publicKey;
   final BigInt secretMultiplier;
-
-  /// Converts the private key to bytes.
-  ///
-  /// Returns:
-  ///   A byte representation of the private key.
-  ///
-  List<int> toBytes() {
-    final tob = BigintUtils.toBytes(secretMultiplier,
-        length: publicKey.generator.curve.baselen);
-    return tob;
-  }
+  ECDSAPrivateKey._(this.publicKey, this.secretMultiplier);
 
   /// Creates an ECDSA private key from bytes.
   ///
@@ -39,8 +29,6 @@ class ECDSAPrivateKey {
     final ECDSAPublicKey publicKey = ECDSAPublicKey(curve, curve * secexp);
     return ECDSAPrivateKey._(publicKey, secexp);
   }
-
-  ECDSAPrivateKey._(this.publicKey, this.secretMultiplier);
 
   @override
   bool operator ==(other) {
@@ -86,6 +74,17 @@ class ECDSAPrivateKey {
     }
 
     return ECDSASignature(r, s);
+  }
+
+  /// Converts the private key to bytes.
+  ///
+  /// Returns:
+  ///   A byte representation of the private key.
+  ///
+  List<int> toBytes() {
+    final tob = BigintUtils.toBytes(secretMultiplier,
+        length: publicKey.generator.curve.baselen);
+    return tob;
   }
 
   @override

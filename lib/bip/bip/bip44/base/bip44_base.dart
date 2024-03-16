@@ -37,28 +37,29 @@ class Bip44Levels {
   // Named constants representing each level
 
   /// Master level
-  static const master = Bip44Levels._(0);
+  static const master = Bip44Levels._(0, "Master");
 
   /// Purpose level
-  static const purpose = Bip44Levels._(1);
+  static const purpose = Bip44Levels._(1, "Purpose");
 
   /// Coin level
-  static const coin = Bip44Levels._(2);
+  static const coin = Bip44Levels._(2, "Coin");
 
   /// Account level
-  static const account = Bip44Levels._(3);
+  static const account = Bip44Levels._(3, "Account");
 
   /// Change level (external/internal)
-  static const change = Bip44Levels._(4);
+  static const change = Bip44Levels._(4, "Change");
 
   /// Address index level
-  static const addressIndex = Bip44Levels._(5);
+  static const addressIndex = Bip44Levels._(5, "Address");
 
   // The value associated with each instance
 
   /// Constructor to associate a value with each instance
   final int value;
-  const Bip44Levels._(this.value);
+  final String name;
+  const Bip44Levels._(this.value, this.name);
 
   /// Factory method to create a [Bip44Levels] instance from an integer.
 
@@ -76,6 +77,10 @@ class Bip44Levels {
     change,
     addressIndex,
   ];
+  @override
+  String toString() {
+    return "Bip44Levels.$name";
+  }
 }
 
 /// Abstract base class for BIP-44 hierarchical deterministic wallets.

@@ -52,7 +52,7 @@
   OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-import 'package:blockchain_utils/bip/address/ada_byron_addr.dart';
+import 'package:blockchain_utils/bip/address/ada/ada_byron_addr.dart';
 import 'package:blockchain_utils/bip/bip/bip32/base/bip32_base.dart';
 import 'package:blockchain_utils/bip/bip/bip32/bip32_key_data.dart';
 import 'package:blockchain_utils/bip/bip/bip32/bip32_keys.dart';
@@ -170,9 +170,10 @@ class CardanoByronLegacy {
   String getAddress(Bip32KeyIndex firstIndex, Bip32KeyIndex secondIndex) {
     final pubKey =
         getPublicKey(firstIndex: firstIndex, secondIndex: secondIndex);
+    final hdPath = _getDerivationPath(firstIndex, secondIndex);
     return AdaByronLegacyAddrEncoder().encodeKey(pubKey.key.compressed, {
       "chain_code": pubKey.chainCode.toBytes(),
-      "hd_path": _getDerivationPath(firstIndex, secondIndex),
+      "hd_path": hdPath,
       "hd_path_key": hdPathKey,
     });
   }

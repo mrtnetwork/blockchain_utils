@@ -162,7 +162,8 @@ class Cip1852 extends Bip44Base {
   @override
   Cip1852 get deriveDefaultPath {
     Bip44Base bipObj = purpose.coin;
-    return Cip1852._(bip32.derivePath(bipObj.coinConf.defPath), coinConf);
+    return Cip1852._(
+        bipObj.bip32.derivePath(bipObj.coinConf.defPath), coinConf);
   }
 
   /// Specification name

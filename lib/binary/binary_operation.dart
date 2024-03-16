@@ -110,3 +110,5 @@ void zero(List<int> array) {
     array[i] = 0;
   }
 }
+
+final BigInt maxU64 = BigInt.parse("18446744073709551615");

@@ -29,7 +29,6 @@ class CardanoIcarusMstKeyGenerator implements IBip32MstKeyGenerator {
     if (seedBytes.length < Bip32Slip10MstKeyGeneratorConst.seedMinByteLen) {
       throw ArgumentException('Invalid seed length (${seedBytes.length})');
     }
-
     List<int> keyBytes = PBKDF2.deriveKey(
         salt: seedBytes,
         mac: () => HMAC(

@@ -2,14 +2,6 @@
 
 Discover a versatile and powerful cryptographic toolkit, carefully crafted in pure Dart to serve developers, businesses, and blockchain enthusiasts across multiple platforms. This package offers a wide array of essential features, including encoding/decoding for various data formats, support for numerous blockchain addresses, robust cryptographic algorithms, mnemonic management, and more – all without relying on external dependencies. Whether you're securing private keys, interacting with blockchain networks, or ensuring data integrity, this cross-platform solution simplifies your crypto journey. Experience a comprehensive set of tools designed to meet your diverse encoding, cryptography, and blockchain needs on iOS, Android, the web, Linux, and beyond.
 
-This comprehensive package has been shaped by the influence of several key sources, culminating in its development for Dart.
-
-- python [bip_utils](https://github.com/ebellocchia/bip_utils)
-- python [ecdsa](https://github.com/tlsfuzzer/python-ecdsa)
-- rust [schnorrkel](https://github.com/w3f/schnorrkel)
-- js [stablelib](https://github.com/StableLib/stablelib)
-- rust [strobe](https://github.com/rozbb/strobe-rs)
-
 ## Features
 
 **Encoding and Decoding:**
@@ -141,6 +133,7 @@ These features make your package a comprehensive solution for encoding, cryptogr
    - Tron (EDDSA)
    - Solana (EDDSA)
    - XRP (EDDSA, ECDSA)
+   - Solana (EDDSA, EDDSA Khalow)
 
 **Example: Explore Our Toolkit**
 

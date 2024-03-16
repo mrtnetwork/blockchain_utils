@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:blockchain_utils/binary/utils.dart';
 import 'package:blockchain_utils/numbers/bigint_utils.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/curve/curves.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/eddsa/publickey.dart';
@@ -12,11 +13,15 @@ import 'package:blockchain_utils/exception/exception.dart';
 class EDDSAPrivateKey {
   final EDPoint generator;
   final int baselen;
-  late final List<int> _privateKey;
-  late final List<int> _h;
-  EDDSAPublicKey? _publicKey;
-  late final BigInt _s;
-  final bool isKhalow;
+  final List<int> _privateKey;
+  final List<int>? _extendedKey;
+  final BigInt _secret;
+  final EDDSAPublicKey publicKey;
+  EDDSAPrivateKey._(this.generator, this.baselen, List<int> privateKey,
+      this._secret, List<int>? extendedKey)
+      : _privateKey = BytesUtils.toBytes(privateKey, unmodifiable: true),
+        _extendedKey = BytesUtils.tryToBytes(extendedKey, unmodifiable: true),
+        publicKey = EDDSAPublicKey(generator, (generator * _secret).toBytes());
 
   /// Creates an EdDSA private key from a random value using a provided hash method.
   ///
@@ -31,22 +36,22 @@ class EDDSAPrivateKey {
   /// Throws:
   ///   - ArgumentException: If the private key size is invalid.
   ///
-  EDDSAPrivateKey(
-    this.generator,
+  factory EDDSAPrivateKey(
+    EDPoint generator,
     List<int> privateKey,
     SerializableHash Function() hashMethod,
-  )   : baselen = (generator.curve.p.bitLength + 1 + 7) ~/ 8,
-        isKhalow = false {
+  ) {
+    final baselen = (generator.curve.p.bitLength + 1 + 7) ~/ 8;
     if (privateKey.length != baselen) {
       throw ArgumentException(
           'Incorrect size of private key, expected: $baselen bytes');
     }
-
-    _privateKey = List<int>.from(privateKey);
-    _h = hashMethod().update(privateKey).digest();
-    final a = _h.sublist(0, baselen);
-    final prunedKey = _keyPrune(List<int>.from(a));
-    _s = BigintUtils.fromBytes(prunedKey, byteOrder: Endian.little);
+    final extendedKey = hashMethod().update(privateKey).digest();
+    final a = extendedKey.sublist(0, baselen);
+    final prunedKey = _keyPrune(List<int>.from(a), generator);
+    final secret = BigintUtils.fromBytes(prunedKey, byteOrder: Endian.little);
+    return EDDSAPrivateKey._(
+        generator, baselen, privateKey, secret, extendedKey.sublist(baselen));
   }
 
   /// Creates an EdDSA private key from a private key value for Khalow curves.
@@ -61,17 +66,18 @@ class EDDSAPrivateKey {
   /// Throws:
   ///   - ArgumentException: If the private key size is invalid.
   ///
-  EDDSAPrivateKey.fromKhalow(
-    this.generator,
-    List<int> privateKey,
-  )   : baselen = (generator.curve.p.bitLength + 1 + 7) ~/ 8,
-        isKhalow = true {
-    if (privateKey.length != baselen) {
+  factory EDDSAPrivateKey.fromKhalow(EDPoint generator, List<int> privateKey) {
+    final baselen = (generator.curve.p.bitLength + 1 + 7) ~/ 8;
+    if (privateKey.length < baselen) {
       throw ArgumentException(
-          'Incorrect size of private key, expected: $baselen bytes');
+          'Incorrect size of private key, expected: ${baselen * 2} bytes');
     }
-    _privateKey = privateKey;
-    _s = BigintUtils.fromBytes(_privateKey, byteOrder: Endian.little);
+    final List<int> privateKeyPart = privateKey.sublist(0, baselen);
+    final List<int> extendedKey = privateKey.sublist(baselen);
+    final secret =
+        BigintUtils.fromBytes(privateKeyPart, byteOrder: Endian.little);
+    return EDDSAPrivateKey._(
+        generator, baselen, privateKeyPart, secret, extendedKey);
   }
 
   /// Retrieves the private key bytes.
@@ -87,7 +93,7 @@ class EDDSAPrivateKey {
   }
 
   /// Prunes the key to achieve improved security.
-  List<int> _keyPrune(List<int> key) {
+  static List<int> _keyPrune(List<int> key, EDPoint generator) {
     final h = generator.curve.cofactor();
     int hLog;
     if (h == BigInt.from(4)) {
@@ -110,24 +116,11 @@ class EDDSAPrivateKey {
     return key;
   }
 
-  /// Retrieves the public key associated with this private key.
-  EDDSAPublicKey publicKey() {
-    if (_publicKey != null) {
-      return _publicKey!;
-    }
-    final publicPoint = generator * _s;
-    _publicKey ??= EDDSAPublicKey(generator, publicPoint.toBytes(),
-        publicPoint: publicPoint);
-    return _publicKey!;
-  }
-
   /// Signs the provided data using this private key.
   List<int> sign(
     List<int> data,
     SerializableHash Function() hashMethod,
   ) {
-    final A = publicKey().publicKey();
-    final prefix = _h.sublist(baselen);
     List<int> dom = List.empty();
     if (generator.curve == Curves.curveEd448) {
       dom = List<int>.from([...'SigEd448'.codeUnits, 0x00, 0x00]);
@@ -135,19 +128,20 @@ class EDDSAPrivateKey {
 
     final r = BigintUtils.fromBytes(
         hashMethod()
-            .update(List<int>.from([...dom, ...prefix, ...data]))
+            .update(List<int>.from([...dom, ..._extendedKey ?? [], ...data]))
             .digest(),
         byteOrder: Endian.little);
     final R = (generator * r).toBytes();
 
     BigInt k = BigintUtils.fromBytes(
         hashMethod()
-            .update(List<int>.from([...dom, ...R, ...A, ...data]))
+            .update(
+                List<int>.from([...dom, ...R, ...publicKey.toBytes(), ...data]))
             .digest(),
         byteOrder: Endian.little);
 
     k %= generator.order!;
-    final s = (r + k * _s) % generator.order!;
+    final s = (r + k * _secret) % generator.order!;
     return List<int>.from([
       ...R,
       ...BigintUtils.toBytes(s, length: baselen, order: Endian.little)

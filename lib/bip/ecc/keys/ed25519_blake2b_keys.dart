@@ -66,10 +66,10 @@ import 'package:blockchain_utils/exception/exception.dart';
 /// Represents an Ed25519 public key with Blake2b hashing, implementing the IPublicKey interface.
 class Ed25519Blake2bPublicKey implements IPublicKey {
   /// EDDSA public key
-  final EDDSAPublicKey publicKey;
+  final EDDSAPublicKey _publicKey;
 
   /// Private constructor to create an Ed25519Blake2bPublicKey instance from an EDDSAPublicKey.
-  Ed25519Blake2bPublicKey._(this.publicKey);
+  Ed25519Blake2bPublicKey._(this._publicKey);
 
   /// Factory constructor to create an Ed25519Blake2bPublicKey from raw key bytes.
   factory Ed25519Blake2bPublicKey.fromBytes(List<int> keyBytes) {
@@ -115,14 +115,14 @@ class Ed25519Blake2bPublicKey implements IPublicKey {
   /// edwards point of public key
   @override
   EDPoint get point {
-    return publicKey.point;
+    return _publicKey.point;
   }
 
   /// compressed bytes of public key
   @override
   List<int> get compressed {
     return List<int>.from(
-        [...Ed25519KeysConst.pubKeyPrefix, ...publicKey.point.toBytes()]);
+        [...Ed25519KeysConst.pubKeyPrefix, ..._publicKey.point.toBytes()]);
   }
 
   /// uncompressed bytes of public key
@@ -140,9 +140,9 @@ class Ed25519Blake2bPublicKey implements IPublicKey {
 /// Represents an Ed25519 private key with Blake2b hashing, implementing the IPrivateKey interface.
 class Ed25519Blake2bPrivateKey implements IPrivateKey {
   /// Private constructor for creating an Ed25519Blake2bPrivateKey instance from an EDDSAPrivateKey.
-  Ed25519Blake2bPrivateKey._(this.privateKey);
+  Ed25519Blake2bPrivateKey._(this._privateKey);
 
-  final EDDSAPrivateKey privateKey;
+  final EDDSAPrivateKey _privateKey;
 
   /// Factory method for creating an Ed25519Blake2bPrivateKey from a byte array.
   /// It checks the length of the provided keyBytes to ensure it matches the expected length.
@@ -182,13 +182,13 @@ class Ed25519Blake2bPrivateKey implements IPrivateKey {
   /// access to public key
   @override
   IPublicKey get publicKey {
-    return Ed25519Blake2bPublicKey._(privateKey.publicKey());
+    return Ed25519Blake2bPublicKey._(_privateKey.publicKey);
   }
 
   /// private key raw bytes
   @override
   List<int> get raw {
-    return privateKey.privateKey;
+    return _privateKey.privateKey;
   }
 
   @override

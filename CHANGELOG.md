@@ -1,3 +1,9 @@
+## 2.1.0
+- Implements classes for signing and verifying transaction digests.
+   - Introduces classes for signing and verifying transaction digests, with support for Cardano.
+   - Adds a new class for encoding and decoding ADA addresses, covering enterprise, pointer, base, reward, shelly, and shelly legacy address formats.
+   - Fixes an issue with CBOR decoding of negative integers in web environments.
+
 ## 2.0.1
    - dart format .
 

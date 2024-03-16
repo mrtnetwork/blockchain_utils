@@ -64,10 +64,10 @@ import 'package:blockchain_utils/exception/exception.dart';
 
 /// A class representing an Ed25519 Monero-compatible public key that implements the IPublicKey interface.
 class Ed25519MoneroPublicKey implements IPublicKey {
-  final EDDSAPublicKey publicKey;
+  final EDDSAPublicKey _publicKey;
 
   /// Private constructor for creating an Ed25519MoneroPublicKey instance from an EDDSAPublicKey.
-  Ed25519MoneroPublicKey._(this.publicKey);
+  Ed25519MoneroPublicKey._(this._publicKey);
 
   /// Factory method for creating an Ed25519MoneroPublicKey from a byte array.
   factory Ed25519MoneroPublicKey.fromBytes(List<int> keyBytes) {
@@ -107,14 +107,14 @@ class Ed25519MoneroPublicKey implements IPublicKey {
   /// accsess to public key point
   @override
   EDPoint get point {
-    return publicKey.point;
+    return _publicKey.point;
   }
 
   /// public key compressed bytes
   @override
   List<int> get compressed {
     return List<int>.from(
-        [...Ed25519KeysConst.pubKeyPrefix, ...publicKey.point.toBytes()]);
+        [...Ed25519KeysConst.pubKeyPrefix, ..._publicKey.point.toBytes()]);
   }
 
   /// public key uncompressed bytes
@@ -131,10 +131,10 @@ class Ed25519MoneroPublicKey implements IPublicKey {
 
 /// A class representing an Ed25519 Monero-compatible private key that implements the IPrivateKey interface.
 class Ed25519MoneroPrivateKey implements IPrivateKey {
-  final EDDSAPrivateKey privateKey;
+  final EDDSAPrivateKey _privateKey;
 
   /// Private constructor for creating an Ed25519MoneroPrivateKey instance from an EDDSAPrivateKey.
-  Ed25519MoneroPrivateKey._(this.privateKey);
+  Ed25519MoneroPrivateKey._(this._privateKey);
 
   /// Factory method for creating an Ed25519MoneroPrivateKey from a byte array.
   /// It checks the length of the provided keyBytes to ensure it matches the expected length.
@@ -174,13 +174,13 @@ class Ed25519MoneroPrivateKey implements IPrivateKey {
   /// accsess to public key
   @override
   IPublicKey get publicKey {
-    return Ed25519MoneroPublicKey._(privateKey.publicKey());
+    return Ed25519MoneroPublicKey._(_privateKey.publicKey);
   }
 
   /// private key raw bytes
   @override
   List<int> get raw {
-    return privateKey.privateKey;
+    return _privateKey.privateKey;
   }
 
   @override

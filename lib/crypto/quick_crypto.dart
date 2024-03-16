@@ -26,9 +26,7 @@ class QuickCrypto {
   }
 
   /// Static property that defines the size of SHA-256 digests in bytes
-  static int get sha256DigestSize {
-    return 32;
-  }
+  static const int sha256DigestSize = 32;
 
   /// Derive a key from a password using PBKDF2 algorithm
   static List<int> pbkdf2DeriveKey(
@@ -73,7 +71,7 @@ class QuickCrypto {
   }
 
   /// Define the size of BLAKE2b-512 digests, which is 64 bytes (512 bits)
-  static int blake2b512DigestSize = 64;
+  static const int blake2b512DigestSize = 64;
 
   /// Calculate the BLAKE2b-512 hash of the input data
   static List<int> blake2b512Hash(
@@ -84,7 +82,7 @@ class QuickCrypto {
       _blake2bHash(data, blake2b512DigestSize, key: key, salt: salt);
 
   /// Define the size of BLAKE2b-256 digests, which is 32 bytes (256 bits)
-  static int blake2b256DigestSize = 32;
+  static const int blake2b256DigestSize = 32;
 
   /// Calculate the BLAKE2b-256 hash of the input data
   static List<int> blake2b256Hash(
@@ -95,7 +93,7 @@ class QuickCrypto {
       _blake2bHash(data, blake2b256DigestSize, key: key, salt: salt);
 
   /// Define the size of BLAKE2b-224 digests, which is 28 bytes (224 bits)
-  static int blake2b224DigestSize = 28;
+  static const int blake2b224DigestSize = 28;
 
   /// Calculate the BLAKE2b-224 hash of the input data
   static List<int> blake2b224Hash(
@@ -106,7 +104,7 @@ class QuickCrypto {
       _blake2bHash(data, blake2b224DigestSize, key: key, salt: salt);
 
   /// Define the size of BLAKE2b-160 digests, which is 20 bytes (160 bits)
-  static int blake2b160DigestSize = 20;
+  static const int blake2b160DigestSize = 20;
 
   /// Calculate the BLAKE2b-160 hash of the input data
   static List<int> blake2b160Hash(
@@ -117,7 +115,7 @@ class QuickCrypto {
       _blake2bHash(data, blake2b160DigestSize, key: key, salt: salt);
 
   /// Define the size of BLAKE2b-40 digests, which is 5 bytes (40 bits)
-  static int blake2b40DigestSize = 5;
+  static const int blake2b40DigestSize = 5;
 
   /// Calculate the BLAKE2b-40 hash of the input data
   static List<int> blake2b40Hash(
@@ -128,7 +126,7 @@ class QuickCrypto {
       _blake2bHash(data, blake2b40DigestSize, key: key, salt: salt);
 
   /// Define the size of BLAKE2b-32 digests, which is 4 bytes (32 bits)
-  static int blake2b32DigestSize = 4;
+  static const int blake2b32DigestSize = 4;
 
   /// Calculate the BLAKE2b-32 hash of the input data
   static List<int> blake2b32Hash(
@@ -149,7 +147,7 @@ class QuickCrypto {
   }
 
   /// Gets the length of the SHA512 digest.
-  static int sha512DeigestLength = SHA512.digestLength;
+  static const int sha512DeigestLength = SHA512.digestLength;
 
   /// Computes the SHA512 hash of the input data and returns its halves.
   ///
@@ -175,7 +173,7 @@ class QuickCrypto {
   }
 
   /// Define the size of SHA-3-256 digests, which is 32 bytes (256 bits)
-  static int get sha3256DigestSize => 32;
+  static const int sha3256DigestSize = 32;
 
   /// Calculate the HMAC-SHA-256 hash of the input data using the provided key
   static List<int> hmacsha256Hash(List<int> key, List<int> data) {

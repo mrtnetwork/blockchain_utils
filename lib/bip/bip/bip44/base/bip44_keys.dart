@@ -1,4 +1,4 @@
-import 'package:blockchain_utils/bip/address/ada_shelley_addr.dart';
+import 'package:blockchain_utils/bip/address/ada/ada_shelley_addr.dart';
 import 'package:blockchain_utils/bip/address/encoder.dart';
 import 'package:blockchain_utils/bip/address/p2pkh_addr.dart';
 import 'package:blockchain_utils/bip/address/xmr_addr.dart';

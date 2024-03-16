@@ -2,11 +2,21 @@
 library address_decoder;
 
 /// Export statement for Ada Byron address decoder.
-export 'ada_byron_addr.dart' show AdaByronAddrDecoder;
+export 'ada/ada_byron_addr.dart' show AdaByronAddrDecoder;
 
 /// Export statements for Ada Shelley address decoders.
-export 'ada_shelley_addr.dart'
-    show AdaShelleyStakingAddrDecoder, AdaShelleyAddrDecoder;
+export 'ada/ada.dart'
+    show
+        AdaShelleyStakingAddrDecoder,
+        AdaShelleyAddrDecoder,
+        AdaShelleyPointerDecoder,
+        AdaShelleyEnterpriseDecoder,
+        AdaGenericAddrDecoderResult,
+        AdaGenericAddrDecoder,
+        ADAAddressType,
+        ADANetwork,
+        ADAByronAddrTypes;
+export 'ada/network.dart';
 
 /// Export statement for Algorand address decoder.
 export 'algo_addr.dart' show AlgoAddrDecoder;

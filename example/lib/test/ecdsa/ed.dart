@@ -142,10 +142,10 @@ void _testEncoding() {
 void _testKeys() {
   final pr =
       EDDSAPrivateKey(Curves.generatorED25519, Uint8List(32), () => SHA512());
-  assert(pr.publicKey().point.toBytes().toHex() ==
+  assert(pr.publicKey.point.toBytes().toHex() ==
       "3b6a27bcceb6a42d62a3a8d02a6f0d73653215771de243a63ac048a18b59da29");
   final sig = pr.sign(Uint8List(32), () => SHA512());
-  final verify = pr.publicKey().verify(Uint8List(32), sig, () => SHA512());
+  final verify = pr.publicKey.verify(Uint8List(32), sig, () => SHA512());
   assert(verify);
 }
 
@@ -153,7 +153,7 @@ void _testEDBlake2bKeys() {
   final pr =
       EDDSAPrivateKey(Curves.generatorED25519, Uint8List(32), () => BLAKE2b());
   final sig = pr.sign(Uint8List(32), () => BLAKE2b());
-  final verify = pr.publicKey().verify(Uint8List(32), sig, () => BLAKE2b());
+  final verify = pr.publicKey.verify(Uint8List(32), sig, () => BLAKE2b());
   assert(verify);
 }
 

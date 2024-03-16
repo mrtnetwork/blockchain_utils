@@ -1,3 +1,5 @@
+import 'package:blockchain_utils/tuple/tuple.dart';
+
 import 'bech32_utils.dart';
 import 'package:blockchain_utils/exception/exception.dart';
 
@@ -119,7 +121,7 @@ class Bech32Decoder extends Bech32DecoderBase {
   /// Returns the decoded byte array.
   ///
   /// Throws an ArgumentException if the decoding fails or if the HRP doesn't match.
-  static List<int> decode(String hrp, String address) {
+  static List<int> decode(String? hrp, String address) {
     final decode = Bech32DecoderBase.decodeBech32(
         address,
         Bech32Const.separator,
@@ -131,5 +133,15 @@ class Bech32Decoder extends Bech32DecoderBase {
     }
     final result = Bech32BaseUtils.convertFromBase32(decode.item2);
     return result;
+  }
+
+  static Tuple<String, List<int>> decodeWithoutHRP(String address) {
+    final decode = Bech32DecoderBase.decodeBech32(
+        address,
+        Bech32Const.separator,
+        Bech32Const.checksumStrLen,
+        Bech32Utils.verifyChecksum);
+    final result = Bech32BaseUtils.convertFromBase32(decode.item2);
+    return Tuple(decode.item1, result);
   }
 }

@@ -7,6 +7,7 @@ import 'package:blockchain_utils/cbor/core/cbor.dart';
 class CborListValue<T> implements CborObject {
   /// Constructor for creating a CborListValue instance with the provided parameters.
   /// It accepts the List of all cbor encodable value.
+  ///
   CborListValue.fixedLength(this.value) : _isFixedLength = true;
 
   /// Constructor for creating a CborListValue instance with the provided parameters.

@@ -8,6 +8,7 @@ import 'package:blockchain_utils/exception/exception.dart';
 class ECDSAPublicKey {
   final ProjectiveECCPoint generator;
   final ProjectiveECCPoint point;
+  ECDSAPublicKey._(this.generator, this.point);
 
   /// Creates an ECDSA public key with a generator and a point.
   ///
@@ -17,7 +18,8 @@ class ECDSAPublicKey {
   ///   - verify: Set to `true` to verify that the point is on the curve and
   ///     has a valid order (default is `true`).
   ///
-  ECDSAPublicKey(this.generator, this.point, {bool verify = true}) {
+  factory ECDSAPublicKey(ProjectiveECCPoint generator, ProjectiveECCPoint point,
+      {bool verify = true}) {
     final curve = generator.curve;
     final n = generator.order;
     final p = curve.p;
@@ -38,6 +40,7 @@ class ECDSAPublicKey {
     if (verify && curve.cofactor() != BigInt.one && !(point * n).isInfinity) {
       throw ArgumentException("Generator point order is bad.");
     }
+    return ECDSAPublicKey._(generator, point);
   }
 
   @override

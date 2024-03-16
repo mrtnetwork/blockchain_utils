@@ -3,7 +3,6 @@ import 'package:blockchain_utils/cbor/utils/dynamic_bytes.dart';
 import 'package:blockchain_utils/cbor/core/tags.dart';
 import 'package:blockchain_utils/cbor/types/bigint.dart';
 import 'package:blockchain_utils/cbor/core/cbor.dart';
-import 'package:blockchain_utils/cbor/types/int.dart';
 import 'package:blockchain_utils/compare/compare.dart';
 import 'int64.dart';
 
@@ -44,12 +43,10 @@ class CborBigFloatValue implements CborObject {
   }
 
   List<int> _encodeValue(BigInt value) {
-    if (value.isValidInt) {
-      return CborIntValue(value.toInt()).encode();
-    } else if (value.bitLength > 64) {
+    if (value.bitLength > 64) {
       return CborBigIntValue(value).encode();
     }
-    return CborInt64Value(value).encode();
+    return CborSafeIntValue(value).encode();
   }
 
   /// Encode the value into CBOR bytes an then to hex

@@ -2,12 +2,23 @@
 library address_encoder;
 
 /// Export statements for Ada Byron address encoders.
-export 'ada_byron_addr.dart'
+export 'ada/ada_byron_addr.dart'
     show AdaByronIcarusAddrEncoder, AdaByronLegacyAddrEncoder;
 
 /// Export statements for Ada Shelley address encoders.
-export 'ada_shelley_addr.dart'
-    show AdaShelleyAddrEncoder, AdaShelleyStakingAddrEncoder;
+export 'ada/ada.dart'
+    show
+        AdaShelleyAddrEncoder,
+        AdaShelleyStakingAddrEncoder,
+        AdaPointerAddrEncoder,
+        AdaShelleyEnterpriseAddrEncoder,
+        AdaStakeCredType,
+        AdaStakeCredential,
+        Pointer,
+        ADAAddressType,
+        ADANetwork,
+        ADAByronAddrTypes;
+export 'ada/network.dart';
 
 /// Export statement for Algorand address encoder.
 export 'algo_addr.dart' show AlgoAddrEncoder;

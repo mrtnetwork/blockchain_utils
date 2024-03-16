@@ -1,7 +1,11 @@
-import 'package:blockchain_utils/blockchain_utils.dart';
+import 'package:blockchain_utils/bip/ecc/bip_ecc.dart';
+import 'package:blockchain_utils/crypto/crypto/cdsa/cdsa.dart';
+import 'package:blockchain_utils/crypto/crypto/hash/hash.dart';
+import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/numbers/numbers.dart';
 
 /// Constants used by the Solana signer for cryptographic operations.
-class SolanaSignerConst {
+class CardanoSignerConst {
   /// The ED25519 elliptic curve generator point.
   static final EDPoint ed25519Generator = Curves.generatorED25519;
 
@@ -10,21 +14,35 @@ class SolanaSignerConst {
 }
 
 /// Class for signing Solana transactions using either EDDSA algorithm.
-class SolanaSigner {
-  /// Constructs a new SolanaSigner instance with the provided signing keys.
-  ///
-  /// This constructor is marked as private and takes an EDDSA private key [_signingKey]
-  SolanaSigner._(this._signingKey);
-
+class CardanoSigner {
   /// The EDDSA private key for signing.
   final EDDSAPrivateKey _signingKey;
 
+  /// Constructs a new SolanaSigner instance with the provided signing keys.
+  ///
+  /// This constructor is marked as private and takes an EDDSA private key [_signingKey]
+  CardanoSigner._(this._signingKey);
+
   /// Factory method to create an SolanaSigner instance from key bytes.
-  factory SolanaSigner.fromKeyBytes(List<int> keyBytes) {
+  factory CardanoSigner.fromKeyBytes(List<int> keyBytes) {
+    if (keyBytes.length != Ed25519KholawKeysConst.privKeyByteLen &&
+        keyBytes.length != Ed25519KeysConst.privKeyByteLen) {
+      throw MessageException("Invalid key bytes length.", details: {
+        "length": keyBytes.length,
+        "Excepted":
+            "${Ed25519KholawKeysConst.privKeyByteLen} or ${Ed25519KeysConst.privKeyByteLen}"
+      });
+    }
     // Create an EDDSA private key from the key bytes using the ED25519 curve.
-    final signingKey = EDDSAPrivateKey(
-        SolanaSignerConst.ed25519Generator, keyBytes, () => SHA512());
-    return SolanaSigner._(signingKey);
+    final EDDSAPrivateKey signingKey;
+    if (keyBytes.length == Ed25519KholawKeysConst.privKeyByteLen) {
+      signingKey = EDDSAPrivateKey.fromKhalow(
+          CardanoSignerConst.ed25519Generator, keyBytes);
+    } else {
+      signingKey = EDDSAPrivateKey(
+          CardanoSignerConst.ed25519Generator, keyBytes, () => SHA512());
+    }
+    return CardanoSigner._(signingKey);
   }
 
   /// Signs the provided digest using the ED25519 algorithm.
@@ -62,25 +80,25 @@ class SolanaSigner {
   /// This method constructs and returns an SolanaVerifier instance for signature verification.
   ///
   /// returns An SolanaVerifier instance based on the available signing key type.
-  SolanaVerifier toVerifyKey() {
+  CardanoVerifier toVerifyKey() {
     final keyBytes = _signingKey.publicKey.toBytes();
-    return SolanaVerifier.fromKeyBytes(keyBytes);
+    return CardanoVerifier.fromKeyBytes(keyBytes);
   }
 }
 
 /// Class representing an Solana Verifier for signature verification.
-class SolanaVerifier {
+class CardanoVerifier {
   final EDDSAPublicKey? _eddsaPublicKey;
 
   /// Private constructor to create an SolanaVerifier instance.
-  SolanaVerifier._(this._eddsaPublicKey);
+  CardanoVerifier._(this._eddsaPublicKey);
 
   /// Factory method to create an SolanaVerifier instance from key bytes.
-  factory SolanaVerifier.fromKeyBytes(List<int> keyBytes) {
+  factory CardanoVerifier.fromKeyBytes(List<int> keyBytes) {
     final pub = Ed25519PublicKey.fromBytes(keyBytes);
     final verifyingKey = EDDSAPublicKey(
-        SolanaSignerConst.ed25519Generator, pub.compressed.sublist(1));
-    return SolanaVerifier._(verifyingKey);
+        CardanoSignerConst.ed25519Generator, pub.compressed.sublist(1));
+    return CardanoVerifier._(verifyingKey);
   }
 
   /// Verifies the EDDSA signature for the provided digest.
@@ -99,7 +117,6 @@ class SolanaVerifier {
   /// Verifies the signature for the provided digest using the available key.
   ///
   /// This method verifies the signature of the provided digest using either EDDSA algorithms,
-  ///
   /// [digest] The digest to be verified.
   /// [signature] The signature to be verified.
   bool verify(List<int> digest, List<int> signature) {

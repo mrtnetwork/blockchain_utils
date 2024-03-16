@@ -1,4 +1,5 @@
 import 'dart:typed_data';
+import 'package:blockchain_utils/binary/binary_operation.dart';
 import 'package:blockchain_utils/binary/utils.dart';
 import 'package:blockchain_utils/exception/exception.dart';
 import 'package:blockchain_utils/string/string.dart';
@@ -254,11 +255,11 @@ class BigintUtils {
   /// Returns: A list of bytes representing the BigInt with the specified length and byte order.
   static List<int> toBytes(BigInt val,
       {required int length, Endian order = Endian.big}) {
-    BigInt bigMaskEight = BigInt.from(0xff);
     if (val == BigInt.zero) {
       return List.filled(length, 0);
     }
-    var byteList = List<int>.filled(length, 0);
+    BigInt bigMaskEight = BigInt.from(0xff);
+    List<int> byteList = List<int>.filled(length, 0);
     for (var i = 0; i < length; i++) {
       byteList[length - i - 1] = (val & bigMaskEight).toInt();
       val = val >> 8;
@@ -438,5 +439,34 @@ class BigintUtils {
     } on ArgumentException {
       return null;
     }
+  }
+
+  static List<int> variableNatEncode(BigInt val) {
+    BigInt num = val & BigInt.from(mask32);
+    List<int> output = [(num & BigInt.from(0xFF)).toInt() & 0x7F];
+    num ~/= BigInt.from(128);
+    while (num > BigInt.zero) {
+      output.add(((num & BigInt.from(0xFF)).toInt() & 0x7F) | 0x80);
+      num ~/= BigInt.from(128);
+    }
+    output = output.reversed.toList();
+    return output;
+  }
+
+  static Tuple<BigInt, int> variableNatDecode(List<int> bytes) {
+    BigInt output = BigInt.zero;
+    int bytesRead = 0;
+    for (int byte in bytes) {
+      output = (output << 7) | BigInt.from(byte & 0x7F);
+      if (output > maxU64) {
+        throw MessageException(
+            "The variable size exceeds the limit for Nat Decode");
+      }
+      bytesRead++;
+      if ((byte & 0x80) == 0) {
+        return Tuple(output, bytesRead);
+      }
+    }
+    throw MessageException("Nat Decode failed.");
   }
 }

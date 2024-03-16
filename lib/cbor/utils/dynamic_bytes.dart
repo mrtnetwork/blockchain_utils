@@ -19,32 +19,9 @@ class CborBytesTracker {
     pushBytes([val]);
   }
 
-  /// Append a 16-bit integer value in big-endian format to the byte sequence in the buffer.
-  void pushUint16Be(int val) {
-    final result = List<int>.filled(2, 0);
-    writeUint16BE(val, result);
-    pushBytes(result);
-  }
-
-  List<int> _toUint32Be(int val) {
-    final result = List<int>.filled(4, 0);
-    writeUint32BE(val, result);
-    return result;
-  }
-
-  /// Append a 32-bit integer value in big-endian format to the byte sequence in the buffer.
-  void pushUint32Be(int val) {
-    pushBytes(_toUint32Be(val));
-  }
-
   /// Append a list of integer values (chunk) to the byte sequence in the buffer.
   void pushBytes(List<int> chunk) {
-    for (final i in chunk) {
-      if (i < 0 || i > mask8) {
-        throw ArgumentException(
-            "invalid byte ${chunk[i] < 0 ? "-" : ""}0x${chunk[i].abs().toRadixString(16)}");
-      }
-    }
+    BytesUtils.validateBytes(chunk);
     _buffer.add(chunk);
   }
 
@@ -78,33 +55,33 @@ class CborBytesTracker {
     int value,
   ) {
     majorTag <<= 5;
-    if (value < 24) {
-      pushUInt8(majorTag | value);
-      return;
-    } else if (value <= mask8) {
-      pushUInt8(majorTag | NumBytes.one);
-      pushUInt8(value);
-      return;
-    } else if (value <= mask16) {
-      pushUInt8(majorTag | NumBytes.two);
-      pushUint16Be(value);
-    } else if (value <= mask32) {
-      pushUInt8(majorTag | NumBytes.four);
-      pushUint32Be(value);
+    int? length = bytesLength(value);
+    pushUInt8(majorTag | (length ?? value));
+    if (length == null) return;
+    final int len = 1 << (length - 24);
+    if (len <= 4) {
+      pushBytes(IntUtils.toBytes(value, length: len));
     } else {
-      pushUInt8(majorTag | NumBytes.eight);
       pushBigint(BigInt.from(value));
     }
   }
 
+  int? bytesLength(int value) {
+    if (value < 24) {
+      return null;
+    } else if (value <= mask8) {
+      return NumBytes.one;
+    } else if (value <= mask16) {
+      return NumBytes.two;
+    } else if (value <= mask32) {
+      return NumBytes.four;
+    } else {
+      return NumBytes.eight;
+    }
+  }
+
   /// Append a BigInt value with a specified major tag to the byte sequence in the buffer.
-  void pushBigint(
-    BigInt value,
-  ) {
-    final shift32 = BigInt.from(0x100000000);
-    final quotient = value ~/ shift32;
-    final remainder = value % shift32;
-    pushBytes(_toUint32Be(quotient.toInt()));
-    pushBytes(_toUint32Be(remainder.toInt()));
+  void pushBigint(BigInt value) {
+    pushBytes(BigintUtils.toBytes(value, length: 8));
   }
 }

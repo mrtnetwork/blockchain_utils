@@ -6,7 +6,8 @@ import 'package:blockchain_utils/cbor/core/cbor.dart';
 class CborTagValue<T> implements CborObject {
   /// Constructor for creating a CborBoleanValue instance with the provided parameters.
   /// It accepts the all encodable cbor value.
-  CborTagValue(this.value, this.tags);
+  CborTagValue(this.value, List<int> tags)
+      : tags = List<int>.unmodifiable(tags);
 
   final List<int> tags;
 

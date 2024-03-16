@@ -138,7 +138,7 @@ void cborTest() {
   assert(const CborIntValue(-1).encode().toHex() == "20");
   assert(const CborIntValue(1000000000000000).encode().toHex() ==
       "1b00038d7ea4c68000");
-  assert(CborInt64Value(BigInt.from(-1000000000000000)).encode().toHex() ==
+  assert(CborSafeIntValue(BigInt.from(-1000000000000000)).encode().toHex() ==
       "3b00038d7ea4c67fff");
   assert(CborBigIntValue(BigInt.parse("1")).encode().toHex() == "c24101");
   assert(CborBigIntValue(BigInt.parse("-1")).encode().toHex() == "c340");

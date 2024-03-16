@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:blockchain_utils/binary/binary.dart';
 import 'package:blockchain_utils/numbers/bigint_utils.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/curve/curves.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/point/edwards.dart';
@@ -16,10 +17,14 @@ class EDDSAPublicKey {
   final List<int> _encoded;
 
   /// The length of the base data used in encoding.
-  late final int baselen;
+  final int baselen;
 
   /// The Edwards curve point derived from the encoded public key.
-  late final EDPoint _point;
+  final EDPoint _point;
+
+  EDDSAPublicKey._(
+      this.generator, List<int> _encoded, this.baselen, this._point)
+      : _encoded = BytesUtils.toBytes(_encoded, unmodifiable: true);
 
   /// Creates an EdDSA public key from a generator, encoded public key bytes, and an optional public point.
   ///
@@ -48,17 +53,9 @@ class EDDSAPublicKey {
   /// Note: This constructor is used to create EdDSA public keys from the generator
   ///       and encoded public key bytes, making them ready for cryptographic operations.
   ///       The public point can be optionally provided if it is already available.
-  EDDSAPublicKey(this.generator, List<int> publicKey, {EDPoint? publicPoint})
-      : _encoded = publicKey {
-    baselen = (generator.curve.p.bitLength + 1 + 7) ~/ 8;
-
-    if (publicKey.length != baselen) {
-      throw ArgumentException(
-          'Incorrect size of the public key, expected: $baselen bytes');
-    }
-
-    _point = (publicPoint ??
-        EDPoint.fromBytes(curve: generator.curve, data: publicKey));
+  factory EDDSAPublicKey(EDPoint generator, List<int> publicKey) {
+    return EDDSAPublicKey.fromPoint(
+        generator, EDPoint.fromBytes(curve: generator.curve, data: publicKey));
   }
 
   /// Creates an EdDSA public key from a generator and an existing public point.
@@ -84,18 +81,17 @@ class EDDSAPublicKey {
   /// Note: This constructor is used when you have an existing public point and want
   ///       to create an EdDSA public key from it. It performs necessary validation
   ///       and prepares the public key for cryptographic operations.
-  EDDSAPublicKey.fromPoint(
-    this.generator,
+  factory EDDSAPublicKey.fromPoint(
+    EDPoint generator,
     EDPoint publicPoint,
-  ) : _encoded = publicPoint.toBytes() {
-    baselen = (generator.curve.p.bitLength + 1 + 7) ~/ 8;
-
-    if (_encoded.length != baselen) {
+  ) {
+    final int baselen = (generator.curve.p.bitLength + 1 + 7) ~/ 8;
+    final pubkeyBytes = publicPoint.toBytes();
+    if (pubkeyBytes.length != baselen) {
       throw ArgumentException(
           'Incorrect size of the public key, expected: $baselen bytes');
     }
-
-    _point = publicPoint;
+    return EDDSAPublicKey._(generator, pubkeyBytes, baselen, publicPoint);
   }
 
   @override
@@ -114,7 +110,9 @@ class EDDSAPublicKey {
   EDPoint publicPoint() => _point;
 
   /// Retrieves the encoded public key as bytes.
-  List<int> publicKey() => _encoded;
+  List<int> toBytes() {
+    return List<int>.from(_encoded);
+  }
 
   /// Verifies a signature against the provided data using this public key.
   ///

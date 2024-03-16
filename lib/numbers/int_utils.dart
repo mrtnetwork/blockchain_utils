@@ -84,8 +84,12 @@ class IntUtils {
   /// [val] The integer value for which to calculate the bit length in bytes.
   /// Returns the number of bytes required to represent the bit length of the integer value.
   static int bitlengthInBytes(int val) {
-    final abs = val.abs();
-    return ((abs > 0 ? abs.bitLength : 1) + 7) ~/ 8;
+    int bitlength = val.bitLength;
+    if (bitlength == 0) return 1;
+    if (val.isNegative) {
+      bitlength += 1;
+    }
+    return (bitlength + 7) ~/ 8;
   }
 
   /// Converts an integer to a byte list with the specified length and endianness.
@@ -95,11 +99,23 @@ class IntUtils {
   /// whether the most significant bytes are at the beginning (big-endian) or end
   /// (little-endian) of the resulting byte list.
   static List<int> toBytes(int val,
-      {required int length, Endian byteOrder = Endian.big}) {
-    assert(val.bitLength <= 32);
+      {required int length,
+      Endian byteOrder = Endian.big,
+      int maxBytesLength = 6}) {
+    assert(maxBytesLength > 0 && maxBytesLength <= 8);
+    assert(length <= maxBytesLength);
     if (length > 4) {
-      return BigintUtils.toBytes(BigInt.from(val),
-          length: length, order: byteOrder);
+      int lowerPart = val & mask32;
+      int upperPart = (val >> 32) & mask32;
+
+      final bytes = [
+        ...toBytes(upperPart, length: length - 4),
+        ...toBytes(lowerPart, length: 4),
+      ];
+      if (byteOrder == Endian.little) {
+        return bytes.reversed.toList();
+      }
+      return bytes;
     }
     List<int> byteList = List<int>.filled(length, 0);
 
@@ -121,20 +137,23 @@ class IntUtils {
   /// [byteOrder] The byte order, defaults to Endian.big.
   /// Returns the corresponding integer value.
   static int fromBytes(List<int> bytes,
-      {Endian byteOrder = Endian.big, bool sign = false}) {
-    assert(bytes.length <= 4);
-    if (bytes.length > 4) {
-      return BigintUtils.fromBytes(bytes, byteOrder: byteOrder, sign: sign)
-          .toInt();
-    }
+      {Endian byteOrder = Endian.big, bool sign = false, int maxBytes = 6}) {
+    assert(maxBytes > 0 && maxBytes <= 8);
+    assert(bytes.length <= maxBytes);
     if (byteOrder == Endian.little) {
       bytes = List<int>.from(bytes.reversed.toList());
     }
-
     int result = 0;
-    for (var i = 0; i < bytes.length; i++) {
-      result |= (bytes[bytes.length - i - 1] << (8 * i));
+    if (bytes.length > 4) {
+      int lowerPart = fromBytes(bytes.sublist(bytes.length - 4, bytes.length));
+      int upperPart = fromBytes(bytes.sublist(0, bytes.length - 4));
+      result = (upperPart << 32) | lowerPart;
+    } else {
+      for (var i = 0; i < bytes.length; i++) {
+        result |= (bytes[bytes.length - i - 1] << (8 * i));
+      }
     }
+
     if (sign && (bytes[0] & 0x80) != 0) {
       return result.toSigned(bitlengthInBytes(result) * 8);
     }

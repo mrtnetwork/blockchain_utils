@@ -140,7 +140,7 @@ class XrpSigner {
   /// returns An XrpVerifier instance based on the available signing key type.
   XrpVerifier toVerifyKey() {
     final keyBytes = _ecdsaSigningKey?.privateKey.publicKey.toBytes() ??
-        _signingKey!.publicKey().publicKey();
+        _signingKey!.publicKey.toBytes();
     return XrpVerifier.fromKeyBytes(
         keyBytes,
         _ecdsaSigningKey == null

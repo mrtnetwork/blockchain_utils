@@ -27,10 +27,10 @@ class Ed25519KeysConst {
 
 /// A class representing an Ed25519 public key that implements the IPublicKey interface.
 class Ed25519PublicKey implements IPublicKey {
-  final EDDSAPublicKey publicKey;
+  final EDDSAPublicKey _publicKey;
 
   /// Private constructor for creating an Ed25519PublicKey instance from an EDDSAPublicKey.
-  Ed25519PublicKey._(this.publicKey);
+  Ed25519PublicKey._(this._publicKey);
 
   /// Factory method for creating an Ed25519PublicKey from a byte array.
   /// It checks the length and prefix of the provided keyBytes to ensure validity.
@@ -80,14 +80,14 @@ class Ed25519PublicKey implements IPublicKey {
   /// public key edwards point
   @override
   EDPoint get point {
-    return publicKey.point;
+    return _publicKey.point;
   }
 
   /// compressed bytes of public key
   @override
   List<int> get compressed {
     return List<int>.from(
-        [...Ed25519KeysConst.pubKeyPrefix, ...publicKey.point.toBytes()]);
+        [...Ed25519KeysConst.pubKeyPrefix, ..._publicKey.point.toBytes()]);
   }
 
   /// uncompressed bytes of public key
@@ -105,8 +105,8 @@ class Ed25519PublicKey implements IPublicKey {
 /// A class representing an Ed25519 private key that implements the IPrivateKey interface.
 class Ed25519PrivateKey implements IPrivateKey {
   /// Private constructor for creating an Ed25519PrivateKey instance from an EDDSAPrivateKey.
-  Ed25519PrivateKey._(this.privateKey);
-  final EDDSAPrivateKey privateKey;
+  Ed25519PrivateKey._(this._privateKey);
+  final EDDSAPrivateKey _privateKey;
 
   /// Factory method for creating an Ed25519PrivateKey from a byte array.
   /// It checks the length of the provided keyBytes to ensure it matches the expected length.
@@ -147,13 +147,13 @@ class Ed25519PrivateKey implements IPrivateKey {
   /// accsess to public key
   @override
   IPublicKey get publicKey {
-    return Ed25519PublicKey._(privateKey.publicKey());
+    return Ed25519PublicKey._(_privateKey.publicKey);
   }
 
   /// private key raw bytes
   @override
   List<int> get raw {
-    return privateKey.privateKey;
+    return _privateKey.privateKey;
   }
 
   @override

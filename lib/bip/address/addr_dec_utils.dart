@@ -40,13 +40,12 @@ class AddrDecUtils {
   }
 
   /// Validate address length.
-  static void validateBytesLength(
-    List<int> addr,
-    int lenExp,
-  ) {
-    if (addr.length != lenExp) {
+  static void validateBytesLength(List<int> addr, int lenExp,
+      {int? minLength}) {
+    if ((minLength != null && addr.length < minLength) ||
+        (minLength == null && addr.length != lenExp)) {
       throw ArgumentException(
-        'Invalid length (expected $lenExp, got ${addr.length})',
+        'Invalid length (expected ${minLength ?? lenExp}, got ${addr.length})',
       );
     }
   }

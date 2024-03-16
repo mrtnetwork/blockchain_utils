@@ -16,10 +16,10 @@ class Ed25519KholawKeysConst {
 
 /// A class representing an Ed25519-Kholaw public key that implements the IPublicKey interface.
 class Ed25519KholawPublicKey implements IPublicKey {
-  final EDDSAPublicKey publicKey;
+  final EDDSAPublicKey _publicKey;
 
   /// Private constructor for creating an Ed25519-KholawPublicKey instance from an EDDSAPublicKey.
-  Ed25519KholawPublicKey._(this.publicKey);
+  Ed25519KholawPublicKey._(this._publicKey);
 
   /// Factory method for creating an Ed25519-KholawPublicKey from a byte array.
   /// It checks the length and prefix of the provided keyBytes to ensure validity.
@@ -49,7 +49,7 @@ class Ed25519KholawPublicKey implements IPublicKey {
   /// accsess to public key edward point
   @override
   EDPoint get point {
-    return publicKey.point;
+    return _publicKey.point;
   }
 
   /// public key compressed bytes length
@@ -75,7 +75,7 @@ class Ed25519KholawPublicKey implements IPublicKey {
   @override
   List<int> get compressed {
     return List<int>.from(
-        [...Ed25519KeysConst.pubKeyPrefix, ...publicKey.point.toBytes()]);
+        [...Ed25519KeysConst.pubKeyPrefix, ..._publicKey.point.toBytes()]);
   }
 
   /// public key uncompressed bytes
@@ -94,9 +94,9 @@ class Ed25519KholawPublicKey implements IPublicKey {
 class Ed25519KholawPrivateKey implements IPrivateKey {
   /// Private constructor for creating an Ed25519-KholawPrivateKey instance from an extended key
   /// and an EDDSAPrivateKey.
-  Ed25519KholawPrivateKey._(this._extendKey, this.privateKey);
+  Ed25519KholawPrivateKey._(this._extendKey, this._privateKey);
   final List<int> _extendKey;
-  final EDDSAPrivateKey privateKey;
+  final EDDSAPrivateKey _privateKey;
 
   /// Factory method for creating an Ed25519-KholawPrivateKey from a byte array.
   /// It checks the length of the provided keyBytes to ensure it matches the expected length.
@@ -107,8 +107,8 @@ class Ed25519KholawPrivateKey implements IPrivateKey {
       throw ArgumentException("invalid private key length");
     }
     final edwardGenerator = Curves.generatorED25519;
-    final eddsaPrivateKey = EDDSAPrivateKey.fromKhalow(
-        edwardGenerator, keyBytes.sublist(0, Ed25519KeysConst.privKeyByteLen));
+    final eddsaPrivateKey =
+        EDDSAPrivateKey.fromKhalow(edwardGenerator, keyBytes);
     return Ed25519KholawPrivateKey._(
         keyBytes.sublist(Ed25519KeysConst.privKeyByteLen), eddsaPrivateKey);
   }
@@ -139,13 +139,13 @@ class Ed25519KholawPrivateKey implements IPrivateKey {
   /// acsess to public key
   @override
   IPublicKey get publicKey {
-    return Ed25519KholawPublicKey._(privateKey.publicKey());
+    return Ed25519KholawPublicKey._(_privateKey.publicKey);
   }
 
   /// private key raw bytes
   @override
   List<int> get raw {
-    return List<int>.from([...privateKey.privateKey, ..._extendKey]);
+    return List<int>.from([..._privateKey.privateKey, ..._extendKey]);
   }
 
   @override

@@ -82,30 +82,18 @@ class CborUtils {
       return Tuple(info, 1);
     }
     final int len = 1 << (info - 24);
-    ByteData buf =
-        ByteData.view(Uint8List.fromList(cborBytes.sublist(1, len + 1)).buffer);
-    const int shift32 = 0x100000000; // 2^32
-    const int maxSafeHigh = 0x1fffff;
-    switch (info) {
-      case NumBytes.one:
-        return Tuple(buf.getUint8(0), 2);
-      case NumBytes.two:
-        return Tuple(buf.getUint16(0, Endian.big), 3);
-      case NumBytes.four:
-        return Tuple(buf.getUint32(0, Endian.big), 5);
-      case NumBytes.eight:
-        final f = buf.getUint32(0, Endian.big);
-        final g = buf.getUint32(4, Endian.big);
-        if (f > maxSafeHigh) {
-          final big = (BigInt.from(f) * BigInt.from(shift32)) + BigInt.from(g);
-          if (big.isValidInt) {
-            return Tuple(big.toInt(), 9);
-          }
-          return Tuple(big, 9);
-        }
-        return Tuple((f * shift32) + g, 9);
-      default:
-        throw ArgumentException('Invalid additional info for int: $info');
+    List<int> bytes = cborBytes.sublist(1, len + 1);
+    if (len <= 4) {
+      final decode = IntUtils.fromBytes(bytes);
+      return Tuple(decode, len + 1);
+    } else if (len <= 8) {
+      final decode = BigintUtils.fromBytes(bytes);
+      if (decode.isValidInt) {
+        return Tuple(decode.toInt(), len + 1);
+      }
+      return Tuple(decode, len + 1);
+    } else {
+      throw ArgumentException('Invalid additional info for int: $info');
     }
   }
 
@@ -163,7 +151,8 @@ class CborUtils {
       int info, int i, List<int> cborBytes, List<int> tags) {
     if (info == NumBytes.indefinite) {
       final toList = _decodeDynamicArray(cborBytes, i, info, tags);
-      final bytesList = toList.item1.value
+      final bytesList = (toList.item1 as CborListValue)
+          .value
           .whereType<CborBytesValue>()
           .map((e) => e.value)
           .toList();
@@ -190,9 +179,6 @@ class CborUtils {
 
   static Tuple<CborObject, int> _decodeMap(
       List<int> cborBytes, int offset, int info, List<int> tags) {
-    // s
-    // int index = offset + 1;
-
     final decodeLen = _decodeLength(info, cborBytes);
     int index = offset + decodeLen.item2;
     final int length = decodeLen.item1;
@@ -233,6 +219,7 @@ class CborUtils {
       final decodeData = _decode(cborBytes.sublist(index));
       objects.add(decodeData.item1);
       index += decodeData.item2;
+      if (index == cborBytes.length) break;
     }
     if (bytesEqual(tags, CborTags.bigFloat) ||
         bytesEqual(tags, CborTags.decimalFrac)) {
@@ -243,7 +230,7 @@ class CborUtils {
       final toObj = CborSetValue(objects.toSet());
       return Tuple(tags.isEmpty ? toObj : CborTagValue(toObj, tags), index);
     }
-    final toObj = CborListValue.fixedLength(objects);
+    final toObj = CborListValue<CborObject>.fixedLength(objects);
     return Tuple(tags.isEmpty ? toObj : CborTagValue(toObj, tags), index);
   }
 
@@ -256,7 +243,7 @@ class CborUtils {
       objects.add(decodeData.item1);
       index += decodeData.item2;
     }
-    final toObj = CborListValue.dynamicLength(objects);
+    final toObj = CborListValue<CborObject>.dynamicLength(objects);
     return Tuple(tags.isEmpty ? toObj : CborTagValue(toObj, tags), index + 1);
   }
 
@@ -337,18 +324,21 @@ class CborUtils {
   static Tuple<CborObject, int> _parseInt(
       int mt, int info, int i, List<int> cborBytes, List<int> tags) {
     final data = _decodeLength(info, cborBytes.sublist(i));
-    final val = data.item1;
+    final numb = data.item1;
     CborNumeric? numericValue;
-    final index = data.item2 + i;
-    if (val is BigInt) {
-      if (val.bitLength > 64) {
-        throw MessageException("invalid int value");
+    if (numb is BigInt || mt == MajorTags.negInt) {
+      BigInt val = numb is BigInt ? numb : BigInt.from(numb);
+      if (mt == MajorTags.negInt) {
+        val = ~val;
       }
       if (val.isValidInt) {
-        numericValue = CborInt64Value(mt == MajorTags.negInt ? ~val : val);
+        numericValue = CborIntValue(val.toInt());
       }
+      numericValue ??= CborSafeIntValue(val);
+    } else {
+      numericValue = CborIntValue(numb);
     }
-    numericValue ??= CborIntValue(mt == MajorTags.negInt ? ~val : val);
+    final index = data.item2 + i;
     if (bytesEqual(tags, CborTags.dateEpoch)) {
       final dt =
           DateTime.fromMillisecondsSinceEpoch(numericValue.toInt() * 1000);
