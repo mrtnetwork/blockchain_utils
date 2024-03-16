@@ -122,10 +122,14 @@ class BitcoinSigner {
     int lengthR = signature[3];
 
     while (lengthR == 33) {
-      final attemptBytes = IntUtils.toBytes(attempt, length: 32);
+      final List<int> extraEntropy = List<int>.filled(32, 0);
+      final attemptBytes =
+          IntUtils.toBytes(attempt, length: IntUtils.bitlengthInBytes(attempt));
+      extraEntropy.setAll(
+          extraEntropy.length - attemptBytes.length, attemptBytes);
 
       ecdsaSign = signingKey.signDigestDeterminstic(
-          digest: digest, hashFunc: () => SHA256(), extraEntropy: attemptBytes);
+          digest: digest, hashFunc: () => SHA256(), extraEntropy: extraEntropy);
 
       signature = BigintUtils.toDer([ecdsaSign.r, ecdsaSign.s]);
       attempt += 1;

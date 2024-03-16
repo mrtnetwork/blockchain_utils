@@ -2,6 +2,7 @@ import 'package:blockchain_utils/binary/utils.dart';
 import 'package:blockchain_utils/cbor/utils/dynamic_bytes.dart';
 import 'package:blockchain_utils/cbor/core/tags.dart';
 import 'package:blockchain_utils/cbor/core/cbor.dart';
+import 'package:blockchain_utils/numbers/numbers.dart';
 
 /// A class representing a CBOR (Concise Binary Object Representation) Bigint value.
 class CborBigIntValue implements CborNumeric {
@@ -24,14 +25,10 @@ class CborBigIntValue implements CborNumeric {
     } else {
       bytes.pushTags(CborTags.posBigInt);
     }
-    final b = List<int>.filled((v.bitLength + 7) ~/ 8, 0);
-
-    for (var i = b.length - 1; i >= 0; i--) {
-      b[i] = v.toUnsigned(8).toInt();
-      v >>= 8;
-    }
-    bytes.pushInt(MajorTags.byteString, b.length);
-    bytes.pushBytes(b);
+    final toBytes =
+        BigintUtils.toBytes(v, length: BigintUtils.bitlengthInBytes(v));
+    bytes.pushInt(MajorTags.byteString, toBytes.length);
+    bytes.pushBytes(toBytes);
     return bytes.toBytes();
   }
 
@@ -67,7 +64,7 @@ class CborBigIntValue implements CborNumeric {
     return value == other.value;
   }
 
-  /// ovveride hash code
+  /// overide hash code
   @override
   int get hashCode => value.hashCode;
 }

@@ -1,3 +1,6 @@
+## 2.1.1
+   - Fix Cbor bigint encoding.
+
 ## 2.1.0
 - Implements classes for signing and verifying transaction digests.
    - Introduces classes for signing and verifying transaction digests, with support for Cardano.

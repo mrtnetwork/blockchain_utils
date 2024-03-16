@@ -54,8 +54,9 @@ class CborSafeIntValue implements CborNumeric {
   /// override equal operation
   @override
   operator ==(other) {
-    if (other is! CborSafeIntValue) return false;
-    return value == other.value;
+    if (other is! CborNumeric) return false;
+    if (other is CborBigIntValue) return false;
+    return toBigInt() == other.toBigInt();
   }
 
   /// override hashcode

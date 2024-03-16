@@ -1,7 +1,6 @@
-import 'package:blockchain_utils/binary/utils.dart';
+import 'package:blockchain_utils/blockchain_utils.dart';
 import 'package:blockchain_utils/cbor/utils/dynamic_bytes.dart';
 import 'package:blockchain_utils/cbor/core/tags.dart';
-import 'package:blockchain_utils/cbor/core/cbor.dart';
 
 /// A class representing a CBOR (Concise Binary Object Representation) int value.
 class CborIntValue implements CborNumeric {
@@ -49,8 +48,9 @@ class CborIntValue implements CborNumeric {
   /// overide equal operation
   @override
   operator ==(other) {
-    if (other is! CborIntValue) return false;
-    return value == other.value;
+    if (other is! CborNumeric) return false;
+    if (other is CborBigIntValue) return false;
+    return toBigInt() == other.toBigInt();
   }
 
   /// ovveride hash code
