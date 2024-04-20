@@ -77,6 +77,8 @@ class CardanoByronLegacyConst {
 class CardanoByronLegacy {
   final Bip32Base bip32;
 
+  /// CardanoByronLegacy
+
   /// Constructor to create a Cardano Byron Legacy wallet from a seed.
   ///
   /// Initializes the wallet's hierarchical deterministic (HD) structure using the
@@ -86,6 +88,8 @@ class CardanoByronLegacy {
   /// - `seedBytes`: The seed bytes used for wallet initialization.
   CardanoByronLegacy.fromSeed(List<int> seedBytes)
       : bip32 = CardanoByronLegacyBip32.fromSeed(seedBytes);
+
+  CardanoByronLegacy.fromBip32(this.bip32);
 
   /// Computes and returns the HD path key for Cardano Byron Legacy wallet.
   ///

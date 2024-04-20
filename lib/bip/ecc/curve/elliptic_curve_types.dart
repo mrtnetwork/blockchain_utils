@@ -41,4 +41,9 @@ class EllipticCurveTypes {
     return EllipticCurveTypes.values
         .firstWhere((element) => element.name == name);
   }
+
+  @override
+  String toString() {
+    return "EllipticCurveTypes.$name";
+  }
 }

@@ -1,5 +1,5 @@
-import 'package:blockchain_utils/bip/bip/bip.dart';
 import 'package:blockchain_utils/bip/bip/conf/bip_coin_conf.dart';
+import 'package:blockchain_utils/blockchain_utils.dart';
 
 /// An abstract class representing a collection of cryptocurrency coins.
 ///
@@ -16,31 +16,64 @@ abstract class CryptoCoins {
   CoinConfig get conf;
 
   static CryptoCoins? getCoin(String name, CryptoProposal proposal) {
-    if (proposal is BipProposal) {
-      switch (proposal) {
-        case BipProposal.bip44:
-          return Bip44Coins.fromName(name);
-        case BipProposal.bip49:
-          return Bip49Coins.fromName(name);
-        case BipProposal.bip84:
-          return Bip84Coins.fromName(name);
-        default:
-          return Bip86Coins.fromName(name);
-      }
+    switch (proposal) {
+      case BipProposal.bip44:
+        return Bip44Coins.fromName(name);
+      case BipProposal.bip49:
+        return Bip49Coins.fromName(name);
+      case BipProposal.bip84:
+        return Bip84Coins.fromName(name);
+      case BipProposal.bip86:
+        return Bip86Coins.fromName(name);
+      case CipProposal.cip1852:
+        return Cip1852Coins.fromName(name);
+      default:
+        return null;
     }
-    return null;
   }
 
   CryptoProposal get proposal;
+
+  @override
+  String toString() {
+    return "$runtimeType.$coinName";
+  }
 }
 
 abstract class CryptoProposal {
   String get specName;
   CryptoProposal get value;
+  Bip32KeyIndex get purpose;
 
   static CryptoProposal fromName(String name) {
-    return BipProposal.values.firstWhere((element) => element.name == name);
+    try {
+      return BipProposal.values.firstWhere((element) => element.name == name);
+    } on StateError {
+      return CipProposal.values.firstWhere(
+        (element) => element.name == name,
+        orElse: () => throw MessageException(
+            "Unable to locate a proposal with the given name.",
+            details: {"Name": name}),
+      );
+    }
   }
+}
+
+class CipProposal implements CryptoProposal {
+  static const CipProposal cip1852 = CipProposal._('cip1852');
+
+  const CipProposal._(this.name);
+  final String name;
+
+  @override
+  String get specName => name;
+  @override
+  CipProposal get value => this;
+
+  static const List<CipProposal> values = [cip1852];
+
+  @override
+  Bip32KeyIndex get purpose => Cip1852Const.purpose;
 }
 
 /// Enum representing different BIP proposals.
@@ -62,6 +95,7 @@ class BipProposal implements CryptoProposal {
   BipProposal get value => this;
 
   /// Extension method to get the corresponding [Bip32KeyIndex.purpose] for each [BipProposal].
+  @override
   Bip32KeyIndex get purpose {
     switch (this) {
       case BipProposal.bip44:

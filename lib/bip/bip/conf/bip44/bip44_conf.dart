@@ -358,10 +358,7 @@ class Bip44Conf {
     wifNetVer: null,
     type: EllipticCurveTypes.ed25519Kholaw,
     addressEncoder: ([dynamic kwargs]) => AdaByronIcarusAddrEncoder(),
-    addrParams: {
-      "chain_code": true,
-      "is_icarus": true,
-    },
+    addrParams: {"chain_code": true, "is_icarus": true},
   );
 
   /// Configuration for Cardano Byron (Ledger)
@@ -374,9 +371,31 @@ class Bip44Conf {
     wifNetVer: null,
     type: EllipticCurveTypes.ed25519Kholaw,
     addressEncoder: ([dynamic kwargs]) => AdaByronIcarusAddrEncoder(),
-    addrParams: {
-      "chain_code": true,
-    },
+    addrParams: {"chain_code": true},
+  );
+  static final CoinConfig cardanoByronIcarusTestnet = CoinConfig(
+    coinNames: CoinsConf.cardanoMainNet.coinName,
+    coinIdx: Slip44.testnet,
+    isTestnet: true,
+    defPath: derPathNonHardenedFull,
+    keyNetVer: Bip32Const.kholawKeyNetVersions,
+    wifNetVer: null,
+    type: EllipticCurveTypes.ed25519Kholaw,
+    addressEncoder: ([dynamic kwargs]) => AdaByronIcarusAddrEncoder(),
+    addrParams: {"chain_code": true, "is_icarus": true},
+  );
+
+  /// Configuration for Cardano Byron (Ledger)
+  static final CoinConfig cardanoByronLedgerTestnet = CoinConfig(
+    coinNames: CoinsConf.cardanoMainNet.coinName,
+    coinIdx: Slip44.testnet,
+    isTestnet: true,
+    defPath: derPathNonHardenedFull,
+    keyNetVer: Bip32Const.kholawKeyNetVersions,
+    wifNetVer: null,
+    type: EllipticCurveTypes.ed25519Kholaw,
+    addressEncoder: ([dynamic kwargs]) => AdaByronIcarusAddrEncoder(),
+    addrParams: {"chain_code": true},
   );
 
   /// Configuration for Celo
@@ -432,6 +451,47 @@ class Bip44Conf {
     wifNetVer: null,
     type: EllipticCurveTypes.secp256k1,
     addressEncoder: ([dynamic kwargs]) => AtomAddrEncoder(),
+    addrParams: {
+      "hrp": CoinsConf.cosmos.params.addrHrp!,
+    },
+  );
+  static final CoinConfig cosmosTestnet = CoinConfig(
+    coinNames: CoinsConf.cosmos.coinName,
+    coinIdx: Slip44.testnet,
+    isTestnet: false,
+    defPath: derPathNonHardenedFull,
+    keyNetVer: bip44BtcKeyNetVerMain,
+    wifNetVer: null,
+    type: EllipticCurveTypes.secp256k1,
+    addressEncoder: ([dynamic kwargs]) => AtomAddrEncoder(),
+    addrParams: {
+      "hrp": CoinsConf.cosmos.params.addrHrp!,
+    },
+  );
+
+  /// Configuration for Cosmos
+  static final CoinConfig cosmosNist256p1 = CoinConfig(
+    coinNames: CoinsConf.cosmos.coinName,
+    coinIdx: Slip44.atom,
+    isTestnet: false,
+    defPath: derPathNonHardenedFull,
+    keyNetVer: bip44BtcKeyNetVerMain,
+    wifNetVer: null,
+    type: EllipticCurveTypes.nist256p1,
+    addressEncoder: ([dynamic kwargs]) => AtomNist256P1AddrEncoder(),
+    addrParams: {
+      "hrp": CoinsConf.cosmos.params.addrHrp!,
+    },
+  );
+  static final CoinConfig cosmosTestnetNist256p1 = CoinConfig(
+    coinNames: CoinsConf.cosmos.coinName,
+    coinIdx: Slip44.testnet,
+    isTestnet: false,
+    defPath: derPathNonHardenedFull,
+    keyNetVer: bip44BtcKeyNetVerMain,
+    wifNetVer: null,
+    type: EllipticCurveTypes.nist256p1,
+    addressEncoder: ([dynamic kwargs]) => AtomNist256P1AddrEncoder(),
     addrParams: {
       "hrp": CoinsConf.cosmos.params.addrHrp!,
     },
@@ -1121,6 +1181,19 @@ class Bip44Conf {
     coinNames: CoinsConf.solana.coinName,
     coinIdx: Slip44.solana,
     isTestnet: false,
+    defPath: derPathHardenedShort,
+    keyNetVer: bip44BtcKeyNetVerMain,
+    wifNetVer: null,
+    type: EllipticCurveTypes.ed25519,
+    addressEncoder: ([dynamic kwargs]) => SolAddrEncoder(),
+    addrParams: {},
+  );
+
+  /// Configuration for Solana
+  static final CoinConfig solanaTestnet = CoinConfig(
+    coinNames: CoinsConf.solana.coinName,
+    coinIdx: Slip44.testnet,
+    isTestnet: true,
     defPath: derPathHardenedShort,
     keyNetVer: bip44BtcKeyNetVerMain,
     wifNetVer: null,

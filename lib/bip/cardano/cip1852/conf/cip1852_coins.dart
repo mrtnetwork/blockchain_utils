@@ -48,5 +48,5 @@ class Cip1852Coins implements CryptoCoins {
   };
 
   @override
-  BipProposal get proposal => throw UnimplementedError();
+  CryptoProposal get proposal => CipProposal.cip1852;
 }

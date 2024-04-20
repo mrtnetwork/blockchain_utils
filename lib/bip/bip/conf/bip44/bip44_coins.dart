@@ -112,6 +112,14 @@ class Bip44Coins implements CryptoCoins {
   /// Cardano Byron Ledger
   static const cardanoByronLedger = Bip44Coins._('cardanoByronLedger');
 
+  /// Cardano Byron Icarus
+  static const cardanoByronIcarusTestnet =
+      Bip44Coins._('cardanoByronIcarusTestnet');
+
+  /// Cardano Byron Ledger
+  static const cardanoByronLedgerTestnet =
+      Bip44Coins._('cardanoByronLedgerTestnet');
+
   /// Celo
   static const celo = Bip44Coins._('celo');
 
@@ -123,6 +131,15 @@ class Bip44Coins implements CryptoCoins {
 
   /// Cosmos
   static const cosmos = Bip44Coins._('cosmos');
+
+  /// Cosmos
+  static const cosmosTestnet = Bip44Coins._('cosmosTestnet');
+
+  /// Cosmos
+  static const cosmosNist256p1 = Bip44Coins._('cosmosNist256p1');
+
+  /// Cosmos
+  static const cosmosTestnetNist256p1 = Bip44Coins._('cosmosTestnetNist256p1');
 
   /// Dash
   static const dash = Bip44Coins._('dash');
@@ -250,6 +267,9 @@ class Bip44Coins implements CryptoCoins {
   /// Solana
   static const solana = Bip44Coins._('solana');
 
+  /// Solana
+  static const solanaTestnet = Bip44Coins._('solanaTestnet');
+
   /// Stellar
   static const stellar = Bip44Coins._('stellar');
 
@@ -360,10 +380,15 @@ class Bip44Coins implements CryptoCoins {
     Bip44Coins.bitcoinSvTestnet: Bip44Conf.bitcoinSvTestNet,
     Bip44Coins.cardanoByronIcarus: Bip44Conf.cardanoByronIcarus,
     Bip44Coins.cardanoByronLedger: Bip44Conf.cardanoByronLedger,
+    Bip44Coins.cardanoByronIcarusTestnet: Bip44Conf.cardanoByronIcarusTestnet,
+    Bip44Coins.cardanoByronLedgerTestnet: Bip44Conf.cardanoByronLedgerTestnet,
     Bip44Coins.celo: Bip44Conf.celo,
     Bip44Coins.certik: Bip44Conf.certik,
     Bip44Coins.chihuahua: Bip44Conf.chihuahua,
     Bip44Coins.cosmos: Bip44Conf.cosmos,
+    Bip44Coins.cosmosTestnet: Bip44Conf.cosmosTestnet,
+    Bip44Coins.cosmosNist256p1: Bip44Conf.cosmosNist256p1,
+    Bip44Coins.cosmosTestnetNist256p1: Bip44Conf.cosmosTestnetNist256p1,
     Bip44Coins.dash: Bip44Conf.dashMainNet,
     Bip44Coins.dashTestnet: Bip44Conf.dashTestNet,
     Bip44Coins.dogecoin: Bip44Conf.dogecoinMainNet,
@@ -411,6 +436,7 @@ class Bip44Coins implements CryptoCoins {
     Bip44Coins.secretNetworkOld: Bip44Conf.secretNetworkOld,
     Bip44Coins.secretNetworkNew: Bip44Conf.secretNetworkNew,
     Bip44Coins.solana: Bip44Conf.solana,
+    Bip44Coins.solanaTestnet: Bip44Conf.solanaTestnet,
     Bip44Coins.stellar: Bip44Conf.stellar,
     Bip44Coins.terra: Bip44Conf.terra,
     Bip44Coins.tezos: Bip44Conf.tezos,

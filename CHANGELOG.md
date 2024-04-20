@@ -1,3 +1,6 @@
+## 2.1.2
+   - Implements classes for signing and verifying cosmos transaction digests
+
 ## 2.1.1
    - Fix Cbor bigint encoding.
 

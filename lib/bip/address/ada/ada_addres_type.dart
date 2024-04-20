@@ -10,6 +10,7 @@ class ADAAddressType {
   static const ADAAddressType enterprise = ADAAddressType._(0x06, "Enterprise");
   static const ADAAddressType pointer = ADAAddressType._(0x04, "Pointer");
   static const ADAAddressType byron = ADAAddressType._(0x8, "Byron");
+
   static ADAAddressType decodeAddressType(int header) {
     switch ((header & 0xF0) >> 4) {
       case 0x00:
@@ -31,6 +32,20 @@ class ADAAddressType {
     }
     throw MessageException("Invalid address header bytes.",
         details: {"value": header});
+  }
+
+  static const List<ADAAddressType> values = [
+    base,
+    reward,
+    enterprise,
+    pointer,
+    byron
+  ];
+  static ADAAddressType fromHeader(int? header) {
+    return values.firstWhere(
+      (element) => element.header == header,
+      orElse: () => throw MessageException("Invalid header value encountered."),
+    );
   }
 
   @override

@@ -28,7 +28,7 @@ class Cip1852Conf {
   // Configuration for Cardano test net (Icarus)
   static final CoinConfig cardanoIcarusTestNet = CoinConfig(
     coinNames: CoinsConf.cardanoTestNet.coinName,
-    coinIdx: Slip44.cardano,
+    coinIdx: Slip44.testnet,
     isTestnet: true,
     defPath: derPathNonHardenedFull,
     keyNetVer: Bip32Const.testNetKeyNetVersions,
@@ -57,7 +57,7 @@ class Cip1852Conf {
   // Configuration for Cardano test net (Ledger)
   static final CoinConfig cardanoLedgerTestNet = CoinConfig(
     coinNames: CoinsConf.cardanoTestNet.coinName,
-    coinIdx: Slip44.cardano,
+    coinIdx: Slip44.testnet,
     isTestnet: true,
     defPath: derPathNonHardenedFull,
     keyNetVer: Bip32Const.testNetKeyNetVersions,
