@@ -1,76 +1,31 @@
 import 'package:blockchain_utils/bip/address/substrate_addr.dart';
-import 'package:blockchain_utils/bip/ecc/keys/sr25519_keys.dart';
+import 'package:blockchain_utils/bip/ecc/bip_ecc.dart';
+
 import 'package:blockchain_utils/bip/substrate/conf/substrate_coin_conf.dart';
 import 'package:blockchain_utils/bip/substrate/substrate_ex.dart';
 
-/// Represents a Substrate public key using the Sr25519 key pair. This class provides methods for
-/// working with Substrate public keys, including serialization, address generation, and error handling.
-class SubstratePublicKey {
-  /// The underlying Sr25519 public key.
-  final Sr25519PublicKey pubKey;
-
-  /// The Substrate coin configuration associated with this public key.
-  final SubstrateCoinConf coinConf;
-
-  /// Creates a new instance of [SubstratePublicKey] with the given [pubKey] and [coinConf].
-  const SubstratePublicKey(this.pubKey, this.coinConf);
-
-  /// Creates a [SubstratePublicKey] from the provided [keyBytes] and [coinConf].
-  factory SubstratePublicKey.fromBytes(
-      List<int> keyBytes, SubstrateCoinConf coinConf) {
-    return SubstratePublicKey(
-      _keyFromBytes(keyBytes),
-      coinConf,
-    );
-  }
-
-  /// Gets the compressed representation of the public key as a List<int>.
-  List<int> get compressed {
-    return pubKey.compressed;
-  }
-
-  /// Gets the uncompressed representation of the public key as a List<int>.
-  List<int> get uncompressed {
-    return pubKey.uncompressed;
-  }
-
-  /// Converts the public key to a Substrate address using the specified [coinConf].
-  String get toAddress {
-    return SubstrateSr25519AddrEncoder().encodeKey(
-      pubKey.compressed,
-      coinConf.addrParams,
-    );
-  }
-
-  /// Internal method to create an Sr25519 public key from raw bytes.
-  static Sr25519PublicKey _keyFromBytes(List<int> keyBytes) {
-    try {
-      return Sr25519PublicKey.fromBytes(keyBytes);
-    } catch (e) {
-      throw const SubstrateKeyError('Invalid public key');
-    }
-  }
+class SubstrateKeyAlgorithm {
+  final EllipticCurveTypes cuve;
+  const SubstrateKeyAlgorithm._(this.cuve);
+  static const SubstrateKeyAlgorithm ed25519 =
+      SubstrateKeyAlgorithm._(EllipticCurveTypes.ed25519);
+  static const SubstrateKeyAlgorithm sr25519 =
+      SubstrateKeyAlgorithm._(EllipticCurveTypes.sr25519);
+  static const SubstrateKeyAlgorithm secp256k1 =
+      SubstrateKeyAlgorithm._(EllipticCurveTypes.secp256k1);
 }
 
-/// Represents a Substrate private key using the Sr25519 key pair. This class provides methods for
-/// working with Substrate private keys, including serialization, public key derivation, and error handling.
-class SubstratePrivateKey {
-  /// The underlying Sr25519 private key.
-  final Sr25519PrivateKey privKey;
-
-  /// The Substrate coin configuration associated with this private key.
+class SubstratePrvKey {
+  final IPrivateKey privKey;
+  final SubstrateKeyAlgorithm algorithm;
   final SubstrateCoinConf coinConf;
 
-  /// Creates a new instance of [SubstratePrivateKey] with the given [privKey] and [coinConf].
-  const SubstratePrivateKey._(this.privKey, this.coinConf);
+  const SubstratePrvKey._(this.privKey, this.coinConf, this.algorithm);
 
-  /// Creates a [SubstratePrivateKey] from the provided [keyBytes] and [coinConf].
-  factory SubstratePrivateKey.fromBytes(
-      List<int> keyBytes, SubstrateCoinConf coinConf) {
-    return SubstratePrivateKey._(
-      _keyFromBytes(keyBytes),
-      coinConf,
-    );
+  /// Creates a [Sr25519PrivateKey] from the provided [keyBytes] and [coinConf].
+  factory SubstratePrvKey.fromBytes(List<int> keyBytes,
+      SubstrateCoinConf coinConf, SubstrateKeyAlgorithm curve) {
+    return SubstratePrvKey._(_keyFromBytes(keyBytes, curve), coinConf, curve);
   }
 
   /// Gets the raw representation of the private key as a List<int>.
@@ -79,19 +34,73 @@ class SubstratePrivateKey {
   }
 
   /// Derives the corresponding Substrate public key from this private key.
-  SubstratePublicKey get publicKey {
-    return SubstratePublicKey(
-      privKey.publicKey,
-      coinConf,
-    );
+  SubstratePubKey get publicKey {
+    return SubstratePubKey._(privKey.publicKey, coinConf, algorithm);
   }
 
   /// Internal method to create an Sr25519 private key from raw bytes.
-  static Sr25519PrivateKey _keyFromBytes(List<int> keyBytes) {
+  static IPrivateKey _keyFromBytes(
+      List<int> keyBytes, SubstrateKeyAlgorithm curve) {
     try {
-      return Sr25519PrivateKey.fromBytes(keyBytes);
+      return IPrivateKey.fromBytes(keyBytes, curve.cuve);
     } catch (e) {
       throw const SubstrateKeyError('Invalid private key');
+    }
+  }
+}
+
+class SubstratePubKey {
+  final IPublicKey pubKey;
+  final SubstrateKeyAlgorithm algorithm;
+
+  final SubstrateCoinConf coinConf;
+
+  const SubstratePubKey._(this.pubKey, this.coinConf, this.algorithm);
+
+  factory SubstratePubKey.fromBytes(
+      {required List<int> keyBytes,
+      required SubstrateCoinConf coinConf,
+      required SubstrateKeyAlgorithm curve}) {
+    return SubstratePubKey._(_keyFromBytes(keyBytes, curve), coinConf, curve);
+  }
+
+  EllipticCurveTypes get curve => pubKey.curve;
+
+  List<int> get compressed {
+    return pubKey.compressed;
+  }
+
+  List<int> get uncompressed {
+    return pubKey.uncompressed;
+  }
+
+  String toSS58Address({int? ss58Format}) {
+    final Map<String, dynamic> addrParams = {
+      "ss58_format": ss58Format ?? coinConf.addrParams["ss58_format"]!
+    };
+    switch (pubKey.curve) {
+      case EllipticCurveTypes.sr25519:
+        return SubstrateSr25519AddrEncoder()
+            .encodeKey(pubKey.compressed, addrParams);
+      case EllipticCurveTypes.ed25519:
+        return SubstrateEd25519AddrEncoder()
+            .encodeKey(pubKey.compressed, addrParams);
+      default:
+        return SubstrateSecp256k1AddrEncoder()
+            .encodeKey(pubKey.compressed, addrParams);
+    }
+  }
+
+  String get toAddress {
+    return toSS58Address();
+  }
+
+  static IPublicKey _keyFromBytes(
+      List<int> keyBytes, SubstrateKeyAlgorithm curve) {
+    try {
+      return IPublicKey.fromBytes(keyBytes, curve.cuve);
+    } catch (e) {
+      throw const SubstrateKeyError('Invalid public key');
     }
   }
 }

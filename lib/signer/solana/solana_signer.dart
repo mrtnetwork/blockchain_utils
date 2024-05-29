@@ -14,7 +14,7 @@ class SolanaSigner {
   /// Constructs a new SolanaSigner instance with the provided signing keys.
   ///
   /// This constructor is marked as private and takes an EDDSA private key [_signingKey]
-  SolanaSigner._(this._signingKey);
+  const SolanaSigner._(this._signingKey);
 
   /// The EDDSA private key for signing.
   final EDDSAPrivateKey _signingKey;
@@ -70,10 +70,10 @@ class SolanaSigner {
 
 /// Class representing an Solana Verifier for signature verification.
 class SolanaVerifier {
-  final EDDSAPublicKey? _eddsaPublicKey;
+  final EDDSAPublicKey _eddsaPublicKey;
 
   /// Private constructor to create an SolanaVerifier instance.
-  SolanaVerifier._(this._eddsaPublicKey);
+  const SolanaVerifier._(this._eddsaPublicKey);
 
   /// Factory method to create an SolanaVerifier instance from key bytes.
   factory SolanaVerifier.fromKeyBytes(List<int> keyBytes) {
@@ -93,7 +93,7 @@ class SolanaVerifier {
   /// [signature] The EDDSA signature as a list of bytes.
   /// returns True if the signature is verified, false otherwise.
   bool _verifyEddsa(List<int> digest, List<int> signature) {
-    return _eddsaPublicKey!.verify(digest, signature, () => SHA512());
+    return _eddsaPublicKey.verify(digest, signature, () => SHA512());
   }
 
   /// Verifies the signature for the provided digest using the available key.

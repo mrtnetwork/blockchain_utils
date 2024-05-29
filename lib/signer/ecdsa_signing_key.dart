@@ -62,7 +62,7 @@ class EcdsaSigningKey {
   /// Uses RFC 6979 for 'k' value generation to mitigate certain vulnerabilities associated with random 'k' generation.
   ECDSASignature signDigestDeterminstic({
     required List<int> digest,
-    required Hash Function() hashFunc,
+    required HashFunc hashFunc,
     List<int> extraEntropy = const [],
     bool truncate = false,
   }) {

@@ -8,19 +8,10 @@ void substrateAddressTest() {
   for (final i in testVector) {
     final params = Map<String, dynamic>.from(i["params"]);
 
-    final z = SubstrateEd25519AddrEncoder()
+    final z = SubstrateGenericAddrEncoder()
         .encodeKey(BytesUtils.fromHexString(i["public"]), params);
     assert(z == i["address"]);
-    final decode = SubstrateEd25519AddrDecoder().decodeAddr(z, params);
-    assert(decode.toHex() == i["decode"]);
-  }
-  for (final i in testVector) {
-    final params = Map<String, dynamic>.from(i["params"]);
-
-    final z = SubstrateSr25519AddrEncoder()
-        .encodeKey(BytesUtils.fromHexString(i["public"]), params);
-    assert(z == i["address"]);
-    final decode = SubstrateSr25519AddrDecoder().decodeAddr(z, params);
+    final decode = SubstrateGenericAddrDecoder().decodeAddr(z, params);
     assert(decode.toHex() == i["decode"]);
   }
 }

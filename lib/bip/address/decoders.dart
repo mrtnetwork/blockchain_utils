@@ -83,7 +83,11 @@ export 'sol_addr.dart' show SolAddrDecoder;
 
 /// Export statements for Substrate address decoders (Ed25519 and Sr25519).
 export 'substrate_addr.dart'
-    show SubstrateEd25519AddrDecoder, SubstrateSr25519AddrDecoder;
+    show
+        SubstrateEd25519AddrDecoder,
+        SubstrateSr25519AddrDecoder,
+        SubstrateSecp256k1AddrDecoder,
+        SubstrateGenericAddrDecoder;
 
 /// Export statement for TRON (TRX) address decoder.
 export 'trx_addr.dart' show TrxAddrDecoder;

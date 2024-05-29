@@ -1,7 +1,5 @@
 import 'package:blockchain_utils/binary/binary_operation.dart';
-
 import 'package:blockchain_utils/crypto/crypto/hash/hash.dart';
-import 'package:blockchain_utils/exception/exception.dart';
 
 /// The `HMAC` class represents a Hash-based Message Authentication Code.
 ///
@@ -15,8 +13,8 @@ class HMAC implements SerializableHash {
   @override
   int get getDigestLength => _outer.getDigestLength;
 
-  late Hash _inner; // inner hash
-  late Hash _outer; // outer hash
+  late SerializableHash _inner; // inner hash
+  late SerializableHash _outer; // outer hash
 
   bool _finished = false; // true if HMAC was finalized
 
@@ -38,7 +36,7 @@ class HMAC implements SerializableHash {
   /// The `key` is the secret key as a `List<int>`.
   /// The optional `blockSize` parameter sets the block size for the HMAC.
   /// If not provided, it defaults to the block size of the hash function.
-  HMAC(Hash Function() hash, List<int> key, [int? blockSize]) {
+  HMAC(HashFunc hash, List<int> key, [int? blockSize]) {
     _blockSize = blockSize;
     // Initialize inner and outer hashes.
     _inner = hash();
@@ -80,10 +78,8 @@ class HMAC implements SerializableHash {
     // Save states of both hashes, so that we can quickly restore
     // them later in reset() without the need to remember the actual
     // key and perform this initialization again.
-    if (_inner is SerializableHash && _outer is SerializableHash) {
-      _innerKeyedState = (_inner as SerializableHash).saveState();
-      _outerKeyedState = (_outer as SerializableHash).saveState();
-    }
+    _innerKeyedState = _inner.saveState();
+    _outerKeyedState = _outer.saveState();
 
     // Clean pad.
     zero(pad);
@@ -97,13 +93,8 @@ class HMAC implements SerializableHash {
   /// Returns the current instance of the hash algorithm with the initial stat
   @override
   HMAC reset() {
-    if (_inner is! SerializableHash || _outer is! SerializableHash) {
-      throw MessageException(
-          "hmac: can't reset() because hash doesn't implement restoreState()");
-    }
-    // Restore keyed states of inner and outer hashes.
-    (_inner as SerializableHash).restoreState(_innerKeyedState);
-    (_outer as SerializableHash).restoreState(_outerKeyedState);
+    _inner.restoreState(_innerKeyedState);
+    _outer.restoreState(_outerKeyedState);
     _finished = false;
 
     return this;
@@ -112,12 +103,8 @@ class HMAC implements SerializableHash {
   /// Clean up the internal state and reset hash object to its initial state.
   @override
   void clean() {
-    if (_inner is SerializableHash) {
-      (_inner as SerializableHash).cleanSavedState(_innerKeyedState);
-    }
-    if (_outer is SerializableHash) {
-      (_outer as SerializableHash).cleanSavedState(_outerKeyedState);
-    }
+    _inner.cleanSavedState(_innerKeyedState);
+    _outer.cleanSavedState(_outerKeyedState);
   }
 
   /// Updates the hash computation with the given data.
@@ -186,11 +173,7 @@ class HMAC implements SerializableHash {
   /// Returns a [HashState] object containing the saved state information.
   @override
   HashState saveState() {
-    if (_inner is! SerializableHash) {
-      throw MessageException(
-          "hmac: can't saveState() because hash doesn't implement it");
-    }
-    return (_inner as SerializableHash).saveState();
+    return _inner.saveState();
   }
 
   /// Restores the hash computation state from a previously saved state.
@@ -205,13 +188,8 @@ class HMAC implements SerializableHash {
   /// Returns the current instance of the hash algorithm with the restored state.
   @override
   HMAC restoreState(dynamic savedState) {
-    if (_inner is! SerializableHash || _outer is! SerializableHash) {
-      throw MessageException(
-          "hmac: can't restoreState() because hash doesn't implement it");
-    }
-
-    (_inner as SerializableHash).restoreState(savedState);
-    (_outer as SerializableHash).restoreState(_outerKeyedState);
+    _inner.restoreState(savedState);
+    _outer.restoreState(_outerKeyedState);
     _finished = false;
 
     return this;
@@ -224,12 +202,7 @@ class HMAC implements SerializableHash {
   /// [savedState]: The hash state to be cleaned and reset.
   @override
   void cleanSavedState(dynamic savedState) {
-    if (_inner is! SerializableHash) {
-      throw MessageException(
-          "hmac: can't cleanSavedState() because hash doesn't implement it");
-    }
-
-    (_inner as SerializableHash).cleanSavedState(savedState);
+    _inner.cleanSavedState(savedState);
   }
 
   /// Calculates an HMAC using a specified hash function, a secret key, and input data.
@@ -241,7 +214,7 @@ class HMAC implements SerializableHash {
   /// final data = List<int>.from([0x10, 0x11, 0x12, 0x13]);
   /// final hmac = hmac(()=>SHA256(), key, data);
   /// ```
-  static List<int> hmac(Hash Function() hash, List<int> key, List<int> data) {
+  static List<int> hmac(HashFunc hash, List<int> key, List<int> data) {
     final h = HMAC(hash, key);
     h.update(data);
     final digest = h.digest();

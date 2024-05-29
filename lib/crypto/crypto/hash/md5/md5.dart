@@ -12,7 +12,7 @@ part of 'package:blockchain_utils/crypto/crypto/hash/hash.dart';
 /// final digest = md5.digest();
 /// md5.clean(); // Clean up resources after use.
 /// ```
-class MD5 implements SerializableHash {
+class MD5 implements SerializableHash<SH1State> {
   /// Creates a new MD5 instance.
   MD5() {
     reset();
@@ -73,8 +73,7 @@ class MD5 implements SerializableHash {
   ///
   /// [savedState]: The hash state to be cleaned and reset.
   @override
-  void cleanSavedState(HashState savedState) {
-    savedState as SH1State;
+  void cleanSavedState(SH1State savedState) {
     savedState.buffer = List.empty();
     savedState.state = List.unmodifiable([
       0x67452301,
@@ -215,8 +214,7 @@ class MD5 implements SerializableHash {
   ///
   /// Returns the current instance of the hash algorithm with the restored state.
   @override
-  SerializableHash restoreState(HashState savedState) {
-    savedState as SH1State;
+  SerializableHash restoreState(SH1State savedState) {
     _buffer.clear();
     _buffer.addAll(savedState.buffer);
     _state.setAll(0, savedState.state);

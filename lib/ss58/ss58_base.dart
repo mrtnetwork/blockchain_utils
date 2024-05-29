@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:blockchain_utils/base58/base58_base.dart';
+import 'package:blockchain_utils/compare/compare.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
 import 'package:blockchain_utils/binary/utils.dart';
 import 'package:blockchain_utils/numbers/int_utils.dart';
@@ -20,15 +21,19 @@ class _Ss58Const {
   /// A list of reserved format identifiers.
   static const List<int> reservedFormats = [46, 47];
 
-  /// The length of the data part of an SS58 address in bytes.
-  static const int dataByteLen = 32;
+  // /// The length of the data part of an SS58 address in bytes.
+  // static const int dataByteLen = 32;
 
   /// The length of the checksum part of an SS58 address in bytes.
-  static const int checksumByteLen = 2;
+  // static const int checksumByteLen = 2;
 
   /// The prefix used for generating the checksum.
   static final List<int> checksumPrefix =
-      List<int>.from(<int>[83, 83, 53, 56, 80, 82, 69]);
+      List<int>.unmodifiable(<int>[83, 83, 53, 56, 80, 82, 69]);
+
+  static int checkBytesLen(int dataBytesLength) {
+    return [33, 34].contains(dataBytesLength) ? 2 : 1;
+  }
 }
 
 /// Utility methods for SS58 address encoding and decoding.
@@ -37,7 +42,7 @@ class _Ss58Utils {
   ///
   /// The checksum is computed by prepending the checksum prefix to the data bytes,
   /// hashing the resulting sequence using the Blake2b-512 algorithm, and then taking
-  /// the first [Ss58Const.checksumByteLen] bytes of the hash as the checksum.
+  /// the first [_Ss58Const.checksumByteLen] bytes of the hash as the checksum.
   ///
   /// Parameters:
   /// - [dataBytes]: The data bytes for which the checksum needs to be computed.
@@ -48,7 +53,7 @@ class _Ss58Utils {
     final prefixAndData =
         List<int>.from([..._Ss58Const.checksumPrefix, ...dataBytes]);
     return QuickCrypto.blake2b512Hash(prefixAndData)
-        .sublist(0, _Ss58Const.checksumByteLen);
+        .sublist(0, _Ss58Const.checkBytesLen(dataBytes.length));
   }
 }
 
@@ -66,9 +71,9 @@ class SS58Encoder {
   /// Throws an [ArgumentException] if the input parameters are invalid, such as incorrect data length, out-of-range SS58 format, or using reserved formats.
   static String encode(List<int> dataBytes, int ss58Format) {
     // Check parameters
-    if (dataBytes.length != _Ss58Const.dataByteLen) {
-      throw ArgumentException('Invalid data length (${dataBytes.length})');
-    }
+    // if (dataBytes.length != _Ss58Const.dataByteLen) {
+    //   throw ArgumentException('Invalid data length (${dataBytes.length})');
+    // }
     if (ss58Format < 0 || ss58Format > _Ss58Const.formatMaxVal) {
       throw ArgumentException('Invalid SS58 format ($ss58Format)');
     }
@@ -127,21 +132,17 @@ class SS58Decoder {
     if (_Ss58Const.reservedFormats.contains(ss58Format)) {
       throw ArgumentException('Invalid SS58 format ($ss58Format)');
     }
+    final int checkSumLength =
+        _Ss58Const.checkBytesLen(decBytes.length - ss58FormatLen);
+    final dataBytes = List<int>.from(
+        decBytes.sublist(ss58FormatLen, decBytes.length - checkSumLength));
+    final checksumBytes = List<int>.unmodifiable(
+        decBytes.sublist(decBytes.length - checkSumLength));
 
-    final dataBytes = List<int>.from(decBytes.sublist(
-        ss58FormatLen, decBytes.length - _Ss58Const.checksumByteLen));
-    final checksumBytes = List<int>.from(
-        decBytes.sublist(decBytes.length - _Ss58Const.checksumByteLen));
+    final checksumBytesGot = _Ss58Utils.computeChecksum(
+        decBytes.sublist(0, decBytes.length - checkSumLength));
 
-    if (dataBytes.length != _Ss58Const.dataByteLen) {
-      throw ArgumentException('Invalid data length (${dataBytes.length})');
-    }
-
-    final checksumBytesGot = _Ss58Utils.computeChecksum(List<int>.from(
-        decBytes.sublist(0, decBytes.length - _Ss58Const.checksumByteLen)));
-
-    if (!checksumBytesGot.every((element) =>
-        element == checksumBytes[checksumBytesGot.indexOf(element)])) {
+    if (!bytesEqual(checksumBytesGot, checksumBytes)) {
       throw SS58ChecksumError(
           'Invalid checksum (expected ${BytesUtils.toHexString(checksumBytesGot)}, '
           'got ${BytesUtils.toHexString(checksumBytes)})');

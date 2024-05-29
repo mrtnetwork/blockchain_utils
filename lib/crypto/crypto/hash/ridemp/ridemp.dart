@@ -127,7 +127,7 @@ class RIPEMD128 extends _RIPEMD {
 ///
 /// Parameters:
 /// - [length]: An integer specifying the length of the hash state.
-class _RIPEMD implements SerializableHash {
+class _RIPEMD implements SerializableHash<SH1State> {
   _RIPEMD(int length) {
     _state = List<int>.filled(length, 0);
     reset();
@@ -160,8 +160,7 @@ class _RIPEMD implements SerializableHash {
   ///
   /// [savedState]: The hash state to be cleaned and reset.
   @override
-  void cleanSavedState(HashState savedState) {
-    savedState as SH1State;
+  void cleanSavedState(SH1State savedState) {
     savedState.buffer = List.empty();
     final state = _RidempUtils.readState(getDigestLength);
     savedState.state = state;
@@ -262,8 +261,7 @@ class _RIPEMD implements SerializableHash {
   ///
   /// Returns the current instance of the hash algorithm with the restored state.
   @override
-  SerializableHash restoreState(HashState savedState) {
-    savedState as SH1State;
+  SerializableHash restoreState(SH1State savedState) {
     _buffer.clear();
     _buffer.addAll(savedState.buffer);
     _state.setAll(0, savedState.state);

@@ -56,7 +56,7 @@ class BytesUtils {
   ///
   static String toHexString(List<int> dataBytes,
       {bool lowerCase = true, String? prefix}) {
-    final String toHex = hex.hex.encode(dataBytes, lowerCase);
+    final String toHex = hex.hex.encode(dataBytes, lowerCase: lowerCase);
     return "${prefix ?? ''}$toHex";
   }
 
@@ -159,10 +159,12 @@ class BytesUtils {
   /// Throws:
   /// - [ArgumentException] if any byte is outside the valid range.
   ///
-  static void validateBytes(List<int> bytes) {
-    for (final int i in bytes) {
-      if (i < 0 || i > mask8) {
-        throw ArgumentException("invalid bytes $i");
+  static void validateBytes(List<int> bytes, {String? onError}) {
+    for (int i = 0; i < bytes.length; i++) {
+      final int byte = bytes[i];
+      if (byte < 0 || byte > mask8) {
+        throw ArgumentException(
+            "${onError ?? "Invalid bytes"} at index $i $byte");
       }
     }
   }

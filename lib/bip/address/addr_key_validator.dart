@@ -7,9 +7,16 @@ class AddrKeyValidator {
   /// validate argrument by key
   static T validateAddressArgs<T>(Map<String, dynamic> kwargs, String key) {
     if (!kwargs.containsKey(key) || kwargs[key] is! T) {
-      throw ArgumentException('Missing required parameters: $key');
+      throw ArgumentException(
+          'Invalid or Missing required parameters: $key as type $T');
     }
     return kwargs[key] as T;
+  }
+
+  static T? nullOrValidateAddressArgs<T>(
+      Map<String, dynamic> kwargs, String key) {
+    if (kwargs[key] == null) return null;
+    return validateAddressArgs<T>(kwargs, key);
   }
 
   /// Validate and get an ed25519 public key.
@@ -45,5 +52,9 @@ class AddrKeyValidator {
   static IPublicKey _validateAndGetGenericKey(
       List<int> pubKey, EllipticCurveTypes type) {
     return IPublicKey.fromBytes(pubKey, type);
+  }
+
+  static bool hasValidPubkeyBytes(List<int> pubKey, EllipticCurveTypes type) {
+    return IPublicKey.isValidBytes(pubKey, type);
   }
 }

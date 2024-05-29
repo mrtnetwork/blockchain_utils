@@ -146,7 +146,7 @@ class Ed25519PrivateKey implements IPrivateKey {
 
   /// accsess to public key
   @override
-  IPublicKey get publicKey {
+  Ed25519PublicKey get publicKey {
     return Ed25519PublicKey._(_privateKey.publicKey);
   }
 

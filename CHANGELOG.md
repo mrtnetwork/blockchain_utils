@@ -1,62 +1,82 @@
+## 3.0.0
+
+- Improved hex performance.
+- Added support for Substrate ECDSA: address, sign, vrfsign, verify, derive.
+- Added support for Substrate SR25519: address, sign, vrfsign, verify, derive.
+- Added support for Substrate ED25519: address, sign, vrfsign, verify, derive.
+
 ## 2.1.2
-   - Implements classes for signing and verifying cosmos transaction digests
+
+- Implements classes for signing and verifying cosmos transaction digests
 
 ## 2.1.1
-   - Fix Cbor bigint encoding.
+
+- Fix Cbor bigint encoding.
 
 ## 2.1.0
+
 - Implements classes for signing and verifying transaction digests.
-   - Introduces classes for signing and verifying transaction digests, with support for Cardano.
-   - Adds a new class for encoding and decoding ADA addresses, covering enterprise, pointer, base, reward, shelly, and shelly legacy address formats.
-   - Fixes an issue with CBOR decoding of negative integers in web environments.
+- Introduces classes for signing and verifying transaction digests, with support for Cardano.
+- Adds a new class for encoding and decoding ADA addresses, covering enterprise, pointer, base, reward, shelly, and shelly legacy address formats.
+- Fixes an issue with CBOR decoding of negative integers in web environments.
 
 ## 2.0.1
-   - dart format .
+
+- dart format .
 
 ## 2.0.0
+
 - Implements classes for signing and verifying transaction digests.
-   - Bitcoin (ECDSA, Schnorr)
-   - BitcoinCash (ECDSA)
-   - Dogecoin (ECDSA)
-   - Litecoin (ECDSA)
-   - Dash (ECDSA)
-   - BSV (ECDSA)
-   - Ethereum (ECDSA)
-   - Tron (ECDSA)
-   - Solana (EDDSA)
-   - XRP (EDDSA, ECDSA)
+- Bitcoin (ECDSA, Schnorr)
+- BitcoinCash (ECDSA)
+- Dogecoin (ECDSA)
+- Litecoin (ECDSA)
+- Dash (ECDSA)
+- BSV (ECDSA)
+- Ethereum (ECDSA)
+- Tron (ECDSA)
+- Solana (EDDSA)
+- XRP (EDDSA, ECDSA)
 
 ## 1.6.0
+
 - Addressed an issue with Cbor decoding.
 - Enhanced secret storage definition to encrypt and decrypt bytes instead of strings. This resolves a compatibility issue with Ethereum keystore.
 
-
 ## 1.5.0
+
 - Added a new class for signing and verifying Ethereum and tron transactions.
 
 ## 1.4.1
+
 - Corrected Ripple address encoding for ED25519
 - Added support for Ripple ED25519 coin
 
 ## 1.4.0
+
 - Downgrade DART SDK version from 2.17.1 to 2.15.0
 
 ## 1.3.0
+
 - Downgrade DART SDK version from 3.1.1 to 2.17.1 to address compatibility issues and ensure smoother integration.
 - Added a new class for signing and verifying Ripple transactions.
 
 ## 1.2.1
+
 - Resolved an issue with byte order in the method IntUtils.toBytes for more consistent behavior.
 
 ## 1.2.0
+
 - Fixed several bugs to enhance the stability and reliability of the code.
 - Added utility functions to handle XRP X-address format for improved compatibility.
 - Resolved an issue with byte order in the method IntUtils.toBytes for more consistent behavior.
 
 ## 1.1.0
+
 - Implementing custom exception classes for more effective error handling.
 
 ## 1.0.6
+
 - Resolved issue with CBOR decoding of lists
 - Removed "tags" property from CBOR
 - Introduced a new class for CBOR tags

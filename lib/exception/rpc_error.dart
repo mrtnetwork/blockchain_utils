@@ -32,6 +32,6 @@ class RPCError implements BlockchainUtilsException {
   /// The string includes the error code, error message, and the request details if available.
   @override
   String toString() {
-    return 'RPCError: got code $errorCode with msg "$message".';
+    return 'RPCError: got code $errorCode with msg "$message". ${data ?? ''}';
   }
 }

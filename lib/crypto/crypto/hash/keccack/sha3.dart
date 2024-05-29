@@ -201,7 +201,7 @@ class Keccack extends _Keccack {
   /// This method allows you to restore the hash computation state to a previously saved state.
   /// It is useful when you want to continue hashing data from a certain point, or if you want
   /// to combine multiple hash computations.
-  Keccack restoreState(dynamic savedState) {
+  Keccack restoreState(List<int> savedState) {
     _state.setAll(0, savedState);
     _pos = savedState.length;
     _finished = false;
@@ -229,7 +229,7 @@ class Keccack extends _Keccack {
 
 /// The `SHA3` class is used to compute hash digests of data, and it allows customization of the
 /// digest length
-class SHA3 extends _Keccack implements SerializableHash {
+class SHA3 extends _Keccack implements SerializableHash<HashBytesState> {
   // Constructor for SHA3 with an optional positional parameter digestLength
   SHA3([int digestLength = 32])
       : getDigestLength = digestLength,
@@ -326,8 +326,7 @@ class SHA3 extends _Keccack implements SerializableHash {
   ///
   /// Returns the current instance of the hash algorithm with the restored state.
   @override
-  SHA3 restoreState(HashState savedState) {
-    savedState as HashBytesState;
+  SHA3 restoreState(HashBytesState savedState) {
     _state.setAll(0, savedState.data);
     _pos = savedState.pos;
     _finished = false;
@@ -340,8 +339,7 @@ class SHA3 extends _Keccack implements SerializableHash {
   ///
   /// [savedState]: The hash state to be cleaned and reset.
   @override
-  void cleanSavedState(HashState savedState) {
-    savedState as HashBytesState;
+  void cleanSavedState(HashBytesState savedState) {
     zero(savedState.data);
     savedState.pos = 0;
   }
@@ -441,7 +439,7 @@ class SHA3512 extends SHA3 {
 }
 
 /// The `SHAKE` class represents the SHAKE (Secure Hash Algorithm KEccak) extendable-output hash function.
-class SHAKE extends _Keccack implements SerializableHash {
+class SHAKE extends _Keccack implements SerializableHash<HashBytesState> {
   /// The desired output size in bits for the SHAKE digest.
   final int bitSize;
 
@@ -495,10 +493,10 @@ class SHAKE extends _Keccack implements SerializableHash {
   ///
   /// Returns the current instance of the hash algorithm with the restored state.
   @override
-  SHAKE restoreState(dynamic savedState) {
+  SHAKE restoreState(HashBytesState savedState) {
     savedState as List<int>;
-    _state.setAll(0, savedState);
-    _pos = savedState.length;
+    _state.setAll(0, savedState.data);
+    _pos = savedState.pos;
     _finished = false;
     return this;
   }
@@ -1018,7 +1016,8 @@ void _keccakf(List<int> sh, List<int> sl, List<int> buf) {
 /// where data is processed in chunks or sections, and the `pos` field keeps track of the current position
 /// within the data buffer.
 class HashBytesState implements HashState {
-  HashBytesState({required this.data, required this.pos});
+  HashBytesState({required List<int> data, required this.pos})
+      : data = List<int>.from(data);
   final List<int> data;
   int pos;
 }

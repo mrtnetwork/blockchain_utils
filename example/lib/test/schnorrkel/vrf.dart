@@ -24,7 +24,7 @@ void vrfSignTest() {
     verifyScript.additionalData("sign-bytes".codeUnits, message);
     assert(secret
         .publicKey()
-        .vrfVerify(verifyScript, vrfout.item1.output, vrproof));
+        .vrfVerify(verifyScript, vrfout.item1.toVRFPreOut(), vrproof));
   }
 
   /// test vrf sign
@@ -47,7 +47,7 @@ void vrfSignTest() {
     final keyPair =
         SchnorrkelKeypair.fromBytes(BytesUtils.fromHexString(i["keypair"]));
     final public = keyPair.secretKey().publicKey();
-    final output = BytesUtils.fromHexString(i["out"]);
+    final output = VRFPreOut(BytesUtils.fromHexString(i["out"]));
     final proof = VRFProof.fromBytes(BytesUtils.fromHexString(i["proof"]));
     final script = MerlinTranscript("SigningContext");
     script.additionalData("".codeUnits, "yo!".codeUnits);

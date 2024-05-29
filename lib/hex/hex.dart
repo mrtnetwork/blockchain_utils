@@ -1,7 +1,4 @@
-// Copyright (C) 2016 Dmitry Chestnykh
-// MIT License. See LICENSE file for details.
-
-import 'package:blockchain_utils/binary/binary_operation.dart';
+import 'package:blockchain_utils/binary/binary.dart';
 import 'package:blockchain_utils/exception/exception.dart';
 
 // ignore: library_private_types_in_public_api
@@ -9,52 +6,69 @@ const _Hex hex = _Hex();
 
 class _Hex {
   const _Hex();
-
-  /// Encode a single nibble (4 bits) to a hexadecimal character.
-  ///
-  /// Input: b - an integer representing a nibble (0-15).
-  /// Output: Returns a string with the hexadecimal representation of the nibble.
-  String _encodeNibble(int b) {
-    // b >= 0
-    int result = b + 48;
-    // b > 9
-    result += ((9 - b) >> 8) & (-48 + 65 - 10);
-
-    return String.fromCharCode(result);
-  }
-
-  /// Encode a single nibble (4 bits) to a lowercase hexadecimal character.
-  ///
-  /// Input: b - an integer representing a nibble (0-15).
-  /// Output: Returns a string with the lowercase hexadecimal representation of the nibble.
-  String _encodeNibbleLower(int b) {
-    int result = b + 48;
-    // b > 9
-    result += ((9 - b) >> 8) & (-48 + 97 - 10);
-
-    return String.fromCharCode(result);
-  }
+  static const _lookupTableLower = [
+    '0',
+    '1',
+    '2',
+    '3',
+    '4',
+    '5',
+    '6',
+    '7',
+    '8',
+    '9',
+    'a',
+    'b',
+    'c',
+    'd',
+    'e',
+    'f'
+  ];
+  static const _lookupTableUpper = [
+    '0',
+    '1',
+    '2',
+    '3',
+    '4',
+    '5',
+    '6',
+    '7',
+    '8',
+    '9',
+    'A',
+    'B',
+    'C',
+    'D',
+    'E',
+    'F'
+  ];
 
 // Invalid character used in decoding to indicate
 // that the character to decode is out of range of
 // the hex alphabet and cannot be decoded.
   static const _invalidHexNibble = 256;
 
-  /// Decode a hexadecimal character to its integer value.
-  ///
-  /// Input: c - an integer representing the ASCII code of the character.
-  /// Output: Returns the integer value of the hexadecimal character, or INVALID_HEX_NIBBLE for invalid characters.
-  int _decodeNibble(int c) {
-    int result = _invalidHexNibble;
+  static const List<int> _nibbleLookupTable = [
+    256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256,
+    256, // 0-15
+    256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256,
+    256, // 16-31
+    256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256,
+    256, // 32-47
+    0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 256, 256, 256, 256, 256, 256, // 48-63 (0-9)
+    256, 10, 11, 12, 13, 14, 15, 256, 256, 256, 256, 256, 256, 256, 256,
+    256, // 64-79 (A-F)
+    256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256,
+    256, // 80-95
+    256, 10, 11, 12, 13, 14, 15, 256, 256, 256, 256, 256, 256, 256, 256,
+    256, // 96-111 (a-f)
+    256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256,
+    256, // 112-127
+    // the rest are all 256 by default
+  ];
 
-    result += (((47 - c) & (c - 58)) >> 8) & (-_invalidHexNibble + c - 48);
-    // A-F: c > 64 and c < 71
-    result += (((64 - c) & (c - 71)) >> 8) & (-_invalidHexNibble + c - 65 + 10);
-    // a-f: c > 96 and c < 103
-    result +=
-        (((96 - c) & (c - 103)) >> 8) & (-_invalidHexNibble + c - 97 + 10);
-
-    return result;
+  int _decodeNibble(int charCode) {
+    return charCode < 128 ? _nibbleLookupTable[charCode] : _invalidHexNibble;
   }
 
   /// Encode a bytes as a hex string.
@@ -62,21 +76,20 @@ class _Hex {
   /// Input: data - the bytes to be encoded.
   ///        lowerCase - a flag indicating whether to use lowercase hexadecimal characters (default is true).
   /// Output: Returns a hex-encoded string.
-  String encode(List<int> data, [bool lowerCase = true]) {
-    final enc = lowerCase ? _encodeNibbleLower : _encodeNibble;
-    String s = "";
-    for (int i = 0; i < data.length; i++) {
+  String encode(List<int> data, {bool lowerCase = true}) {
+    BytesUtils.validateBytes(data, onError: "Invalid hex bytes");
+    final table = lowerCase ? _lookupTableLower : _lookupTableUpper;
+    final int length = data.length;
+    final List<String> result = List<String>.filled(length * 2, '');
+    for (int i = 0; i < length; i++) {
       final byte = data[i];
-      if (byte < 0 || byte > mask8) {
-        throw ArgumentException("invalid byte ${byte.abs().toRadixString(16)}");
-      }
-      s += enc(data[i] >> 4);
-      s += enc(data[i] & 0x0F);
+      result[i * 2] = table[byte >> 4];
+      result[i * 2 + 1] = table[byte & 0x0F];
     }
-    return s;
+    return result.join();
   }
 
-  /// Decode a hex string into a Uint8Array.
+  /// Decode a hex string into a bytes.
   ///
   /// Input: hex - the hex string to be decoded.
   /// Output: Returns a bytes with data decoded from the hex string.
@@ -91,15 +104,14 @@ class _Hex {
           "Hex input string must be divisible by two");
     }
     final result = List<int>.filled(hex.length ~/ 2, 0);
-    int haveBad = 0;
+    bool haveBad = false;
     for (int i = 0; i < hex.length; i += 2) {
       int v0 = _decodeNibble(hex.codeUnitAt(i));
       int v1 = _decodeNibble(hex.codeUnitAt(i + 1));
       result[i ~/ 2] = ((v0 << 4) | v1) & mask8;
-      haveBad |= v0 & _invalidHexNibble;
-      haveBad |= v1 & _invalidHexNibble;
+      haveBad |= (v0 == _invalidHexNibble) | (v1 == _invalidHexNibble);
     }
-    if (haveBad != 0) {
+    if (haveBad) {
       throw const ArgumentException("Incorrect characters for hex decoding");
     }
     return result;

@@ -144,7 +144,7 @@ class EDDSAPublicKey {
   bool verify(
     List<int> data,
     List<int> signature,
-    SerializableHash Function() hashMethod,
+    HashFunc hashMethod,
   ) {
     if (signature.length != 2 * baselen) {
       throw ArgumentException(

@@ -4,7 +4,7 @@ part of 'package:blockchain_utils/crypto/crypto/hash/hash.dart';
 ///
 /// MD4 is a widely-used cryptographic hash function that produces a 128-bit (16-byte) hash value.
 /// This class allows you to compute MD4 hashes for input data.
-class MD4 implements SerializableHash {
+class MD4 implements SerializableHash<SH1State> {
   /// The initial constructor for the MD4 class.
   ///
   /// Initializes the MD4 hash function and resets it to its initial state.
@@ -91,8 +91,7 @@ class MD4 implements SerializableHash {
   /// Params:
   /// - `savedState`: The [HashState] object to be cleaned and reset.
   @override
-  void cleanSavedState(HashState savedState) {
-    savedState as SH1State;
+  void cleanSavedState(SH1State savedState) {
     savedState.buffer = List.empty();
     savedState.state = List<int>.from([
       0x67452301,
@@ -211,8 +210,7 @@ class MD4 implements SerializableHash {
   /// Returns:
   /// - The MD4 hash object with the restored state.
   @override
-  SerializableHash restoreState(HashState savedState) {
-    savedState as SH1State;
+  SerializableHash restoreState(SH1State savedState) {
     _buffer.clear();
     _buffer.addAll(savedState.buffer);
     _state.setAll(0, savedState.state);

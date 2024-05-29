@@ -24,12 +24,19 @@ import 'package:blockchain_utils/binary/binary_operation.dart';
 /// This class simplifies the process of managing transcripts for cryptographic protocols and is commonly used for secure communication and cryptographic operations.
 class MerlinTranscript {
   static const String merlinVersion = "Merlin v1.0";
+  const MerlinTranscript.fromStrobe(this.strobe);
 
   /// The Strobe instance used for cryptographic operations.
-  MerlinTranscript(String label)
-      : strobe = Strobe(merlinVersion, StrobeSecParam.sec128) {
-    additionalData("dom-sep".codeUnits, label.codeUnits);
+  factory MerlinTranscript(String label) {
+    final transcript = MerlinTranscript.fromStrobe(
+        Strobe(merlinVersion, StrobeSecParam.sec128));
+    transcript.additionalData("dom-sep".codeUnits, label.codeUnits);
+    return transcript;
   }
+  MerlinTranscript clone() {
+    return MerlinTranscript.fromStrobe(strobe.clone());
+  }
+
   final Strobe strobe;
 
   /// Appends additional data to the transcript for the Merlin cryptographic protocol.

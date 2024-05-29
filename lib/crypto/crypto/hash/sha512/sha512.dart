@@ -14,7 +14,7 @@ part of 'package:blockchain_utils/crypto/crypto/hash/hash.dart';
 /// sha512.update(data);
 /// final hash = sha512.digest();
 /// ```
-class SHA512 implements SerializableHash {
+class SHA512 implements SerializableHash<SHA512State> {
   /// Initializes a new instance of the SHA-512 hash algorithm.
   SHA512() {
     reset();
@@ -220,8 +220,7 @@ class SHA512 implements SerializableHash {
   ///
   /// Returns the current instance of the hash algorithm with the restored state.
   @override
-  SerializableHash restoreState(HashState savedState) {
-    savedState as SHA512State;
+  SerializableHash restoreState(SHA512State savedState) {
     _stateHi.setAll(0, savedState.stateHi);
     _stateLo.setAll(0, savedState.stateLo);
     _bufferLength = savedState.bufferLength;
@@ -239,8 +238,7 @@ class SHA512 implements SerializableHash {
   ///
   /// [savedState]: The hash state to be cleaned and reset.
   @override
-  void cleanSavedState(HashState savedState) {
-    savedState as SHA512State;
+  void cleanSavedState(SHA512State savedState) {
     zero(savedState.stateHi);
     zero(savedState.stateLo);
     if (savedState.buffer != null) {

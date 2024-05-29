@@ -120,7 +120,7 @@ final List<List<int>> _sigma = [
 /// - [_mtmp]: Temporary storage for message data.
 /// - [_paddedKey]: Padded key for hash initialization.
 /// - [_initialState]: The initial state of the BLAKE2b hash.
-class BLAKE2b implements SerializableHash {
+class BLAKE2b implements SerializableHash<Blake2bState> {
   final List<int> _state = List<int>.from(_iv, growable: false);
   final List<int> _buffer = List<int>.filled(_blockSize, 0);
   int _bufferLength = 0;
@@ -666,8 +666,7 @@ class BLAKE2b implements SerializableHash {
   /// Returns:
   /// The BLAKE2b instance with the state restored to that of the saved state.
   @override
-  BLAKE2b restoreState(HashState savedState) {
-    savedState as Blake2bState;
+  BLAKE2b restoreState(Blake2bState savedState) {
     _state.setAll(0, savedState.state);
     _buffer.setAll(0, savedState.buffer);
     _bufferLength = savedState.bufferLength;

@@ -54,6 +54,10 @@ part 'md4/md4.dart';
 /// Export statement for the 'keccak' part, providing the SHA-3 (Keccak) hash algorithm.
 part 'keccack/sha3.dart';
 
+part 'xxhash64/xxhash64.dart';
+
+typedef HashFunc = SerializableHash Function();
+
 /// The `Hash` abstract class defines the basic operations for hash algorithms.
 ///
 /// It serves as the base for hash algorithms, defining methods and properties
@@ -85,15 +89,15 @@ abstract class Hash {
 /// functionality for saving, restoring, and cleaning hash states.
 ///
 /// It's useful for hash algorithms that require intermediate state management.
-abstract class SerializableHash extends Hash {
+abstract class SerializableHash<T extends HashState> extends Hash {
   /// Saves the current hash state.
   HashState saveState();
 
   /// Restores the hash state from a saved state.
-  SerializableHash restoreState(HashState savedState);
+  SerializableHash restoreState(T savedState);
 
   /// Cleans sensitive data from the saved hash state.
-  void cleanSavedState(HashState savedState);
+  void cleanSavedState(T savedState);
 }
 
 /// The `HashState` abstract class serves as a marker interface for hash state classes.

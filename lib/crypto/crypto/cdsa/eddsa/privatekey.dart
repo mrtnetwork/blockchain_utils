@@ -39,7 +39,7 @@ class EDDSAPrivateKey {
   factory EDDSAPrivateKey(
     EDPoint generator,
     List<int> privateKey,
-    SerializableHash Function() hashMethod,
+    HashFunc hashMethod,
   ) {
     final baselen = (generator.curve.p.bitLength + 1 + 7) ~/ 8;
     if (privateKey.length != baselen) {
@@ -119,7 +119,7 @@ class EDDSAPrivateKey {
   /// Signs the provided data using this private key.
   List<int> sign(
     List<int> data,
-    SerializableHash Function() hashMethod,
+    HashFunc hashMethod,
   ) {
     List<int> dom = List.empty();
     if (generator.curve == Curves.curveEd448) {

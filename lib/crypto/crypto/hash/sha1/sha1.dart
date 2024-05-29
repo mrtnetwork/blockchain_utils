@@ -13,7 +13,7 @@ part of 'package:blockchain_utils/crypto/crypto/hash/hash.dart';
 /// sha1.update(List<int>.from([0x48, 0x65, 0x6C, 0x6C, 0x6F]));
 /// final hashDigest = sha1.digest();
 /// ```
-class SHA1 implements SerializableHash {
+class SHA1 implements SerializableHash<SH1State> {
   /// Initializes an instance of the SHA-1 hash.
   SHA1() {
     reset();
@@ -51,8 +51,7 @@ class SHA1 implements SerializableHash {
   ///
   /// [savedState]: The hash state to be cleaned and reset.
   @override
-  void cleanSavedState(HashState savedState) {
-    savedState as SH1State;
+  void cleanSavedState(SH1State savedState) {
     savedState.buffer = List.empty();
     savedState.state = List<int>.from([
       0x67452301,
@@ -202,8 +201,7 @@ class SHA1 implements SerializableHash {
   ///
   /// Returns the current instance of the hash algorithm with the restored state.
   @override
-  SerializableHash restoreState(HashState savedState) {
-    savedState as SH1State;
+  SerializableHash restoreState(SH1State savedState) {
     _buffer.clear();
     _buffer.addAll(savedState.buffer);
     _estate.setAll(0, savedState.state);

@@ -58,7 +58,7 @@ class RFC6979 {
   /// Note: The RFC6979 algorithm ensures that K values are generated deterministically
   ///       and securely, which is essential for cryptographic operations.
   static BigInt generateK(
-      BigInt order, BigInt secexp, Hash Function() hashFunc, List<int> data,
+      BigInt order, BigInt secexp, HashFunc hashFunc, List<int> data,
       {int retryGn = 0, List<int>? extraEntropy}) {
     int qlen = order.bitLength;
     final hx = hashFunc();

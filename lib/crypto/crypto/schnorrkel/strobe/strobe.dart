@@ -94,13 +94,16 @@ class Strobe {
     bool initialized = false,
     List<int> buffer = const [],
     List<int> storage = const [],
-    List<int> temp = const [],
+    List<int>? state,
   })  : _initialized = initialized,
         _st = storage,
         _buffer = buffer,
         _curFlags = curFlags,
         _posBegin = posBegin,
-        _io = io;
+        _io = io,
+        _state = state == null
+            ? List<int>.filled(200, 0)
+            : List.from(state, growable: false);
 
   final int rate;
   final int strober;
@@ -111,9 +114,22 @@ class Strobe {
 
   int _curFlags;
   // state
-  final List<int> _state = List<int>.filled(200, 0);
+  final List<int> _state;
   List<int> _buffer;
   final List<int> _st;
+
+  Strobe clone() {
+    return Strobe._(
+        rate: rate,
+        strober: strober,
+        io: _io,
+        posBegin: _posBegin,
+        buffer: List.from(_buffer),
+        curFlags: _curFlags,
+        initialized: _initialized,
+        storage: List.from(_st),
+        state: List.from(_state));
+  }
 
   /// Create a new instance of the Strobe protocol with the specified parameters.
   ///
@@ -144,7 +160,6 @@ class Strobe {
       posBegin: 0,
       curFlags: 0,
       storage: List<int>.filled(rate, 0),
-      temp: List<int>.filled(rate, 0),
       buffer: List.empty(growable: true),
     );
     List<int> domain = [1, rate, 1, 0, 1, 12 * 8];
