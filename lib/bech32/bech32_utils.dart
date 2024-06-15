@@ -54,7 +54,7 @@
 
 import 'package:blockchain_utils/bech32/bech32_ex.dart';
 import 'package:blockchain_utils/exception/exception.dart';
-import 'package:blockchain_utils/tuple/tuple.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 
 /// A utility class containing constants for Bech32 encoding and decoding.
 class Bech32BaseConst {
@@ -77,7 +77,7 @@ class Bech32BaseUtils {
   static List<int> convertToBase32(List<int> data) {
     List<int>? convData = _convertBits(data, 8, 5);
     if (convData == null) {
-      throw ArgumentException(
+      throw const ArgumentException(
           'Invalid data, cannot perform conversion to base32');
     }
 
@@ -97,7 +97,7 @@ class Bech32BaseUtils {
   static List<int> convertFromBase32(List<int> data) {
     List<int>? convData = _convertBits(data, 5, 8, pad: false);
     if (convData == null) {
-      throw ArgumentException(
+      throw const ArgumentException(
           'Invalid data, cannot perform conversion from base32');
     }
 
@@ -193,14 +193,16 @@ abstract class Bech32DecoderBase {
       int checksumLen,
       bool Function(String hrp, List<int> data) verifyChecksum) {
     if (_isStringMixed(bechStr)) {
-      throw ArgumentException('Invalid bech32 format (string is mixed case)');
+      throw const ArgumentException(
+          'Invalid bech32 format (string is mixed case)');
     }
 
     bechStr = bechStr.toLowerCase();
 
     final sepPos = bechStr.lastIndexOf(sep);
     if (sepPos == -1) {
-      throw ArgumentException('Invalid bech32 format (no separator found)');
+      throw const ArgumentException(
+          'Invalid bech32 format (no separator found)');
     }
 
     final hrp = bechStr.substring(0, sepPos);
@@ -213,7 +215,8 @@ abstract class Bech32DecoderBase {
     if (dataPart.length < checksumLen + 1 ||
         dataPart.codeUnits.any(
             (x) => !Bech32BaseConst.charset.contains(String.fromCharCode(x)))) {
-      throw ArgumentException('Invalid bech32 format (data part not valid)');
+      throw const ArgumentException(
+          'Invalid bech32 format (data part not valid)');
     }
 
     final intData = dataPart.codeUnits

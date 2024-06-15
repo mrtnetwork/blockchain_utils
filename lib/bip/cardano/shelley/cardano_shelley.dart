@@ -17,7 +17,8 @@ class CardanoShelley {
   /// Throws an `ArgumentException` if the provided Bip object is not a Cip1852 instance.
   factory CardanoShelley.fromCip1852Object(Bip44Base bip) {
     if (bip is! Cip1852) {
-      throw ArgumentException("The Bip object shall be a Cip1852 instance");
+      throw const ArgumentException(
+          "The Bip object shall be a Cip1852 instance");
     }
     return CardanoShelley(bip, __deriveStakingKeys(bip));
   }
@@ -31,10 +32,12 @@ class CardanoShelley {
   /// Throws an `ArgumentException` if the provided Bip object is below the account level or if `bipSk` is not at the address index level.
   CardanoShelley(Bip44Base bip, Bip44Base bipSk) {
     if (bip.level.value < Bip44Levels.account.value) {
-      throw ArgumentException("The bipObj shall not be below account level");
+      throw const ArgumentException(
+          "The bipObj shall not be below account level");
     }
     if (bipSk.level != Bip44Levels.addressIndex) {
-      throw ArgumentException("The bipSkObj shall be of address index level");
+      throw const ArgumentException(
+          "The bipSkObj shall be of address index level");
     }
     bip44 = bip;
     bip44Sk = bipSk;

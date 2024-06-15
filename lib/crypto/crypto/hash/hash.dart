@@ -15,8 +15,7 @@
 /// -....
 library hash;
 
-import 'package:blockchain_utils/binary/binary_operation.dart';
-import 'package:blockchain_utils/binary/utils.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 import 'dart:math' as math;
 
 import 'package:blockchain_utils/exception/exception.dart';

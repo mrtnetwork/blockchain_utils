@@ -2,7 +2,7 @@
 
 import 'package:blockchain_utils/bech32/segwit_bech32.dart';
 import 'package:example/test/quick_hex.dart';
-import 'package:blockchain_utils/binary/utils.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 
 final List<Map<String, String>> _testVectors = [
   {

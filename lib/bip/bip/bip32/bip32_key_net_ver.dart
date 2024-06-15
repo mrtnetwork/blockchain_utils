@@ -13,7 +13,7 @@ class Bip32KeyNetVersions {
   /// constractur for Bip32KeyNetVersions
   Bip32KeyNetVersions(List<int> pubNetVer, List<int> privNetVer) {
     if (pubNetVer.length != length || privNetVer.length != length) {
-      throw ArgumentException("Invalid key net version length");
+      throw const ArgumentException("Invalid key net version length");
     }
 
     _pubNetVer = pubNetVer;

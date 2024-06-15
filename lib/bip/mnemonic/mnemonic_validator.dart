@@ -5,8 +5,8 @@ import 'package:blockchain_utils/bip/mnemonic/mnemonic_decoder_base.dart';
 /// The `MnemonicValidator` class provides methods to validate and determine the
 /// validity of mnemonic phrases using a specified `MnemonicDecoderBase`. It can
 /// check whether a given mnemonic phrase is valid and adheres to the expected format.
-class MnemonicValidator {
-  final MnemonicDecoderBase decoder;
+class MnemonicValidator<T extends MnemonicDecoderBase> {
+  final T decoder;
 
   /// Creates a new instance of the MnemonicValidator with the provided [decoder].
   ///

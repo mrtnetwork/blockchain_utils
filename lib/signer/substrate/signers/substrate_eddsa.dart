@@ -1,6 +1,9 @@
-import 'package:blockchain_utils/blockchain_utils.dart';
+import 'package:blockchain_utils/crypto/quick_crypto.dart';
+import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/signer/solana/solana_signer.dart';
 import 'package:blockchain_utils/signer/substrate/core/signer.dart';
 import 'package:blockchain_utils/signer/substrate/core/verifier.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 
 class _SubstrateED25519SignerConstant {
   static final int vrfLength =
@@ -97,7 +100,7 @@ class SubstrateED25519Verifier implements BaseSubstrateVerifier {
         ...BytesUtils.tryToBytes(extra) ?? [],
         ...signature,
       ]);
-      return bytesEqual(vrf, vrfHash);
+      return BytesUtils.bytesEqual(vrf, vrfHash);
     }
     return false;
   }

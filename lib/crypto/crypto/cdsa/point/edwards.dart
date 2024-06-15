@@ -23,7 +23,7 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
 
-import 'package:blockchain_utils/numbers/bigint_utils.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/curve/curve.dart';
 import 'base.dart';
 import 'package:blockchain_utils/exception/exception.dart';
@@ -400,7 +400,7 @@ class EDPoint extends AbstractPoint {
   @override
   EDPoint operator +(AbstractPoint other) {
     if (other is! EDPoint || curve != other.curve) {
-      throw ArgumentException("The other point is on a different curve.");
+      throw const ArgumentException("The other point is on a different curve.");
     }
     if (other.isInfinity) {
       return this;

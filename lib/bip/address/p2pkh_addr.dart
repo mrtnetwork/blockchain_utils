@@ -1,12 +1,12 @@
 import 'package:blockchain_utils/base58/base58.dart';
 import 'package:blockchain_utils/bech32/bch_bech32.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/bip/address/addr_dec_utils.dart';
 import 'package:blockchain_utils/bip/address/addr_key_validator.dart';
 import 'package:blockchain_utils/bip/address/encoder.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
-import 'package:blockchain_utils/compare/compare.dart';
 import 'decoder.dart';
-import 'package:blockchain_utils/exception/exception.dart';
+import 'exception/exception.dart';
 
 /// Enumeration representing different modes for public keys used in P2PKH addresses.
 ///
@@ -79,11 +79,11 @@ class P2PKHAddrEncoder implements BlockchainAddressEncoder {
     final List<int> netVerBytes = kwargs["net_ver"];
     final alphabet = kwargs["base58_alph"] ?? Base58Alphabets.bitcoin;
     if (alphabet is! Base58Alphabets) {
-      throw ArgumentException("invalid base58 alphabet");
+      throw const AddressConverterException("invalid base58 alphabet");
     }
     final pubKeyModes = kwargs["pub_key_mode"] ?? PubKeyModes.compressed;
     if (pubKeyModes is! PubKeyModes) {
-      throw ArgumentException("invalid pub key mode");
+      throw const AddressConverterException("invalid pub key mode");
     }
 
     /// Validate and process the public key as a Secp256k1 key.
@@ -132,8 +132,8 @@ class BchP2PKHAddrDecoder implements BlockchainAddressDecoder {
     List<int> addrDecBytes = result.item2;
 
     /// Validate that the decoded network version matches the expected network version.
-    if (!bytesEqual(netVerBytes, netVerBytesGot)) {
-      throw ArgumentException("Invalid net version");
+    if (!BytesUtils.bytesEqual(netVerBytes, netVerBytesGot)) {
+      throw const AddressConverterException("Invalid net version");
     }
 
     /// Validate the length of the decoded address.

@@ -1,9 +1,8 @@
-import 'package:blockchain_utils/binary/utils.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/cbor/utils/dynamic_bytes.dart';
 import 'package:blockchain_utils/cbor/core/tags.dart';
 import 'package:blockchain_utils/cbor/types/bigint.dart';
 import 'package:blockchain_utils/cbor/core/cbor.dart';
-import 'package:blockchain_utils/compare/compare.dart';
 import 'int64.dart';
 
 /// A class representing a CBOR (Concise Binary Object Representation) BigFloat value.
@@ -66,7 +65,7 @@ class CborBigFloatValue implements CborObject {
   operator ==(other) {
     if (other is! CborBigFloatValue) return false;
 
-    return iterableIsEqual(value, other.value);
+    return CompareUtils.iterableIsEqual(value, other.value);
   }
 
   /// ovveride hash code

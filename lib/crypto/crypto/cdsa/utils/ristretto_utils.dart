@@ -1,5 +1,4 @@
-import 'package:blockchain_utils/binary/utils.dart';
-import 'package:blockchain_utils/tuple/tuple.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 
 import 'package:blockchain_utils/crypto/crypto/cdsa/curve/curves.dart';
 

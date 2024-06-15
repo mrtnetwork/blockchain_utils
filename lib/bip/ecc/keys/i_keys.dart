@@ -68,7 +68,8 @@ abstract class IPublicKey {
   /// Get the abstract point representation of the public key.
   AbstractPoint get point;
 
-  String toHex();
+  String toHex(
+      {bool withPrefix = true, bool lowerCase = true, String? prefix = ""});
 }
 
 /// An abstract class representing a generic private key interface for different elliptic curve types.
@@ -121,5 +122,5 @@ abstract class IPrivateKey {
     }
   }
 
-  String toHex();
+  String toHex({bool lowerCase = true, String? prefix = ""});
 }

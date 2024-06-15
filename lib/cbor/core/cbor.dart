@@ -1,4 +1,4 @@
-import 'package:blockchain_utils/binary/utils.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/cbor/types/types.dart';
 import 'package:blockchain_utils/cbor/utils/cbor_utils.dart';
 import 'package:blockchain_utils/exception/exception.dart';
@@ -73,7 +73,7 @@ abstract class CborNumeric implements CborObject {
     } else if (val is CborSafeIntValue) {
       return val.value;
     }
-    throw ArgumentException("invalid cbornumeric");
+    throw const ArgumentException("invalid cbornumeric");
   }
 
   /// Convert the CborNumeric object to an integer.

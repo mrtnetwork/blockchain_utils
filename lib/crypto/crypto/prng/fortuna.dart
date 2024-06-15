@@ -68,7 +68,7 @@ class FortunaPRNG {
     }
 
     if (n > 65536) {
-      throw MessageException('Size is too large!');
+      throw const MessageException('Size is too large!');
     }
 
     final tempBlock = List<int>.filled(32, 0);

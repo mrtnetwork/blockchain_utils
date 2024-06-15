@@ -1,5 +1,5 @@
 import 'package:blockchain_utils/crypto/crypto/schnorrkel/keys/keys.dart';
-import 'package:blockchain_utils/binary/utils.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 import 'package:test/test.dart';
 
 import '../quick_hex.dart';

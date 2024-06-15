@@ -1,7 +1,7 @@
 import 'package:blockchain_utils/crypto/crypto/schnorrkel/keys/keys.dart';
 import 'package:blockchain_utils/crypto/crypto/schnorrkel/merlin/transcript.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
-import 'package:blockchain_utils/binary/utils.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 import 'package:test/test.dart';
 import '../quick_hex.dart';
 import 'vrf_test_vector.dart' as vrf_test;

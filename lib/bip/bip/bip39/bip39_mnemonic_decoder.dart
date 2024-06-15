@@ -1,8 +1,7 @@
-import 'package:blockchain_utils/numbers/bigint_utils.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/bip/bip/bip39/bip39_mnemonic.dart';
 import 'package:blockchain_utils/bip/bip/bip39/bip39_mnemonic_utils.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
-import 'package:blockchain_utils/binary/utils.dart';
 import 'package:blockchain_utils/bip/mnemonic/mnemonic.dart';
 import 'package:blockchain_utils/bip/mnemonic/mnemonic_decoder_base.dart';
 import 'package:blockchain_utils/bip/mnemonic/mnemonic_ex.dart';
@@ -112,12 +111,12 @@ class Bip39MnemonicDecoder extends MnemonicDecoderBase {
       throw ArgumentException('Mnemonic words count is not valid ($wCount)');
     }
     final wordsList = findLanguage(mnemonicObj).item1;
-    final mnemonicBinStr = _mnemonicToBinaryStr(mnemonicObj, wordsList);
+    final mnemonicBinStr = mnemonicToBinaryStr(mnemonicObj, wordsList);
     final checksumBinStr = mnemonicBinStr
         .substring(mnemonicBinStr.length - _getChecksumLen(mnemonicBinStr));
     final checksumBinStrGot = _computeChecksumBinaryStr(mnemonicBinStr);
     if (checksumBinStr != checksumBinStrGot) {
-      throw MnemonicChecksumError(
+      throw MnemonicException(
           'Invalid checksum (expected $checksumBinStr, got $checksumBinStrGot)');
     }
 
@@ -145,7 +144,7 @@ class Bip39MnemonicDecoder extends MnemonicDecoderBase {
   }
 
   /// mnemonic to binary
-  String _mnemonicToBinaryStr(Mnemonic mnemonic, MnemonicWordsList wordsList) {
+  String mnemonicToBinaryStr(Mnemonic mnemonic, MnemonicWordsList wordsList) {
     final mnemonicBinStr = mnemonic.toList().map((word) {
       final wordIdx = wordsList.getWordIdx(word);
       return BigintUtils.toBinary(

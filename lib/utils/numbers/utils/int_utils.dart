@@ -1,10 +1,9 @@
 import 'dart:typed_data';
-
-import 'package:blockchain_utils/binary/binary_operation.dart';
-import 'package:blockchain_utils/string/string.dart';
-import 'package:blockchain_utils/tuple/tuple.dart';
+import 'package:blockchain_utils/utils/binary/binary_operation.dart';
+import 'package:blockchain_utils/utils/numbers/utils/bigint_utils.dart';
+import 'package:blockchain_utils/utils/string/string.dart';
+import 'package:blockchain_utils/utils/tuple/tuple.dart';
 import 'package:blockchain_utils/exception/exception.dart';
-import 'package:blockchain_utils/numbers/bigint_utils.dart';
 
 /// Utility class for integer-related operations and conversions.
 class IntUtils {
@@ -38,7 +37,8 @@ class IntUtils {
     BigInt value = BigintUtils.fromBytes(byteint.sublist(1, 1 + size),
         byteOrder: Endian.little);
     if (!value.isValidInt) {
-      throw MessageException("cannot read variable-length in this environment");
+      throw const MessageException(
+          "cannot read variable-length in this environment");
     }
     return Tuple(value.toInt(), size + 1);
   }
@@ -190,7 +190,7 @@ class IntUtils {
       }
       // ignore: empty_catches
     } catch (e) {}
-    throw ArgumentException("invalid input for parse int");
+    throw const ArgumentException("invalid input for parse int");
   }
 
   /// Tries to parse a dynamic value [v] into an integer, returning null if parsing fails.

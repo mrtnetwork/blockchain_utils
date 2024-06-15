@@ -1,12 +1,10 @@
 import 'dart:typed_data';
-
-import 'package:blockchain_utils/numbers/bigint_utils.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/curve/curves.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/ecdsa/private_key.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/point/ec_projective_point.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/rfc6979/rfc6979.dart';
 import 'package:blockchain_utils/crypto/crypto/hash/hash.dart';
-import 'package:blockchain_utils/binary/utils.dart';
 import 'package:test/test.dart';
 
 void _testEqualWithAffinePoint() {

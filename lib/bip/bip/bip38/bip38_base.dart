@@ -2,7 +2,7 @@ import 'package:blockchain_utils/bip/address/p2pkh_addr.dart';
 import 'package:blockchain_utils/bip/bip/bip38/bip38_no_ec.dart';
 
 import 'bip38_ec.dart';
-import 'package:blockchain_utils/tuple/tuple.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 
 /// Helper class for BIP38 encryption and decryption operations.
 ///

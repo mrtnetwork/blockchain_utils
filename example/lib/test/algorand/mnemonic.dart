@@ -5,7 +5,7 @@ import 'package:blockchain_utils/bip/algorand/mnemonic/algorand_seed_generator.d
 import 'package:blockchain_utils/bip/bip/bip44/bip44.dart';
 import 'package:blockchain_utils/bip/bip/conf/bip44/bip44_coins.dart';
 import 'package:example/test/quick_hex.dart';
-import 'package:blockchain_utils/binary/utils.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 import 'test_vector.dart';
 
 void algorandMnemonicAndAddressTest() {

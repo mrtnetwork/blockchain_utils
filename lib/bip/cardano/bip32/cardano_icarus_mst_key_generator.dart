@@ -1,13 +1,11 @@
 import 'package:blockchain_utils/bip/bip/bip32/base/ibip32_mst_key_generator.dart';
 import 'package:blockchain_utils/bip/bip/bip32/slip10/bip32_slip10_mst_key_generator.dart';
 import 'package:blockchain_utils/bip/ecc/keys/ed25519_kholaw_keys.dart';
-import 'package:blockchain_utils/binary/bit_utils.dart';
 import 'package:blockchain_utils/crypto/crypto/hash/hash.dart';
 import 'package:blockchain_utils/crypto/crypto/hmac/hmac.dart';
 import 'package:blockchain_utils/crypto/crypto/pbkdf2/pbkdf2.dart';
-import 'package:blockchain_utils/string/string.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/exception/exception.dart';
-import 'package:blockchain_utils/tuple/tuple.dart';
 
 /// A class that holds constants related to the Cardano Icarus master key generation process.
 class CardanoIcarusMasterKeyGeneratorConst {

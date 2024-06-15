@@ -1,7 +1,7 @@
 import 'package:blockchain_utils/bip/electrum/mnemonic_v1/electrum_v1_mnemonic.dart';
 import 'package:blockchain_utils/bip/mnemonic/mnemonic.dart';
 import 'package:blockchain_utils/bip/mnemonic/mnemonic_utils.dart';
-import 'package:blockchain_utils/tuple/tuple.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/exception/exception.dart';
 
 /// A class responsible for fetching Electrum V1 mnemonic word lists based on language.
@@ -21,7 +21,7 @@ class ElectrumV1WordsListGetter extends MnemonicWordsListGetterBase {
   @override
   MnemonicWordsList getByLanguage(MnemonicLanguages language) {
     if (language is! ElectrumV1Languages) {
-      throw ArgumentException(
+      throw const ArgumentException(
           "Language is not an enumerative of Bip39Languages");
     }
     return loadWordsList(language, ElectrumV1MnemonicConst.wordsListNum);

@@ -3,7 +3,7 @@ import 'package:blockchain_utils/bip/address/addr_key_validator.dart';
 import 'package:blockchain_utils/bip/address/decoder.dart';
 import 'package:blockchain_utils/bip/address/encoder.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
-import 'package:blockchain_utils/exception/exception.dart';
+import 'exception/exception.dart';
 
 /// Constants related to P2WPKH (Pay-to-Witness-Public-Key-Hash) addresses.
 class P2WPKHAddrConst {
@@ -45,7 +45,7 @@ class P2WPKHAddrDecoder implements BlockchainAddressDecoder {
 
     /// Check the witness version.
     if (witVerGot != P2WPKHAddrConst.witnessVer) {
-      throw MessageException(
+      throw AddressConverterException(
           'Invalid witness version (expected ${P2WPKHAddrConst.witnessVer}, got $witVerGot)');
     }
 

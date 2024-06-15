@@ -50,7 +50,7 @@ class _SubstrateUtils {
   static List<int> getSecretKey(
       List<int> seedBytes, SubstrateKeyAlgorithm curve) {
     if (seedBytes.length < SubstrateConst.seedMinByteLen) {
-      throw ArgumentException(
+      throw const ArgumentException(
         'Seed length is too small, it shall be at least ${SubstrateConst.seedMinByteLen} bytes',
       );
     }

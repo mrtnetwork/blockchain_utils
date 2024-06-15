@@ -1,4 +1,4 @@
-import 'package:blockchain_utils/numbers/bigint_utils.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/ecdsa/signature.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/point/base.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/point/ec_projective_point.dart';
@@ -26,19 +26,20 @@ class ECDSAPublicKey {
 
     if (!(BigInt.zero <= point.x && point.x < p) ||
         !(BigInt.zero <= point.y && point.y < p)) {
-      throw ArgumentException("The public point has x or y out of range.");
+      throw const ArgumentException(
+          "The public point has x or y out of range.");
     }
 
     if (verify && !curve.containsPoint(point.x, point.y)) {
-      throw ArgumentException("AffinePointt does not lay on the curve");
+      throw const ArgumentException("AffinePointt does not lay on the curve");
     }
 
     if (n == null) {
-      throw ArgumentException("Generator point must have order.");
+      throw const ArgumentException("Generator point must have order.");
     }
 
     if (verify && curve.cofactor() != BigInt.one && !(point * n).isInfinity) {
-      throw ArgumentException("Generator point order is bad.");
+      throw const ArgumentException("Generator point order is bad.");
     }
     return ECDSAPublicKey._(generator, point);
   }

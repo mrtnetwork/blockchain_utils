@@ -1,12 +1,9 @@
 import 'dart:typed_data';
-
-import 'package:blockchain_utils/binary/utils.dart';
-import 'package:blockchain_utils/numbers/bigint_utils.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/curve/curve.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/point/edwards.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/utils/utils.dart';
 import 'package:blockchain_utils/exception/exception.dart';
-import 'package:blockchain_utils/tuple/tuple.dart';
 
 /// An enumeration representing different types of encoding for elliptic curve points.
 enum EncodeType { comprossed, hybrid, raw, uncompressed }
@@ -141,12 +138,12 @@ abstract class AbstractPoint {
         } else if (prefix == 0x06 || prefix == 0x07) {
           encodeType = EncodeType.hybrid;
         } else {
-          throw ArgumentException("invalid key length");
+          throw const ArgumentException("invalid key length");
         }
       } else if (keyLen == rawEncodingLength ~/ 2 + 1) {
         encodeType = EncodeType.comprossed;
       } else {
-        throw ArgumentException("invalid key length");
+        throw const ArgumentException("invalid key length");
       }
     }
     curve as CurveFp;
@@ -169,7 +166,8 @@ abstract class AbstractPoint {
     final expLen = (p.bitLength + 1 + 7) ~/ 8;
 
     if (data.length != expLen) {
-      throw ArgumentException("AffinePointt length doesn't match the curve.");
+      throw const ArgumentException(
+          "AffinePointt length doesn't match the curve.");
     }
 
     final x0 = (data[expLen - 1] & 0x80) >> 7;
@@ -211,7 +209,7 @@ abstract class AbstractPoint {
   /// Creates an elliptic curve point from a compressed byte encoding.
   static Tuple<BigInt, BigInt> _fromCompressed(List<int> data, CurveFp curve) {
     if (data[0] != 0x02 && data[0] != 0x03) {
-      throw ArgumentException('Malformed compressed point encoding');
+      throw const ArgumentException('Malformed compressed point encoding');
     }
 
     final isEven = data[0] == 0x02;
@@ -243,7 +241,7 @@ abstract class AbstractPoint {
     // Validate if it's self-consistent if we're asked to do that
     if (((prefix == BigInt.one && data[0] != 0x07) ||
         (prefix == BigInt.zero && data[0] != 0x06))) {
-      throw ArgumentException('Inconsistent hybrid point encoding');
+      throw const ArgumentException('Inconsistent hybrid point encoding');
     }
 
     return Tuple(x, y);

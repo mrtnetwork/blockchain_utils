@@ -9,8 +9,11 @@ class Bip32KeyError implements BlockchainUtilsException {
   @override
   final String message;
 
+  @override
+  final Map<String, dynamic>? details;
+
   /// Creates a `Bip32KeyError` with an optional error message.
-  const Bip32KeyError(this.message);
+  const Bip32KeyError(this.message, {this.details});
 
   @override
   String toString() {
@@ -27,8 +30,11 @@ class Bip32PathError implements BlockchainUtilsException {
   @override
   final String message;
 
+  @override
+  final Map<String, dynamic>? details;
+
   /// Creates a `Bip32PathError` with an optional error message.
-  const Bip32PathError(this.message);
+  const Bip32PathError(this.message, {this.details});
 
   @override
   String toString() {

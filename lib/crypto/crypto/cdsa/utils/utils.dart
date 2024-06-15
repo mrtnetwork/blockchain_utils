@@ -91,7 +91,7 @@ class ECDSAUtils {
       }
     }
 
-    throw MessageException("No suitable 'b' found.");
+    throw const MessageException("No suitable 'b' found.");
   }
 
   /// Multiply two polynomials represented by lists 'm1' and 'm2', reducing modulo 'polymod' and prime 'p'.

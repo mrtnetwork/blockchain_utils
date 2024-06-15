@@ -10,7 +10,7 @@ library uuid;
 
 import 'dart:math' as math;
 
-import 'package:blockchain_utils/binary/utils.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/exception/exception.dart';
 
 class UUID {
@@ -77,9 +77,10 @@ class UUID {
   /// final buffer = toBuffer(uuid);
   /// print(buffer); /// Output: [85, 14, 132, 0, 226, 155, 65, 212, 167, 22, 68, 102, 85, 68, 0, 0]
   /// ```
-  static List<int> toBuffer(String uuidString) {
-    if (!isValidUUIDv4(uuidString)) {
-      throw ArgumentException("invalid uuid string.");
+  static List<int> toBuffer(String uuidString, {bool validate = true}) {
+    if (validate && !isValidUUIDv4(uuidString)) {
+      throw ArgumentException("invalid uuid string.",
+          details: {"uuid": uuidString});
     }
     final buffer = List<int>.filled(16, 0);
 
@@ -122,7 +123,7 @@ class UUID {
   /// This method assumes that the input buffer contains valid UUIDv4 data.
   static String fromBuffer(List<int> buffer) {
     if (buffer.length != 16) {
-      throw ArgumentException(
+      throw const ArgumentException(
           'Invalid buffer length. UUIDv4 buffers must be 16 bytes long.');
     }
 

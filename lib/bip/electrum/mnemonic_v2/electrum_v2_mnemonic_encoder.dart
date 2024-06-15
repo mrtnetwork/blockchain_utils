@@ -1,4 +1,4 @@
-import 'package:blockchain_utils/numbers/bigint_utils.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/bip/bip/bip39/bip39_mnemonic_utils.dart';
 import 'package:blockchain_utils/bip/electrum/mnemonic_v2/electrum_v2_entropy_generator.dart';
 import 'package:blockchain_utils/bip/electrum/mnemonic_v2/electrum_v2_mnemonic.dart';
@@ -37,7 +37,7 @@ class ElectrumV2MnemonicEncoder extends MnemonicEncoderBase {
 
     /// Check if the entropy bits are sufficient for a valid mnemonic
     if (!ElectrumV2EntropyGenerator.areEntropyBitsEnough(entropyInt)) {
-      throw ArgumentException(
+      throw const ArgumentException(
           'Entropy bit length is not enough for generating a valid mnemonic');
     }
 
@@ -57,7 +57,7 @@ class ElectrumV2MnemonicEncoder extends MnemonicEncoderBase {
 
     /// Check if the resulting mnemonic is valid for the specified mnemonic type
     if (!ElectrumV2MnemonicUtils.isValidMnemonic(mnemonicObj, mnemonicType)) {
-      throw ArgumentException(
+      throw const ArgumentException(
           'Entropy bytes are not suitable for generating a valid mnemonic');
     }
     return mnemonicObj;

@@ -1,4 +1,8 @@
-import 'package:blockchain_utils/blockchain_utils.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
+import 'package:blockchain_utils/utils/utils.dart';
+
+import 'bech32_base.dart';
+import 'bech32_utils.dart';
 
 /// A utility class containing constants used for segwit Bech32 encoding and decoding.
 class SegwitBech32Const {

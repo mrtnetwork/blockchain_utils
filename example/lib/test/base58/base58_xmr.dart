@@ -2,7 +2,7 @@
 
 import 'package:blockchain_utils/base58/base58_xmr.dart';
 import 'package:example/test/quick_hex.dart';
-import 'package:blockchain_utils/binary/utils.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 
 var _testVect = [
   {

@@ -1,7 +1,7 @@
 import 'package:blockchain_utils/crypto/crypto/hash/hash.dart';
 import 'package:blockchain_utils/crypto/crypto/hmac/hmac.dart';
 import 'package:blockchain_utils/crypto/crypto/pbkdf2/pbkdf2.dart';
-import 'package:blockchain_utils/binary/binary_operation.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/exception/exception.dart';
 
 /// A class for performing scrypt key derivation.
@@ -35,19 +35,19 @@ class Scrypt {
   /// Throws an [ArgumentException] if the parameters are out of the valid range or not a power of 2.
   Scrypt(this.n, this.r, this.p) {
     if (p <= 0) {
-      throw ArgumentException("scrypt: incorrect p");
+      throw const ArgumentException("scrypt: incorrect p");
     }
 
     if (r <= 0) {
-      throw ArgumentException("scrypt: incorrect r");
+      throw const ArgumentException("scrypt: incorrect r");
     }
 
     if (n < 1 || n > 1 << 31) {
-      throw ArgumentException('scrypt: N must be between 2 and 2^31');
+      throw const ArgumentException('scrypt: N must be between 2 and 2^31');
     }
 
     if (!_isPowerOfTwo(n)) {
-      throw ArgumentException("scrypt: N must be a power of 2");
+      throw const ArgumentException("scrypt: N must be a power of 2");
     }
 
     const maxInt = (1 << 31) & mask32;
@@ -56,7 +56,7 @@ class Scrypt {
         r > maxInt ~/ 128 ~/ p ||
         r > maxInt ~/ 256 ||
         n > maxInt ~/ 128 ~/ r) {
-      throw ArgumentException("scrypt: parameters are too large");
+      throw const ArgumentException("scrypt: parameters are too large");
     }
 
     _v = List<int>.filled(32 * (n + 2) * r, 0);

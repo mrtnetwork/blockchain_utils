@@ -1,7 +1,7 @@
 import 'package:blockchain_utils/crypto/crypto/scrypt/scrypt.dart';
 import 'package:test/test.dart';
 import '../../quick_hex.dart';
-import 'package:blockchain_utils/binary/utils.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 
 import 'test_vector.dart';
 

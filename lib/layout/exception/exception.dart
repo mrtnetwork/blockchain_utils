@@ -9,6 +9,7 @@ class LayoutException implements BlockchainUtilsException {
   @override
   final String message;
   final StackTrace? trace;
+  @override
   final Map<String, dynamic>? details;
 
   @override

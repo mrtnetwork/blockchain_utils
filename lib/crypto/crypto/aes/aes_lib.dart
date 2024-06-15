@@ -1,4 +1,4 @@
-import 'package:blockchain_utils/binary/binary_operation.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 
 class AESLib {
   AESLib._() {

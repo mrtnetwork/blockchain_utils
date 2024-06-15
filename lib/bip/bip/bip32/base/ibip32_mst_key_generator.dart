@@ -1,4 +1,4 @@
-import 'package:blockchain_utils/tuple/tuple.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 
 /// An abstract class that defines a method for generating master keys from a seed.
 ///

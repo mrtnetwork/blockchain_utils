@@ -36,7 +36,7 @@ void main() {
       final decode = BchBech32Decoder.decode(hrp, i["encode"]!);
       expect(BytesUtils.toHexString(decode.item2), i["raw"]);
       expect(
-          bytesEqual(
+          BytesUtils.bytesEqual(
               decode.item1, CoinsConf.bitcoinCashMainNet.params.p2pkhStdNetVer),
           true);
     }

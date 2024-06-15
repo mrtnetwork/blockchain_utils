@@ -1,4 +1,4 @@
-import 'package:blockchain_utils/tuple/tuple.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 
 import 'bech32_utils.dart';
 import 'package:blockchain_utils/exception/exception.dart';

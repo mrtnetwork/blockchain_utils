@@ -1,4 +1,4 @@
-import 'package:blockchain_utils/binary/binary_operation.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/crypto/crypto/hash/hash.dart';
 import 'package:blockchain_utils/exception/exception.dart';
 
@@ -178,7 +178,7 @@ class Strobe {
   void _run() {
     if (_initialized) {
       if (_buffer.length > strober) {
-        throw MessageException(
+        throw const MessageException(
             "strobe: buffer is never supposed to reach strobeR");
       }
       _buffer.add(_posBegin);
@@ -283,19 +283,20 @@ class Strobe {
             (StrobeFlags.I | StrobeFlags.T)) &&
         ((flags & (StrobeFlags.I | StrobeFlags.A)) != StrobeFlags.A)) {
       if (length == 0) {
-        throw MessageException("A length should be set for this operation.");
+        throw const MessageException(
+            "A length should be set for this operation.");
       }
       data = List<int>.filled(length, 0);
     } else {
       if (length != 0) {
-        throw MessageException(
+        throw const MessageException(
             "Output length must be zero except for PRF, send_MAC, and RATCHET operations.");
       }
       data = List<int>.from(dataConst);
     }
     if (more) {
       if (flags != _curFlags) {
-        throw MessageException(
+        throw const MessageException(
             "Flag should be the same when streaming operations.");
       }
     } else {
@@ -318,7 +319,7 @@ class Strobe {
     } else if ((flags & (StrobeFlags.I | StrobeFlags.A | StrobeFlags.T)) ==
         (StrobeFlags.I | StrobeFlags.T)) {
       if (more) {
-        throw MessageException(
+        throw const MessageException(
             "Not supposed to check a MAC with the 'more' streaming option");
       }
       int failures = 0;

@@ -1,15 +1,12 @@
 import 'dart:typed_data';
 import 'package:blockchain_utils/exception/exception.dart';
-
-import 'package:blockchain_utils/numbers/int_utils.dart';
-import 'package:blockchain_utils/numbers/bigint_utils.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/bip/address/xmr_addr.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/utils/ed25519_utils.dart';
 import 'package:blockchain_utils/bip/monero/monero_keys.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/curve/curves.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/point/edwards.dart';
-import 'package:blockchain_utils/tuple/tuple.dart';
 
 /// A class containing constants related to Monero subaddresses.
 class MoneroSubaddressConst {

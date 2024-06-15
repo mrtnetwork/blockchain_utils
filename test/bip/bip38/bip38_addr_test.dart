@@ -2,7 +2,7 @@
 
 import 'package:blockchain_utils/bip/address/p2pkh_addr.dart';
 import 'package:blockchain_utils/bip/bip/bip38/bip38_addr.dart';
-import 'package:blockchain_utils/binary/utils.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 import 'package:test/test.dart';
 
 List<Map<String, dynamic>> _testVector = [

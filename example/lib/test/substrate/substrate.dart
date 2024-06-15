@@ -1,8 +1,7 @@
 import 'package:blockchain_utils/bip/ecc/bip_ecc.dart';
 import 'package:blockchain_utils/bip/substrate/substrate.dart';
-import 'package:blockchain_utils/compare/compare.dart';
 import 'package:example/test/quick_hex.dart';
-import 'package:blockchain_utils/binary/utils.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 
 import 'test_vector.dart';
 
@@ -32,7 +31,7 @@ void substrateDeriveTest() {
         final secret = (w.priveKey.privKey as Sr25519PrivateKey).secretKey;
         final testPrive =
             BytesUtils.fromHexString(childInfo["private_key"]).sublist(0, 32);
-        assert(bytesEqual(testPrive, secret.key()));
+        assert(BytesUtils.bytesEqual(testPrive, secret.key()));
       }
     }
   }
@@ -62,7 +61,7 @@ void substrateDeriveTest() {
         final secret = (w.priveKey.privKey as Sr25519PrivateKey).secretKey;
         final testPrive =
             BytesUtils.fromHexString(childInfo["private_key"]).sublist(0, 32);
-        assert(bytesEqual(testPrive, secret.key()));
+        assert(BytesUtils.bytesEqual(testPrive, secret.key()));
       }
     }
   }

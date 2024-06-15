@@ -3,12 +3,9 @@ import 'package:blockchain_utils/bip/address/p2pkh_addr.dart';
 import 'package:blockchain_utils/bip/bip/bip38/bip38_addr.dart';
 import 'package:blockchain_utils/bip/ecc/keys/secp256k1_keys_ecdsa.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
-import 'package:blockchain_utils/binary/utils.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/crypto/crypto/scrypt/scrypt.dart';
-import 'package:blockchain_utils/compare/compare.dart';
-import 'package:blockchain_utils/string/string.dart';
 import 'package:blockchain_utils/exception/exception.dart';
-import 'package:blockchain_utils/tuple/tuple.dart';
 
 /// Constants for BIP38 encryption and decryption without ECDSA.
 ///
@@ -207,7 +204,7 @@ class Bip38NoEcDecrypter {
     final encryptedHalf2 = privKeyEncBytes.sublist(23);
 
     // Check prefix and flagbyte
-    if (!bytesEqual(prefix, Bip38NoEcConst.encKeyPrefix)) {
+    if (!BytesUtils.bytesEqual(prefix, Bip38NoEcConst.encKeyPrefix)) {
       throw ArgumentException(
           'Invalid prefix (${BytesUtils.toHexString(prefix)})');
     }
@@ -235,7 +232,7 @@ class Bip38NoEcDecrypter {
 
     // Verify the address hash
     final addressHashGot = Bip38NoEcUtils.addressHash(privKeyBytes, pubKeyMode);
-    if (!bytesEqual(addressHash, addressHashGot)) {
+    if (!BytesUtils.bytesEqual(addressHash, addressHashGot)) {
       throw ArgumentException(
           'Invalid address hash (expected: ${BytesUtils.toHexString(addressHash)}, '
           'got: ${BytesUtils.toHexString(addressHashGot)})');

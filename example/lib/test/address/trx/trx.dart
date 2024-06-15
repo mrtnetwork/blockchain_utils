@@ -1,6 +1,6 @@
 import 'package:blockchain_utils/bip/address/trx_addr.dart';
 import 'package:example/test/quick_hex.dart';
-import 'package:blockchain_utils/binary/utils.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 
 import 'test.dart' show testVecotr;
 

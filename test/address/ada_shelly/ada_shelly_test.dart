@@ -1,6 +1,6 @@
 import 'package:blockchain_utils/bip/address/ada/ada_shelley_addr.dart';
 
-import 'package:blockchain_utils/binary/utils.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/bip/address/encoders.dart';
 import 'package:test/test.dart';
 import '../../quick_hex.dart';

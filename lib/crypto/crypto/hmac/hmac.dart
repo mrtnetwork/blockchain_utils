@@ -1,4 +1,4 @@
-import 'package:blockchain_utils/binary/binary_operation.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/crypto/crypto/hash/hash.dart';
 
 /// The `HMAC` class represents a Hash-based Message Authentication Code.

@@ -1,8 +1,7 @@
-import 'package:blockchain_utils/binary/utils.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/cbor/utils/dynamic_bytes.dart';
 import 'package:blockchain_utils/cbor/core/tags.dart';
 import 'package:blockchain_utils/cbor/core/cbor.dart';
-import 'package:blockchain_utils/compare/compare.dart';
 
 /// A class representing a CBOR (Concise Binary Object Representation) Set value.
 class CborSetValue<T> implements CborObject {
@@ -44,7 +43,7 @@ class CborSetValue<T> implements CborObject {
   @override
   operator ==(other) {
     if (other is! CborSetValue) return false;
-    return iterableIsEqual(value, other.value);
+    return CompareUtils.iterableIsEqual(value, other.value);
   }
 
   /// override hashcode

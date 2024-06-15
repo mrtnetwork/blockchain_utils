@@ -1,4 +1,5 @@
-import 'package:blockchain_utils/blockchain_utils.dart';
+import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/utils/numbers/utils/bigint_utils.dart';
 
 /// Represents a rational number with arbitrary precision using BigInt for the numerator and denominator.
 class BigRational {
@@ -26,12 +27,12 @@ class BigRational {
   BigRational._(this.numerator, this.denominator);
 
   /// Constructs a BigRational instance from the given numerator and optional denominator.
-  factory BigRational(BigInt numerator, [BigInt? denominator]) {
+  factory BigRational(BigInt numerator, {BigInt? denominator}) {
     if (denominator == null) {
       return BigRational._(numerator, _one);
     }
     if (denominator == _zero) {
-      throw ArgumentException("Denominator cannot be 0.");
+      throw const ArgumentException("Denominator cannot be 0.");
     }
     if (numerator == _zero) {
       return BigRational._(_zero, _one);
@@ -40,8 +41,9 @@ class BigRational {
   }
 
   /// Constructs a BigRational instance from the given numerator and optional denominator as integers.
-  factory BigRational.from(int numerator, [int? denominator]) {
-    return BigRational(BigInt.from(numerator), BigInt.from(denominator ?? 1));
+  factory BigRational.from(int numerator, {int? denominator}) {
+    return BigRational(BigInt.from(numerator),
+        denominator: BigInt.from(denominator ?? 1));
   }
 
   /// Finds the greatest common divisor of two BigInt numbers a and b.
@@ -78,7 +80,7 @@ class BigRational {
   factory BigRational.parseDecimal(String decimal) {
     List<String> parts = decimal.split(RegExp(r'e', caseSensitive: false));
     if (parts.length > 2) {
-      throw ArgumentException("Invalid input: too many 'e' tokens");
+      throw const ArgumentException("Invalid input: too many 'e' tokens");
     }
 
     if (parts.length > 1) {
@@ -102,7 +104,7 @@ class BigRational {
 
     parts = decimal.trim().split(".");
     if (parts.length > 2) {
-      throw ArgumentException("Invalid input: too many '.' tokens");
+      throw const ArgumentException("Invalid input: too many '.' tokens");
     }
     if (parts.length > 1) {
       bool isNegative = parts[0][0] == '-';

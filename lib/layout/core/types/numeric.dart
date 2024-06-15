@@ -6,7 +6,7 @@ import 'package:blockchain_utils/layout/core/core/core.dart';
 import 'package:blockchain_utils/layout/core/types/padding_layout.dart';
 import 'package:blockchain_utils/layout/exception/exception.dart';
 import 'package:blockchain_utils/layout/utils/utils.dart';
-import 'package:blockchain_utils/numbers/numbers.dart';
+import 'package:blockchain_utils/utils/numbers/numbers.dart';
 
 /// Represents an external layout.
 abstract class ExternalLayout extends Layout<int> {

@@ -1,4 +1,4 @@
-import 'package:blockchain_utils/numbers/bigint_utils.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/bip/bip/bip39/bip39_mnemonic_utils.dart';
 import 'package:blockchain_utils/bip/electrum/mnemonic_v2/electrum_v2_mnemonic.dart';
 import 'package:blockchain_utils/bip/electrum/mnemonic_v2/electrum_v2_mnemonic_utils.dart';
@@ -50,7 +50,7 @@ class ElectrumV2MnemonicDecoder extends MnemonicDecoderBase {
 
     /// Check the validity of the mnemonic for the specified mnemonic type
     if (!ElectrumV2MnemonicUtils.isValidMnemonic(mnemonicObj, mnemonicType)) {
-      throw ArgumentException('Invalid mnemonic');
+      throw const ArgumentException('Invalid mnemonic');
     }
 
     /// Get the list of words from the mnemonic

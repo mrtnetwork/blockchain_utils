@@ -20,7 +20,7 @@ class _Keccack {
   late final int blockSize;
   _Keccack([int capacity = 32]) {
     if (capacity <= 0 || capacity > 128) {
-      throw ArgumentException("SHA3: incorrect capacity");
+      throw const ArgumentException("SHA3: incorrect capacity");
     }
 
     blockSize = 200 - capacity;
@@ -54,7 +54,8 @@ class _Keccack {
   /// Returns this [Hash] object for method chaining.
   _Keccack update(List<int> data) {
     if (_finished) {
-      throw MessageException("SHA3: can't update because hash was finished");
+      throw const MessageException(
+          "SHA3: can't update because hash was finished");
     }
 
     for (var i = 0; i < data.length; i++) {
@@ -88,7 +89,7 @@ class _Keccack {
 
   void _squeeze(List<int> dst) {
     if (!_finished) {
-      throw MessageException("SHA3: squeezing before padAndPermute");
+      throw const MessageException("SHA3: squeezing before padAndPermute");
     }
 
     for (var i = 0; i < dst.length; i++) {
@@ -191,7 +192,7 @@ class Keccack extends _Keccack {
   /// Returns a [HashState] object containing the saved state information.
   List<int> saveState() {
     if (_finished) {
-      throw MessageException("SHA3: cannot save finished state");
+      throw const MessageException("SHA3: cannot save finished state");
     }
     return List<int>.from(_state.sublist(0, _pos));
   }
@@ -310,7 +311,7 @@ class SHA3 extends _Keccack implements SerializableHash<HashBytesState> {
   @override
   HashBytesState saveState() {
     if (_finished) {
-      throw MessageException("SHA3: cannot save finished state");
+      throw const MessageException("SHA3: cannot save finished state");
     }
     return HashBytesState(data: List<int>.from(_state), pos: _pos);
   }
@@ -557,7 +558,7 @@ class SHAKE extends _Keccack implements SerializableHash<HashBytesState> {
   @override
   HashBytesState saveState() {
     if (_finished) {
-      throw MessageException("SHA3: cannot save finished state");
+      throw const MessageException("SHA3: cannot save finished state");
     }
     return HashBytesState(data: List<int>.from(_state), pos: _pos);
   }

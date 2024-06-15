@@ -1,6 +1,6 @@
 import 'package:blockchain_utils/bip/address/xlm_addr.dart';
 import '../../quick_hex.dart';
-import 'package:blockchain_utils/binary/utils.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 import 'package:test/test.dart';
 
 import 'test_vector.dart' show testVector;

@@ -9,7 +9,10 @@ class SquareRootError implements BlockchainUtilsException {
   @override
   final String message;
 
-  const SquareRootError(this.message);
+  @override
+  final Map<String, dynamic>? details;
+
+  const SquareRootError(this.message, {this.details});
 
   @override
   String toString() {
@@ -26,7 +29,10 @@ class JacobiError implements BlockchainUtilsException {
   @override
   final String message;
 
-  const JacobiError(this.message);
+  @override
+  final Map<String, dynamic>? details;
+
+  const JacobiError(this.message, {this.details});
 
   @override
   String toString() {

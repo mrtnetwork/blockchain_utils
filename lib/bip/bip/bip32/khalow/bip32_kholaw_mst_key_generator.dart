@@ -2,7 +2,7 @@ import 'package:blockchain_utils/bip/bip/bip32/base/ibip32_mst_key_generator.dar
 import 'package:blockchain_utils/bip/bip/bip32/slip10/bip32_slip10_mst_key_generator.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
 import 'package:blockchain_utils/exception/exception.dart';
-import 'package:blockchain_utils/tuple/tuple.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 
 /// Constants for generating master keys for Bip32KholawEd25519 keys.
 ///
@@ -44,7 +44,7 @@ class Bip32KholawEd25519MstKeyGenerator implements IBip32MstKeyGenerator {
   @override
   Tuple<List<int>, List<int>> generateFromSeed(List<int> seedBytes) {
     if (seedBytes.length < Bip32KholawMstKeyGeneratorConst.seedMinByteLen) {
-      throw ArgumentException("Invalid seed length");
+      throw const ArgumentException("Invalid seed length");
     }
     final hashDigest = _hashRepeatedly(seedBytes,
         List<int>.from(Bip32KholawMstKeyGeneratorConst.masterKeyHmacKey));

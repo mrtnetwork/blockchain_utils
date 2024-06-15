@@ -52,7 +52,7 @@
   OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-import 'package:blockchain_utils/string/string.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/exception/exception.dart';
 
 /// Constants and data structures used for Base32 encoding and decoding.
@@ -201,7 +201,7 @@ class Base32Decoder {
       return List<int>.from(decodedBytes);
     } catch (ex) {
       /// Handle exceptions by throwing an error for invalid Base32 strings.
-      throw ArgumentException('Invalid Base32 string');
+      throw const ArgumentException('Invalid Base32 string');
     }
   }
 }

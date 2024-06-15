@@ -1,4 +1,4 @@
-import 'package:blockchain_utils/numbers/bigint_utils.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 
 /// This class represents a finite field elliptic curve defined over a prime field (Fp).
 class CurveFp extends Curve {

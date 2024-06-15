@@ -9,10 +9,13 @@ class Bip44DepthError implements BlockchainUtilsException {
   @override
   final String message;
 
+  @override
+  final Map<String, dynamic>? details;
+
   /// Create a `Bip44DepthError` with an optional error message.
   ///
   /// - [message]: An optional error message to provide more context.
-  const Bip44DepthError(this.message);
+  const Bip44DepthError(this.message, {this.details});
 
   @override
   String toString() {

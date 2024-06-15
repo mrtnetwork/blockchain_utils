@@ -1,4 +1,4 @@
-import 'package:blockchain_utils/binary/utils.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/bip/address/p2tr_addr.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/curve/curves.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/ecdsa/private_key.dart';
@@ -9,10 +9,7 @@ import 'package:blockchain_utils/crypto/crypto/cdsa/point/ec_projective_point.da
 import 'package:blockchain_utils/crypto/crypto/hash/hash.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
 import 'package:blockchain_utils/exception/exception.dart';
-import 'package:blockchain_utils/numbers/bigint_utils.dart';
-import 'package:blockchain_utils/numbers/int_utils.dart';
 import 'package:blockchain_utils/signer/ecdsa_signing_key.dart';
-import 'package:blockchain_utils/string/string.dart';
 
 /// The [BitcoinSignerUtils] class provides utility methods related to Bitcoin signing operations.
 class BitcoinSignerUtils {
@@ -62,7 +59,7 @@ class BitcoinSignerUtils {
   static List<int> magicMessage(List<int> message, String messagePrefix) {
     final prefixBytes = StringUtils.encode(messagePrefix);
     if (prefixBytes[0] != BitcoinSignerUtils.safeBitcoinMessagePrefix) {
-      throw ArgumentException(
+      throw const ArgumentException(
           "invalid message prefix. message prefix should start with 0x18");
     }
     final magic = _magicPrefix(message, prefixBytes);
@@ -177,7 +174,7 @@ class BitcoinSigner {
   List<int> signSchnorrTransaction(List<int> digest,
       {required List<dynamic> tapScripts, required bool tweak}) {
     if (digest.length != 32) {
-      throw ArgumentException("The message must be a 32-byte array.");
+      throw const ArgumentException("The message must be a 32-byte array.");
     }
     List<int> byteKey = <int>[];
     if (tweak) {
@@ -193,7 +190,7 @@ class BitcoinSigner {
     final d0 = BigintUtils.fromBytes(byteKey);
 
     if (!(BigInt.one <= d0 && d0 <= BitcoinSignerUtils._order - BigInt.one)) {
-      throw ArgumentException(
+      throw const ArgumentException(
           "The secret key must be an integer in the range 1..n-1.");
     }
     final P = Curves.generatorSecp256k1 * d0;
@@ -292,11 +289,11 @@ class BitcoinVerifier {
   bool verifySchnorr(List<int> message, List<int> signature,
       {List<dynamic>? tapleafScripts, required bool isTweak}) {
     if (message.length != 32) {
-      throw ArgumentException("The message must be a 32-byte array.");
+      throw const ArgumentException("The message must be a 32-byte array.");
     }
 
     if (signature.length != 64 && signature.length != 65) {
-      throw ArgumentException(
+      throw const ArgumentException(
           "The signature must be a 64-byte array or 65-bytes with sighash");
     }
 
@@ -344,7 +341,7 @@ class BitcoinVerifier {
   bool verifyMessage(
       List<int> message, String messagePrefix, List<int> signature) {
     if (signature.length != 64 && signature.length != 65) {
-      throw ArgumentException(
+      throw const ArgumentException(
           "bitcoin signature must be 64 bytes without recover-id or 65 bytes with recover-id");
     }
     final List<int> messgaeHash = QuickCrypto.sha256Hash(

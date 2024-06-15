@@ -15,7 +15,7 @@ class NoneLayout extends Layout {
 
   @override
   decode(LayoutByteReader bytes, {int offset = 0}) {
-    return LayoutDecodeResult(consumed: 0, value: null);
+    return const LayoutDecodeResult(consumed: 0, value: null);
   }
 
   @override

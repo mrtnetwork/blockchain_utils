@@ -1,6 +1,5 @@
 import 'dart:convert';
-
-import 'package:blockchain_utils/binary/binary.dart';
+import 'package:blockchain_utils/utils/binary/utils.dart';
 
 /// An enumeration representing different string encoding options.
 enum StringEncoding {
@@ -17,6 +16,7 @@ enum StringEncoding {
 
   /// The base64 encoding option
   base64,
+  base64UrlSafe
 }
 
 /// A utility class for working with strings and common string operations.
@@ -57,12 +57,6 @@ class StringUtils {
   /// If the input [value] starts with '0x', this method returns the
   /// substring of [value] without those two characters. If [value]
   /// does not start with '0x', it returns the original [value].
-  ///
-  /// Example:
-  /// ```dart
-  /// String stripped = StringUtils.strip0x("0x123abc"); // Returns "123abc"
-  /// String original = StringUtils.strip0x("abcdef");  // Returns "abcdef"
-  /// ```
   static String strip0x(String value) {
     if (value.toLowerCase().startsWith("0x")) {
       return value.substring(2);
@@ -74,28 +68,28 @@ class StringUtils {
   ///
   /// The [type] parameter determines the encoding type to use, with UTF-8 being the default.
   /// Returns a list of bytes representing the encoded string.
-  ///
-  /// Example:
-  /// ```dart
-  /// List<int> encodedBytes = StringUtils.encode("Hello, World!");
-  /// ```
   static List<int> encode(String value,
-      [StringEncoding type = StringEncoding.utf8]) {
+      {StringEncoding type = StringEncoding.utf8}) {
     switch (type) {
       case StringEncoding.utf8:
         return utf8.encode(value);
       case StringEncoding.base64:
+      case StringEncoding.base64UrlSafe:
         return base64Decode(value);
       default:
         return ascii.encode(value);
     }
   }
 
+  /// Encodes the given [value] string into a list of bytes using the specified [type] if possible.
+  ///
+  /// The [type] parameter determines the encoding type to use, with UTF-8 being the default.
+  /// Returns a list of bytes representing the encoded string.
   static List<int>? tryEncode(String? value,
-      [StringEncoding type = StringEncoding.utf8]) {
+      {StringEncoding type = StringEncoding.utf8}) {
     if (value == null) return null;
     try {
-      return encode(value, type);
+      return encode(value, type: type);
     } catch (e) {
       return null;
     }
@@ -105,31 +99,32 @@ class StringUtils {
   ///
   /// The [type] parameter determines the decoding type to use, with UTF-8 being the default.
   /// Returns the decoded string.
-  ///
-  /// Example:
-  /// ```dart
-  /// String decodedString = StringUtils.decode([72, 101, 108, 108, 111, 44, 32, 87, 111, 114, 108, 100, 33]);
-  /// ```
-  static String decode(
-    List<int> value, [
-    StringEncoding type = StringEncoding.utf8,
-    bool allowInvalidOrMalformed = false,
-  ]) {
+  static String decode(List<int> value,
+      {StringEncoding type = StringEncoding.utf8,
+      bool allowInvalidOrMalformed = false}) {
     switch (type) {
       case StringEncoding.utf8:
         return utf8.decode(value, allowMalformed: allowInvalidOrMalformed);
       case StringEncoding.base64:
         return base64Encode(value);
+      case StringEncoding.base64UrlSafe:
+        return base64UrlEncode(value);
       default:
         return ascii.decode(value, allowInvalid: allowInvalidOrMalformed);
     }
   }
 
+  /// Decodes a list of bytes [value] into a string using the specified [type] if possible.
+  ///
+  /// The [type] parameter determines the decoding type to use, with UTF-8 being the default.
+  /// Returns the decoded string.
   static String? tryDecode(List<int>? value,
-      [StringEncoding type = StringEncoding.utf8]) {
+      {StringEncoding type = StringEncoding.utf8,
+      bool allowInvalidOrMalformed = false}) {
     if (value == null) return null;
     try {
-      return decode(value, type);
+      return decode(value,
+          type: type, allowInvalidOrMalformed: allowInvalidOrMalformed);
     } catch (e) {
       return null;
     }
@@ -148,5 +143,28 @@ class StringUtils {
   /// Returns a Map representing the Dart object.
   static dynamic toJson(String data) {
     return jsonDecode(data);
+  }
+
+  /// Converts a Dart object represented as a Map to a JSON-encoded string if possible.
+  ///
+  /// The input [data] is a Map representing the Dart object.
+  static String? tryFromJson(Object? data) {
+    try {
+      return fromJson(data!);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  /// Converts a JSON-encoded string to a Dart object represented as a Map if possible.
+  ///
+  /// The input [data] is a JSON-encoded string.
+  /// Returns a Map representing the Dart object.
+  static Object? tryToJson(String data) {
+    try {
+      return toJson(data);
+    } catch (e) {
+      return null;
+    }
   }
 }

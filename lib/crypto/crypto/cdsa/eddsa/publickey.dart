@@ -1,11 +1,8 @@
 import 'dart:typed_data';
-
-import 'package:blockchain_utils/binary/binary.dart';
-import 'package:blockchain_utils/numbers/bigint_utils.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/curve/curves.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/point/edwards.dart';
 import 'package:blockchain_utils/crypto/crypto/hash/hash.dart';
-import 'package:blockchain_utils/compare/compare.dart';
 import 'package:blockchain_utils/exception/exception.dart';
 
 /// Represents an EdDSA public key in the Edwards curve format.
@@ -98,7 +95,7 @@ class EDDSAPublicKey {
   bool operator ==(other) {
     if (other is EDDSAPublicKey) {
       return generator.curve == other.generator.curve &&
-          bytesEqual(_encoded, other._encoded);
+          BytesUtils.bytesEqual(_encoded, other._encoded);
     }
     return false;
   }
@@ -157,7 +154,7 @@ class EDDSAPublicKey {
         byteOrder: Endian.little);
 
     if (S >= generator.order!) {
-      throw ArgumentException('Invalid signature');
+      throw const ArgumentException('Invalid signature');
     }
 
     List<int> dom = List.empty();

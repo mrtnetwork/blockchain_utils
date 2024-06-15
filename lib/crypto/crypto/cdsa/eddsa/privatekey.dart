@@ -1,12 +1,9 @@
 import 'dart:typed_data';
-
-import 'package:blockchain_utils/binary/utils.dart';
-import 'package:blockchain_utils/numbers/bigint_utils.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/curve/curves.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/eddsa/publickey.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/point/edwards.dart';
 import 'package:blockchain_utils/crypto/crypto/hash/hash.dart';
-import 'package:blockchain_utils/compare/compare.dart';
 import 'package:blockchain_utils/exception/exception.dart';
 
 /// Represents an EdDSA private key and provides methods for key operations.
@@ -87,7 +84,7 @@ class EDDSAPrivateKey {
   bool operator ==(Object other) {
     if (other is EDDSAPrivateKey) {
       return generator.curve == other.generator.curve &&
-          bytesEqual(_privateKey, other._privateKey);
+          BytesUtils.bytesEqual(_privateKey, other._privateKey);
     }
     return false;
   }
@@ -101,7 +98,8 @@ class EDDSAPrivateKey {
     } else if (h == BigInt.from(8)) {
       hLog = 3;
     } else {
-      throw ArgumentException('Only cofactor 4 and 8 curves are supported');
+      throw const ArgumentException(
+          'Only cofactor 4 and 8 curves are supported');
     }
     key[0] &= ~((1 << hLog) - 1);
 

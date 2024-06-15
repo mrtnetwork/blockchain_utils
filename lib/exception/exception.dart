@@ -4,6 +4,10 @@ abstract class BlockchainUtilsException implements Exception {
   /// Abstract field to hold the exception message.
   abstract final String message;
 
+  abstract final Map<String, dynamic>? details;
+
+  const BlockchainUtilsException();
+
   /// Override the 'toString' method to provide a custom string representation of the exception.
   @override
   String toString() {
@@ -15,7 +19,10 @@ abstract class BlockchainUtilsException implements Exception {
 /// This exception is used to represent errors related to invalid arguments in blockchain utility operations.
 class ArgumentException implements BlockchainUtilsException {
   /// Constructor to initialize the exception with a specific message.
-  const ArgumentException(this.message);
+  const ArgumentException(this.message, {this.details});
+
+  @override
+  final Map<String, dynamic>? details;
 
   /// Final field to store the exception message.
   @override
@@ -44,5 +51,6 @@ class MessageException implements BlockchainUtilsException {
     return "$message${details == null ? '' : " $details"}";
   }
 
+  @override
   final Map<String, dynamic>? details;
 }

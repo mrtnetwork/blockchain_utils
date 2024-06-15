@@ -11,7 +11,8 @@ class MoneroConf {
   /// is not an instance of MoneroCoins, an error is thrown.
   static MoneroCoinConf getCoin(CryptoCoins coin) {
     if (coin is! MoneroCoins) {
-      throw ArgumentException("Coin type is not an enumerative of MoneroCoins");
+      throw const ArgumentException(
+          "Coin type is not an enumerative of MoneroCoins");
     }
     return coinToConf[coin.value]!;
   }

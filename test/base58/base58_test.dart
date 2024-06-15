@@ -1,5 +1,5 @@
 import 'package:blockchain_utils/base58/base58_base.dart';
-import 'package:blockchain_utils/binary/utils.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 import 'package:test/test.dart';
 
 final List<Map<String, String>> testVectBtc = [

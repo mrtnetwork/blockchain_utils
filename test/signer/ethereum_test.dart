@@ -14,7 +14,7 @@ void main() {
     expect(verify, true);
     final publicKey = ETHVerifier.getPublicKey(message, sign);
     expect(
-        bytesEqual(publicKey?.toBytes(),
+        BytesUtils.bytesEqual(publicKey?.toBytes(),
             signer.toVerifyKey().edsaVerifyKey.publicKey.toBytes()),
         true);
   });

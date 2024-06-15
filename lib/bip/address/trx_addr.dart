@@ -4,7 +4,7 @@ import 'package:blockchain_utils/bip/address/eth_addr.dart';
 import 'package:blockchain_utils/bip/address/decoder.dart';
 import 'package:blockchain_utils/bip/address/encoder.dart';
 import 'package:blockchain_utils/bip/coin_conf/coins_conf.dart';
-import 'package:blockchain_utils/binary/utils.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 
 class TrxAddressUtils {
   static const List<int> prefix = [0x41];

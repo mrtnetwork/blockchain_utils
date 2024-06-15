@@ -7,10 +7,13 @@ class MoneroKeyError implements BlockchainUtilsException {
   @override
   final String message;
 
+  @override
+  final Map<String, dynamic>? details;
+
   /// Constructs a MoneroKeyError with an optional error message.
   ///
   /// [message]: An optional error message describing the key-related issue.
-  const MoneroKeyError(this.message);
+  const MoneroKeyError(this.message, {this.details});
 
   /// Returns a string representation of the exception.
   @override

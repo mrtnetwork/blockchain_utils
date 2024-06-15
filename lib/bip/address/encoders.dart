@@ -27,7 +27,7 @@ export 'algo_addr.dart' show AlgoAddrEncoder;
 export 'aptos_addr.dart' show AptosAddrEncoder;
 
 /// Export statement for Atom address encoder.
-export 'atom_addr.dart' show AtomAddrEncoder;
+export 'atom_addr.dart' show AtomAddrEncoder, AtomNist256P1AddrEncoder;
 
 /// Export statements for Avalanche (AVAX) address encoders.
 export 'avax_addr.dart' show AvaxXChainAddrEncoder, AvaxPChainAddrEncoder;
@@ -42,7 +42,7 @@ export 'egld_addr.dart' show EgldAddrEncoder;
 export 'eos_addr.dart' show EosAddrEncoder;
 
 /// Export statement for Ergo address encoder.
-export 'ergo.dart' show ErgoP2PKHAddrEncoder;
+export 'ergo.dart' show ErgoP2PKHAddrEncoder, ErgoNetworkTypes;
 
 /// Export statement for Ethereum address encoder.
 export 'eth_addr.dart' show EthAddrEncoder;
@@ -98,7 +98,7 @@ export 'substrate_addr.dart'
 export 'trx_addr.dart' show TrxAddrEncoder;
 
 /// Export statement for Stellar (XLM) address encoder.
-export 'xlm_addr.dart' show XlmAddrEncoder;
+export 'xlm_addr.dart' show XlmAddrEncoder, XlmAddrTypes;
 
 /// Export statements for Monero (XMR) address encoders.
 export 'xmr_addr.dart' show XmrAddrEncoder, XmrIntegratedAddrEncoder;
@@ -107,7 +107,10 @@ export 'xmr_addr.dart' show XmrAddrEncoder, XmrIntegratedAddrEncoder;
 export 'xrp_addr.dart' show XrpAddrEncoder, XrpXAddrEncoder, XRPAddressUtils;
 
 /// Export statement for Tezos (XTZ) address encoder.
-export 'xtz_addr.dart' show XtzAddrEncoder;
+export 'xtz_addr.dart' show XtzAddrEncoder, XtzAddrPrefixes;
 
 /// Export statement for Zilliqa (ZIL) address encoder.
 export 'zil_addr.dart' show ZilAddrEncoder;
+
+export 'ton_addr.dart'
+    show TonAddrEncoder, TonAddressUtils, FriendlyAddressFlags;

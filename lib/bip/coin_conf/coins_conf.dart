@@ -678,4 +678,12 @@ class CoinsConf {
       addrHrp: Slip173.zilliqa,
     ),
   );
+
+  static const CoinConf tonTestnet = CoinConf(
+      coinName: CoinNames("The Open Network", "tTON"),
+      params: CoinParams(workchain: -1));
+
+  static const CoinConf tonMainnet = CoinConf(
+      coinName: CoinNames("The Open Network", "TON"),
+      params: CoinParams(workchain: 0));
 }

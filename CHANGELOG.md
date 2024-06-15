@@ -1,3 +1,12 @@
+## 3.1.0
+
+- Ton Address Support: Implemented functionality to support Ton addresses.
+- Ton Mnemonic Support:
+  - Added mnemonic and seed generation capabilities for Ton.
+  - Introduced a mnemonic validator for Ton.
+- BIP-44 Support for TonCoin: Added TonCoin to the list of supported coins under the BIP-44 standard.
+- The SecretWallet class name has been updated to Web3SecretStorageDefinitionV3.
+
 ## 3.0.0
 
 - Improved hex performance.

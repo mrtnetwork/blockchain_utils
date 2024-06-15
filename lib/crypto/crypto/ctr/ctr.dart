@@ -1,5 +1,5 @@
 import 'package:blockchain_utils/crypto/crypto/blockcipher/blockcipher.dart';
-import 'package:blockchain_utils/binary/binary_operation.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/exception/exception.dart';
 
 /// Counter (CTR) mode for block ciphers.
@@ -71,7 +71,7 @@ class CTR {
     _cipher = null;
 
     if (iv != null && iv.length != _counter.length) {
-      throw ArgumentException(
+      throw const ArgumentException(
           "CTR: iv length must be equal to cipher block size");
     }
     _cipher = cipher;
@@ -160,6 +160,6 @@ void _incrementCounter(List<int> counter) {
     carry >>= 8;
   }
   if (carry > 0) {
-    throw ArgumentException("CTR: counter overflow");
+    throw const ArgumentException("CTR: counter overflow");
   }
 }

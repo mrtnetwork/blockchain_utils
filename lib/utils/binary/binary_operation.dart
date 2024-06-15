@@ -112,3 +112,9 @@ void zero(List<int> array) {
 }
 
 final BigInt maxU64 = BigInt.parse("18446744073709551615");
+
+final BigInt maskBig8 = BigInt.from(mask8);
+
+final BigInt maskBig16 = BigInt.from(mask16);
+
+final BigInt maskBig32 = BigInt.from(mask32);

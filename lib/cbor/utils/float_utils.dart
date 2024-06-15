@@ -18,7 +18,7 @@ import 'dart:typed_data';
 
 import 'package:blockchain_utils/cbor/core/tags.dart';
 import 'package:blockchain_utils/exception/exception.dart';
-import 'package:blockchain_utils/tuple/tuple.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 
 // Enum representing different floating-point formats and their characteristics.
 class FloatLength {
@@ -124,18 +124,18 @@ class FloatUtils {
 
   static Tuple<bool, bool> _isLessThan(double value, [Endian? endian]) {
     if (value.isNaN || value.isInfinite) {
-      return Tuple(true, true);
+      return const Tuple(true, true);
     }
     final int bits = _toBits(value, endian);
     final isLesThan16 = _dobuleLessThan(bits, FloatLength.bytes16);
     if (isLesThan16) {
-      return Tuple(true, true);
+      return const Tuple(true, true);
     }
     final isLessThan32 = _dobuleLessThan(bits, FloatLength.bytes32);
     if (isLessThan32) {
-      return Tuple(false, true);
+      return const Tuple(false, true);
     }
-    return Tuple(false, false);
+    return const Tuple(false, false);
   }
 
   static bool _dobuleLessThan(int bits, FloatLength type) {
@@ -242,13 +242,13 @@ class FloatUtils {
     switch (decodFloatType) {
       case FloatLength.bytes16:
         if (!isLessThan16) {
-          throw ArgumentException("overflow bytes");
+          throw const ArgumentException("overflow bytes");
         }
         bytes = _encodeFloat16(endianness);
         break;
       case FloatLength.bytes32:
         if (!isLessThan32) {
-          throw ArgumentException("overflow bytes");
+          throw const ArgumentException("overflow bytes");
         }
         bytes = _encodeFloat32(endianness);
         break;
@@ -262,7 +262,7 @@ class FloatUtils {
   /// Decode a 16-bit floating-point value from a byte array and return it as a double.
   static double floatFromBytes16(List<int> bytes) {
     if (bytes.length != 2) {
-      throw ArgumentException(
+      throw const ArgumentException(
           'Input byte array must be exactly 2 bytes long for Float16');
     }
 

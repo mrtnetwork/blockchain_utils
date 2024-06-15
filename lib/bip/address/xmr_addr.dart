@@ -58,9 +58,8 @@ import 'package:blockchain_utils/bip/address/decoder.dart';
 import 'package:blockchain_utils/bip/address/encoder.dart';
 import 'package:blockchain_utils/bip/ecc/keys/ed25519_keys.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
-import 'package:blockchain_utils/binary/utils.dart';
-import 'package:blockchain_utils/compare/compare.dart';
-import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/utils/utils.dart';
+import 'exception/exception.dart';
 import 'addr_key_validator.dart';
 
 /// Constants related to Monero (XMR) addresses.
@@ -115,13 +114,13 @@ class _XmrAddrUtils {
       /// Check payment ID
       if (paymentIdBytes == null ||
           paymentIdBytes.length != XmrAddrConst.paymentIdByteLen) {
-        throw ArgumentException('Invalid payment ID');
+        throw const AddressConverterException('Invalid payment ID');
       }
 
       final paymentIdGotBytes = payloadBytesWithoutPrefix.sublist(
           payloadBytesWithoutPrefix.length - XmrAddrConst.paymentIdByteLen);
-      if (!bytesEqual(paymentIdBytes, paymentIdGotBytes)) {
-        throw ArgumentException(
+      if (!BytesUtils.bytesEqual(paymentIdBytes, paymentIdGotBytes)) {
+        throw AddressConverterException(
             'Invalid payment ID (expected ${BytesUtils.toHexString(paymentIdBytes)}, '
             'got ${BytesUtils.toHexString(paymentIdGotBytes)})');
       }
@@ -150,7 +149,7 @@ class _XmrAddrUtils {
   }) {
     if (paymentIdBytes != null &&
         paymentIdBytes.length != XmrAddrConst.paymentIdByteLen) {
-      throw ArgumentException('Invalid payment ID length');
+      throw const AddressConverterException('Invalid payment ID length');
     }
 
     final paymentIdBytesSafe = paymentIdBytes ?? List<int>.from([]);

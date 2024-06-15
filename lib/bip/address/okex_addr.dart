@@ -4,9 +4,8 @@ import 'package:blockchain_utils/bip/address/eth_addr.dart';
 import 'package:blockchain_utils/bip/address/decoder.dart';
 import 'package:blockchain_utils/bip/address/encoder.dart';
 import 'package:blockchain_utils/bip/coin_conf/coins_conf.dart';
-import 'package:blockchain_utils/binary/utils.dart';
-import 'package:blockchain_utils/string/string.dart';
-import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/utils/utils.dart';
+import 'exception/exception.dart';
 
 /// Implementation of the [BlockchainAddressDecoder] for OKExChain addresses.
 class OkexAddrDecoder implements BlockchainAddressDecoder {
@@ -39,7 +38,7 @@ class OkexAddrDecoder implements BlockchainAddressDecoder {
           {"skip_chksum_enc": true});
     } catch (e) {
       if (e is Bech32ChecksumError) {
-        throw ArgumentException('Invalid bech32 checksum');
+        throw const AddressConverterException('Invalid bech32 checksum');
       }
       rethrow;
     }

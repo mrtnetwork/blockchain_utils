@@ -6,8 +6,11 @@ class SubstrateKeyError implements BlockchainUtilsException {
   @override
   final String message;
 
+  @override
+  final Map<String, dynamic>? details;
+
   /// Creates a new instance of [SubstrateKeyError] with an optional [message].
-  const SubstrateKeyError(this.message);
+  const SubstrateKeyError(this.message, {this.details});
 
   @override
   String toString() {
@@ -21,8 +24,11 @@ class SubstratePathError implements BlockchainUtilsException {
   @override
   final String message;
 
+  @override
+  final Map<String, dynamic>? details;
+
   /// Creates a new instance of [SubstratePathError] with an optional [message].
-  const SubstratePathError(this.message);
+  const SubstratePathError(this.message, {this.details});
 
   @override
   String toString() {

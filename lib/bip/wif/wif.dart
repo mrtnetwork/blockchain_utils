@@ -55,7 +55,7 @@
 import 'package:blockchain_utils/base58/base58.dart';
 import 'package:blockchain_utils/bip/address/p2pkh_addr.dart';
 import 'package:blockchain_utils/bip/ecc/keys/secp256k1_keys_ecdsa.dart';
-import 'package:blockchain_utils/tuple/tuple.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/exception/exception.dart';
 
 /// Constants related to Wallet Import Format (WIF).
@@ -106,7 +106,7 @@ class WifDecoder {
       {List<int> netVer = const []}) {
     List<int> privKeyBytes = Base58Decoder.checkDecode(wif);
     if (netVer.isEmpty || privKeyBytes[0] != netVer[0]) {
-      throw ArgumentException('Invalid net version');
+      throw const ArgumentException('Invalid net version');
     }
     privKeyBytes = privKeyBytes.sublist(1);
     PubKeyModes pubKeyMode;
@@ -114,13 +114,13 @@ class WifDecoder {
         privKeyBytes.sublist(0, privKeyBytes.length - 1))) {
       // Check the compressed public key suffix
       if (privKeyBytes[privKeyBytes.length - 1] != WifConst.comprPubKeySuffix) {
-        throw ArgumentException('Invalid compressed public key suffix');
+        throw const ArgumentException('Invalid compressed public key suffix');
       }
       privKeyBytes = privKeyBytes.sublist(0, privKeyBytes.length - 1);
       pubKeyMode = PubKeyModes.compressed;
     } else {
       if (!Secp256k1PrivateKeyEcdsa.isValidBytes(privKeyBytes)) {
-        throw ArgumentException('Invalid decoded key');
+        throw const ArgumentException('Invalid decoded key');
       }
       pubKeyMode = PubKeyModes.uncompressed;
     }

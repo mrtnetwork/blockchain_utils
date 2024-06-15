@@ -1,8 +1,7 @@
-import 'package:blockchain_utils/compare/compare.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/crypto/crypto/aead/aead.dart';
 import 'package:blockchain_utils/crypto/crypto/blockcipher/blockcipher.dart';
 import 'package:blockchain_utils/crypto/crypto/ctr/ctr.dart';
-import 'package:blockchain_utils/binary/binary_operation.dart';
 import 'package:blockchain_utils/exception/exception.dart';
 
 import 'dart:math' as math;
@@ -29,7 +28,7 @@ class GCM implements AEAD {
   /// - `ArgumentException` if the provided block cipher does not have a 16-byte block size.
   GCM(BlockCipher cipher) {
     if (cipher.blockSize != 16) {
-      throw ArgumentException("GCM supports only 16-byte block cipher");
+      throw const ArgumentException("GCM supports only 16-byte block cipher");
     }
     _cipher = cipher;
 
@@ -60,7 +59,7 @@ class GCM implements AEAD {
   List<int> encrypt(List<int> nonce, List<int> plaintext,
       {List<int>? associatedData, List<int>? dst}) {
     if (nonce.length != nonceLength) {
-      throw ArgumentException("GCM: incorrect nonce length");
+      throw const ArgumentException("GCM: incorrect nonce length");
     }
 
     final blockSize = _cipher.blockSize;
@@ -68,7 +67,7 @@ class GCM implements AEAD {
     final resultLength = plaintext.length + tagLength;
     List<int> result = dst ?? List<int>.filled(resultLength, 0);
     if (result.length != resultLength) {
-      throw ArgumentException("GCM: incorrect destination length");
+      throw const ArgumentException("GCM: incorrect destination length");
     }
 
     final counter = List<int>.filled(blockSize, 0);
@@ -115,7 +114,7 @@ class GCM implements AEAD {
   List<int>? decrypt(List<int> nonce, List<int> sealed,
       {List<int>? associatedData, List<int>? dst}) {
     if (nonce.length != nonceLength) {
-      throw ArgumentException("GCM: incorrect nonce length");
+      throw const ArgumentException("GCM: incorrect nonce length");
     }
 
     if (sealed.length < tagLength) {
@@ -138,14 +137,15 @@ class GCM implements AEAD {
     _authenticate(calculatedTag, tagMask,
         sealed.sublist(0, sealed.length - tagLength), associatedData);
 
-    if (!bytesEqual(calculatedTag, sealed.sublist(sealed.length - tagLength))) {
+    if (!BytesUtils.bytesEqual(
+        calculatedTag, sealed.sublist(sealed.length - tagLength))) {
       return null;
     }
 
     final resultLength = sealed.length - tagLength;
     List<int> result = dst ?? List<int>.filled(resultLength, 0);
     if (result.length != resultLength) {
-      throw ArgumentException("GCM: incorrect destination length");
+      throw const ArgumentException("GCM: incorrect destination length");
     }
     final ctr = CTR(_cipher, counter);
     ctr.streamXOR(sealed.sublist(0, sealed.length - tagLength), result);

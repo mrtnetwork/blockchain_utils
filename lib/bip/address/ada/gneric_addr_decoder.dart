@@ -1,13 +1,12 @@
 import 'package:blockchain_utils/base58/base58.dart';
 import 'package:blockchain_utils/bech32/bech32_base.dart';
-import 'package:blockchain_utils/binary/binary.dart';
 import 'package:blockchain_utils/bip/address/ada/ada_byron_addr.dart';
 import 'package:blockchain_utils/bip/address/ada/ada_shelley_addr.dart';
 import 'package:blockchain_utils/bip/address/addr_dec_utils.dart';
 import 'package:blockchain_utils/bip/address/decoder.dart';
+import 'package:blockchain_utils/bip/address/exception/exception.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
-import 'package:blockchain_utils/exception/exception.dart';
-import 'package:blockchain_utils/tuple/tuple.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 
 import 'ada_addres_type.dart';
 import 'network.dart';
@@ -42,7 +41,7 @@ class AdaGenericAddrDecoder {
 
     if (netTag != null) {
       if (netTag is! ADANetwork) {
-        throw ArgumentException(
+        throw const AddressConverterException(
             'Address type is not an enumerative of ADANetwork');
       }
     }
@@ -63,7 +62,7 @@ class AdaGenericAddrDecoder {
 
     final List<int> addressBytes = addrDecBytes.item2;
     if (addressBytes.length < QuickCrypto.blake2b224DigestSize + 1) {
-      throw ArgumentException("Invalid address length.");
+      throw const AddressConverterException("Invalid address length.");
     }
     int header = addressBytes[0];
     int networkTag = AdaShelleyAddrUtils.decodeNetworkTag(header);
@@ -106,10 +105,10 @@ class AdaGenericAddrDecoder {
 
         break;
       default:
-        throw ArgumentException("Invalid address prefix $addressType");
+        throw AddressConverterException("Invalid address prefix $addressType");
     }
     if (hrp == null || addrDecBytes.item1 != hrp) {
-      throw ArgumentException("Invalid address hrp ${hrp ?? ''}");
+      throw AddressConverterException("Invalid address hrp ${hrp ?? ''}");
     }
 
     if (addressType == ADAAddressType.byron) {

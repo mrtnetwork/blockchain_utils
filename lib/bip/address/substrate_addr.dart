@@ -1,7 +1,11 @@
 import 'package:blockchain_utils/bip/address/addr_key_validator.dart';
 import 'package:blockchain_utils/bip/address/decoder.dart';
 import 'package:blockchain_utils/bip/address/encoder.dart';
-import 'package:blockchain_utils/blockchain_utils.dart';
+import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
+import 'package:blockchain_utils/crypto/quick_crypto.dart';
+import 'package:blockchain_utils/ss58/ss58_base.dart';
+import 'package:blockchain_utils/utils/utils.dart';
+import 'exception/exception.dart';
 
 /// Utility class for decoding and working with Substrate addresses.
 class _SubstrateAddrUtils {
@@ -12,12 +16,12 @@ class _SubstrateAddrUtils {
     final ss58FormatGot = decodedResult.item1;
     final addrDecBytes = decodedResult.item2;
     if (addrDecBytes.length != encodeBytesLength) {
-      throw ArgumentException(
+      throw AddressConverterException(
           "Invalid address bytes. (expected $encodeBytesLength, got ${addrDecBytes.length})");
     }
 
     if (ss58Format != null && ss58Format != ss58FormatGot) {
-      throw ArgumentException(
+      throw AddressConverterException(
           "Invalid SS58 format (expected $ss58Format, got $ss58FormatGot)");
     }
 
@@ -26,7 +30,7 @@ class _SubstrateAddrUtils {
 
   static String encode(List<int> pubKeyBytes, int ss58Format) {
     if (pubKeyBytes.length != encodeBytesLength) {
-      throw ArgumentException(
+      throw AddressConverterException(
           "Invalid pubkey length (excepted $encodeBytesLength, got ${pubKeyBytes.length}) ");
     }
     return SS58Encoder.encode(pubKeyBytes, ss58Format);
@@ -216,7 +220,7 @@ class SubstrateGenericAddrEncoder implements BlockchainAddressEncoder {
       }
       return SubstrateSr25519AddrEncoder().encodeKey(pubKey, kwargs);
     } catch (e) {
-      throw ArgumentException(
+      throw const AddressConverterException(
           "Invalid ed25519, secp256k1 or sr25519 public key bytes");
     }
   }

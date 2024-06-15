@@ -1,21 +1,15 @@
 import 'dart:typed_data';
 
 import 'package:blockchain_utils/base58/base58.dart';
-import 'package:blockchain_utils/numbers/int_utils.dart';
-import 'package:blockchain_utils/numbers/bigint_utils.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/bip/address/p2pkh_addr.dart';
 import 'package:blockchain_utils/bip/bip/bip38/bip38_addr.dart';
 import 'package:blockchain_utils/bip/ecc/keys/ecdsa_keys.dart';
 import 'package:blockchain_utils/bip/ecc/keys/secp256k1_keys_ecdsa.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
-import 'package:blockchain_utils/binary/bit_utils.dart';
-import 'package:blockchain_utils/binary/utils.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/curve/curves.dart';
 import 'package:blockchain_utils/crypto/crypto/scrypt/scrypt.dart';
-import 'package:blockchain_utils/compare/compare.dart';
-import 'package:blockchain_utils/string/string.dart';
 import 'package:blockchain_utils/exception/exception.dart';
-import 'package:blockchain_utils/tuple/tuple.dart';
 
 //
 /// Constants for BIP38 encryption and decryption operations.
@@ -301,8 +295,8 @@ class Bip38EcKeysGenerator {
         Secp256k1PublicKeyEcdsa.fromBytes(intPassphraseBytes.sublist(16));
 
     /// Check if the magic number is valid.
-    if (!bytesEqual(magic, Bip38EcConst.intPassMagicNoLotSeq) &&
-        !bytesEqual(magic, Bip38EcConst.intPassMagicWithLotSeq)) {
+    if (!BytesUtils.bytesEqual(magic, Bip38EcConst.intPassMagicNoLotSeq) &&
+        !BytesUtils.bytesEqual(magic, Bip38EcConst.intPassMagicWithLotSeq)) {
       throw ArgumentException(
           'Invalid magic (${BytesUtils.toHexString(magic)})');
     }
@@ -383,7 +377,7 @@ class Bip38EcKeysGenerator {
     }
 
     /// Set the 'lot and sequence' bit if the magic number matches 'with lot/seq'.
-    if (bytesEqual(magic, Bip38EcConst.intPassMagicWithLotSeq)) {
+    if (BytesUtils.bytesEqual(magic, Bip38EcConst.intPassMagicWithLotSeq)) {
       flagbyteInt = BitUtils.setBit(flagbyteInt, Bip38EcConst.flagBitLotSeq);
     }
     return IntUtils.toBytes(flagbyteInt,
@@ -427,7 +421,7 @@ class Bip38EcDecrypter {
     final encryptedPart2 = privKeyEncBytes.sublist(23);
 
     /// Verify the prefix of the encrypted private key.
-    if (!bytesEqual(prefix, Bip38EcConst.encKeyPrefix)) {
+    if (!BytesUtils.bytesEqual(prefix, Bip38EcConst.encKeyPrefix)) {
       throw ArgumentException(
           'Invalid prefix (${BytesUtils.toHexString(prefix)})');
     }
@@ -453,7 +447,7 @@ class Bip38EcDecrypter {
         toPub.publicKey.point.toBytes(), flagOptions.item1);
 
     /// Verify the extracted address hash matches the expected value.
-    if (!bytesEqual(addressHash, addressHashGot)) {
+    if (!BytesUtils.bytesEqual(addressHash, addressHashGot)) {
       throw ArgumentException(
           'Invalid address hash (expected: ${BytesUtils.toHexString(addressHash)}, got: ${BytesUtils.toHexString(addressHashGot)})');
     }

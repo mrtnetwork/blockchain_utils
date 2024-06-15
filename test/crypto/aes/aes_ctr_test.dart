@@ -3,7 +3,7 @@ import 'dart:typed_data';
 import 'package:blockchain_utils/crypto/crypto/aes/aes.dart';
 import 'package:blockchain_utils/crypto/crypto/ctr/ctr.dart';
 import '../../quick_hex.dart';
-import 'package:blockchain_utils/binary/utils.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 import 'package:test/test.dart';
 
 import 'test_vector.dart';

@@ -5,7 +5,7 @@ import 'package:blockchain_utils/bip/bip/bip32/bip32_keys.dart';
 import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/point/edwards.dart';
-import 'package:blockchain_utils/tuple/tuple.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 
 /// Define an abstract class 'Bip32KholawEd25519KeyDerivatorBase' that implements the 'IBip32KeyDerivator' interface.
 /// This class provides a base for deriving Ed25519 keys with the Kholaw scheme.

@@ -1,4 +1,7 @@
-import 'package:blockchain_utils/blockchain_utils.dart';
+import 'package:blockchain_utils/bip/ecc/keys/ed25519_keys.dart';
+import 'package:blockchain_utils/crypto/crypto/crypto.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 
 /// Constants used by the Solana signer for cryptographic operations.
 class SolanaSignerConst {

@@ -1,4 +1,4 @@
-import 'package:blockchain_utils/numbers/bigint_utils.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/bip/electrum/mnemonic_v2/electrum_v2_entropy_generator.dart';
 import 'package:blockchain_utils/bip/electrum/mnemonic_v2/electrum_v2_mnemonic.dart';
 import 'package:blockchain_utils/bip/electrum/mnemonic_v2/electrum_v2_mnemonic_encoder.dart';
@@ -86,6 +86,6 @@ class ElectrumV2MnemonicGenerator {
       }
     }
 
-    throw ArgumentException('Unable to generate a valid mnemonic');
+    throw const ArgumentException('Unable to generate a valid mnemonic');
   }
 }

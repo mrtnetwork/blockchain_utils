@@ -1,17 +1,13 @@
 import 'dart:typed_data';
-
 import 'package:blockchain_utils/bech32/bech32_base.dart';
-import 'package:blockchain_utils/binary/utils.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/bip/address/addr_dec_utils.dart';
 import 'package:blockchain_utils/bip/address/addr_key_validator.dart';
 import 'package:blockchain_utils/bip/address/decoder.dart';
 import 'package:blockchain_utils/bip/address/encoder.dart';
+import 'package:blockchain_utils/bip/address/exception/exception.dart';
 import 'package:blockchain_utils/bip/coin_conf/coins_conf.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
-import 'package:blockchain_utils/numbers/bigint_utils.dart';
-import 'package:blockchain_utils/numbers/int_utils.dart';
-import 'package:blockchain_utils/exception/exception.dart';
-
 import 'ada_addres_type.dart';
 import 'network.dart';
 
@@ -66,10 +62,11 @@ class AdaStakeCredential {
   factory AdaStakeCredential(
       {required List<int> hash, required AdaStakeCredType type}) {
     if (hash.length != QuickCrypto.blake2b224DigestSize) {
-      throw MessageException("Invalid credential hash length. ", details: {
-        "Excepted": QuickCrypto.blake2b224DigestSize,
-        "length": hash.length
-      });
+      throw AddressConverterException("Invalid credential hash length. ",
+          details: {
+            "Excepted": QuickCrypto.blake2b224DigestSize,
+            "length": hash.length
+          });
     }
     return AdaStakeCredential._(type, hash);
   }
@@ -180,7 +177,7 @@ class AdaShelleyAddrDecoder implements BlockchainAddressDecoder {
 
     /// Check if the provided network tag is a valid enum value.
     if (netTag is! ADANetwork) {
-      throw ArgumentException(
+      throw const AddressConverterException(
           'Address type is not an enumerative of ADANetwork');
     }
 
@@ -211,7 +208,7 @@ class AdaShelleyAddrEncoder implements BlockchainAddressEncoder {
     final netTag = kwargs["net_tag"] ?? ADANetwork.mainnet;
 
     if (netTag is! ADANetwork) {
-      throw ArgumentException(
+      throw const AddressConverterException(
           'Address type is not an enumerative of ADANetwork');
     }
     return AdaShelleyAddrUtils.encode(
@@ -237,7 +234,7 @@ class AdaShelleyAddrEncoder implements BlockchainAddressEncoder {
 
     /// Check if the provided network tag is a valid enum value.
     if (netTag is! ADANetwork) {
-      throw ArgumentException(
+      throw const AddressConverterException(
           'Address type is not an enumerative of ADANetwork');
     }
 
@@ -273,7 +270,7 @@ class AdaShelleyStakingAddrDecoder implements BlockchainAddressDecoder {
 
     /// Check if the provided network tag is a valid enum value.
     if (netTag is! ADANetwork) {
-      throw ArgumentException(
+      throw const AddressConverterException(
           'Address type is not an enumerative of ADANetwork');
     }
 
@@ -303,7 +300,7 @@ class AdaShelleyStakingAddrEncoder implements BlockchainAddressEncoder {
 
     /// Check if the provided network tag is a valid enum value.
     if (netTag is! ADANetwork) {
-      throw ArgumentException(
+      throw const AddressConverterException(
           'Address type is not an enumerative of ADANetwork');
     }
     return AdaShelleyAddrUtils.encode(
@@ -322,7 +319,7 @@ class AdaShelleyStakingAddrEncoder implements BlockchainAddressEncoder {
 
     /// Check if the provided network tag is a valid enum value.
     if (netTag is! ADANetwork) {
-      throw ArgumentException(
+      throw const AddressConverterException(
           'Address type is not an enumerative of ADANetwork');
     }
 
@@ -352,7 +349,7 @@ class AdaShelleyEnterpriseDecoder implements BlockchainAddressDecoder {
 
     /// Check if the provided network tag is a valid enum value.
     if (netTag is! ADANetwork) {
-      throw ArgumentException(
+      throw const AddressConverterException(
           'Address type is not an enumerative of ADANetwork');
     }
 
@@ -381,7 +378,7 @@ class AdaShelleyEnterpriseAddrEncoder implements BlockchainAddressEncoder {
 
     /// Check if the provided network tag is a valid enum value.
     if (netTag is! ADANetwork) {
-      throw ArgumentException(
+      throw const AddressConverterException(
           'Address type is not an enumerative of ADANetwork');
     }
 
@@ -401,7 +398,7 @@ class AdaShelleyEnterpriseAddrEncoder implements BlockchainAddressEncoder {
 
     /// Check if the provided network tag is a valid enum value.
     if (netTag is! ADANetwork) {
-      throw ArgumentException(
+      throw const AddressConverterException(
           'Address type is not an enumerative of ADANetwork');
     }
 
@@ -432,7 +429,7 @@ class AdaShelleyPointerDecoder implements BlockchainAddressDecoder {
 
     /// Check if the provided network tag is a valid enum value.
     if (netTag is! ADANetwork) {
-      throw ArgumentException(
+      throw const AddressConverterException(
           'Address type is not an enumerative of ADANetwork');
     }
 
@@ -464,13 +461,13 @@ class AdaPointerAddrEncoder implements BlockchainAddressEncoder {
 
     /// Check if the provided network tag is a valid enum value.
     if (netTag is! ADANetwork) {
-      throw ArgumentException(
+      throw const AddressConverterException(
           'Address type is not an enumerative of ADANetwork');
     }
 
     final pointer = kwargs["pointer"];
     if (pointer is! Pointer) {
-      throw ArgumentException(
+      throw const AddressConverterException(
           'The provided value for "Pointer" is not of type Pointer.');
     }
     return AdaShelleyAddrUtils.encode(
@@ -488,13 +485,13 @@ class AdaPointerAddrEncoder implements BlockchainAddressEncoder {
 
     /// Check if the provided network tag is a valid enum value.
     if (netTag is! ADANetwork) {
-      throw ArgumentException(
+      throw const AddressConverterException(
           'Address type is not an enumerative of ADANetwork');
     }
 
     final pointer = kwargs["pointer"];
     if (pointer is! Pointer) {
-      throw ArgumentException(
+      throw const AddressConverterException(
           'The provided value for "Pointer" is not of type Pointer.');
     }
 

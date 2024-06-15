@@ -5,7 +5,7 @@ import 'package:blockchain_utils/bip/address/decoder.dart';
 import 'package:blockchain_utils/bip/address/encoder.dart';
 import 'package:blockchain_utils/bip/coin_conf/coins_conf.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
-import 'package:blockchain_utils/exception/exception.dart';
+import 'exception/exception.dart';
 
 /// Enum representing different address types for Filecoin (FIL) addresses.
 class FillAddrTypes {
@@ -70,7 +70,7 @@ class _FilAddrUtils {
         addr, CoinsConf.filecoin.params.addrPrefix!);
     int addrTypeGot = addrNoPrefix[0].codeUnits.first - "0".codeUnits.first;
     if (addrType.value != addrTypeGot) {
-      throw ArgumentException(
+      throw AddressConverterException(
           "Invalid address type (expected ${addrType.value}, got $addrTypeGot)");
     }
     List<int> addrDecBytes = Base32Decoder.decode(

@@ -3,11 +3,10 @@ import 'package:blockchain_utils/bip/address/decoder.dart';
 import 'package:blockchain_utils/bip/coin_conf/coins_conf.dart';
 import 'package:blockchain_utils/bip/ecc/keys/i_keys.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
-import 'package:blockchain_utils/binary/utils.dart';
-import 'package:blockchain_utils/string/string.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 import 'addr_key_validator.dart';
 import 'encoder.dart';
-import 'package:blockchain_utils/exception/exception.dart';
+import 'exception/exception.dart';
 
 /// Constants related to Ethereum addresses.
 class EthAddrConst {
@@ -82,7 +81,7 @@ class EthAddrDecoder implements BlockchainAddressDecoder {
     AddrDecUtils.validateLength(addrNoPrefix, EthAddrConst.addrLen);
     if (!skipChecksum &&
         addrNoPrefix != EthAddrUtils._checksumEncode(addrNoPrefix)) {
-      throw ArgumentException("Invalid checksum encoding");
+      throw const AddressConverterException("Invalid checksum encoding");
     }
     return BytesUtils.fromHexString(addrNoPrefix);
   }

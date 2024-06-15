@@ -1,5 +1,7 @@
 import 'dart:typed_data';
-import 'package:blockchain_utils/blockchain_utils.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
+import 'package:blockchain_utils/utils/utils.dart';
+import 'substrate_scale_enc_base.dart';
 
 /// Constants related to Substrate SCALE Compact Uint (CUint) encoding.
 class SubstrateScaleCUintEncoderConst {

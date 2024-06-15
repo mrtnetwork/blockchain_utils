@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:blockchain_utils/exception/exception.dart';
-import 'package:blockchain_utils/numbers/bigint_utils.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/bip/address/p2pkh_addr.dart';
 import 'package:blockchain_utils/bip/bip/bip32/bip32_key_data.dart';
 import 'package:blockchain_utils/bip/coin_conf/coins_conf.dart';
@@ -10,7 +10,6 @@ import 'package:blockchain_utils/bip/ecc/keys/ecdsa_keys.dart';
 import 'package:blockchain_utils/bip/ecc/keys/secp256k1_keys_ecdsa.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/curve/curves.dart';
-import 'package:blockchain_utils/string/string.dart';
 
 /// Electrum V1 is a class that represents a pair of public and private keys for the Secp256k1 elliptic curve.
 class ElectrumV1 {
@@ -45,7 +44,7 @@ class ElectrumV1 {
   /// Get the master private key, throwing an exception if it's a public-only key.
   IPrivateKey get masterPrivateKey {
     if (isPublicOnly) {
-      throw MessageException(
+      throw const MessageException(
           'Public-only deterministic keys have no private half');
     }
     return privateKey!;
@@ -59,7 +58,7 @@ class ElectrumV1 {
   /// Get a private key for a specific change and address index, throwing an exception if it's a public-only key.
   IPrivateKey getPrivateKey(int changeIndex, int addrIndex) {
     if (isPublicOnly) {
-      throw MessageException(
+      throw const MessageException(
           'Public-only deterministic keys have no private half');
     }
     return _derivePrivateKey(changeIndex, addrIndex);

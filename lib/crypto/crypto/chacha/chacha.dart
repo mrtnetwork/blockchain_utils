@@ -1,4 +1,4 @@
-import 'package:blockchain_utils/binary/binary_operation.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/exception/exception.dart';
 
 class ChaCha20 {
@@ -96,7 +96,7 @@ class ChaCha20 {
       len--;
     }
     if (carry > 0) {
-      throw MessageException("ChaCha: counter overflow");
+      throw const MessageException("ChaCha: counter overflow");
     }
   }
 
@@ -128,11 +128,12 @@ class ChaCha20 {
       {int nonceInplaceCounterLength = 0}) {
     // We only support 256-bit keys.
     if (key.length != 32) {
-      throw ArgumentException("ChaCha: key size must be 32 bytes");
+      throw const ArgumentException("ChaCha: key size must be 32 bytes");
     }
 
     if (dst.length < src.length) {
-      throw ArgumentException("ChaCha: destination is shorter than source");
+      throw const ArgumentException(
+          "ChaCha: destination is shorter than source");
     }
 
     List<int> nc;
@@ -140,14 +141,15 @@ class ChaCha20 {
 
     if (nonceInplaceCounterLength == 0) {
       if (nonce.length != 8 && nonce.length != 12) {
-        throw ArgumentException("ChaCha nonce must be 8 or 12 bytes");
+        throw const ArgumentException("ChaCha nonce must be 8 or 12 bytes");
       }
       nc = List<int>.filled(16, 0);
       counterLength = nc.length - nonce.length;
       nc.setAll(counterLength, nonce);
     } else {
       if (nonce.length != 16) {
-        throw ArgumentException("ChaCha nonce with counter must be 16 bytes");
+        throw const ArgumentException(
+            "ChaCha nonce with counter must be 16 bytes");
       }
       nc = nonce;
       counterLength = nonceInplaceCounterLength;

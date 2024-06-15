@@ -36,7 +36,7 @@ void _decodeStringIndefinite() {
   final dec = CborObject.fromCbor(cb.encode());
   expect(dec.runtimeType, CborIndefiniteStringValue);
   dec as CborIndefiniteStringValue;
-  expect(iterableIsEqual(dec.value, cb.value), true);
+  expect(CompareUtils.iterableIsEqual(dec.value, cb.value), true);
 }
 
 void _decodeMap() {
@@ -48,10 +48,10 @@ void _decodeMap() {
   dec as CborMapValue<CborObject, CborObject>;
   final keys = cb.value.keys.map((e) => e).toList();
   final keysDec = dec.value.keys.map((e) => e.value).toList();
-  expect(iterableIsEqual(keys, keysDec), true);
+  expect(CompareUtils.iterableIsEqual(keys, keysDec), true);
   final values = cb.value.values.map((e) => e).toList();
   final valuesDec = dec.value.values.map((e) => e.value).toList();
-  expect(iterableIsEqual(values, valuesDec), true);
+  expect(CompareUtils.iterableIsEqual(values, valuesDec), true);
 }
 
 void _decodeMapDynamic() {
@@ -66,10 +66,10 @@ void _decodeMapDynamic() {
   dec as CborMapValue<CborObject, CborObject>;
   final keys = cb.value.keys.map((e) => e).toList();
   final keysDec = dec.value.keys.map((e) => e.value).toList();
-  expect(iterableIsEqual(keys, keysDec), true);
+  expect(CompareUtils.iterableIsEqual(keys, keysDec), true);
   final values = cb.value.values.map((e) => e).toList();
   final valuesDec = dec.value.values.map((e) => e.value).toList();
-  expect(iterableIsEqual(values, valuesDec), true);
+  expect(CompareUtils.iterableIsEqual(values, valuesDec), true);
 }
 
 void _decodeList() {
@@ -86,7 +86,7 @@ void _decodeList() {
 
   dec as CborListValue;
   final valuesDec = dec.value.map((e) => e.value).toList();
-  expect(iterableIsEqual(cb.value, valuesDec), true);
+  expect(CompareUtils.iterableIsEqual(cb.value, valuesDec), true);
 }
 
 void _decodeDateTime() {

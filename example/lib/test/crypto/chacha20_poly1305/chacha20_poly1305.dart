@@ -1,6 +1,6 @@
 import 'package:blockchain_utils/crypto/crypto/chacha20poly1305/chacha20poly1305.dart';
 import 'package:example/test/quick_hex.dart';
-import 'package:blockchain_utils/binary/utils.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 
 import 'test_vector.dart';
 

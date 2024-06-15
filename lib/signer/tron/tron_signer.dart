@@ -1,5 +1,10 @@
-import 'package:blockchain_utils/blockchain_utils.dart';
+import 'package:blockchain_utils/crypto/crypto/crypto.dart';
+import 'package:blockchain_utils/crypto/quick_crypto.dart';
+import 'package:blockchain_utils/exception/exception.dart';
 import 'package:blockchain_utils/signer/ecdsa_signing_key.dart';
+import 'package:blockchain_utils/signer/eth/eth_signature.dart';
+import 'package:blockchain_utils/signer/eth/evm_signer.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 
 /// Constants used by the Tron Signer for cryptographic operations.
 ///
@@ -90,7 +95,7 @@ class TronSigner {
         ? ETHSignerConst.ethPersonalSignPrefix
         : TronSignerConst.tronPersonalSignPrefix;
     prefix = prefix + (payloadLength?.toString() ?? digest.length.toString());
-    final prefixBytes = StringUtils.encode(prefix, StringEncoding.ascii);
+    final prefixBytes = StringUtils.encode(prefix, type: StringEncoding.ascii);
     return _signEcdsa(
         QuickCrypto.keccack256Hash(<int>[...prefixBytes, ...digest]),
         hashMessage: false);
@@ -160,7 +165,8 @@ class TronVerifier {
           : TronSignerConst.tronPersonalSignPrefix;
       prefix =
           prefix + (payloadLength?.toString() ?? message.length.toString());
-      final prefixBytes = StringUtils.encode(prefix, StringEncoding.ascii);
+      final prefixBytes =
+          StringUtils.encode(prefix, type: StringEncoding.ascii);
       message = QuickCrypto.keccack256Hash(<int>[...prefixBytes, ...message]);
     }
     if (signature.length > ETHSignerConst.ethSignatureLength) {
@@ -190,7 +196,8 @@ class TronVerifier {
           : TronSignerConst.tronPersonalSignPrefix;
       prefix =
           prefix + (payloadLength?.toString() ?? message.length.toString());
-      final prefixBytes = StringUtils.encode(prefix, StringEncoding.ascii);
+      final prefixBytes =
+          StringUtils.encode(prefix, type: StringEncoding.ascii);
       message = QuickCrypto.keccack256Hash(<int>[...prefixBytes, ...message]);
     }
 

@@ -55,7 +55,8 @@ class SHA256 implements SerializableHash<SHA256State> {
   @override
   SerializableHash update(List<int> data, {int? length}) {
     if (_finished) {
-      throw MessageException("SHA256: can't update because hash was finished.");
+      throw const MessageException(
+          "SHA256: can't update because hash was finished.");
     }
     int dataLength = length ?? data.length;
     int dataPos = 0;
@@ -194,7 +195,7 @@ class SHA256 implements SerializableHash<SHA256State> {
   @override
   SHA256State saveState() {
     if (_finished) {
-      throw MessageException("SHA256: cannot save finished state");
+      throw const MessageException("SHA256: cannot save finished state");
     }
     return SHA256State(
       state: List<int>.from(_state, growable: false),

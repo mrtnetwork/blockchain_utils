@@ -61,3 +61,5 @@ export 'scrypt/scrypt.dart';
 
 /// Export statement for the XMODEM CRC (Cyclic Redundancy Check) for error-checking in data transmission.
 export 'x_modem_crc/x_modem_crc.dart';
+
+export 'crc16/crc16.dart';

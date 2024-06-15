@@ -166,7 +166,7 @@ class Slip32KeyDeserializer {
         keyNetVer.private) {
       return false;
     } else {
-      throw ArgumentException("Invalid extended key (wrong net version)");
+      throw const ArgumentException("Invalid extended key (wrong net version)");
     }
   }
 

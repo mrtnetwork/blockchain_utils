@@ -1,10 +1,11 @@
 import 'dart:typed_data';
-import 'package:blockchain_utils/binary/binary_operation.dart';
-import 'package:blockchain_utils/binary/utils.dart';
+import 'package:blockchain_utils/utils/binary/binary_operation.dart';
+import 'package:blockchain_utils/utils/binary/utils.dart';
+import 'package:blockchain_utils/utils/string/string.dart';
+import 'package:blockchain_utils/utils/tuple/tuple.dart';
 import 'package:blockchain_utils/exception/exception.dart';
-import 'package:blockchain_utils/string/string.dart';
-import 'package:blockchain_utils/tuple/tuple.dart';
-import 'package:blockchain_utils/numbers/int_utils.dart';
+
+import 'int_utils.dart';
 
 class BigintUtils {
   /// Converts a BigInt 'num' into a List<int> of bytes with a specified 'order'.
@@ -419,7 +420,7 @@ class BigintUtils {
       }
       // ignore: empty_catches
     } catch (e) {}
-    throw ArgumentException("invalid input for parse bigint");
+    throw const ArgumentException("invalid input for parse bigint");
   }
 
   /// Tries to parse a dynamic value [v] into a BigInt, returning null if parsing fails.
@@ -442,11 +443,11 @@ class BigintUtils {
   }
 
   static List<int> variableNatEncode(BigInt val) {
-    BigInt num = val & BigInt.from(mask32);
-    List<int> output = [(num & BigInt.from(0xFF)).toInt() & 0x7F];
+    BigInt num = val & maskBig32;
+    List<int> output = [(num & maskBig8).toInt() & 0x7F];
     num ~/= BigInt.from(128);
     while (num > BigInt.zero) {
-      output.add(((num & BigInt.from(0xFF)).toInt() & 0x7F) | 0x80);
+      output.add(((num & maskBig8).toInt() & 0x7F) | 0x80);
       num ~/= BigInt.from(128);
     }
     output = output.reversed.toList();
@@ -459,7 +460,7 @@ class BigintUtils {
     for (int byte in bytes) {
       output = (output << 7) | BigInt.from(byte & 0x7F);
       if (output > maxU64) {
-        throw MessageException(
+        throw const MessageException(
             "The variable size exceeds the limit for Nat Decode");
       }
       bytesRead++;
@@ -467,6 +468,6 @@ class BigintUtils {
         return Tuple(output, bytesRead);
       }
     }
-    throw MessageException("Nat Decode failed.");
+    throw const MessageException("Nat Decode failed.");
   }
 }

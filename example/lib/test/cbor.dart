@@ -1,3 +1,4 @@
+import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/cbor/core/cbor.dart';
 import 'package:blockchain_utils/cbor/types/bigint.dart';
 import 'package:blockchain_utils/cbor/types/bytes.dart';
@@ -9,9 +10,7 @@ import 'package:blockchain_utils/cbor/types/int64.dart';
 import 'package:blockchain_utils/cbor/types/list.dart';
 import 'package:blockchain_utils/cbor/types/map.dart';
 import 'package:blockchain_utils/cbor/types/string.dart';
-import 'package:blockchain_utils/compare/compare.dart';
 import 'package:example/test/quick_hex.dart';
-import 'package:blockchain_utils/binary/utils.dart';
 
 List<dynamic> _testList1 = [
   0,
@@ -46,7 +45,7 @@ void _decodeStringIndefinite() {
   final dec = CborObject.fromCbor(cb.encode());
   assert(dec.runtimeType == CborIndefiniteStringValue);
   dec as CborIndefiniteStringValue;
-  assert(iterableIsEqual(dec.value, cb.value));
+  assert(CompareUtils.iterableIsEqual(dec.value, cb.value));
 }
 
 void _decodeMap() {
@@ -58,10 +57,10 @@ void _decodeMap() {
   dec as CborMapValue<CborObject, CborObject>;
   final keys = cb.value.keys.map((e) => e).toList();
   final keysDec = dec.value.keys.map((e) => e.value).toList();
-  assert(iterableIsEqual(keys, keysDec));
+  assert(CompareUtils.iterableIsEqual(keys, keysDec));
   final values = cb.value.values.map((e) => e).toList();
   final valuesDec = dec.value.values.map((e) => e.value).toList();
-  assert(iterableIsEqual(values, valuesDec));
+  assert(CompareUtils.iterableIsEqual(values, valuesDec));
 }
 
 void _decodeMapDynamic() {
@@ -76,10 +75,10 @@ void _decodeMapDynamic() {
   dec as CborMapValue<CborObject, CborObject>;
   final keys = cb.value.keys.map((e) => e).toList();
   final keysDec = dec.value.keys.map((e) => e.value).toList();
-  assert(iterableIsEqual(keys, keysDec));
+  assert(CompareUtils.iterableIsEqual(keys, keysDec));
   final values = cb.value.values.map((e) => e).toList();
   final valuesDec = dec.value.values.map((e) => e.value).toList();
-  assert(iterableIsEqual(values, valuesDec));
+  assert(CompareUtils.iterableIsEqual(values, valuesDec));
 }
 
 void _decodeList() {
@@ -96,7 +95,7 @@ void _decodeList() {
 
   dec as CborListValue;
   final valuesDec = dec.value.map((e) => e.value).toList();
-  assert(iterableIsEqual(cb.value, valuesDec));
+  assert(CompareUtils.iterableIsEqual(cb.value, valuesDec));
 }
 
 void _decodeDateTime() {

@@ -332,6 +332,12 @@ class Bip44Coins implements CryptoCoins {
   /// Zcash Testnet
   static const zcashTestnet = Bip44Coins._('zcashTestnet');
 
+  /// Ton Testnet
+  static const tonTestnet = Bip44Coins._('tonTestnet');
+
+  /// Ton Testnet
+  static const tonMainnet = Bip44Coins._('tonMainnet');
+
   // Fields and methods
 
   @override
@@ -448,7 +454,14 @@ class Bip44Coins implements CryptoCoins {
     Bip44Coins.zcash: Bip44Conf.zcashMainNet,
     Bip44Coins.zcashTestnet: Bip44Conf.zcashTestNet,
     Bip44Coins.zilliqa: Bip44Conf.zilliqa,
+    Bip44Coins.tonTestnet: Bip44Conf.tonTestnet,
+    Bip44Coins.tonMainnet: Bip44Conf.tonMainnet,
   };
   @override
   BipProposal get proposal => BipProposal.bip44;
+
+  @override
+  String toString() {
+    return "Bip44Coins.$name";
+  }
 }

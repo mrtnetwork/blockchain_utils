@@ -52,7 +52,7 @@ class AlgorandMnemonicDecoder extends MnemonicDecoderBase {
     final chksumWordIdx =
         AlgorandMnemonicUtils.computeChecksumWordIndex(entropyBytes);
     if (chksumWordIdx != chksumWordIdxExp) {
-      throw MnemonicChecksumError(
+      throw MnemonicException(
           'Invalid checksum (expected ${wordsList.getWordAtIdx(chksumWordIdx)}, '
           'got ${wordsList.getWordAtIdx(chksumWordIdxExp)})');
     }

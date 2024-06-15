@@ -1,7 +1,7 @@
 import 'package:blockchain_utils/bip/bip/bip39/bip39_mnemonic_validator.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
 import 'package:blockchain_utils/bip/mnemonic/mnemonic.dart';
-import 'package:blockchain_utils/string/string.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 
 /// Constants related to Bip39 seed generation.
 class Bip39SeedGeneratorConst {

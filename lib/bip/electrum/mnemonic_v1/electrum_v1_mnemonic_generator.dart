@@ -43,7 +43,7 @@ class ElectrumV1MnemonicGenerator {
       ElectrumV1WordsNum.values
           .firstWhere((element) => element.value == wordsNum);
     } on StateError {
-      throw ArgumentException("invalid words num");
+      throw const ArgumentException("invalid words num");
     }
     final wNum = ElectrumV1WordsNum.values
         .firstWhere((element) => element.value == wordsNum);

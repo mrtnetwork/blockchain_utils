@@ -1,4 +1,4 @@
-import 'package:blockchain_utils/blockchain_utils.dart';
+import 'package:blockchain_utils/bip/substrate/substrate.dart';
 import 'package:blockchain_utils/signer/substrate/signers/substrate_ecdsa.dart';
 import 'package:blockchain_utils/signer/substrate/signers/substrate_eddsa.dart';
 import 'package:blockchain_utils/signer/substrate/signers/substrate_sr25519.dart';

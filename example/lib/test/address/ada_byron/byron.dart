@@ -1,6 +1,5 @@
 import 'package:blockchain_utils/bip/address/ada/ada_byron_addr.dart';
-import 'package:blockchain_utils/compare/compare.dart';
-import 'package:blockchain_utils/binary/utils.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 import 'byron_test_vector.dart' as byron;
 import 'lagacy_test_vector.dart' as lagacy;
 
@@ -13,7 +12,8 @@ void adaByronAddrTest() {
         .encodeKey(BytesUtils.fromHexString(i["public"]), params);
     assert(l == i["address"]);
     final decode = AdaByronAddrDecoder().decodeAddr(l);
-    assert(bytesEqual(decode, BytesUtils.fromHexString(i["decode"])));
+    assert(
+        BytesUtils.bytesEqual(decode, BytesUtils.fromHexString(i["decode"])));
   }
 
   for (final i in byron.testVector) {
@@ -23,6 +23,7 @@ void adaByronAddrTest() {
         .encodeKey(BytesUtils.fromHexString(i["public"]), params);
     assert(l == i["address"]);
     final decode = AdaByronAddrDecoder().decodeAddr(l);
-    assert(bytesEqual(decode, BytesUtils.fromHexString(i["decode"])));
+    assert(
+        BytesUtils.bytesEqual(decode, BytesUtils.fromHexString(i["decode"])));
   }
 }

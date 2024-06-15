@@ -1,7 +1,7 @@
 import 'package:blockchain_utils/bip/coin_conf/coins_conf.dart';
 import 'package:blockchain_utils/bip/electrum/electrum_v2.dart';
 import 'package:blockchain_utils/bip/wif/wif.dart';
-import 'package:blockchain_utils/binary/utils.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 import 'package:test/test.dart';
 
 import '../../quick_hex.dart';

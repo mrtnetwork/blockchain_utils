@@ -24,7 +24,7 @@ export 'crypto/quick_crypto.dart';
 export 'hex/hex.dart';
 
 /// Export for tools related to managing secret wallets.
-export 'secret_wallet/secret_wallet.dart';
+export 'secret_wallet/web3_storage_defination.dart';
 
 /// Export for SS58 (Substrate/Polkadot/Stash encoding) utilities.
 export 'ss58/ss58.dart';
@@ -59,29 +59,27 @@ export 'bip/substrate/substrate.dart';
 /// Export for Wallet Import Format (WIF) encoding and decoding utilities.
 export 'bip/wif/wif.dart';
 
-/// Exports utility functions related to string operations.
-export 'string/string.dart';
-
-/// Exports utility functions related to binary operations.
-export 'binary/binary.dart';
-
 /// Exports the BitcoinSigner class for Bitcoin signing operations.
 export 'signer/signer.dart';
 
 /// Exports modules related to ECC (Elliptic Curve Cryptography) in the context of BIP.
 export 'bip/ecc/bip_ecc.dart';
 
-/// Exports utility functions related to BigInt operations.
-export 'numbers/bigint_utils.dart';
+/// Exports utility functions related to TON mnemonic.
+export 'bip/ton/ton.dart';
+
+/// Exports utility functions related to mnemonic.
+export 'bip/mnemonic/mnemonic.dart';
+
+/// Exports utility functions related to numeric, bytes and strings.
+export 'utils/utils.dart';
 
 /// Exports utility functions related to numbers operations.
-export 'numbers/numbers.dart';
+export 'utils/numbers/numbers.dart';
 
 /// Exceptions
 export 'exception/exceptions.dart';
 
-export 'tuple/tuple.dart';
-
-export 'compare/compare.dart';
+export 'utils/compare/compare.dart';
 
 export 'layout/layout.dart';

@@ -1,7 +1,7 @@
 // import 'package:blockchain_utils/layout/byte/byte_handler.dart';
 // import 'package:blockchain_utils/layout/core/core/core.dart';
 // import 'package:blockchain_utils/layout/exception/exception.dart';
-// import 'package:blockchain_utils/string/string.dart';
+// import 'package:blockchain_utils/utils/utils.dart';
 
 // /// A class representing a C-style string layout within a buffer.
 // class CStringLayout extends Layout<String> {

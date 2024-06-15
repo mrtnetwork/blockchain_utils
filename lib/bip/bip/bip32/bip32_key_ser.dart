@@ -4,10 +4,7 @@ import 'package:blockchain_utils/bip/bip/bip32/bip32_ex.dart';
 import 'package:blockchain_utils/bip/bip/bip32/bip32_key_data.dart';
 import 'package:blockchain_utils/bip/bip/bip32/bip32_key_net_ver.dart';
 import 'package:blockchain_utils/bip/ecc/keys/i_keys.dart';
-import 'package:blockchain_utils/binary/utils.dart';
-import 'package:blockchain_utils/compare/compare.dart';
-import 'package:blockchain_utils/numbers/int_utils.dart';
-import 'package:blockchain_utils/tuple/tuple.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 
 /// The `Bip32KeySerConst` class contains constants related to the serialization
 /// of Bip32 keys. These constants specify the length of serialized public and
@@ -118,9 +115,9 @@ class Bip32KeyDeserializer {
       List<int> serKeyBytes, Bip32KeyNetVersions keyNetVer) {
     final keyNetVerGot = serKeyBytes.sublist(0, Bip32KeyNetVersions.length);
 
-    if (bytesEqual(keyNetVerGot, keyNetVer.public)) {
+    if (BytesUtils.bytesEqual(keyNetVerGot, keyNetVer.public)) {
       return true;
-    } else if (bytesEqual(keyNetVerGot, keyNetVer.private)) {
+    } else if (BytesUtils.bytesEqual(keyNetVerGot, keyNetVer.private)) {
       return false;
     } else {
       throw Bip32KeyError(

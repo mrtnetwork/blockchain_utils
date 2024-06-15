@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 
-import 'package:blockchain_utils/numbers/bigint_utils.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/curve/curves.dart';
 
 /// Utility class for Ed25519-specific operations.

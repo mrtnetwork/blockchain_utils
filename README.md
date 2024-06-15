@@ -60,6 +60,7 @@ This comprehensive package has been shaped by the influence of several key sourc
 - Algorand
 - Ada Shelley
 - Ada Byron
+- Ton
 
 **Binary Data:**
 
@@ -90,6 +91,7 @@ This comprehensive package has been shaped by the influence of several key sourc
     - SHA256
     - SHA384
     - SHA512
+    - XXhash
 
    These algorithms provide a wide range of cryptographic functions, including encryption, decryption, message authentication, hashing, and more, to enhance security and data integrity in applications.
 
@@ -128,6 +130,8 @@ This comprehensive package has been shaped by the influence of several key sourc
 23. **BIP86 Key, Address, and Coin Management:** Manage keys, derive addresses, and handle various coins, complying with the BIP84 standard.
 
 24. **Electrum Mnemonic V1 and V2 with Key and Address Management:** Support for both Electrum Mnemonic V1 and V2, including SegWit and Standard transactions.
+
+26. **TonMnemonic:** Support for Ton mnemonics has been added, enabling creation, validation, and seed generation.
 
 These features make your package a comprehensive solution for encoding, cryptography, blockchain management, BIP39 mnemonic support, and diverse blockchain address encoding and decoding needs.
 

@@ -25,7 +25,7 @@ abstract class Bip32KeyBase {
   /// Gets the extended representation of the BIP32 key.
   String get toExtended;
 
-  String toHex();
+  String toHex({bool lowerCase = true, String? prefix = ""});
 }
 
 /// Represents a BIP32 public key with associated data such as the elliptic curve type,
@@ -91,8 +91,10 @@ class Bip32PublicKey extends Bip32KeyBase {
   }
 
   @override
-  String toHex() {
-    return pubKey.toHex();
+  String toHex(
+      {bool withPrefix = true, bool lowerCase = true, String? prefix = ""}) {
+    return pubKey.toHex(
+        lowerCase: lowerCase, prefix: prefix, withPrefix: withPrefix);
   }
 }
 
@@ -141,14 +143,11 @@ class Bip32PrivateKey extends Bip32KeyBase {
     EllipticCurveTypes curveType,
   ) {
     return Bip32PrivateKey(
-      IPrivateKey.fromBytes(keyBytes, curveType),
-      keyData,
-      keyNetVer,
-    );
+        IPrivateKey.fromBytes(keyBytes, curveType), keyData, keyNetVer);
   }
 
   @override
-  String toHex() {
-    return privKey.toHex();
+  String toHex({bool lowerCase = true, String? prefix = ""}) {
+    return privKey.toHex(lowerCase: lowerCase, prefix: prefix);
   }
 }

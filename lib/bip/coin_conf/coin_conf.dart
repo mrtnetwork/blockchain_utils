@@ -77,6 +77,7 @@ class CoinParams {
 
     // Address versions
     this.addrVer,
+    this.workchain,
   });
 
   // Network versions for Pay-to-Public-Key-Hash (P2PKH) addresses
@@ -125,4 +126,6 @@ class CoinParams {
 
   // Address versions
   final List<int>? addrVer;
+  // Ton workchain ID
+  final int? workchain;
 }

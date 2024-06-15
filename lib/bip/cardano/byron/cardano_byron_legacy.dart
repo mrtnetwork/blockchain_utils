@@ -59,7 +59,7 @@ import 'package:blockchain_utils/bip/bip/bip32/bip32_keys.dart';
 import 'package:blockchain_utils/bip/bip/bip32/bip32_path.dart';
 import 'package:blockchain_utils/bip/cardano/bip32/cardano_byron_legacy_bip32.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
-import 'package:blockchain_utils/string/string.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 
 /// A class that holds constants related to the Cardano Byron legacy key derivation process.
 class CardanoByronLegacyConst {

@@ -1,9 +1,14 @@
+import 'package:blockchain_utils/base58/base58.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/bip/address/addr_dec_utils.dart';
 import 'package:blockchain_utils/bip/address/addr_key_validator.dart';
 import 'package:blockchain_utils/bip/address/decoder.dart';
 import 'package:blockchain_utils/bip/address/encoder.dart';
 import 'package:blockchain_utils/bip/coin_conf/coins_conf.dart';
-import 'package:blockchain_utils/blockchain_utils.dart';
+import 'package:blockchain_utils/bip/ecc/bip_ecc.dart';
+import 'package:blockchain_utils/crypto/quick_crypto.dart';
+import 'exception/exception.dart';
+import 'p2pkh_addr.dart';
 
 /// Constants related to XRP (Ripple) addresses.
 class _XRPAddressConst {
@@ -31,7 +36,7 @@ class XRPAddressUtils {
   /// throws ArgumentException if the address hash length is not equal to QuickCrypto.hash160DigestSize.
   static String hashToAddress(List<int> addrHash) {
     if (addrHash.length != QuickCrypto.hash160DigestSize) {
-      throw ArgumentException(
+      throw AddressConverterException(
           "address hash must be ${QuickCrypto.hash160DigestSize} bytes length but got ${addrHash.length}");
     }
 
@@ -66,7 +71,7 @@ class XRPAddressUtils {
   static String hashToXAddress(
       List<int> addrHash, List<int> xAddrPrefix, int? tag) {
     if (tag != null && tag > mask32) {
-      throw ArgumentException(
+      throw const AddressConverterException(
           "Invalid tag. Tag should be lower than 2^32 for Ripple X address");
     }
     List<int> addrBytes = [...xAddrPrefix, ...addrHash];
@@ -98,14 +103,16 @@ class XRPAddressUtils {
         addrDecBytes.sublist(0, _XRPAddressConst.xAddressPrefixLength);
 
     if (prefix != null) {
-      if (!bytesEqual(prefix, prefixBytes)) {
-        throw ArgumentException(
+      if (!BytesUtils.bytesEqual(prefix, prefixBytes)) {
+        throw AddressConverterException(
             'Invalid prefix (expected $prefix, got $prefixBytes)');
       }
     } else {
-      if (!bytesEqual(prefixBytes, _XRPAddressConst._xAddressPrefixMain) &&
-          !bytesEqual(prefixBytes, _XRPAddressConst._xAddressPrefixTest)) {
-        throw ArgumentException(
+      if (!BytesUtils.bytesEqual(
+              prefixBytes, _XRPAddressConst._xAddressPrefixMain) &&
+          !BytesUtils.bytesEqual(
+              prefixBytes, _XRPAddressConst._xAddressPrefixTest)) {
+        throw const AddressConverterException(
             'Invalid prefix for mainnet or testnet ripple address');
       }
     }
@@ -117,12 +124,13 @@ class XRPAddressUtils {
         .sublist(addrDecBytes.length - _XRPAddressConst.xAddressTagLength);
     int tagFlag = tagBytes[0];
     if (tagFlag != 0 && tagFlag != 1) {
-      throw ArgumentException(
+      throw AddressConverterException(
           'Invalid tag flag, tag flag should be 0 or 1 but got ${tagBytes[0]}');
     }
     tagBytes = tagBytes.sublist(1);
-    if (tagFlag == 0 && !bytesEqual(tagBytes, List.filled(8, 0))) {
-      throw ArgumentException("tag bytes must be zero for flag 0");
+    if (tagFlag == 0 && !BytesUtils.bytesEqual(tagBytes, List.filled(8, 0))) {
+      throw const AddressConverterException(
+          "tag bytes must be zero for flag 0");
     }
 
     int? tag;
@@ -185,7 +193,8 @@ class XRPAddressUtils {
         return xAddr.item1;
       }
     } catch (e) {
-      throw ArgumentException("invalid ripple X or classic address");
+      throw const AddressConverterException(
+          "invalid ripple X or classic address");
     }
   }
 
@@ -299,7 +308,7 @@ class XrpAddrEncoder implements BlockchainAddressEncoder {
     if (publicType is! EllipticCurveTypes ||
         (publicType != EllipticCurveTypes.secp256k1 &&
             publicType != EllipticCurveTypes.ed25519)) {
-      throw ArgumentException(
+      throw const AddressConverterException(
           'Missing required parameters: curve_type, curvetype must be EllipticCurveTypes.secp256k1 or EllipticCurveTypes.ed25519');
     }
     if (publicType == EllipticCurveTypes.secp256k1) {

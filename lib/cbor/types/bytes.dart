@@ -1,8 +1,7 @@
-import 'package:blockchain_utils/binary/utils.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/cbor/utils/dynamic_bytes.dart';
 import 'package:blockchain_utils/cbor/core/tags.dart';
 import 'package:blockchain_utils/cbor/core/cbor.dart';
-import 'package:blockchain_utils/compare/compare.dart';
 
 /// A class representing a CBOR (Concise Binary Object Representation) bytes value.
 class CborBytesValue implements CborObject {
@@ -34,7 +33,7 @@ class CborBytesValue implements CborObject {
   operator ==(other) {
     if (other is! CborBytesValue) return false;
 
-    return bytesEqual(other.value, value);
+    return BytesUtils.bytesEqual(other.value, value);
   }
 
   /// ovveride hash code

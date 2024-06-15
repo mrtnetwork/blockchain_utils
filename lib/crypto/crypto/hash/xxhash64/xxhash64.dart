@@ -481,7 +481,7 @@ class XXHash64 extends SerializableHash<HashBytesState> {
   @override
   HashBytesState saveState() {
     if (_finished) {
-      throw MessageException(
+      throw const MessageException(
           "XXHash64: can't update because hash was finished.");
     }
     return HashBytesState(data: _buffer, pos: _buffer.length);
@@ -490,7 +490,7 @@ class XXHash64 extends SerializableHash<HashBytesState> {
   @override
   Hash update(List<int> data) {
     if (_finished) {
-      throw MessageException(
+      throw const MessageException(
           "XXHash64: can't update because hash was finished.");
     }
     _buffer.addAll(data);

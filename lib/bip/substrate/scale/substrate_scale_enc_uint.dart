@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 import 'package:blockchain_utils/exception/exception.dart';
-import 'package:blockchain_utils/numbers/bigint_utils.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 import 'substrate_scale_enc_base.dart';
 
 /// An abstract base class for encoding unsigned integers in Substrate SCALE format.

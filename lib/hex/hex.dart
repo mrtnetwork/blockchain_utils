@@ -1,4 +1,4 @@
-import 'package:blockchain_utils/binary/binary.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/exception/exception.dart';
 
 // ignore: library_private_types_in_public_api

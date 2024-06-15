@@ -1,5 +1,4 @@
-import 'package:blockchain_utils/binary/utils.dart';
-import 'package:blockchain_utils/compare/compare.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/crypto/crypto/crypto.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
 import 'package:blockchain_utils/exception/exceptions.dart';
@@ -8,7 +7,6 @@ import 'package:blockchain_utils/signer/eth/eth_signature.dart';
 import 'package:blockchain_utils/signer/eth/evm_signer.dart';
 import 'package:blockchain_utils/signer/substrate/core/signer.dart';
 import 'package:blockchain_utils/signer/substrate/core/verifier.dart';
-import 'package:blockchain_utils/string/string.dart';
 
 class _SubstrateEcdsaSignerCons {
   static const int vrfLength = ETHSignerConst.ethSignatureLength +
@@ -109,7 +107,7 @@ class SubstrateEcdsaSigner implements BaseSubstrateSigner {
   List<int> signProsonalMessage(List<int> digest, {int? payloadLength}) {
     final prefix = ETHSignerConst.ethPersonalSignPrefix +
         (payloadLength?.toString() ?? digest.length.toString());
-    final prefixBytes = StringUtils.encode(prefix, StringEncoding.ascii);
+    final prefixBytes = StringUtils.encode(prefix, type: StringEncoding.ascii);
     final sign = _signEcdsa(<int>[...prefixBytes, ...digest]);
     return sign.toBytes(true);
   }
@@ -189,7 +187,8 @@ class SubstrateEcdsaVerifier implements BaseSubstrateVerifier {
     if (hashMessage) {
       final prefix = ETHSignerConst.ethPersonalSignPrefix +
           (payloadLength?.toString() ?? message.length.toString());
-      final prefixBytes = StringUtils.encode(prefix, StringEncoding.ascii);
+      final prefixBytes =
+          StringUtils.encode(prefix, type: StringEncoding.ascii);
       return QuickCrypto.blake2b256Hash(<int>[...prefixBytes, ...message]);
     }
     return message;
@@ -237,7 +236,7 @@ class SubstrateEcdsaVerifier implements BaseSubstrateVerifier {
         ...BytesUtils.tryToBytes(extra) ?? [],
         ...signature,
       ]);
-      return bytesEqual(vrf, vrfHash);
+      return BytesUtils.bytesEqual(vrf, vrfHash);
     }
     return false;
   }

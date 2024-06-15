@@ -2,8 +2,7 @@ import 'package:blockchain_utils/bip/ecc/keys/sr25519_keys.dart';
 import 'package:blockchain_utils/bip/substrate/conf/substrate_coins.dart';
 import 'package:blockchain_utils/bip/substrate/substrate_base.dart';
 import 'package:blockchain_utils/bip/substrate/substrate_path.dart';
-import 'package:blockchain_utils/compare/compare.dart';
-import 'package:blockchain_utils/binary/utils.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 import 'package:test/test.dart';
 
 import '../quick_hex.dart';
@@ -36,7 +35,7 @@ void main() {
           final secret = (w.priveKey.privKey as Sr25519PrivateKey).secretKey;
           final testPrive =
               BytesUtils.fromHexString(childInfo["private_key"]).sublist(0, 32);
-          expect(bytesEqual(testPrive, secret.key()), true);
+          expect(BytesUtils.bytesEqual(testPrive, secret.key()), true);
         }
       }
     }
@@ -69,7 +68,7 @@ void main() {
           final secret = (w.priveKey.privKey as Sr25519PrivateKey).secretKey;
           final testPrive =
               BytesUtils.fromHexString(childInfo["private_key"]).sublist(0, 32);
-          expect(bytesEqual(testPrive, secret.key()), true);
+          expect(BytesUtils.bytesEqual(testPrive, secret.key()), true);
         }
       }
     }

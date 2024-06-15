@@ -1,5 +1,8 @@
 import 'package:blockchain_utils/bip/mnemonic/mnemonic.dart';
-import 'package:blockchain_utils/blockchain_utils.dart';
+import 'package:blockchain_utils/exception/exception.dart';
+import 'monero_entropy_generator.dart';
+import 'monero_mnemonic.dart';
+import 'monero_mnemonic_encoder.dart';
 
 /// A class containing constants related to Monero mnemonic generation.
 ///

@@ -5,7 +5,7 @@ import 'package:blockchain_utils/crypto/crypto/cdsa/eddsa/privatekey.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/point/edwards.dart';
 import 'package:blockchain_utils/crypto/crypto/hash/hash.dart';
 import 'package:example/test/quick_hex.dart';
-import 'package:blockchain_utils/binary/utils.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 
 void _testDouble() {
   final a = Curves.generatorED25519;

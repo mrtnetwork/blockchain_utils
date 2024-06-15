@@ -1,4 +1,4 @@
-import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/bip/address/exception/exception.dart';
 
 class ADAAddressType {
   final int header;
@@ -30,7 +30,7 @@ class ADAAddressType {
       case 0x8:
         return ADAAddressType.byron;
     }
-    throw MessageException("Invalid address header bytes.",
+    throw AddressConverterException("Invalid address header bytes.",
         details: {"value": header});
   }
 
@@ -44,7 +44,8 @@ class ADAAddressType {
   static ADAAddressType fromHeader(int? header) {
     return values.firstWhere(
       (element) => element.header == header,
-      orElse: () => throw MessageException("Invalid header value encountered."),
+      orElse: () => throw const AddressConverterException(
+          "Invalid header value encountered."),
     );
   }
 

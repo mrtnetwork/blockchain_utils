@@ -7,8 +7,8 @@ import 'package:blockchain_utils/bip/address/decoder.dart';
 import 'package:blockchain_utils/bip/address/encoder.dart';
 import 'package:blockchain_utils/bip/ecc/keys/ecdsa_keys.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
-import 'package:blockchain_utils/numbers/int_utils.dart';
-import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/utils/utils.dart';
+import 'exception/exception.dart';
 
 /// An enumeration representing different Ergo address types.
 class ErgoAddressTypes {
@@ -88,7 +88,7 @@ class ErgoP2PKHAddrDecoder implements BlockchainAddressDecoder {
 
     /// Validate network type
     if (netType is! ErgoNetworkTypes) {
-      throw ArgumentException(
+      throw const AddressConverterException(
           'Address type is not an enumerative of ErgoNetworkTypes');
     }
     final addrDecBytes = Base58Decoder.decode(addr);
@@ -134,7 +134,7 @@ class ErgoP2PKHAddrEncoder implements BlockchainAddressEncoder {
 
     /// Validate network type
     if (netType is! ErgoNetworkTypes) {
-      throw ArgumentException(
+      throw const AddressConverterException(
           'Address type is not an enumerative of ErgoNetworkTypes');
     }
 

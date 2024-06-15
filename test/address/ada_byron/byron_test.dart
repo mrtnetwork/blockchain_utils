@@ -1,6 +1,5 @@
 import 'package:blockchain_utils/bip/address/ada/ada_byron_addr.dart';
-import 'package:blockchain_utils/binary/utils.dart';
-import 'package:blockchain_utils/compare/compare.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 import 'package:test/test.dart';
 import 'byron_test_vector.dart' as byron;
 import 'lagacy_test_vector.dart' as lagacy;
@@ -15,7 +14,9 @@ void main() {
           .encodeKey(BytesUtils.fromHexString(i["public"]), params);
       expect(l, i["address"]);
       final decode = AdaByronAddrDecoder().decodeAddr(l);
-      expect(bytesEqual(decode, BytesUtils.fromHexString(i["decode"])), true);
+      expect(
+          BytesUtils.bytesEqual(decode, BytesUtils.fromHexString(i["decode"])),
+          true);
     }
   });
 
@@ -27,7 +28,9 @@ void main() {
           .encodeKey(BytesUtils.fromHexString(i["public"]), params);
       expect(l, i["address"]);
       final decode = AdaByronAddrDecoder().decodeAddr(l);
-      expect(bytesEqual(decode, BytesUtils.fromHexString(i["decode"])), true);
+      expect(
+          BytesUtils.bytesEqual(decode, BytesUtils.fromHexString(i["decode"])),
+          true);
     }
   });
 }

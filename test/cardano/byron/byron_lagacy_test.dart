@@ -1,7 +1,7 @@
 import 'package:blockchain_utils/bip/bip/bip32/bip32_key_data.dart';
 import 'package:blockchain_utils/bip/cardano/byron/cardano_byron_legacy.dart';
 
-import 'package:blockchain_utils/binary/utils.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 import 'package:test/test.dart';
 import '../../quick_hex.dart';
 import 'test_vector.dart';

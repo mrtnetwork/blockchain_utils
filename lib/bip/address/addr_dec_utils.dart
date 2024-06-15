@@ -1,9 +1,7 @@
 import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
 import 'package:blockchain_utils/bip/ecc/keys/i_keys.dart';
-import 'package:blockchain_utils/binary/utils.dart';
-import 'package:blockchain_utils/compare/compare.dart';
-import 'package:blockchain_utils/exception/exception.dart';
-import 'package:blockchain_utils/tuple/tuple.dart';
+import 'package:blockchain_utils/utils/utils.dart';
+import 'exception/exception.dart';
 
 /// Class for decode address utility functions.
 class AddrDecUtils {
@@ -14,8 +12,8 @@ class AddrDecUtils {
   ) {
     final prefixGot = addr.sublist(0, prefix.length);
 
-    if (!bytesEqual(prefix, prefixGot)) {
-      throw ArgumentException(
+    if (!BytesUtils.bytesEqual(prefix, prefixGot)) {
+      throw AddressConverterException(
         'Invalid prefix (expected $prefix, got $prefixGot)',
       );
     }
@@ -31,7 +29,7 @@ class AddrDecUtils {
     final prefixGot = addr.substring(0, prefix.length);
 
     if (prefix != prefixGot) {
-      throw ArgumentException(
+      throw AddressConverterException(
         'Invalid prefix (expected $prefix, got $prefixGot)',
       );
     }
@@ -44,7 +42,7 @@ class AddrDecUtils {
       {int? minLength}) {
     if ((minLength != null && addr.length < minLength) ||
         (minLength == null && addr.length != lenExp)) {
-      throw ArgumentException(
+      throw AddressConverterException(
         'Invalid length (expected ${minLength ?? lenExp}, got ${addr.length})',
       );
     }
@@ -56,7 +54,7 @@ class AddrDecUtils {
     int lenExp,
   ) {
     if (addr.length != lenExp) {
-      throw ArgumentException(
+      throw AddressConverterException(
         'Invalid length (expected $lenExp, got ${addr.length})',
       );
     }
@@ -70,7 +68,7 @@ class AddrDecUtils {
     try {
       IPublicKey.fromBytes(pubKeyBytes, curveType);
     } catch (e) {
-      throw ArgumentException(
+      throw AddressConverterException(
           "Invalid $curveType public key (${BytesUtils.toHexString(pubKeyBytes)})");
     }
   }
@@ -83,10 +81,8 @@ class AddrDecUtils {
   ) {
     final checksumBytesGot = checksumFct(payloadBytes);
 
-    if (!bytesEqual(checksumBytesExp, checksumBytesGot)) {
-      throw ArgumentException(
-        'Invalid checksum',
-      );
+    if (!BytesUtils.bytesEqual(checksumBytesExp, checksumBytesGot)) {
+      throw const AddressConverterException('Invalid checksum');
     }
   }
 

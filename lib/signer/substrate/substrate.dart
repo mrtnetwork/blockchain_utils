@@ -1,6 +1,8 @@
-import 'package:blockchain_utils/blockchain_utils.dart';
+import 'package:blockchain_utils/bip/substrate/substrate_base.dart';
+import 'package:blockchain_utils/bip/substrate/substrate_keys.dart';
 import 'package:blockchain_utils/signer/substrate/core/signer.dart';
 import 'package:blockchain_utils/signer/substrate/core/verifier.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 
 class SubstrateSigner {
   final BaseSubstrateSigner _signer;

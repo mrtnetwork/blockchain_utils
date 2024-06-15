@@ -7,8 +7,11 @@ class SS58ChecksumError implements BlockchainUtilsException {
   @override
   final String message;
 
+  @override
+  final Map<String, dynamic>? details;
+
   /// Creates a new [SS58ChecksumError] with an optional [message].
-  const SS58ChecksumError(this.message);
+  const SS58ChecksumError(this.message, {this.details});
 
   @override
   String toString() {

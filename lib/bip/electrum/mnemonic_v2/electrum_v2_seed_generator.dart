@@ -2,7 +2,7 @@ import 'package:blockchain_utils/bip/electrum/mnemonic_v2/electrum_v2_mnemonic.d
 import 'package:blockchain_utils/bip/electrum/mnemonic_v2/electrum_v2_mnemonic_validator.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
 import 'package:blockchain_utils/bip/mnemonic/mnemonic.dart';
-import 'package:blockchain_utils/string/string.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 
 /// Constants and configurations related to Electrum V2 seed generation.
 class ElectrumV2SeedGeneratorConst {

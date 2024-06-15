@@ -1,12 +1,8 @@
 import 'dart:typed_data';
-
 import 'package:blockchain_utils/base58/base58_base.dart';
-import 'package:blockchain_utils/compare/compare.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
-import 'package:blockchain_utils/binary/utils.dart';
-import 'package:blockchain_utils/numbers/int_utils.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/exception/exception.dart';
-import 'package:blockchain_utils/tuple/tuple.dart';
 
 import 'ss58_ex.dart';
 
@@ -142,7 +138,7 @@ class SS58Decoder {
     final checksumBytesGot = _Ss58Utils.computeChecksum(
         decBytes.sublist(0, decBytes.length - checkSumLength));
 
-    if (!bytesEqual(checksumBytesGot, checksumBytes)) {
+    if (!BytesUtils.bytesEqual(checksumBytesGot, checksumBytes)) {
       throw SS58ChecksumError(
           'Invalid checksum (expected ${BytesUtils.toHexString(checksumBytesGot)}, '
           'got ${BytesUtils.toHexString(checksumBytes)})');

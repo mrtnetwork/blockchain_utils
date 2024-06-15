@@ -23,7 +23,7 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
 
-import 'package:blockchain_utils/numbers/bigint_utils.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/curve/curve.dart';
 import 'base.dart';
 import 'point.dart';
@@ -364,7 +364,7 @@ class ProjectiveECCPoint extends AbstractPoint {
   factory ProjectiveECCPoint.fromAffine(AbstractPoint point,
       {bool generator = false}) {
     if (point is! ProjectiveECCPoint && point is! AffinePointt) {
-      throw ArgumentException("invalid Affine point");
+      throw const ArgumentException("invalid Affine point");
     }
     return ProjectiveECCPoint._(
         point.curve as CurveFp, [point.x, point.y, BigInt.one],
@@ -643,7 +643,7 @@ class ProjectiveECCPoint extends AbstractPoint {
       other = ProjectiveECCPoint.fromAffine(other);
     }
     if (curve != other.curve) {
-      throw ArgumentException("The other point is on a different curve");
+      throw const ArgumentException("The other point is on a different curve");
     }
     other as ProjectiveECCPoint;
 

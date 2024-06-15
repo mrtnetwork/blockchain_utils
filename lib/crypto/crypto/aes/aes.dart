@@ -1,5 +1,5 @@
 import 'package:blockchain_utils/crypto/crypto/blockcipher/blockcipher.dart';
-import 'package:blockchain_utils/binary/binary_operation.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/exception/exception.dart';
 import 'aes_lib.dart' as aes_lib;
 
@@ -71,10 +71,11 @@ class AES implements BlockCipher {
   @override
   AES setKey(List<int> key, [bool noDecryption = false]) {
     if (key.length != 16 && key.length != 24 && key.length != 32) {
-      throw ArgumentException("AES: wrong key size (must be 16, 24, or 32)");
+      throw const ArgumentException(
+          "AES: wrong key size (must be 16, 24, or 32)");
     }
     if (_keyLen != key.length) {
-      throw ArgumentException("AES: initialized with different key size");
+      throw const ArgumentException("AES: initialized with different key size");
     }
 
     _encKey ??= List<int>.filled(key.length + 28, 0, growable: false);
@@ -130,14 +131,14 @@ class AES implements BlockCipher {
   List<int> encryptBlock(List<int> src, [List<int>? dst]) {
     final out = dst ?? List<int>.filled(blockSize, 0);
     if (src.length != blockSize) {
-      throw ArgumentException("AES: invalid source block size");
+      throw const ArgumentException("AES: invalid source block size");
     }
     if (out.length != blockSize) {
-      throw ArgumentException("AES: invalid destination block size");
+      throw const ArgumentException("AES: invalid destination block size");
     }
 
     if (_encKey == null) {
-      throw MessageException("AES: encryption key is not available");
+      throw const MessageException("AES: encryption key is not available");
     }
     _lib.encryptBlock(_encKey!, src, out);
 
@@ -164,14 +165,14 @@ class AES implements BlockCipher {
   List<int> decryptBlock(List<int> src, [List<int>? dst]) {
     final out = dst ?? List<int>.filled(blockSize, 0);
     if (src.length != blockSize) {
-      throw ArgumentException("AES: invaiid source block size");
+      throw const ArgumentException("AES: invaiid source block size");
     }
     if (out.length != blockSize) {
-      throw ArgumentException("AES: invalid destination block size");
+      throw const ArgumentException("AES: invalid destination block size");
     }
 
     if (_decKey == null) {
-      throw MessageException(
+      throw const MessageException(
           "AES: decrypting with an instance created with noDecryption option");
     } else {
       _lib.decryptBlock(_decKey!, src, out);

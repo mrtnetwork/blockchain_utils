@@ -1,9 +1,8 @@
 import 'package:blockchain_utils/bip/bip/bip32/base/ibip32_mst_key_generator.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
-import 'package:blockchain_utils/binary/bit_utils.dart';
 import 'package:blockchain_utils/cbor/types/bytes.dart';
 import 'package:blockchain_utils/exception/exception.dart';
-import 'package:blockchain_utils/tuple/tuple.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 
 /// A class that holds constants related to the Cardano Byron legacy master key generation process.
 class CardanoByronLegacyMstKeyGeneratorConst {

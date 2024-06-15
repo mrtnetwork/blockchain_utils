@@ -106,3 +106,5 @@ export 'xtz_addr.dart' show XtzAddrDecoder;
 
 /// Export statement for Zilliqa (ZIL) address decoder.
 export 'zil_addr.dart' show ZilAddrDecoder;
+
+export 'ton_addr.dart' show TonAddrDecoder, TonAddressUtils;

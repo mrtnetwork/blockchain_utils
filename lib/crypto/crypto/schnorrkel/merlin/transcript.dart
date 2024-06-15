@@ -1,10 +1,7 @@
 import 'dart:typed_data';
-
-import 'package:blockchain_utils/binary/utils.dart';
-import 'package:blockchain_utils/numbers/bigint_utils.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/utils/ed25519_utils.dart';
 import 'package:blockchain_utils/crypto/crypto/schnorrkel/strobe/strobe.dart';
-import 'package:blockchain_utils/binary/binary_operation.dart';
 
 /// A transcript object for the Merlin cryptographic protocol.
 ///

@@ -1,6 +1,5 @@
-import 'package:blockchain_utils/binary/binary.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/exception/exception.dart';
-import 'package:blockchain_utils/numbers/bigint_utils.dart';
 import 'package:blockchain_utils/signer/eth/evm_signer.dart';
 
 /// Utility class for Ethereum signature operations.

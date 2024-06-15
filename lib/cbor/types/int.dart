@@ -1,6 +1,9 @@
-import 'package:blockchain_utils/blockchain_utils.dart';
+import 'package:blockchain_utils/cbor/core/cbor.dart';
 import 'package:blockchain_utils/cbor/utils/dynamic_bytes.dart';
 import 'package:blockchain_utils/cbor/core/tags.dart';
+import 'package:blockchain_utils/utils/utils.dart';
+
+import 'bigint.dart';
 
 /// A class representing a CBOR (Concise Binary Object Representation) int value.
 class CborIntValue implements CborNumeric {

@@ -1,8 +1,9 @@
+import 'package:blockchain_utils/base58/base58.dart';
 import 'package:blockchain_utils/bip/address/addr_key_validator.dart';
 import 'package:blockchain_utils/bip/address/decoder.dart';
 import 'package:blockchain_utils/bip/address/encoder.dart';
-import 'package:blockchain_utils/blockchain_utils.dart';
-
+import 'package:blockchain_utils/crypto/quick_crypto.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 import 'addr_dec_utils.dart';
 
 /// Enum defining address prefixes for Tezos (XTZ) blockchain addresses.

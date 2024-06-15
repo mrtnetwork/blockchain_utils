@@ -1,10 +1,9 @@
 import 'package:blockchain_utils/bip/bip/bip39/bip39_mnemonic_validator.dart';
 import 'package:blockchain_utils/bip/electrum/mnemonic_v1/electrum_v1_mnemonic_validator.dart';
 import 'package:blockchain_utils/bip/electrum/mnemonic_v2/electrum_v2_mnemonic.dart';
-import 'package:blockchain_utils/binary/utils.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
 import 'package:blockchain_utils/bip/mnemonic/mnemonic.dart';
-import 'package:blockchain_utils/string/string.dart';
 
 /// Constants related to Electrum V2 mnemonic utilities.
 class ElectrumV2MnemonicUtilsConst {

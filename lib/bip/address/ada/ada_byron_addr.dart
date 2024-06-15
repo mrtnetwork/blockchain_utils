@@ -59,6 +59,7 @@ import 'package:blockchain_utils/bip/address/addr_dec_utils.dart';
 import 'package:blockchain_utils/bip/address/addr_key_validator.dart';
 import 'package:blockchain_utils/bip/address/decoder.dart';
 import 'package:blockchain_utils/bip/address/encoder.dart';
+import 'package:blockchain_utils/bip/address/exception/exception.dart';
 import 'package:blockchain_utils/bip/bip/bip32/bip32_key_data.dart';
 import 'package:blockchain_utils/bip/bip/bip32/bip32_path.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
@@ -69,8 +70,7 @@ import 'package:blockchain_utils/cbor/types/int.dart';
 import 'package:blockchain_utils/cbor/types/list.dart';
 import 'package:blockchain_utils/cbor/types/map.dart';
 import 'package:blockchain_utils/crypto/crypto/crc32/crc32.dart';
-import 'package:blockchain_utils/exception/exception.dart';
-import 'package:blockchain_utils/tuple/tuple.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 
 import 'network.dart';
 
@@ -157,7 +157,7 @@ class _AdaByronAddrHdPath {
     );
     final decode = CborObject.fromCbor(plainTextBytes);
     if (decode is! CborListValue) {
-      throw ArgumentException("invalid bip32 path");
+      throw const AddressConverterException("invalid bip32 path");
     }
     final paths = decode.value
         .map((e) => Bip32KeyIndex(e is String ? int.parse(e) : e as int))
@@ -189,7 +189,7 @@ class ADAByronAddrAttrs {
         (cborValue.value.isNotEmpty &&
             !cborValue.value.containsKey(cborOne) &&
             !cborValue.value.containsKey(cborTwo))) {
-      throw ArgumentException('Invalid address attributes');
+      throw const AddressConverterException('Invalid address attributes');
     }
     final hdPath = cborValue.value.containsKey(cborOne)
         ? CborObject.fromCbor(
@@ -257,12 +257,12 @@ class ADAByronAddrPayload {
   factory ADAByronAddrPayload.deserialize(List<int> serPayloadBytes) {
     final addrPayload = CborObject.fromCbor(serPayloadBytes);
     if (addrPayload is! CborListValue || addrPayload.value.length != 3) {
-      throw const MessageException("Invalid address payload");
+      throw const AddressConverterException("Invalid address payload");
     }
     if (addrPayload.value[0] is! CborBytesValue ||
         addrPayload.value[1] is! CborMapValue ||
         addrPayload.value[2] is! CborIntValue) {
-      throw const MessageException("Invalid address payload");
+      throw const AddressConverterException("Invalid address payload");
     }
     final cborBytes = addrPayload.value[0] as CborBytesValue;
     // Check key hash length
@@ -307,24 +307,25 @@ class ADAByronAddr {
   factory ADAByronAddr.deserialize(List<int> serAddrBytes) {
     final addrBytes = CborObject.fromCbor(serAddrBytes);
     if (addrBytes is! CborListValue || addrBytes.value.length != 2) {
-      throw const MessageException("Invalid address encoding");
+      throw const AddressConverterException("Invalid address encoding");
     }
     if (addrBytes.value[0] is! CborTagValue ||
         addrBytes.value[1] is! CborIntValue) {
-      throw const MessageException("Invalid address encoding");
+      throw const AddressConverterException("Invalid address encoding");
     }
     final decodeCbor = addrBytes.value[0] as CborTagValue;
     if (decodeCbor.tags.isEmpty ||
         decodeCbor.tags.first != ADAByronAddrConst.payloadTag ||
         decodeCbor.value is! CborBytesValue) {
-      throw const MessageException("Invalid CBOR tag");
+      throw const AddressConverterException("Invalid CBOR tag");
     }
 
     final crcTag = (addrBytes.value[1] as CborIntValue).value;
     final List<int> payloadBytes = decodeCbor.value.value;
     final crc32Got = Crc32.quickIntDigest(payloadBytes);
     if (crc32Got != crcTag) {
-      throw MessageException("Invalid CRC (expected: $crcTag, got: $crc32Got)");
+      throw AddressConverterException(
+          "Invalid CRC (expected: $crcTag, got: $crc32Got)");
     }
 
     return ADAByronAddr(payload: ADAByronAddrPayload.deserialize(payloadBytes));
@@ -394,7 +395,7 @@ class AdaByronAddrDecoder implements BlockchainAddressDecoder {
       [Map<String, dynamic> kwargs = const {}]) {
     final addrType = kwargs["addr_type"];
     if (addrType != null && addrType is! ADAByronAddrTypes) {
-      throw ArgumentException(
+      throw const AddressConverterException(
           'Address type is not an enumerative of ADAByronAddrTypes');
     }
 
@@ -403,13 +404,13 @@ class AdaByronAddrDecoder implements BlockchainAddressDecoder {
 
     /// Check if the provided network tag is a valid enum value.
     if (netTag != null && netTag is! ADANetwork) {
-      throw ArgumentException(
+      throw const AddressConverterException(
           'Address type is not an enumerative of ADANetwork');
     }
 
     final decAddr = ADAByronAddr.decode(addr);
     if (addrType != null && decAddr.payload.type != addrType) {
-      throw ArgumentException('Invalid address type');
+      throw const AddressConverterException('Invalid address type');
     }
     if (netTag != null) {
       netTag as ADANetwork;
@@ -418,7 +419,7 @@ class AdaByronAddrDecoder implements BlockchainAddressDecoder {
             netTag == ADANetwork.mainnet) {
           return decAddr.payload;
         }
-        throw MessageException("Invalid address network.");
+        throw const AddressConverterException("Invalid address network.");
       }
     }
     return decAddr.payload;
@@ -470,7 +471,7 @@ class AdaByronIcarusAddrEncoder implements BlockchainAddressEncoder {
 
     /// Check if the provided network tag is a valid enum value.
     if (netTag is! ADANetwork) {
-      throw ArgumentException(
+      throw const AddressConverterException(
           'Address type is not an enumerative of ADANetwork');
     }
     List<int> chainCodeBytes;
@@ -480,7 +481,7 @@ class AdaByronIcarusAddrEncoder implements BlockchainAddressEncoder {
     } else if (chainCode is List<int>) {
       chainCodeBytes = chainCode;
     } else {
-      throw ArgumentException("invalid chaincode ");
+      throw const AddressConverterException("invalid chaincode ");
     }
     final pubkeyBytes =
         AddrKeyValidator.validateAndGetEd25519Key(pubKey).compressed;
@@ -524,7 +525,7 @@ class AdaByronLegacyAddrEncoder implements BlockchainAddressEncoder {
 
     /// Check if the provided network tag is a valid enum value.
     if (netTag is! ADANetwork) {
-      throw ArgumentException(
+      throw const AddressConverterException(
           'Address type is not an enumerative of ADANetwork');
     }
 
@@ -533,7 +534,8 @@ class AdaByronLegacyAddrEncoder implements BlockchainAddressEncoder {
       hdPath = Bip32PathParser.parse(kwargs["hd_path"]);
     } else {
       if (kwargs["hd_path"] is! Bip32Path) {
-        throw ArgumentException("hd path must be string or Bip32Path");
+        throw const AddressConverterException(
+            "hd path must be string or Bip32Path");
       }
       hdPath = kwargs["hd_path"];
     }
@@ -544,17 +546,18 @@ class AdaByronLegacyAddrEncoder implements BlockchainAddressEncoder {
       chainCodeBytes = kwargs["chain_code"];
     } else {
       if (kwargs["chain_code"] is! Bip32ChainCode) {
-        throw ArgumentException("chain code must be bytes or Bip32ChainCode");
+        throw const AddressConverterException(
+            "chain code must be bytes or Bip32ChainCode");
       }
       chainCodeBytes = (kwargs["chain_code"] as Bip32ChainCode).toBytes();
     }
     List<int> hdPathKeyBytes;
     if (kwargs["hd_path_key"] is! List<int>) {
-      throw ArgumentException("hd path key must be bytes");
+      throw const AddressConverterException("hd path key must be bytes");
     }
     hdPathKeyBytes = kwargs["hd_path_key"];
     if (hdPathKeyBytes.length != QuickCrypto.chacha20Polu1305Keysize) {
-      throw ArgumentException(
+      throw const AddressConverterException(
           "HD path key shall be ${QuickCrypto.chacha20Polu1305Keysize}-byte long");
     }
     final pubKeyBytes =

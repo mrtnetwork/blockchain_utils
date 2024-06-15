@@ -1,6 +1,6 @@
 import 'package:blockchain_utils/bip/monero/conf/monero_coins.dart';
 import 'package:blockchain_utils/bip/monero/monero_base.dart';
-import 'package:blockchain_utils/binary/utils.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 import 'package:test/test.dart';
 import '../quick_hex.dart';
 import 'test_vector.dart';

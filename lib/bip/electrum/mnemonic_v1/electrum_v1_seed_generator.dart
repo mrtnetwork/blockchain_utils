@@ -2,9 +2,8 @@ import 'dart:core';
 
 import 'package:blockchain_utils/bip/electrum/mnemonic_v1/electrum_v1_mnemonic.dart';
 import 'package:blockchain_utils/bip/electrum/mnemonic_v1/electrum_v1_mnemonic_decoder.dart';
-import 'package:blockchain_utils/binary/utils.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
-import 'package:blockchain_utils/string/string.dart';
 
 /// Constants related to the generation of Electrum V1 seeds.
 class ElectrumV1SeedGeneratorConst {
@@ -41,7 +40,7 @@ class ElectrumV1SeedGenerator {
   static List<int> _generateSeed(List<int> entropyBytes) {
     final entropy = StringUtils.encode(BytesUtils.toHexString(entropyBytes));
     List<int> h = entropy;
-    for (int _ = 0; _ < ElectrumV1SeedGeneratorConst.hashIterationNum; _++) {
+    for (int i = 0; i < ElectrumV1SeedGeneratorConst.hashIterationNum; i++) {
       h = QuickCrypto.sha256Hash(List<int>.from([...h, ...entropy]));
     }
     return h;

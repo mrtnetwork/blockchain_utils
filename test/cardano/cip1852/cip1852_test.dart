@@ -2,7 +2,7 @@ import 'package:blockchain_utils/bip/bip/bip44/base/bip44_base.dart';
 import 'package:blockchain_utils/bip/cardano/cip1852/cip1852.dart';
 import 'package:blockchain_utils/bip/cardano/cip1852/conf/cip1852_coins.dart';
 import 'package:blockchain_utils/bip/cardano/shelley/cardano_shelley.dart';
-import 'package:blockchain_utils/binary/utils.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 import 'package:test/test.dart';
 import 'test_vector.dart';
 

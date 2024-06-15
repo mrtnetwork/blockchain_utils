@@ -50,7 +50,7 @@ class ECB extends AES {
 
     final out = dst ?? List<int>.filled(input.length, 0);
     if (out.length != input.length) {
-      throw ArgumentException(
+      throw const ArgumentException(
           "The destination size does not match with source size");
     }
     final numBlocks = input.length ~/ blockSize;
@@ -106,7 +106,7 @@ class ECB extends AES {
     }
     if (dst != null) {
       if (dst.length < out.length) {
-        throw ArgumentException("Destination size is small");
+        throw const ArgumentException("Destination size is small");
       }
       dst.setAll(0, out);
       return dst;

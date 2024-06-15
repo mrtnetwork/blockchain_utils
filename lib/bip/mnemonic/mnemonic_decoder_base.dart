@@ -1,6 +1,6 @@
 import 'package:blockchain_utils/bip/mnemonic/mnemonic.dart';
 import 'package:blockchain_utils/bip/mnemonic/mnemonic_utils.dart';
-import 'package:blockchain_utils/blockchain_utils.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 
 /// An abstract base class for mnemonic phrase decoding in various languages and word lists.
 ///

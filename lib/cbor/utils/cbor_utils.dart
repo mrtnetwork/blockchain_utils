@@ -1,7 +1,10 @@
 import 'dart:typed_data';
-import 'package:blockchain_utils/blockchain_utils.dart';
+import 'package:blockchain_utils/cbor/core/cbor.dart';
+import 'package:blockchain_utils/cbor/types/types.dart';
 import 'package:blockchain_utils/cbor/utils/float_utils.dart';
 import 'package:blockchain_utils/cbor/core/tags.dart';
+import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 
 class CborUtils {
   /// Decode a CBOR (Concise Binary Object Representation) data stream represented by a List<int>.
@@ -67,7 +70,7 @@ class CborUtils {
               "invalid or unsuported cbor tag major: $majorTag ");
       }
     }
-    throw ArgumentException("invalid or unsuported cbor tag");
+    throw const ArgumentException("invalid or unsuported cbor tag");
   }
 
   static Tuple<List<int>, int> _parsBytes(int info, List<int> cborBytes) {
@@ -124,21 +127,21 @@ class CborUtils {
     if (tags.isEmpty) {
       toObj = CborStringValue(toString);
     } else if (CborBase64Types.values
-        .any((element) => bytesEqual(tags, element.tag))) {
+        .any((element) => BytesUtils.bytesEqual(tags, element.tag))) {
       final baseType = CborBase64Types.values
-          .firstWhere((element) => bytesEqual(tags, element.tag));
+          .firstWhere((element) => BytesUtils.bytesEqual(tags, element.tag));
       tags.clear();
       toObj = CborBaseUrlValue(toString, baseType);
-    } else if (bytesEqual(tags, CborTags.mime)) {
+    } else if (BytesUtils.bytesEqual(tags, CborTags.mime)) {
       tags.clear();
       toObj = CborMimeValue(toString);
-    } else if (bytesEqual(tags, CborTags.uri)) {
+    } else if (BytesUtils.bytesEqual(tags, CborTags.uri)) {
       tags.clear();
       toObj = CborUriValue(toString);
-    } else if (bytesEqual(tags, CborTags.regexp)) {
+    } else if (BytesUtils.bytesEqual(tags, CborTags.regexp)) {
       tags.clear();
       toObj = CborRegxpValue(toString);
-    } else if (bytesEqual(tags, CborTags.dateString)) {
+    } else if (BytesUtils.bytesEqual(tags, CborTags.dateString)) {
       tags.clear();
       final time = parseRFC3339DateTime(toString);
       toObj = CborStringDateValue(time);
@@ -164,10 +167,10 @@ class CborUtils {
     }
     final bytes = _parsBytes(info, cborBytes.sublist(i));
     CborObject? val;
-    if (bytesEqual(tags, CborTags.negBigInt) ||
-        bytesEqual(tags, CborTags.posBigInt)) {
+    if (BytesUtils.bytesEqual(tags, CborTags.negBigInt) ||
+        BytesUtils.bytesEqual(tags, CborTags.posBigInt)) {
       BigInt big = BigintUtils.fromBytes(bytes.item1);
-      if (bytesEqual(tags, CborTags.negBigInt)) {
+      if (BytesUtils.bytesEqual(tags, CborTags.negBigInt)) {
         big = ~big;
       }
       tags.clear();
@@ -221,11 +224,11 @@ class CborUtils {
       index += decodeData.item2;
       if (index == cborBytes.length) break;
     }
-    if (bytesEqual(tags, CborTags.bigFloat) ||
-        bytesEqual(tags, CborTags.decimalFrac)) {
+    if (BytesUtils.bytesEqual(tags, CborTags.bigFloat) ||
+        BytesUtils.bytesEqual(tags, CborTags.decimalFrac)) {
       return Tuple(_decodeCborBigfloatOrDecimal(objects, tags), index);
     }
-    if (bytesEqual(tags, CborTags.set)) {
+    if (BytesUtils.bytesEqual(tags, CborTags.set)) {
       tags.clear();
       final toObj = CborSetValue(objects.toSet());
       return Tuple(tags.isEmpty ? toObj : CborTagValue(toObj, tags), index);
@@ -251,9 +254,9 @@ class CborUtils {
       List<CborObject> objects, List<int> tags) {
     objects = objects.whereType<CborNumeric>().toList();
     if (objects.length != 2) {
-      throw MessageException("invalid bigFloat array length");
+      throw const MessageException("invalid bigFloat array length");
     }
-    if (bytesEqual(tags, CborTags.decimalFrac)) {
+    if (BytesUtils.bytesEqual(tags, CborTags.decimalFrac)) {
       tags.clear();
       final toObj = CborDecimalFracValue.fromCborNumeric(
           objects[0] as CborNumeric, objects[1] as CborNumeric);
@@ -271,16 +274,16 @@ class CborUtils {
     CborObject? obj;
     switch (info) {
       case SimpleTags.simpleFalse:
-        obj = CborBoleanValue(false);
+        obj = const CborBoleanValue(false);
         break;
       case SimpleTags.simpleTrue:
-        obj = CborBoleanValue(true);
+        obj = const CborBoleanValue(true);
         break;
       case SimpleTags.simpleNull:
-        obj = CborNullValue();
+        obj = const CborNullValue();
         break;
       case SimpleTags.simpleUndefined:
-        obj = CborUndefinedValue();
+        obj = const CborUndefinedValue();
         break;
       default:
     }
@@ -310,9 +313,9 @@ class CborUtils {
         offset = offset + 8;
         break;
       default:
-        throw MessageException("Invalid simpleOrFloatTags");
+        throw const MessageException("Invalid simpleOrFloatTags");
     }
-    if (bytesEqual(tags, CborTags.dateEpoch)) {
+    if (BytesUtils.bytesEqual(tags, CborTags.dateEpoch)) {
       final dt = DateTime.fromMillisecondsSinceEpoch((val * 1000).round());
       tags.clear();
       obj = CborEpochFloatValue(dt);
@@ -339,7 +342,7 @@ class CborUtils {
       numericValue = CborIntValue(numb);
     }
     final index = data.item2 + i;
-    if (bytesEqual(tags, CborTags.dateEpoch)) {
+    if (BytesUtils.bytesEqual(tags, CborTags.dateEpoch)) {
       final dt =
           DateTime.fromMillisecondsSinceEpoch(numericValue.toInt() * 1000);
       tags.clear();

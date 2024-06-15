@@ -1,5 +1,7 @@
 import 'package:blockchain_utils/base58/base58_ex.dart';
-import 'package:blockchain_utils/blockchain_utils.dart';
+import 'package:blockchain_utils/crypto/quick_crypto.dart';
+import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 
 enum Base58Alphabets {
   bitcoin,
@@ -159,7 +161,7 @@ class Base58Decoder {
         decodedBytes.sublist(decodedBytes.length - Base58Const.checksumByteLen);
 
     final computedChecksum = Base58Utils.computeChecksum(dataBytes);
-    if (!bytesEqual(checksumBytes, computedChecksum)) {
+    if (!BytesUtils.bytesEqual(checksumBytes, computedChecksum)) {
       throw Base58ChecksumError(
         "Invalid checksum (expected ${BytesUtils.toHexString(computedChecksum)}, got ${BytesUtils.toHexString(checksumBytes)})",
       );

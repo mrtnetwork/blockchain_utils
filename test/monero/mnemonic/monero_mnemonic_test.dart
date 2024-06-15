@@ -2,8 +2,7 @@ import 'package:blockchain_utils/bip/monero/mnemonic/monero_mnemonic.dart';
 import 'package:blockchain_utils/bip/monero/mnemonic/monero_mnemonic_decoder.dart';
 import 'package:blockchain_utils/bip/monero/mnemonic/monero_mnemonic_generator.dart';
 import 'package:blockchain_utils/bip/monero/mnemonic/monero_seed_generator.dart';
-import 'package:blockchain_utils/compare/compare.dart';
-import 'package:blockchain_utils/binary/utils.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 import 'package:test/test.dart';
 import "test_vector.dart";
 
@@ -19,9 +18,9 @@ void main() {
       final mnNc = MoneroMnemonicGenerator(lang).fromEntropyNoChecksum(entropy);
       expect(mnNc.toStr(), i["no_checksum"]);
       final entropyResult = MoneroMnemonicDecoder(lang).decode(mn.toStr());
-      expect(bytesEqual(entropyResult, entropy), true);
+      expect(BytesUtils.bytesEqual(entropyResult, entropy), true);
       final seed = MoneroSeedGenerator(mn).generate();
-      expect(bytesEqual(seed, entropy), true);
+      expect(BytesUtils.bytesEqual(seed, entropy), true);
     }
   });
 }

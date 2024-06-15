@@ -12,7 +12,7 @@ class SubstrateConf {
   /// is not an instance of SubstrateCoins, an error is thrown.
   static SubstrateCoinConf getCoin(CryptoCoins coin) {
     if (coin is! SubstrateCoins) {
-      throw ArgumentException(
+      throw const ArgumentException(
           "Coin type is not an enumerative of SubstrateCoins");
     }
     return coinToConf[coin.value]!;

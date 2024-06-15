@@ -1,6 +1,6 @@
 import 'package:blockchain_utils/bip/bip/bip49/bip49_base.dart';
 import 'package:blockchain_utils/bip/bip/conf/bip49/bip49_coins.dart';
-import 'package:blockchain_utils/binary/utils.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 import 'package:test/test.dart';
 import 'test_vector.dart';
 

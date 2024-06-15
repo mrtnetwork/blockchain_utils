@@ -1,4 +1,4 @@
-import 'package:blockchain_utils/binary/utils.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/bip/ecc/keys/ecdsa_keys.dart';
 import 'package:blockchain_utils/bip/ecc/keys/i_keys.dart';
 import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
@@ -70,8 +70,10 @@ class Secp256k1PublicKeyEcdsa implements IPublicKey {
   }
 
   @override
-  String toHex() {
-    return BytesUtils.toHexString(compressed);
+  String toHex(
+      {bool withPrefix = true, bool lowerCase = true, String? prefix = ""}) {
+    return BytesUtils.toHexString(compressed,
+        prefix: prefix, lowerCase: lowerCase);
   }
 }
 
@@ -123,7 +125,7 @@ class Secp256k1PrivateKeyEcdsa implements IPrivateKey {
   }
 
   @override
-  String toHex() {
-    return BytesUtils.toHexString(raw);
+  String toHex({bool lowerCase = true, String? prefix = ""}) {
+    return BytesUtils.toHexString(raw, lowerCase: lowerCase, prefix: prefix);
   }
 }

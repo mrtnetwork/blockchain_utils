@@ -2,7 +2,7 @@ import 'package:blockchain_utils/bip/bip/bip39/bip39_entropy_generator.dart';
 import 'package:blockchain_utils/bip/bip/bip39/bip39_mnemonic.dart';
 import 'package:blockchain_utils/bip/bip/bip39/bip39_mnemonic_utils.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
-import 'package:blockchain_utils/binary/utils.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/bip/mnemonic/mnemonic_encoder_base.dart';
 import 'package:blockchain_utils/exception/exception.dart';
 

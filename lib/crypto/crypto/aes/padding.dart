@@ -67,11 +67,11 @@ class BlockCipherPadding {
     int paddedDataLen = paddedData.length;
 
     if (paddedDataLen == 0) {
-      throw ArgumentException('Zero-length input cannot be unpadded');
+      throw const ArgumentException('Zero-length input cannot be unpadded');
     }
 
     if (paddedDataLen % blockSize != 0) {
-      throw ArgumentException('Input data is not padded');
+      throw const ArgumentException('Input data is not padded');
     }
 
     int paddingLen;
@@ -79,34 +79,34 @@ class BlockCipherPadding {
     if (style == PaddingAlgorithm.pkcs7 || style == PaddingAlgorithm.x923) {
       paddingLen = paddedData[paddedDataLen - 1];
       if (paddingLen < 1 || paddingLen > blockSize) {
-        throw ArgumentException('incorrect padding');
+        throw const ArgumentException('incorrect padding');
       }
 
       if (style == PaddingAlgorithm.pkcs7) {
         for (int i = 1; i <= paddingLen; i++) {
           if (paddedData[paddedDataLen - i] != paddingLen) {
-            throw ArgumentException('incorrect padding');
+            throw const ArgumentException('incorrect padding');
           }
         }
       } else {
         for (int i = 1; i < paddingLen; i++) {
           if (paddedData[paddedDataLen - i - 1] != 0) {
-            throw ArgumentException('incorrect padding');
+            throw const ArgumentException('incorrect padding');
           }
         }
       }
     } else {
       int index = paddedData.lastIndexOf(128);
       if (index < 0) {
-        throw ArgumentException('incorrect padding');
+        throw const ArgumentException('incorrect padding');
       }
       paddingLen = paddedDataLen - index;
       if (paddingLen < 1 || paddingLen > blockSize) {
-        throw ArgumentException('incorrect padding');
+        throw const ArgumentException('incorrect padding');
       }
       for (int i = 1; i < paddingLen; i++) {
         if (paddedData[index + i] != 0) {
-          throw ArgumentException('incorrect padding');
+          throw const ArgumentException('incorrect padding');
         }
       }
     }

@@ -60,7 +60,7 @@ class MoneroMnemonicDecoder extends MnemonicDecoderBase {
   ///
   /// This method checks whether the provided Monero mnemonic words have a valid checksum
   /// by comparing them to the expected checksum. If the checksum is invalid, it throws
-  /// a MnemonicChecksumError.
+  /// a MnemonicException.
   ///
   /// [words]: The list of Monero mnemonic words to validate.
   /// [language]: The Monero language used in the mnemonic.
@@ -71,7 +71,7 @@ class MoneroMnemonicDecoder extends MnemonicDecoderBase {
       final checkSum = MoneroMnemonicUtils.computeChecksum(
           words.sublist(0, words.length - 1), language);
       if (words.last != checkSum) {
-        throw MnemonicChecksumError(
+        throw MnemonicException(
             'Invalid checksum (expected $checkSum, got ${words.last})');
       }
       // ignore: empty_catches

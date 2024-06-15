@@ -1,7 +1,7 @@
 import 'package:blockchain_utils/bip/bip/bip86/bip86.dart';
 import 'package:blockchain_utils/bip/bip/conf/bip86/bip86_coins.dart';
 
-import 'package:blockchain_utils/binary/utils.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 import 'test_vector.dart';
 
 void bip86Test() {

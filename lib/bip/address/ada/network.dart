@@ -1,4 +1,4 @@
-import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/bip/address/exception/exception.dart';
 
 /// An enumeration of Ada Shelley address network tags.
 class ADANetwork {
@@ -32,7 +32,8 @@ class ADANetwork {
   static ADANetwork fromTag(int tag) {
     return values.firstWhere(
       (element) => element.value == tag,
-      orElse: () => throw ArgumentException("Invalid network tag. $tag"),
+      orElse: () =>
+          throw AddressConverterException("Invalid network tag. $tag"),
     );
   }
 
@@ -40,7 +41,7 @@ class ADANetwork {
     if (protocolMagic == null) return ADANetwork.mainnet;
     return values.firstWhere(
       (element) => element.protocolMagic == protocolMagic,
-      orElse: () => throw ArgumentException(
+      orElse: () => throw const AddressConverterException(
           "Invalid protocol magic or network does not supported."),
     );
   }

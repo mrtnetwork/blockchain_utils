@@ -1,17 +1,19 @@
 import 'dart:typed_data' show Endian;
-import 'package:blockchain_utils/blockchain_utils.dart';
+import 'package:blockchain_utils/bip/substrate/scale/substrate_scale_enc_cuint.dart';
+import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 
 class LayoutSerializationUtils {
   static List<int> encodeLength(List<int> bytes) {
-    return SubstrateScaleCUintEncoder().encode(bytes.length.toString());
+    return const SubstrateScaleCUintEncoder().encode(bytes.length.toString());
   }
 
   static List<int> compactToBytes(BigInt value) {
-    return SubstrateScaleCUintEncoder().encode(value.toString());
+    return const SubstrateScaleCUintEncoder().encode(value.toString());
   }
 
   static List<int> compactIntToBytes(int value) {
-    return SubstrateScaleCUintEncoder().encode(value.toString());
+    return const SubstrateScaleCUintEncoder().encode(value.toString());
   }
 
   static Tuple<int, BigInt> decodeLength(List<int> bytes, {bool sign = false}) {
@@ -51,7 +53,7 @@ class LayoutSerializationUtils {
   static Tuple<int, int> decodeLengthWithDetails(List<int> bytes) {
     final decode = decodeLength(bytes, sign: false);
     if (!decode.item2.isValidInt) {
-      throw MessageException("Invalid variable length. length to large.");
+      throw const MessageException("Invalid variable length. length to large.");
     }
     final bytesLength = decode.item2.toInt();
     final dataOffset = decode.item1;

@@ -3,8 +3,7 @@ import 'package:blockchain_utils/bip/address/addr_key_validator.dart';
 import 'package:blockchain_utils/bip/address/decoder.dart';
 import 'package:blockchain_utils/bip/address/encoder.dart';
 import 'package:blockchain_utils/bip/ecc/keys/ed25519_keys.dart';
-import 'package:blockchain_utils/binary/utils.dart';
-import 'package:blockchain_utils/string/string.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 
 /// Implementation of the [BlockchainAddressDecoder] for Near Protocol addresses.
 class NearAddrDecoder implements BlockchainAddressDecoder {

@@ -29,7 +29,7 @@ class ElectrumV2EntropyGenerator extends EntropyGenerator {
   /// [bitLen]: The desired bit length for generating Electrum V2 entropy.
   ElectrumV2EntropyGenerator(int bitLen) : super(bitLen) {
     if (!isValidEntropyBitLen(bitLen)) {
-      throw ArgumentException('Entropy bit length is not valid');
+      throw const ArgumentException('Entropy bit length is not valid');
     }
   }
 

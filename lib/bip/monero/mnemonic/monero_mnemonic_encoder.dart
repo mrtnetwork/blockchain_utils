@@ -1,9 +1,12 @@
 import 'dart:typed_data';
-
 import 'package:blockchain_utils/bip/mnemonic/mnemonic.dart';
 import 'package:blockchain_utils/bip/mnemonic/mnemonic_encoder_base.dart';
 import 'package:blockchain_utils/bip/mnemonic/mnemonic_utils.dart';
-import 'package:blockchain_utils/blockchain_utils.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
+
+import 'monero_entropy_generator.dart';
+import 'monero_mnemonic.dart';
+import 'monero_mnemonic_utils.dart';
 
 /// An abstract base class for encoding entropy into Monero mnemonics.
 ///

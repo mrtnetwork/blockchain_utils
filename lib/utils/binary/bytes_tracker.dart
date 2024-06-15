@@ -1,4 +1,4 @@
-import 'package:blockchain_utils/blockchain_utils.dart';
+import 'utils.dart';
 
 /// A utility class for tracking bytes dynamically.
 class DynamicByteTracker {

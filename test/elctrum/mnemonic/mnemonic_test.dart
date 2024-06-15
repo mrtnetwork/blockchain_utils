@@ -7,8 +7,7 @@ import 'package:blockchain_utils/bip/electrum/mnemonic_v2/electrum_v2_mnemonic.d
 import 'package:blockchain_utils/bip/electrum/mnemonic_v2/electrum_v2_mnemonic_decoder.dart';
 import 'package:blockchain_utils/bip/electrum/mnemonic_v2/electrum_v2_mnemonic_generator.dart';
 import 'package:blockchain_utils/bip/electrum/mnemonic_v2/electrum_v2_seed_generator.dart';
-import 'package:blockchain_utils/compare/compare.dart';
-import 'package:blockchain_utils/binary/utils.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 import 'package:test/test.dart';
 import '../../quick_hex.dart';
 import 'test_vector_v1.dart';
@@ -30,9 +29,10 @@ void main() {
       final decode =
           ElectrumV2MnemonicDecoder(mnemonicType: type, language: lang)
               .decode(mn.toStr());
-      expect(bytesEqual(decode, entropy), true);
+      expect(BytesUtils.bytesEqual(decode, entropy), true);
       final seed = ElectrumV2SeedGenerator(mn, lang).generate("MRT");
-      expect(bytesEqual(seed, BytesUtils.fromHexString(i["seed"])), true);
+      expect(BytesUtils.bytesEqual(seed, BytesUtils.fromHexString(i["seed"])),
+          true);
       if (i["address"] != null) {
         String addr;
         if (type.name.startsWith("segwit")) {
@@ -52,7 +52,7 @@ void main() {
       final seed = ElectrumV1SeedGenerator(toMnemonic.toStr()).generate();
       expect(seed.toHex(), i["seed"]);
       final en = ElectrumV1MnemonicDecoder().decode(toMnemonic.toStr());
-      expect(bytesEqual(en, entropy), true);
+      expect(BytesUtils.bytesEqual(en, entropy), true);
       final addr = ElectrumV1.fromSeed(seed).getAddress(0, 0);
       expect(addr, i["address"]);
     }

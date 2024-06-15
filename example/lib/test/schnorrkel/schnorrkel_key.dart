@@ -2,7 +2,7 @@
 
 import 'package:blockchain_utils/crypto/crypto/schnorrkel/keys/keys.dart';
 import 'package:example/test/quick_hex.dart';
-import 'package:blockchain_utils/binary/utils.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 
 import 'key_test_vector.dart';
 

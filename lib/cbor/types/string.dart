@@ -1,9 +1,7 @@
-import 'package:blockchain_utils/binary/utils.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/cbor/utils/dynamic_bytes.dart';
 import 'package:blockchain_utils/cbor/core/tags.dart';
 import 'package:blockchain_utils/cbor/core/cbor.dart';
-import 'package:blockchain_utils/compare/compare.dart';
-import 'package:blockchain_utils/string/string.dart';
 
 /// A class representing a CBOR (Concise Binary Object Representation) String value.
 abstract class CborString implements CborObject {
@@ -89,7 +87,7 @@ class CborIndefiniteStringValue extends CborString {
   @override
   operator ==(other) {
     if (other is! CborIndefiniteStringValue) return false;
-    return iterableIsEqual<String>(value, other.value);
+    return CompareUtils.iterableIsEqual<String>(value, other.value);
   }
 
   /// override hashcode

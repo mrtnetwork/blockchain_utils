@@ -1,6 +1,10 @@
+import 'package:blockchain_utils/bip/algorand/mnemonic/algorand_mnemonic.dart';
+import 'package:blockchain_utils/bip/electrum/mnemonic_v2/electrum_v2_mnemonic.dart';
 import 'package:blockchain_utils/bip/mnemonic/mnemonic.dart';
 import 'package:blockchain_utils/bip/mnemonic/mnemonic_utils.dart';
-import 'package:blockchain_utils/blockchain_utils.dart';
+import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/utils/utils.dart';
+import 'bip39_mnemonic.dart';
 
 /// Retrieves a list of BIP39 words based on the specified language.
 ///
@@ -14,7 +18,7 @@ class Bip39WordsListGetter extends MnemonicWordsListGetterBase {
     if (language is! Bip39Languages &&
         language is! AlgorandLanguages &&
         language is! ElectrumV2Languages) {
-      throw ArgumentException(
+      throw const ArgumentException(
           "Language is not an enumerative of Bip39Languages");
     }
     return loadWordsList(language, Bip39MnemonicConst.wordsListNum);

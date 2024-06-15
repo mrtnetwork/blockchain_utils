@@ -1,7 +1,6 @@
-import 'package:blockchain_utils/bip/address/ada/ada_shelley_addr.dart';
 import 'package:blockchain_utils/bip/address/encoder.dart';
+import 'package:blockchain_utils/bip/address/encoders.dart';
 import 'package:blockchain_utils/bip/address/p2pkh_addr.dart';
-import 'package:blockchain_utils/bip/address/xmr_addr.dart';
 import 'package:blockchain_utils/bip/bip/bip32/bip32_key_data.dart';
 import 'package:blockchain_utils/bip/bip/bip32/bip32_keys.dart';
 import 'package:blockchain_utils/bip/bip/conf/bip_coin_conf.dart';
@@ -68,12 +67,17 @@ class Bip44PublicKey {
   String get toAddress {
     BlockchainAddressEncoder encoder = coinConf.encoder();
     if (encoder is AdaShelleyAddrEncoder) {
-      throw ArgumentException(
+      throw const ArgumentException(
           'Use the CardanoShelley class to get Cardano Shelley addresses');
     }
     // Exception for Monero
     if (encoder is XmrAddrEncoder) {
-      throw ArgumentException('Use the Monero class to get Monero addresses');
+      throw const ArgumentException(
+          'Use the Monero class to get Monero addresses');
+    }
+    if (encoder is TonAddrEncoder) {
+      throw const ArgumentException(
+          'Ton Address must be generated with hash of contract state. use TonAddrEncoder to encode address.');
     }
     return encoder.encodeKey(
         pubKey.pubKey.compressed, coinConf.getParams(pubKey));

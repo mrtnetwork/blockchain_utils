@@ -4,7 +4,7 @@ import 'package:blockchain_utils/bip/algorand/mnemonic/algorand_mnemonic_validat
 import 'package:blockchain_utils/bip/algorand/mnemonic/algorand_seed_generator.dart';
 import 'package:blockchain_utils/bip/bip/bip44/bip44_base.dart';
 import 'package:blockchain_utils/bip/bip/conf/bip44/bip44_coins.dart';
-import 'package:blockchain_utils/binary/utils.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 import 'package:test/test.dart';
 import '../quick_hex.dart';
 import 'test_vector.dart';

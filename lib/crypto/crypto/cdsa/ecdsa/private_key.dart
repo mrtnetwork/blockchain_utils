@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:blockchain_utils/exception/exception.dart';
-import 'package:blockchain_utils/numbers/bigint_utils.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/ecdsa/signature.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/point/ec_projective_point.dart';
 import 'public_key.dart';
@@ -23,7 +23,7 @@ class ECDSAPrivateKey {
   ///
   factory ECDSAPrivateKey.fromBytes(List<int> bytes, ProjectiveECCPoint curve) {
     if (bytes.length != curve.curve.baselen) {
-      throw ArgumentException("Invalid length of private key");
+      throw const ArgumentException("Invalid length of private key");
     }
     final secexp = BigintUtils.fromBytes(bytes, byteOrder: Endian.big);
     final ECDSAPublicKey publicKey = ECDSAPublicKey(curve, curve * secexp);
@@ -62,7 +62,7 @@ class ECDSAPrivateKey {
     }
 
     if (r == BigInt.zero) {
-      throw MessageException("unlucky random number r");
+      throw const MessageException("unlucky random number r");
     }
 
     BigInt s =
@@ -70,7 +70,7 @@ class ECDSAPrivateKey {
             n;
 
     if (s == BigInt.zero) {
-      throw MessageException("unlucky random number s");
+      throw const MessageException("unlucky random number s");
     }
 
     return ECDSASignature(r, s);

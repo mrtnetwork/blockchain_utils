@@ -2,7 +2,7 @@ import 'package:blockchain_utils/bip/bip/bip39/bip39_mnemonic.dart';
 import 'package:blockchain_utils/bip/bip/bip39/bip39_mnemonic_decoder.dart';
 import 'package:blockchain_utils/bip/bip/bip39/bip39_mnemonic_generator.dart';
 import 'package:blockchain_utils/bip/bip/bip39/bip39_seed_generator.dart';
-import 'package:blockchain_utils/binary/utils.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 import 'package:test/test.dart';
 import '../../quick_hex.dart';
 import 'test_vector.dart' show testVector;

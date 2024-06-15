@@ -1,6 +1,6 @@
 import 'package:blockchain_utils/base58/base58.dart';
 import 'package:example/test/quick_hex.dart';
-import 'package:blockchain_utils/binary/utils.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 
 final List<Map<String, String>> testVectBtc = [
   {"raw": "", "encode": "", "check_encode": "3QJmnh"},

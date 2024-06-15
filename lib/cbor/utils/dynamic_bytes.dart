@@ -1,5 +1,5 @@
-import 'package:blockchain_utils/blockchain_utils.dart';
 import 'package:blockchain_utils/cbor/core/tags.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 
 /// A class for tracking and building a sequence of bytes (List<int>) for CBOR encoding.
 class CborBytesTracker {

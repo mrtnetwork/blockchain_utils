@@ -126,7 +126,7 @@ abstract class Bip32Base {
     final pathInstance = Bip32PathParser.parse(path);
 
     if (depth.depth > 0 && pathInstance.isAbsolute) {
-      throw ArgumentException(
+      throw const ArgumentException(
           'Absolute paths can only be derived from a master key, not child ones');
     }
     Bip32Base derivedObject = this;

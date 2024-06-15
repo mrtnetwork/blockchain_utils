@@ -1,5 +1,9 @@
-import 'package:blockchain_utils/blockchain_utils.dart';
+import 'package:blockchain_utils/bip/ecc/bip_ecc.dart';
+import 'package:blockchain_utils/crypto/crypto/crypto.dart';
+import 'package:blockchain_utils/crypto/quick_crypto.dart';
+import 'package:blockchain_utils/exception/exception.dart';
 import 'package:blockchain_utils/signer/ecdsa_signing_key.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 
 /// Constants used by the XRP signer for cryptographic operations.
 class _XrpSignerConst {
@@ -10,7 +14,7 @@ class _XrpSignerConst {
   static final ProjectiveECCPoint secp256 = Curves.generatorSecp256k1;
 
   /// The length of the digest in bytes.
-  static final int digestLength = 32;
+  static const int digestLength = 32;
 
   /// The order of the SECP256k1 elliptic curve.
   static final curveOrder = secp256.order!;

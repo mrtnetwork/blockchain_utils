@@ -1,8 +1,7 @@
 import 'package:blockchain_utils/bech32/bch_bech32.dart';
 import 'package:blockchain_utils/bip/coin_conf/coins_conf.dart';
-import 'package:blockchain_utils/compare/compare.dart';
 import 'package:example/test/quick_hex.dart';
-import 'package:blockchain_utils/binary/utils.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 
 final List<Map<String, String>> _testVect = [
   {
@@ -36,7 +35,7 @@ void bchBech32Test() {
     final hrp = i["encode"]!.substring(0, i["encode"]!.indexOf(":"));
     final decode = BchBech32Decoder.decode(hrp, i["encode"]!);
     assert(decode.item2.toHex() == i["raw"]);
-    assert(bytesEqual(
+    assert(BytesUtils.bytesEqual(
         decode.item1, CoinsConf.bitcoinCashMainNet.params.p2pkhStdNetVer));
   }
   for (final i in _testVect) {

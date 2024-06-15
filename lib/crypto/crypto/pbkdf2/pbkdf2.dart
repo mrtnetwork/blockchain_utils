@@ -1,5 +1,5 @@
 import 'package:blockchain_utils/crypto/crypto/hmac/hmac.dart';
-import 'package:blockchain_utils/binary/binary_operation.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 
 /// The `PBKDF2` class is an implementation of the Password-Based Key Derivation Function 2 (PBKDF2) algorithm.
 ///

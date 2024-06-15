@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 import 'package:blockchain_utils/layout/core/core.dart';
 import 'package:blockchain_utils/layout/exception/exception.dart';
-import 'package:blockchain_utils/string/string.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 
 class LayoutConst {
   /// [GreedyCount].

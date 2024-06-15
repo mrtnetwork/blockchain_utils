@@ -3,7 +3,7 @@ import 'package:blockchain_utils/bip/bip/bip39/bip39_mnemonic_decoder.dart';
 import 'package:blockchain_utils/bip/bip/bip39/bip39_mnemonic_generator.dart';
 import 'package:blockchain_utils/bip/bip/bip39/bip39_seed_generator.dart';
 import 'package:example/test/quick_hex.dart';
-import 'package:blockchain_utils/binary/utils.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 import 'test_vector.dart' show testVector;
 
 const String _passphrase = "MRT";

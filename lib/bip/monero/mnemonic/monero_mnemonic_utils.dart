@@ -3,8 +3,7 @@ import 'package:blockchain_utils/bip/mnemonic/mnemonic.dart';
 import 'package:blockchain_utils/bip/mnemonic/mnemonic_utils.dart';
 import 'package:blockchain_utils/crypto/crypto/crc32/crc32.dart';
 import 'package:blockchain_utils/exception/exception.dart';
-import 'package:blockchain_utils/string/string.dart';
-import 'package:blockchain_utils/tuple/tuple.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 
 /// A class that retrieves Monero mnemonic word lists by language.
 ///
@@ -24,7 +23,7 @@ class MoneroWordsListGetter extends MnemonicWordsListGetterBase {
   @override
   MnemonicWordsList getByLanguage(MnemonicLanguages language) {
     if (language is! MoneroLanguages) {
-      throw ArgumentException(
+      throw const ArgumentException(
           "Language is not an enumerative of MoneroLanguages");
     }
     return loadWordsList(language, MoneroMnemonicConst.wordsListNum);
