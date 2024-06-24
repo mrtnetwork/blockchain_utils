@@ -147,6 +147,9 @@ class Bip44Coins implements CryptoCoins {
   /// Dogecoin
   static const dogecoin = Bip44Coins._('dogecoin');
 
+  /// Pepecoin
+  static const pepecoin = Bip44Coins._('pepecoin');
+
   /// eCash
   static const ecash = Bip44Coins._('ecash');
 
@@ -320,6 +323,9 @@ class Bip44Coins implements CryptoCoins {
   /// Dogecoin Testnet
   static const dogecoinTestnet = Bip44Coins._('dogecoinTestnet');
 
+  /// Pepecoin Testnet
+  static const pepecoinTestnet = Bip44Coins._('pepecoinTestnet');
+
   /// eCash Testnet
   static const ecashTestnet = Bip44Coins._('ecashTestnet');
 
@@ -399,6 +405,8 @@ class Bip44Coins implements CryptoCoins {
     Bip44Coins.dashTestnet: Bip44Conf.dashTestNet,
     Bip44Coins.dogecoin: Bip44Conf.dogecoinMainNet,
     Bip44Coins.dogecoinTestnet: Bip44Conf.dogecoinTestNet,
+    Bip44Coins.pepecoin: Bip44Conf.pepeMainnet,
+    Bip44Coins.pepecoinTestnet: Bip44Conf.pepeTestnet,
     Bip44Coins.ecash: Bip44Conf.ecashMainNet,
     Bip44Coins.ecashTestnet: Bip44Conf.ecashTestNet,
     Bip44Coins.elrond: Bip44Conf.elrond,

@@ -686,4 +686,24 @@ class CoinsConf {
   static const CoinConf tonMainnet = CoinConf(
       coinName: CoinNames("The Open Network", "TON"),
       params: CoinParams(workchain: 0));
+
+  /// Configuration for pepecoin main net
+  static const CoinConf pepeMainnet = CoinConf(
+    coinName: CoinNames("Pepecoin", "PEPE"),
+    params: CoinParams(
+      p2pkhNetVer: [0x38],
+      p2shNetVer: [0x16],
+      wifNetVer: [0x9e],
+    ),
+  );
+
+  /// Configuration for pepecoin test net
+  static const CoinConf pepeTestnet = CoinConf(
+    coinName: CoinNames("Pepecoin TestNet", "PEPE"),
+    params: CoinParams(
+      p2pkhNetVer: [0x71],
+      p2shNetVer: btcP2SHNetVerTn,
+      wifNetVer: [0xf1],
+    ),
+  );
 }

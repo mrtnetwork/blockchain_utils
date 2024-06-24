@@ -25,6 +25,15 @@ class _XRPAddressConst {
   static const int xAddressPrefixLength = 2;
 }
 
+class XRPXAddressDecodeResult {
+  final List<int> bytes;
+  final int? tag;
+  final bool isTestnet;
+  XRPXAddressDecodeResult(
+      {required List<int> bytes, required this.tag, required this.isTestnet})
+      : bytes = BytesUtils.toBytes(bytes, unmodifiable: true);
+}
+
 class XRPAddressUtils {
   /// Generates an XRP (Ripple) address from the provided address hash.
   ///
@@ -89,7 +98,8 @@ class XRPAddressUtils {
   /// [prefix] The optional prefix representing the network type (mainnet or testnet).
   /// returns A tuple containing the address hash and an optional tag extracted from the X-Address.
   /// throws ArgumentException if the decoded address has invalid length, prefix mismatch, or an invalid tag.
-  static Tuple<List<int>, int?> decodeXAddress(String addr, List<int>? prefix) {
+  static XRPXAddressDecodeResult decodeXAddress(
+      String addr, List<int>? prefix) {
     List<int> addrDecBytes =
         Base58Decoder.checkDecode(addr, Base58Alphabets.ripple);
 
@@ -138,7 +148,11 @@ class XRPAddressUtils {
       tag = readUint32LE(tagBytes);
     }
 
-    return Tuple(addrHash, tag);
+    return XRPXAddressDecodeResult(
+        bytes: addrHash,
+        tag: tag,
+        isTestnet: BytesUtils.bytesEqual(
+            prefixBytes, _XRPAddressConst._xAddressPrefixTest));
   }
 
   /// Converts a classic XRP address to an X-Address.
@@ -190,7 +204,7 @@ class XRPAddressUtils {
         return decode;
       } catch (e) {
         final xAddr = decodeXAddress(address, xAddrPrefix);
-        return xAddr.item1;
+        return xAddr.bytes;
       }
     } catch (e) {
       throw const AddressConverterException(
@@ -241,7 +255,7 @@ class XRPAddressUtils {
     if (isClassicAddress(address)) {
       return address;
     }
-    final addrHash = decodeXAddress(address, null).item1;
+    final addrHash = decodeXAddress(address, null).bytes;
     return hashToAddress(addrHash);
   }
 }
@@ -371,8 +385,8 @@ class XrpXAddrDecoder implements BlockchainAddressDecoder {
   @override
   List<int> decodeAddr(String addr, [Map<String, dynamic> kwargs = const {}]) {
     final prefix =
-        AddrKeyValidator.validateAddressArgs<List<int>>(kwargs, "prefix");
+        AddrKeyValidator.nullOrValidateAddressArgs<List<int>>(kwargs, "prefix");
 
-    return XRPAddressUtils.decodeXAddress(addr, prefix).item1;
+    return XRPAddressUtils.decodeXAddress(addr, prefix).bytes;
   }
 }

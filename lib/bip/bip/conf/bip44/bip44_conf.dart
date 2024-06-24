@@ -534,6 +534,34 @@ class Bip44Conf {
     },
   );
 
+  /// Configuration for Pepecoin main net
+  static final CoinConfig pepeMainnet = CoinConfig(
+    coinNames: CoinsConf.pepeMainnet.coinName,
+    coinIdx: Slip44.pepecoin,
+    isTestnet: false,
+    defPath: derPathNonHardenedFull,
+    keyNetVer: Bip32KeyNetVersions(List<int>.from([0x02, 0xfa, 0xca, 0xfd]),
+        List<int>.from([0x02, 0xfa, 0xc3, 0x98])),
+    wifNetVer: CoinsConf.pepeMainnet.params.wifNetVer,
+    type: EllipticCurveTypes.secp256k1,
+    addressEncoder: ([dynamic kwargs]) => P2PKHAddrEncoder(),
+    addrParams: {"net_ver": CoinsConf.pepeMainnet.params.p2pkhNetVer!},
+  );
+
+  /// Configuration for Pepecoin test net
+  static final CoinConfig pepeTestnet = CoinConfig(
+    coinNames: CoinsConf.pepeTestnet.coinName,
+    coinIdx: Slip44.testnet,
+    isTestnet: true,
+    defPath: derPathNonHardenedFull,
+    keyNetVer: Bip32KeyNetVersions(List<int>.from([0x04, 0x32, 0xa9, 0xa8]),
+        List<int>.from([0x04, 0x32, 0xa2, 0x43])),
+    wifNetVer: CoinsConf.pepeTestnet.params.wifNetVer,
+    type: EllipticCurveTypes.secp256k1,
+    addressEncoder: ([dynamic kwargs]) => P2PKHAddrEncoder(),
+    addrParams: {"net_ver": CoinsConf.pepeTestnet.params.p2pkhNetVer!},
+  );
+
   /// Configuration for eCash main net
   static final BipBitcoinCashConf ecashMainNet = BipBitcoinCashConf(
     coinNames: CoinsConf.ecashMainNet.coinName,
@@ -1096,7 +1124,7 @@ class Bip44Conf {
     coinNames: CoinsConf.ripple.coinName,
     coinIdx: Slip44.ripple,
     isTestnet: false,
-    defPath: derPathNonHardenedFull,
+    defPath: derPathHardenedFull,
     keyNetVer: bip44BtcKeyNetVerMain,
     wifNetVer: null,
     type: EllipticCurveTypes.ed25519,
@@ -1112,7 +1140,7 @@ class Bip44Conf {
     coinNames: CoinsConf.ripple.coinName,
     coinIdx: Slip44.testnet,
     isTestnet: true,
-    defPath: derPathNonHardenedFull,
+    defPath: derPathHardenedFull,
     keyNetVer: bip44BtcKeyNetVerMain,
     wifNetVer: null,
     type: EllipticCurveTypes.ed25519,

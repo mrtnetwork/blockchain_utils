@@ -377,4 +377,38 @@ class Bip49Conf {
       },
     },
   );
+
+  /// Configuration for pepecoin main net
+  static final CoinConfig pepeMainnet = CoinConfig(
+      coinNames: CoinsConf.pepeMainnet.coinName,
+      coinIdx: Slip44.pepecoin,
+      isTestnet: false,
+      defPath: derPathNonHardenedFull,
+      keyNetVer: Bip32KeyNetVersions(
+        List<int>.from([0x02, 0xfa, 0xca, 0xfd]),
+        List<int>.from([0x02, 0xfa, 0xc3, 0x98]),
+      ),
+      wifNetVer: CoinsConf.pepeMainnet.params.wifNetVer,
+      type: EllipticCurveTypes.secp256k1,
+      addressEncoder: ([dynamic kwargs]) => P2SHAddrEncoder(),
+      addrParams: {
+        "net_ver": CoinsConf.pepeMainnet.params.p2shNetVer!,
+      });
+
+  /// Configuration for pepecoin test net
+  static final CoinConfig pepeTestnet = CoinConfig(
+      coinNames: CoinsConf.pepeTestnet.coinName,
+      coinIdx: Slip44.testnet,
+      isTestnet: true,
+      defPath: derPathNonHardenedFull,
+      keyNetVer: Bip32KeyNetVersions(
+        List<int>.from([0x04, 0x32, 0xa9, 0xa8]),
+        List<int>.from([0x04, 0x32, 0xa2, 0x43]),
+      ),
+      wifNetVer: CoinsConf.pepeTestnet.params.wifNetVer,
+      type: EllipticCurveTypes.secp256k1,
+      addressEncoder: ([dynamic kwargs]) => P2SHAddrEncoder(),
+      addrParams: {
+        "net_ver": CoinsConf.pepeTestnet.params.p2shNetVer!,
+      });
 }

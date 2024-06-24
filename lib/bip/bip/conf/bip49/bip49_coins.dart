@@ -14,6 +14,7 @@ class Bip49Coins implements CryptoCoins {
   static const Bip49Coins ecash = Bip49Coins._('ecash');
   static const Bip49Coins litecoin = Bip49Coins._('litecoin');
   static const Bip49Coins zcash = Bip49Coins._('zcash');
+  static const Bip49Coins pepecoin = Bip49Coins._('pepecoin');
 
   // Test nets
   static const Bip49Coins bitcoinCashTestnet =
@@ -27,6 +28,7 @@ class Bip49Coins implements CryptoCoins {
   static const Bip49Coins ecashTestnet = Bip49Coins._('ecashTestnet');
   static const Bip49Coins litecoinTestnet = Bip49Coins._('litecoinTestnet');
   static const Bip49Coins zcashTestnet = Bip49Coins._('zcashTestnet');
+  static const Bip49Coins pepecoinTestnet = Bip49Coins._('pepecoinTestnet');
 
   final String name;
 
@@ -72,6 +74,8 @@ class Bip49Coins implements CryptoCoins {
     Bip49Coins.litecoinTestnet: Bip49Conf.litecoinTestNet,
     Bip49Coins.zcash: Bip49Conf.zcashMainNet,
     Bip49Coins.zcashTestnet: Bip49Conf.zcashTestNet,
+    Bip49Coins.pepecoin: Bip49Conf.pepeMainnet,
+    Bip49Coins.pepecoinTestnet: Bip49Conf.pepeTestnet
   };
   @override
   BipProposal get proposal => BipProposal.bip49;

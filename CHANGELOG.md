@@ -1,3 +1,7 @@
+## 3.2.0
+
+  - Add Pepecoin configiration to Bip-44 and Bip-49 coins.
+
 ## 3.1.0
 
 - Ton Address Support: Implemented functionality to support Ton addresses.
