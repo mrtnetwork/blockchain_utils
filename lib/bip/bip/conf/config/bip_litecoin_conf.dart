@@ -1,23 +1,18 @@
-import 'package:blockchain_utils/bip/address/encoder.dart';
 import 'package:blockchain_utils/bip/bip/bip32/bip32_key_net_ver.dart';
-import 'package:blockchain_utils/bip/bip/conf/bip_coin_conf.dart';
+import 'package:blockchain_utils/bip/bip/conf/config/bip_coin_conf.dart';
+import 'package:blockchain_utils/bip/bip/conf/core/coin_conf.dart';
 import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
 import 'package:blockchain_utils/bip/coin_conf/coins_name.dart';
 
-/// A class representing the configuration for Bitcoin Cash (BCH) based on the BIP framework.
-class BipBitcoinCashConf extends CoinConfig {
-  /// Flag to indicate whether legacy address format should be used.
-  final bool useLagacyAdder;
+/// A class representing the configuration for Litecoin (LTC) based on the BIP framework.
+class BipLitecoinConf extends BipCoinConfig {
+  /// Configuration properties specific to Litecoin.
+  final Bip32KeyNetVersions altKeyNetVer;
+  final bool useDeprAddress;
+  final bool useAltKeyNetVer;
 
-  /// Returns an address encoder based on the 'useLagacyAdder' flag.
-  @override
-  BlockchainAddressEncoder encoder() {
-    return addressEncoder([useLagacyAdder]);
-  }
-
-  /// Constructor for BipBitcoinCashConf.
-  @override
-  const BipBitcoinCashConf({
+  /// Constructor for BipLitecoinConf.
+  const BipLitecoinConf({
     required CoinNames coinNames,
     required int coinIdx,
     required bool isTestnet,
@@ -27,7 +22,9 @@ class BipBitcoinCashConf extends CoinConfig {
     required EllipticCurveTypes type,
     required AddrEncoder addressEncoder,
     required Map<String, dynamic> addrParams,
-    this.useLagacyAdder = false,
+    required this.altKeyNetVer,
+    this.useAltKeyNetVer = false,
+    this.useDeprAddress = false,
   }) : super(
             addrParams: addrParams,
             addressEncoder: addressEncoder,
@@ -40,18 +37,25 @@ class BipBitcoinCashConf extends CoinConfig {
             wifNetVer: wifNetVer);
 
   /// Overrides the 'addrParams' getter to return the appropriate address parameters
-  /// based on the 'useLagacyAdder' flag.
+  /// based on the 'useDeprAddress' flag.
   @override
   Map<String, dynamic> get addrParams {
-    if (useLagacyAdder) {
-      return super.addrParams["legacy"];
-    }
-    return super.addrParams['std'];
+    return {
+      "net_ver": useDeprAddress
+          ? super.addrParams["depr_net_ver"]
+          : super.addrParams['std_net_ver']
+    };
   }
 
-  /// Creates a copy of the BipBitcoinCashConf object with optional properties updated.
+  /// Overrides the 'keyNetVer' getter to use the alternate key network version
+  /// when the 'usAltKeyNetVer' flag is set to true.
   @override
-  BipBitcoinCashConf copy({
+  Bip32KeyNetVersions get keyNetVer =>
+      useAltKeyNetVer ? altKeyNetVer : super.keyNetVer;
+  @override
+
+  /// Creates a copy of the BipLitecoinConf object with optional properties updated.
+  BipLitecoinConf copy({
     CoinNames? coinNames,
     int? coinIdx,
     bool? isTestnet,
@@ -62,9 +66,10 @@ class BipBitcoinCashConf extends CoinConfig {
     Map<String, dynamic>? addrParams,
     EllipticCurveTypes? type,
     AddrEncoder? addressEncoder,
-    bool? useLagacyAdder,
+    bool? useAltKeyNetVer,
+    bool? useDeprAddress,
   }) {
-    return BipBitcoinCashConf(
+    return BipLitecoinConf(
         coinNames: coinNames ?? this.coinNames,
         coinIdx: coinIdx ?? this.coinIdx,
         isTestnet: isTestnet ?? this.isTestnet,
@@ -74,6 +79,8 @@ class BipBitcoinCashConf extends CoinConfig {
         addrParams: addrParams ?? this.addrParams,
         type: type ?? this.type,
         addressEncoder: addressEncoder ?? this.addressEncoder,
-        useLagacyAdder: useLagacyAdder ?? this.useLagacyAdder);
+        altKeyNetVer: altKeyNetVer ?? this.altKeyNetVer,
+        useAltKeyNetVer: useAltKeyNetVer ?? this.useAltKeyNetVer,
+        useDeprAddress: useDeprAddress ?? this.useDeprAddress);
   }
 }

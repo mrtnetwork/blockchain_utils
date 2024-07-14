@@ -7,6 +7,7 @@ import 'package:blockchain_utils/bip/ecc/keys/sr25519_keys.dart';
 import 'package:blockchain_utils/bip/monero/monero_keys.dart';
 import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/point/base.dart';
+import 'package:blockchain_utils/utils/binary/utils.dart';
 
 /// An abstract class representing a generic public key interface for different elliptic curve types.
 abstract class IPublicKey {
@@ -28,6 +29,9 @@ abstract class IPublicKey {
       default:
         return Secp256k1PublicKeyEcdsa.fromBytes(keybytes);
     }
+  }
+  factory IPublicKey.fromHex(String keyHex, EllipticCurveTypes type) {
+    return IPublicKey.fromBytes(BytesUtils.fromHexString(keyHex), type);
   }
 
   /// Static method to check the validity of a byte array as a public key for a specific elliptic curve type.
@@ -93,6 +97,10 @@ abstract class IPrivateKey {
       default:
     }
     return Secp256k1PrivateKeyEcdsa.fromBytes(keyBytes);
+  }
+
+  factory IPrivateKey.fromHex(String keyHex, EllipticCurveTypes type) {
+    return IPrivateKey.fromBytes(BytesUtils.fromHexString(keyHex), type);
   }
 
   /// Get the length of the private key in bytes.

@@ -1,13 +1,13 @@
 import 'package:blockchain_utils/bip/address/p2wpkh_addr.dart';
 import 'package:blockchain_utils/bip/bip/bip32/bip32_key_net_ver.dart';
-import 'package:blockchain_utils/bip/bip/conf/bip_coin_conf.dart';
-import 'package:blockchain_utils/bip/bip/conf/bip_conf_const.dart';
+import 'package:blockchain_utils/bip/bip/conf/config/bip_coin_conf.dart';
+import 'package:blockchain_utils/bip/bip/conf/const/bip_conf_const.dart';
 import 'package:blockchain_utils/bip/coin_conf/coins_conf.dart';
 import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
 import 'package:blockchain_utils/bip/slip/slip44/slip44.dart';
 
 /// A configuration class for BIP84 that defines the key network versions and
-/// maps each supported BIP84Coin to its corresponding CoinConfig.
+/// maps each supported BIP84Coin to its corresponding BipCoinConfig.
 class Bip84Conf {
   /// The key network version for Bitcoin.
   static final Bip32KeyNetVersions bip84BtcKeyNetVer = Bip32KeyNetVersions(
@@ -16,7 +16,7 @@ class Bip84Conf {
   );
 
   /// Configuration for Bitcoin main net
-  static final CoinConfig bitcoinMainNet = CoinConfig(
+  static final BipCoinConfig bitcoinMainNet = BipCoinConfig(
     coinNames: CoinsConf.bitcoinMainNet.coinName,
     coinIdx: Slip44.bitcoin,
     isTestnet: false,
@@ -29,7 +29,7 @@ class Bip84Conf {
   );
 
   /// Configuration for Bitcoin test net
-  static final CoinConfig bitcoinTestNet = CoinConfig(
+  static final BipCoinConfig bitcoinTestNet = BipCoinConfig(
     coinNames: CoinsConf.bitcoinTestNet.coinName,
     coinIdx: Slip44.testnet,
     isTestnet: true,
@@ -45,7 +45,7 @@ class Bip84Conf {
   );
 
   /// Configuration for Litecoin main net
-  static final CoinConfig litecoinMainNet = CoinConfig(
+  static final BipCoinConfig litecoinMainNet = BipCoinConfig(
     coinNames: CoinsConf.litecoinMainNet.coinName,
     coinIdx: Slip44.litecoin,
     isTestnet: false,
@@ -58,7 +58,7 @@ class Bip84Conf {
   );
 
   /// Configuration for Litecoin test net
-  static final CoinConfig litecoinTestNet = CoinConfig(
+  static final BipCoinConfig litecoinTestNet = BipCoinConfig(
     coinNames: CoinsConf.litecoinTestNet.coinName,
     coinIdx: Slip44.testnet,
     isTestnet: true,

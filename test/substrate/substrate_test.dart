@@ -1,7 +1,7 @@
 import 'package:blockchain_utils/bip/ecc/keys/sr25519_keys.dart';
 import 'package:blockchain_utils/bip/substrate/conf/substrate_coins.dart';
-import 'package:blockchain_utils/bip/substrate/substrate_base.dart';
-import 'package:blockchain_utils/bip/substrate/substrate_path.dart';
+import 'package:blockchain_utils/bip/substrate/core/substrate_base.dart';
+import 'package:blockchain_utils/bip/substrate/path/substrate_path.dart';
 import 'package:blockchain_utils/utils/utils.dart';
 import 'package:test/test.dart';
 
@@ -15,7 +15,7 @@ void main() {
       final seed = BytesUtils.fromHexString(i["private_key"]);
       final coin = SubstrateCoins.values.firstWhere((element) =>
           element.name.toLowerCase() ==
-          (i["coin"] as String).toLowerCase().replaceAll("_", ""));
+          "${(i["coin"] as String).toLowerCase().replaceAll("_", "")}sr25519");
       Substrate w = Substrate.fromPrivateKey(seed, coin);
       expect(w.publicKey.compressed.toHex(), i["public_key"]);
       expect(w.priveKey.raw.toHex(), i["private_key"]);
@@ -48,7 +48,7 @@ void main() {
       final seed = BytesUtils.fromHexString(i["seed"]);
       final coin = SubstrateCoins.values.firstWhere((element) =>
           element.name.toLowerCase() ==
-          (i["coin"] as String).toLowerCase().replaceAll("_", ""));
+          "${(i["coin"] as String).toLowerCase().replaceAll("_", "")}sr25519");
       Substrate w = Substrate.fromSeed(seed, coin);
       expect(w.publicKey.compressed.toHex(), i["public_key"]);
       expect(w.priveKey.raw.toHex(), i["private_key"]);

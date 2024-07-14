@@ -1,5 +1,5 @@
-import 'package:blockchain_utils/bip/substrate/substrate_base.dart';
-import 'package:blockchain_utils/bip/substrate/substrate_keys.dart';
+import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
+import 'package:blockchain_utils/bip/substrate/core/substrate_base.dart';
 import 'package:blockchain_utils/signer/substrate/core/signer.dart';
 import 'package:blockchain_utils/signer/substrate/core/verifier.dart';
 import 'package:blockchain_utils/utils/utils.dart';
@@ -9,7 +9,7 @@ class SubstrateSigner {
   const SubstrateSigner._(this._signer);
 
   factory SubstrateSigner.fromBytes(
-      List<int> keyBytes, SubstrateKeyAlgorithm algorithm) {
+      List<int> keyBytes, EllipticCurveTypes algorithm) {
     return SubstrateSigner._(
         BaseSubstrateSigner.fromBytes(keyBytes, algorithm));
   }
@@ -35,7 +35,7 @@ class SubstrateVerifier {
   const SubstrateVerifier._(this._verifier);
 
   factory SubstrateVerifier.fromBytes(
-      List<int> keyBytes, SubstrateKeyAlgorithm algorithm) {
+      List<int> keyBytes, EllipticCurveTypes algorithm) {
     return SubstrateVerifier._(
         BaseSubstrateVerifier.fromBytes(keyBytes, algorithm));
   }

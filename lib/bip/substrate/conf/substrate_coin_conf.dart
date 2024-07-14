@@ -1,9 +1,13 @@
+import 'package:blockchain_utils/bip/bip/bip32/bip32_key_net_ver.dart';
+import 'package:blockchain_utils/bip/bip/conf/core/coin_conf.dart';
 import 'package:blockchain_utils/bip/coin_conf/coin_conf.dart';
 import 'package:blockchain_utils/bip/coin_conf/coins_name.dart';
+import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
 
 /// A class representing the configuration for a Substrate-based cryptocurrency.
-class SubstrateCoinConf {
+class SubstrateCoinConf implements CoinConfig {
   /// Coin names and symbols
+  @override
   final CoinNames coinNames;
 
   /// Address format identifier
@@ -13,18 +17,50 @@ class SubstrateCoinConf {
   ///
   /// It initializes the Substrate cryptocurrency's coin names and symbols [coinNames]
   /// and the SS58 address format identifier [ss58Format].
-  SubstrateCoinConf({required this.coinNames, required this.ss58Format});
+  const SubstrateCoinConf(
+      {required this.coinNames,
+      required this.ss58Format,
+      required this.addressEncoder,
+      required this.type,
+      this.addrParams = const {},
+      this.isTestnet});
 
   /// Factory method to create a SubstrateCoinConf from a generic CoinConf.
   ///
   /// This method takes a generic `CoinConf` instance and extracts the coin names
   /// and SS58 address format information to create a `SubstrateCoinConf`.
-  factory SubstrateCoinConf.fromCoinConf(CoinConf coinConf) {
+  factory SubstrateCoinConf.fromCoinConf({
+    required CoinConf coinConf,
+    required AddrEncoder addressEncode,
+    required EllipticCurveTypes type,
+  }) {
     return SubstrateCoinConf(
         coinNames: coinConf.coinName,
-        ss58Format: coinConf.params.addrSs58Format!);
+        ss58Format: coinConf.params.addrSs58Format!,
+        addressEncoder: addressEncode,
+        type: type);
   }
 
-  /// Get the Substrate-specific address parameters as a map.
-  Map<String, int> get addrParams => {"ss58_format": ss58Format};
+  @override
+  final AddrEncoder addressEncoder;
+
+  @override
+  final EllipticCurveTypes type;
+
+  @override
+  final Map<String, dynamic> addrParams;
+
+  @override
+  final bool? isTestnet;
+
+  @override
+  bool get hasExtendedKeys => false;
+
+  @override
+  bool get hasWif => false;
+
+  @override
+  final Bip32KeyNetVersions? keyNetVer = null;
+  @override
+  final List<int>? wifNetVer = null;
 }

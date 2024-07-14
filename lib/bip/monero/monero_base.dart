@@ -3,7 +3,6 @@ import 'package:blockchain_utils/bip/ecc/keys/ed25519_keys.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/utils/ed25519_utils.dart';
 import 'package:blockchain_utils/bip/monero/conf/monero_coin_conf.dart';
 import 'package:blockchain_utils/bip/monero/conf/monero_coins.dart';
-import 'package:blockchain_utils/bip/monero/conf/monero_conf.dart';
 import 'package:blockchain_utils/bip/monero/monero_exc.dart';
 import 'package:blockchain_utils/bip/monero/monero_keys.dart';
 import 'package:blockchain_utils/bip/monero/monero_subaddr.dart';
@@ -61,7 +60,7 @@ class Monero {
       final mPubSkey = mPrivSkey.publicKey;
       final mPubVkey = mPrivVkey.publicKey;
       return Monero.__(
-          coinConf: MoneroConf.getCoin(coinType),
+          coinConf: coinType.conf,
           privSkey: mPrivSkey,
           privVkey: mPrivVkey,
           pubSkey: mPubSkey,
@@ -72,7 +71,7 @@ class Monero {
     final mPubSkey = MoneroPublicKey.fromBytes(pubKey);
     final mPubVkey = mPrivVkey.publicKey;
     return Monero.__(
-        coinConf: MoneroConf.getCoin(coinType),
+        coinConf: coinType.conf,
         privSkey: null,
         privVkey: mPrivVkey,
         pubSkey: mPubSkey,

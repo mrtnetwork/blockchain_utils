@@ -3,7 +3,7 @@ import 'package:blockchain_utils/bip/bip/bip32/bip32_key_data.dart';
 import 'package:blockchain_utils/bip/bip/bip44/base/bip44_base.dart';
 import 'package:blockchain_utils/bip/bip/bip44/base/bip44_base_ex.dart';
 import 'package:blockchain_utils/bip/bip/conf/bip84/bip84_coins.dart';
-import 'package:blockchain_utils/bip/bip/conf/bip_coin_conf.dart';
+import 'package:blockchain_utils/bip/bip/conf/config/bip_coin_conf.dart';
 
 /// Constants related to BIP-84 (Bitcoin Improvement Proposal 84).
 class Bip84Const {
@@ -16,7 +16,8 @@ class Bip84Const {
 
 class Bip84 extends Bip44Base {
   /// private constractor
-  Bip84._(Bip32Base bip32Obj, CoinConfig coinConf) : super(bip32Obj, coinConf);
+  Bip84._(Bip32Base bip32Obj, BipCoinConfig coinConf)
+      : super(bip32Obj, coinConf);
 
   /// Constructor for creating a [Bip84] object from a seed and coin.
   Bip84.fromSeed(List<int> seedBytes, Bip84Coins coinType)

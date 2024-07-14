@@ -8,6 +8,8 @@ export 'base/bip44_base.dart';
 /// Export statement for BIP-44 key-related functions and structures.
 export 'base/bip44_keys.dart';
 
+export 'base/bip44_base_ex.dart';
+
 /// Export statement for the BIP-44 base implementation, which includes key
 /// derivation and wallet management functions.
 export 'bip44_base.dart';

@@ -1,3 +1,7 @@
+## 3.3.0
+
+  - Fix substrate key generation from seed (ECDSA, EDDSA).
+
 ## 3.2.0
 
   - Add Pepecoin configiration to Bip-44 and Bip-49 coins.

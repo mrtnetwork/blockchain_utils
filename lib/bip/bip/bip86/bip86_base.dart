@@ -3,7 +3,7 @@ import 'package:blockchain_utils/bip/bip/bip32/bip32_key_data.dart';
 import 'package:blockchain_utils/bip/bip/bip44/base/bip44_base.dart';
 import 'package:blockchain_utils/bip/bip/bip44/base/bip44_base_ex.dart';
 import 'package:blockchain_utils/bip/bip/conf/bip86/bip86_coins.dart';
-import 'package:blockchain_utils/bip/bip/conf/bip_coin_conf.dart';
+import 'package:blockchain_utils/bip/bip/conf/config/bip_coin_conf.dart';
 
 /// Constants related to BIP-86 (Bitcoin Improvement Proposal 86).
 class Bip86Const {
@@ -16,7 +16,8 @@ class Bip86Const {
 
 class Bip86 extends Bip44Base {
   /// private constructor
-  Bip86._(Bip32Base bip32Obj, CoinConfig coinConf) : super(bip32Obj, coinConf);
+  Bip86._(Bip32Base bip32Obj, BipCoinConfig coinConf)
+      : super(bip32Obj, coinConf);
 
   /// Constructor for creating a [Bip86] object from a seed and coin.
   Bip86.fromSeed(List<int> seedBytes, Bip86Coins coinType)

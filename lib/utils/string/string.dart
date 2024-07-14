@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/utils/binary/utils.dart';
 
 /// An enumeration representing different string encoding options.
@@ -141,7 +142,12 @@ class StringUtils {
   ///
   /// The input [data] is a JSON-encoded string.
   /// Returns a Map representing the Dart object.
-  static dynamic toJson(String data) {
+  static T toJson<T>(String data) {
+    final decode = jsonDecode(data);
+    if (decode is! T) {
+      throw ArgumentException(
+          "Invalid json casting. excepted: $T got: ${decode.runtimeType}");
+    }
     return jsonDecode(data);
   }
 
@@ -160,7 +166,7 @@ class StringUtils {
   ///
   /// The input [data] is a JSON-encoded string.
   /// Returns a Map representing the Dart object.
-  static Object? tryToJson(String data) {
+  static T? tryToJson<T>(String data) {
     try {
       return toJson(data);
     } catch (e) {

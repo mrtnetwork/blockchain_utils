@@ -52,13 +52,13 @@
   OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+import 'package:blockchain_utils/bip/bip/conf/bip/bip_coins.dart';
 import 'package:blockchain_utils/bip/bip/conf/bip84/bip84_conf.dart';
-import 'package:blockchain_utils/bip/bip/conf/bip_coin_conf.dart';
-import 'package:blockchain_utils/bip/bip/conf/bip_coins.dart';
+import 'package:blockchain_utils/bip/bip/conf/config/bip_coin_conf.dart';
 
 /// An enumeration of supported cryptocurrencies for BIP84. It includes both main
 /// networks and test networks of various cryptocurrencies.
-class Bip84Coins implements CryptoCoins {
+class Bip84Coins extends BipCoins {
   // Main nets
   static const Bip84Coins bitcoin = Bip84Coins._('bitcoin');
   static const Bip84Coins litecoin = Bip84Coins._('litecoin');
@@ -83,7 +83,7 @@ class Bip84Coins implements CryptoCoins {
   String get coinName => name;
 
   @override
-  CoinConfig get conf => _coinToConf[this]!;
+  BipCoinConfig get conf => _coinToConf[this]!;
 
   static Bip84Coins? fromName(String name) {
     try {
@@ -94,8 +94,8 @@ class Bip84Coins implements CryptoCoins {
   }
 
   /// A mapping that associates each BIP84Coin (enum) with its corresponding
-  /// CoinConfig configuration.
-  static final Map<Bip84Coins, CoinConfig> _coinToConf = {
+  /// BipCoinConfig configuration.
+  static final Map<Bip84Coins, BipCoinConfig> _coinToConf = {
     Bip84Coins.bitcoin: Bip84Conf.bitcoinMainNet,
     Bip84Coins.bitcoinTestnet: Bip84Conf.bitcoinTestNet,
     Bip84Coins.litecoin: Bip84Conf.litecoinMainNet,

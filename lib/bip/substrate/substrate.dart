@@ -13,10 +13,10 @@ export 'scale/substrate_scale_enc_cuint.dart';
 export 'scale/substrate_scale_enc_uint.dart';
 
 /// Export statement for Substrate base components, including key, derivation, address.
-export 'substrate_base.dart';
+export 'core/substrate_base.dart';
 
 /// Export statement for Substrate key management components.
-export 'substrate_keys.dart';
+export 'keys/substrate_keys.dart';
 
 /// Export statement for Substrate path components.
-export 'substrate_path.dart';
+export 'path/substrate_path.dart';

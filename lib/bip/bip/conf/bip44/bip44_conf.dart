@@ -1,16 +1,16 @@
 import 'package:blockchain_utils/bip/address/encoders.dart';
 import 'package:blockchain_utils/bip/bip/bip32/bip32_const.dart';
 import 'package:blockchain_utils/bip/bip/bip32/bip32_key_net_ver.dart';
-import 'package:blockchain_utils/bip/bip/conf/bip_bitcoin_cash_conf.dart';
-import 'package:blockchain_utils/bip/bip/conf/bip_coin_conf.dart';
-import 'package:blockchain_utils/bip/bip/conf/bip_conf_const.dart';
-import 'package:blockchain_utils/bip/bip/conf/bip_litecoin_conf.dart';
+import 'package:blockchain_utils/bip/bip/conf/config/bip_bitcoin_cash_conf.dart';
+import 'package:blockchain_utils/bip/bip/conf/config/bip_coin_conf.dart';
+import 'package:blockchain_utils/bip/bip/conf/const/bip_conf_const.dart';
+import 'package:blockchain_utils/bip/bip/conf/config/bip_litecoin_conf.dart';
 import 'package:blockchain_utils/bip/coin_conf/coins_conf.dart';
 import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
 import 'package:blockchain_utils/bip/slip/slip44/slip44.dart';
 
 /// A configuration class for BIP44 coins that defines the key network versions and
-/// maps each supported BIP44Coin to its corresponding CoinConfig.
+/// maps each supported BIP44Coin to its corresponding BipCoinConfig.
 class Bip44Conf {
   /// The key network version for the mainnet of Bitcoin.
   static final Bip32KeyNetVersions bip44BtcKeyNetVerMain =
@@ -21,7 +21,7 @@ class Bip44Conf {
       Bip32Const.testNetKeyNetVersions;
 
   /// Configuration for Akash Network
-  static final CoinConfig akashNetwork = CoinConfig(
+  static final BipCoinConfig akashNetwork = BipCoinConfig(
     coinNames: CoinsConf.akashNetwork.coinName,
     coinIdx: Slip44.atom,
     isTestnet: false,
@@ -36,7 +36,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Algorand
-  static final CoinConfig algorand = CoinConfig(
+  static final BipCoinConfig algorand = BipCoinConfig(
     coinNames: CoinsConf.algorand.coinName,
     addressEncoder: ([dynamic kwargs]) => AlgoAddrEncoder(),
     coinIdx: Slip44.algorand,
@@ -49,7 +49,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Aptos
-  static final CoinConfig aptos = CoinConfig(
+  static final BipCoinConfig aptos = BipCoinConfig(
     coinNames: CoinsConf.aptos.coinName,
     coinIdx: Slip44.aptos,
     isTestnet: false,
@@ -62,7 +62,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Avax C-Chain
-  static final CoinConfig avaxCChain = CoinConfig(
+  static final BipCoinConfig avaxCChain = BipCoinConfig(
     coinNames: CoinsConf.avaxCChain.coinName,
     coinIdx: Slip44.ethereum,
     isTestnet: false,
@@ -75,7 +75,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Avax P-Chain
-  static final CoinConfig avaxPChain = CoinConfig(
+  static final BipCoinConfig avaxPChain = BipCoinConfig(
     coinNames: CoinsConf.avaxPChain.coinName,
     coinIdx: Slip44.avalanche,
     isTestnet: false,
@@ -88,7 +88,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Avax X-Chain
-  static final CoinConfig avaxXChain = CoinConfig(
+  static final BipCoinConfig avaxXChain = BipCoinConfig(
     coinNames: CoinsConf.avaxXChain.coinName,
     coinIdx: Slip44.avalanche,
     isTestnet: false,
@@ -101,7 +101,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Axelar
-  static final CoinConfig axelar = CoinConfig(
+  static final BipCoinConfig axelar = BipCoinConfig(
     coinNames: CoinsConf.axelar.coinName,
     coinIdx: Slip44.atom,
     isTestnet: false,
@@ -116,7 +116,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Band Protocol
-  static final CoinConfig bandProtocol = CoinConfig(
+  static final BipCoinConfig bandProtocol = BipCoinConfig(
     coinNames: CoinsConf.bandProtocol.coinName,
     coinIdx: Slip44.bandProtocol,
     isTestnet: false,
@@ -131,7 +131,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Binance Chain
-  static final CoinConfig binanceChain = CoinConfig(
+  static final BipCoinConfig binanceChain = BipCoinConfig(
     coinNames: CoinsConf.binanceChain.coinName,
     coinIdx: Slip44.binanceChain,
     isTestnet: false,
@@ -146,7 +146,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Binance Smart Chain
-  static final CoinConfig binanceSmartChain = CoinConfig(
+  static final BipCoinConfig binanceSmartChain = BipCoinConfig(
     coinNames: CoinsConf.binanceSmartChain.coinName,
     coinIdx: Slip44.ethereum,
     isTestnet: false,
@@ -159,7 +159,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Bitcoin main net
-  static final CoinConfig bitcoinMainNet = CoinConfig(
+  static final BipCoinConfig bitcoinMainNet = BipCoinConfig(
     coinNames: CoinsConf.bitcoinMainNet.coinName,
     coinIdx: Slip44.bitcoin,
     isTestnet: false,
@@ -174,7 +174,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Bitcoin test net
-  static final CoinConfig bitcoinTestNet = CoinConfig(
+  static final BipCoinConfig bitcoinTestNet = BipCoinConfig(
     coinNames: CoinsConf.bitcoinTestNet.coinName,
     coinIdx: Slip44.testnet,
     isTestnet: true,
@@ -293,7 +293,7 @@ class Bip44Conf {
   );
 
   /// Configuration for BitcoinSV main net
-  static final CoinConfig bitcoinSvMainNet = CoinConfig(
+  static final BipCoinConfig bitcoinSvMainNet = BipCoinConfig(
     coinNames: CoinsConf.bitcoinSvMainNet.coinName,
     coinIdx: Slip44.bitcoinSv,
     isTestnet: false,
@@ -310,7 +310,7 @@ class Bip44Conf {
   );
 
   /// Configuration for BitcoinSV test net
-  static final CoinConfig bitcoinSvTestNet = CoinConfig(
+  static final BipCoinConfig bitcoinSvTestNet = BipCoinConfig(
     coinNames: CoinsConf.bitcoinSvTestNet.coinName,
     coinIdx: Slip44.testnet,
     isTestnet: true,
@@ -324,7 +324,7 @@ class Bip44Conf {
     },
   );
 
-  static final CoinConfig cardanoByronIcarus = CoinConfig(
+  static final BipCoinConfig cardanoByronIcarus = BipCoinConfig(
     coinNames: CoinsConf.cardanoMainNet.coinName,
     coinIdx: Slip44.cardano,
     isTestnet: false,
@@ -337,7 +337,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Cardano Byron (Ledger)
-  static final CoinConfig cardanoByronLedger = CoinConfig(
+  static final BipCoinConfig cardanoByronLedger = BipCoinConfig(
     coinNames: CoinsConf.cardanoMainNet.coinName,
     coinIdx: Slip44.cardano,
     isTestnet: false,
@@ -348,7 +348,7 @@ class Bip44Conf {
     addressEncoder: ([dynamic kwargs]) => AdaByronIcarusAddrEncoder(),
     addrParams: {"chain_code": true},
   );
-  static final CoinConfig cardanoByronIcarusTestnet = CoinConfig(
+  static final BipCoinConfig cardanoByronIcarusTestnet = BipCoinConfig(
     coinNames: CoinsConf.cardanoMainNet.coinName,
     coinIdx: Slip44.testnet,
     isTestnet: true,
@@ -361,7 +361,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Cardano Byron (Ledger)
-  static final CoinConfig cardanoByronLedgerTestnet = CoinConfig(
+  static final BipCoinConfig cardanoByronLedgerTestnet = BipCoinConfig(
     coinNames: CoinsConf.cardanoMainNet.coinName,
     coinIdx: Slip44.testnet,
     isTestnet: true,
@@ -374,7 +374,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Celo
-  static final CoinConfig celo = CoinConfig(
+  static final BipCoinConfig celo = BipCoinConfig(
     coinNames: CoinsConf.celo.coinName,
     coinIdx: Slip44.celo,
     isTestnet: false,
@@ -387,7 +387,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Certik
-  static final CoinConfig certik = CoinConfig(
+  static final BipCoinConfig certik = BipCoinConfig(
     coinNames: CoinsConf.certik.coinName,
     coinIdx: Slip44.atom,
     isTestnet: false,
@@ -402,7 +402,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Chihuahua
-  static final CoinConfig chihuahua = CoinConfig(
+  static final BipCoinConfig chihuahua = BipCoinConfig(
     coinNames: CoinsConf.chihuahua.coinName,
     coinIdx: Slip44.atom,
     isTestnet: false,
@@ -417,7 +417,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Cosmos
-  static final CoinConfig cosmos = CoinConfig(
+  static final BipCoinConfig cosmos = BipCoinConfig(
     coinNames: CoinsConf.cosmos.coinName,
     coinIdx: Slip44.atom,
     isTestnet: false,
@@ -430,7 +430,7 @@ class Bip44Conf {
       "hrp": CoinsConf.cosmos.params.addrHrp!,
     },
   );
-  static final CoinConfig cosmosTestnet = CoinConfig(
+  static final BipCoinConfig cosmosTestnet = BipCoinConfig(
     coinNames: CoinsConf.cosmos.coinName,
     coinIdx: Slip44.testnet,
     isTestnet: false,
@@ -445,7 +445,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Cosmos
-  static final CoinConfig cosmosNist256p1 = CoinConfig(
+  static final BipCoinConfig cosmosNist256p1 = BipCoinConfig(
     coinNames: CoinsConf.cosmos.coinName,
     coinIdx: Slip44.atom,
     isTestnet: false,
@@ -458,7 +458,7 @@ class Bip44Conf {
       "hrp": CoinsConf.cosmos.params.addrHrp!,
     },
   );
-  static final CoinConfig cosmosTestnetNist256p1 = CoinConfig(
+  static final BipCoinConfig cosmosTestnetNist256p1 = BipCoinConfig(
     coinNames: CoinsConf.cosmos.coinName,
     coinIdx: Slip44.testnet,
     isTestnet: false,
@@ -473,7 +473,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Dash main net
-  static final CoinConfig dashMainNet = CoinConfig(
+  static final BipCoinConfig dashMainNet = BipCoinConfig(
     coinNames: CoinsConf.dashMainNet.coinName,
     coinIdx: Slip44.dash,
     isTestnet: false,
@@ -488,7 +488,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Dash test net
-  static final CoinConfig dashTestNet = CoinConfig(
+  static final BipCoinConfig dashTestNet = BipCoinConfig(
     coinNames: CoinsConf.dashTestNet.coinName,
     coinIdx: Slip44.testnet,
     isTestnet: true,
@@ -503,7 +503,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Dogecoin main net
-  static final CoinConfig dogecoinMainNet = CoinConfig(
+  static final BipCoinConfig dogecoinMainNet = BipCoinConfig(
     coinNames: CoinsConf.dogecoinMainNet.coinName,
     coinIdx: Slip44.dogecoin,
     isTestnet: false,
@@ -519,7 +519,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Dogecoin test net
-  static final CoinConfig dogecoinTestNet = CoinConfig(
+  static final BipCoinConfig dogecoinTestNet = BipCoinConfig(
     coinNames: CoinsConf.dogecoinTestNet.coinName,
     coinIdx: Slip44.testnet,
     isTestnet: true,
@@ -535,7 +535,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Pepecoin main net
-  static final CoinConfig pepeMainnet = CoinConfig(
+  static final BipCoinConfig pepeMainnet = BipCoinConfig(
     coinNames: CoinsConf.pepeMainnet.coinName,
     coinIdx: Slip44.pepecoin,
     isTestnet: false,
@@ -549,7 +549,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Pepecoin test net
-  static final CoinConfig pepeTestnet = CoinConfig(
+  static final BipCoinConfig pepeTestnet = BipCoinConfig(
     coinNames: CoinsConf.pepeTestnet.coinName,
     coinIdx: Slip44.testnet,
     isTestnet: true,
@@ -617,7 +617,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Elrond
-  static final CoinConfig elrond = CoinConfig(
+  static final BipCoinConfig elrond = BipCoinConfig(
     coinNames: CoinsConf.elrond.coinName,
     coinIdx: Slip44.elrond,
     isTestnet: false,
@@ -630,7 +630,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Eos
-  static final CoinConfig eos = CoinConfig(
+  static final BipCoinConfig eos = BipCoinConfig(
     coinNames: CoinsConf.eos.coinName,
     coinIdx: Slip44.eos,
     isTestnet: false,
@@ -643,7 +643,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Ergo main net
-  static final CoinConfig ergoMainNet = CoinConfig(
+  static final BipCoinConfig ergoMainNet = BipCoinConfig(
     coinNames: CoinsConf.ergoMainNet.coinName,
     coinIdx: Slip44.ergo,
     isTestnet: false,
@@ -658,7 +658,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Ergo test net
-  static final CoinConfig ergoTestNet = CoinConfig(
+  static final BipCoinConfig ergoTestNet = BipCoinConfig(
     coinNames: CoinsConf.ergoTestNet.coinName,
     coinIdx: Slip44.ergo,
     isTestnet: true,
@@ -673,7 +673,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Ethereum
-  static final CoinConfig ethereum = CoinConfig(
+  static final BipCoinConfig ethereum = BipCoinConfig(
     coinNames: CoinsConf.ethereum.coinName,
     coinIdx: Slip44.ethereum,
     isTestnet: false,
@@ -686,7 +686,7 @@ class Bip44Conf {
   );
 
   /// Configuration for EthereumTestnet
-  static final CoinConfig ethereumTestnet = CoinConfig(
+  static final BipCoinConfig ethereumTestnet = BipCoinConfig(
     coinNames: CoinsConf.ethereum.coinName,
     coinIdx: Slip44.testnet,
     isTestnet: true,
@@ -699,7 +699,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Ethereum Classic
-  static final CoinConfig ethereumClassic = CoinConfig(
+  static final BipCoinConfig ethereumClassic = BipCoinConfig(
     coinNames: CoinsConf.ethereumClassic.coinName,
     coinIdx: Slip44.ethereumClassic,
     isTestnet: false,
@@ -712,7 +712,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Fantom Opera
-  static final CoinConfig fantomOpera = CoinConfig(
+  static final BipCoinConfig fantomOpera = BipCoinConfig(
     coinNames: CoinsConf.fantomOpera.coinName,
     coinIdx: Slip44.ethereum,
     isTestnet: false,
@@ -725,7 +725,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Filecoin
-  static final CoinConfig filecoin = CoinConfig(
+  static final BipCoinConfig filecoin = BipCoinConfig(
     coinNames: CoinsConf.filecoin.coinName,
     coinIdx: Slip44.filecoin,
     isTestnet: false,
@@ -738,7 +738,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Harmony One (Metamask address)
-  static final CoinConfig harmonyOneMetamask = CoinConfig(
+  static final BipCoinConfig harmonyOneMetamask = BipCoinConfig(
     coinNames: CoinsConf.harmonyOne.coinName,
     coinIdx: Slip44.ethereum,
     isTestnet: false,
@@ -751,7 +751,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Harmony One (Ethereum address)
-  static final CoinConfig harmonyOneEth = CoinConfig(
+  static final BipCoinConfig harmonyOneEth = BipCoinConfig(
     coinNames: CoinsConf.harmonyOne.coinName,
     coinIdx: Slip44.harmonyOne,
     isTestnet: false,
@@ -764,7 +764,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Harmony One (Atom address)
-  static final CoinConfig harmonyOneAtom = CoinConfig(
+  static final BipCoinConfig harmonyOneAtom = BipCoinConfig(
     coinNames: CoinsConf.harmonyOne.coinName,
     coinIdx: Slip44.harmonyOne,
     isTestnet: false,
@@ -777,7 +777,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Huobi Chain
-  static final CoinConfig huobiChain = CoinConfig(
+  static final BipCoinConfig huobiChain = BipCoinConfig(
     coinNames: CoinsConf.huobiChain.coinName,
     coinIdx: Slip44.ethereum,
     isTestnet: false,
@@ -790,7 +790,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Icon
-  static final CoinConfig icon = CoinConfig(
+  static final BipCoinConfig icon = BipCoinConfig(
     coinNames: CoinsConf.icon.coinName,
     coinIdx: Slip44.icon,
     isTestnet: false,
@@ -803,7 +803,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Injective
-  static final CoinConfig injective = CoinConfig(
+  static final BipCoinConfig injective = BipCoinConfig(
     coinNames: CoinsConf.injective.coinName,
     coinIdx: Slip44.ethereum,
     isTestnet: false,
@@ -816,7 +816,7 @@ class Bip44Conf {
   );
 
   /// Configuration for IRISnet
-  static final CoinConfig irisNet = CoinConfig(
+  static final BipCoinConfig irisNet = BipCoinConfig(
     coinNames: CoinsConf.irisNet.coinName,
     coinIdx: Slip44.atom,
     isTestnet: false,
@@ -831,7 +831,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Kava
-  static final CoinConfig kava = CoinConfig(
+  static final BipCoinConfig kava = BipCoinConfig(
     coinNames: CoinsConf.kava.coinName,
     coinIdx: Slip44.kava,
     isTestnet: false,
@@ -846,9 +846,24 @@ class Bip44Conf {
   );
 
   /// Configuration for Kusama (ed25519 SLIP-0010)
-  static final CoinConfig kusamaEd25519Slip = CoinConfig(
+  static final BipCoinConfig kusamaEd25519Slip = BipCoinConfig(
     coinNames: CoinsConf.kusama.coinName,
     coinIdx: Slip44.kusama,
+    isTestnet: false,
+    defPath: derPathHardenedFull,
+    keyNetVer: bip44BtcKeyNetVerMain,
+    wifNetVer: null,
+    type: EllipticCurveTypes.ed25519,
+    addressEncoder: ([dynamic kwargs]) => SubstrateEd25519AddrEncoder(),
+    addrParams: {
+      "ss58_format": CoinsConf.kusama.params.addrSs58Format,
+    },
+  );
+
+  /// Configuration for KusamaTestnet (ed25519 SLIP-0010)
+  static final BipCoinConfig kusamaTestnetEd25519Slip = BipCoinConfig(
+    coinNames: CoinsConf.kusama.coinName,
+    coinIdx: Slip44.testnet,
     isTestnet: false,
     defPath: derPathHardenedFull,
     keyNetVer: bip44BtcKeyNetVerMain,
@@ -904,7 +919,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Monero (ed25519 SLIP-0010)
-  static final CoinConfig moneroEd25519Slip = CoinConfig(
+  static final BipCoinConfig moneroEd25519Slip = BipCoinConfig(
     coinNames: CoinsConf.moneroMainNet.coinName,
     coinIdx: Slip44.monero,
     isTestnet: false,
@@ -917,7 +932,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Monero (secp256k1)
-  static final CoinConfig moneroSecp256k1 = CoinConfig(
+  static final BipCoinConfig moneroSecp256k1 = BipCoinConfig(
     coinNames: CoinsConf.moneroMainNet.coinName,
     coinIdx: Slip44.monero,
     isTestnet: false,
@@ -930,7 +945,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Nano
-  static final CoinConfig nano = CoinConfig(
+  static final BipCoinConfig nano = BipCoinConfig(
     coinNames: CoinsConf.nano.coinName,
     coinIdx: Slip44.nano,
     isTestnet: false,
@@ -943,7 +958,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Near Protocol
-  static final CoinConfig nearProtocol = CoinConfig(
+  static final BipCoinConfig nearProtocol = BipCoinConfig(
     coinNames: CoinsConf.nearProtocol.coinName,
     coinIdx: Slip44.nearProtocol,
     isTestnet: false,
@@ -956,7 +971,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Neo
-  static final CoinConfig neo = CoinConfig(
+  static final BipCoinConfig neo = BipCoinConfig(
     coinNames: CoinsConf.neo.coinName,
     coinIdx: Slip44.neo,
     isTestnet: false,
@@ -971,7 +986,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Nine Chronicles Gold
-  static final CoinConfig nineChroniclesGold = CoinConfig(
+  static final BipCoinConfig nineChroniclesGold = BipCoinConfig(
     coinNames: CoinsConf.nineChroniclesGold.coinName,
     coinIdx: Slip44.nineChronicles,
     isTestnet: false,
@@ -984,7 +999,7 @@ class Bip44Conf {
   );
 
   /// Configuration for OKEx Chain (Ethereum address)
-  static final CoinConfig okexChainEth = CoinConfig(
+  static final BipCoinConfig okexChainEth = BipCoinConfig(
     coinNames: CoinsConf.okexChain.coinName,
     coinIdx: Slip44.ethereum,
     isTestnet: false,
@@ -997,7 +1012,7 @@ class Bip44Conf {
   );
 
   /// Configuration for OKEx Chain (Atom address)
-  static final CoinConfig okexChainAtom = CoinConfig(
+  static final BipCoinConfig okexChainAtom = BipCoinConfig(
     coinNames: CoinsConf.okexChain.coinName,
     coinIdx: Slip44.ethereum,
     isTestnet: false,
@@ -1010,7 +1025,7 @@ class Bip44Conf {
   );
 
   /// Configuration for OKEx Chain (old Atom address)
-  static final CoinConfig okexChainAtomOld = CoinConfig(
+  static final BipCoinConfig okexChainAtomOld = BipCoinConfig(
     coinNames: CoinsConf.okexChain.coinName,
     coinIdx: Slip44.okexChain,
     isTestnet: false,
@@ -1023,7 +1038,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Ontology
-  static final CoinConfig ontology = CoinConfig(
+  static final BipCoinConfig ontology = BipCoinConfig(
     coinNames: CoinsConf.ontology.coinName,
     coinIdx: Slip44.ontology,
     isTestnet: false,
@@ -1038,7 +1053,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Osmosis
-  static final CoinConfig osmosis = CoinConfig(
+  static final BipCoinConfig osmosis = BipCoinConfig(
     coinNames: CoinsConf.osmosis.coinName,
     coinIdx: Slip44.atom,
     isTestnet: false,
@@ -1053,7 +1068,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Pi Network
-  static final CoinConfig piNetwork = CoinConfig(
+  static final BipCoinConfig piNetwork = BipCoinConfig(
     coinNames: CoinsConf.piNetwork.coinName,
     coinIdx: Slip44.piNetwork,
     isTestnet: false,
@@ -1066,7 +1081,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Polkadot (ed25519 SLIP-0010)
-  static final CoinConfig polkadotEd25519Slip = CoinConfig(
+  static final BipCoinConfig polkadotEd25519Slip = BipCoinConfig(
     coinNames: CoinsConf.polkadot.coinName,
     coinIdx: Slip44.polkadot,
     isTestnet: false,
@@ -1079,9 +1094,22 @@ class Bip44Conf {
       "ss58_format": CoinsConf.polkadot.params.addrSs58Format!,
     },
   );
+  static final BipCoinConfig polkadotTestnetEd25519Slip = BipCoinConfig(
+    coinNames: CoinsConf.polkadot.coinName,
+    coinIdx: Slip44.testnet,
+    isTestnet: true,
+    defPath: derPathHardenedFull,
+    keyNetVer: bip44BtcKeyNetVerMain,
+    wifNetVer: null,
+    type: EllipticCurveTypes.ed25519,
+    addressEncoder: ([dynamic kwargs]) => SubstrateEd25519AddrEncoder(),
+    addrParams: {
+      "ss58_format": CoinsConf.genericSubstrate.params.addrSs58Format!
+    },
+  );
 
   /// Configuration for Polygon
-  static final CoinConfig polygon = CoinConfig(
+  static final BipCoinConfig polygon = BipCoinConfig(
     coinNames: CoinsConf.polygon.coinName,
     coinIdx: Slip44.ethereum,
     isTestnet: false,
@@ -1094,7 +1122,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Ripple
-  static final CoinConfig ripple = CoinConfig(
+  static final BipCoinConfig ripple = BipCoinConfig(
     coinNames: CoinsConf.ripple.coinName,
     coinIdx: Slip44.ripple,
     isTestnet: false,
@@ -1107,7 +1135,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Ripple testnet
-  static final CoinConfig rippleTestnet = CoinConfig(
+  static final BipCoinConfig rippleTestnet = BipCoinConfig(
     coinNames: CoinsConf.ripple.coinName,
     coinIdx: Slip44.testnet,
     isTestnet: true,
@@ -1120,7 +1148,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Ripple
-  static final CoinConfig rippleEd25519 = CoinConfig(
+  static final BipCoinConfig rippleEd25519 = BipCoinConfig(
     coinNames: CoinsConf.ripple.coinName,
     coinIdx: Slip44.ripple,
     isTestnet: false,
@@ -1136,7 +1164,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Ripple testnet
-  static final CoinConfig rippleTestnetEd25519 = CoinConfig(
+  static final BipCoinConfig rippleTestnetEd25519 = BipCoinConfig(
     coinNames: CoinsConf.ripple.coinName,
     coinIdx: Slip44.testnet,
     isTestnet: true,
@@ -1150,7 +1178,7 @@ class Bip44Conf {
       "curve_type": EllipticCurveTypes.ed25519
     },
   );
-  static final CoinConfig secretNetworkOld = CoinConfig(
+  static final BipCoinConfig secretNetworkOld = BipCoinConfig(
     coinNames: CoinsConf.secretNetwork.coinName,
     coinIdx: Slip44.atom,
     isTestnet: false,
@@ -1165,7 +1193,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Secret Network (new path)
-  static final CoinConfig secretNetworkNew = CoinConfig(
+  static final BipCoinConfig secretNetworkNew = BipCoinConfig(
     coinNames: CoinsConf.secretNetwork.coinName,
     coinIdx: Slip44.secretNetwork,
     isTestnet: false,
@@ -1180,7 +1208,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Solana
-  static final CoinConfig solana = CoinConfig(
+  static final BipCoinConfig solana = BipCoinConfig(
     coinNames: CoinsConf.solana.coinName,
     coinIdx: Slip44.solana,
     isTestnet: false,
@@ -1193,7 +1221,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Solana
-  static final CoinConfig solanaTestnet = CoinConfig(
+  static final BipCoinConfig solanaTestnet = BipCoinConfig(
     coinNames: CoinsConf.solana.coinName,
     coinIdx: Slip44.testnet,
     isTestnet: true,
@@ -1206,7 +1234,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Stellar
-  static final CoinConfig stellar = CoinConfig(
+  static final BipCoinConfig stellar = BipCoinConfig(
     coinNames: CoinsConf.stellar.coinName,
     coinIdx: Slip44.stellar,
     isTestnet: false,
@@ -1219,7 +1247,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Terra
-  static final CoinConfig terra = CoinConfig(
+  static final BipCoinConfig terra = BipCoinConfig(
     coinNames: CoinsConf.terra.coinName,
     coinIdx: Slip44.terra,
     isTestnet: false,
@@ -1234,7 +1262,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Tezos
-  static final CoinConfig tezos = CoinConfig(
+  static final BipCoinConfig tezos = BipCoinConfig(
     coinNames: CoinsConf.tezos.coinName,
     coinIdx: Slip44.tezos,
     isTestnet: false,
@@ -1247,7 +1275,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Theta
-  static final CoinConfig theta = CoinConfig(
+  static final BipCoinConfig theta = BipCoinConfig(
     coinNames: CoinsConf.theta.coinName,
     coinIdx: Slip44.theta,
     isTestnet: false,
@@ -1260,7 +1288,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Tron
-  static final CoinConfig tron = CoinConfig(
+  static final BipCoinConfig tron = BipCoinConfig(
     coinNames: CoinsConf.tron.coinName,
     coinIdx: Slip44.tron,
     isTestnet: false,
@@ -1273,7 +1301,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Tron testnet
-  static final CoinConfig tronTestnet = CoinConfig(
+  static final BipCoinConfig tronTestnet = BipCoinConfig(
     coinNames: CoinsConf.tron.coinName,
     coinIdx: Slip44.testnet,
     isTestnet: true,
@@ -1286,7 +1314,7 @@ class Bip44Conf {
   );
 
   /// Configuration for VeChain
-  static final CoinConfig vechain = CoinConfig(
+  static final BipCoinConfig vechain = BipCoinConfig(
     coinNames: CoinsConf.veChain.coinName,
     coinIdx: Slip44.vechain,
     isTestnet: false,
@@ -1299,7 +1327,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Verge
-  static final CoinConfig verge = CoinConfig(
+  static final BipCoinConfig verge = BipCoinConfig(
     coinNames: CoinsConf.verge.coinName,
     coinIdx: Slip44.verge,
     isTestnet: false,
@@ -1314,7 +1342,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Zcash main net
-  static final CoinConfig zcashMainNet = CoinConfig(
+  static final BipCoinConfig zcashMainNet = BipCoinConfig(
     coinNames: CoinsConf.zcashMainNet.coinName,
     coinIdx: Slip44.zcash,
     isTestnet: false,
@@ -1329,7 +1357,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Zcash test net
-  static final CoinConfig zcashTestNet = CoinConfig(
+  static final BipCoinConfig zcashTestNet = BipCoinConfig(
     coinNames: CoinsConf.zcashTestNet.coinName,
     coinIdx: Slip44.testnet,
     isTestnet: true,
@@ -1344,7 +1372,7 @@ class Bip44Conf {
   );
 
   /// Configuration for Zilliqa
-  static final CoinConfig zilliqa = CoinConfig(
+  static final BipCoinConfig zilliqa = BipCoinConfig(
     coinNames: CoinsConf.zilliqa.coinName,
     coinIdx: Slip44.zilliqa,
     isTestnet: false,
@@ -1356,7 +1384,7 @@ class Bip44Conf {
     addrParams: {},
   );
 
-  static final CoinConfig tonMainnet = CoinConfig(
+  static final BipCoinConfig tonMainnet = BipCoinConfig(
     coinNames: CoinsConf.tonMainnet.coinName,
     coinIdx: Slip44.ton,
     isTestnet: false,
@@ -1367,7 +1395,7 @@ class Bip44Conf {
     addressEncoder: ([dynamic kwargs]) => TonAddrEncoder(),
     addrParams: {"workchain": CoinsConf.tonMainnet.params.workchain},
   );
-  static final CoinConfig tonTestnet = CoinConfig(
+  static final BipCoinConfig tonTestnet = BipCoinConfig(
     coinNames: CoinsConf.tonTestnet.coinName,
     coinIdx: Slip44.testnet,
     isTestnet: true,

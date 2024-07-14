@@ -1,10 +1,10 @@
+import 'package:blockchain_utils/bip/bip/conf/bip/bip_coins.dart';
 import 'package:blockchain_utils/bip/bip/conf/bip86/bip86_conf.dart';
-import 'package:blockchain_utils/bip/bip/conf/bip_coin_conf.dart';
-import 'package:blockchain_utils/bip/bip/conf/bip_coins.dart';
+import 'package:blockchain_utils/bip/bip/conf/config/bip_coin_conf.dart';
 
 /// An enumeration of supported cryptocurrencies for BIP86. It includes both main
 /// networks and test networks of various cryptocurrencies.
-class Bip86Coins implements CryptoCoins {
+class Bip86Coins extends BipCoins {
   /// mainnets
   static const Bip86Coins bitcoin = Bip86Coins._('bitcoin');
 
@@ -28,7 +28,7 @@ class Bip86Coins implements CryptoCoins {
   }
 
   @override
-  CoinConfig get conf => _coinToConf[this]!;
+  BipCoinConfig get conf => _coinToConf[this]!;
 
   static Bip86Coins? fromName(String name) {
     try {
@@ -39,8 +39,8 @@ class Bip86Coins implements CryptoCoins {
   }
 
   /// A mapping that associates each BIP86Coin (enum) with its corresponding
-  /// CoinConfig configuration.
-  static final Map<Bip86Coins, CoinConfig> _coinToConf = {
+  /// BipCoinConfig configuration.
+  static final Map<Bip86Coins, BipCoinConfig> _coinToConf = {
     Bip86Coins.bitcoin: Bip86Conf.bitcoinMainNet,
     Bip86Coins.bitcoinTestnet: Bip86Conf.bitcoinTestNet,
   };

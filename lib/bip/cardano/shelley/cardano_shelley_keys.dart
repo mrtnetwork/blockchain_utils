@@ -1,12 +1,12 @@
 import 'package:blockchain_utils/bip/address/ada/ada_shelley_addr.dart';
 import 'package:blockchain_utils/bip/bip/bip32/bip32_keys.dart';
-import 'package:blockchain_utils/bip/bip/conf/bip_coin_conf.dart';
+import 'package:blockchain_utils/bip/bip/conf/config/bip_coin_conf.dart';
 
 /// A class that represents public keys associated with a Cardano Shelley wallet.
 class CardanoShelleyPublicKeys {
   final Bip32PublicKey pubAddrKey;
   final Bip32PublicKey pubSkKey;
-  final CoinConfig coinConf;
+  final BipCoinConfig coinConf;
 
   /// Constructor to create a Cardano Shelley Public Keys instance.
   ///
@@ -56,7 +56,7 @@ class CardanoShelleyPublicKeys {
 class CardanoShelleyPrivateKeys {
   final Bip32PrivateKey privAddrKey;
   final Bip32PrivateKey privSkKey;
-  final CoinConfig coinConf;
+  final BipCoinConfig coinConf;
 
   /// Constructor to create a Cardano Shelley Private Keys instance.
   ///

@@ -55,32 +55,37 @@
 import 'package:blockchain_utils/bip/address/encoder.dart';
 import 'package:blockchain_utils/bip/bip/bip32/bip32_key_net_ver.dart';
 import 'package:blockchain_utils/bip/bip/bip32/bip32_keys.dart';
+import 'package:blockchain_utils/bip/bip/conf/core/coin_conf.dart';
 import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
 import 'package:blockchain_utils/bip/coin_conf/coins_name.dart';
 
-/// A typedef for the address encoder function that takes optional dynamic parameters.
-typedef AddrEncoder = BlockchainAddressEncoder Function([dynamic kwargs]);
-
 /// A base class representing configuration parameters for a cryptocurrency coin.
-class CoinConfig {
+class BipCoinConfig implements CoinConfig {
   /// Returns the address encoder for this coin configuration.
   BlockchainAddressEncoder encoder() {
     return addressEncoder();
   }
 
   /// Configuration properties.
+  @override
   final CoinNames coinNames;
   final int coinIdx;
+  @override
   final bool isTestnet;
   final String defPath;
+  @override
   final Bip32KeyNetVersions keyNetVer;
+  @override
   final List<int>? wifNetVer;
+  @override
   final AddrEncoder addressEncoder;
+  @override
   final Map<String, dynamic> addrParams;
+  @override
   final EllipticCurveTypes type;
 
-  /// Creates a copy of the CoinConfig object with optional properties updated.
-  CoinConfig copy({
+  /// Creates a copy of the BipCoinConfig object with optional properties updated.
+  BipCoinConfig copy({
     CoinNames? coinNames,
     int? coinIdx,
     bool? isTestnet,
@@ -91,7 +96,7 @@ class CoinConfig {
     EllipticCurveTypes? type,
     AddrEncoder? addressEncoder,
   }) {
-    return CoinConfig(
+    return BipCoinConfig(
         coinNames: coinNames ?? this.coinNames,
         coinIdx: coinIdx ?? this.coinIdx,
         isTestnet: isTestnet ?? this.isTestnet,
@@ -103,8 +108,8 @@ class CoinConfig {
         addressEncoder: addressEncoder ?? this.addressEncoder);
   }
 
-  /// Constructor for CoinConfig.
-  const CoinConfig({
+  /// Constructor for BipCoinConfig.
+  const BipCoinConfig({
     required this.coinNames,
     required this.coinIdx,
     required this.isTestnet,
@@ -127,4 +132,10 @@ class CoinConfig {
     }
     return addrParams;
   }
+
+  @override
+  bool get hasExtendedKeys => true;
+
+  @override
+  bool get hasWif => wifNetVer != null;
 }

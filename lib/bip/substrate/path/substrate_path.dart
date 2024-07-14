@@ -1,7 +1,7 @@
 import 'package:blockchain_utils/bip/substrate/scale/substrate_scale_enc_base.dart';
 import 'package:blockchain_utils/bip/substrate/scale/substrate_scale_enc_bytes.dart';
 import 'package:blockchain_utils/bip/substrate/scale/substrate_scale_enc_uint.dart';
-import 'package:blockchain_utils/bip/substrate/substrate_ex.dart';
+import 'package:blockchain_utils/bip/substrate/exception/substrate_ex.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
 
 /// A constants class that provides predefined values and regular expressions related to Substrate paths
@@ -20,14 +20,14 @@ class SubstratePathConst {
   static const String hardPathPrefix = "//";
 
   /// SCALE encoders for different integer sizes
-  static Map<int, SubstrateScaleEncoderBase> get scaleIntEncoders => const {
-        8: SubstrateScaleU8Encoder(),
-        16: SubstrateScaleU16Encoder(),
-        32: SubstrateScaleU32Encoder(),
-        64: SubstrateScaleU64Encoder(),
-        128: SubstrateScaleU128Encoder(),
-        256: SubstrateScaleU256Encoder(),
-      };
+  static const Map<int, SubstrateScaleEncoderBase> scaleIntEncoders = {
+    8: SubstrateScaleU8Encoder(),
+    16: SubstrateScaleU16Encoder(),
+    32: SubstrateScaleU32Encoder(),
+    64: SubstrateScaleU64Encoder(),
+    128: SubstrateScaleU128Encoder(),
+    256: SubstrateScaleU256Encoder(),
+  };
 }
 
 /// Represents a Substrate path element, which can be either soft or hard, and provides methods for

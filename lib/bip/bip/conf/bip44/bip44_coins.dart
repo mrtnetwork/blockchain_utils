@@ -52,13 +52,13 @@
   OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+import 'package:blockchain_utils/bip/bip/conf/bip/bip_coins.dart';
 import 'package:blockchain_utils/bip/bip/conf/bip44/bip44_conf.dart';
-import 'package:blockchain_utils/bip/bip/conf/bip_coin_conf.dart';
-import 'package:blockchain_utils/bip/bip/conf/bip_coins.dart';
+import 'package:blockchain_utils/bip/bip/conf/config/bip_coin_conf.dart';
 
 /// An enumeration of supported cryptocurrencies for BIP44. It includes both main
 /// networks and test networks of various cryptocurrencies.
-class Bip44Coins implements CryptoCoins {
+class Bip44Coins extends BipCoins {
   // Named constants representing each coin
   const Bip44Coins._(this.name);
 
@@ -204,6 +204,10 @@ class Bip44Coins implements CryptoCoins {
   /// Kusama Ed25519 Slip
   static const kusamaEd25519Slip = Bip44Coins._('kusamaEd25519Slip');
 
+  /// Kusama testnet Ed25519 Slip
+  static const kusamaTestnetEd25519Slip =
+      Bip44Coins._('kusamaTestnetEd25519Slip');
+
   /// Litecoin
   static const litecoin = Bip44Coins._('litecoin');
 
@@ -245,6 +249,10 @@ class Bip44Coins implements CryptoCoins {
 
   /// Polkadot Ed25519 Slip
   static const polkadotEd25519Slip = Bip44Coins._('polkadotEd25519Slip');
+
+  /// Polkadot testnet Ed25519 Slip
+  static const polkadotTestnetEd25519Slip =
+      Bip44Coins._('polkadotTestnetEd25519Slip');
 
   /// Polygon
   static const polygon = Bip44Coins._('polygon');
@@ -357,7 +365,7 @@ class Bip44Coins implements CryptoCoins {
   }
 
   @override
-  CoinConfig get conf => _coinToConf[this]!;
+  BipCoinConfig get conf => _coinToConf[this]!;
 
   static Bip44Coins? fromName(String name) {
     try {
@@ -370,8 +378,8 @@ class Bip44Coins implements CryptoCoins {
   static List<Bip44Coins> get values => _coinToConf.keys.toList();
 
   /// A mapping that associates each BIP44Coin (enum) with its corresponding
-  /// CoinConfig configuration.
-  static final Map<Bip44Coins, CoinConfig> _coinToConf = {
+  /// BipCoinConfig configuration.
+  static final Map<Bip44Coins, BipCoinConfig> _coinToConf = {
     Bip44Coins.akashNetwork: Bip44Conf.akashNetwork,
     Bip44Coins.algorand: Bip44Conf.algorand,
     Bip44Coins.aptos: Bip44Conf.aptos,
@@ -427,6 +435,7 @@ class Bip44Coins implements CryptoCoins {
     Bip44Coins.irisNet: Bip44Conf.irisNet,
     Bip44Coins.kava: Bip44Conf.kava,
     Bip44Coins.kusamaEd25519Slip: Bip44Conf.kusamaEd25519Slip,
+    Bip44Coins.kusamaTestnetEd25519Slip: Bip44Conf.kusamaTestnetEd25519Slip,
     Bip44Coins.litecoin: Bip44Conf.litecoinMainNet,
     Bip44Coins.litecoinTestnet: Bip44Conf.litecoinTestNet,
     Bip44Coins.moneroEd25519Slip: Bip44Conf.moneroEd25519Slip,
@@ -442,6 +451,7 @@ class Bip44Coins implements CryptoCoins {
     Bip44Coins.osmosis: Bip44Conf.osmosis,
     Bip44Coins.piNetwork: Bip44Conf.piNetwork,
     Bip44Coins.polkadotEd25519Slip: Bip44Conf.polkadotEd25519Slip,
+    Bip44Coins.polkadotTestnetEd25519Slip: Bip44Conf.polkadotTestnetEd25519Slip,
     Bip44Coins.polygon: Bip44Conf.polygon,
     Bip44Coins.ripple: Bip44Conf.ripple,
     Bip44Coins.rippleTestnet: Bip44Conf.rippleTestnet,

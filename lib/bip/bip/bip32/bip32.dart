@@ -3,6 +3,10 @@
 /// cryptocurrencies to manage and derive keys.
 library bip32;
 
+export 'base/bip32_base.dart';
+export 'base/ibip32_key_derivator.dart';
+export 'base/ibip32_mst_key_generator.dart';
+
 /// Export statements for Khalow-based BIP-32 components:
 /// Export the Khalow BIP-32 implementation for Ed25519.
 export 'khalow/bip32_kholaw_ed25519.dart';

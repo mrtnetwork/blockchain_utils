@@ -1,16 +1,15 @@
 import 'package:blockchain_utils/bip/address/p2sh_addr.dart';
 import 'package:blockchain_utils/bip/bip/bip32/bip32_key_net_ver.dart';
-import 'package:blockchain_utils/bip/bip/conf/bip_bitcoin_cash_conf.dart';
-import 'package:blockchain_utils/bip/bip/conf/bip_coin_conf.dart';
-import 'package:blockchain_utils/bip/bip/conf/bip_litecoin_conf.dart';
+import 'package:blockchain_utils/bip/bip/conf/const/bip_conf_const.dart';
+import 'package:blockchain_utils/bip/bip/conf/config/bip_bitcoin_cash_conf.dart';
+import 'package:blockchain_utils/bip/bip/conf/config/bip_coin_conf.dart';
+import 'package:blockchain_utils/bip/bip/conf/config/bip_litecoin_conf.dart';
 import 'package:blockchain_utils/bip/coin_conf/coins_conf.dart';
 import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
 import 'package:blockchain_utils/bip/slip/slip44/slip44.dart';
 
-import '../bip_conf_const.dart';
-
 /// A configuration class for BIP49 that defines the key network versions and
-/// maps each supported BIP49Coin to its corresponding CoinConfig.
+/// maps each supported BIP49Coin to its corresponding BipCoinConfig.
 class Bip49Conf {
   /// The key network version for the mainnet of Bitcoin.
   static final bip49BtcKeyNetVerMain = Bip32KeyNetVersions(
@@ -25,7 +24,7 @@ class Bip49Conf {
   );
 
   /// Configuration for Dash main net
-  static final CoinConfig dashMainNet = CoinConfig(
+  static final BipCoinConfig dashMainNet = BipCoinConfig(
       coinNames: CoinsConf.dashMainNet.coinName,
       coinIdx: Slip44.dash,
       isTestnet: false,
@@ -39,7 +38,7 @@ class Bip49Conf {
       });
 
   /// Configuration for Dash test net
-  static final CoinConfig dashTestNet = CoinConfig(
+  static final BipCoinConfig dashTestNet = BipCoinConfig(
       coinNames: CoinsConf.dashTestNet.coinName,
       coinIdx: Slip44.testnet,
       isTestnet: true,
@@ -53,7 +52,7 @@ class Bip49Conf {
       });
 
   /// Configuration for Dogecoin main net
-  static final CoinConfig dogecoinMainNet = CoinConfig(
+  static final BipCoinConfig dogecoinMainNet = BipCoinConfig(
       coinNames: CoinsConf.dogecoinMainNet.coinName,
       coinIdx: Slip44.dogecoin,
       isTestnet: false,
@@ -70,7 +69,7 @@ class Bip49Conf {
       });
 
   /// Configuration for Dogecoin test net
-  static final CoinConfig dogecoinTestNet = CoinConfig(
+  static final BipCoinConfig dogecoinTestNet = BipCoinConfig(
       coinNames: CoinsConf.dogecoinTestNet.coinName,
       coinIdx: Slip44.testnet,
       isTestnet: true,
@@ -134,7 +133,7 @@ class Bip49Conf {
       });
 
   /// Configuration for Zcash main net
-  static final CoinConfig zcashMainNet = CoinConfig(
+  static final BipCoinConfig zcashMainNet = BipCoinConfig(
       coinNames: CoinsConf.zcashMainNet.coinName,
       coinIdx: Slip44.zcash,
       isTestnet: false,
@@ -148,7 +147,7 @@ class Bip49Conf {
       });
 
   /// Configuration for Zcash test net
-  static final CoinConfig zcashTestNet = CoinConfig(
+  static final BipCoinConfig zcashTestNet = BipCoinConfig(
       coinNames: CoinsConf.zcashTestNet.coinName,
       coinIdx: Slip44.testnet,
       isTestnet: true,
@@ -164,7 +163,7 @@ class Bip49Conf {
       });
 
   /// Configuration for Bitcoin main net
-  static final CoinConfig bitcoinMainNet = CoinConfig(
+  static final BipCoinConfig bitcoinMainNet = BipCoinConfig(
       coinNames: CoinsConf.bitcoinMainNet.coinName,
       coinIdx: Slip44.bitcoin,
       isTestnet: false,
@@ -178,7 +177,7 @@ class Bip49Conf {
       });
 
   /// Configuration for Bitcoin test net
-  static final CoinConfig bitcoinTestNet = CoinConfig(
+  static final BipCoinConfig bitcoinTestNet = BipCoinConfig(
       coinNames: CoinsConf.bitcoinTestNet.coinName,
       coinIdx: Slip44.testnet,
       isTestnet: true,
@@ -192,7 +191,7 @@ class Bip49Conf {
       });
 
   /// Configuration for BitcoinSV main net
-  static final CoinConfig bitcoinSvMainNet = CoinConfig(
+  static final BipCoinConfig bitcoinSvMainNet = BipCoinConfig(
       coinNames: CoinsConf.bitcoinSvMainNet.coinName,
       coinIdx: Slip44.bitcoinSv,
       isTestnet: false,
@@ -206,7 +205,7 @@ class Bip49Conf {
       });
 
   /// Configuration for BitcoinSV test net
-  static final CoinConfig bitcoinSvTestNet = CoinConfig(
+  static final BipCoinConfig bitcoinSvTestNet = BipCoinConfig(
       coinNames: CoinsConf.bitcoinSvTestNet.coinName,
       coinIdx: Slip44.testnet,
       isTestnet: true,
@@ -379,7 +378,7 @@ class Bip49Conf {
   );
 
   /// Configuration for pepecoin main net
-  static final CoinConfig pepeMainnet = CoinConfig(
+  static final BipCoinConfig pepeMainnet = BipCoinConfig(
       coinNames: CoinsConf.pepeMainnet.coinName,
       coinIdx: Slip44.pepecoin,
       isTestnet: false,
@@ -396,7 +395,7 @@ class Bip49Conf {
       });
 
   /// Configuration for pepecoin test net
-  static final CoinConfig pepeTestnet = CoinConfig(
+  static final BipCoinConfig pepeTestnet = BipCoinConfig(
       coinNames: CoinsConf.pepeTestnet.coinName,
       coinIdx: Slip44.testnet,
       isTestnet: true,

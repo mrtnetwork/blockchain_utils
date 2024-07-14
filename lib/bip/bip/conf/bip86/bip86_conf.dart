@@ -54,14 +54,14 @@
 
 import 'package:blockchain_utils/bip/address/p2tr_addr.dart';
 import 'package:blockchain_utils/bip/bip/bip32/bip32_const.dart';
-import 'package:blockchain_utils/bip/bip/conf/bip_coin_conf.dart';
-import 'package:blockchain_utils/bip/bip/conf/bip_conf_const.dart';
+import 'package:blockchain_utils/bip/bip/conf/config/bip_coin_conf.dart';
+import 'package:blockchain_utils/bip/bip/conf/const/bip_conf_const.dart';
 import 'package:blockchain_utils/bip/coin_conf/coins_conf.dart';
 import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
 import 'package:blockchain_utils/bip/slip/slip44/slip44.dart';
 
 /// A configuration class for BIP86 that defines the key network versions and
-/// maps each supported BIP86Coin to its corresponding CoinConfig.
+/// maps each supported BIP86Coin to its corresponding BipCoinConfig.
 class Bip86Conf {
   /// The key network version for the mainnet of Bitcoin.
   static final bip86BtcKeyNetVer = Bip32Const.mainNetKeyNetVersions;
@@ -70,7 +70,7 @@ class Bip86Conf {
   static final bip86BtcKeyNetVerTest = Bip32Const.testNetKeyNetVersions;
 
   /// Configuration for Bitcoin main net
-  static CoinConfig bitcoinMainNet = CoinConfig(
+  static BipCoinConfig bitcoinMainNet = BipCoinConfig(
     coinNames: CoinsConf.bitcoinMainNet.coinName,
     coinIdx: Slip44.bitcoin,
     isTestnet: false,
@@ -85,7 +85,7 @@ class Bip86Conf {
   );
 
   /// Configuration for Bitcoin test net
-  static CoinConfig bitcoinTestNet = CoinConfig(
+  static BipCoinConfig bitcoinTestNet = BipCoinConfig(
     coinNames: CoinsConf.bitcoinTestNet.coinName,
     coinIdx: Slip44.testnet,
     isTestnet: true,

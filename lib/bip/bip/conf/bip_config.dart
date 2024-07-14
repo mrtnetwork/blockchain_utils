@@ -5,22 +5,32 @@
 /// and key derivation for a variety of blockchain networks.
 library bip_config;
 
-/// Export statement for BIP-44 coin definitions and parameters, including
-/// coin names and configuration information for hierarchical deterministic wallets.
+export 'bip/bip_coins.dart';
+
+/// bip44
 export 'bip44/bip44_coins.dart';
 export 'bip44/bip44_conf.dart';
 
-/// Export statement for BIP-49 coin definitions and parameters, including
-/// coin names and configuration information for hierarchical deterministic wallets.
+/// bip49
 export 'bip49/bip49_coins.dart';
 export 'bip49/bip49_conf.dart';
 
-/// Export statement for BIP-84 coin definitions and parameters, including
-/// coin names and configuration information for hierarchical deterministic wallets.
+/// bip84
 export 'bip84/bip84_coins.dart';
 export 'bip84/bip84_conf.dart';
 
-/// Export statement for BIP-86 coin definitions and parameters, including
-/// coin names and configuration information for hierarchical deterministic wallets.
+/// bip86
 export 'bip86/bip86_coins.dart';
 export 'bip86/bip86_conf.dart';
+
+/// coin configs
+export 'config/bip_bitcoin_cash_conf.dart';
+export 'config/bip_coin_conf.dart';
+export 'config/bip_litecoin_conf.dart';
+
+/// coin constants
+export 'const/bip_conf_const.dart';
+
+/// crypto coin base class
+export 'core/coins.dart';
+export 'core/coin_conf.dart';

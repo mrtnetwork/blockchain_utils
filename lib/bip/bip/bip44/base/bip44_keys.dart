@@ -3,7 +3,7 @@ import 'package:blockchain_utils/bip/address/encoders.dart';
 import 'package:blockchain_utils/bip/address/p2pkh_addr.dart';
 import 'package:blockchain_utils/bip/bip/bip32/bip32_key_data.dart';
 import 'package:blockchain_utils/bip/bip/bip32/bip32_keys.dart';
-import 'package:blockchain_utils/bip/bip/conf/bip_coin_conf.dart';
+import 'package:blockchain_utils/bip/bip/conf/config/bip_coin_conf.dart';
 import 'package:blockchain_utils/bip/wif/wif.dart';
 import 'package:blockchain_utils/exception/exception.dart';
 
@@ -19,12 +19,12 @@ class Bip44PublicKey {
   final Bip32PublicKey pubKey;
 
   /// The coin configuration associated with this public key.
-  final CoinConfig coinConf;
+  final BipCoinConfig coinConf;
 
   /// Factory constructor to create a [Bip44PublicKey] from a [Bip32PublicKey]
-  /// and a [CoinConfig]. It verifies that the elliptic curve type of the public
+  /// and a [BipCoinConfig]. It verifies that the elliptic curve type of the public
   /// key matches the coin's configuration.
-  factory Bip44PublicKey(Bip32PublicKey pubKey, CoinConfig coinConf) {
+  factory Bip44PublicKey(Bip32PublicKey pubKey, BipCoinConfig coinConf) {
     if (pubKey.curveType != coinConf.type) {
       throw ArgumentException(
         'The public key elliptic curve (${pubKey.curveType}) shall match '
@@ -96,12 +96,12 @@ class Bip44PrivateKey {
   final Bip32PrivateKey privKey;
 
   /// The coin configuration associated with this private key.
-  final CoinConfig coinConf;
+  final BipCoinConfig coinConf;
 
   /// Factory constructor to create a [Bip44PrivateKey] from a [Bip32PrivateKey]
-  /// and a [CoinConfig]. It verifies that the elliptic curve type of the private
+  /// and a [BipCoinConfig]. It verifies that the elliptic curve type of the private
   /// key matches the coin's configuration.
-  factory Bip44PrivateKey(Bip32PrivateKey privKey, CoinConfig coinConf) {
+  factory Bip44PrivateKey(Bip32PrivateKey privKey, BipCoinConfig coinConf) {
     if (privKey.curveType != coinConf.type) {
       throw ArgumentException(
         'The private key elliptic curve (${privKey.curveType}) shall match the coin configuration one (${coinConf.type})',

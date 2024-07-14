@@ -1,10 +1,10 @@
+import 'package:blockchain_utils/bip/bip/conf/bip/bip_coins.dart';
 import 'package:blockchain_utils/bip/bip/conf/bip49/bip49_conf.dart';
-import 'package:blockchain_utils/bip/bip/conf/bip_coin_conf.dart';
-import 'package:blockchain_utils/bip/bip/conf/bip_coins.dart';
+import 'package:blockchain_utils/bip/bip/conf/config/bip_coin_conf.dart';
 
 /// An enumeration of supported cryptocurrencies for BIP49. It includes both main
 /// networks and test networks of various cryptocurrencies.
-class Bip49Coins implements CryptoCoins {
+class Bip49Coins extends BipCoins {
   static const Bip49Coins bitcoin = Bip49Coins._('bitcoin');
   static const Bip49Coins bitcoinCash = Bip49Coins._('bitcoinCash');
   static const Bip49Coins bitcoinCashSlp = Bip49Coins._('bitcoinCashSlp');
@@ -41,7 +41,7 @@ class Bip49Coins implements CryptoCoins {
   String get coinName => name;
 
   @override
-  CoinConfig get conf => _coinToConf[this]!;
+  BipCoinConfig get conf => _coinToConf[this]!;
 
   static Bip49Coins? fromName(String name) {
     try {
@@ -54,8 +54,8 @@ class Bip49Coins implements CryptoCoins {
   static List<Bip49Coins> get values => _coinToConf.keys.toList();
 
   /// A mapping that associates each BIP49Coin (enum) with its corresponding
-  /// CoinConfig configuration.
-  static final Map<Bip49Coins, CoinConfig> _coinToConf = {
+  /// BipCoinConfig configuration.
+  static final Map<Bip49Coins, BipCoinConfig> _coinToConf = {
     Bip49Coins.bitcoin: Bip49Conf.bitcoinMainNet,
     Bip49Coins.bitcoinTestnet: Bip49Conf.bitcoinTestNet,
     Bip49Coins.bitcoinCash: Bip49Conf.bitcoinCashMainNet,

@@ -1,7 +1,8 @@
-import 'package:blockchain_utils/bip/bip/bip39/bip39_mnemonic_validator.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
 import 'package:blockchain_utils/bip/mnemonic/mnemonic.dart';
 import 'package:blockchain_utils/utils/utils.dart';
+
+import 'bip39_mnemonic_decoder.dart';
 
 /// Constants related to Bip39 seed generation.
 class Bip39SeedGeneratorConst {
@@ -18,14 +19,19 @@ class Bip39SeedGeneratorConst {
 /// optional passphrase into account. It validates the mnemonic before
 /// generating the seed.
 class Bip39SeedGenerator {
+  final List<int> _entropy;
+  final Mnemonic mnemonic;
+  Bip39SeedGenerator._(this.mnemonic, List<int> entropy)
+      : _entropy = BytesUtils.toBytes(entropy, unmodifiable: true);
+
   /// Initializes a new instance of the Bip39SeedGenerator.
   ///
   /// The [mnemonic] parameter represents the Bip39 mnemonic to be used for seed generation.
-  Bip39SeedGenerator(this.mnemonic) {
+  factory Bip39SeedGenerator(Mnemonic mnemonic) {
     /// Validate the provided Bip39 mnemonic.
-    Bip39MnemonicValidator().validate(mnemonic.toStr());
+    final entropy = Bip39MnemonicDecoder().decode(mnemonic.toStr());
+    return Bip39SeedGenerator._(mnemonic, entropy);
   }
-  final Mnemonic mnemonic;
 
   /// Generates a seed from the Bip39 mnemonic.
   ///
@@ -40,6 +46,24 @@ class Bip39SeedGenerator {
     final salt = Bip39SeedGeneratorConst.seedSaltMod + passphrase;
     return QuickCrypto.pbkdf2DeriveKey(
       password: StringUtils.encode(mnemonic.toStr()),
+      salt: StringUtils.encode(salt),
+      iterations: Bip39SeedGeneratorConst.seedPbkdf2Rounds,
+    );
+  }
+
+  /// Generates a seed from the Bip39 mnemonic entropy.
+  ///
+  /// Optionally, a [passphrase] can be provided to further secure the seed generation.
+  ///
+  /// Example usage:
+  /// ```dart
+  /// final seedGenerator = Bip39SeedGenerator(mnemonic);
+  /// final seed = seedGenerator.generateFromEntropy("my_passphrase");
+  /// ```
+  List<int> generateFromEntropy([String passphrase = ""]) {
+    final salt = Bip39SeedGeneratorConst.seedSaltMod + passphrase;
+    return QuickCrypto.pbkdf2DeriveKey(
+      password: _entropy,
       salt: StringUtils.encode(salt),
       iterations: Bip39SeedGeneratorConst.seedPbkdf2Rounds,
     );

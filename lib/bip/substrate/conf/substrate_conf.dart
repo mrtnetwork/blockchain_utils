@@ -1,94 +1,230 @@
-import 'package:blockchain_utils/bip/bip/conf/bip_coins.dart';
+import 'package:blockchain_utils/bip/address/substrate_addr.dart';
 import 'package:blockchain_utils/bip/coin_conf/coins_conf.dart';
-import 'package:blockchain_utils/bip/substrate/conf/substrate_coins.dart';
-import 'package:blockchain_utils/exception/exception.dart';
-
+import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
 import 'substrate_coin_conf.dart';
 
 /// A configuration class for Substrate coins that defines the key network versions and
 /// maps each supported SubstrateCoins to its corresponding SubstrateConf.
 class SubstrateConf {
-  /// Retrieves the SubstrateCoinConf for the given SubstrateCoin. If the provided coin
-  /// is not an instance of SubstrateCoins, an error is thrown.
-  static SubstrateCoinConf getCoin(CryptoCoins coin) {
-    if (coin is! SubstrateCoins) {
-      throw const ArgumentException(
-          "Coin type is not an enumerative of SubstrateCoins");
-    }
-    return coinToConf[coin.value]!;
-  }
-
-  /// A mapping that associates each SubstrateCoins (enum) with its corresponding
-  /// SubstrateCoinConf configuration.
-  static final Map<SubstrateCoins, SubstrateCoinConf> coinToConf = {
-    SubstrateCoins.acala: SubstrateConf.acala,
-    SubstrateCoins.bifrost: SubstrateConf.bifrost,
-    SubstrateCoins.chainx: SubstrateConf.chainX,
-    SubstrateCoins.edgeware: SubstrateConf.edgeware,
-    SubstrateCoins.generic: SubstrateConf.generic,
-    SubstrateCoins.karura: SubstrateConf.karura,
-    SubstrateCoins.kusama: SubstrateConf.kusama,
-    SubstrateCoins.moonbeam: SubstrateConf.moonbeam,
-    SubstrateCoins.moonriver: SubstrateConf.moonriver,
-    SubstrateCoins.phala: SubstrateConf.phala,
-    SubstrateCoins.plasm: SubstrateConf.plasm,
-    SubstrateCoins.polkadot: SubstrateConf.polkadot,
-    SubstrateCoins.sora: SubstrateConf.sora,
-    SubstrateCoins.stafi: SubstrateConf.stafi,
-  };
+  static final SubstrateCoinConf acalaEd25519 = SubstrateCoinConf.fromCoinConf(
+      coinConf: CoinsConf.acala,
+      addressEncode: ([kwargs]) => SubstrateEd25519AddrEncoder(),
+      type: EllipticCurveTypes.ed25519);
   // Configuration for Acala
-  static final SubstrateCoinConf acala =
-      SubstrateCoinConf.fromCoinConf(CoinsConf.acala);
+  static final SubstrateCoinConf acalaSecp256k1 =
+      SubstrateCoinConf.fromCoinConf(
+          coinConf: CoinsConf.acala,
+          addressEncode: ([kwargs]) => SubstrateSecp256k1AddrEncoder(),
+          type: EllipticCurveTypes.secp256k1);
+
+  static final SubstrateCoinConf acalaSr25519 = SubstrateCoinConf.fromCoinConf(
+      coinConf: CoinsConf.acala,
+      addressEncode: ([kwargs]) => SubstrateSr25519AddrEncoder(),
+      type: EllipticCurveTypes.sr25519);
 
   // Configuration for Bifrost
-  static final SubstrateCoinConf bifrost =
-      SubstrateCoinConf.fromCoinConf(CoinsConf.bifrost);
+  static final SubstrateCoinConf bifrostEd25519 =
+      SubstrateCoinConf.fromCoinConf(
+          coinConf: CoinsConf.bifrost,
+          addressEncode: ([kwargs]) => SubstrateEd25519AddrEncoder(),
+          type: EllipticCurveTypes.ed25519);
+  static final SubstrateCoinConf bifrostSecp256k1 =
+      SubstrateCoinConf.fromCoinConf(
+          coinConf: CoinsConf.bifrost,
+          addressEncode: ([kwargs]) => SubstrateSecp256k1AddrEncoder(),
+          type: EllipticCurveTypes.secp256k1);
+  static final SubstrateCoinConf bifrostSr25519 =
+      SubstrateCoinConf.fromCoinConf(
+          coinConf: CoinsConf.bifrost,
+          addressEncode: ([kwargs]) => SubstrateSr25519AddrEncoder(),
+          type: EllipticCurveTypes.sr25519);
 
-  // Configuration for ChainX
-  static final SubstrateCoinConf chainX =
-      SubstrateCoinConf.fromCoinConf(CoinsConf.chainX);
+// Configuration for ChainX
+  static final SubstrateCoinConf chainXEd25519 = SubstrateCoinConf.fromCoinConf(
+      coinConf: CoinsConf.chainX,
+      addressEncode: ([kwargs]) => SubstrateEd25519AddrEncoder(),
+      type: EllipticCurveTypes.ed25519);
+  static final SubstrateCoinConf chainXSecp256k1 =
+      SubstrateCoinConf.fromCoinConf(
+          coinConf: CoinsConf.chainX,
+          addressEncode: ([kwargs]) => SubstrateSecp256k1AddrEncoder(),
+          type: EllipticCurveTypes.secp256k1);
+  static final SubstrateCoinConf chainXSr25519 = SubstrateCoinConf.fromCoinConf(
+      coinConf: CoinsConf.chainX,
+      addressEncode: ([kwargs]) => SubstrateSr25519AddrEncoder(),
+      type: EllipticCurveTypes.sr25519);
 
-  // Configuration for Edgeware
-  static final SubstrateCoinConf edgeware =
-      SubstrateCoinConf.fromCoinConf(CoinsConf.edgeware);
+// Configuration for Edgeware
+  static final SubstrateCoinConf edgewareEd25519 =
+      SubstrateCoinConf.fromCoinConf(
+          coinConf: CoinsConf.edgeware,
+          addressEncode: ([kwargs]) => SubstrateEd25519AddrEncoder(),
+          type: EllipticCurveTypes.ed25519);
+  static final SubstrateCoinConf edgewareSecp256k1 =
+      SubstrateCoinConf.fromCoinConf(
+          coinConf: CoinsConf.edgeware,
+          addressEncode: ([kwargs]) => SubstrateSecp256k1AddrEncoder(),
+          type: EllipticCurveTypes.secp256k1);
+  static final SubstrateCoinConf edgewareSr25519 =
+      SubstrateCoinConf.fromCoinConf(
+          coinConf: CoinsConf.edgeware,
+          addressEncode: ([kwargs]) => SubstrateSr25519AddrEncoder(),
+          type: EllipticCurveTypes.sr25519);
 
-  // Configuration for generic Substrate coin
-  static final SubstrateCoinConf generic =
-      SubstrateCoinConf.fromCoinConf(CoinsConf.genericSubstrate);
+// Configuration for generic Substrate coin
+  static final SubstrateCoinConf genericEd25519 =
+      SubstrateCoinConf.fromCoinConf(
+          coinConf: CoinsConf.genericSubstrate,
+          addressEncode: ([kwargs]) => SubstrateEd25519AddrEncoder(),
+          type: EllipticCurveTypes.ed25519);
+  static final SubstrateCoinConf genericSecp256k1 =
+      SubstrateCoinConf.fromCoinConf(
+          coinConf: CoinsConf.genericSubstrate,
+          addressEncode: ([kwargs]) => SubstrateSecp256k1AddrEncoder(),
+          type: EllipticCurveTypes.secp256k1);
+  static final SubstrateCoinConf genericSr25519 =
+      SubstrateCoinConf.fromCoinConf(
+          coinConf: CoinsConf.genericSubstrate,
+          addressEncode: ([kwargs]) => SubstrateSr25519AddrEncoder(),
+          type: EllipticCurveTypes.sr25519);
 
-  // Configuration for Karura
-  static final SubstrateCoinConf karura =
-      SubstrateCoinConf.fromCoinConf(CoinsConf.karura);
+// Configuration for Karura
+  static final SubstrateCoinConf karuraEd25519 = SubstrateCoinConf.fromCoinConf(
+      coinConf: CoinsConf.karura,
+      addressEncode: ([kwargs]) => SubstrateEd25519AddrEncoder(),
+      type: EllipticCurveTypes.ed25519);
+  static final SubstrateCoinConf karuraSecp256k1 =
+      SubstrateCoinConf.fromCoinConf(
+          coinConf: CoinsConf.karura,
+          addressEncode: ([kwargs]) => SubstrateSecp256k1AddrEncoder(),
+          type: EllipticCurveTypes.secp256k1);
+  static final SubstrateCoinConf karuraSr25519 = SubstrateCoinConf.fromCoinConf(
+      coinConf: CoinsConf.karura,
+      addressEncode: ([kwargs]) => SubstrateSr25519AddrEncoder(),
+      type: EllipticCurveTypes.sr25519);
 
-  // Configuration for Kusama
-  static final SubstrateCoinConf kusama =
-      SubstrateCoinConf.fromCoinConf(CoinsConf.kusama);
+// Configuration for Kusama
+  static final SubstrateCoinConf kusamaEd25519 = SubstrateCoinConf.fromCoinConf(
+      coinConf: CoinsConf.kusama,
+      addressEncode: ([kwargs]) => SubstrateEd25519AddrEncoder(),
+      type: EllipticCurveTypes.ed25519);
+  static final SubstrateCoinConf kusamaSecp256k1 =
+      SubstrateCoinConf.fromCoinConf(
+          coinConf: CoinsConf.kusama,
+          addressEncode: ([kwargs]) => SubstrateSecp256k1AddrEncoder(),
+          type: EllipticCurveTypes.secp256k1);
+  static final SubstrateCoinConf kusamaSr25519 = SubstrateCoinConf.fromCoinConf(
+      coinConf: CoinsConf.kusama,
+      addressEncode: ([kwargs]) => SubstrateSr25519AddrEncoder(),
+      type: EllipticCurveTypes.sr25519);
 
-  // Configuration for Moonbeam
-  static final SubstrateCoinConf moonbeam =
-      SubstrateCoinConf.fromCoinConf(CoinsConf.moonbeam);
+// Configuration for Moonbeam
+  static final SubstrateCoinConf moonbeamEd25519 =
+      SubstrateCoinConf.fromCoinConf(
+          coinConf: CoinsConf.moonbeam,
+          addressEncode: ([kwargs]) => SubstrateEd25519AddrEncoder(),
+          type: EllipticCurveTypes.ed25519);
+  static final SubstrateCoinConf moonbeamSecp256k1 =
+      SubstrateCoinConf.fromCoinConf(
+          coinConf: CoinsConf.moonbeam,
+          addressEncode: ([kwargs]) => SubstrateSecp256k1AddrEncoder(),
+          type: EllipticCurveTypes.secp256k1);
+  static final SubstrateCoinConf moonbeamSr25519 =
+      SubstrateCoinConf.fromCoinConf(
+          coinConf: CoinsConf.moonbeam,
+          addressEncode: ([kwargs]) => SubstrateSr25519AddrEncoder(),
+          type: EllipticCurveTypes.sr25519);
 
-  // Configuration for Moonriver
-  static final SubstrateCoinConf moonriver =
-      SubstrateCoinConf.fromCoinConf(CoinsConf.moonriver);
+// Configuration for Moonriver
+  static final SubstrateCoinConf moonriverEd25519 =
+      SubstrateCoinConf.fromCoinConf(
+          coinConf: CoinsConf.moonriver,
+          addressEncode: ([kwargs]) => SubstrateEd25519AddrEncoder(),
+          type: EllipticCurveTypes.ed25519);
+  static final SubstrateCoinConf moonriverSecp256k1 =
+      SubstrateCoinConf.fromCoinConf(
+          coinConf: CoinsConf.moonriver,
+          addressEncode: ([kwargs]) => SubstrateSecp256k1AddrEncoder(),
+          type: EllipticCurveTypes.secp256k1);
+  static final SubstrateCoinConf moonriverSr25519 =
+      SubstrateCoinConf.fromCoinConf(
+          coinConf: CoinsConf.moonriver,
+          addressEncode: ([kwargs]) => SubstrateSr25519AddrEncoder(),
+          type: EllipticCurveTypes.sr25519);
 
-  // Configuration for Phala
-  static final SubstrateCoinConf phala =
-      SubstrateCoinConf.fromCoinConf(CoinsConf.phala);
+// Configuration for Phala
+  static final SubstrateCoinConf phalaEd25519 = SubstrateCoinConf.fromCoinConf(
+      coinConf: CoinsConf.phala,
+      addressEncode: ([kwargs]) => SubstrateEd25519AddrEncoder(),
+      type: EllipticCurveTypes.ed25519);
+  static final SubstrateCoinConf phalaSecp256k1 =
+      SubstrateCoinConf.fromCoinConf(
+          coinConf: CoinsConf.phala,
+          addressEncode: ([kwargs]) => SubstrateSecp256k1AddrEncoder(),
+          type: EllipticCurveTypes.secp256k1);
+  static final SubstrateCoinConf phalaSr25519 = SubstrateCoinConf.fromCoinConf(
+      coinConf: CoinsConf.phala,
+      addressEncode: ([kwargs]) => SubstrateSr25519AddrEncoder(),
+      type: EllipticCurveTypes.sr25519);
 
-  // Configuration for Plasm
-  static final SubstrateCoinConf plasm =
-      SubstrateCoinConf.fromCoinConf(CoinsConf.plasm);
+// Configuration for Plasm
+  static final SubstrateCoinConf plasmEd25519 = SubstrateCoinConf.fromCoinConf(
+      coinConf: CoinsConf.plasm,
+      addressEncode: ([kwargs]) => SubstrateEd25519AddrEncoder(),
+      type: EllipticCurveTypes.ed25519);
+  static final SubstrateCoinConf plasmSecp256k1 =
+      SubstrateCoinConf.fromCoinConf(
+          coinConf: CoinsConf.plasm,
+          addressEncode: ([kwargs]) => SubstrateSecp256k1AddrEncoder(),
+          type: EllipticCurveTypes.secp256k1);
+  static final SubstrateCoinConf plasmSr25519 = SubstrateCoinConf.fromCoinConf(
+      coinConf: CoinsConf.plasm,
+      addressEncode: ([kwargs]) => SubstrateSr25519AddrEncoder(),
+      type: EllipticCurveTypes.sr25519);
 
-  // Configuration for Polkadot
-  static final SubstrateCoinConf polkadot =
-      SubstrateCoinConf.fromCoinConf(CoinsConf.polkadot);
+// Configuration for Polkadot
+  static final SubstrateCoinConf polkadotEd25519 =
+      SubstrateCoinConf.fromCoinConf(
+          coinConf: CoinsConf.polkadot,
+          addressEncode: ([kwargs]) => SubstrateEd25519AddrEncoder(),
+          type: EllipticCurveTypes.ed25519);
+  static final SubstrateCoinConf polkadotSecp256k1 =
+      SubstrateCoinConf.fromCoinConf(
+          coinConf: CoinsConf.polkadot,
+          addressEncode: ([kwargs]) => SubstrateSecp256k1AddrEncoder(),
+          type: EllipticCurveTypes.secp256k1);
+  static final SubstrateCoinConf polkadotSr25519 =
+      SubstrateCoinConf.fromCoinConf(
+          coinConf: CoinsConf.polkadot,
+          addressEncode: ([kwargs]) => SubstrateSr25519AddrEncoder(),
+          type: EllipticCurveTypes.sr25519);
 
-  // Configuration for Sora
-  static final SubstrateCoinConf sora =
-      SubstrateCoinConf.fromCoinConf(CoinsConf.sora);
+// Configuration for Sora
+  static final SubstrateCoinConf soraEd25519 = SubstrateCoinConf.fromCoinConf(
+      coinConf: CoinsConf.sora,
+      addressEncode: ([kwargs]) => SubstrateEd25519AddrEncoder(),
+      type: EllipticCurveTypes.ed25519);
+  static final SubstrateCoinConf soraSecp256k1 = SubstrateCoinConf.fromCoinConf(
+      coinConf: CoinsConf.sora,
+      addressEncode: ([kwargs]) => SubstrateSecp256k1AddrEncoder(),
+      type: EllipticCurveTypes.secp256k1);
+  static final SubstrateCoinConf soraSr25519 = SubstrateCoinConf.fromCoinConf(
+      coinConf: CoinsConf.sora,
+      addressEncode: ([kwargs]) => SubstrateSr25519AddrEncoder(),
+      type: EllipticCurveTypes.sr25519);
 
-  // Configuration for Stafi
-  static final SubstrateCoinConf stafi =
-      SubstrateCoinConf.fromCoinConf(CoinsConf.stafi);
+// Configuration for Stafi
+  static final SubstrateCoinConf stafiEd25519 = SubstrateCoinConf.fromCoinConf(
+      coinConf: CoinsConf.stafi,
+      addressEncode: ([kwargs]) => SubstrateEd25519AddrEncoder(),
+      type: EllipticCurveTypes.ed25519);
+  static final SubstrateCoinConf stafiSecp256k1 =
+      SubstrateCoinConf.fromCoinConf(
+          coinConf: CoinsConf.stafi,
+          addressEncode: ([kwargs]) => SubstrateSecp256k1AddrEncoder(),
+          type: EllipticCurveTypes.secp256k1);
+  static final SubstrateCoinConf stafiSr25519 = SubstrateCoinConf.fromCoinConf(
+      coinConf: CoinsConf.stafi,
+      addressEncode: ([kwargs]) => SubstrateSr25519AddrEncoder(),
+      type: EllipticCurveTypes.sr25519);
 }

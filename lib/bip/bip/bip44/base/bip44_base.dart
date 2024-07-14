@@ -7,7 +7,7 @@ import 'package:blockchain_utils/bip/bip/bip32/slip10/bip32_slip10_ed25519_blake
 import 'package:blockchain_utils/bip/bip/bip32/slip10/bip32_slip10_nist256p1.dart';
 import 'package:blockchain_utils/bip/bip/bip32/slip10/bip32_slip10_secp256k1.dart';
 import 'package:blockchain_utils/bip/bip/bip44/base/bip44_base_ex.dart';
-import 'package:blockchain_utils/bip/bip/conf/bip_coin_conf.dart';
+import 'package:blockchain_utils/bip/bip/conf/config/bip_coin_conf.dart';
 import 'package:blockchain_utils/bip/cardano/bip32/cardano_icarus_bip32.dart';
 import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
 import 'package:blockchain_utils/exception/exception.dart';
@@ -86,10 +86,10 @@ class Bip44Levels {
 /// Abstract base class for BIP-44 hierarchical deterministic wallets.
 abstract class Bip44Base {
   late final Bip32Base bip32;
-  late final CoinConfig coinConf;
+  late final BipCoinConfig coinConf;
 
   /// Constructor for creating a [Bip44Base] object from a seed and coin.
-  Bip44Base.fromSeed(List<int> seedBytes, CoinConfig coin) {
+  Bip44Base.fromSeed(List<int> seedBytes, BipCoinConfig coin) {
     Bip32Base bip;
     switch (coin.type) {
       case EllipticCurveTypes.secp256k1:
@@ -120,7 +120,7 @@ abstract class Bip44Base {
   }
 
   /// Constructor for creating a [Bip44Base] object from a extended key and coin.
-  Bip44Base.fromExtendedKey(String extendedKey, CoinConfig coin) {
+  Bip44Base.fromExtendedKey(String extendedKey, BipCoinConfig coin) {
     Bip32Base bip;
 
     switch (coin.type) {
@@ -154,7 +154,7 @@ abstract class Bip44Base {
   }
 
   /// Constructor for creating a [Bip44Base] object from a private key and coin.
-  Bip44Base.fromPrivateKey(List<int> privateKeyBytes, CoinConfig coin,
+  Bip44Base.fromPrivateKey(List<int> privateKeyBytes, BipCoinConfig coin,
       {Bip32KeyData? keyData}) {
     Bip32Base bip;
     switch (coin.type) {
@@ -192,7 +192,7 @@ abstract class Bip44Base {
   }
 
   /// Constructor for creating a [Bip44Base] object from a public key and coin.
-  Bip44Base.fromPublicKey(List<int> pubkeyBytes, CoinConfig coin,
+  Bip44Base.fromPublicKey(List<int> pubkeyBytes, BipCoinConfig coin,
       {Bip32KeyData? keyData}) {
     Bip32Base bip;
     switch (coin.type) {
@@ -230,8 +230,8 @@ abstract class Bip44Base {
   }
 
   /// Internal validation method for checking the depth of the BIP object.
-  static Tuple<Bip32Base, CoinConfig> _validate(
-      Bip32Base bip32Obj, CoinConfig coinConf) {
+  static Tuple<Bip32Base, BipCoinConfig> _validate(
+      Bip32Base bip32Obj, BipCoinConfig coinConf) {
     int depth = bip32Obj.depth.depth;
 
     if (bip32Obj.isPublicOnly) {
@@ -250,7 +250,7 @@ abstract class Bip44Base {
     return Tuple(bip32Obj, coinConf);
   }
 
-  /// Constructor for creating a [Bip44Base] object from a bip32 [Bip32Base] and coin [CoinConfig].
+  /// Constructor for creating a [Bip44Base] object from a bip32 [Bip32Base] and coin [BipCoinConfig].
   Bip44Base(this.bip32, this.coinConf) {
     _validate(bip32, coinConf);
   }
