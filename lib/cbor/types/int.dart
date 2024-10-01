@@ -19,8 +19,14 @@ class CborIntValue implements CborNumeric {
   @override
   List<int> encode() {
     final bytes = CborBytesTracker();
-    bytes.pushInt(value.isNegative ? MajorTags.negInt : MajorTags.posInt,
-        value.isNegative ? ~value : value);
+    if (value.bitLength > 31 && value.isNegative) {
+      final value = (~BigInt.parse(this.value.toString())).toInt();
+      bytes.pushInt(MajorTags.negInt, value);
+    } else {
+      // print("is here lower!");
+      bytes.pushInt(value.isNegative ? MajorTags.negInt : MajorTags.posInt,
+          value.isNegative ? ~value : value);
+    }
     return bytes.toBytes();
   }
 

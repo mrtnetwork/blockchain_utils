@@ -106,7 +106,6 @@ void _decodeDateTime() {
 }
 
 void main() {
-  // decode
   test("cbor decode", () {
     _decodeInt();
     _decodeFloat();
