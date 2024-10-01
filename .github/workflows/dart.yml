@@ -40,3 +40,5 @@ jobs:
       # want to change this to 'flutter test'.
       - name: Run tests
         run: dart test ./test
+      - name: Run tests Web
+        run: dart test ./test -p chrome --timeout=120s
