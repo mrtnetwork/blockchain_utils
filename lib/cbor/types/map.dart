@@ -1,4 +1,3 @@
-import 'package:blockchain_utils/helper/helper.dart';
 import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/cbor/utils/dynamic_bytes.dart';
 import 'package:blockchain_utils/cbor/core/tags.dart';
@@ -8,16 +7,12 @@ import 'package:blockchain_utils/cbor/core/cbor.dart';
 class CborMapValue<K, V> implements CborObject {
   /// Constructor for creating a CborMapValue instance with the provided parameters.
   /// It accepts the Map with all cbor encodable key and value.
-  CborMapValue.fixedLength(Map<K, V> value)
-      : value = value.immutable,
-        _isFixedLength = true;
+  CborMapValue.fixedLength(this.value) : _isFixedLength = true;
 
   /// Constructor for creating a CborMapValue instance with the provided parameters.
   /// It accepts the Map with all cbor encodable key and value.
   /// this method encode values with indefinite tag.
-  CborMapValue.dynamicLength(Map<K, V> value)
-      : value = value.immutable,
-        _isFixedLength = false;
+  CborMapValue.dynamicLength(this.value) : _isFixedLength = false;
 
   /// value as Map
   @override

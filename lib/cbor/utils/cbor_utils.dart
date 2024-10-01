@@ -1,9 +1,9 @@
 import 'dart:typed_data';
 import 'package:blockchain_utils/cbor/core/cbor.dart';
+import 'package:blockchain_utils/cbor/exception/exception.dart';
 import 'package:blockchain_utils/cbor/types/types.dart';
 import 'package:blockchain_utils/cbor/utils/float_utils.dart';
 import 'package:blockchain_utils/cbor/core/tags.dart';
-import 'package:blockchain_utils/exception/exception.dart';
 import 'package:blockchain_utils/utils/utils.dart';
 
 class CborUtils {
@@ -23,7 +23,7 @@ class CborUtils {
       // Split the string into the date and offset parts
       final parts = dateTimeString.split('+');
       if (parts.length != 2) {
-        throw MessageException("Invalid format: $dateTimeString");
+        throw CborException("Invalid RFC3339 format: $dateTimeString");
       }
       final datePart = DateTime.parse(parts[0]);
       return datePart;
@@ -66,11 +66,11 @@ class CborUtils {
           }
           return _decodeArray(cborBytes, i, info, tags);
         default:
-          throw ArgumentException(
+          throw CborException(
               "invalid or unsuported cbor tag major: $majorTag ");
       }
     }
-    throw const ArgumentException("invalid or unsuported cbor tag");
+    throw const CborException("invalid or unsuported cbor tag");
   }
 
   static Tuple<List<int>, int> _parsBytes(int info, List<int> cborBytes) {
@@ -96,7 +96,7 @@ class CborUtils {
       }
       return Tuple(decode, len + 1);
     } else {
-      throw ArgumentException('Invalid additional info for int: $info');
+      throw CborException('Invalid additional info for int: $info');
     }
   }
 
@@ -254,7 +254,7 @@ class CborUtils {
       List<CborObject> objects, List<int> tags) {
     objects = objects.whereType<CborNumeric>().toList();
     if (objects.length != 2) {
-      throw const MessageException("invalid bigFloat array length");
+      throw const CborException("invalid bigFloat array length");
     }
     if (BytesUtils.bytesEqual(tags, CborTags.decimalFrac)) {
       tags.clear();
@@ -313,7 +313,7 @@ class CborUtils {
         offset = offset + 8;
         break;
       default:
-        throw const MessageException("Invalid simpleOrFloatTags");
+        throw const CborException("Invalid simpleOrFloatTags");
     }
     if (BytesUtils.bytesEqual(tags, CborTags.dateEpoch)) {
       final dt = DateTime.fromMillisecondsSinceEpoch((val * 1000).round());

@@ -1,7 +1,7 @@
+import 'package:blockchain_utils/cbor/exception/exception.dart';
 import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/cbor/types/types.dart';
 import 'package:blockchain_utils/cbor/utils/cbor_utils.dart';
-import 'package:blockchain_utils/exception/exception.dart';
 
 /// An abstract class representing a CBOR (Concise Binary Object Representation) object.
 /// CBOR objects can hold various data types and optional tags, providing a flexible way
@@ -49,12 +49,15 @@ abstract class CborObject {
     } else if (value is List<List<int>>) {
       return CborDynamicBytesValue(value);
     } else if (value is Map) {
-      return CborMapValue.fixedLength(value);
+      return CborMapValue.fixedLength({
+        for (final i in value.entries)
+          CborObject.fromDynamic(i.key): CborObject.fromDynamic(i.value)
+      });
     } else if (value is List<dynamic>) {
       return CborListValue.fixedLength(
           value.map((e) => CborObject.fromDynamic(e)).toList());
     }
-    throw UnimplementedError("does not supported");
+    throw const CborException("does not supported");
   }
 }
 
@@ -73,7 +76,7 @@ abstract class CborNumeric implements CborObject {
     } else if (val is CborSafeIntValue) {
       return val.value;
     }
-    throw const ArgumentException("invalid cbornumeric");
+    throw const CborException("invalid cbornumeric");
   }
 
   /// Convert the CborNumeric object to an integer.

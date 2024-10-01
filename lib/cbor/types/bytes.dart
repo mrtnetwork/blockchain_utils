@@ -10,8 +10,6 @@ class CborBytesValue implements CborObject {
   /// It accepts the bytes value.
   CborBytesValue(List<int> value) : value = value.asImmutableBytes;
 
-  /// The value as a List<int>.
-  @override
   final List<int> value;
 
   /// Encode the value into CBOR bytes
@@ -51,6 +49,8 @@ class CborDynamicBytesValue implements CborObject {
 
   @override
   final List<List<int>> value;
+  // @override
+  // List<List<int>> get value => _value;
 
   /// Encode the value into CBOR bytes
   @override
@@ -82,7 +82,7 @@ class CborDynamicBytesValue implements CborObject {
   operator ==(other) {
     if (other is! CborDynamicBytesValue) return false;
 
-    return value == other.value;
+    return CompareUtils.iterableIsEqual(value, other.value);
   }
 
   /// ovveride hash code

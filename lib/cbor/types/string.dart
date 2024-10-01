@@ -61,7 +61,6 @@ class CborIndefiniteStringValue extends CborString {
   /// It accepts a List<String> value.
   CborIndefiniteStringValue(List<String> value) : value = value.immutable;
 
-  /// value as List<String>
   @override
   final List<String> value;
 

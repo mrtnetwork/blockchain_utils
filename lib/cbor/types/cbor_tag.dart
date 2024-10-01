@@ -22,7 +22,7 @@ class CborTagValue<T> implements CborObject {
   List<int> encode() {
     final bytes = CborBytesTracker();
     bytes.pushTags(tags);
-    final obj = CborObject.fromDynamic(value).encode();
+    final obj = CborObject.fromDynamic(_value).encode();
     bytes.pushBytes(obj);
     return bytes.toBytes();
   }

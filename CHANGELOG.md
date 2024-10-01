@@ -1,6 +1,7 @@
 ## 3.4.0
 
 - Stellar Address Support: Add support for stellar Contract address.
+- Fix incorrect CBOR encoding of large negative integers.
 
 ## 3.3.0
 

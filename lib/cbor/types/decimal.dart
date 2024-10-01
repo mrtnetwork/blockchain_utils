@@ -13,9 +13,7 @@ class CborDecimalFracValue implements CborObject {
 
   /// Create a CborBigFloatValue from two CborNumeric values representing the exponent and mantissa.
   factory CborDecimalFracValue.fromCborNumeric(
-    CborNumeric exponent,
-    CborNumeric mantissa,
-  ) {
+      CborNumeric exponent, CborNumeric mantissa) {
     return CborDecimalFracValue(CborNumeric.getCborNumericValue(exponent),
         CborNumeric.getCborNumericValue(mantissa));
   }

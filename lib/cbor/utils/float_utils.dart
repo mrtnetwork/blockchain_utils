@@ -17,7 +17,7 @@ import 'dart:math' as math;
 import 'dart:typed_data';
 
 import 'package:blockchain_utils/cbor/core/tags.dart';
-import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/cbor/exception/exception.dart';
 import 'package:blockchain_utils/utils/utils.dart';
 
 // Enum representing different floating-point formats and their characteristics.
@@ -60,7 +60,7 @@ class FloatLength {
     if (index >= 0 && index < values.length) {
       return values[index];
     }
-    throw MessageException('Index out of bounds', details: {"input": index});
+    throw CborException('Index out of bounds', details: {"input": index});
   }
 }
 
@@ -242,13 +242,13 @@ class FloatUtils {
     switch (decodFloatType) {
       case FloatLength.bytes16:
         if (!isLessThan16) {
-          throw const ArgumentException("overflow bytes");
+          throw const CborException("overflow bytes");
         }
         bytes = _encodeFloat16(endianness);
         break;
       case FloatLength.bytes32:
         if (!isLessThan32) {
-          throw const ArgumentException("overflow bytes");
+          throw const CborException("overflow bytes");
         }
         bytes = _encodeFloat32(endianness);
         break;
@@ -262,7 +262,7 @@ class FloatUtils {
   /// Decode a 16-bit floating-point value from a byte array and return it as a double.
   static double floatFromBytes16(List<int> bytes) {
     if (bytes.length != 2) {
-      throw const ArgumentException(
+      throw const CborException(
           'Input byte array must be exactly 2 bytes long for Float16');
     }
 
