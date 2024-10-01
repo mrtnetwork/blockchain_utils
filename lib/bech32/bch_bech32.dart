@@ -54,6 +54,7 @@
 
 import 'dart:typed_data';
 
+import 'package:blockchain_utils/helper/helper.dart';
 import 'package:blockchain_utils/utils/utils.dart';
 
 import 'bech32_utils.dart';
@@ -131,9 +132,10 @@ class _BchBech32Utils {
 class BchBech32Encoder extends Bech32EncoderBase {
   /// Combine the network version bytes and data.
   static String encode(String hrp, List<int> netVar, List<int> data) {
+    final concatBytes = [...netVar, ...data].asImmutableBytes;
     return Bech32EncoderBase.encodeBech32(
         hrp,
-        Bech32BaseUtils.convertToBase32(List<int>.from([...netVar, ...data])),
+        Bech32BaseUtils.convertToBase32(concatBytes),
         BchBech32Const.separator,
         _BchBech32Utils.computeChecksum);
   }

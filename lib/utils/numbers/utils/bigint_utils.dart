@@ -8,6 +8,10 @@ import 'package:blockchain_utils/exception/exception.dart';
 import 'int_utils.dart';
 
 class BigintUtils {
+  static BigInt max(BigInt a, BigInt b) {
+    return a.compareTo(b) > 0 ? a : b;
+  }
+
   /// Converts a BigInt 'num' into a List<int> of bytes with a specified 'order'.
   ///
   /// This method converts 'num' into a hexadecimal string, ensuring it's at least
@@ -185,16 +189,7 @@ class BigintUtils {
   /// Returns:
   /// A binary string representation of the `value`, possibly zero-padded.
   ///
-  /// Example:
-  /// ```dart
-  /// BigInt number = BigInt.parse('10');
-  /// int bitLength = 8; // Desired bit length
-  /// String binaryString = toBinary(number, bitLength);
-  /// print('Binary representation: $binaryString');
-  /// ```
-  ///
   /// This method is useful for converting BigInt values to binary strings for various applications.
-  ///
   static String toBinary(BigInt value, int zeroPadBitLen) {
     String binaryStr = value.toRadixString(2);
     if (zeroPadBitLen > 0) {
@@ -336,9 +331,8 @@ class BigintUtils {
         encodedIntegers.fold<List<int>>([], (prev, e) => [...prev, ...e]);
     _encodeLength(200);
     var derBytes = [
-      0x30, ...lengthBytes,
-
-      /// DER SEQUENCE tag and length
+      0x30,
+      ...lengthBytes,
       ...contentBytes,
     ];
 
@@ -375,8 +369,8 @@ class BigintUtils {
     /// can't support negative numbers yet
     assert(r >= BigInt.zero);
 
-    List<int> s = BigintUtils.toBytes(r, length: BigintUtils.orderLen(r));
-
+    final len = BigintUtils.orderLen(r);
+    List<int> s = BigintUtils.toBytes(r, length: len);
     int num = s[0];
     if (num <= 0x7F) {
       return [0x02, ..._encodeLength(s.length), ...s];

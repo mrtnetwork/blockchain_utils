@@ -33,7 +33,6 @@ class Bip39MnemonicDecoder extends MnemonicDecoderBase {
   /// If no [language] is provided, it defaults to [Bip39Languages.english].
   ///
   /// The constructor initializes the decoder with the appropriate [language],
-  /// [wordsListFinder], and [wordsListGetter] for BIP39 mnemonics.
   ///
   /// Example usage:
   ///

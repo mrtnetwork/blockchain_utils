@@ -1,3 +1,4 @@
+import 'package:blockchain_utils/helper/helper.dart';
 import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/cbor/utils/dynamic_bytes.dart';
 import 'package:blockchain_utils/cbor/core/tags.dart';
@@ -7,7 +8,7 @@ import 'package:blockchain_utils/cbor/core/cbor.dart';
 class CborBytesValue implements CborObject {
   /// Constructor for creating a CborBytesValue instance with the provided parameters.
   /// It accepts the bytes value.
-  const CborBytesValue(this.value);
+  CborBytesValue(List<int> value) : value = value.asImmutableBytes;
 
   /// The value as a List<int>.
   @override
@@ -45,9 +46,9 @@ class CborBytesValue implements CborObject {
 class CborDynamicBytesValue implements CborObject {
   /// Constructor for creating a CborDynamicBytesValue instance with the provided parameters.
   /// It accepts the bytes value.
-  const CborDynamicBytesValue(this.value);
+  CborDynamicBytesValue(List<List<int>> value)
+      : value = value.map((e) => e.asImmutableBytes).toList().immutable;
 
-  /// The value as a List<List<int>>.
   @override
   final List<List<int>> value;
 

@@ -1,3 +1,4 @@
+import 'package:blockchain_utils/helper/helper.dart';
 import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/cbor/utils/dynamic_bytes.dart';
 import 'package:blockchain_utils/cbor/core/tags.dart';
@@ -8,12 +9,16 @@ class CborListValue<T> implements CborObject {
   /// Constructor for creating a CborListValue instance with the provided parameters.
   /// It accepts the List of all cbor encodable value.
   ///
-  CborListValue.fixedLength(this.value) : _isFixedLength = true;
+  CborListValue.fixedLength(List<T> value)
+      : value = value.immutable,
+        _isFixedLength = true;
 
   /// Constructor for creating a CborListValue instance with the provided parameters.
   /// It accepts the List of all cbor encodable value.
   /// this method encode values with indefinite tag.
-  CborListValue.dynamicLength(this.value) : _isFixedLength = false;
+  CborListValue.dynamicLength(List<T> value)
+      : value = value.immutable,
+        _isFixedLength = false;
 
   /// value as List
   @override

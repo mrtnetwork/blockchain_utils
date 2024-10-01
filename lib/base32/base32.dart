@@ -52,6 +52,7 @@
   OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+import 'package:blockchain_utils/helper/helper.dart';
 import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/exception/exception.dart';
 
@@ -117,14 +118,14 @@ class _Base32Utils {
       if (char == '=') {
         return;
       }
-      final symbol = (_Base32Const._b32rev[alphabet]![char] ?? 0) & 0xff;
+      final symbol = (_Base32Const._b32rev[alphabet]![char] ?? 0) & mask8;
       shift -= 5;
       if (shift > 0) {
-        carry |= (symbol << shift) & 0xff;
+        carry |= (symbol << shift) & mask8;
       } else if (shift < 0) {
         decoded.add(carry | (symbol >> -shift));
         shift += 8;
-        carry = (symbol << shift) & 0xff;
+        carry = (symbol << shift) & mask8;
       } else {
         decoded.add(carry | symbol);
         shift = 8;
@@ -228,6 +229,8 @@ class Base32Encoder {
   /// Encode the provided List<int> of bytes into a Base32 encoded string.
   /// Optionally, you can specify a custom alphabet for encoding.
   static String encodeBytes(List<int> data, [String? customAlphabet]) {
+    data = data.asImmutableBytes;
+
     /// Encode the input bytes in Base32.
     String encoded = StringUtils.decode(
         _Base32Utils._b32encode(_Base32Const.alphabet, data));

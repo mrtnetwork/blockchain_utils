@@ -1,6 +1,7 @@
 import 'package:blockchain_utils/base58/base58_ex.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
 import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/helper/helper.dart';
 import 'package:blockchain_utils/utils/utils.dart';
 
 enum Base58Alphabets {
@@ -93,6 +94,7 @@ class Base58Encoder {
   /// A Base58 encoded string of the input dataBytes with a checksum.
   static String checkEncode(List<int> dataBytes,
       [Base58Alphabets base58alphabets = Base58Alphabets.bitcoin]) {
+    dataBytes = dataBytes.asImmutableBytes;
     final checksum = Base58Utils.computeChecksum(dataBytes);
     final dataWithChecksum = List<int>.from([...dataBytes, ...checksum]);
     return encode(dataWithChecksum, base58alphabets);
@@ -101,7 +103,7 @@ class Base58Encoder {
 
 /// A utility class for decoding Base58 encoded strings into List<int> data using a specified alphabet.
 class Base58Decoder {
-  /// Decode the provided Base58 encoded [dataStr] into a List<int> of data bytes using the specified [base58alphabets].
+  /// Decode the provided Base58 encoded [data] into a List<int> of data bytes using the specified [base58alphabets].
   ///
   /// Parameters:
   /// - data: The Base58 encoded string to be decoded.
@@ -114,7 +116,7 @@ class Base58Decoder {
     final alphabet = Base58Const.alphabets[base58alphabets]!;
     var val = BigInt.zero;
 
-    for (var i = 0; i < data.length; i++) {
+    for (int i = 0; i < data.length; i++) {
       final c = data[data.length - 1 - i];
       final charIndex = alphabet.indexOf(c);
       if (charIndex == -1) {

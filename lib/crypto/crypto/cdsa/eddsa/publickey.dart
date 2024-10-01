@@ -1,4 +1,5 @@
 import 'dart:typed_data';
+import 'package:blockchain_utils/helper/helper.dart';
 import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/curve/curves.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/point/edwards.dart';
@@ -21,7 +22,7 @@ class EDDSAPublicKey {
 
   EDDSAPublicKey._(
       this.generator, List<int> _encoded, this.baselen, this._point)
-      : _encoded = BytesUtils.toBytes(_encoded, unmodifiable: true);
+      : _encoded = _encoded.asImmutableBytes;
 
   /// Creates an EdDSA public key from a generator, encoded public key bytes, and an optional public point.
   ///

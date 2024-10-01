@@ -1,5 +1,6 @@
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
 import 'package:blockchain_utils/bip/mnemonic/mnemonic.dart';
+import 'package:blockchain_utils/helper/helper.dart';
 import 'package:blockchain_utils/utils/utils.dart';
 
 import 'bip39_mnemonic_decoder.dart';
@@ -22,7 +23,7 @@ class Bip39SeedGenerator {
   final List<int> _entropy;
   final Mnemonic mnemonic;
   Bip39SeedGenerator._(this.mnemonic, List<int> entropy)
-      : _entropy = BytesUtils.toBytes(entropy, unmodifiable: true);
+      : _entropy = entropy.asImmutableBytes;
 
   /// Initializes a new instance of the Bip39SeedGenerator.
   ///

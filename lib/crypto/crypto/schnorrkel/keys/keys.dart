@@ -675,6 +675,15 @@ class SchnorrkelSecretKey {
 
     return VRFProof._(c, s);
   }
+
+  @override
+  operator ==(other) {
+    if (other is! SchnorrkelSecretKey) return false;
+    return BytesUtils.bytesEqual(_key, other._key);
+  }
+
+  @override
+  int get hashCode => _key.fold<int>(0, (c, p) => p ^ c).hashCode;
 }
 
 /// Represents a Schnorrkel public key used for verifying signatures.
@@ -949,6 +958,15 @@ class SchnorrkelPublicKey {
         RistrettoPoint.fromUniform(script.toBytes("VRFHash".codeUnits, 64));
     return hashPoint;
   }
+
+  @override
+  operator ==(other) {
+    if (other is! SchnorrkelPublicKey) return false;
+    return BytesUtils.bytesEqual(_publicKey, other._publicKey);
+  }
+
+  @override
+  int get hashCode => _publicKey.fold<int>(0, (c, p) => p ^ c).hashCode;
 }
 
 /// Represents a Schnorrkel key pair, consisting of a secret key and a public key.

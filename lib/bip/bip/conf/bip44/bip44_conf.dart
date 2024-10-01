@@ -1246,6 +1246,19 @@ class Bip44Conf {
     addrParams: {"addr_type": XlmAddrTypes.pubKey},
   );
 
+  /// Configuration for Stellar testnet
+  static final BipCoinConfig stellarTestnet = BipCoinConfig(
+    coinNames: CoinsConf.stellar.coinName,
+    coinIdx: Slip44.testnet,
+    isTestnet: true,
+    defPath: derPathHardenedShort,
+    keyNetVer: bip44BtcKeyNetVerMain,
+    wifNetVer: null,
+    type: EllipticCurveTypes.ed25519,
+    addressEncoder: ([dynamic kwargs]) => XlmAddrEncoder(),
+    addrParams: {"addr_type": XlmAddrTypes.pubKey},
+  );
+
   /// Configuration for Terra
   static final BipCoinConfig terra = BipCoinConfig(
     coinNames: CoinsConf.terra.coinName,

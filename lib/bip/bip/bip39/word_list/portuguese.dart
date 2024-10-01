@@ -1,7 +1,7 @@
 part of 'package:blockchain_utils/bip/bip/bip39/word_list/languages.dart';
 
 /// Portuguese
-final List<String> _portuguese = [
+const List<String> _portuguese = [
   "abacate",
   "abaixo",
   "abalar",

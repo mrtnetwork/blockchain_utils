@@ -53,6 +53,7 @@
 */
 
 import 'package:blockchain_utils/bip/bip/bip32/bip32_key_data.dart';
+import 'package:blockchain_utils/helper/helper.dart';
 
 import 'bip32_ex.dart';
 
@@ -77,8 +78,8 @@ class Bip32Path {
   ///
   /// [elems] is an optional list of key indices in the path.
   /// [isAbsolute] specifies if the path is absolute (default: true).
-  Bip32Path({List<Bip32KeyIndex>? elems, this.isAbsolute = true})
-      : elems = elems ?? List.empty(growable: true);
+  Bip32Path({List<Bip32KeyIndex> elems = const [], this.isAbsolute = true})
+      : elems = elems.immutable;
 
   /// Adds a key index element to the path and returns a new Bip32Path.
   Bip32Path addElem(Bip32KeyIndex elem) {

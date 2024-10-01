@@ -1,3 +1,7 @@
+## 3.4.0
+
+- Stellar Address Support: Add support for stellar Contract address.
+
 ## 3.3.0
 
   - Fix substrate key generation from seed (ECDSA, EDDSA).

@@ -11,7 +11,7 @@ import 'package:blockchain_utils/exception/exception.dart';
 class AlgorandMnemonicGeneratorConst {
   static final Map<AlgorandWordsNum, AlgorandEntropyBitLen>
       wordsNumToEntropyLen = {
-    AlgorandWordsNum.wordsNum25: AlgorandEntropyBitLen.bitLen256,
+    AlgorandWordsNum.wordsNum25: AlgorandEntropyBitLen.bitLen256
   };
 }
 
@@ -47,14 +47,10 @@ class AlgorandMnemonicGenerator {
   ///
   /// [wordsNum] can be either the number of words or an [AlgorandWordsNum] enum value.
   /// It ensures that the number of words is valid and consistent with the entropy bit length.
-  Mnemonic fromWordsNumber(dynamic wordsNum) {
+  Mnemonic fromWordsNumber(AlgorandWordsNum wordsNum) {
     if (!AlgorandMnemonicConst.mnemonicWordNum.contains(wordsNum)) {
       throw ArgumentException(
           'Words number for mnemonic ($wordsNum) is not valid');
-    }
-
-    if (wordsNum is int) {
-      wordsNum = AlgorandWordsNum.values[wordsNum];
     }
 
     final entropyBitLen =

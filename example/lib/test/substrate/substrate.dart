@@ -11,7 +11,7 @@ void substrateDeriveTest() {
     final seed = BytesUtils.fromHexString(i["private_key"]);
     final coin = SubstrateCoins.values.firstWhere((element) =>
         element.name.toLowerCase() ==
-        (i["coin"] as String).toLowerCase().replaceAll("_", ""));
+        "${(i["coin"] as String).toLowerCase().replaceAll("_", "")}sr25519");
     Substrate w = Substrate.fromPrivateKey(seed, coin);
     assert(w.publicKey.compressed.toHex() == i["public_key"]);
     assert(w.priveKey.raw.toHex() == i["private_key"]);
@@ -31,7 +31,7 @@ void substrateDeriveTest() {
         final secret = (w.priveKey.privKey as Sr25519PrivateKey).secretKey;
         final testPrive =
             BytesUtils.fromHexString(childInfo["private_key"]).sublist(0, 32);
-        assert(BytesUtils.bytesEqual(testPrive, secret.key()));
+        assert(BytesUtils.bytesEqual(testPrive, secret.key()), true);
       }
     }
   }
@@ -41,7 +41,7 @@ void substrateDeriveTest() {
     final seed = BytesUtils.fromHexString(i["seed"]);
     final coin = SubstrateCoins.values.firstWhere((element) =>
         element.name.toLowerCase() ==
-        (i["coin"] as String).toLowerCase().replaceAll("_", ""));
+        "${(i["coin"] as String).toLowerCase().replaceAll("_", "")}sr25519");
     Substrate w = Substrate.fromSeed(seed, coin);
     assert(w.publicKey.compressed.toHex() == i["public_key"]);
     assert(w.priveKey.raw.toHex() == i["private_key"]);
@@ -61,7 +61,7 @@ void substrateDeriveTest() {
         final secret = (w.priveKey.privKey as Sr25519PrivateKey).secretKey;
         final testPrive =
             BytesUtils.fromHexString(childInfo["private_key"]).sublist(0, 32);
-        assert(BytesUtils.bytesEqual(testPrive, secret.key()));
+        assert(BytesUtils.bytesEqual(testPrive, secret.key()) == true);
       }
     }
   }

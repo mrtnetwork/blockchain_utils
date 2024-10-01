@@ -4,6 +4,7 @@ import 'package:blockchain_utils/bip/bip/bip32/bip32_ex.dart';
 import 'package:blockchain_utils/bip/bip/bip32/bip32_key_data.dart';
 import 'package:blockchain_utils/bip/bip/bip32/bip32_key_net_ver.dart';
 import 'package:blockchain_utils/bip/ecc/keys/i_keys.dart';
+import 'package:blockchain_utils/helper/helper.dart';
 import 'package:blockchain_utils/utils/utils.dart';
 
 /// The `Bip32KeySerConst` class contains constants related to the serialization
@@ -72,7 +73,7 @@ class Bip32DeserializedKey {
   final bool isPublic;
 
   Bip32DeserializedKey(List<int> keyBytes, this.keyData, this.isPublic)
-      : _keyBytes = keyBytes;
+      : _keyBytes = keyBytes.asImmutableBytes;
 
   List<int> get keyBytes {
     return List<int>.from(_keyBytes);

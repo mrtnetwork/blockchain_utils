@@ -50,10 +50,6 @@ abstract class BipCoins implements CryptoCoins<BipCoinConfig> {
   }
 }
 
-// abstract class BipProposals implements CoinProposal {
-//   abstract final Bip32KeyIndex purpose;
-// }
-
 /// Enum representing different BIP proposals.
 class BipProposal implements CoinProposal {
   static const BipProposal bip44 = BipProposal._('bip44');

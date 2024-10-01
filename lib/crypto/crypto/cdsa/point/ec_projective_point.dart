@@ -278,17 +278,6 @@ class ProjectiveECCPoint extends AbstractPoint {
     return normalizedY;
   }
 
-  /// Scales the projective point's coordinates.
-  ///
-  /// If the current z-coordinate is already one, there's no need to scale the point.
-  ///
-  /// [currentX], [currentY], and [currentZ] represent the current coordinates.
-  /// [primeField] is the prime field value of the curve.
-  /// [zInverse] is the modular inverse of the current z-coordinate.
-  /// [zInverseSquared] is the square of the z-inverse.
-  ///
-  /// The x and y coordinates are scaled using [zInverseSquared].
-  ///
   /// The coordinates are updated to the scaled values, and the scaled point is returned.
   ProjectiveECCPoint scale() {
     final currentZ = _coords[2];

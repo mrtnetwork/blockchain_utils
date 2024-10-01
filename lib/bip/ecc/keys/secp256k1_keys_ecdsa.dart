@@ -75,6 +75,15 @@ class Secp256k1PublicKeyEcdsa implements IPublicKey {
     return BytesUtils.toHexString(compressed,
         prefix: prefix, lowerCase: lowerCase);
   }
+
+  @override
+  operator ==(other) {
+    if (other is! Secp256k1PublicKeyEcdsa) return false;
+    return publicKey == other.publicKey && curve == other.curve;
+  }
+
+  @override
+  int get hashCode => publicKey.hashCode ^ curve.hashCode;
 }
 
 /// A class representing a Secp256k1 private key using the ECDSA algorithm that implements the IPrivateKey interface.
@@ -128,4 +137,13 @@ class Secp256k1PrivateKeyEcdsa implements IPrivateKey {
   String toHex({bool lowerCase = true, String? prefix = ""}) {
     return BytesUtils.toHexString(raw, lowerCase: lowerCase, prefix: prefix);
   }
+
+  @override
+  operator ==(other) {
+    if (other is! Secp256k1PrivateKeyEcdsa) return false;
+    return privateKey == other.privateKey && curveType == other.curveType;
+  }
+
+  @override
+  int get hashCode => privateKey.hashCode ^ curveType.hashCode;
 }

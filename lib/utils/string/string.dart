@@ -24,6 +24,7 @@ enum StringEncoding {
 class StringUtils {
   static final RegExp _hexBytesRegex = RegExp(r'^(0x|0X)?([0-9A-Fa-f]{2})+$');
   static final RegExp _hexaDecimalRegex = RegExp(r'^(0x|0X)?[0-9A-Fa-f]+$');
+
   static bool isHexBytes(String v) {
     return _hexBytesRegex.hasMatch(v);
   }
@@ -43,12 +44,8 @@ class StringUtils {
   static List<int>? tryToBytes(String? v) {
     if (v == null) return null;
     try {
-      if (isHexBytes(v)) {
-        return BytesUtils.fromHexString(v);
-      } else {
-        return encode(v);
-      }
-    } catch (e) {
+      return toBytes(v);
+    } catch (_) {
       return null;
     }
   }
@@ -134,8 +131,15 @@ class StringUtils {
   /// Converts a Dart object represented as a Map to a JSON-encoded string.
   ///
   /// The input [data] is a Map representing the Dart object.
-  static String fromJson(Object data) {
-    return jsonEncode(data);
+  static String fromJson(Object data,
+      {String? indent, bool toStringEncodable = false}) {
+    if (indent != null) {
+      return JsonEncoder.withIndent(
+              indent, toStringEncodable ? (c) => c.toString() : null)
+          .convert(data);
+    }
+    return jsonEncode(data,
+        toEncodable: toStringEncodable ? (c) => c.toString() : null);
   }
 
   /// Converts a JSON-encoded string to a Dart object represented as a Map.
@@ -154,9 +158,11 @@ class StringUtils {
   /// Converts a Dart object represented as a Map to a JSON-encoded string if possible.
   ///
   /// The input [data] is a Map representing the Dart object.
-  static String? tryFromJson(Object? data) {
+  static String? tryFromJson(Object? data,
+      {String? indent, bool toStringEncodable = false}) {
     try {
-      return fromJson(data!);
+      return fromJson(data!,
+          indent: indent, toStringEncodable: toStringEncodable);
     } catch (e) {
       return null;
     }
@@ -166,10 +172,10 @@ class StringUtils {
   ///
   /// The input [data] is a JSON-encoded string.
   /// Returns a Map representing the Dart object.
-  static T? tryToJson<T>(String data) {
+  static T? tryToJson<T>(String? data) {
     try {
-      return toJson(data);
-    } catch (e) {
+      return toJson(data!);
+    } catch (_) {
       return null;
     }
   }

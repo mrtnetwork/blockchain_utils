@@ -18,7 +18,7 @@ class LayoutByteReader {
     final length = LayoutSerializationUtils.decodeLength(_maxOffset(offset, 12),
         sign: sign);
     if (!length.item2.isValidInt) {
-      throw LayoutException("compact value is too large for length.");
+      throw const LayoutException("compact value is too large for length.");
     }
     return Tuple(length.item1, length.item2.toInt());
   }

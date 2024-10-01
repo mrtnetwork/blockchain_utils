@@ -112,7 +112,7 @@ abstract class Bip44Base {
         bip = Bip32Slip10Nist256p1.fromSeed(seedBytes, coin.keyNetVer);
         break;
       default:
-        throw const ArgumentException("invaid type");
+        throw ArgumentException("Bip44 does not supported ${coin.type}");
     }
     final validate = _validate(bip, coin);
     bip32 = validate.item1;

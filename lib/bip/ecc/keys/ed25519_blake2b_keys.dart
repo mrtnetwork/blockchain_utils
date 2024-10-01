@@ -140,6 +140,15 @@ class Ed25519Blake2bPublicKey implements IPublicKey {
     }
     return BytesUtils.toHexString(key, prefix: prefix, lowerCase: lowerCase);
   }
+
+  @override
+  operator ==(other) {
+    if (other is! Ed25519Blake2bPublicKey) return false;
+    return _publicKey == other._publicKey && curve == other.curve;
+  }
+
+  @override
+  int get hashCode => _publicKey.hashCode ^ curve.hashCode;
 }
 
 /// Represents an Ed25519 private key with Blake2b hashing, implementing the IPrivateKey interface.
@@ -200,4 +209,13 @@ class Ed25519Blake2bPrivateKey implements IPrivateKey {
   String toHex({bool lowerCase = true, String? prefix = ""}) {
     return BytesUtils.toHexString(raw, lowerCase: lowerCase, prefix: prefix);
   }
+
+  @override
+  operator ==(other) {
+    if (other is! Ed25519Blake2bPrivateKey) return false;
+    return _privateKey == other._privateKey && curveType == other.curveType;
+  }
+
+  @override
+  int get hashCode => _privateKey.hashCode ^ curveType.hashCode;
 }

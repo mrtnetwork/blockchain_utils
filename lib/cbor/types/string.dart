@@ -1,3 +1,4 @@
+import 'package:blockchain_utils/helper/helper.dart';
 import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/cbor/utils/dynamic_bytes.dart';
 import 'package:blockchain_utils/cbor/core/tags.dart';
@@ -58,7 +59,7 @@ class CborStringValue extends CborString {
 class CborIndefiniteStringValue extends CborString {
   /// Constructor for creating a CborStringValue instance with the provided parameters.
   /// It accepts a List<String> value.
-  CborIndefiniteStringValue(this.value);
+  CborIndefiniteStringValue(List<String> value) : value = value.immutable;
 
   /// value as List<String>
   @override

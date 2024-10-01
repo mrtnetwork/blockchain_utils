@@ -16,7 +16,7 @@ import 'package:blockchain_utils/layout/exception/exception.dart';
 /// - [property] (optional): Initializer for [property].
 /// - [decodePrefixes] (optional): Initializer for [decodePrefixes].
 ///
-/// Throws [MessageException] if [fields] contains an unnamed variable-length layout.
+/// Throws [LayoutException] if [fields] contains an unnamed variable-length layout.
 ///
 class StructLayout extends Layout<Map<String, dynamic>> {
   final List<Layout> fields;
@@ -80,9 +80,9 @@ class StructLayout extends Layout<Map<String, dynamic>> {
 
         return span + fsp;
       });
-    } catch (e, s) {
+    } catch (_, s) {
       throw LayoutException("indeterminate span",
-          details: {"property": property}, trace: s);
+          details: {"property": property, "stack": s});
     }
 
     return span;

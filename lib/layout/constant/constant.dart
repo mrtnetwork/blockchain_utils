@@ -86,7 +86,7 @@ class LayoutConst {
       IntegerLayout(6, property: property, order: Endian.big);
 
   /// [BigIntLayout] (big-endian unsigned int layouts) interpreted as Numbers.
-  static BigIntLayout nu64be({String? property}) =>
+  static BigIntLayout u64be({String? property}) =>
       BigIntLayout(8, property: property, order: Endian.big);
 
   /// [IntegerLayout] (signed int layouts) spanning one byte.
@@ -138,7 +138,7 @@ class LayoutConst {
       IntegerLayout(6, property: property, sign: true, order: Endian.big);
 
   /// [BigIntLayout] (big-endian signed int layouts) interpreted as Numbers.
-  static BigIntLayout ns64be({String? property}) =>
+  static BigIntLayout s64be({String? property}) =>
       BigIntLayout(8, property: property, sign: true, order: Endian.big);
 
   /// [DoubleLayout] (little-endian 32-bit floating point) values.
@@ -161,6 +161,12 @@ class LayoutConst {
   static StructLayout struct(List<Layout> fields,
           {String? property, bool decodePrefixes = false}) =>
       StructLayout(fields, property: property, decodePrefixes: decodePrefixes);
+
+  // /// [StructLayout] values.
+  static LazyStructLayout lazyStruct(List<LazyLayout> fields,
+          {String? property, bool decodePrefixes = false}) =>
+      LazyStructLayout(fields,
+          property: property, decodePrefixes: decodePrefixes);
 
   /// [SequenceLayout] values.
   static SequenceLayout seq<T>(Layout elementLayout, Layout count,
@@ -188,15 +194,6 @@ class LayoutConst {
   static RawBytesLayout fixedBlobN(int len, {String? property}) =>
       RawBytesLayout(len, property: property);
 
-  // /// [CString] values.
-  // static CStringLayout cstr({String? property}) =>
-  //     CStringLayout(property: property);
-
-  // /// [UTF8Layout] values.
-  // static UTF8Layout utf8({int? maxSpan, String? property}) =>
-  //     UTF8Layout(maxSpan: maxSpan ?? -1, property: property);
-
-  /// [Constant] values.
   static ConstantLayout constant(dynamic value, {String? property}) =>
       ConstantLayout(value, property: property);
   static String nameWithProperty(String name, Layout? lo) {
@@ -240,9 +237,15 @@ class LayoutConst {
     return OptionalLayout<BigInt>(u64(), property: property);
   }
 
+  static OptionalLayout optionalU32Be(Layout layout,
+      {String? property, bool keepSize = false}) {
+    return optional(layout,
+        keepSize: keepSize, discriminator: u32be(), property: property);
+  }
+
   /// [OptionalLayout]
   static OptionalLayout optional(Layout layout,
-      {String? property, bool keepSize = false, Layout? discriminator}) {
+      {String? property, bool keepSize = false, BaseIntiger? discriminator}) {
     return OptionalLayout(layout,
         property: property,
         discriminator: discriminator,
@@ -264,6 +267,10 @@ class LayoutConst {
           return src ? 1 : 0;
         },
         property: property);
+  }
+
+  static CustomLayout boolean32Be({String? property}) {
+    return boolean(property: property, layout: u32be());
   }
 
   /// [bool] 4 bytes values
@@ -304,6 +311,86 @@ class LayoutConst {
       decoder: (data) => data["data"],
       property: property,
     );
+  }
+
+  static Layout<String> xdrString({String? property}) {
+    return CustomLayout<List<int>, String>(
+        layout: xdrVecBytes(),
+        decoder: (bytes) => StringUtils.decode(bytes),
+        encoder: (src) => StringUtils.encode(src),
+        property: property);
+  }
+
+  static Layout<List<int>> xdrVecBytes({String? property}) {
+    final length = padding(u32be(property: "length"), propery: "length");
+    final layout = struct([
+      length,
+      XDRBytesLayout(offset(length, -length.span), property: 'data'),
+    ]);
+    return CustomLayout<Map<String, dynamic>, List<int>>(
+        layout: layout,
+        encoder: (data) {
+          return {"data": data};
+        },
+        decoder: (data) => data["data"],
+        property: property);
+  }
+
+  static CustomLayout<Map<String, dynamic>, Map<String, dynamic>> enum32Be(
+    List<Layout> variants, {
+    String? property,
+    bool useKeyAndValue = true,
+  }) {
+    return rustEnum(variants,
+        discriminant: u32be(),
+        property: property,
+        useKeyAndValue: useKeyAndValue);
+  }
+
+  static CustomLayout<Map<String, dynamic>, Map<String, dynamic>> lazyEnumU32Be(
+    List<LazyVariantModel> variants, {
+    required String? property,
+    bool useKeyAndValue = true,
+  }) {
+    return lazyEnum(variants,
+        discriminant: u32be(),
+        property: property,
+        useKeyAndValue: useKeyAndValue);
+  }
+
+  static CustomLayout<Map<String, dynamic>, Map<String, dynamic>> lazyEnumS32Be(
+    List<LazyVariantModel> variants, {
+    required String? property,
+    bool useKeyAndValue = true,
+  }) {
+    return lazyEnum(variants,
+        discriminant: s32be(),
+        property: property,
+        useKeyAndValue: useKeyAndValue);
+  }
+
+  static CustomLayout<Map<String, dynamic>, Map<String, dynamic>> lazyEnum(
+    List<LazyVariantModel> variants, {
+    IntegerLayout? discriminant,
+    String? property,
+    bool useKeyAndValue = true,
+  }) {
+    final unionLayout = LazyUnion(discriminant ?? u8());
+    variants
+        .asMap()
+        .forEach((index, variant) => unionLayout.addVariant(variant));
+    return CustomLayout<Map<String, dynamic>, Map<String, dynamic>>(
+        layout: unionLayout,
+        decoder: (value) {
+          if (useKeyAndValue) {
+            return {"key": value.keys.first, "value": value.values.first};
+          }
+          return value;
+        },
+        encoder: (src) {
+          return src;
+        },
+        property: property);
   }
 
   /// enum values
@@ -356,6 +443,19 @@ class LayoutConst {
         property: property);
   }
 
+  static CustomLayout xdrVec(Layout elementLayout, {String? property}) {
+    final length = padding(u32be(property: "length"), propery: "length");
+    final layout = struct([
+      length,
+      seq(elementLayout, offset(length, -length.span), property: 'values'),
+    ]);
+    return CustomLayout<Map<String, dynamic>, dynamic>(
+        layout: layout,
+        encoder: (data) => {"values": data},
+        decoder: (data) => data["values"],
+        property: property);
+  }
+
   /// vectors
   static CustomLayout vec(Layout elementLayout, {String? property}) {
     final length = padding(u32(property: "length"), propery: "length");
@@ -377,7 +477,6 @@ class LayoutConst {
 
   /// factory for Rust vectors
   static CustomLayout rustVec(Layout elementLayout, {String? property}) {
-    // final length = u32(property: "length");
     final length = padding(u32(property: "length"), propery: "length");
 
     final paddingLayout = padding(u32(), propery: "padding_length");
@@ -397,7 +496,6 @@ class LayoutConst {
   /// map values
   static CustomLayout map(Layout keyLayout, Layout valueLayout,
       {String? property}) {
-    // final length = u32(property: "length");
     final length = padding(u32(property: "length"), propery: "length");
     final layout = struct([
       length,
@@ -440,7 +538,6 @@ class LayoutConst {
     );
   }
 
-  /// arrays
   static CustomLayout array(Layout elementLayout, int length,
       {String? property}) {
     final layout = struct([
@@ -454,7 +551,6 @@ class LayoutConst {
     );
   }
 
-  /// arrays with greedy size layout.
   static CustomLayout greedyArray(Layout elementLayout, {String? property}) {
     final layout = struct([
       seq(elementLayout, greedy(elementSpan: elementLayout.span),

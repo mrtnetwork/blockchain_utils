@@ -1,4 +1,5 @@
 import 'dart:typed_data';
+import 'package:blockchain_utils/helper/helper.dart';
 import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/curve/curves.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/eddsa/publickey.dart';
@@ -16,8 +17,8 @@ class EDDSAPrivateKey {
   final EDDSAPublicKey publicKey;
   EDDSAPrivateKey._(this.generator, this.baselen, List<int> privateKey,
       this._secret, List<int>? extendedKey)
-      : _privateKey = BytesUtils.toBytes(privateKey, unmodifiable: true),
-        _extendedKey = BytesUtils.tryToBytes(extendedKey, unmodifiable: true),
+      : _privateKey = privateKey.asImmutableBytes,
+        _extendedKey = extendedKey?.asImmutableBytes,
         publicKey = EDDSAPublicKey(generator, (generator * _secret).toBytes());
 
   /// Creates an EdDSA private key from a random value using a provided hash method.
@@ -99,7 +100,7 @@ class EDDSAPrivateKey {
       hLog = 3;
     } else {
       throw const ArgumentException(
-          'Only cofactor 4 and 8 curves are supported');
+          'Invalid private key. Only cofactor 4 and 8 curves are supported');
     }
     key[0] &= ~((1 << hLog) - 1);
 

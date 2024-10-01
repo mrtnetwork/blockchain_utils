@@ -53,6 +53,7 @@
 */
 
 import 'package:blockchain_utils/base58/base58.dart';
+import 'package:blockchain_utils/helper/helper.dart';
 
 /// Constants and data related to Base58 encoding used in Monero (XMR).
 class Base58XmrConst {
@@ -73,6 +74,7 @@ class Base58XmrConst {
 class Base58XmrEncoder {
   /// Encode the provided BytesData of dataBytes into a Monero Base58 encoded string.
   static String encode(List<int> dataBytes) {
+    dataBytes = dataBytes.asImmutableBytes;
     String enc = '';
 
     /// Get lengths
@@ -109,7 +111,6 @@ class Base58XmrEncoder {
 /// A utility class for decoding Monero Base58 encoded strings into BytesData data.
 class Base58XmrDecoder {
   /// Decode the provided Monero Base58 encoded [dataStr] into a BytesData of dataBytes.
-  /// Throws a [Base58ChecksumError] if the checksum is invalid.
   static List<int> decode(String dataStr) {
     List<int> dec = List.empty();
 

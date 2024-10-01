@@ -118,3 +118,12 @@ final BigInt maskBig8 = BigInt.from(mask8);
 final BigInt maskBig16 = BigInt.from(mask16);
 
 final BigInt maskBig32 = BigInt.from(mask32);
+final BigInt maskBig64 = BigInt.parse("FFFFFFFFFFFFFFFF", radix: 16);
+
+final BigInt minInt64 = BigInt.parse("-9223372036854775808");
+final BigInt maxInt64 = BigInt.parse("9223372036854775807");
+
+const int maxInt32 = 2147483647;
+const int minInt32 = -2147483648;
+
+const int maxUint32 = 4294967295;

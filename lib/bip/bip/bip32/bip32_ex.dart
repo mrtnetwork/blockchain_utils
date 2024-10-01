@@ -5,20 +5,9 @@ import 'package:blockchain_utils/exception/exception.dart';
 /// an optional error message to describe the specific issue. When caught, you
 /// can access the error message using the `toString()` method or the `message`
 /// property, if provided.
-class Bip32KeyError implements BlockchainUtilsException {
-  @override
-  final String message;
-
-  @override
-  final Map<String, dynamic>? details;
-
-  /// Creates a `Bip32KeyError` with an optional error message.
-  const Bip32KeyError(this.message, {this.details});
-
-  @override
-  String toString() {
-    return message;
-  }
+class Bip32KeyError extends BlockchainUtilsException {
+  const Bip32KeyError(String message, {Map<String, dynamic>? details})
+      : super(message, details: details);
 }
 
 /// The `Bip32PathError` class represents an exception that can be thrown in case
@@ -26,18 +15,7 @@ class Bip32KeyError implements BlockchainUtilsException {
 /// errors associated with hierarchical deterministic paths. You can include
 /// an optional error message to describe the specific issue. To access the error
 /// message, use the `toString()` method or the `message` property, if provided.
-class Bip32PathError implements BlockchainUtilsException {
-  @override
-  final String message;
-
-  @override
-  final Map<String, dynamic>? details;
-
-  /// Creates a `Bip32PathError` with an optional error message.
-  const Bip32PathError(this.message, {this.details});
-
-  @override
-  String toString() {
-    return message;
-  }
+class Bip32PathError extends BlockchainUtilsException {
+  const Bip32PathError(String message, {Map<String, dynamic>? details})
+      : super(message, details: details);
 }

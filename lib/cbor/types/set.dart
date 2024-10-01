@@ -7,7 +7,7 @@ import 'package:blockchain_utils/cbor/core/cbor.dart';
 class CborSetValue<T> implements CborObject {
   /// Constructor for creating a CborSetValue instance with the provided parameters.
   /// It accepts a set of all encodable cbor object.
-  CborSetValue(this.value);
+  CborSetValue(Set<T> value) : value = Set.unmodifiable(value);
 
   /// value as set
   @override

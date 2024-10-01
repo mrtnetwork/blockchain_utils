@@ -77,6 +77,15 @@ class Sr25519PublicKey implements IPublicKey {
     return BytesUtils.toHexString(compressed,
         prefix: prefix, lowerCase: lowerCase);
   }
+
+  @override
+  operator ==(other) {
+    if (other is! Sr25519PublicKey) return false;
+    return publicKey == other.publicKey && curve == other.curve;
+  }
+
+  @override
+  int get hashCode => publicKey.hashCode ^ curve.hashCode;
 }
 
 /// A class representing an Sr25519 private key that implements the IPrivateKey interface.
@@ -129,4 +138,13 @@ class Sr25519PrivateKey implements IPrivateKey {
   String toHex({bool lowerCase = true, String? prefix = ""}) {
     return BytesUtils.toHexString(raw, lowerCase: lowerCase, prefix: prefix);
   }
+
+  @override
+  operator ==(other) {
+    if (other is! Sr25519PrivateKey) return false;
+    return secretKey == other.secretKey && curveType == other.curveType;
+  }
+
+  @override
+  int get hashCode => secretKey.hashCode ^ curveType.hashCode;
 }

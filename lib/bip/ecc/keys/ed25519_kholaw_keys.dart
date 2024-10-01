@@ -41,8 +41,7 @@ class Ed25519KholawPublicKey implements IPublicKey {
       Ed25519KholawPublicKey.fromBytes(keyBytes);
 
       return true;
-      // ignore: empty_catches
-    } catch (e) {}
+    } catch (_) {}
     return false;
   }
 
@@ -93,6 +92,15 @@ class Ed25519KholawPublicKey implements IPublicKey {
     }
     return BytesUtils.toHexString(key, prefix: prefix, lowerCase: lowerCase);
   }
+
+  @override
+  operator ==(other) {
+    if (other is! Ed25519KholawPublicKey) return false;
+    return _publicKey == other._publicKey && curve == other.curve;
+  }
+
+  @override
+  int get hashCode => _publicKey.hashCode ^ curve.hashCode;
 }
 
 /// A class representing an Ed25519-Kholaw private key that implements the IPrivateKey interface.
@@ -124,8 +132,7 @@ class Ed25519KholawPrivateKey implements IPrivateKey {
       Ed25519KholawPrivateKey.fromBytes(keyBytes);
 
       return true;
-      // ignore: empty_catches
-    } catch (e) {}
+    } catch (_) {}
     return false;
   }
 
@@ -157,4 +164,13 @@ class Ed25519KholawPrivateKey implements IPrivateKey {
   String toHex({bool lowerCase = true, String? prefix = ""}) {
     return BytesUtils.toHexString(raw, lowerCase: lowerCase, prefix: prefix);
   }
+
+  @override
+  operator ==(other) {
+    if (other is! Ed25519KholawPrivateKey) return false;
+    return _privateKey == other._privateKey && curveType == other.curveType;
+  }
+
+  @override
+  int get hashCode => _privateKey.hashCode ^ curveType.hashCode;
 }

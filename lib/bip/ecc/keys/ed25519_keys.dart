@@ -104,6 +104,15 @@ class Ed25519PublicKey implements IPublicKey {
     }
     return BytesUtils.toHexString(key, prefix: prefix, lowerCase: lowerCase);
   }
+
+  @override
+  operator ==(other) {
+    if (other is! Ed25519PublicKey) return false;
+    return _publicKey == other._publicKey && curve == other.curve;
+  }
+
+  @override
+  int get hashCode => _publicKey.hashCode ^ curve.hashCode;
 }
 
 /// A class representing an Ed25519 private key that implements the IPrivateKey interface.
@@ -164,4 +173,13 @@ class Ed25519PrivateKey implements IPrivateKey {
   String toHex({bool lowerCase = true, String? prefix = ""}) {
     return BytesUtils.toHexString(raw, lowerCase: lowerCase, prefix: prefix);
   }
+
+  @override
+  operator ==(other) {
+    if (other is! Ed25519PrivateKey) return false;
+    return _privateKey == other._privateKey && curveType == other.curveType;
+  }
+
+  @override
+  int get hashCode => _privateKey.hashCode ^ curveType.hashCode;
 }

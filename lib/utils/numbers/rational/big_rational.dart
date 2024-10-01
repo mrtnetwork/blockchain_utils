@@ -1,6 +1,10 @@
 import 'package:blockchain_utils/exception/exception.dart';
 import 'package:blockchain_utils/utils/numbers/utils/bigint_utils.dart';
 
+class _BigRationalConst {
+  static const int maxScale = 20;
+}
+
 /// Represents a rational number with arbitrary precision using BigInt for the numerator and denominator.
 class BigRational {
   static final BigRational zero = BigRational.from(0);
@@ -247,6 +251,26 @@ class BigRational {
     return BigRational._(floor, _one);
   }
 
+  /// Returns the floor of the BigRational as a BigRational with denominator 1
+  BigRational floor() {
+    BigInt flooredNumerator;
+
+    if (numerator.isNegative && denominator.isNegative) {
+      // Both numerator and denominator are negative: treat as positive
+      flooredNumerator = numerator.abs() ~/ denominator.abs();
+    } else if (numerator.isNegative || denominator.isNegative) {
+      // One of them is negative: result will be negative
+      flooredNumerator =
+          (numerator.abs() ~/ denominator.abs()) * BigInt.from(-1) - BigInt.one;
+    } else {
+      // Both are positive: simple integer division
+      flooredNumerator = numerator ~/ denominator;
+    }
+
+    // Return the floored value as a BigRational with denominator 1
+    return BigRational(flooredNumerator, denominator: BigInt.one);
+  }
+
   /// Rounds this BigRational towards zero and returns the result as a BigRational.
   BigRational operator ~() {
     if (denominator.isNegative) {
@@ -326,12 +350,11 @@ class BigRational {
 
   static BigRational _reduce(BigInt n, BigInt d) {
     final BigInt divisor = _gcd(n, d);
-    final BigInt num = n ~/ divisor;
-    final BigInt denom = d ~/ divisor;
+    BigInt num = n ~/ divisor;
+    BigInt denom = d ~/ divisor;
     if (denom.isNegative) {
       return BigRational._(-num, -denom);
     }
-
     return BigRational._(num, denom);
   }
 
@@ -362,7 +385,7 @@ class BigRational {
   /// [digits] The number of digits after the decimal point (default is the scale of the BigRational).
   /// Returns a string representing the decimal value, with the specified number of digits after the decimal point.
   String toDecimal({int? digits}) {
-    if (_inDecimal != null) {
+    if (digits == null && _inDecimal != null) {
       return _inDecimal!;
     }
     digits ??= scale;
@@ -423,6 +446,7 @@ class BigRational {
     while (r.denominator != BigInt.one) {
       scale++;
       r *= ten;
+      if (scale >= _BigRationalConst.maxScale) break;
     }
     return scale;
   }

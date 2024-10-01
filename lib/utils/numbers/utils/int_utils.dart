@@ -99,11 +99,8 @@ class IntUtils {
   /// whether the most significant bytes are at the beginning (big-endian) or end
   /// (little-endian) of the resulting byte list.
   static List<int> toBytes(int val,
-      {required int length,
-      Endian byteOrder = Endian.big,
-      int maxBytesLength = 6}) {
-    assert(maxBytesLength > 0 && maxBytesLength <= 8);
-    assert(length <= maxBytesLength);
+      {required int length, Endian byteOrder = Endian.big}) {
+    assert(length <= 8);
     if (length > 4) {
       int lowerPart = val & mask32;
       int upperPart = (val >> 32) & mask32;
@@ -137,9 +134,8 @@ class IntUtils {
   /// [byteOrder] The byte order, defaults to Endian.big.
   /// Returns the corresponding integer value.
   static int fromBytes(List<int> bytes,
-      {Endian byteOrder = Endian.big, bool sign = false, int maxBytes = 6}) {
-    assert(maxBytes > 0 && maxBytes <= 8);
-    assert(bytes.length <= maxBytes);
+      {Endian byteOrder = Endian.big, bool sign = false}) {
+    assert(bytes.length <= 8);
     if (byteOrder == Endian.little) {
       bytes = List<int>.from(bytes.reversed.toList());
     }
@@ -188,8 +184,7 @@ class IntUtils {
         }
         return parse!;
       }
-      // ignore: empty_catches
-    } catch (e) {}
+    } catch (_) {}
     throw const ArgumentException("invalid input for parse int");
   }
 

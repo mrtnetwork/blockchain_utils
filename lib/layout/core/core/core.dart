@@ -49,6 +49,14 @@ The 3-Clause BSD License
 import 'package:blockchain_utils/layout/byte/byte_handler.dart';
 import 'package:blockchain_utils/layout/exception/exception.dart';
 
+typedef LayoutFunc<T> = Layout<T> Function({String? property});
+
+class LazyLayout<T> {
+  final LayoutFunc<T> layout;
+  final String? property;
+  const LazyLayout({required this.layout, required this.property});
+}
+
 /// Base class for layout objects.
 ///
 /// **NOTE:** This is an abstract base class; you can create instances if it amuses you,

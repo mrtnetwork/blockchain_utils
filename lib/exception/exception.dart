@@ -2,55 +2,35 @@
 /// This class serves as a base for custom exceptions related to blockchain utility operations.
 abstract class BlockchainUtilsException implements Exception {
   /// Abstract field to hold the exception message.
-  abstract final String message;
+  final String message;
 
-  abstract final Map<String, dynamic>? details;
+  final Map<String, dynamic>? details;
 
-  const BlockchainUtilsException();
+  const BlockchainUtilsException(this.message, {this.details});
 
-  /// Override the 'toString' method to provide a custom string representation of the exception.
   @override
   String toString() {
-    return message;
+    final infos = Map<String, dynamic>.fromEntries(
+        details?.entries.where((element) => element.value != null) ?? []);
+    if (infos.isEmpty) return "$runtimeType($message)";
+    final String msg =
+        "$message ${infos.entries.map((e) => "${e.key}: ${e.value}").join(", ")}";
+    return "$runtimeType($msg)";
   }
 }
 
 /// A specific exception class 'ArgumentException' that extends 'BlockchainUtilsException'.
 /// This exception is used to represent errors related to invalid arguments in blockchain utility operations.
-class ArgumentException implements BlockchainUtilsException {
+class ArgumentException extends BlockchainUtilsException {
   /// Constructor to initialize the exception with a specific message.
-  const ArgumentException(this.message, {this.details});
-
-  @override
-  final Map<String, dynamic>? details;
-
-  /// Final field to store the exception message.
-  @override
-  final String message;
-
-  /// Override the 'toString' method to provide a custom string representation of the exception.
-  @override
-  String toString() {
-    return message;
-  }
+  const ArgumentException(String message, {Map<String, dynamic>? details})
+      : super(message, details: details);
 }
 
 /// Another specific exception class 'MessageException' that extends 'BlockchainUtilsException'.
 /// This exception is used to represent errors related to messages in blockchain utility operations.
-class MessageException implements BlockchainUtilsException {
+class MessageException extends BlockchainUtilsException {
   /// Constructor to initialize the exception with a specific message.
-  const MessageException(this.message, {this.details});
-
-  /// Final field to store the exception message.
-  @override
-  final String message;
-
-  /// Override the 'toString' method to provide a custom string representation of the exception.
-  @override
-  String toString() {
-    return "$message${details == null ? '' : " $details"}";
-  }
-
-  @override
-  final Map<String, dynamic>? details;
+  const MessageException(String message, {Map<String, dynamic>? details})
+      : super(message, details: details);
 }

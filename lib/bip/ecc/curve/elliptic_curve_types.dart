@@ -1,3 +1,5 @@
+import 'package:blockchain_utils/blockchain_utils.dart';
+
 /// An enumeration of common elliptic curve types used in cryptographic operations.
 class EllipticCurveTypes {
   /// Edwards-curve Digital Signature Algorithm (EdDSA) using ed25519 curve
@@ -38,8 +40,9 @@ class EllipticCurveTypes {
   ];
 
   static EllipticCurveTypes fromName(String name) {
-    return EllipticCurveTypes.values
-        .firstWhere((element) => element.name == name);
+    return EllipticCurveTypes.values.firstWhere(
+        (element) => element.name == name,
+        orElse: () => throw MessageException("Invalid curve type name. $name"));
   }
 
   @override

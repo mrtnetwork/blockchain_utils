@@ -128,6 +128,15 @@ class Nist256p1PublicKey implements IPublicKey {
     return BytesUtils.toHexString(compressed,
         prefix: prefix, lowerCase: lowerCase);
   }
+
+  @override
+  operator ==(other) {
+    if (other is! Nist256p1PublicKey) return false;
+    return publicKey == other.publicKey && curve == other.curve;
+  }
+
+  @override
+  int get hashCode => publicKey.hashCode ^ curve.hashCode;
 }
 
 /// A class representing a NIST P-256 private key that implements the IPrivateKey interface.
@@ -181,4 +190,13 @@ class Nist256p1PrivateKey implements IPrivateKey {
   String toHex({bool lowerCase = true, String? prefix = ""}) {
     return BytesUtils.toHexString(raw, lowerCase: lowerCase, prefix: prefix);
   }
+
+  @override
+  operator ==(other) {
+    if (other is! Nist256p1PrivateKey) return false;
+    return privateKey == other.privateKey && curveType == other.curveType;
+  }
+
+  @override
+  int get hashCode => privateKey.hashCode ^ curveType.hashCode;
 }

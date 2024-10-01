@@ -284,6 +284,9 @@ class Bip44Coins extends BipCoins {
   /// Stellar
   static const stellar = Bip44Coins._('stellar');
 
+  /// Stellar testnet
+  static const stellarTestnet = Bip44Coins._('stellarTestnet');
+
   /// Terra
   static const terra = Bip44Coins._('terra');
 
@@ -462,6 +465,7 @@ class Bip44Coins extends BipCoins {
     Bip44Coins.solana: Bip44Conf.solana,
     Bip44Coins.solanaTestnet: Bip44Conf.solanaTestnet,
     Bip44Coins.stellar: Bip44Conf.stellar,
+    Bip44Coins.stellarTestnet: Bip44Conf.stellarTestnet,
     Bip44Coins.terra: Bip44Conf.terra,
     Bip44Coins.tezos: Bip44Conf.tezos,
     Bip44Coins.theta: Bip44Conf.theta,
