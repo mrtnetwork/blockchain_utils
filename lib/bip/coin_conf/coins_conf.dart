@@ -706,4 +706,14 @@ class CoinsConf {
       wifNetVer: [0xf1],
     ),
   );
+
+  /// Configuration for Omni XEP main net
+  static const CoinConf omniXep = CoinConf(
+    coinName: CoinNames("Omni XEP", "XEP"),
+    params: CoinParams(
+      p2pkhNetVer: [0x37],
+      p2shNetVer: [0x89],
+      wifNetVer: [0xA2],
+    ),
+  );
 }
