@@ -411,7 +411,7 @@ class Bip49Conf {
         "net_ver": CoinsConf.pepeTestnet.params.p2shNetVer!,
       });
 
-  /// Configuration for pepecoin main net
+  /// Configuration for Omni XEP main net
   static final BipCoinConfig omniXepMainNet = BipCoinConfig(
       coinNames: CoinsConf.omniXep.coinName,
       coinIdx: Slip44.omniXep,
