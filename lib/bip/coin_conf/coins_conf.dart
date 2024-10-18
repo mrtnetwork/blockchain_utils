@@ -714,6 +714,7 @@ class CoinsConf {
       p2pkhNetVer: [0x37],
       p2shNetVer: [0x89],
       wifNetVer: [0xa2],
+      p2wpkhHrp: "ep",
     ),
   );
 }
