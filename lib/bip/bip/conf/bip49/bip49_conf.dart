@@ -410,4 +410,21 @@ class Bip49Conf {
       addrParams: {
         "net_ver": CoinsConf.pepeTestnet.params.p2shNetVer!,
       });
+
+  /// Configuration for pepecoin main net
+  static final BipCoinConfig omniXepMainNet = BipCoinConfig(
+      coinNames: CoinsConf.omniXep.coinName,
+      coinIdx: Slip44.omniXep,
+      isTestnet: false,
+      defPath: derPathNonHardenedFull,
+      keyNetVer: Bip32KeyNetVersions(
+        List<int>.from([0x04, 0x88, 0xB2, 0x1E]),
+        List<int>.from([0x04, 0x88, 0xAD, 0xE4]),
+      ),
+      wifNetVer: CoinsConf.omniXep.params.wifNetVer,
+      type: EllipticCurveTypes.secp256k1,
+      addressEncoder: ([dynamic kwargs]) => P2SHAddrEncoder(),
+      addrParams: {
+        "net_ver": CoinsConf.omniXep.params.p2shNetVer!,
+      });
 }
