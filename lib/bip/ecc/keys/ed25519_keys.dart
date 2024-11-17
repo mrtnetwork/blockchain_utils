@@ -183,6 +183,5 @@ class Ed25519PrivateKey implements IPrivateKey {
   }
 
   @override
-  int get hashCode =>
-      HashCodeGenerator.generateHashCode([_privateKey, curve]);
+  int get hashCode => HashCodeGenerator.generateHashCode([_privateKey, curve]);
 }

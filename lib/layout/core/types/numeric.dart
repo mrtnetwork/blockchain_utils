@@ -16,7 +16,8 @@ abstract class ExternalLayout extends Layout<int> {
 }
 
 abstract class ExternalOffsetLayout extends ExternalLayout {
-  const ExternalOffsetLayout({String? property}) : super(-1, property: property);
+  const ExternalOffsetLayout({String? property})
+      : super(-1, property: property);
   LayoutDecodeResult<int> getLenAndSpan(LayoutByteReader bytes,
       {int offset = 0});
 }

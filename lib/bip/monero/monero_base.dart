@@ -104,7 +104,8 @@ class MoneroAccount {
         seedBytes.length == Ed25519KeysConst.privKeyByteLen
             ? seedBytes
             : QuickCrypto.keccack256Hash(seedBytes);
-    return MoneroAccount.fromPrivateSpendKey(Ed25519Utils.scalarReduce(privSkeyBytes),
+    return MoneroAccount.fromPrivateSpendKey(
+        Ed25519Utils.scalarReduce(privSkeyBytes),
         coinType: coinType);
   }
 
@@ -134,7 +135,8 @@ class MoneroAccount {
   /// Monero instance with the associated keys and configurations.
   factory MoneroAccount.fromWatchOnly(List<int> privVkey, List<int> pubSkey,
       {MoneroCoins coinType = MoneroCoins.moneroMainnet}) {
-    return MoneroAccount._(privKey: privVkey, pubKey: pubSkey, coinType: coinType);
+    return MoneroAccount._(
+        privKey: privVkey, pubKey: pubSkey, coinType: coinType);
   }
 
   /// Check if the Monero instance is watch-only (has no private spend key).
@@ -190,8 +192,7 @@ class MoneroAccount {
   }
 
   /// Calculate and return the private view key from the private spend key.
-  static MoneroPrivateKey _viewFromSpendKey(
-      MoneroPrivateKey privSkey) {
+  static MoneroPrivateKey _viewFromSpendKey(MoneroPrivateKey privSkey) {
     List<int> privVkeyBytes =
         Ed25519Utils.scalarReduce(QuickCrypto.keccack256Hash(privSkey.raw));
     return MoneroPrivateKey.fromBytes(privVkeyBytes);

@@ -55,8 +55,7 @@ class MoneroSubaddress {
   ///
   /// The constructor takes a private view key [privVKey] and a public spend key [pubSKey].
   /// Optionally, it can also accept a public view key [publicVkey] (defaulting to `null`).
-  MoneroSubaddress(this.privVKey, this.pubSKey,
-      [MoneroPublicKey? publicVkey])
+  MoneroSubaddress(this.privVKey, this.pubSKey, [MoneroPublicKey? publicVkey])
       : pubVKey = publicVkey ?? privVKey.publicKey;
 
   /// Compute the subaddress keys based on minor and major indexes.
@@ -96,8 +95,7 @@ class MoneroSubaddress {
     BigInt mInt = BigintUtils.fromBytes(secretKey, byteOrder: Endian.little);
     final newPoint = pubSKey.point + (Curves.generatorED25519 * mInt);
 
-    MoneroPublicKey subaddrPubSKey =
-        MoneroPublicKey.fromPoint(newPoint);
+    MoneroPublicKey subaddrPubSKey = MoneroPublicKey.fromPoint(newPoint);
     MoneroPublicKey subaddrPubVKey = MoneroPublicKey.fromPoint(
         (subaddrPubSKey.point *
             BigintUtils.fromBytes(privVKey.raw, byteOrder: Endian.little)));
