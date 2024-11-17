@@ -3,8 +3,8 @@ import 'package:blockchain_utils/bip/ecc/keys/i_keys.dart';
 import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
 import 'package:blockchain_utils/bip/ecc/keys/ed25519_keys.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/curve/curves.dart';
-import 'package:blockchain_utils/crypto/crypto/cdsa/eddsa/privatekey.dart';
-import 'package:blockchain_utils/crypto/crypto/cdsa/eddsa/publickey.dart';
+import 'package:blockchain_utils/crypto/crypto/cdsa/eddsa/keys/privatekey.dart';
+import 'package:blockchain_utils/crypto/crypto/cdsa/eddsa/keys/publickey.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/point/edwards.dart';
 import 'package:blockchain_utils/exception/exception.dart';
 
@@ -96,11 +96,12 @@ class Ed25519KholawPublicKey implements IPublicKey {
   @override
   operator ==(other) {
     if (other is! Ed25519KholawPublicKey) return false;
+    if (identical(this, other)) return true;
     return _publicKey == other._publicKey && curve == other.curve;
   }
 
   @override
-  int get hashCode => _publicKey.hashCode ^ curve.hashCode;
+  int get hashCode => HashCodeGenerator.generateHashCode([_publicKey, curve]);
 }
 
 /// A class representing an Ed25519-Kholaw private key that implements the IPrivateKey interface.
@@ -138,7 +139,7 @@ class Ed25519KholawPrivateKey implements IPrivateKey {
 
   /// curve type
   @override
-  EllipticCurveTypes get curveType {
+  EllipticCurveTypes get curve {
     return EllipticCurveTypes.ed25519Kholaw;
   }
 
@@ -168,9 +169,11 @@ class Ed25519KholawPrivateKey implements IPrivateKey {
   @override
   operator ==(other) {
     if (other is! Ed25519KholawPrivateKey) return false;
-    return _privateKey == other._privateKey && curveType == other.curveType;
+    if (identical(other, this)) return true;
+    return _privateKey == other._privateKey && curve == other.curve;
   }
 
   @override
-  int get hashCode => _privateKey.hashCode ^ curveType.hashCode;
+  int get hashCode =>
+      HashCodeGenerator.generateHashCode([_privateKey, curve]);
 }

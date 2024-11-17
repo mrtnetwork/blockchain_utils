@@ -1,15 +1,15 @@
 import 'package:blockchain_utils/bip/address/xmr_addr.dart';
 import 'package:blockchain_utils/bip/ecc/keys/ed25519_keys.dart';
+import 'package:blockchain_utils/bip/ecc/keys/ed25519_monero_keys.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/utils/ed25519_utils.dart';
 import 'package:blockchain_utils/bip/monero/conf/monero_coin_conf.dart';
 import 'package:blockchain_utils/bip/monero/conf/monero_coins.dart';
 import 'package:blockchain_utils/bip/monero/monero_exc.dart';
-import 'package:blockchain_utils/bip/monero/monero_keys.dart';
 import 'package:blockchain_utils/bip/monero/monero_subaddr.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
 
 /// A class representing Monero cryptocurrency and its associated keys and configurations.
-class Monero {
+class MoneroAccount {
   /// Private spend key (optional)
   final MoneroPrivateKey? privSkey;
 
@@ -29,7 +29,7 @@ class Monero {
   final MoneroSubaddress scubaddr;
 
   /// Private constructor for creating a Monero instance.
-  Monero.__(
+  MoneroAccount.__(
       {required this.coinConf,
       required this.privSkey,
       required this.privVkey,
@@ -49,7 +49,7 @@ class Monero {
   /// If no public key is provided (pubKey is null), it generates the public keys from the private keys.
   ///
   /// Returns a Monero instance configured with the provided keys and coin type.
-  factory Monero._({
+  factory MoneroAccount._({
     required List<int> privKey,
     List<int>? pubKey,
     MoneroCoins coinType = MoneroCoins.moneroMainnet,
@@ -59,7 +59,7 @@ class Monero {
       final mPrivVkey = _viewFromSpendKey(mPrivSkey);
       final mPubSkey = mPrivSkey.publicKey;
       final mPubVkey = mPrivVkey.publicKey;
-      return Monero.__(
+      return MoneroAccount.__(
           coinConf: coinType.conf,
           privSkey: mPrivSkey,
           privVkey: mPrivVkey,
@@ -70,7 +70,7 @@ class Monero {
     final mPrivVkey = MoneroPrivateKey.fromBytes(privKey);
     final mPubSkey = MoneroPublicKey.fromBytes(pubKey);
     final mPubVkey = mPrivVkey.publicKey;
-    return Monero.__(
+    return MoneroAccount.__(
         coinConf: coinType.conf,
         privSkey: null,
         privVkey: mPrivVkey,
@@ -79,17 +79,32 @@ class Monero {
         scubaddr: MoneroSubaddress(mPrivVkey, mPubSkey, mPubVkey));
   }
 
+  factory MoneroAccount.multisig(
+      {required MoneroPrivateKey privVkey,
+      required MoneroPublicKey pubSkey,
+      required MoneroPrivateKey privSkey,
+      MoneroCoins coinType = MoneroCoins.moneroMainnet}) {
+    final mPubVkey = privVkey.publicKey;
+    return MoneroAccount.__(
+        coinConf: coinType.conf,
+        privSkey: privSkey,
+        privVkey: privVkey,
+        pubSkey: pubSkey,
+        pubVkey: mPubVkey,
+        scubaddr: MoneroSubaddress(privVkey, pubSkey, mPubVkey));
+  }
+
   /// Factory method to create a Monero instance from a seed.
   ///
   /// Given a [seedBytes] and an optional [coinType], this method constructs a Monero instance
   /// with the associated keys and configurations.
-  factory Monero.fromSeed(List<int> seedBytes,
+  factory MoneroAccount.fromSeed(List<int> seedBytes,
       {MoneroCoins coinType = MoneroCoins.moneroMainnet}) {
     List<int> privSkeyBytes =
         seedBytes.length == Ed25519KeysConst.privKeyByteLen
             ? seedBytes
             : QuickCrypto.keccack256Hash(seedBytes);
-    return Monero.fromPrivateSpendKey(Ed25519Utils.scalarReduce(privSkeyBytes),
+    return MoneroAccount.fromPrivateSpendKey(Ed25519Utils.scalarReduce(privSkeyBytes),
         coinType: coinType);
   }
 
@@ -97,9 +112,9 @@ class Monero {
   ///
   /// Given a [privKey] and an optional [coinType], this method constructs a Monero instance
   /// with the associated keys and configurations.
-  factory Monero.fromBip44PrivateKey(List<int> privKey,
+  factory MoneroAccount.fromBip44PrivateKey(List<int> privKey,
       {MoneroCoins coinType = MoneroCoins.moneroMainnet}) {
-    return Monero.fromPrivateSpendKey(
+    return MoneroAccount.fromPrivateSpendKey(
         Ed25519Utils.scalarReduce(QuickCrypto.keccack256Hash(privKey)),
         coinType: coinType);
   }
@@ -108,18 +123,18 @@ class Monero {
   ///
   /// Given a [privSkey] and an optional [coinType], this method constructs a Monero instance
   /// with the associated keys and configurations.
-  factory Monero.fromPrivateSpendKey(List<int> privSkey,
+  factory MoneroAccount.fromPrivateSpendKey(List<int> privSkey,
       {MoneroCoins coinType = MoneroCoins.moneroMainnet}) {
-    return Monero._(privKey: privSkey, coinType: coinType);
+    return MoneroAccount._(privKey: privSkey, coinType: coinType);
   }
 
   /// Factory method to create a Monero instance from watch-only keys.
   ///
   /// Given a [privVkey], [pubSkey], and an optional [coinType], this method constructs a
   /// Monero instance with the associated keys and configurations.
-  factory Monero.fromWatchOnly(List<int> privVkey, List<int> pubSkey,
+  factory MoneroAccount.fromWatchOnly(List<int> privVkey, List<int> pubSkey,
       {MoneroCoins coinType = MoneroCoins.moneroMainnet}) {
-    return Monero._(privKey: privVkey, pubKey: pubSkey, coinType: coinType);
+    return MoneroAccount._(privKey: privVkey, pubKey: pubSkey, coinType: coinType);
   }
 
   /// Check if the Monero instance is watch-only (has no private spend key).
@@ -175,7 +190,8 @@ class Monero {
   }
 
   /// Calculate and return the private view key from the private spend key.
-  static MoneroPrivateKey _viewFromSpendKey(MoneroPrivateKey privSkey) {
+  static MoneroPrivateKey _viewFromSpendKey(
+      MoneroPrivateKey privSkey) {
     List<int> privVkeyBytes =
         Ed25519Utils.scalarReduce(QuickCrypto.keccack256Hash(privSkey.raw));
     return MoneroPrivateKey.fromBytes(privVkeyBytes);

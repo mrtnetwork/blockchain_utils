@@ -44,14 +44,6 @@ class ECDSAPublicKey {
     return ECDSAPublicKey._(generator, point);
   }
 
-  @override
-  bool operator ==(Object other) {
-    if (other is ECDSAPublicKey) {
-      return generator.curve == other.generator.curve && point == other.point;
-    }
-    return false;
-  }
-
   /// Verifies an ECDSA signature against a hash value.
   ///
   /// Parameters:
@@ -85,10 +77,20 @@ class ECDSAPublicKey {
     return v == r;
   }
 
-  @override
-  int get hashCode => generator.hashCode ^ point.hashCode;
-
   List<int> toBytes([EncodeType encodeType = EncodeType.comprossed]) {
     return point.toBytes(encodeType);
   }
+
+  @override
+  bool operator ==(Object other) {
+    if (other is ECDSAPublicKey) {
+      if (identical(this, other)) return true;
+      return generator.curve == other.generator.curve && point == other.point;
+    }
+    return false;
+  }
+
+  @override
+  int get hashCode =>
+      HashCodeGenerator.generateHashCode([generator.curve, point]);
 }

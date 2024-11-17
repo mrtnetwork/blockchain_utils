@@ -10,13 +10,6 @@ import 'package:blockchain_utils/utils/utils.dart';
 /// To use this class, create an instance of `Crc32`, select the CRC32 algorithm you need, and then
 /// use the provided methods to calculate CRC32 checksums for your data.
 ///
-/// Example:
-/// ```dart
-/// final data = List<int>.from([0x01, 0x02, 0x03, 0x04]);
-/// final checksum = Crc32.quickIntDigest(data); // Calculate CRC32 checksum
-/// print('CRC32 Checksum: ${checksum.toRadixString(16)}');
-/// ```
-///
 /// Note: The `Crc32` class can be customized with different algorithms and options for specific use cases.
 class Crc32 {
   static const List<int> _crcTable = [

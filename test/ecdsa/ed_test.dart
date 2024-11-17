@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:blockchain_utils/crypto/crypto/cdsa/curve/curves.dart';
-import 'package:blockchain_utils/crypto/crypto/cdsa/eddsa/privatekey.dart';
+import 'package:blockchain_utils/crypto/crypto/cdsa/eddsa/keys/privatekey.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/point/edwards.dart';
 import 'package:blockchain_utils/crypto/crypto/hash/hash.dart';
 import 'package:blockchain_utils/utils/utils.dart';

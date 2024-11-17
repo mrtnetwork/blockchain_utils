@@ -17,7 +17,6 @@ class LayoutSerializationUtils {
   }
 
   static Tuple<int, BigInt> decodeLength(List<int> bytes, {bool sign = false}) {
-    // print("come bytes $bytes ${bytes[0] & 0x03}");
     switch (bytes[0] & 0x03) {
       case 0x00:
         return Tuple(1, BigInt.from(bytes[0]) >> 2);

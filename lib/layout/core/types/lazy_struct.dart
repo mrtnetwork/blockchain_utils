@@ -10,9 +10,9 @@ import 'package:blockchain_utils/layout/exception/exception.dart';
 /// Throws [LayoutException] if [fields] contains an unnamed variable-length layout.
 ///
 class LazyStructLayout extends Layout<Map<String, dynamic>> {
-  final List<LazyLayout> fields;
+  final List<BaseLazyLayout> fields;
   final bool decodePrefixes;
-  factory LazyStructLayout(List<LazyLayout> fields,
+  factory LazyStructLayout(List<BaseLazyLayout> fields,
       {String? property, bool decodePrefixes = false}) {
     for (final field in fields) {
       if (field.property == null) {
@@ -31,11 +31,11 @@ class LazyStructLayout extends Layout<Map<String, dynamic>> {
   }
 
   LazyStructLayout._({
-    required List<LazyLayout> fields,
+    required List<BaseLazyLayout> fields,
     required int span,
     required this.decodePrefixes,
     String? property,
-  })  : fields = List<LazyLayout>.unmodifiable(fields),
+  })  : fields = List<BaseLazyLayout>.unmodifiable(fields),
         super(span, property: property);
 
   @override
@@ -48,7 +48,8 @@ class LazyStructLayout extends Layout<Map<String, dynamic>> {
   }
 
   @override
-  int getSpan(LayoutByteReader? bytes, {int offset = 0}) {
+  int getSpan(LayoutByteReader? bytes,
+      {int offset = 0, Map<String, dynamic>? source}) {
     if (this.span >= 0) {
       return this.span;
     }
@@ -57,15 +58,21 @@ class LazyStructLayout extends Layout<Map<String, dynamic>> {
 
     try {
       span = fields.fold(0, (span, field) {
-        final layout = field.layout(property: field.property);
-        final fsp = layout.getSpan(bytes, offset: offset);
-        offset += fsp;
+        final layout = field.layout(
+            action: LayoutAction.span, sourceOrResult: source, remindBytes: 0);
+        final lSpan = layout.getSpan(bytes,
+            offset: offset, source: source?[field.property]);
+        assert(lSpan >= 0, "span cannot be negative.");
+        offset += lSpan;
 
-        return span + fsp;
+        return span + lSpan;
       });
-    } catch (_, s) {
-      throw LayoutException("indeterminate span",
-          details: {"property": property, "stack": s});
+    } catch (e, s) {
+      throw LayoutException("indeterminate span", details: {
+        "property": property,
+        "error": e,
+        "stack": s,
+      });
     }
 
     return span;
@@ -75,20 +82,27 @@ class LazyStructLayout extends Layout<Map<String, dynamic>> {
   LayoutDecodeResult<Map<String, dynamic>> decode(LayoutByteReader bytes,
       {int offset = 0}) {
     final Map<String, dynamic> result = {};
+    int remindBytes = bytes.length - offset;
     int consumed = 0;
     for (final field in fields) {
-      final layout = field.layout(property: field.property);
+      final layout = field.layout(
+          action: LayoutAction.decode,
+          sourceOrResult: result,
+          remindBytes: remindBytes);
       if (field.property != null) {
         final decode = layout.decode(bytes, offset: offset);
         consumed += decode.consumed;
+        remindBytes -= decode.consumed;
         result[field.property!] = decode.value;
       }
-      offset += layout.getSpan(bytes, offset: offset);
+      final lSpan =
+          layout.getSpan(bytes, offset: offset, source: result[field.property]);
+      assert(lSpan >= 0, "span cannot be negative.");
+      offset += lSpan;
       if (decodePrefixes && bytes.length == offset) {
         break;
       }
     }
-
     return LayoutDecodeResult(consumed: consumed, value: result);
   }
 
@@ -100,14 +114,16 @@ class LazyStructLayout extends Layout<Map<String, dynamic>> {
     int lastWrote = 0;
 
     for (final field in fields) {
-      final layout = field.layout(property: field.property);
+      final layout = field.layout(
+          action: LayoutAction.encode, sourceOrResult: source, remindBytes: 0);
       int span = layout.span;
       lastWrote = (span > 0) ? span : 0;
       if (source.containsKey(field.property)) {
         final value = source[field.property];
         lastWrote = layout.encode(value, writer, offset: offset);
         if (span < 0) {
-          span = layout.getSpan(writer.reader, offset: offset);
+          span = layout.getSpan(writer.reader, offset: offset, source: value);
+          assert(!span.isNegative, "span cannot be negative.");
         }
       } else {
         if (span < 0 || field is! PaddingLayout) {
@@ -121,7 +137,7 @@ class LazyStructLayout extends Layout<Map<String, dynamic>> {
       lastOffset = offset;
       offset += span;
     }
-
-    return (lastOffset + lastWrote) - firstOffset;
+    final encodeLen = (lastOffset + lastWrote) - firstOffset;
+    return encodeLen;
   }
 }

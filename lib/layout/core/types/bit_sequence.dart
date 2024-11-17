@@ -12,7 +12,7 @@ class BitSequenceLayout extends Layout<List<int>> {
   }
 
   @override
-  int getSpan(LayoutByteReader? bytes, {int offset = 0}) {
+  int getSpan(LayoutByteReader? bytes, {int offset = 0, List<int>? source}) {
     return bytes!.getCompactTotalLenght(offset).item2 ~/ 8;
   }
 

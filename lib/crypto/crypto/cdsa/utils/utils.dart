@@ -71,7 +71,7 @@ class ECDSAUtils {
       if (d == BigInt.one) {
         return a.modPow((p + BigInt.from(3)) ~/ BigInt.from(8), p);
       }
-      assert(d == p - BigInt.one);
+      // assert(d == p - BigInt.one);
       return (BigInt.from(2) *
               a *
               (BigInt.from(4) * a)

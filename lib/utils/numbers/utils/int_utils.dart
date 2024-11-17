@@ -4,6 +4,7 @@ import 'package:blockchain_utils/utils/numbers/utils/bigint_utils.dart';
 import 'package:blockchain_utils/utils/string/string.dart';
 import 'package:blockchain_utils/utils/tuple/tuple.dart';
 import 'package:blockchain_utils/exception/exception.dart';
+import 'dart:math' as math;
 
 /// Utility class for integer-related operations and conversions.
 class IntUtils {
@@ -207,5 +208,21 @@ class IntUtils {
     } on ArgumentException {
       return null;
     }
+  }
+
+  static double sqrt(num x) => math.sqrt(x);
+  static double log(num x) => math.log(x);
+  static double cos(num x) => math.cos(x);
+  static double exp(num x) => math.exp(x);
+  static num pow(num x, num exponent) => math.pow(x, exponent);
+  static double get pi => math.pi;
+  static int max(int a, int b) {
+    if (a > b) return a;
+    return b;
+  }
+
+  static int min(int a, int b) {
+    if (a > b) return b;
+    return a;
   }
 }

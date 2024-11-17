@@ -1,10 +1,10 @@
 import 'package:blockchain_utils/bip/ecc/keys/ed25519_keys.dart';
 import 'package:blockchain_utils/bip/ecc/keys/ed25519_blake2b_keys.dart';
 import 'package:blockchain_utils/bip/ecc/keys/ed25519_kholaw_keys.dart';
+import 'package:blockchain_utils/bip/ecc/keys/ed25519_monero_keys.dart';
 import 'package:blockchain_utils/bip/ecc/keys/nist256p1_keys.dart';
 import 'package:blockchain_utils/bip/ecc/keys/secp256k1_keys_ecdsa.dart';
 import 'package:blockchain_utils/bip/ecc/keys/sr25519_keys.dart';
-import 'package:blockchain_utils/bip/monero/monero_keys.dart';
 import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/point/base.dart';
 import 'package:blockchain_utils/utils/binary/utils.dart';
@@ -79,7 +79,7 @@ abstract class IPublicKey {
 /// An abstract class representing a generic private key interface for different elliptic curve types.
 abstract class IPrivateKey {
   /// Get the elliptic curve type associated with the private key.
-  EllipticCurveTypes get curveType;
+  EllipticCurveTypes get curve;
 
   /// Factory method for creating an IPrivateKey instance from a byte array and an elliptic curve type.
   factory IPrivateKey.fromBytes(List<int> keyBytes, EllipticCurveTypes type) {
@@ -92,8 +92,11 @@ abstract class IPrivateKey {
         return Ed25519KholawPrivateKey.fromBytes(keyBytes);
       case EllipticCurveTypes.ed25519Blake2b:
         return Ed25519Blake2bPrivateKey.fromBytes(keyBytes);
+      case EllipticCurveTypes.ed25519Monero:
+        return MoneroPrivateKey.fromBytes(keyBytes);
       case EllipticCurveTypes.sr25519:
         return Sr25519PrivateKey.fromBytes(keyBytes);
+
       default:
     }
     return Secp256k1PrivateKeyEcdsa.fromBytes(keyBytes);
@@ -123,6 +126,8 @@ abstract class IPrivateKey {
         return Ed25519KholawPrivateKey.isValidBytes(keyBytes);
       case EllipticCurveTypes.ed25519Blake2b:
         return Ed25519Blake2bPrivateKey.isValidBytes(keyBytes);
+      case EllipticCurveTypes.ed25519Monero:
+        return MoneroPrivateKey.isValidBytes(keyBytes);
       case EllipticCurveTypes.sr25519:
         return Sr25519PrivateKey.isValidBytes(keyBytes);
       default:

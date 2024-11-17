@@ -65,14 +65,16 @@ class OptionalLayout<T> extends Layout<T?> {
   }
 
   @override
-  int getSpan(LayoutByteReader? bytes, {int offset = 0}) {
+  int getSpan(LayoutByteReader? bytes, {int offset = 0, T? source}) {
     if (size != null) return size!;
 
     final decode = discriminator.decode(bytes!, offset: offset);
     if (decode.value == 0) return discriminator.span;
     _validateOption(property: property, value: decode.value);
-    return layout.getSpan(bytes, offset: offset + discriminator.span) +
-        discriminator.span;
+    final lSpan = layout.getSpan(bytes,
+        offset: offset + discriminator.span, source: source);
+    assert(lSpan >= 0, "span cannot be negative.");
+    return lSpan + discriminator.span;
   }
 
   @override

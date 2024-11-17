@@ -454,7 +454,6 @@ class Web3SecretStorageDefinationV3 {
   ///
   /// Returns the encrypted wallet data as a string in the chosen encoding format.
   String encrypt({SecretWalletEncoding encoding = SecretWalletEncoding.json}) {
-    // print("cipher ${BytesUtils.toHexString(ciphertextBytes)}");
     if (encoding == SecretWalletEncoding.cbor) {
       return _crypto.encodeCbor(_password, data, uuid);
     }

@@ -20,8 +20,5 @@ export 'mnemonic/words_list/languages.dart';
 /// Export statement for Monero base components, including address generation.
 export 'monero_base.dart';
 
-/// Export statement for Monero key management components.
-export 'monero_keys.dart';
-
 /// Export statement for Monero subaddress components.
 export 'monero_subaddr.dart';

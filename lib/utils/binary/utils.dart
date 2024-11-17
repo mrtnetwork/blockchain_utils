@@ -13,9 +13,7 @@ class BytesUtils {
   /// of the XOR operation between the corresponding bytes in the input lists.
   static List<int> xor(List<int> dataBytes1, List<int> dataBytes2) {
     return List<int>.from(List<int>.generate(
-      dataBytes1.length,
-      (index) => dataBytes1[index] ^ dataBytes2[index],
-    ));
+        dataBytes1.length, (index) => dataBytes1[index] ^ dataBytes2[index]));
   }
 
   /// Converts a list of bytes to a binary string representation.
@@ -134,7 +132,7 @@ class BytesUtils {
   ///
   /// Performs a bitwise AND operation with a mask (`mask8`) to ensure that each byte in
   /// the input list is represented as an 8-bit integer.
-  static List<int> toBytes(List<int> bytes, {bool unmodifiable = false}) {
+  static List<int> toBytes(Iterable<int> bytes, {bool unmodifiable = false}) {
     final toBytes = bytes.map((e) => e & mask8).toList();
     if (unmodifiable) {
       return List<int>.unmodifiable(toBytes);
@@ -159,9 +157,9 @@ class BytesUtils {
   /// Throws:
   /// - [ArgumentException] if any byte is outside the valid range.
   ///
-  static void validateBytes(List<int> bytes, {String? onError}) {
+  static void validateBytes(Iterable<int> bytes, {String? onError}) {
     for (int i = 0; i < bytes.length; i++) {
-      final int byte = bytes[i];
+      final int byte = bytes.elementAt(i);
       if (byte < 0 || byte > mask8) {
         throw ArgumentException(
             "${onError ?? "Invalid bytes"} at index $i $byte");
@@ -188,6 +186,13 @@ class BytesUtils {
     }
 
     return 0;
+  }
+
+  static bool isContains(List<List<int>> a, List<int> part) {
+    for (final i in a) {
+      if (bytesEqual(i, part)) return true;
+    }
+    return false;
   }
 
   /// Compare two lists of bytes for equality.

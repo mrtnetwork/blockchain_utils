@@ -31,8 +31,9 @@ class XDRBytesLayout extends Layout<List<int>> {
   }
 
   @override
-  int getSpan(LayoutByteReader? bytes, {int offset = 0}) {
-    int span = layout.getSpan(bytes, offset: offset);
+  int getSpan(LayoutByteReader? bytes, {int offset = 0, List<int>? source}) {
+    int span = layout.getSpan(bytes, offset: offset, source: source);
+    assert(span >= 0, "span cannot be negative.");
     span += _reminder(span);
     return span;
   }

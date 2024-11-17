@@ -1,6 +1,28 @@
 import 'package:blockchain_utils/exception/exception.dart';
 import 'package:blockchain_utils/utils/utils.dart';
 
+typedef ItrableCondition<T> = bool Function(T);
+
+extension SetHelper<T> on Set<T> {
+  Set<T> get immutable => Set<T>.unmodifiable(this);
+  Set<T> clone({bool immutable = false}) {
+    if (immutable) return this.immutable;
+    return Set<T>.from(this);
+  }
+}
+
+extension IterableHelper<T> on Iterable<T> {
+  Set<T> get toImutableSet => Set<T>.unmodifiable(this);
+  List<T> get toImutableList => List<T>.unmodifiable(this);
+  T? firstWhereNullable(bool Function(T) test, {T Function()? orElse}) {
+    try {
+      return firstWhere(test);
+    } on StateError {
+      return null;
+    }
+  }
+}
+
 extension ListHelper<T> on List<T> {
   List<T> get immutable => List<T>.unmodifiable(this);
   List<T> clone({bool immutable = false}) {
@@ -9,6 +31,30 @@ extension ListHelper<T> on List<T> {
   }
 
   List<T>? get emptyAsNull => isEmpty ? null : this;
+  List<T> exceptedLen(int len, {String? message}) {
+    if (length != len) {
+      throw ArgumentException(message ?? 'Invalid length. ',
+          details: {"excepted": len, "length": length});
+    }
+    return this;
+  }
+}
+
+extension IterableIntHelper on Iterable<int> {
+  List<int> get immutable => List<int>.unmodifiable(this);
+
+  List<int> get asImmutableBytes {
+    BytesUtils.validateBytes(this);
+    return immutable;
+  }
+
+  List<int> get toImutableBytes {
+    return BytesUtils.toBytes(this, unmodifiable: true);
+  }
+
+  List<int> get toBytes {
+    return BytesUtils.toBytes(this);
+  }
 }
 
 extension ListIntHelper on List<int> {
@@ -78,6 +124,17 @@ extension IntHelper on int {
   int get asUint32 {
     if (isNegative || this > maxUint32) {
       throw ArgumentException("Invalid Unsigned int 32.", details: {
+        "excepted": mask32.bitLength,
+        "bitLength": bitLength,
+        "value": toString()
+      });
+    }
+    return this;
+  }
+
+  int get asUint8 {
+    if (isNegative || this > mask8) {
+      throw ArgumentException("Invalid Unsigned int 8.", details: {
         "excepted": mask32.bitLength,
         "bitLength": bitLength,
         "value": toString()

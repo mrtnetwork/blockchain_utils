@@ -81,12 +81,6 @@ import 'network.dart';
 /// - `redemption`: Represents the address type for redemption addresses.
 ///
 /// Each address type is associated with a unique integer value for identification.
-///
-/// Example Usage:
-/// ```dart
-/// final addressType = ADAByronAddrTypes.publicKey;
-/// print('Address Type: $addressType'); // Output: Address Type: ADAByronAddrTypes.publicKey
-/// ```
 class ADAByronAddrTypes {
   /// Represents the address type for public keys.
   static const ADAByronAddrTypes publicKey =

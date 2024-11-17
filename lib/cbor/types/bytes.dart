@@ -10,6 +10,7 @@ class CborBytesValue implements CborObject {
   /// It accepts the bytes value.
   CborBytesValue(List<int> value) : value = value.asImmutableBytes;
 
+  @override
   final List<int> value;
 
   /// Encode the value into CBOR bytes

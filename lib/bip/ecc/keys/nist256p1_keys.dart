@@ -154,7 +154,7 @@ class Nist256p1PrivateKey implements IPrivateKey {
 
   /// curve type.
   @override
-  EllipticCurveTypes get curveType {
+  EllipticCurveTypes get curve {
     return EllipticCurveTypes.nist256p1;
   }
 
@@ -194,9 +194,9 @@ class Nist256p1PrivateKey implements IPrivateKey {
   @override
   operator ==(other) {
     if (other is! Nist256p1PrivateKey) return false;
-    return privateKey == other.privateKey && curveType == other.curveType;
+    return privateKey == other.privateKey && curve == other.curve;
   }
 
   @override
-  int get hashCode => privateKey.hashCode ^ curveType.hashCode;
+  int get hashCode => privateKey.hashCode ^ curve.hashCode;
 }

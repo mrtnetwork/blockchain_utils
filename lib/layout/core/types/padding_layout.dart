@@ -8,8 +8,8 @@ class PaddingLayout<T> extends Layout<T> {
       : super(layout.span, property: property);
 
   @override
-  int getSpan(LayoutByteReader? bytes, {int offset = 0}) {
-    return layout.getSpan(bytes, offset: offset);
+  int getSpan(LayoutByteReader? bytes, {int offset = 0, T? source}) {
+    return layout.getSpan(bytes, offset: offset, source: source);
   }
 
   @override

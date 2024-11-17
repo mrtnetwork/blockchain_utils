@@ -66,7 +66,8 @@ class StructLayout extends Layout<Map<String, dynamic>> {
   }
 
   @override
-  int getSpan(LayoutByteReader? bytes, {int offset = 0}) {
+  int getSpan(LayoutByteReader? bytes,
+      {int offset = 0, Map<String, dynamic>? source}) {
     if (this.span >= 0) {
       return this.span;
     }
@@ -75,12 +76,14 @@ class StructLayout extends Layout<Map<String, dynamic>> {
 
     try {
       span = fields.fold(0, (span, fd) {
-        final fsp = fd.getSpan(bytes, offset: offset);
+        final fsp =
+            fd.getSpan(bytes, offset: offset, source: source?[fd.property]);
+        assert(fsp >= 0, "indeterminate span ${fd.property}");
         offset += fsp;
 
         return span + fsp;
       });
-    } catch (_, s) {
+    } catch (e, s) {
       throw LayoutException("indeterminate span",
           details: {"property": property, "stack": s});
     }
@@ -99,7 +102,10 @@ class StructLayout extends Layout<Map<String, dynamic>> {
         consumed += decode.consumed;
         result[fd.property!] = decode.value;
       }
-      offset += fd.getSpan(bytes, offset: offset);
+      final lSpan =
+          fd.getSpan(bytes, offset: offset, source: result[fd.property]);
+      assert(lSpan >= 0, "span cannot be negative.");
+      offset += lSpan;
       if (decodePrefixes && bytes.length == offset) {
         break;
       }
@@ -112,17 +118,23 @@ class StructLayout extends Layout<Map<String, dynamic>> {
   int encode(Map<String, dynamic> source, LayoutByteWriter writer,
       {int offset = 0}) {
     final firstOffset = offset;
-    int lastOffset = 0;
+    int lastOffset = firstOffset;
     int lastWrote = 0;
 
     for (final field in fields) {
       int span = field.span;
-      lastWrote = (span > 0) ? span : 0;
       if (source.containsKey(field.property)) {
         final value = source[field.property];
         lastWrote = field.encode(value, writer, offset: offset);
         if (span < 0) {
-          span = field.getSpan(writer.reader, offset: offset);
+          span = field.getSpan(writer.reader, offset: offset, source: value);
+          if (span.isNegative) {
+            throw LayoutException("indeterminate span.", details: {
+              "key": field.property,
+              "source": source,
+              "property": property
+            });
+          }
         }
       } else {
         if (span < 0 || field is! PaddingLayout) {

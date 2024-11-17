@@ -138,4 +138,31 @@ class FortunaPRNG {
     }
     return out;
   }
+
+  int get nextUint32 {
+    if (_c + 4 > _out.length) {
+      _generateBlocks(_out, 1);
+      _c = 0;
+    }
+    int result = (_out[_c] << 24) |
+        (_out[_c + 1] << 16) |
+        (_out[_c + 2] << 8) |
+        (_out[_c + 3]);
+    _c += 4;
+    return result;
+  }
+
+  double get nextDouble {
+    // Get a 32-bit integer and scale it to the range [0, 1)
+    return nextUint32 / 4294967296.0;
+  }
+
+  int nextInt(int max) {
+    if (max <= 0) throw ArgumentError("max must be greater than 0");
+
+    // Generate a random double in the range [0.0, 1.0)
+    double fraction =
+        nextUint32 / 4294967296.0; // Divide by 2^32 to get a fraction
+    return (fraction * max).floor();
+  }
 }

@@ -29,15 +29,6 @@ class ECDSAPrivateKey {
     return ECDSAPrivateKey._(publicKey, secexp);
   }
 
-  @override
-  bool operator ==(other) {
-    if (other is ECDSAPrivateKey) {
-      return publicKey == other.publicKey &&
-          secretMultiplier == other.secretMultiplier;
-    }
-    return false;
-  }
-
   /// Signs a hash value using the private key.
   ///
   /// Parameters:
@@ -87,5 +78,16 @@ class ECDSAPrivateKey {
   }
 
   @override
-  int get hashCode => secretMultiplier.hashCode ^ publicKey.hashCode;
+  bool operator ==(other) {
+    if (other is ECDSAPrivateKey) {
+      if (identical(this, other)) return true;
+      return publicKey == other.publicKey &&
+          secretMultiplier == other.secretMultiplier;
+    }
+    return false;
+  }
+
+  @override
+  int get hashCode =>
+      HashCodeGenerator.generateHashCode([publicKey, secretMultiplier]);
 }

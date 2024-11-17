@@ -23,7 +23,9 @@ class MapEntryLayout extends Layout<MapEntry> {
   LayoutDecodeResult<MapEntry> decode(LayoutByteReader bytes,
       {int offset = 0}) {
     final key = keyLayout.decode(bytes, offset: offset);
-    final keyOffset = keyLayout.getSpan(bytes, offset: offset);
+    final keyOffset =
+        keyLayout.getSpan(bytes, offset: offset, source: key.value);
+    assert(keyOffset >= 0, "span cannot be negative");
     final value = valueLayout.decode(bytes, offset: offset + keyOffset);
     return LayoutDecodeResult(
         consumed: key.consumed + value.consumed,
@@ -39,9 +41,14 @@ class MapEntryLayout extends Layout<MapEntry> {
   }
 
   @override
-  int getSpan(LayoutByteReader? bytes, {int offset = 0}) {
-    final keySpan = keyLayout.getSpan(bytes, offset: offset);
-    return keySpan + valueLayout.getSpan(bytes, offset: offset + keySpan);
+  int getSpan(LayoutByteReader? bytes, {int offset = 0, MapEntry? source}) {
+    final keySpan =
+        keyLayout.getSpan(bytes, offset: offset, source: source?.key);
+    assert(keySpan >= 0, "span cannot be negative");
+    final valSpan = valueLayout.getSpan(bytes,
+        offset: offset + keySpan, source: source?.value);
+    assert(valSpan >= 0, "span cannot be negative");
+    return keySpan + valSpan;
   }
 
   @override
