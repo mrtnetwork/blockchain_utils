@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 import 'package:blockchain_utils/crypto/crypto/cdsa/crypto_ops/crypto_ops.dart';
+import 'package:blockchain_utils/crypto/crypto/cdsa/curve/curves.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/utils/exp.dart';
 import 'package:blockchain_utils/helper/helper.dart';
 import 'package:blockchain_utils/utils/utils.dart';
@@ -23,9 +24,12 @@ class Ed25519Utils {
   ///     operation, and converts the result back to a byte array. This ensures
   ///     that the scalar remains within the valid range for Ed25519 operations.
   static List<int> scalarReduce(List<int> scalar) {
-    final sc = List<int>.from(scalar);
-    CryptoOps.scReduce32(sc);
-    return sc;
+    final toint = BigintUtils.fromBytes(scalar, byteOrder: Endian.little);
+    final reduce = toint % Curves.generatorED25519.order!;
+    final tobytes = BigintUtils.toBytes(reduce,
+        order: Endian.little,
+        length: BigintUtils.orderLen(Curves.generatorED25519.order!));
+    return tobytes;
   }
 
   static BigInt asScalarInt(List<int> scalar) {
@@ -119,7 +123,8 @@ class Ed25519Utils {
 
   static List<int> secretKeyToPubKey({required List<int> secretKey}) {
     if (CryptoOps.scCheck(secretKey) != 0) {
-      throw const SquareRootError("The provided scalar exceeds the allowed range.");
+      throw const SquareRootError(
+          "The provided scalar exceeds the allowed range.");
     }
     final List<int> pubKey = zero();
     final GroupElementP3 point = GroupElementP3();
