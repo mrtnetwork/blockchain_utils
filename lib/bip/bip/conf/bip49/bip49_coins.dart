@@ -30,6 +30,7 @@ class Bip49Coins extends BipCoins {
   static const Bip49Coins litecoinTestnet = Bip49Coins._('litecoinTestnet');
   static const Bip49Coins zcashTestnet = Bip49Coins._('zcashTestnet');
   static const Bip49Coins pepecoinTestnet = Bip49Coins._('pepecoinTestnet');
+  static const Bip49Coins omniXep = Bip49Coins._('omniXep');
 
   final String name;
 
@@ -77,7 +78,7 @@ class Bip49Coins extends BipCoins {
     Bip49Coins.zcashTestnet: Bip49Conf.zcashTestNet,
     Bip49Coins.pepecoin: Bip49Conf.pepeMainnet,
     Bip49Coins.pepecoinTestnet: Bip49Conf.pepeTestnet,
-    Bip49Coins.omniXep: Bip49Conf.omniXepMainNet,
+    Bip49Coins.omniXep: Bip49Conf.omniXepMainNet
   };
   @override
   BipProposal get proposal => BipProposal.bip49;

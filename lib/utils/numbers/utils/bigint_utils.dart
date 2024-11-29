@@ -211,15 +211,6 @@ class BigintUtils {
   /// Returns:
   /// A tuple of two BigInt values where the first element is the quotient, and the second element
   /// is the remainder of the division.
-  ///
-  /// Example:
-  /// ```dart
-  /// BigInt number = BigInt.parse('12345');
-  /// int radix = 10; // Decimal base
-  /// var result = divmod(number, radix);
-  /// print('Quotient: ${result.item1}, Remainder: ${result.item2}');
-  /// ```
-  ///
   /// This method is useful for performing division and obtaining both the quotient and the remainder.
   ///
   static Tuple<BigInt, BigInt> divmod(BigInt value, int radix) {

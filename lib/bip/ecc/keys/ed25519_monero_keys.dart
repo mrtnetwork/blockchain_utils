@@ -52,34 +52,43 @@
   OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/bip/ecc/keys/i_keys.dart';
 import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
 import 'package:blockchain_utils/bip/ecc/keys/ed25519_keys.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/curve/curves.dart';
-import 'package:blockchain_utils/crypto/crypto/cdsa/eddsa/privatekey.dart';
-import 'package:blockchain_utils/crypto/crypto/cdsa/eddsa/publickey.dart';
+import 'package:blockchain_utils/crypto/crypto/cdsa/eddsa/keys/privatekey.dart';
+import 'package:blockchain_utils/crypto/crypto/cdsa/eddsa/keys/publickey.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/point/edwards.dart';
 import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 
 /// A class representing an Ed25519 Monero-compatible public key that implements the IPublicKey interface.
-class Ed25519MoneroPublicKey implements IPublicKey {
-  final EDDSAPublicKey _publicKey;
+class MoneroPublicKey implements IPublicKey {
+  final EDDSAPublicKey publicKey;
 
-  /// Private constructor for creating an Ed25519MoneroPublicKey instance from an EDDSAPublicKey.
-  Ed25519MoneroPublicKey._(this._publicKey);
+  /// Private constructor for creating an MoneroPublicKey instance from an EDDSAPublicKey.
+  MoneroPublicKey._(this.publicKey);
 
-  /// Factory method for creating an Ed25519MoneroPublicKey from a byte array.
-  factory Ed25519MoneroPublicKey.fromBytes(List<int> keyBytes) {
-    return Ed25519MoneroPublicKey._(
-        EDDSAPublicKey(Curves.generatorED25519, keyBytes));
+  /// Factory method for creating an MoneroPublicKey from a byte array.
+  factory MoneroPublicKey.fromBytes(List<int> keyBytes) {
+    if (keyBytes.length ==
+        Ed25519KeysConst.pubKeyByteLen + Ed25519KeysConst.pubKeyPrefix.length) {
+      keyBytes = keyBytes.sublist(Ed25519KeysConst.pubKeyPrefix.length);
+    }
+    return MoneroPublicKey._(EDDSAPublicKey(Curves.generatorED25519, keyBytes));
   }
 
-  /// Factory method for creating an Ed25519MoneroPublicKey from an EDPoint.
-  factory Ed25519MoneroPublicKey.fromPoint(EDPoint point) {
-    return Ed25519MoneroPublicKey._(
-        EDDSAPublicKey.fromPoint(Curves.generatorED25519, point));
+  /// Factory method for creating an MoneroPublicKey from a hex.
+  factory MoneroPublicKey.fromHex(String keyHex) {
+    return MoneroPublicKey.fromBytes(BytesUtils.fromHexString(keyHex));
   }
+
+  /// Factory method for creating an MoneroPublicKey from an EDPoint.
+  MoneroPublicKey.fromPoint(EDPoint point)
+      : publicKey = EDDSAPublicKey.fromPoint(Curves.generatorED25519, point);
+
+  /// immutable key
+  List<int> get key => publicKey.key;
 
   /// curve type
   @override
@@ -101,20 +110,19 @@ class Ed25519MoneroPublicKey implements IPublicKey {
 
   /// check if bytes is valid for this key
   static bool isValidBytes(List<int> keyBytes) {
-    return Ed25519MoneroPrivateKey.isValidBytes(keyBytes);
+    return MoneroPrivateKey.isValidBytes(keyBytes);
   }
 
   /// accsess to public key point
   @override
   EDPoint get point {
-    return _publicKey.point;
+    return publicKey.point;
   }
 
   /// public key compressed bytes
   @override
   List<int> get compressed {
-    return List<int>.from(
-        [...Ed25519KeysConst.pubKeyPrefix, ..._publicKey.point.toBytes()]);
+    return publicKey.point.toBytes();
   }
 
   /// public key uncompressed bytes
@@ -126,7 +134,7 @@ class Ed25519MoneroPublicKey implements IPublicKey {
   @override
   String toHex(
       {bool withPrefix = true, bool lowerCase = true, String? prefix = ""}) {
-    List<int> key = _publicKey.point.toBytes();
+    List<int> key = publicKey.point.toBytes();
     if (withPrefix) {
       key = compressed;
     }
@@ -135,43 +143,52 @@ class Ed25519MoneroPublicKey implements IPublicKey {
 
   @override
   operator ==(other) {
-    if (other is! Ed25519MoneroPublicKey) return false;
-    return _publicKey == other._publicKey && curve == other.curve;
+    if (other is! MoneroPublicKey) return false;
+    if (identical(this, other)) return true;
+    return publicKey == other.publicKey && curve == other.curve;
   }
 
   @override
-  int get hashCode => _publicKey.hashCode ^ curve.hashCode;
+  int get hashCode => HashCodeGenerator.generateHashCode([publicKey, curve]);
 }
 
 /// A class representing an Ed25519 Monero-compatible private key that implements the IPrivateKey interface.
-class Ed25519MoneroPrivateKey implements IPrivateKey {
-  final EDDSAPrivateKey _privateKey;
+class MoneroPrivateKey implements IPrivateKey {
+  final EDDSAPrivateKey privateKey;
 
-  /// Private constructor for creating an Ed25519MoneroPrivateKey instance from an EDDSAPrivateKey.
-  Ed25519MoneroPrivateKey._(this._privateKey);
+  /// Private constructor for creating an MoneroPrivateKey instance from an EDDSAPrivateKey.
+  MoneroPrivateKey._(this.privateKey);
 
-  /// Factory method for creating an Ed25519MoneroPrivateKey from a byte array.
+  /// Factory method for creating an MoneroPrivateKey from a byte array.
   /// It checks the length of the provided keyBytes to ensure it matches the expected length.
   /// Then, it initializes an EdDSA private key using the Ed25519 generator and the specified keyBytes.
-  factory Ed25519MoneroPrivateKey.fromBytes(List<int> keyBytes) {
+  factory MoneroPrivateKey.fromBytes(List<int> keyBytes) {
     if (keyBytes.length != Ed25519KeysConst.privKeyByteLen) {
       throw const ArgumentException("invalid private key length");
     }
     final gn = Curves.generatorED25519;
     final prv = EDDSAPrivateKey.fromKhalow(gn, keyBytes);
-    return Ed25519MoneroPrivateKey._(prv);
+    return MoneroPrivateKey._(prv);
   }
+
+  /// Factory method for creating an MoneroPrivateKey from a hex.
+  factory MoneroPrivateKey.fromHex(String keyHex) {
+    return MoneroPrivateKey.fromBytes(BytesUtils.fromHexString(keyHex));
+  }
+
+  /// imutable key
+  List<int> get key => privateKey.key;
 
   /// curve type
   @override
-  EllipticCurveTypes get curveType {
+  EllipticCurveTypes get curve {
     return EllipticCurveTypes.ed25519Monero;
   }
 
   /// check if bytes is valid for this key
   static bool isValidBytes(List<int> keyBytes) {
     try {
-      Ed25519MoneroPrivateKey.fromBytes(keyBytes);
+      MoneroPrivateKey.fromBytes(keyBytes);
 
       return true;
       // ignore: empty_catches
@@ -187,14 +204,14 @@ class Ed25519MoneroPrivateKey implements IPrivateKey {
 
   /// accsess to public key
   @override
-  IPublicKey get publicKey {
-    return Ed25519MoneroPublicKey._(_privateKey.publicKey);
+  MoneroPublicKey get publicKey {
+    return MoneroPublicKey._(privateKey.publicKey);
   }
 
   /// private key raw bytes
   @override
   List<int> get raw {
-    return _privateKey.privateKey;
+    return privateKey.privateKey;
   }
 
   @override
@@ -204,10 +221,11 @@ class Ed25519MoneroPrivateKey implements IPrivateKey {
 
   @override
   operator ==(other) {
-    if (other is! Ed25519MoneroPrivateKey) return false;
-    return _privateKey == other._privateKey && curveType == other.curveType;
+    if (other is! MoneroPrivateKey) return false;
+    if (identical(this, other)) return true;
+    return privateKey == other.privateKey && curve == other.curve;
   }
 
   @override
-  int get hashCode => _privateKey.hashCode ^ curveType.hashCode;
+  int get hashCode => HashCodeGenerator.generateHashCode([privateKey, curve]);
 }

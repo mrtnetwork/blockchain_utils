@@ -11,7 +11,7 @@ void moneroTest() {
     final coin = MoneroCoins.values.firstWhere((element) =>
         element.name.toLowerCase() ==
         (i["coin"] as String).replaceAll("_", "").toLowerCase());
-    final w = Monero.fromSeed(seed, coinType: coin);
+    final w = MoneroAccount.fromSeed(seed, coinType: coin);
     assert(w.privateSpendKey.raw.toHex() == i["private_sky"]);
     assert(w.privateViewKey.raw.toHex() == i["private_vkey"]);
     assert(w.publicSpendKey.compressed.toHex() == i["public_sky"]);

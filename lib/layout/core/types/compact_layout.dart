@@ -25,7 +25,7 @@ class CompactLayout<T> extends Layout<T> {
   }
 
   @override
-  int getSpan(LayoutByteReader? bytes, {int offset = 0}) {
+  int getSpan(LayoutByteReader? bytes, {int offset = 0, T? source}) {
     return bytes!.getCompactTotalLenght(offset).item2;
   }
 

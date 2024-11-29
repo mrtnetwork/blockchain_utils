@@ -280,22 +280,28 @@ class QuickCrypto {
   /// Define the key size for ChaCha20-Poly1305, which is 32 bytes
   static const int chacha20Polu1305Keysize = 32;
 
-  /// A private field to hold the FortunaRandom instance for generating random numbers.
-  static FortunaPRNG? _randomGenerator;
+  /// field to hold the FortunaRandom instance for generating random numbers.
+  static final FortunaPRNG prng = FortunaPRNG();
 
   static GenerateRandom _generateRandom = (length) {
-    _randomGenerator ??= FortunaPRNG();
-    return _randomGenerator!.nextBytes(length);
+    return prng.nextBytes(length);
   };
 
-  /// This function generates a random List<int> of the specified size (default is 32 bytes).
-  static List<int> generateRandom([int size = 32, GenerateRandom? random]) {
-    if (random != null) {
+  static void setupRandom(GenerateRandom? random) {
+    if (random == null) {
+      _generateRandom = (length) {
+        return prng.nextBytes(length);
+      };
+    } else {
       _generateRandom = random;
     }
+  }
 
+  /// This function generates a random List<int> of the specified size (default is 32 bytes).
+  static List<int> generateRandom([int size = 32]) {
     /// Generate the random bytes of the specified size using the _randomGenerator.
     final r = _generateRandom(size);
+    assert(r.length == size, "Incorrect random generted size.");
 
     /// Return the generated random bytes.
     return r;

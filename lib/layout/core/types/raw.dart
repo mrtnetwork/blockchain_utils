@@ -31,7 +31,7 @@ class RawBytesLayout extends Layout<List<int>> {
   }
 
   @override
-  int getSpan(LayoutByteReader? bytes, {int offset = 0}) {
+  int getSpan(LayoutByteReader? bytes, {int offset = 0, List<int>? source}) {
     int span = this.span;
     if (span < 0) {
       span = (length as ExternalLayout).decode(bytes!, offset: offset).value;

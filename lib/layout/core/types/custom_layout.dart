@@ -36,8 +36,11 @@ class CustomLayout<T, D> extends Layout<D> {
   }
 
   @override
-  int getSpan(LayoutByteReader? bytes, {int offset = 0}) {
-    return this.layout.getSpan(bytes, offset: offset);
+  int getSpan(LayoutByteReader? bytes, {int offset = 0, D? source}) {
+    final span = this.layout.getSpan(bytes,
+        offset: offset, source: source == null ? null : encoder(source));
+    assert(span >= 0, "span cannot be negative");
+    return span;
   }
 
   @override

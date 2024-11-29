@@ -29,7 +29,8 @@ class LazyUnion extends Layout<Map<String, dynamic>> {
   }
 
   @override
-  int getSpan(LayoutByteReader? bytes, {int offset = 0}) {
+  int getSpan(LayoutByteReader? bytes,
+      {int offset = 0, Map<String, dynamic>? source}) {
     if (span >= 0) {
       return span;
     }
@@ -40,7 +41,7 @@ class LazyUnion extends Layout<Map<String, dynamic>> {
           details: {"property": property});
     }
 
-    return vlo.getSpan(bytes, offset: offset);
+    return vlo.getSpan(bytes, offset: offset, source: source);
   }
 
   LazyVariantLayout? defaultGetSourceVariant(Map<String, dynamic> source) {
@@ -134,16 +135,17 @@ class LazyVariantLayout extends Layout<Map<String, dynamic>> {
   }
 
   @override
-  int getSpan(LayoutByteReader? bytes, {int offset = 0}) {
+  int getSpan(LayoutByteReader? bytes,
+      {int offset = 0, Map<String, dynamic>? source}) {
     if (!this.span.isNegative) {
       return this.span;
     }
     int contentOffset = union.discriminator.layout.span;
 
     int span = 0;
-    span = layout
-        .layout(property: layout.property)
-        .getSpan(bytes, offset: offset + contentOffset);
+    span = layout.layout(property: layout.property).getSpan(bytes,
+        offset: offset + contentOffset, source: source?[property]);
+    assert(span >= 0, "span cannot be negative.");
     return contentOffset + span;
   }
 
@@ -181,7 +183,10 @@ class LazyVariantLayout extends Layout<Map<String, dynamic>> {
 
     final layout = this.layout.layout(property: this.layout.property);
     layout.encode(source[property], writer, offset: offset + contentOffset);
-    span += layout.getSpan(writer.reader, offset: offset + contentOffset);
+    final lSpan = layout.getSpan(writer.reader,
+        offset: offset + contentOffset, source: source[property]);
+    assert(lSpan >= 0, "span cannot be negative.");
+    span += lSpan;
 
     if (union.span >= 0 && span > union.span) {
       throw LayoutException("encoded variant overruns containing union",

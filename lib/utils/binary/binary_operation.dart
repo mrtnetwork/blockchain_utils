@@ -127,3 +127,6 @@ const int maxInt32 = 2147483647;
 const int minInt32 = -2147483648;
 
 const int maxUint32 = 4294967295;
+
+const int safeUint = 9007199254740991;
+const int safeInt = -9007199254740991;

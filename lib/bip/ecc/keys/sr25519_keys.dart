@@ -102,7 +102,7 @@ class Sr25519PrivateKey implements IPrivateKey {
 
   /// curve type.
   @override
-  EllipticCurveTypes get curveType {
+  EllipticCurveTypes get curve {
     return EllipticCurveTypes.sr25519;
   }
 
@@ -142,9 +142,9 @@ class Sr25519PrivateKey implements IPrivateKey {
   @override
   operator ==(other) {
     if (other is! Sr25519PrivateKey) return false;
-    return secretKey == other.secretKey && curveType == other.curveType;
+    return secretKey == other.secretKey && curve == other.curve;
   }
 
   @override
-  int get hashCode => secretKey.hashCode ^ curveType.hashCode;
+  int get hashCode => secretKey.hashCode ^ curve.hashCode;
 }

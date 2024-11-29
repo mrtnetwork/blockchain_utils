@@ -108,7 +108,7 @@ class Bip32PrivateKey extends Bip32KeyBase {
     this.privKey,
     Bip32KeyData keyData,
     Bip32KeyNetVersions keyNetVer,
-  ) : super(keyData, keyNetVer, privKey.curveType);
+  ) : super(keyData, keyNetVer, privKey.curve);
 
   /// Gets the underlying private key object.
   IPrivateKey keyObject() {

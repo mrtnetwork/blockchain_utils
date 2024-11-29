@@ -163,7 +163,7 @@ class LayoutConst {
       StructLayout(fields, property: property, decodePrefixes: decodePrefixes);
 
   // /// [StructLayout] values.
-  static LazyStructLayout lazyStruct(List<LazyLayout> fields,
+  static LazyStructLayout lazyStruct(List<BaseLazyLayout> fields,
           {String? property, bool decodePrefixes = false}) =>
       LazyStructLayout(fields,
           property: property, decodePrefixes: decodePrefixes);
@@ -299,8 +299,11 @@ class LayoutConst {
   }
 
   /// vector bytes
-  static CustomLayout vecU8({String? property}) {
-    final length = padding(u32(property: "length"), propery: "length");
+  static CustomLayout vecU8(
+      {String? property, IntegerLayout? lengthSizeLayout}) {
+    lengthSizeLayout ??= (lengthSizeLayout?.clone(newProperty: "length") ??
+        u32(property: "length"));
+    final length = padding(lengthSizeLayout, propery: "length");
     final layout = struct([
       length,
       blob(offset(length, -length.span), property: 'data'),
@@ -457,8 +460,11 @@ class LayoutConst {
   }
 
   /// vectors
-  static CustomLayout vec(Layout elementLayout, {String? property}) {
-    final length = padding(u32(property: "length"), propery: "length");
+  static CustomLayout vec(Layout elementLayout,
+      {String? property, IntegerLayout? lengthSizeLayout}) {
+    lengthSizeLayout ??= (lengthSizeLayout?.clone(newProperty: "length") ??
+        u32(property: "length"));
+    final length = padding(lengthSizeLayout, propery: "length");
     final layout = struct([
       length,
       seq(elementLayout, offset(length, -length.span), property: 'values'),

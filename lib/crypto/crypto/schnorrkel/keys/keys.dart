@@ -6,8 +6,6 @@ import 'package:blockchain_utils/crypto/crypto/cdsa/curve/curves.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/point/ristretto_point.dart';
 import 'package:blockchain_utils/crypto/crypto/hash/hash.dart';
 import 'package:blockchain_utils/crypto/crypto/prng/fortuna.dart';
-import 'package:blockchain_utils/crypto/crypto/cdsa/utils/ristretto_utils.dart'
-    as ristretto_tools;
 import 'package:blockchain_utils/crypto/crypto/schnorrkel/merlin/transcript.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
 import 'package:blockchain_utils/exception/exception.dart';
@@ -532,7 +530,7 @@ class SchnorrkelSecretKey {
     if (nonce.length != 32) {
       throw const ArgumentException("invalid random bytes length");
     }
-    final newKey = ristretto_tools.add(key(), derivePub.item1);
+    final newKey = Ed25519Utils.add(key(), derivePub.item1);
     final combine = List<int>.from([...newKey, ...nonce]);
     return Tuple(SchnorrkelSecretKey.fromBytes(combine), derivePub.item2);
   }
@@ -578,8 +576,8 @@ class SchnorrkelSecretKey {
     signingContextScript.additionalData("sign:R".codeUnits, r.toBytes());
     final k =
         signingContextScript.toBytesWithReduceScalar("sign:c".codeUnits, 64);
-    final km = ristretto_tools.mul(key(), k);
-    final s = ristretto_tools.add(km, nonceBytes);
+    final km = Ed25519Utils.mul(key(), k);
+    final s = Ed25519Utils.add(km, nonceBytes);
     final sig = SchnorrkelSignature._(s, r.toBytes());
     return sig;
   }
@@ -670,8 +668,8 @@ class SchnorrkelSecretKey {
     }
     script.additionalData("vrf:h^sk".codeUnits, out.output);
     final c = script.toBytesWithReduceScalar("prove".codeUnits, 64);
-    final multiply = ristretto_tools.mul(c, key());
-    final s = ristretto_tools.sub(n, multiply);
+    final multiply = Ed25519Utils.mul(c, key());
+    final s = Ed25519Utils.sub(n, multiply);
 
     return VRFProof._(c, s);
   }

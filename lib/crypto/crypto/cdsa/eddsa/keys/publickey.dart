@@ -1,10 +1,10 @@
 import 'dart:typed_data';
 import 'package:blockchain_utils/helper/helper.dart';
-import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/curve/curves.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/point/edwards.dart';
 import 'package:blockchain_utils/crypto/crypto/hash/hash.dart';
 import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 
 /// Represents an EdDSA public key in the Edwards curve format.
 class EDDSAPublicKey {
@@ -19,6 +19,9 @@ class EDDSAPublicKey {
 
   /// The Edwards curve point derived from the encoded public key.
   final EDPoint _point;
+
+  /// immutable key
+  List<int> get key => _encoded;
 
   EDDSAPublicKey._(
       this.generator, List<int> _encoded, this.baselen, this._point)
@@ -95,8 +98,10 @@ class EDDSAPublicKey {
   @override
   bool operator ==(other) {
     if (other is EDDSAPublicKey) {
-      return generator.curve == other.generator.curve &&
+      if (identical(this, other)) return true;
+      final equal = generator.curve == other.generator.curve &&
           BytesUtils.bytesEqual(_encoded, other._encoded);
+      return equal;
     }
     return false;
   }
@@ -174,5 +179,7 @@ class EDDSAPublicKey {
   }
 
   @override
-  int get hashCode => generator.curve.hashCode ^ _encoded.hashCode;
+  int get hashCode {
+    return HashCodeGenerator.generateBytesHashCode(_encoded, [generator.curve]);
+  }
 }

@@ -87,6 +87,7 @@ class CurveED extends Curve {
   @override
   operator ==(other) {
     if (other is CurveED) {
+      if (identical(this, other)) return true;
       return (p == other.p && a == other.a && d == other.d && h == other.h);
     }
     return false;

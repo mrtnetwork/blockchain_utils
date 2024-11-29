@@ -1,3 +1,7 @@
+## 3.5.0
+
+- Implemented Monero cryptographic operations.
+
 ## 3.4.0
 
 - Stellar Address Support: Add support for stellar Contract address.

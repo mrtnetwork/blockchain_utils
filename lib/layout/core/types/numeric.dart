@@ -15,6 +15,13 @@ abstract class ExternalLayout extends Layout<int> {
   bool isCount() => false;
 }
 
+abstract class ExternalOffsetLayout extends ExternalLayout {
+  const ExternalOffsetLayout({String? property})
+      : super(-1, property: property);
+  LayoutDecodeResult<int> getLenAndSpan(LayoutByteReader bytes,
+      {int offset = 0});
+}
+
 /// Represents a layout that greedily consumes bytes until the end.
 class GreedyCount extends ExternalLayout {
   int elementSpan;
@@ -267,7 +274,7 @@ class CompactIntLayout extends Layout<int> {
   const CompactIntLayout(this.layout, {String? property})
       : super(-1, property: property);
   @override
-  int getSpan(LayoutByteReader? bytes, {int offset = 0}) {
+  int getSpan(LayoutByteReader? bytes, {int offset = 0, int? source}) {
     return bytes!.getCompactDataOffset(offset);
   }
 
@@ -297,7 +304,7 @@ class CompactBigIntLayout extends Layout<BigInt> {
       : super(-1, property: property);
   final BaseIntiger layout;
   @override
-  int getSpan(LayoutByteReader? bytes, {int offset = 0}) {
+  int getSpan(LayoutByteReader? bytes, {int offset = 0, BigInt? source}) {
     return bytes!.getCompactDataOffset(offset);
   }
 

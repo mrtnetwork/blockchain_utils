@@ -27,7 +27,8 @@ void main() {
         expect(account.publicKey.toExtended, accountInfo["account_public"]);
         if (coin == Bip44Coins.moneroEd25519Slip ||
             coin == Bip44Coins.moneroSecp256k1) {
-          final addrClass = Monero.fromBip44PrivateKey(account.privateKey.raw);
+          final addrClass =
+              MoneroAccount.fromBip44PrivateKey(account.privateKey.raw);
           expect(addrClass.primaryAddress, accountInfo["address"]);
           continue;
         }

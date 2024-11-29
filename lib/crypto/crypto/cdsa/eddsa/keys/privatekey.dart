@@ -1,25 +1,33 @@
 import 'dart:typed_data';
 import 'package:blockchain_utils/helper/helper.dart';
-import 'package:blockchain_utils/utils/utils.dart';
+import 'package:blockchain_utils/utils/binary/utils.dart';
+import 'package:blockchain_utils/utils/compare/hash_code.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/curve/curves.dart';
-import 'package:blockchain_utils/crypto/crypto/cdsa/eddsa/publickey.dart';
+import 'package:blockchain_utils/crypto/crypto/cdsa/eddsa/keys/publickey.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/point/edwards.dart';
 import 'package:blockchain_utils/crypto/crypto/hash/hash.dart';
 import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/utils/numbers/utils/bigint_utils.dart';
 
 /// Represents an EdDSA private key and provides methods for key operations.
 class EDDSAPrivateKey {
   final EDPoint generator;
   final int baselen;
-  final List<int> _privateKey;
+
+  /// immutable key bytes
+  final List<int> key;
   final List<int>? _extendedKey;
-  final BigInt _secret;
+  final BigInt secret;
   final EDDSAPublicKey publicKey;
+
+  /// Retrieves the private key bytes.
+  List<int> get privateKey => List<int>.from(key);
+
   EDDSAPrivateKey._(this.generator, this.baselen, List<int> privateKey,
-      this._secret, List<int>? extendedKey)
-      : _privateKey = privateKey.asImmutableBytes,
+      this.secret, List<int>? extendedKey)
+      : key = privateKey.asImmutableBytes,
         _extendedKey = extendedKey?.asImmutableBytes,
-        publicKey = EDDSAPublicKey(generator, (generator * _secret).toBytes());
+        publicKey = EDDSAPublicKey(generator, (generator * secret).toBytes());
 
   /// Creates an EdDSA private key from a random value using a provided hash method.
   ///
@@ -78,18 +86,6 @@ class EDDSAPrivateKey {
         generator, baselen, privateKeyPart, secret, extendedKey);
   }
 
-  /// Retrieves the private key bytes.
-  List<int> get privateKey => List<int>.from(_privateKey);
-
-  @override
-  bool operator ==(Object other) {
-    if (other is EDDSAPrivateKey) {
-      return generator.curve == other.generator.curve &&
-          BytesUtils.bytesEqual(_privateKey, other._privateKey);
-    }
-    return false;
-  }
-
   /// Prunes the key to achieve improved security.
   static List<int> _keyPrune(List<int> key, EDPoint generator) {
     final h = generator.curve.cofactor();
@@ -140,7 +136,7 @@ class EDDSAPrivateKey {
         byteOrder: Endian.little);
 
     k %= generator.order!;
-    final s = (r + k * _secret) % generator.order!;
+    final s = (r + k * secret) % generator.order!;
     return List<int>.from([
       ...R,
       ...BigintUtils.toBytes(s, length: baselen, order: Endian.little)
@@ -148,5 +144,16 @@ class EDDSAPrivateKey {
   }
 
   @override
-  int get hashCode => _privateKey.hashCode ^ generator.hashCode;
+  bool operator ==(Object other) {
+    if (other is EDDSAPrivateKey) {
+      if (identical(this, other)) return true;
+      return generator.curve == other.generator.curve &&
+          BytesUtils.bytesEqual(key, other.key);
+    }
+    return false;
+  }
+
+  @override
+  int get hashCode =>
+      HashCodeGenerator.generateBytesHashCode(key, [generator.curve]);
 }

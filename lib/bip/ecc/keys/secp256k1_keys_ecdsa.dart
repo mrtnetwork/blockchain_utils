@@ -101,7 +101,7 @@ class Secp256k1PrivateKeyEcdsa implements IPrivateKey {
 
   /// curve type
   @override
-  EllipticCurveTypes get curveType {
+  EllipticCurveTypes get curve {
     return EllipticCurveTypes.secp256k1;
   }
 
@@ -141,9 +141,9 @@ class Secp256k1PrivateKeyEcdsa implements IPrivateKey {
   @override
   operator ==(other) {
     if (other is! Secp256k1PrivateKeyEcdsa) return false;
-    return privateKey == other.privateKey && curveType == other.curveType;
+    return privateKey == other.privateKey && curve == other.curve;
   }
 
   @override
-  int get hashCode => privateKey.hashCode ^ curveType.hashCode;
+  int get hashCode => privateKey.hashCode ^ curve.hashCode;
 }

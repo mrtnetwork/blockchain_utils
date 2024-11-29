@@ -6,13 +6,13 @@ import '../quick_hex.dart';
 import 'test_vector.dart';
 
 void main() {
-  test("monero", () {
+  test("monero account", () {
     for (final i in testVector) {
       final seed = BytesUtils.fromHexString(i["seed"]);
       final coin = MoneroCoins.values.firstWhere((element) =>
           element.name.toLowerCase() ==
           (i["coin"] as String).replaceAll("_", "").toLowerCase());
-      final w = Monero.fromSeed(seed, coinType: coin);
+      final w = MoneroAccount.fromSeed(seed, coinType: coin);
       expect(w.privateSpendKey.raw.toHex(), i["private_sky"]);
       expect(w.privateViewKey.raw.toHex(), i["private_vkey"]);
       expect(w.publicSpendKey.compressed.toHex(), i["public_sky"]);

@@ -58,7 +58,8 @@ class EDPoint extends AbstractPoint {
   /// Returns:
   /// - An instance of [EDPoint] representing the point at infinity.
   factory EDPoint.infinity({required CurveED curve}) {
-    return EDPoint._(curve, [BigInt.zero, BigInt.zero, BigInt.zero]);
+    return EDPoint._(
+        curve, [BigInt.zero, BigInt.zero, BigInt.zero, BigInt.zero]);
   }
 
   /// Private constructor for creating an [EDPoint] with specified curve, coordinates, and optional order.
@@ -153,11 +154,7 @@ class EDPoint extends AbstractPoint {
     List<BigInt> coordsList = getCoords();
 
     /// Create a temporary point for doubling.
-    EDPoint doubler = EDPoint._(
-      curve,
-      getCoords(),
-      order: newOrder,
-    );
+    EDPoint doubler = EDPoint._(curve, getCoords(), order: newOrder);
 
     newOrder *= BigInt.from(4);
 
@@ -246,8 +243,6 @@ class EDPoint extends AbstractPoint {
   /// Returns:
   /// - A reference to the scaled Edwards curve point.
   EDPoint scale() {
-    // List<BigInt> newCoords = _coords;
-
     BigInt z1 = _coords[2];
 
     /// If the z-coordinate is already 1, the point is already in projective form, and no scaling is required.
@@ -564,8 +559,7 @@ class EDPoint extends AbstractPoint {
     BigInt t2 = _coords[3];
     BigInt y2 = _coords[1];
     BigInt z2 = _coords[2];
-
-    if (x2 == BigInt.zero || t2 == BigInt.zero || other == BigInt.zero) {
+    if (other == BigInt.zero) {
       return EDPoint.infinity(curve: curve);
     }
 
@@ -608,10 +602,6 @@ class EDPoint extends AbstractPoint {
       }
     }
 
-    if (x3 == BigInt.zero || t3 == BigInt.zero) {
-      return EDPoint.infinity(curve: curve);
-    }
-
     return EDPoint._(curve, [x3, y3, z3, t3], order: order);
   }
 
@@ -633,5 +623,5 @@ class EDPoint extends AbstractPoint {
   @override
   bool get isInfinity =>
       _coords.isEmpty ||
-      (_coords[0] == BigInt.zero && _coords[1] == BigInt.zero);
+      (_coords[0] == BigInt.zero || _coords[3] == BigInt.zero);
 }

@@ -146,13 +146,22 @@ class StringUtils {
   ///
   /// The input [data] is a JSON-encoded string.
   /// Returns a Map representing the Dart object.
-  static T toJson<T>(String data) {
-    final decode = jsonDecode(data);
+  static T toJson<T>(Object? data,
+      {Object? Function(Object?, Object?)? reviver}) {
+    if (data is! String) {
+      if (data is! T) {
+        throw ArgumentException(
+            "Invalid data encountered during JSON conversion.",
+            details: {"data": data});
+      }
+      return data;
+    }
+    final decode = jsonDecode(data, reviver: reviver);
     if (decode is! T) {
       throw ArgumentException(
           "Invalid json casting. excepted: $T got: ${decode.runtimeType}");
     }
-    return jsonDecode(data);
+    return decode;
   }
 
   /// Converts a Dart object represented as a Map to a JSON-encoded string if possible.
@@ -172,9 +181,10 @@ class StringUtils {
   ///
   /// The input [data] is a JSON-encoded string.
   /// Returns a Map representing the Dart object.
-  static T? tryToJson<T>(String? data) {
+  static T? tryToJson<T>(Object? data,
+      {Object? Function(Object?, Object?)? reviver}) {
     try {
-      return toJson(data!);
+      return toJson<T>(data, reviver: reviver);
     } catch (_) {
       return null;
     }

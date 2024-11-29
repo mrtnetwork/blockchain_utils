@@ -39,7 +39,7 @@ class COptionLayout<T> extends Layout<T?> {
   }
 
   @override
-  int getSpan(LayoutByteReader? bytes, {int offset = 0}) {
+  int getSpan(LayoutByteReader? bytes, {int offset = 0, T? source}) {
     if (bytes == null) return layout.span + 1;
     final decode = discriminator.decode(bytes, offset: offset);
     if (decode.value == 0) return 1;

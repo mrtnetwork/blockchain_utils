@@ -53,17 +53,24 @@ class SequenceLayout<T> extends Layout<List<T>> {
   }) : super(span, property: property);
 
   @override
-  int getSpan(LayoutByteReader? bytes, {int offset = 0}) {
+  int getSpan(LayoutByteReader? bytes, {int offset = 0, List<T>? source}) {
     if (this.span >= 0) {
       return this.span;
     }
 
     int span = 0;
     int counter = 0;
-    if (count is CompactOffsetLayout) {
+    if (count is ConstantLayout) {
+      counter = (count as ConstantLayout).value;
+    } else if (count is CompactOffsetLayout) {
       final decodeLength = bytes!.getCompactLengthInfos(offset);
       span = decodeLength.item1;
       counter = decodeLength.item2;
+    } else if (count is ExternalOffsetLayout) {
+      final testLayput = count as ExternalOffsetLayout;
+      final decode = testLayput.decode(bytes!, offset: offset);
+      span = decode.consumed;
+      counter = decode.value;
     } else if (count is ExternalLayout) {
       counter = count.decode(bytes!, offset: offset).value;
     }
@@ -73,10 +80,15 @@ class SequenceLayout<T> extends Layout<List<T>> {
     } else {
       int idx = 0;
       while (idx < counter) {
-        span += this.elementLayout.getSpan(bytes, offset: offset + span);
+        final lSpan = this
+            .elementLayout
+            .getSpan(bytes, offset: offset + span, source: source?[idx]);
+        assert(lSpan >= 0, "span cannot be negative.");
+        span += lSpan;
         ++idx;
       }
     }
+
     return span;
   }
 
@@ -90,6 +102,11 @@ class SequenceLayout<T> extends Layout<List<T>> {
       final decodeLength = bytes.getCompactLengthInfos(offset);
       startOffset += decodeLength.item1;
       count = decodeLength.item2;
+    } else if (this.count is ExternalOffsetLayout) {
+      final testLayput = this.count as ExternalOffsetLayout;
+      final decode = testLayput.decode(bytes, offset: offset);
+      startOffset += decode.consumed;
+      count = decode.value;
     } else {
       count = this.count.decode(bytes, offset: offset).value;
     }
@@ -97,7 +114,11 @@ class SequenceLayout<T> extends Layout<List<T>> {
       final decodeElement =
           this.elementLayout.decode(bytes, offset: startOffset);
       decoded.add(decodeElement.value);
-      startOffset += this.elementLayout.getSpan(bytes, offset: startOffset);
+      final lSpan = this
+          .elementLayout
+          .getSpan(bytes, offset: startOffset, source: decodeElement.value);
+      assert(lSpan >= 0, "span cannot be negative.");
+      startOffset += lSpan;
       i += 1;
     }
     return LayoutDecodeResult(consumed: startOffset - offset, value: decoded);
@@ -109,15 +130,18 @@ class SequenceLayout<T> extends Layout<List<T>> {
     if (count is CompactOffsetLayout) {
       span = (count as CompactOffsetLayout)
           .encode(source.length, writer, offset: offset);
+    } else if (this.count is ExternalOffsetLayout) {
+      final testLayput = this.count as ExternalOffsetLayout;
+      span = testLayput.encode(source.length, writer, offset: offset);
     } else if (this.count is ExternalLayout) {
       this.count.encode(source.length, writer, offset: offset);
     }
     span = source.fold(span, (span, v) {
       final encodeLength =
           elementLayout.encode(v, writer, offset: offset + span);
+      assert(encodeLength >= 0, "invalid encoded length");
       return span + encodeLength;
     });
-
     return span;
   }
 
