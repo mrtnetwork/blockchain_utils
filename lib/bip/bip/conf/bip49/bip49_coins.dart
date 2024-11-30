@@ -18,8 +18,10 @@ class Bip49Coins extends BipCoins {
   static const Bip49Coins omniXep = Bip49Coins._('omniXep');
 
   // Test nets
-  static const Bip49Coins bitcoinCashTestnet = Bip49Coins._('bitcoinCashTestnet');
-  static const Bip49Coins bitcoinCashSlpTestnet = Bip49Coins._('bitcoinCashSlpTestnet');
+  static const Bip49Coins bitcoinCashTestnet =
+      Bip49Coins._('bitcoinCashTestnet');
+  static const Bip49Coins bitcoinCashSlpTestnet =
+      Bip49Coins._('bitcoinCashSlpTestnet');
   static const Bip49Coins bitcoinSvTestnet = Bip49Coins._('bitcoinSvTestnet');
   static const Bip49Coins bitcoinTestnet = Bip49Coins._('bitcoinTestnet');
   static const Bip49Coins dashTestnet = Bip49Coins._('dashTestnet');
