@@ -1,5 +1,5 @@
-import 'package:blockchain_utils/bip/slip/slip173/slip173.dart';
 import 'package:blockchain_utils/bip/coin_conf/coins_name.dart';
+import 'package:blockchain_utils/bip/slip/slip173/slip173.dart';
 
 import 'coin_conf.dart';
 
@@ -707,14 +707,25 @@ class CoinsConf {
     ),
   );
 
-  /// Configuration for Omni XEP main net
-  static const CoinConf omniXepMainNet = CoinConf(
-    coinName: CoinNames("Omni XEP", "OXEP"),
+  /// Configuration for Electra Protocol main net
+  static const CoinConf electraProtocolMainNet = CoinConf(
+    coinName: CoinNames("Electra Protocol", "XEP"),
     params: CoinParams(
       p2pkhNetVer: [0x37],
       p2shNetVer: [0x89],
       wifNetVer: [0xa2],
       p2wpkhHrp: "ep",
+    ),
+  );
+
+  /// Configuration for Electra Protocol test net
+  static const CoinConf electraProtocolTestNet = CoinConf(
+    coinName: CoinNames("Electra Protocol TestNet", "XEP"),
+    params: CoinParams(
+      p2pkhNetVer: [0x8d],
+      p2shNetVer: [0x13],
+      wifNetVer: [0xef],
+      p2wpkhHrp: "te",
     ),
   );
 }
