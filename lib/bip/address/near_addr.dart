@@ -23,7 +23,7 @@ class NearAddrDecoder implements BlockchainAddressDecoder {
   @override
   List<int> decodeAddr(String addr, [Map<String, dynamic> kwargs = const {}]) {
     /// Convert the hexadecimal input to bytes.
-    List<int> pubKeyBytes = BytesUtils.fromHexString(addr);
+    final List<int> pubKeyBytes = BytesUtils.fromHexString(addr);
 
     /// Validate the length of the public key bytes.
     AddrDecUtils.validateBytesLength(

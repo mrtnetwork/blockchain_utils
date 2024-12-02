@@ -192,7 +192,7 @@ class FloatUtils {
       float16View[0] = sign << 15 | 0x1F << 10 | 0x000;
     } else {
       // Normalized number
-      int newExponent = exponent - 127 + 15;
+      final int newExponent = exponent - 127 + 15;
       if (newExponent < 0) {
         // Round to zero if exponent is too small for float16
         float16View[0] = sign << 15;
@@ -266,12 +266,12 @@ class FloatUtils {
           'Input byte array must be exactly 2 bytes long for Float16');
     }
 
-    ByteData byteData = ByteData.sublistView(Uint8List.fromList(bytes));
-    int int16Bits = byteData.getInt16(0, Endian.big);
+    final ByteData byteData = ByteData.sublistView(Uint8List.fromList(bytes));
+    final int int16Bits = byteData.getInt16(0, Endian.big);
 
-    int sign = (int16Bits >> 15) & 0x1;
+    final int sign = (int16Bits >> 15) & 0x1;
     int exponent = (int16Bits >> 10) & 0x1F;
-    int fraction = int16Bits & 0x3FF;
+    final int fraction = int16Bits & 0x3FF;
 
     double value;
 

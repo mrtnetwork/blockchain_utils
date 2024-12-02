@@ -23,8 +23,8 @@ class BigintUtils {
   ///
   static List<int> bigintToBytesWithPadding(BigInt x, BigInt order) {
     String hexStr = x.toRadixString(16);
-    int hexLen = hexStr.length;
-    int byteLen = (order.bitLength + 7) ~/ 8;
+    final int hexLen = hexStr.length;
+    final int byteLen = (order.bitLength + 7) ~/ 8;
 
     if (hexLen < byteLen * 2) {
       hexStr = '0' * (byteLen * 2 - hexLen) + hexStr;
@@ -60,8 +60,8 @@ class BigintUtils {
   /// Note: The method assumes that 'data' is big-endian (most significant bits first).
   ///       Any padding bits will be removed as needed to match 'qlen'.
   static BigInt bitsToBigIntWithLengthLimit(List<int> data, int qlen) {
-    BigInt x = BigInt.parse(BytesUtils.toHexString(data), radix: 16);
-    int l = data.length * 8;
+    final BigInt x = BigInt.parse(BytesUtils.toHexString(data), radix: 16);
+    final int l = data.length * 8;
 
     if (l > qlen) {
       return (x >> (l - qlen));
@@ -91,7 +91,7 @@ class BigintUtils {
   ///   - Finally, 'z2' is converted to a byte array with padding to match the length
   ///     of 'order' in octets. The output is a byte array suitable for cryptographic use.
   static List<int> bitsToOctetsWithOrderPadding(List<int> data, BigInt order) {
-    BigInt z1 = bitsToBigIntWithLengthLimit(data, order.bitLength);
+    final BigInt z1 = bitsToBigIntWithLengthLimit(data, order.bitLength);
     BigInt z2 = z1 - order;
     if (z2 < BigInt.zero) {
       z2 = z1;
@@ -108,8 +108,8 @@ class BigintUtils {
   /// Returns the number of bytes required to represent 'order'.
   ///
   static int orderLen(BigInt value) {
-    String hexOrder = value.toRadixString(16);
-    int byteLength = (hexOrder.length + 1) ~/ 2; // Calculate bytes needed
+    final String hexOrder = value.toRadixString(16);
+    final int byteLength = (hexOrder.length + 1) ~/ 2; // Calculate bytes needed
     return byteLength;
   }
 
@@ -133,9 +133,9 @@ class BigintUtils {
 
     while (low > BigInt.one) {
       // Continue the Euclidean algorithm until 'low' becomes 1.
-      BigInt r = high ~/ low;
-      BigInt nm = hm - lm * r;
-      BigInt newLow = high - low * r;
+      final BigInt r = high ~/ low;
+      final BigInt nm = hm - lm * r;
+      final BigInt newLow = high - low * r;
       hm = lm;
       high = low;
       lm = nm;
@@ -153,7 +153,7 @@ class BigintUtils {
   /// Returns:
   /// - A list of BigInt values representing the NAF of the input integer.
   static List<BigInt> computeNAF(BigInt mult) {
-    List<BigInt> nafList = [];
+    final List<BigInt> nafList = [];
 
     while (mult != BigInt.zero) {
       if (mult.isOdd) {
@@ -191,7 +191,7 @@ class BigintUtils {
   ///
   /// This method is useful for converting BigInt values to binary strings for various applications.
   static String toBinary(BigInt value, int zeroPadBitLen) {
-    String binaryStr = value.toRadixString(2);
+    final String binaryStr = value.toRadixString(2);
     if (zeroPadBitLen > 0) {
       return binaryStr.padLeft(zeroPadBitLen, '0');
     } else {
@@ -245,7 +245,7 @@ class BigintUtils {
     if (val == BigInt.zero) {
       return List.filled(length, 0);
     }
-    BigInt bigMaskEight = BigInt.from(0xff);
+    final BigInt bigMaskEight = BigInt.from(0xff);
     List<int> byteList = List<int>.filled(length, 0);
     for (var i = 0; i < length; i++) {
       byteList[length - i - 1] = (val & bigMaskEight).toInt();
@@ -311,17 +311,17 @@ class BigintUtils {
   /// - [bigIntList]: The list of BigInt values to be DER-encoded.
   /// Returns: A list of bytes representing the DER-encoded sequence of integers.
   static List<int> toDer(List<BigInt> bigIntList) {
-    List<List<int>> encodedIntegers = bigIntList.map((bi) {
-      List<int> bytes = _encodeInteger(bi);
+    final List<List<int>> encodedIntegers = bigIntList.map((bi) {
+      final List<int> bytes = _encodeInteger(bi);
       return bytes;
     }).toList();
 
-    List<int> lengthBytes =
+    final List<int> lengthBytes =
         _encodeLength(encodedIntegers.fold<int>(0, (sum, e) => sum + e.length));
-    List<int> contentBytes =
+    final List<int> contentBytes =
         encodedIntegers.fold<List<int>>([], (prev, e) => [...prev, ...e]);
     _encodeLength(200);
-    var derBytes = [
+    final derBytes = [
       0x30,
       ...lengthBytes,
       ...contentBytes,
@@ -361,8 +361,8 @@ class BigintUtils {
     assert(r >= BigInt.zero);
 
     final len = BigintUtils.orderLen(r);
-    List<int> s = BigintUtils.toBytes(r, length: len);
-    int num = s[0];
+    final List<int> s = BigintUtils.toBytes(r, length: len);
+    final int num = s[0];
     if (num <= 0x7F) {
       return [0x02, ..._encodeLength(s.length), ...s];
     } else {
@@ -442,7 +442,7 @@ class BigintUtils {
   static Tuple<BigInt, int> variableNatDecode(List<int> bytes) {
     BigInt output = BigInt.zero;
     int bytesRead = 0;
-    for (int byte in bytes) {
+    for (final int byte in bytes) {
       output = (output << 7) | BigInt.from(byte & 0x7F);
       if (output > maxU64) {
         throw const MessageException(

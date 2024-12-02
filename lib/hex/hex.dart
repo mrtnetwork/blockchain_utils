@@ -106,8 +106,8 @@ class _Hex {
     final result = List<int>.filled(hex.length ~/ 2, 0);
     bool haveBad = false;
     for (int i = 0; i < hex.length; i += 2) {
-      int v0 = _decodeNibble(hex.codeUnitAt(i));
-      int v1 = _decodeNibble(hex.codeUnitAt(i + 1));
+      final int v0 = _decodeNibble(hex.codeUnitAt(i));
+      final int v1 = _decodeNibble(hex.codeUnitAt(i + 1));
       result[i ~/ 2] = ((v0 << 4) | v1) & mask8;
       haveBad |= (v0 == _invalidHexNibble) | (v1 == _invalidHexNibble);
     }

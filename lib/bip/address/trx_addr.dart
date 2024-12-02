@@ -26,7 +26,7 @@ class TrxAddrDecoder implements BlockchainAddressDecoder {
   /// Returns the decoded address as a List<int>.
   @override
   List<int> decodeAddr(String addr, [Map<String, dynamic> kwargs = const {}]) {
-    List<int> addrDec = Base58Decoder.checkDecode(addr);
+    final List<int> addrDec = Base58Decoder.checkDecode(addr);
     final tronPrefix =
         BytesUtils.fromHexString(CoinsConf.tron.params.addrPrefix!);
     AddrDecUtils.validateBytesLength(
@@ -59,7 +59,7 @@ class TrxAddrEncoder implements BlockchainAddressEncoder {
   /// A Tron address encoded as a Base58 string.
   @override
   String encodeKey(List<int> pubKey, [Map<String, dynamic> kwargs = const {}]) {
-    String ethAddr = EthAddrEncoder().encodeKey(pubKey).substring(2);
+    final String ethAddr = EthAddrEncoder().encodeKey(pubKey).substring(2);
     return Base58Encoder.checkEncode(List<int>.from([
       ...BytesUtils.fromHexString(CoinsConf.tron.params.addrPrefix!),
       ...BytesUtils.fromHexString(ethAddr)

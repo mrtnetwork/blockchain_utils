@@ -89,7 +89,7 @@ class BitcoinSigner {
   List<int> signMessage(List<int> message, String messagePrefix) {
     final messgaeHash = QuickCrypto.sha256Hash(
         BitcoinSignerUtils.magicMessage(message, messagePrefix));
-    ECDSASignature ecdsaSign = signingKey.signDigestDeterminstic(
+    final ECDSASignature ecdsaSign = signingKey.signDigestDeterminstic(
         digest: messgaeHash, hashFunc: () => SHA256());
     final n = BitcoinSignerUtils._order >> 1;
     BigInt newS;
@@ -133,13 +133,13 @@ class BitcoinSigner {
       lengthR = signature[3];
     }
 
-    int derPrefix = signature[0];
+    final int derPrefix = signature[0];
     int lengthTotal = signature[1];
-    int derTypeInt = signature[2];
-    List<int> R = signature.sublist(4, 4 + lengthR);
+    final int derTypeInt = signature[2];
+    final List<int> R = signature.sublist(4, 4 + lengthR);
     int lengthS = signature[5 + lengthR];
-    List<int> S = signature.sublist(5 + lengthR + 1);
-    BigInt sAsBigint = BigintUtils.fromBytes(S);
+    final List<int> S = signature.sublist(5 + lengthR + 1);
+    final BigInt sAsBigint = BigintUtils.fromBytes(S);
     List<int> newS;
     if (lengthS == 33) {
       final newSAsBigint = BitcoinSignerUtils._order - sAsBigint;
@@ -275,11 +275,11 @@ class BitcoinVerifier {
 
   /// Verifies an ECDSA signature against a given transaction digest.
   bool verifyTransaction(List<int> digest, List<int> derSignature) {
-    int lengthR = derSignature[3];
-    int lengthS = derSignature[5 + lengthR];
-    List<int> rBytes = derSignature.sublist(4, 4 + lengthR);
+    final int lengthR = derSignature[3];
+    final int lengthS = derSignature[5 + lengthR];
+    final List<int> rBytes = derSignature.sublist(4, 4 + lengthR);
     final int sIndex = 4 + lengthR + 2;
-    List<int> sBytes = derSignature.sublist(sIndex, sIndex + lengthS);
+    final List<int> sBytes = derSignature.sublist(sIndex, sIndex + lengthS);
     final signature = ECDSASignature(
         BigintUtils.fromBytes(rBytes), BigintUtils.fromBytes(sBytes));
     return verifyKey.verify(signature, digest);
@@ -326,7 +326,7 @@ class BitcoinVerifier {
     if (P.y.isEven) {
       e = BitcoinSignerUtils._order - e;
     }
-    ProjectiveECCPoint eP = P * e;
+    final ProjectiveECCPoint eP = P * e;
 
     final R = sp + eP;
 
@@ -346,10 +346,10 @@ class BitcoinVerifier {
     }
     final List<int> messgaeHash = QuickCrypto.sha256Hash(
         BitcoinSignerUtils.magicMessage(message, messagePrefix));
-    List<int> correctSignature =
+    final List<int> correctSignature =
         signature.length == 65 ? signature.sublist(1) : List.from(signature);
-    List<int> rBytes = correctSignature.sublist(0, 32);
-    List<int> sBytes = correctSignature.sublist(32);
+    final List<int> rBytes = correctSignature.sublist(0, 32);
+    final List<int> sBytes = correctSignature.sublist(32);
     final ecdsaSignature = ECDSASignature(
         BigintUtils.fromBytes(rBytes), BigintUtils.fromBytes(sBytes));
 

@@ -176,7 +176,7 @@ class SubstrateEcdsaVerifier implements BaseSubstrateVerifier {
   /// - True if the signature is valid, false otherwise.
   bool verifyPersonalMessage(List<int> message, List<int> signature,
       {bool hashMessage = true, int? payloadLength}) {
-    List<int> messagaeHash = _hashMessage(message,
+    final List<int> messagaeHash = _hashMessage(message,
         hashMessage: hashMessage, payloadLength: payloadLength);
     return _verifyEcdsa(
         messagaeHash, signature.sublist(0, ETHSignerConst.ethSignatureLength));
@@ -206,7 +206,7 @@ class SubstrateEcdsaVerifier implements BaseSubstrateVerifier {
   /// - The recovered ECDSAPublicKey.
   static ECDSAPublicKey? getPublicKey(List<int> message, List<int> signature,
       {bool hashMessage = true, int? payloadLength}) {
-    List<int> messagaeHash = _hashMessage(message,
+    final List<int> messagaeHash = _hashMessage(message,
         hashMessage: hashMessage, payloadLength: payloadLength);
     final ethSignature = ETHSignature.fromBytes(signature);
     final toBytes = ethSignature.toBytes(false);

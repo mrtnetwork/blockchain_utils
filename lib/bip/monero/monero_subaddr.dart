@@ -76,27 +76,28 @@ class MoneroSubaddress {
           pubSKey: pubSKey, pubVKey: pubVKey, privateKey: privVKey);
     }
 
-    List<int> majorIdxBytes = IntUtils.toBytes(majorIndex,
+    final List<int> majorIdxBytes = IntUtils.toBytes(majorIndex,
         length: MoneroSubaddressConst.subaddrIdxByteLen,
         byteOrder: Endian.little);
-    List<int> minorIdxBytes = IntUtils.toBytes(minorIndex,
+    final List<int> minorIdxBytes = IntUtils.toBytes(minorIndex,
         length: MoneroSubaddressConst.subaddrIdxByteLen,
         byteOrder: Endian.little);
 
-    List<int> privVKeyBytes = privVKey.raw;
+    final List<int> privVKeyBytes = privVKey.raw;
 
-    List<int> mBytes = QuickCrypto.keccack256Hash(List<int>.from([
+    final List<int> mBytes = QuickCrypto.keccack256Hash(List<int>.from([
       ...MoneroSubaddressConst.subaddrPrefix,
       ...privVKeyBytes,
       ...majorIdxBytes,
       ...minorIdxBytes
     ]));
-    List<int> secretKey = Ed25519Utils.scalarReduce(mBytes);
-    BigInt mInt = BigintUtils.fromBytes(secretKey, byteOrder: Endian.little);
+    final List<int> secretKey = Ed25519Utils.scalarReduce(mBytes);
+    final BigInt mInt =
+        BigintUtils.fromBytes(secretKey, byteOrder: Endian.little);
     final newPoint = pubSKey.point + (Curves.generatorED25519 * mInt);
 
-    MoneroPublicKey subaddrPubSKey = MoneroPublicKey.fromPoint(newPoint);
-    MoneroPublicKey subaddrPubVKey = MoneroPublicKey.fromPoint(
+    final MoneroPublicKey subaddrPubSKey = MoneroPublicKey.fromPoint(newPoint);
+    final MoneroPublicKey subaddrPubVKey = MoneroPublicKey.fromPoint(
         (subaddrPubSKey.point *
             BigintUtils.fromBytes(privVKey.raw, byteOrder: Endian.little)));
     final sKey = MoneroPrivateKey.fromBytes(secretKey);

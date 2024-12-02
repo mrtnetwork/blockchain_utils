@@ -104,7 +104,7 @@ class Bip84 extends Bip44Base {
   /// derive default path
   @override
   Bip84 get deriveDefaultPath {
-    Bip44Base bipObj = purpose.coin;
+    final Bip44Base bipObj = purpose.coin;
     return Bip84._(bipObj.bip32.derivePath(bipObj.coinConf.defPath), coinConf);
   }
 

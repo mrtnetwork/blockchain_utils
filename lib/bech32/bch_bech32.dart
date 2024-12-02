@@ -82,12 +82,12 @@ class _BchBech32Utils {
 
     // Compute modulus
     BigInt chk = BigInt.one;
-    for (int value in values) {
-      BigInt top = chk >> 35;
+    for (final int value in values) {
+      final BigInt top = chk >> 35;
       final BigInt valueBig = BigInt.from(value);
       chk = ((chk & BigInt.from(0x07ffffffff)) << 5) ^ valueBig;
 
-      for (List<BigInt> i in generator) {
+      for (final List<BigInt> i in generator) {
         if ((top & i[0]) != BigInt.zero) {
           chk ^= i[1];
         }
@@ -98,7 +98,7 @@ class _BchBech32Utils {
   }
 
   static List<int> hrpExpand(String hrp) {
-    List<int> expandedHrp = hrp.runes.map((int rune) {
+    final List<int> expandedHrp = hrp.runes.map((int rune) {
       return rune & 0x1f;
     }).toList();
     expandedHrp.add(0);
@@ -106,8 +106,8 @@ class _BchBech32Utils {
   }
 
   static List<int> computeChecksum(String hrp, List<int> data) {
-    List<int> values = hrpExpand(hrp) + data;
-    BigInt polymod = polyMod(values + [0, 0, 0, 0, 0, 0, 0, 0]);
+    final List<int> values = hrpExpand(hrp) + data;
+    final BigInt polymod = polyMod(values + [0, 0, 0, 0, 0, 0, 0, 0]);
     return List<int>.generate(
       BchBech32Const.checksumStrLen,
       (i) => ((polymod >> (5 * (7 - i))) & _mask5).toInt(),

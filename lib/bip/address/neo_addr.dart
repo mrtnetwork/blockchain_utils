@@ -36,15 +36,15 @@ class NeoAddrDecoder implements BlockchainAddressDecoder {
   List<int> decodeAddr(String addr, [Map<String, dynamic> kwargs = const {}]) {
     /// Validate the version argument.
     AddrKeyValidator.validateAddressArgs<List<int>>(kwargs, "ver");
-    List<int> verBytes = kwargs["ver"];
-    List<int> addrDecBytes = Base58Decoder.checkDecode(addr);
+    final List<int> verBytes = kwargs["ver"];
+    final List<int> addrDecBytes = Base58Decoder.checkDecode(addr);
 
     /// Validate the length of the decoded address.
     AddrDecUtils.validateBytesLength(
         addrDecBytes, QuickCrypto.hash160DigestSize + verBytes.length);
 
     /// Retrieve the version byte from the decoded address and compare it with the expected version.
-    List<int> verGot = IntUtils.toBytes(addrDecBytes[0],
+    final List<int> verGot = IntUtils.toBytes(addrDecBytes[0],
         length: IntUtils.bitlengthInBytes(addrDecBytes[0]),
         byteOrder: Endian.little);
     if (!BytesUtils.bytesEqual(verGot, verBytes)) {
@@ -75,13 +75,13 @@ class NeoAddrEncoder implements BlockchainAddressEncoder {
   String encodeKey(List<int> pubKey, [Map<String, dynamic> kwargs = const {}]) {
     /// Validate the version argument.
     AddrKeyValidator.validateAddressArgs<List<int>>(kwargs, "ver");
-    List<int> verBytes = kwargs["ver"];
+    final List<int> verBytes = kwargs["ver"];
 
     /// Validate and get the Nist256p1 public key.
     final pubKeyObj = AddrKeyValidator.validateAndGetNist256p1Key(pubKey);
 
     /// Construct the Neo address payload.
-    List<int> payloadBytes = List<int>.from([
+    final List<int> payloadBytes = List<int>.from([
       ...NeoAddrConst.prefixByte,
       ...pubKeyObj.compressed,
       ...NeoAddrConst.suffixByte,

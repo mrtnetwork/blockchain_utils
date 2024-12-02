@@ -48,9 +48,10 @@ class MoneroMnemonicGenerator {
           'Words number for mnemonic ($wordsNum) is not valid');
     }
 
-    int entropyBitLen =
+    final int entropyBitLen =
         MoneroMnemonicGeneratorConst.wordsNumToEntropyLen[wordsNum]!;
-    List<int> entropyBytes = MoneroEntropyGenerator(entropyBitLen).generate();
+    final List<int> entropyBytes =
+        MoneroEntropyGenerator(entropyBitLen).generate();
 
     return wordsNum == MoneroWordsNum.wordsNum13 ||
             wordsNum == MoneroWordsNum.wordsNum25

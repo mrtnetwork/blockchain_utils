@@ -32,14 +32,14 @@ class ElectrumV1MnemonicEncoder extends MnemonicEncoderBase {
   @override
   Mnemonic encode(List<int> entropyBytes) {
     // Check entropy length
-    int entropyByteLen = entropyBytes.length;
+    final int entropyByteLen = entropyBytes.length;
     if (!ElectrumV1EntropyGenerator.isValidEntropyByteLength(entropyByteLen)) {
       throw ArgumentException(
           'Entropy byte length ($entropyByteLen) is not valid');
     }
 
     // Build mnemonic
-    List<String> mnemonic = [];
+    final List<String> mnemonic = [];
     for (int i = 0; i < entropyBytes.length ~/ 4; i++) {
       mnemonic.addAll(MnemonicUtils.bytesChunkToWords(
           entropyBytes.sublist(i * 4, (i * 4) + 4), wordsList,

@@ -27,7 +27,7 @@ class CborBytesTracker {
 
   /// Append a list of CBOR tags to the byte sequence in the buffer.
   void pushTags(List<int> tags) {
-    for (int i in tags) {
+    for (final int i in tags) {
       pushInt(MajorTags.tag, i);
     }
   }
@@ -55,7 +55,7 @@ class CborBytesTracker {
     int value,
   ) {
     majorTag <<= 5;
-    int? length = bytesLength(value);
+    final int? length = bytesLength(value);
     pushUInt8(majorTag | (length ?? value));
     if (length == null) return;
     final int len = 1 << (length - 24);

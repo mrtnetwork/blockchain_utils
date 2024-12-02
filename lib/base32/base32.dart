@@ -113,7 +113,7 @@ class _Base32Utils {
     }
     int shift = 8;
     int carry = 0;
-    List<int> decoded = [];
+    final List<int> decoded = [];
     base32.split('').forEach((char) {
       if (char == '=') {
         return;

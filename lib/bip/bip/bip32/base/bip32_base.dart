@@ -44,7 +44,7 @@ abstract class Bip32Base {
         Bip32KeyDeserializer.deserializeKey(exKeyStr, keyNetVer: keyNetVer);
 
     final keyBytes = deserKey.keyBytes;
-    Bip32KeyData keyData = deserKey.keyData;
+    final Bip32KeyData keyData = deserKey.keyData;
     final isPublic = deserKey.isPublic;
 
     if (keyData.depth.depth == 0) {

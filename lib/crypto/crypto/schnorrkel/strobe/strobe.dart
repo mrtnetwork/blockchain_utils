@@ -153,7 +153,7 @@ class Strobe {
   /// This factory constructor ensures that the Strobe instance is properly initialized and configured based on the provided parameters, allowing it to be used for secure protocol operations.
   factory Strobe(String customizationString, StrobeSecParam security) {
     final int rate = (1600 ~/ 8) - security.value ~/ 4;
-    Strobe s = Strobe._(
+    final Strobe s = Strobe._(
       io: 2,
       rate: rate,
       strober: rate - 2,
@@ -162,7 +162,7 @@ class Strobe {
       storage: List<int>.filled(rate, 0),
       buffer: List.empty(growable: true),
     );
-    List<int> domain = [1, rate, 1, 0, 1, 12 * 8];
+    final List<int> domain = [1, rate, 1, 0, 1, 12 * 8];
     domain.addAll(version.codeUnits);
 
     s._duplex(domain, false, false, true);
@@ -184,7 +184,7 @@ class Strobe {
       _buffer.add(_posBegin);
       _buffer.add(0x04);
       _st.setAll(0, _buffer);
-      int zerosStart = _buffer.length;
+      final int zerosStart = _buffer.length;
       _buffer = _st.sublist(0, rate);
       for (int i = zerosStart; i < rate; i++) {
         _buffer[i] = 0;
@@ -193,7 +193,7 @@ class Strobe {
       _st.setAll(0, _buffer);
       _xor(_state, _buffer);
     } else if (_buffer.isNotEmpty) {
-      int zerosStart = _buffer.length;
+      final int zerosStart = _buffer.length;
       _buffer = _st.sublist(0, rate);
       for (int i = zerosStart; i < rate; i++) {
         _buffer[i] = 0;
@@ -306,9 +306,10 @@ class Strobe {
     }
 
     // Operation
-    bool cAfter = ((flags & (StrobeFlags.C | StrobeFlags.I | StrobeFlags.T)) ==
-        (StrobeFlags.C | StrobeFlags.T));
-    bool cBefore = ((flags & StrobeFlags.C) != 0) && (!cAfter);
+    final bool cAfter =
+        ((flags & (StrobeFlags.C | StrobeFlags.I | StrobeFlags.T)) ==
+            (StrobeFlags.C | StrobeFlags.T));
+    final bool cBefore = ((flags & StrobeFlags.C) != 0) && (!cAfter);
 
     _duplex(data, cBefore, cAfter, false);
     if ((flags & (StrobeFlags.I | StrobeFlags.A)) ==
@@ -323,7 +324,7 @@ class Strobe {
             "Not supposed to check a MAC with the 'more' streaming option");
       }
       int failures = 0;
-      for (int dataByte in data) {
+      for (final int dataByte in data) {
         failures |= dataByte;
       }
       return List<int>.from([failures]); // 0 if correct, 1 if not

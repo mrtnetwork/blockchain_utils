@@ -10,7 +10,7 @@ class SubstrateScaleBytesEncoder extends SubstrateScaleEncoderBase {
   @override
   List<int> encode(String value) {
     final toBytes = StringUtils.encode(value);
-    List<int> lengthBytes =
+    final List<int> lengthBytes =
         const SubstrateScaleCUintEncoder().encode(toBytes.length.toString());
     return List<int>.from([...lengthBytes, ...toBytes]);
   }

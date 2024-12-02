@@ -232,7 +232,7 @@ abstract class Bip44Base {
   /// Internal validation method for checking the depth of the BIP object.
   static Tuple<Bip32Base, BipCoinConfig> _validate(
       Bip32Base bip32Obj, BipCoinConfig coinConf) {
-    int depth = bip32Obj.depth.depth;
+    final int depth = bip32Obj.depth.depth;
 
     if (bip32Obj.isPublicOnly) {
       if (depth < Bip44Levels.account.value ||

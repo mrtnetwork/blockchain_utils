@@ -60,12 +60,12 @@ class AlgorandMnemonicUtils {
   /// Returns:
   ///   List<int>: List of converted values, null in case of errors
   static List<int>? convertBits(List<int> data, int fromBits, int toBits) {
-    int maxOutVal = (1 << toBits) - 1;
+    final int maxOutVal = (1 << toBits) - 1;
     int acc = 0;
     int bits = 0;
-    List<int> ret = <int>[];
+    final List<int> ret = <int>[];
 
-    for (var value in data) {
+    for (final value in data) {
       if (value < 0 || (value >> fromBits) > 0) {
         return null;
       }

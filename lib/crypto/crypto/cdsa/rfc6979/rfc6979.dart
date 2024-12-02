@@ -60,12 +60,12 @@ class RFC6979 {
   static BigInt generateK(
       BigInt order, BigInt secexp, HashFunc hashFunc, List<int> data,
       {int retryGn = 0, List<int>? extraEntropy}) {
-    int qlen = order.bitLength;
+    final int qlen = order.bitLength;
     final hx = hashFunc();
-    int holen = hx.getDigestLength;
-    int rolen = (qlen + 7) ~/ 8;
+    final int holen = hx.getDigestLength;
+    final int rolen = (qlen + 7) ~/ 8;
 
-    List<List<int>> bx = [
+    final List<List<int>> bx = [
       BigintUtils.toBytes(secexp, length: BigintUtils.orderLen(order)),
       BigintUtils.bitsToOctetsWithOrderPadding(data, order),
       extraEntropy ?? List.empty(),
@@ -80,7 +80,7 @@ class RFC6979 {
 
     hmac.update(List<int>.from([...v, 0x00]));
 
-    for (var i in bx) {
+    for (final i in bx) {
       hmac.update(i);
     }
     k = hmac.digest();
@@ -94,7 +94,7 @@ class RFC6979 {
     hmac = HMAC(hashFunc, k);
     hmac.update(List<int>.from([...v, 0x01]));
 
-    for (var i in bx) {
+    for (final i in bx) {
       hmac.update(i);
     }
     k = hmac.digest();
@@ -114,7 +114,7 @@ class RFC6979 {
       }
 
       // Step H3
-      BigInt secret = BigintUtils.bitsToBigIntWithLengthLimit(t, qlen);
+      final BigInt secret = BigintUtils.bitsToBigIntWithLengthLimit(t, qlen);
 
       if (secret >= BigInt.one && secret < order) {
         if (retryGn <= 0) {

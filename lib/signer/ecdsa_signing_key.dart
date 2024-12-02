@@ -38,8 +38,8 @@ class EcdsaSigningKey {
 
     BigInt toBig = BigintUtils.fromBytes(digest);
     if (truncate) {
-      int maxLength = toBig.bitLength;
-      int digestLen = digestBytes.length * 8;
+      final int maxLength = toBig.bitLength;
+      final int digestLen = digestBytes.length * 8;
 
       toBig >>= math.max(0, digestLen - maxLength);
     }

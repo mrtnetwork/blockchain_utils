@@ -86,7 +86,7 @@ class RistrettoPoint extends EDPoint {
   ///   - ArgumentException: If the input bytes result in an invalid RistrettoPoint.
   ///   - Exception: If the RistrettoPoint creation fails any validity checks.
   factory RistrettoPoint.fromBytes(List<int> bytes, {CurveED? curveEdTw}) {
-    List<int> hex = bytes;
+    final List<int> hex = bytes;
     final c = curveEdTw ?? Curves.curveEd25519;
     final a = c.a;
     final d = c.d;
@@ -306,8 +306,8 @@ class RistrettoPoint extends EDPoint {
     final pointCoords = getCoords();
     BigInt x = pointCoords[0];
     BigInt y = pointCoords[1];
-    BigInt z = pointCoords[2];
-    BigInt t = pointCoords[3];
+    final BigInt z = pointCoords[2];
+    final BigInt t = pointCoords[3];
 
     final u1 = ristretto_tools.positiveMod(
         ristretto_tools.positiveMod(z + y, primeP) *

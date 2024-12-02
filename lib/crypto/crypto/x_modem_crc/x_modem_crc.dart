@@ -8,7 +8,7 @@ import 'package:blockchain_utils/utils/utils.dart';
 class XModemCrc {
   static List<int> _calculateXmodemCrc(List<int> bytes) {
     int crc = 0;
-    for (int byte in bytes) {
+    for (final int byte in bytes) {
       crc = crc ^ byte << 8;
       for (int i = 0; i < 8; i++) {
         if ((crc & 0x8000) != 0) {

@@ -38,13 +38,14 @@ class Bip32KholawEd25519KeyDerivator
   @override
   List<int> newPrivateKeyLeftPart(
       List<int> zlBytes, List<int> klBytes, EllipticCurveTypes curve) {
-    BigInt zlInt =
+    final BigInt zlInt =
         BigintUtils.fromBytes(zlBytes.sublist(0, 28), byteOrder: Endian.little);
-    BigInt klInt = BigintUtils.fromBytes(klBytes, byteOrder: Endian.little);
+    final BigInt klInt =
+        BigintUtils.fromBytes(klBytes, byteOrder: Endian.little);
 
     final EDPoint generator =
         EllipticCurveGetter.generatorFromType(curve) as EDPoint;
-    BigInt prvlInt = (zlInt * BigInt.from(8)) + klInt;
+    final BigInt prvlInt = (zlInt * BigInt.from(8)) + klInt;
     if (prvlInt % generator.order! == BigInt.zero) {
       throw const Bip32KeyError(
           'Computed child key is not valid, very unlucky index');
@@ -68,9 +69,11 @@ class Bip32KholawEd25519KeyDerivator
   /// - The new right part of the private key as a List<int>.
   @override
   List<int> newPrivateKeyRightPart(List<int> zrBytes, List<int> krBytes) {
-    BigInt zrInt = BigintUtils.fromBytes(zrBytes, byteOrder: Endian.little);
-    BigInt kprInt = BigintUtils.fromBytes(krBytes, byteOrder: Endian.little);
-    BigInt krInt = (zrInt + kprInt) % (BigInt.one << 256);
+    final BigInt zrInt =
+        BigintUtils.fromBytes(zrBytes, byteOrder: Endian.little);
+    final BigInt kprInt =
+        BigintUtils.fromBytes(krBytes, byteOrder: Endian.little);
+    final BigInt krInt = (zrInt + kprInt) % (BigInt.one << 256);
     final tobytes = BigintUtils.toBytes(krInt,
         order: Endian.little,
         length: Ed25519KholawKeysConst.privKeyByteLen ~/ 2);
@@ -94,7 +97,7 @@ class Bip32KholawEd25519KeyDerivator
   @override
   EDPoint newPublicKeyPoint(Bip32PublicKey pubKey, List<int> zlBytes) {
     assert(pubKey.point is EDPoint);
-    BigInt zlInt =
+    final BigInt zlInt =
         BigintUtils.fromBytes(zlBytes.sublist(0, 28), byteOrder: Endian.little);
     final EDPoint generator =
         EllipticCurveGetter.generatorFromType(pubKey.curveType) as EDPoint;

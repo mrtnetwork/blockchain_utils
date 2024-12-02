@@ -94,7 +94,7 @@ class SequenceLayout<T> extends Layout<List<T>> {
 
   @override
   LayoutDecodeResult<List<T>> decode(LayoutByteReader bytes, {int offset = 0}) {
-    List<T> decoded = [];
+    final List<T> decoded = [];
     int i = 0;
     int startOffset = offset;
     int count;

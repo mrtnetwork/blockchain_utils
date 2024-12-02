@@ -194,7 +194,8 @@ class Union extends Layout<Map<String, dynamic>> {
   }
 
   VariantLayout? getVariant(LayoutByteReader variantBytes, {int offset = 0}) {
-    int variant = discriminator.decode(variantBytes, offset: offset).value;
+    final int variant =
+        discriminator.decode(variantBytes, offset: offset).value;
     return _registry[variant];
   }
 

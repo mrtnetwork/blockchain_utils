@@ -65,7 +65,7 @@ class GCM implements AEAD {
     final blockSize = _cipher.blockSize;
 
     final resultLength = plaintext.length + tagLength;
-    List<int> result = dst ?? List<int>.filled(resultLength, 0);
+    final List<int> result = dst ?? List<int>.filled(resultLength, 0);
     if (result.length != resultLength) {
       throw const ArgumentException("GCM: incorrect destination length");
     }
@@ -143,7 +143,7 @@ class GCM implements AEAD {
     }
 
     final resultLength = sealed.length - tagLength;
-    List<int> result = dst ?? List<int>.filled(resultLength, 0);
+    final List<int> result = dst ?? List<int>.filled(resultLength, 0);
     if (result.length != resultLength) {
       throw const ArgumentException("GCM: incorrect destination length");
     }

@@ -96,7 +96,7 @@ class Bip32KholawEd25519MstKeyGenerator implements IBip32MstKeyGenerator {
   /// Note: This method is called within the `generateFromSeed` method to prepare
   /// the master key bits.
   static List<int> _tweakMasterKeyBits(List<int> keyBytes) {
-    List<int> keyBytesList = keyBytes.toList();
+    final List<int> keyBytesList = keyBytes.toList();
     // Clear the lowest 3 bits of the first byte of kL
     keyBytesList[0] = keyBytesList[0] & 0xF8;
     // Clear the highest bit of the last byte of kL

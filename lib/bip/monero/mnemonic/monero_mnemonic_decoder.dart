@@ -45,10 +45,10 @@ class MoneroMnemonicDecoder extends MnemonicDecoderBase {
     validateCheckSum(words, lang.item2 as MoneroLanguages);
     List<int> entropyBytes = List.empty();
     for (int i = 0; i < words.length ~/ 3; i++) {
-      String word1 = words[i * 3];
-      String word2 = words[i * 3 + 1];
-      String word3 = words[i * 3 + 2];
-      List<int> chunkBytes = MnemonicUtils.wordsToBytesChunk(
+      final String word1 = words[i * 3];
+      final String word2 = words[i * 3 + 1];
+      final String word3 = words[i * 3 + 2];
+      final List<int> chunkBytes = MnemonicUtils.wordsToBytesChunk(
           word1, word2, word3, lang.item1,
           endian: Endian.little);
       entropyBytes = List<int>.from([...entropyBytes, ...chunkBytes]);

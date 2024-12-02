@@ -36,13 +36,13 @@ class P2PKHAddrDecoder implements BlockchainAddressDecoder {
   List<int> decodeAddr(String addr, [Map<String, dynamic> kwargs = const {}]) {
     /// Validate network version and Base58 alphabet arguments.
     AddrKeyValidator.validateAddressArgs<List<int>>(kwargs, "net_ver");
-    List<int> netVarBytes = kwargs["net_ver"];
+    final List<int> netVarBytes = kwargs["net_ver"];
 
     final Base58Alphabets alphabet =
         kwargs["base58_alph"] ?? Base58Alphabets.bitcoin;
 
     /// Decode the address using the specified Base58 alphabet.
-    List<int> addrDecBytes = Base58Decoder.checkDecode(addr, alphabet);
+    final List<int> addrDecBytes = Base58Decoder.checkDecode(addr, alphabet);
 
     /// Validate the length of the decoded address and its network version.
     AddrDecUtils.validateBytesLength(
@@ -128,8 +128,8 @@ class BchP2PKHAddrDecoder implements BlockchainAddressDecoder {
 
     /// Decode the Bech32 address and retrieve network version and decoded bytes.
     final result = BchBech32Decoder.decode(hrp, addr);
-    List<int> netVerBytesGot = result.item1;
-    List<int> addrDecBytes = result.item2;
+    final List<int> netVerBytesGot = result.item1;
+    final List<int> addrDecBytes = result.item2;
 
     /// Validate that the decoded network version matches the expected network version.
     if (!BytesUtils.bytesEqual(netVerBytes, netVerBytesGot)) {
@@ -163,8 +163,8 @@ class BchP2PKHAddrEncoder implements BlockchainAddressEncoder {
     /// Validate network version and HRP arguments.
     AddrKeyValidator.validateAddressArgs<List<int>>(kwargs, "net_ver");
     AddrKeyValidator.validateAddressArgs<String>(kwargs, "hrp");
-    String hrp = kwargs['hrp'];
-    List<int> netVerBytes = kwargs['net_ver'];
+    final String hrp = kwargs['hrp'];
+    final List<int> netVerBytes = kwargs['net_ver'];
 
     /// Validate and process the public key as a Secp256k1 key.
     final pubKeyObj = AddrKeyValidator.validateAndGetSecp256k1Key(pubKey);

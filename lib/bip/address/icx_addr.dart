@@ -32,13 +32,13 @@ class IcxAddrDecoder implements BlockchainAddressDecoder {
   @override
   List<int> decodeAddr(String addr, [Map<String, dynamic> kwargs = const {}]) {
     /// Remove the ICON address prefix.
-    String addrNoPrefix = AddrDecUtils.validateAndRemovePrefix(
+    final String addrNoPrefix = AddrDecUtils.validateAndRemovePrefix(
       addr,
       CoinsConf.icon.params.addrPrefix!,
     );
 
     /// Convert the remaining string to a List<int> and validate its length.
-    List<int> pubKeyHashBytes = BytesUtils.fromHexString(addrNoPrefix);
+    final List<int> pubKeyHashBytes = BytesUtils.fromHexString(addrNoPrefix);
     AddrDecUtils.validateBytesLength(
         pubKeyHashBytes, IcxAddrConst.keyHashByteLen);
 
@@ -65,7 +65,8 @@ class IcxAddrEncoder implements BlockchainAddressEncoder {
   @override
   String encodeKey(List<int> pubKey, [Map<String, dynamic> kwargs = const {}]) {
     /// Validate and transform the public key into a 32-byte hash.
-    IPublicKey pubKeyObj = AddrKeyValidator.validateAndGetSecp256k1Key(pubKey);
+    final IPublicKey pubKeyObj =
+        AddrKeyValidator.validateAndGetSecp256k1Key(pubKey);
     List<int> pubKeyHashBytes =
         QuickCrypto.sha3256Hash(pubKeyObj.uncompressed.sublist(1));
 

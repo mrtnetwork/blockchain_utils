@@ -38,7 +38,8 @@ class ElectrumV2EntropyGenerator extends EntropyGenerator {
   /// [bitLen]: The bit length to be checked.
   /// Returns true if the bit length is valid, otherwise false.
   static bool isValidEntropyBitLen(int bitLen) {
-    for (int entropyBitLen in ElectrumV2EntropyGeneratorConst.entropyBitLen) {
+    for (final int entropyBitLen
+        in ElectrumV2EntropyGeneratorConst.entropyBitLen) {
       if (entropyBitLen - ElectrumV2MnemonicConst.wordBitLen <= bitLen &&
           bitLen <= entropyBitLen) {
         return true;

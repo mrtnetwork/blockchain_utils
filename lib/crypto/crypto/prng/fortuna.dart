@@ -144,7 +144,7 @@ class FortunaPRNG {
       _generateBlocks(_out, 1);
       _c = 0;
     }
-    int result = (_out[_c] << 24) |
+    final int result = (_out[_c] << 24) |
         (_out[_c + 1] << 16) |
         (_out[_c + 2] << 8) |
         (_out[_c + 3]);
@@ -161,7 +161,7 @@ class FortunaPRNG {
     if (max <= 0) throw ArgumentError("max must be greater than 0");
 
     // Generate a random double in the range [0.0, 1.0)
-    double fraction =
+    final double fraction =
         nextUint32 / 4294967296.0; // Divide by 2^32 to get a fraction
     return (fraction * max).floor();
   }

@@ -75,7 +75,7 @@ class Bech32BaseUtils {
   /// Throws:
   /// - ArgumentException: If the data cannot be converted to base32.
   static List<int> convertToBase32(List<int> data) {
-    List<int>? convData = _convertBits(data, 8, 5);
+    final List<int>? convData = _convertBits(data, 8, 5);
     if (convData == null) {
       throw const ArgumentException(
           'Invalid data, cannot perform conversion to base32');
@@ -95,7 +95,7 @@ class Bech32BaseUtils {
   /// Throws:
   /// - ArgumentException: If the data cannot be converted from base32.
   static List<int> convertFromBase32(List<int> data) {
-    List<int>? convData = _convertBits(data, 5, 8, pad: false);
+    final List<int>? convData = _convertBits(data, 5, 8, pad: false);
     if (convData == null) {
       throw const ArgumentException(
           'Invalid data, cannot perform conversion from base32');

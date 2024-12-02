@@ -65,6 +65,8 @@ export 'signer/signer.dart';
 /// Exports modules related to ECC (Elliptic Curve Cryptography) in the context of BIP.
 export 'bip/ecc/bip_ecc.dart';
 
+export 'bip/coin_conf/config.dart';
+
 /// Exports utility functions related to TON mnemonic.
 export 'bip/ton/ton.dart';
 

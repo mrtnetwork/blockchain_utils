@@ -162,7 +162,7 @@ class MD5 implements SerializableHash<SH1State> {
       _buffer.add(0);
     }
 
-    var lengthInBits = _lengthInBytes * 8;
+    final lengthInBits = _lengthInBytes * 8;
 
     // Add the full length of the input data as a 64-bit value at the end of the
     // hash. Note: we're only writing out 64 bits, so skip ahead 8 if the
@@ -175,8 +175,8 @@ class MD5 implements SerializableHash<SH1State> {
     // We're essentially doing byteData.setUint64(offset, lengthInBits, _endian)
     // here, but that method isn't supported on dart2js so we implement it
     // manually instead.
-    var highBits = lengthInBits ~/ 0x100000000; // >> 32
-    var lowBits = lengthInBits & mask32;
+    final highBits = lengthInBits ~/ 0x100000000; // >> 32
+    final lowBits = lengthInBits & mask32;
     // byteData.setUint32(offset, lowBits, Endian.little);
     // byteData.setUint32(offset + 4, highBits, Endian.little);
     writeUint32LE(lowBits, _buffer, offset);
@@ -263,7 +263,7 @@ class MD5 implements SerializableHash<SH1State> {
   }
 
   void _iterate() {
-    var pendingDataChunks = _buffer.length ~/ getBlockSize;
+    final pendingDataChunks = _buffer.length ~/ getBlockSize;
     for (var i = 0; i < pendingDataChunks; i++) {
       // Copy words from the pending data buffer into the current chunk buffer.
       for (var j = 0; j < _currentChunk.length; j++) {

@@ -20,7 +20,7 @@ class IntUtils {
   ///
   /// Throws a MessageException if the decoded value cannot fit into an integer in the current environment.
   static Tuple<int, int> decodeVarint(List<int> byteint) {
-    int ni = byteint[0];
+    final int ni = byteint[0];
     int size = 0;
 
     if (ni < 253) {
@@ -35,7 +35,7 @@ class IntUtils {
       size = 8;
     }
 
-    BigInt value = BigintUtils.fromBytes(byteint.sublist(1, 1 + size),
+    final BigInt value = BigintUtils.fromBytes(byteint.sublist(1, 1 + size),
         byteOrder: Endian.little);
     if (!value.isValidInt) {
       throw const MessageException(
@@ -103,8 +103,8 @@ class IntUtils {
       {required int length, Endian byteOrder = Endian.big}) {
     assert(length <= 8);
     if (length > 4) {
-      int lowerPart = val & mask32;
-      int upperPart = (val >> 32) & mask32;
+      final int lowerPart = val & mask32;
+      final int upperPart = (val >> 32) & mask32;
 
       final bytes = [
         ...toBytes(upperPart, length: length - 4),
@@ -115,7 +115,7 @@ class IntUtils {
       }
       return bytes;
     }
-    List<int> byteList = List<int>.filled(length, 0);
+    final List<int> byteList = List<int>.filled(length, 0);
 
     for (var i = 0; i < length; i++) {
       byteList[length - i - 1] = val & mask8;
@@ -142,8 +142,9 @@ class IntUtils {
     }
     int result = 0;
     if (bytes.length > 4) {
-      int lowerPart = fromBytes(bytes.sublist(bytes.length - 4, bytes.length));
-      int upperPart = fromBytes(bytes.sublist(0, bytes.length - 4));
+      final int lowerPart =
+          fromBytes(bytes.sublist(bytes.length - 4, bytes.length));
+      final int upperPart = fromBytes(bytes.sublist(0, bytes.length - 4));
       result = (upperPart << 32) | lowerPart;
     } else {
       for (var i = 0; i < bytes.length; i++) {

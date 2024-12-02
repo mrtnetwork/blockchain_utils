@@ -89,13 +89,13 @@ int add32(int x, int y) => (x + y) & mask32;
 
 /// Rotates a 32-bit integer left by a specified number of bits.
 int rotl32(int val, int shift) {
-  var modShift = shift & 31;
+  final modShift = shift & 31;
   return ((val << modShift) & mask32) | ((val & mask32) >> (32 - modShift));
 }
 
 /// Rotates a 32-bit integer right by a specified number of bits.
 int rotr32(int val, int shift) {
-  var modShift = shift & 31;
+  final modShift = shift & 31;
   return ((val >> modShift) & mask32) | ((val & mask32) << (32 - modShift));
 }
 

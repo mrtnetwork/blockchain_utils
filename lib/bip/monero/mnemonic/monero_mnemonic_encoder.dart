@@ -34,12 +34,12 @@ abstract class MoneroMnemonicEncoderBase extends MnemonicEncoderBase {
   ///
   /// [entropyBytes]: The entropy bytes to encode.
   List<String> _encodeToList(List<int> entropyBytes) {
-    int entropyByteLen = entropyBytes.length;
+    final int entropyByteLen = entropyBytes.length;
     if (!MoneroEntropyGenerator.isValidEntropyByteLen(entropyByteLen)) {
       throw ArgumentException(
           'Entropy byte length ($entropyByteLen) is not valid');
     }
-    List<String> mnemonic = [];
+    final List<String> mnemonic = [];
     for (int i = 0; i < entropyByteLen ~/ 4; i++) {
       mnemonic.addAll(MnemonicUtils.bytesChunkToWords(
           entropyBytes.sublist(i * 4, (i * 4) + 4), wordsList,
@@ -100,8 +100,9 @@ class MoneroMnemonicWithChecksumEncoder extends MoneroMnemonicEncoderBase {
   /// [entropyBytes]: The entropy bytes to encode.
   @override
   Mnemonic encode(List<int> entropyBytes) {
-    List<String> words = _encodeToList(entropyBytes);
-    String checksumWord = MoneroMnemonicUtils.computeChecksum(words, language);
+    final List<String> words = _encodeToList(entropyBytes);
+    final String checksumWord =
+        MoneroMnemonicUtils.computeChecksum(words, language);
 
     return Mnemonic.fromList([...words, checksumWord]);
   }

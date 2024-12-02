@@ -180,13 +180,13 @@ class MD4 implements SerializableHash<SH1State> {
       _buffer.add(0);
     }
 
-    var lengthInBits = _lengthInBytes * 8;
+    final lengthInBits = _lengthInBytes * 8;
 
     final offset = _buffer.length;
 
     _buffer.addAll(List<int>.filled(8, 0));
-    var highBits = lengthInBits ~/ 0x100000000; // >> 32
-    var lowBits = lengthInBits & mask32;
+    final highBits = lengthInBits ~/ 0x100000000; // >> 32
+    final lowBits = lengthInBits & mask32;
     writeUint32LE(lowBits, _buffer, offset);
     writeUint32LE(highBits, _buffer, offset + 4);
   }
@@ -259,7 +259,7 @@ class MD4 implements SerializableHash<SH1State> {
   }
 
   void _iterate() {
-    var pendingDataChunks = _buffer.length ~/ getBlockSize;
+    final pendingDataChunks = _buffer.length ~/ getBlockSize;
     for (var i = 0; i < pendingDataChunks; i++) {
       // Copy words from the pending data buffer into the current chunk buffer.
       for (var j = 0; j < _currentChunk.length; j++) {

@@ -24,7 +24,7 @@ class OneAddrDecoder implements BlockchainAddressDecoder {
   ///   A List<int> containing the decoded Ethereum address bytes derived from the Harmony ONE address.
   @override
   List<int> decodeAddr(String addr, [Map<String, dynamic> kwargs = const {}]) {
-    List<int> addrDecBytes =
+    final List<int> addrDecBytes =
         Bech32Decoder.decode(CoinsConf.harmonyOne.params.addrHrp!, addr);
 
     /// Decode the address again as an Ethereum address with a custom prefix.
@@ -53,7 +53,8 @@ class OneAddrEncoder implements BlockchainAddressEncoder {
   @override
   String encodeKey(List<int> pubKey, [Map<String, dynamic> kwargs = const {}]) {
     /// Encode the Ethereum address without the '0x' prefix.
-    String ethAddr = StringUtils.strip0x(EthAddrEncoder().encodeKey(pubKey));
+    final String ethAddr =
+        StringUtils.strip0x(EthAddrEncoder().encodeKey(pubKey));
 
     /// Encode the Ethereum address as a Harmony ONE address using Bech32 encoding.
     return Bech32Encoder.encode(

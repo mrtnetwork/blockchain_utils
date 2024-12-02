@@ -57,7 +57,7 @@ class ECB extends AES {
     for (var i = 0; i < numBlocks; i++) {
       final start = i * blockSize;
       final end = (i + 1) * blockSize;
-      List<int> block = List<int>.from(input.sublist(start, end));
+      final List<int> block = List<int>.from(input.sublist(start, end));
       final enc = super.encryptBlock(block);
       out.setRange(start, end, enc);
     }

@@ -113,7 +113,7 @@ class Ed25519Utils {
   }
 
   static bool isValidPoint(List<int> bytes) {
-    GroupElementP3 p = GroupElementP3();
+    final GroupElementP3 p = GroupElementP3();
     return CryptoOps.geFromBytesVartime_(p, bytes) == 0;
   }
 

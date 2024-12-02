@@ -100,7 +100,7 @@ class MoneroAccount {
   /// with the associated keys and configurations.
   factory MoneroAccount.fromSeed(List<int> seedBytes,
       {MoneroCoins coinType = MoneroCoins.moneroMainnet}) {
-    List<int> privSkeyBytes =
+    final List<int> privSkeyBytes =
         seedBytes.length == Ed25519KeysConst.privKeyByteLen
             ? seedBytes
             : QuickCrypto.keccack256Hash(seedBytes);
@@ -193,7 +193,7 @@ class MoneroAccount {
 
   /// Calculate and return the private view key from the private spend key.
   static MoneroPrivateKey _viewFromSpendKey(MoneroPrivateKey privSkey) {
-    List<int> privVkeyBytes =
+    final List<int> privVkeyBytes =
         Ed25519Utils.scalarReduce(QuickCrypto.keccack256Hash(privSkey.raw));
     return MoneroPrivateKey.fromBytes(privVkeyBytes);
   }

@@ -113,7 +113,7 @@ class AvaxPChainAddrEncoder implements BlockchainAddressEncoder {
   /// Returns the encoded Avax P-Chain address as a String.
   @override
   String encodeKey(List<int> pubKey, [Map<String, dynamic> kwargs = const {}]) {
-    String prefix = CoinsConf.avaxPChain.params.addrPrefix!;
+    final String prefix = CoinsConf.avaxPChain.params.addrPrefix!;
     return prefix +
         AtomAddrEncoder().encodeKey(
           pubKey,
@@ -158,7 +158,7 @@ class AvaxXChainAddrEncoder implements BlockchainAddressEncoder {
   /// Returns the encoded Avax X-Chain address as a String.
   @override
   String encodeKey(List<int> pubKey, [Map<String, dynamic> kwargs = const {}]) {
-    String prefix = CoinsConf.avaxXChain.params.addrPrefix!;
+    final String prefix = CoinsConf.avaxXChain.params.addrPrefix!;
     return prefix +
         AtomAddrEncoder().encodeKey(
           pubKey,

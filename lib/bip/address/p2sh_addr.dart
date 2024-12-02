@@ -82,16 +82,17 @@ class P2SHAddrEncoder implements BlockchainAddressEncoder {
   String encodeKey(List<int> pubKey, [Map<String, dynamic> kwargs = const {}]) {
     /// Validate network version arguments and retrieve the network version bytes.
     AddrKeyValidator.validateAddressArgs<List<int>>(kwargs, 'net_ver');
-    List<int> netVerBytes = kwargs['net_ver'];
+    final List<int> netVerBytes = kwargs['net_ver'];
 
     /// Validate and process the public key as a Secp256k1 key.
-    IPublicKey pubKeyObj = AddrKeyValidator.validateAndGetSecp256k1Key(pubKey);
+    final IPublicKey pubKeyObj =
+        AddrKeyValidator.validateAndGetSecp256k1Key(pubKey);
 
     /// Generate the script signature from the public key.
-    List<int> scriptSigBytes = _P2SHAddrUtils.addScriptSig(pubKeyObj);
+    final List<int> scriptSigBytes = _P2SHAddrUtils.addScriptSig(pubKeyObj);
 
     /// Combine the network version and script signature to form the address bytes.
-    List<int> addressBytes =
+    final List<int> addressBytes =
         List<int>.filled(netVerBytes.length + scriptSigBytes.length, 0);
     addressBytes.setAll(0, netVerBytes);
     addressBytes.setAll(netVerBytes.length, scriptSigBytes);
@@ -121,8 +122,8 @@ class BchP2SHAddrDecoder implements BlockchainAddressDecoder {
     /// Validate HRP and network version arguments.
     AddrKeyValidator.validateAddressArgs<String>(kwargs, "hrp");
     AddrKeyValidator.validateAddressArgs<List<int>>(kwargs, "net_ver");
-    String hrp = kwargs['hrp'];
-    List<int> netVerBytes = kwargs['net_ver'];
+    final String hrp = kwargs['hrp'];
+    final List<int> netVerBytes = kwargs['net_ver'];
 
     /// Delegate the decoding process to a specialized P2PKH address decoder with HRP and network version.
     return BchP2PKHAddrDecoder()
@@ -151,11 +152,12 @@ class BchP2SHAddrEncoder implements BlockchainAddressEncoder {
     /// Validate HRP and network version arguments.
     AddrKeyValidator.validateAddressArgs<String>(kwargs, "hrp");
     AddrKeyValidator.validateAddressArgs<List<int>>(kwargs, "net_ver");
-    String hrp = kwargs['hrp'];
-    List<int> netVerBytes = kwargs['net_ver'];
+    final String hrp = kwargs['hrp'];
+    final List<int> netVerBytes = kwargs['net_ver'];
 
     /// Validate and process the public key as a Secp256k1 key.
-    IPublicKey pubKeyObj = AddrKeyValidator.validateAndGetSecp256k1Key(pubKey);
+    final IPublicKey pubKeyObj =
+        AddrKeyValidator.validateAndGetSecp256k1Key(pubKey);
 
     /// Encode the P2SH address using Bech32 encoding.
     return BchBech32Encoder.encode(

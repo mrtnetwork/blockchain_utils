@@ -28,7 +28,7 @@ class OkexAddrDecoder implements BlockchainAddressDecoder {
   List<int> decodeAddr(String addr, [Map<String, dynamic> kwargs = const {}]) {
     try {
       /// Decode the OKExChain address using the OKExChain configuration's HRP.
-      List<int> addrDecBytes =
+      final List<int> addrDecBytes =
           Bech32Decoder.decode(CoinsConf.okexChain.params.addrHrp!, addr);
 
       /// Decode the address again as an Ethereum address with a custom prefix.
@@ -63,7 +63,8 @@ class OkexAddrEncoder implements BlockchainAddressEncoder {
   @override
   String encodeKey(List<int> pubKey, [Map<String, dynamic> kwargs = const {}]) {
     /// Encode the Ethereum address without the '0x' prefix.
-    String ethAddr = StringUtils.strip0x(EthAddrEncoder().encodeKey(pubKey));
+    final String ethAddr =
+        StringUtils.strip0x(EthAddrEncoder().encodeKey(pubKey));
 
     /// Encode the Ethereum address as an OKExChain address using Bech32 encoding.
     return Bech32Encoder.encode(

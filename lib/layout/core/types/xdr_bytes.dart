@@ -26,7 +26,7 @@ class XDRBytesLayout extends Layout<List<int>> {
     return XDRBytesLayout._(RawBytesLayout(length), property: property);
   }
   static int _reminder(int dividend) {
-    int remainder = dividend % 4;
+    final int remainder = dividend % 4;
     return remainder == 0 ? 0 : 4 - remainder;
   }
 

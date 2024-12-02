@@ -66,7 +66,7 @@ class ChaCha20Poly1305 implements AEAD {
 
     final resultLength = plaintext.length + tagLength;
 
-    List<int> result = dst ?? List<int>.filled(resultLength, 0);
+    final List<int> result = dst ?? List<int>.filled(resultLength, 0);
     if (result.length != resultLength) {
       throw const ArgumentException(
           "ChaCha20Poly1305: incorrect destination length");
@@ -134,7 +134,7 @@ class ChaCha20Poly1305 implements AEAD {
 
     final resultLength = sealed.length - tagLength;
 
-    List<int> result = dst ?? List<int>.filled(resultLength, 0);
+    final List<int> result = dst ?? List<int>.filled(resultLength, 0);
     if (result.length != resultLength) {
       throw const ArgumentException(
           "ChaCha20Poly1305: incorrect destination length");

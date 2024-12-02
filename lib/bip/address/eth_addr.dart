@@ -33,12 +33,12 @@ class EthAddrUtils {
   /// Returns:
   ///   A string representing the Ethereum address with checksum.
   static String _checksumEncode(String addr) {
-    String addrHexDigest = BytesUtils.toHexString(
+    final String addrHexDigest = BytesUtils.toHexString(
         QuickCrypto.keccack256Hash(StringUtils.encode(addr.toLowerCase())));
-    List<String> encAddr = addr.split("").asMap().entries.map((entry) {
-      int i = entry.key;
-      String c = entry.value;
-      int charValue = int.parse(addrHexDigest[i], radix: 16);
+    final List<String> encAddr = addr.split("").asMap().entries.map((entry) {
+      final int i = entry.key;
+      final String c = entry.value;
+      final int charValue = int.parse(addrHexDigest[i], radix: 16);
       return charValue >= 8 ? c.toUpperCase() : c.toLowerCase();
     }).toList();
 
@@ -76,7 +76,7 @@ class EthAddrDecoder implements BlockchainAddressDecoder {
   List<int> decodeAddr(String addr, [Map<String, dynamic> kwargs = const {}]) {
     final skipChecksum = kwargs["skip_chksum_enc"] ?? false;
 
-    String addrNoPrefix = AddrDecUtils.validateAndRemovePrefix(
+    final String addrNoPrefix = AddrDecUtils.validateAndRemovePrefix(
         addr, CoinsConf.ethereum.params.addrPrefix!);
     AddrDecUtils.validateLength(addrNoPrefix, EthAddrConst.addrLen);
     if (!skipChecksum &&
@@ -104,11 +104,12 @@ class EthAddrEncoder implements BlockchainAddressEncoder {
   ///   A string representing the Ethereum address.
   @override
   String encodeKey(List<int> pubKey, [Map<String, dynamic> kwargs = const {}]) {
-    IPublicKey pubKeyObj = AddrKeyValidator.validateAndGetSecp256k1Key(pubKey);
+    final IPublicKey pubKeyObj =
+        AddrKeyValidator.validateAndGetSecp256k1Key(pubKey);
     final skipChecksum = kwargs["skip_chksum_enc"] ?? false;
-    String kekkakHex = BytesUtils.toHexString(
+    final String kekkakHex = BytesUtils.toHexString(
         QuickCrypto.keccack256Hash(pubKeyObj.uncompressed.sublist(1)));
-    String addr = kekkakHex.substring(EthAddrConst.startByte);
+    final String addr = kekkakHex.substring(EthAddrConst.startByte);
     if (skipChecksum) {
       return addr;
     }

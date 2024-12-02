@@ -65,7 +65,7 @@ class Bip44PublicKey {
   /// Shelley or Monero, which require using specific classes to generate
   /// addresses.
   String get toAddress {
-    BlockchainAddressEncoder encoder = coinConf.encoder();
+    final BlockchainAddressEncoder encoder = coinConf.encoder();
     if (encoder is AdaShelleyAddrEncoder) {
       throw const ArgumentException(
           'Use the CardanoShelley class to get Cardano Shelley addresses');

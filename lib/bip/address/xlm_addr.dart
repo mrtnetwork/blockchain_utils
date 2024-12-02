@@ -224,9 +224,9 @@ class XlmAddrEncoder implements BlockchainAddressEncoder {
       pubKey = [...pubKey, ...idBytes];
     }
 
-    List<int> payloadBytes = List<int>.from([addrType.value, ...pubKey]);
+    final List<int> payloadBytes = List<int>.from([addrType.value, ...pubKey]);
 
-    List<int> checksumBytes = _XlmAddrUtils.computeChecksum(payloadBytes);
+    final List<int> checksumBytes = _XlmAddrUtils.computeChecksum(payloadBytes);
     return Base32Encoder.encodeNoPaddingBytes(
         List<int>.from([...payloadBytes, ...checksumBytes]));
   }

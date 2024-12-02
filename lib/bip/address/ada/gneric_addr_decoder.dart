@@ -64,9 +64,9 @@ class AdaGenericAddrDecoder {
     if (addressBytes.length < QuickCrypto.blake2b224DigestSize + 1) {
       throw const AddressConverterException("Invalid address length.");
     }
-    int header = addressBytes[0];
-    int networkTag = AdaShelleyAddrUtils.decodeNetworkTag(header);
-    ADAAddressType addressType = ADAAddressType.decodeAddressType(header);
+    final int header = addressBytes[0];
+    final int networkTag = AdaShelleyAddrUtils.decodeNetworkTag(header);
+    final ADAAddressType addressType = ADAAddressType.decodeAddressType(header);
 
     if (network == null) {
       if (addressType == ADAAddressType.byron) {

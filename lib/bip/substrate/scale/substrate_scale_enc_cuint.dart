@@ -41,10 +41,12 @@ class SubstrateScaleCUintEncoder extends SubstrateScaleEncoderBase {
           length: 4, order: Endian.little);
     }
     if (v <= SubstrateScaleCUintEncoderConst.bigIntegerModeMaxVal) {
-      List<int> valueBytes = BigintUtils.toBytes(v,
+      final List<int> valueBytes = BigintUtils.toBytes(v,
           order: Endian.little, length: BigintUtils.orderLen(v));
-      List<int> lenBytes = IntUtils.toBytes((valueBytes.length - 4 << 2) | 0x03,
-          length: 1, byteOrder: Endian.little);
+      final List<int> lenBytes = IntUtils.toBytes(
+          (valueBytes.length - 4 << 2) | 0x03,
+          length: 1,
+          byteOrder: Endian.little);
       return List<int>.from([...lenBytes, ...valueBytes]);
     }
 

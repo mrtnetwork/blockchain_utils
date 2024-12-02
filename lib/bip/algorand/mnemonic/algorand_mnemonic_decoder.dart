@@ -34,7 +34,7 @@ class AlgorandMnemonicDecoder extends MnemonicDecoderBase {
 
     final words = mnemonicObj.toList();
     final wordsList = findLanguage(mnemonicObj).item1;
-    final wordIndexes = [for (var w in words) wordsList.getWordIdx(w)];
+    final wordIndexes = [for (final w in words) wordsList.getWordIdx(w)];
     final entropyList = AlgorandMnemonicUtils.convertBits(
         wordIndexes.getRange(0, words.length - 1).toList(), 11, 8);
     assert(entropyList != null);

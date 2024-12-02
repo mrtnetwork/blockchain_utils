@@ -61,10 +61,10 @@ class _KeyUtils {
   /// Returns:
   /// A new byte array with the scalar divided by the cofactor.
   static List<int> divideScalarByCofactor(List<int> s) {
-    int l = s.length - 1;
+    final int l = s.length - 1;
     int low = 0;
     for (int i = 0; i < s.length; i++) {
-      int r = s[l - i] & 0x07; // remainder
+      final int r = s[l - i] & 0x07; // remainder
       s[l - i] >>= 3;
       s[l - i] += low;
       low = r << 5;
@@ -80,7 +80,7 @@ class _KeyUtils {
   static void multiplyScalarBytesByCofactor(List<int> scalar) {
     int high = 0;
     for (int i = 0; i < scalar.length; i++) {
-      int r = scalar[i] & 0xE0; // carry bits (0xE0 is binary 11100000)
+      final int r = scalar[i] & 0xE0; // carry bits (0xE0 is binary 11100000)
       scalar[i] <<= 3; // multiply by 8
       scalar[i] += high;
       high = r >> 5;
@@ -102,8 +102,8 @@ class _KeyUtils {
   static List<int>? toCanonical(List<int> bytes) {
     final cloneBytes = List<int>.from(bytes);
     cloneBytes[31] &= 127;
-    bool highBitUnset = (bytes[31] >> 7 & 0) == 0;
-    bool isCanonical = BytesUtils.bytesEqual(
+    final bool highBitUnset = (bytes[31] >> 7 & 0) == 0;
+    final bool isCanonical = BytesUtils.bytesEqual(
         cloneBytes, Ed25519Utils.scalarReduce(cloneBytes));
     if (highBitUnset && isCanonical) {
       return cloneBytes;

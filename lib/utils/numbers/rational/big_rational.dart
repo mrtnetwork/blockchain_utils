@@ -111,7 +111,7 @@ class BigRational {
       throw const ArgumentException("Invalid input: too many '.' tokens");
     }
     if (parts.length > 1) {
-      bool isNegative = parts[0][0] == '-';
+      final bool isNegative = parts[0][0] == '-';
       if (isNegative) parts[0] = parts[0].substring(1);
       BigRational intPart = BigRational._(BigInt.parse(parts[0]), _one);
       final int length = parts[1].length;
@@ -239,8 +239,8 @@ class BigRational {
   /// [other] The divisor BigRational.
   /// Returns a new BigRational representing the integer division of this BigRational by the given BigRational.
   BigRational operator ~/(BigRational other) {
-    BigInt divmod = _truncate;
-    BigInt rminder = _remainder;
+    final BigInt divmod = _truncate;
+    final BigInt rminder = _remainder;
     BigInt floor;
 
     if (rminder == _zero || !divmod.isNegative) {
@@ -293,8 +293,8 @@ class BigRational {
   ///
   /// Returns a new BigRational representing the ceiling of this BigRational.
   BigRational ceil(toBigInt) {
-    BigInt divmod = _truncate;
-    BigInt remind = _remainder;
+    final BigInt divmod = _truncate;
+    final BigInt remind = _remainder;
     BigInt ceil;
 
     if (remind == _zero || divmod.isNegative) {
@@ -350,8 +350,8 @@ class BigRational {
 
   static BigRational _reduce(BigInt n, BigInt d) {
     final BigInt divisor = _gcd(n, d);
-    BigInt num = n ~/ divisor;
-    BigInt denom = d ~/ divisor;
+    final BigInt num = n ~/ divisor;
+    final BigInt denom = d ~/ divisor;
     if (denom.isNegative) {
       return BigRational._(-num, -denom);
     }

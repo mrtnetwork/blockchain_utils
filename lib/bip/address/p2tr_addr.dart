@@ -47,7 +47,7 @@ class P2TRUtils {
     if (tag! is String && tag! is List<int>) {
       throw const AddressConverterException("tag must be bytes or string");
     }
-    List<int> tagHash =
+    final List<int> tagHash =
         tag is String ? QuickCrypto.sha256Hash(StringUtils.encode(tag)) : tag;
     return QuickCrypto.sha256Hash(
         List<int>.from([...tagHash, ...tagHash, ...dataBytes]));
@@ -93,7 +93,7 @@ class P2TRUtils {
     if (y.modPow(BigInt.two, p) != ySq) {
       throw const AddressConverterException("Unable to compute LiftX point");
     }
-    BigInt result = (y & BigInt.one) == BigInt.zero ? y : p - y;
+    final BigInt result = (y & BigInt.one) == BigInt.zero ? y : p - y;
     return ProjectiveECCPoint(
         curve: Curves.curveSecp256k1, x: x, y: result, z: BigInt.one);
   }

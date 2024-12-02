@@ -34,7 +34,7 @@ class CardanoByronLegacyMstKeyGenerator extends IBip32MstKeyGenerator {
                   itrNum.toString())
               .codeUnits,
         ]));
-    List<int> keyBytes =
+    final List<int> keyBytes =
         _tweakMasterKeyBits(QuickCrypto.sha512Hash(halves.item1));
     if (BitUtils.areBitsSet(keyBytes[31], 0x20)) {
       return _hashRepeatedly(dataBytes, itrNum + 1);

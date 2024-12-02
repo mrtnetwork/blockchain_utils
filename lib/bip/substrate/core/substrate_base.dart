@@ -196,7 +196,7 @@ class Substrate {
     //   throw const SubstrateKeyError(
     //       'Public child derivation cannot be used to create a hardened child key');
     // }
-    List<int> hdkd = publicKey.coinConf.type == EllipticCurveTypes.ed25519
+    final List<int> hdkd = publicKey.coinConf.type == EllipticCurveTypes.ed25519
         ? SubstrateConst.hdkd
         : SubstrateConst.secp256k1HDKD;
     final key = QuickCrypto.blake2b256Hash([

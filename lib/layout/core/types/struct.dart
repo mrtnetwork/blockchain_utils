@@ -23,7 +23,7 @@ class StructLayout extends Layout<Map<String, dynamic>> {
   final bool decodePrefixes;
   factory StructLayout(List<Layout> fields,
       {String? property, bool decodePrefixes = false}) {
-    for (var fd in fields) {
+    for (final fd in fields) {
       if (fd.property == null) {
         throw LayoutException("fields cannot contain unnamed layout", details: {
           "property": property,
@@ -96,7 +96,7 @@ class StructLayout extends Layout<Map<String, dynamic>> {
       {int offset = 0}) {
     final Map<String, dynamic> result = {};
     int consumed = 0;
-    for (var fd in fields) {
+    for (final fd in fields) {
       if (fd.property != null) {
         final decode = fd.decode(bytes, offset: offset);
         consumed += decode.consumed;

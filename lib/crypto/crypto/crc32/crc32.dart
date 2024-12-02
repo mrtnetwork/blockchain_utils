@@ -286,7 +286,7 @@ class Crc32 {
   /// The returned integer is a digest of the input data, providing a compact representation of its content.
   static int quickIntDigest(List<int> data) {
     int crc = mask32;
-    for (int byte in data) {
+    for (final int byte in data) {
       crc = (crc >> 8) ^ _crcTable[(crc ^ byte) & mask8];
     }
     return crc ^ mask32;

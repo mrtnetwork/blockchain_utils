@@ -16,7 +16,7 @@ class QuickCrypto {
 
   /// Calculate the SHA-256 hash of the SHA-256 hash of the input data
   static List<int> sha256DoubleHash(List<int> data) {
-    List<int> tmp = sha256Hash(data);
+    final List<int> tmp = sha256Hash(data);
     return sha256Hash(tmp);
   }
 
@@ -41,7 +41,7 @@ class QuickCrypto {
 
   /// Calculate the RIPEMD-160 hash of the SHA-256 hash of the input data
   static List<int> hash160(List<int> data) {
-    List<int> tmp = SHA256.hash(data);
+    final List<int> tmp = SHA256.hash(data);
     return RIPEMD160.hash(tmp);
   }
 

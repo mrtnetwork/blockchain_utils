@@ -31,7 +31,7 @@ class AtomAddrDecoder implements BlockchainAddressDecoder {
   List<int> decodeAddr(String addr, [Map<String, dynamic> kwargs = const {}]) {
     final String hrp =
         AddrKeyValidator.validateAddressArgs<String>(kwargs, "hrp");
-    List<int> addrDecBytes = Bech32Decoder.decode(hrp, addr);
+    final List<int> addrDecBytes = Bech32Decoder.decode(hrp, addr);
 
     AddrDecUtils.validateBytesLength(
         addrDecBytes, QuickCrypto.hash160DigestSize);
@@ -105,7 +105,7 @@ class AtomNist256P1AddrDecoder implements BlockchainAddressDecoder {
   List<int> decodeAddr(String addr, [Map<String, dynamic> kwargs = const {}]) {
     final String hrp =
         AddrKeyValidator.validateAddressArgs<String>(kwargs, "hrp");
-    List<int> addrDecBytes = Bech32Decoder.decode(hrp, addr);
+    final List<int> addrDecBytes = Bech32Decoder.decode(hrp, addr);
 
     AddrDecUtils.validateBytesLength(
         addrDecBytes, QuickCrypto.sha256DigestSize);

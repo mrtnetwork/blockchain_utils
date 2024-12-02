@@ -39,6 +39,6 @@ class AlgorandMnemonicEncoder extends MnemonicEncoderBase {
 
   /// find words at index
   List<String> _indexesToWords(List<int> indexes) {
-    return [for (var idx in indexes) wordsList.getWordAtIdx(idx)];
+    return [for (final idx in indexes) wordsList.getWordAtIdx(idx)];
   }
 }

@@ -30,8 +30,9 @@ class BytesUtils {
   /// Parses a binary string and converts it back to a list of bytes. An optional
   /// parameter allows padding the result with zeros to achieve a specific byte length.
   static List<int> fromBinary(String data, {int zeroPadByteLen = 0}) {
-    BigInt intValue = BigInt.parse(data, radix: 2);
-    String hexValue = intValue.toRadixString(16).padLeft(zeroPadByteLen, '0');
+    final BigInt intValue = BigInt.parse(data, radix: 2);
+    final String hexValue =
+        intValue.toRadixString(16).padLeft(zeroPadByteLen, '0');
     return fromHexString(hexValue);
   }
 

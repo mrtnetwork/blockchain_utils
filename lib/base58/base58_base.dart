@@ -69,7 +69,7 @@ class Base58Encoder {
 
     /// Count leading zero bytes in the dataBytes for leading zero characters in the encoded string.
     int zero = 0;
-    for (int byte in dataBytes) {
+    for (final int byte in dataBytes) {
       if (byte == 0) {
         zero++;
       } else {

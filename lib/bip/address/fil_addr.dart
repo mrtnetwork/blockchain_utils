@@ -44,7 +44,7 @@ class _FilAddrUtils {
   ///   A List<int> representing the computed checksum.
   static List<int> computeChecksum(
       List<int> pubKeyHash, FillAddrTypes addrType) {
-    List<int> addrTypeByte = List<int>.from([addrType.value]);
+    final List<int> addrTypeByte = List<int>.from([addrType.value]);
     return QuickCrypto.blake2b32Hash(
         List<int>.from([...addrTypeByte, ...pubKeyHash]));
   }
@@ -66,14 +66,15 @@ class _FilAddrUtils {
   ///   - ArgumentException if the address type doesn't match the expected type.
   ///   - ArgumentException if the address format, length, or checksum is invalid.
   static List<int> decodeAddr(String addr, FillAddrTypes addrType) {
-    String addrNoPrefix = AddrDecUtils.validateAndRemovePrefix(
+    final String addrNoPrefix = AddrDecUtils.validateAndRemovePrefix(
         addr, CoinsConf.filecoin.params.addrPrefix!);
-    int addrTypeGot = addrNoPrefix[0].codeUnits.first - "0".codeUnits.first;
+    final int addrTypeGot =
+        addrNoPrefix[0].codeUnits.first - "0".codeUnits.first;
     if (addrType.value != addrTypeGot) {
       throw AddressConverterException(
           "Invalid address type (expected ${addrType.value}, got $addrTypeGot)");
     }
-    List<int> addrDecBytes = Base32Decoder.decode(
+    final List<int> addrDecBytes = Base32Decoder.decode(
         addrNoPrefix.substring(1), FilAddrConst.base32Alphabet);
     AddrDecUtils.validateBytesLength(addrDecBytes,
         QuickCrypto.blake2b160DigestSize + QuickCrypto.blake2b32DigestSize);
@@ -100,12 +101,12 @@ class _FilAddrUtils {
   /// Returns:
   ///   A string representing the encoded Filecoin address.
   static String encodeKeyBytes(List<int> pubKeyBytes, FillAddrTypes addrType) {
-    String addrTypeStr = String.fromCharCode(addrType.value + 48);
-    List<int> pubKeyHashBytes = QuickCrypto.blake2b160Hash(pubKeyBytes);
-    List<int> checksumBytes = computeChecksum(pubKeyHashBytes, addrType);
+    final String addrTypeStr = String.fromCharCode(addrType.value + 48);
+    final List<int> pubKeyHashBytes = QuickCrypto.blake2b160Hash(pubKeyBytes);
+    final List<int> checksumBytes = computeChecksum(pubKeyHashBytes, addrType);
     final bytesWithChecksum = List<int>.from(pubKeyHashBytes + checksumBytes);
 
-    String b32Enc = Base32Encoder.encodeNoPaddingBytes(
+    final String b32Enc = Base32Encoder.encodeNoPaddingBytes(
         bytesWithChecksum, FilAddrConst.base32Alphabet);
     return CoinsConf.filecoin.params.addrPrefix! + addrTypeStr + b32Enc;
   }

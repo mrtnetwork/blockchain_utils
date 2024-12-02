@@ -58,7 +58,7 @@ class MerlinTranscript {
   void additionalData(List<int> label, List<int> message) {
     final size = List.filled(4, 0);
     writeUint32LE(message.length, size);
-    List<int> labelSize = [...label, ...size];
+    final List<int> labelSize = [...label, ...size];
     strobe.additionalData(true, labelSize);
     strobe.additionalData(false, message);
   }
@@ -89,10 +89,10 @@ class MerlinTranscript {
   List<int> toBytes(List<int> label, int outLen) {
     final len = List.filled(4, 0);
     writeUint32LE(outLen, len);
-    List<int> labelSize = [...label, ...len];
+    final List<int> labelSize = [...label, ...len];
     strobe.additionalData(true, labelSize);
 
-    List<int> outBytes = strobe.pseudoRandomData(outLen);
+    final List<int> outBytes = strobe.pseudoRandomData(outLen);
     return BytesUtils.toBytes(outBytes);
   }
 

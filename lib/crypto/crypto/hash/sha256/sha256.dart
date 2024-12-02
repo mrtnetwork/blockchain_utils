@@ -299,22 +299,22 @@ class SHA256 implements SerializableHash<SHA256State> {
       int g = v[6];
       int h = v[7];
       for (int i = 0; i < 16; i++) {
-        int j = pos + i * 4;
+        final int j = pos + i * 4;
         w[i] = readUint32BE(p, j);
       }
       for (int i = 16; i < 64; i++) {
         int u = w[i - 2];
-        int t1 = rotr32(u, 17) ^ rotr32(u, 19) ^ (u >> 10);
+        final int t1 = rotr32(u, 17) ^ rotr32(u, 19) ^ (u >> 10);
         u = w[i - 15];
-        int t2 = rotr32(u, 7) ^ rotr32(u, 18) ^ (u >> 3);
+        final int t2 = rotr32(u, 7) ^ rotr32(u, 18) ^ (u >> 3);
         w[i] = add32(add32(add32(t1, w[i - 7]), t2), w[i - 16]);
       }
       for (int i = 0; i < 64; i++) {
-        int t1 = add32(
+        final int t1 = add32(
             add32(rotr32(e, 6) ^ rotr32(e, 11) ^ rotr32(e, 25),
                 (e & f) ^ (~e & g)),
             add32(add32(h, _k[i]), w[i]));
-        int t2 = add32((rotr32(a, 2) ^ rotr32(a, 13) ^ rotr32(a, 22)),
+        final int t2 = add32((rotr32(a, 2) ^ rotr32(a, 13) ^ rotr32(a, 22)),
             (a & b) ^ (a & c) ^ (b & c));
         h = g;
         g = f;

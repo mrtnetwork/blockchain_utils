@@ -79,12 +79,12 @@ class MoneroMnemonicUtils {
   static String computeChecksum(
       List<String> mnemonic, MnemonicLanguages language) {
     final uniqueLen = MoneroMnemonicConst.languageUniquePrefixLen[language]!;
-    String prefixes = mnemonic.map((word) {
+    final String prefixes = mnemonic.map((word) {
       final len = word.length >= uniqueLen ? uniqueLen : word.length;
       return word.substring(0, len);
     }).join();
 
-    int index =
+    final int index =
         Crc32.quickIntDigest(StringUtils.encode(prefixes)) % mnemonic.length;
     return mnemonic[index];
   }
