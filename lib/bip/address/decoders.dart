@@ -96,7 +96,8 @@ export 'trx_addr.dart' show TrxAddrDecoder;
 export 'xlm_addr.dart' show XlmAddrDecoder;
 
 /// Export statements for Monero (XMR) address decoders.
-export 'xmr_addr.dart' show XmrAddrDecoder, XmrIntegratedAddrDecoder;
+export 'xmr_addr.dart'
+    show XmrAddrDecoder, XmrIntegratedAddrDecoder, XmrAddressType;
 
 /// Export statement for Ripple (XRP) address decoder.
 export 'xrp_addr.dart' show XrpAddrDecoder, XrpXAddrDecoder, XRPAddressUtils;

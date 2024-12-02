@@ -1,3 +1,7 @@
+## 3.6.0
+ - Enhanced CBOR decoding performance for improved efficiency.
+ - Important Notice: This is the final version supporting Dart v2. The next release will require Dart v3.3 or higher.
+
 ## 3.5.0
 
 - Implemented Monero cryptographic operations.

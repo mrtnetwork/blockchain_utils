@@ -2,8 +2,8 @@ import 'package:blockchain_utils/bip/address/encoder.dart';
 import 'package:blockchain_utils/bip/bip/bip32/bip32_key_net_ver.dart';
 import 'package:blockchain_utils/bip/bip/conf/config/bip_coin_conf.dart';
 import 'package:blockchain_utils/bip/bip/conf/core/coin_conf.dart';
+import 'package:blockchain_utils/bip/coin_conf/models/coins_name.dart';
 import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
-import 'package:blockchain_utils/bip/coin_conf/coins_name.dart';
 
 /// A class representing the configuration for Bitcoin Cash (BCH) based on the BIP framework.
 class BipBitcoinCashConf extends BipCoinConfig {

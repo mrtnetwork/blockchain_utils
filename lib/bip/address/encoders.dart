@@ -101,7 +101,8 @@ export 'trx_addr.dart' show TrxAddrEncoder;
 export 'xlm_addr.dart' show XlmAddrEncoder, XlmAddrTypes;
 
 /// Export statements for Monero (XMR) address encoders.
-export 'xmr_addr.dart' show XmrAddrEncoder, XmrIntegratedAddrEncoder;
+export 'xmr_addr.dart'
+    show XmrAddrEncoder, XmrIntegratedAddrEncoder, XmrAddressType;
 
 /// Export statement for Ripple (XRP) address encoder.
 export 'xrp_addr.dart' show XrpAddrEncoder, XrpXAddrEncoder, XRPAddressUtils;

@@ -2,7 +2,7 @@ import 'package:blockchain_utils/bech32/bech32_base.dart';
 import 'package:blockchain_utils/bip/address/addr_key_validator.dart';
 import 'package:blockchain_utils/bip/address/decoder.dart';
 import 'package:blockchain_utils/bip/address/encoder.dart';
-import 'package:blockchain_utils/bip/coin_conf/coins_conf.dart';
+import 'package:blockchain_utils/bip/coin_conf/constant/coins_conf.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
 
 /// Constants related to Zilliqa (ZIL) blockchain addresses.

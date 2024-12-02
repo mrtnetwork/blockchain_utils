@@ -1,7 +1,6 @@
 import 'package:blockchain_utils/bip/bip/bip32/bip32_key_net_ver.dart';
 import 'package:blockchain_utils/bip/bip/conf/core/coin_conf.dart';
-import 'package:blockchain_utils/bip/coin_conf/coin_conf.dart';
-import 'package:blockchain_utils/bip/coin_conf/coins_name.dart';
+import 'package:blockchain_utils/bip/coin_conf/config.dart';
 import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
 
 /// A class representing the configuration for a Substrate-based cryptocurrency.
