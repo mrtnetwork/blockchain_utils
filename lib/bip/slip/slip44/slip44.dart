@@ -103,5 +103,5 @@ class Slip44 {
   static const int celo = 52752;
   static const int piNetwork = 314159;
   static const int pepecoin = 3434;
-  static const int omniXep = 597;
+  static const int electraProtocol = 597;
 }

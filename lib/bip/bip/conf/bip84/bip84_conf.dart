@@ -1,4 +1,4 @@
-import 'package:blockchain_utils/bip/address/p2wpkh_addr.dart';
+import 'package:blockchain_utils/bip/address/encoders.dart';
 import 'package:blockchain_utils/bip/bip/bip32/bip32_key_net_ver.dart';
 import 'package:blockchain_utils/bip/bip/conf/config/bip_coin_conf.dart';
 import 'package:blockchain_utils/bip/bip/conf/const/bip_conf_const.dart';
@@ -71,5 +71,41 @@ class Bip84Conf {
     type: EllipticCurveTypes.secp256k1,
     addrParams: {"hrp": CoinsConf.litecoinTestNet.params.p2wpkhHrp!},
     addressEncoder: ([dynamic kwargs]) => P2WPKHAddrEncoder(),
+  );
+
+  /// Configuration for Electra Protocol main net
+  static final BipCoinConfig electraProtocolMainNet = BipCoinConfig(
+    coinNames: CoinsConf.electraProtocolMainNet.coinName,
+    coinIdx: Slip44.electraProtocol,
+    isTestnet: false,
+    defPath: derPathNonHardenedFull,
+    keyNetVer: Bip32KeyNetVersions(
+      List<int>.from([0x04, 0x88, 0xb2, 0x1e]),
+      List<int>.from([0x04, 0x88, 0xad, 0xe4]),
+    ),
+    wifNetVer: CoinsConf.electraProtocolMainNet.params.wifNetVer,
+    type: EllipticCurveTypes.secp256k1,
+    addressEncoder: ([dynamic kwargs]) => P2WPKHAddrEncoder(),
+    addrParams: {
+      "hrp": CoinsConf.electraProtocolMainNet.params.p2wpkhHrp!,
+    },
+  );
+
+  /// Configuration for Electra Protocol test net
+  static final BipCoinConfig electraProtocolTestNet = BipCoinConfig(
+    coinNames: CoinsConf.electraProtocolTestNet.coinName,
+    coinIdx: Slip44.electraProtocol,
+    isTestnet: true,
+    defPath: derPathNonHardenedFull,
+    keyNetVer: Bip32KeyNetVersions(
+      List<int>.from([0x04, 0x35, 0x87, 0xcf]),
+      List<int>.from([0x04, 0x35, 0x83, 0x94]),
+    ),
+    wifNetVer: CoinsConf.electraProtocolTestNet.params.wifNetVer,
+    type: EllipticCurveTypes.secp256k1,
+    addressEncoder: ([dynamic kwargs]) => P2WPKHAddrEncoder(),
+    addrParams: {
+      "hrp": CoinsConf.electraProtocolMainNet.params.p2wpkhHrp!,
+    },
   );
 }
