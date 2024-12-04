@@ -1,4 +1,4 @@
-import 'package:blockchain_utils/bip/coin_conf/coins_conf.dart';
+import 'package:blockchain_utils/bip/coin_conf/constants/coins_conf.dart';
 import 'package:blockchain_utils/blockchain_utils.dart';
 import 'package:test/test.dart';
 

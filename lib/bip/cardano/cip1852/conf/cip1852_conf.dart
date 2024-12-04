@@ -3,7 +3,7 @@ import 'package:blockchain_utils/bip/address/ada/network.dart';
 import 'package:blockchain_utils/bip/bip/bip32/bip32_const.dart';
 import 'package:blockchain_utils/bip/bip/conf/config/bip_coin_conf.dart';
 import 'package:blockchain_utils/bip/bip/conf/const/bip_conf_const.dart';
-import 'package:blockchain_utils/bip/coin_conf/coins_conf.dart';
+import 'package:blockchain_utils/bip/coin_conf/constants/coins_conf.dart';
 import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
 import 'package:blockchain_utils/bip/slip/slip44/slip44.dart';
 
