@@ -411,20 +411,39 @@ class Bip49Conf {
         "net_ver": CoinsConf.pepeTestnet.params.p2shNetVer!,
       });
 
-  /// Configuration for Omni XEP main net
-  static final BipCoinConfig omniXepMainNet = BipCoinConfig(
-      coinNames: CoinsConf.omniXepMainNet.coinName,
-      coinIdx: Slip44.omniXep,
-      isTestnet: false,
-      defPath: derPathNonHardenedFull,
-      keyNetVer: Bip32KeyNetVersions(
-        List<int>.from([0x04, 0x88, 0xb2, 0x1e]),
-        List<int>.from([0x04, 0x88, 0xad, 0xe4]),
-      ),
-      wifNetVer: CoinsConf.omniXepMainNet.params.wifNetVer,
-      type: EllipticCurveTypes.secp256k1,
-      addressEncoder: ([dynamic kwargs]) => P2SHAddrEncoder(),
-      addrParams: {
-        "net_ver": CoinsConf.omniXepMainNet.params.p2shNetVer!,
-      });
+  /// Configuration for Electra Protocol main net
+  static final BipCoinConfig electraProtocolMainNet = BipCoinConfig(
+    coinNames: CoinsConf.electraProtocolMainNet.coinName,
+    coinIdx: Slip44.electraProtocol,
+    isTestnet: false,
+    defPath: derPathNonHardenedFull,
+    keyNetVer: Bip32KeyNetVersions(
+      List<int>.from([0x04, 0x88, 0xb2, 0x1e]),
+      List<int>.from([0x04, 0x88, 0xad, 0xe4]),
+    ),
+    wifNetVer: CoinsConf.electraProtocolMainNet.params.wifNetVer,
+    type: EllipticCurveTypes.secp256k1,
+    addressEncoder: ([dynamic kwargs]) => P2SHAddrEncoder(),
+    addrParams: {
+      "net_ver": CoinsConf.electraProtocolMainNet.params.p2shNetVer!,
+    },
+  );
+
+  /// Configuration for Electra Protocol test net
+  static final BipCoinConfig electraProtocolTestNet = BipCoinConfig(
+    coinNames: CoinsConf.electraProtocolTestNet.coinName,
+    coinIdx: Slip44.testnet,
+    isTestnet: true,
+    defPath: derPathNonHardenedFull,
+    keyNetVer: Bip32KeyNetVersions(
+      List<int>.from([0x04, 0x35, 0x87, 0xcf]),
+      List<int>.from([0x04, 0x35, 0x83, 0x94]),
+    ),
+    wifNetVer: CoinsConf.electraProtocolTestNet.params.wifNetVer,
+    type: EllipticCurveTypes.secp256k1,
+    addressEncoder: ([dynamic kwargs]) => P2SHAddrEncoder(),
+    addrParams: {
+      "net_ver": CoinsConf.electraProtocolTestNet.params.p2shNetVer!,
+    },
+  );
 }

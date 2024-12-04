@@ -314,6 +314,12 @@ class Bip44Coins extends BipCoins {
   /// Zilliqa
   static const zilliqa = Bip44Coins._('zilliqa');
 
+  /// Ton mainnet
+  static const tonMainnet = Bip44Coins._('tonMainnet');
+
+  /// Electra Protocol
+  static const electraProtocol = Bip44Coins._('electraProtocol');
+
   // Test nets
 
   /// Bitcoin Cash Testnet
@@ -352,8 +358,8 @@ class Bip44Coins extends BipCoins {
   /// Ton Testnet
   static const tonTestnet = Bip44Coins._('tonTestnet');
 
-  /// Ton Testnet
-  static const tonMainnet = Bip44Coins._('tonMainnet');
+  /// Electra Protocol Testnet
+  static const electraProtocolTestnet = Bip44Coins._('electraProtocolTestnet');
 
   // Fields and methods
 
@@ -478,6 +484,8 @@ class Bip44Coins extends BipCoins {
     Bip44Coins.zilliqa: Bip44Conf.zilliqa,
     Bip44Coins.tonTestnet: Bip44Conf.tonTestnet,
     Bip44Coins.tonMainnet: Bip44Conf.tonMainnet,
+    Bip44Coins.electraProtocol: Bip44Conf.electraProtocolMainNet,
+    Bip44Coins.electraProtocolTestnet: Bip44Conf.electraProtocolTestNet,
   };
   @override
   BipProposal get proposal => BipProposal.bip44;

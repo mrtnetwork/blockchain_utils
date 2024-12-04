@@ -62,15 +62,20 @@ class Bip84Coins extends BipCoins {
   // Main nets
   static const Bip84Coins bitcoin = Bip84Coins._('bitcoin');
   static const Bip84Coins litecoin = Bip84Coins._('litecoin');
+  static const Bip84Coins electraProtocol = Bip84Coins._('electraProtocol');
 
   // Test nets
   static const Bip84Coins bitcoinTestnet = Bip84Coins._('bitcoinTestnet');
   static const Bip84Coins litecoinTestnet = Bip84Coins._('litecoinTestnet');
+  static const Bip84Coins electraProtocolTestnet =
+      Bip84Coins._('electraProtocolTestnet');
   static const List<Bip84Coins> values = [
     bitcoin,
     litecoin,
+    electraProtocol,
     bitcoinTestnet,
-    litecoinTestnet
+    litecoinTestnet,
+    electraProtocolTestnet
   ];
   final String name;
 
@@ -100,6 +105,8 @@ class Bip84Coins extends BipCoins {
     Bip84Coins.bitcoinTestnet: Bip84Conf.bitcoinTestNet,
     Bip84Coins.litecoin: Bip84Conf.litecoinMainNet,
     Bip84Coins.litecoinTestnet: Bip84Conf.litecoinTestNet,
+    Bip84Coins.electraProtocol: Bip84Conf.electraProtocolMainNet,
+    Bip84Coins.electraProtocolTestnet: Bip84Conf.electraProtocolTestNet,
   };
 
   @override
