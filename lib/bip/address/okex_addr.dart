@@ -3,7 +3,7 @@ import 'package:blockchain_utils/bech32/bech32_ex.dart';
 import 'package:blockchain_utils/bip/address/eth_addr.dart';
 import 'package:blockchain_utils/bip/address/decoder.dart';
 import 'package:blockchain_utils/bip/address/encoder.dart';
-import 'package:blockchain_utils/bip/coin_conf/constants/coins_conf.dart';
+import 'package:blockchain_utils/bip/coin_conf/constant/coins_conf.dart';
 import 'package:blockchain_utils/utils/utils.dart';
 import 'exception/exception.dart';
 

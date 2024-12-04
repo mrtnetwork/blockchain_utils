@@ -1,4 +1,4 @@
-import 'package:blockchain_utils/bip/coin_conf/constants/coins_conf.dart';
+import 'package:blockchain_utils/bip/coin_conf/constant/coins_conf.dart';
 import 'package:blockchain_utils/bip/monero/conf/monero_coin_conf.dart';
 
 /// A configuration class for Monero that defines the key network versions and

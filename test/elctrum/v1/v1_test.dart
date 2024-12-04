@@ -1,5 +1,5 @@
 import 'package:blockchain_utils/bip/address/p2pkh_addr.dart';
-import 'package:blockchain_utils/bip/coin_conf/constants/coins_conf.dart';
+import 'package:blockchain_utils/bip/coin_conf/constant/coins_conf.dart';
 import 'package:blockchain_utils/bip/electrum/electrum_v1.dart';
 import 'package:blockchain_utils/bip/wif/wif.dart';
 import 'package:blockchain_utils/utils/utils.dart';

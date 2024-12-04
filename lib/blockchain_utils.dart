@@ -68,6 +68,8 @@ export 'bip/ecc/bip_ecc.dart';
 /// Exports utility functions related to TON mnemonic.
 export 'bip/ton/ton.dart';
 
+export 'bip/coin_conf/conf.dart';
+
 /// Exports utility functions related to mnemonic.
 export 'bip/mnemonic/mnemonic.dart';
 

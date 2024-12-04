@@ -57,7 +57,7 @@ import 'package:blockchain_utils/bip/address/p2wpkh_addr.dart';
 import 'package:blockchain_utils/bip/bip/bip32/base/bip32_base.dart';
 import 'package:blockchain_utils/bip/bip/bip32/bip32_keys.dart';
 import 'package:blockchain_utils/bip/bip/bip32/slip10/bip32_slip10_secp256k1.dart';
-import 'package:blockchain_utils/bip/coin_conf/constants/coins_conf.dart';
+import 'package:blockchain_utils/bip/coin_conf/constant/coins_conf.dart';
 
 /// An abstract base class for Electrum V2 implementations
 abstract class ElectrumV2Base {

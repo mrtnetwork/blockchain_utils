@@ -4,7 +4,7 @@ import 'package:blockchain_utils/bip/bip/conf/config/bip_bitcoin_cash_conf.dart'
 import 'package:blockchain_utils/bip/bip/conf/config/bip_coin_conf.dart';
 import 'package:blockchain_utils/bip/bip/conf/config/bip_litecoin_conf.dart';
 import 'package:blockchain_utils/bip/bip/conf/const/bip_conf_const.dart';
-import 'package:blockchain_utils/bip/coin_conf/constants/coins_conf.dart';
+import 'package:blockchain_utils/bip/coin_conf/constant/coins_conf.dart';
 import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
 import 'package:blockchain_utils/bip/slip/slip44/slip44.dart';
 

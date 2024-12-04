@@ -1,5 +1,5 @@
 import 'package:blockchain_utils/bip/address/substrate_addr.dart';
-import 'package:blockchain_utils/bip/coin_conf/constants/coins_conf.dart';
+import 'package:blockchain_utils/bip/coin_conf/constant/coins_conf.dart';
 import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
 import 'substrate_coin_conf.dart';
 

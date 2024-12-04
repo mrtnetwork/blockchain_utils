@@ -53,7 +53,7 @@
 */
 
 import 'package:blockchain_utils/bip/address/p2pkh_addr.dart';
-import 'package:blockchain_utils/bip/coin_conf/constants/coins_conf.dart';
+import 'package:blockchain_utils/bip/coin_conf/constant/coins_conf.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
 import 'package:blockchain_utils/utils/utils.dart';
 
