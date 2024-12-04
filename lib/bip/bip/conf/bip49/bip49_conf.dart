@@ -432,7 +432,7 @@ class Bip49Conf {
   /// Configuration for Electra Protocol test net
   static final BipCoinConfig electraProtocolTestNet = BipCoinConfig(
     coinNames: CoinsConf.electraProtocolTestNet.coinName,
-    coinIdx: Slip44.electraProtocol,
+    coinIdx: Slip44.testnet,
     isTestnet: true,
     defPath: derPathNonHardenedFull,
     keyNetVer: Bip32KeyNetVersions(

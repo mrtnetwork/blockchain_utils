@@ -1442,7 +1442,7 @@ class Bip44Conf {
   /// Configuration for Electra Protocol test net
   static final BipCoinConfig electraProtocolTestNet = BipCoinConfig(
     coinNames: CoinsConf.electraProtocolTestNet.coinName,
-    coinIdx: Slip44.electraProtocol,
+    coinIdx: Slip44.testnet,
     isTestnet: true,
     defPath: derPathNonHardenedFull,
     keyNetVer: Bip32KeyNetVersions(
@@ -1453,7 +1453,7 @@ class Bip44Conf {
     type: EllipticCurveTypes.secp256k1,
     addressEncoder: ([dynamic kwargs]) => P2PKHAddrEncoder(),
     addrParams: {
-      "net_ver": CoinsConf.electraProtocolTestNet.params.p2pkhNetVer!,
+      "net_ver": CoinsConf.electraProtocolTestNet.params.p2pkhNetVer!
     },
   );
 }
