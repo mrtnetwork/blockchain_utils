@@ -26,7 +26,7 @@
 import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/curve/curve.dart';
 import 'base.dart';
-import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 
 /// A class representing a point on an Edwards curve, extending the abstract [AbstractPoint] class.
 class EDPoint extends AbstractPoint {
@@ -148,10 +148,10 @@ class EDPoint extends AbstractPoint {
     BigInt newOrder = order!;
 
     /// Initialize a list to store computed values.
-    List<List<BigInt>> compute = [];
+    final List<List<BigInt>> compute = [];
     BigInt i = BigInt.one;
     newOrder *= BigInt.from(2);
-    List<BigInt> coordsList = getCoords();
+    final List<BigInt> coordsList = getCoords();
 
     /// Create a temporary point for doubling.
     EDPoint doubler = EDPoint._(curve, getCoords(), order: newOrder);
@@ -188,8 +188,8 @@ class EDPoint extends AbstractPoint {
   /// - The x-coordinate of the point.
   @override
   BigInt get x {
-    BigInt x1 = _coords[0];
-    BigInt z1 = _coords[2];
+    final BigInt x1 = _coords[0];
+    final BigInt z1 = _coords[2];
 
     /// If the z-coordinate is 1, return x1 directly.
     if (z1 == BigInt.one) {
@@ -197,10 +197,10 @@ class EDPoint extends AbstractPoint {
     }
 
     /// Retrieve the prime value (p) of the curve.
-    BigInt p = curve.p;
+    final BigInt p = curve.p;
 
     /// Compute the inverse of z1 modulo p.
-    BigInt zInv = BigintUtils.inverseMod(z1, p);
+    final BigInt zInv = BigintUtils.inverseMod(z1, p);
 
     /// Calculate and return the x-coordinate modulo p.
     return (x1 * zInv) % p;
@@ -217,8 +217,8 @@ class EDPoint extends AbstractPoint {
   BigInt get y {
     /// Create a new list to avoid modifying the original coordinates.
 
-    BigInt y1 = _coords[1];
-    BigInt z1 = _coords[2];
+    final BigInt y1 = _coords[1];
+    final BigInt z1 = _coords[2];
 
     /// If the z-coordinate is 1, return y1 directly.
     if (z1 == BigInt.one) {
@@ -226,10 +226,10 @@ class EDPoint extends AbstractPoint {
     }
 
     /// Retrieve the prime value (p) of the curve.
-    BigInt p = curve.p;
+    final BigInt p = curve.p;
 
     /// Compute the inverse of z1 modulo p.
-    BigInt zInv = BigintUtils.inverseMod(z1, p);
+    final BigInt zInv = BigintUtils.inverseMod(z1, p);
 
     /// Calculate and return the y-coordinate modulo p.
     return (y1 * zInv) % p;
@@ -243,23 +243,23 @@ class EDPoint extends AbstractPoint {
   /// Returns:
   /// - A reference to the scaled Edwards curve point.
   EDPoint scale() {
-    BigInt z1 = _coords[2];
+    final BigInt z1 = _coords[2];
 
     /// If the z-coordinate is already 1, the point is already in projective form, and no scaling is required.
     if (z1 == BigInt.one) {
       return this;
     }
-    BigInt x1 = _coords[0];
-    BigInt y1 = _coords[1];
+    final BigInt x1 = _coords[0];
+    final BigInt y1 = _coords[1];
 
     /// Retrieve the prime value (p) of the curve.
-    BigInt p = curve.p;
+    final BigInt p = curve.p;
 
     /// Compute the inverse of z1 modulo p.
-    BigInt zInv = BigintUtils.inverseMod(z1, p);
-    BigInt x = (x1 * zInv) % p;
-    BigInt y = (y1 * zInv) % p;
-    BigInt t = (x * y) % p;
+    final BigInt zInv = BigintUtils.inverseMod(z1, p);
+    final BigInt x = (x1 * zInv) % p;
+    final BigInt y = (y1 * zInv) % p;
+    final BigInt t = (x * y) % p;
 
     /// Update the coordinates to their scaled values and set z-coordinate to 1 (projective form).
     _coords[0] = x;
@@ -284,18 +284,18 @@ class EDPoint extends AbstractPoint {
     if (other is EDPoint) {
       /// Create new coordinate lists to avoid modifying the original coordinates.
 
-      List<BigInt> otherCoords = other.getCoords();
+      final List<BigInt> otherCoords = other.getCoords();
 
       /// Extract coordinates of the current point.
-      BigInt x1 = _coords[0];
-      BigInt y1 = _coords[1];
-      BigInt z1 = _coords[2];
-      BigInt t1 = _coords[3];
+      final BigInt x1 = _coords[0];
+      final BigInt y1 = _coords[1];
+      final BigInt z1 = _coords[2];
+      final BigInt t1 = _coords[3];
 
       ///  Extract coordinates of the other point.
-      BigInt x2 = otherCoords[0];
-      BigInt y2 = otherCoords[1];
-      BigInt z2 = otherCoords[2];
+      final BigInt x2 = otherCoords[0];
+      final BigInt y2 = otherCoords[1];
+      final BigInt z2 = otherCoords[2];
 
       /// If the other point is infinity, check specific conditions.
       if (other.isInfinity) {
@@ -308,13 +308,13 @@ class EDPoint extends AbstractPoint {
       }
 
       /// Retrieve the prime value (p) of the curve.
-      BigInt p = curve.p;
+      final BigInt p = curve.p;
 
       /// Calculate the normalized coordinates of both points.
-      BigInt xn1 = (x1 * z2) % p;
-      BigInt xn2 = (x2 * z1) % p;
-      BigInt yn1 = (y1 * z2) % p;
-      BigInt yn2 = (y2 * z1) % p;
+      final BigInt xn1 = (x1 * z2) % p;
+      final BigInt xn2 = (x2 * z1) % p;
+      final BigInt yn1 = (y1 * z2) % p;
+      final BigInt yn2 = (y2 * z1) % p;
 
       /// Check if the normalized coordinates are equal.
       return xn1 == xn2 && yn1 == yn2;
@@ -354,14 +354,14 @@ class EDPoint extends AbstractPoint {
     BigInt a,
   ) {
     /// Compute intermediate values for addition.
-    BigInt A = (x1 * x2) % p;
-    BigInt b = (y1 * y2) % p;
-    BigInt c = (z1 * t2) % p;
-    BigInt d = (t1 * z2) % p;
-    BigInt e = d + c;
-    BigInt f = (((x1 - y1) * (x2 + y2)) + b - A) % p;
-    BigInt g = b + (a * A);
-    BigInt h = d - c;
+    final BigInt A = (x1 * x2) % p;
+    final BigInt b = (y1 * y2) % p;
+    final BigInt c = (z1 * t2) % p;
+    final BigInt d = (t1 * z2) % p;
+    final BigInt e = d + c;
+    final BigInt f = (((x1 - y1) * (x2 + y2)) + b - A) % p;
+    final BigInt g = b + (a * A);
+    final BigInt h = d - c;
 
     /// Check if the value of 'h' is zero; if so, perform a doubling operation instead.
     if (h == BigInt.zero) {
@@ -369,10 +369,10 @@ class EDPoint extends AbstractPoint {
     }
 
     /// Calculate the coordinates of the resulting point after addition.
-    BigInt x3 = (e * f) % p;
-    BigInt y3 = (g * h) % p;
-    BigInt t3 = (e * h) % p;
-    BigInt z3 = (f * g) % p;
+    final BigInt x3 = (e * f) % p;
+    final BigInt y3 = (g * h) % p;
+    final BigInt t3 = (e * h) % p;
+    final BigInt z3 = (f * g) % p;
 
     /// Return the resulting coordinates as a list.
     return [x3, y3, z3, t3];
@@ -400,20 +400,20 @@ class EDPoint extends AbstractPoint {
     if (other.isInfinity) {
       return this;
     }
-    BigInt p = curve.p;
-    BigInt a = curve.a;
+    final BigInt p = curve.p;
+    final BigInt a = curve.a;
 
-    BigInt x1 = _coords[0];
-    BigInt y1 = _coords[1];
-    BigInt z1 = _coords[2];
-    BigInt t1 = _coords[3];
+    final BigInt x1 = _coords[0];
+    final BigInt y1 = _coords[1];
+    final BigInt z1 = _coords[2];
+    final BigInt t1 = _coords[3];
 
-    BigInt x2 = other._coords[0];
-    BigInt y2 = other._coords[1];
-    BigInt z2 = other._coords[2];
-    BigInt t2 = other._coords[3];
+    final BigInt x2 = other._coords[0];
+    final BigInt y2 = other._coords[1];
+    final BigInt z2 = other._coords[2];
+    final BigInt t2 = other._coords[3];
 
-    List<BigInt> result = _add(x1, y1, z1, t1, x2, y2, z2, t2, p, a);
+    final List<BigInt> result = _add(x1, y1, z1, t1, x2, y2, z2, t2, p, a);
     if (result[0] == BigInt.zero || result[3] == BigInt.zero) {
       return EDPoint.infinity(curve: curve);
     }
@@ -434,10 +434,10 @@ class EDPoint extends AbstractPoint {
   /// Returns:
   /// - A new Edwards curve point representing the negation of this point.
   EDPoint operator -() {
-    BigInt x1 = _coords[0];
-    BigInt y1 = _coords[1];
-    BigInt t1 = _coords[3];
-    BigInt p = curve.p;
+    final BigInt x1 = _coords[0];
+    final BigInt y1 = _coords[1];
+    final BigInt t1 = _coords[3];
+    final BigInt p = curve.p;
 
     return EDPoint._(curve, [x1, (p - y1) % p, _coords[2], (p - t1) % p],
         order: order);
@@ -445,18 +445,18 @@ class EDPoint extends AbstractPoint {
 
   List<BigInt> _double(
       BigInt x1, BigInt y1, BigInt z1, BigInt t1, BigInt p, BigInt a) {
-    BigInt A = (x1 * x1) % p;
-    BigInt B = (y1 * y1) % p;
-    BigInt C = (z1 * z1 * BigInt.two) % p;
-    BigInt D = (a * A) % p;
-    BigInt E = (((x1 + y1) * (x1 + y1)) - A - B) % p;
-    BigInt G = D + B;
-    BigInt F = G - C;
-    BigInt H = D - B;
-    BigInt x3 = (E * F) % p;
-    BigInt y3 = (G * H) % p;
-    BigInt t3 = (E * H) % p;
-    BigInt z3 = (F * G) % p;
+    final BigInt A = (x1 * x1) % p;
+    final BigInt B = (y1 * y1) % p;
+    final BigInt C = (z1 * z1 * BigInt.two) % p;
+    final BigInt D = (a * A) % p;
+    final BigInt E = (((x1 + y1) * (x1 + y1)) - A - B) % p;
+    final BigInt G = D + B;
+    final BigInt F = G - C;
+    final BigInt H = D - B;
+    final BigInt x3 = (E * F) % p;
+    final BigInt y3 = (G * H) % p;
+    final BigInt t3 = (E * H) % p;
+    final BigInt z3 = (F * G) % p;
 
     return [x3, y3, z3, t3];
   }
@@ -478,10 +478,10 @@ class EDPoint extends AbstractPoint {
   /// - A list of BigInt values representing the new coordinates [x3, y3, z3, t3] after doubling the point.
   @override
   EDPoint doublePoint() {
-    BigInt x1 = _coords[0];
-    BigInt t1 = _coords[3];
-    BigInt p = curve.p;
-    BigInt a = curve.a;
+    final BigInt x1 = _coords[0];
+    final BigInt t1 = _coords[3];
+    final BigInt p = curve.p;
+    final BigInt a = curve.a;
 
     if (x1 == BigInt.zero || t1 == BigInt.zero) {
       return EDPoint.infinity(curve: curve);
@@ -555,10 +555,10 @@ class EDPoint extends AbstractPoint {
   /// - A new Edwards curve point resulting from the multiplication.
   @override
   EDPoint operator *(BigInt other) {
-    BigInt x2 = _coords[0];
-    BigInt t2 = _coords[3];
-    BigInt y2 = _coords[1];
-    BigInt z2 = _coords[2];
+    final BigInt x2 = _coords[0];
+    final BigInt t2 = _coords[3];
+    final BigInt y2 = _coords[1];
+    final BigInt z2 = _coords[2];
     if (other == BigInt.zero) {
       return EDPoint.infinity(curve: curve);
     }
@@ -578,22 +578,23 @@ class EDPoint extends AbstractPoint {
     BigInt t3 = BigInt.one;
 
     final nf = BigintUtils.computeNAF(other).reversed.toList();
-    for (BigInt i in nf) {
-      List<BigInt> resultCoords = _double(x3, y3, z3, t3, curve.p, curve.a);
+    for (final i in nf) {
+      final List<BigInt> resultCoords =
+          _double(x3, y3, z3, t3, curve.p, curve.a);
       x3 = resultCoords[0];
       y3 = resultCoords[1];
       z3 = resultCoords[2];
       t3 = resultCoords[3];
 
       if (i < BigInt.zero) {
-        List<BigInt> doubleCoords =
+        final List<BigInt> doubleCoords =
             _add(x3, y3, z3, t3, -x2, y2, z2, -t2, curve.p, curve.a);
         x3 = doubleCoords[0];
         y3 = doubleCoords[1];
         z3 = doubleCoords[2];
         t3 = doubleCoords[3];
       } else if (i > BigInt.zero) {
-        List<BigInt> doubleCoords =
+        final List<BigInt> doubleCoords =
             _add(x3, y3, z3, t3, x2, y2, z2, t2, curve.p, curve.a);
         x3 = doubleCoords[0];
         y3 = doubleCoords[1];

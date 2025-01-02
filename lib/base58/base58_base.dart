@@ -1,6 +1,6 @@
 import 'package:blockchain_utils/base58/base58_ex.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
-import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/helper/helper.dart';
 import 'package:blockchain_utils/utils/utils.dart';
 
@@ -27,27 +27,27 @@ class Base58Const {
 }
 
 class Base58Utils {
-  /// Compute and return the checksum for the provided List<int> [dataBytes].
+  /// Compute and return the checksum for the provided List [dataBytes].
   /// The checksum is obtained by performing a double SHA-256 hash and extracting
   /// the first [Base58Const.checksumByteLen] bytes.
   ///
   /// Parameters:
-  /// - dataBytes: The List<int> of data bytes for which the checksum is computed.
+  /// - dataBytes: The List of data bytes for which the checksum is computed.
   ///
   /// Returns:
-  /// A List<int> containing the computed checksum.
+  /// A List containing the computed checksum.
   static List<int> computeChecksum(List<int> dataBytes) {
     final doubleSha256Digest = QuickCrypto.sha256DoubleHash(dataBytes);
     return doubleSha256Digest.sublist(0, Base58Const.checksumByteLen);
   }
 }
 
-/// A utility class for encoding List<int> data into a Base58 format using a specified alphabet.
+/// A utility class for encoding List data into a Base58 format using a specified alphabet.
 class Base58Encoder {
-  /// Encodes the provided List<int> [dataBytes] into a Base58 encoded string using the specified [base58alphabets].
+  /// Encodes the provided List [dataBytes] into a Base58 encoded string using the specified [base58alphabets].
   ///
   /// Parameters:
-  /// - dataBytes: The List<int> of data bytes to be encoded.
+  /// - dataBytes: The List of data bytes to be encoded.
   /// - base58alphabets: Optional Base58Alphabets enum to choose the alphabet (default is Base58Alphabets.bitcoin).
   ///
   /// Returns:
@@ -69,7 +69,7 @@ class Base58Encoder {
 
     /// Count leading zero bytes in the dataBytes for leading zero characters in the encoded string.
     int zero = 0;
-    for (int byte in dataBytes) {
+    for (final int byte in dataBytes) {
       if (byte == 0) {
         zero++;
       } else {
@@ -82,12 +82,12 @@ class Base58Encoder {
     return (alphabet[0] * leadingZeros) + enc;
   }
 
-  /// Encodes the provided List<int> [dataBytes] with a checksum using a specified Base58 alphabet.
+  /// Encodes the provided List [dataBytes] with a checksum using a specified Base58 alphabet.
   ///
   /// This method appends a checksum to the data and then encodes the result into a Base58 encoded string.
   ///
   /// Parameters:
-  /// - dataBytes: The List<int> of data bytes to be encoded with a checksum.
+  /// - dataBytes: The List of data bytes to be encoded with a checksum.
   /// - base58alphabets: Optional Base58Alphabets enum to choose the alphabet (default is Base58Alphabets.bitcoin).
   ///
   /// Returns:
@@ -101,16 +101,16 @@ class Base58Encoder {
   }
 }
 
-/// A utility class for decoding Base58 encoded strings into List<int> data using a specified alphabet.
+/// A utility class for decoding Base58 encoded strings into List data using a specified alphabet.
 class Base58Decoder {
-  /// Decode the provided Base58 encoded [data] into a List<int> of data bytes using the specified [base58alphabets].
+  /// Decode the provided Base58 encoded [data] into a List of data bytes using the specified [base58alphabets].
   ///
   /// Parameters:
   /// - data: The Base58 encoded string to be decoded.
   /// - base58alphabets: Optional Base58Alphabets enum to choose the alphabet (default is Base58Alphabets.bitcoin).
   ///
   /// Returns:
-  /// A List<int> containing the decoded data bytes.
+  /// A List containing the decoded data bytes.
   static List<int> decode(String data,
       [Base58Alphabets base58alphabets = Base58Alphabets.bitcoin]) {
     final alphabet = Base58Const.alphabets[base58alphabets]!;
@@ -141,7 +141,7 @@ class Base58Decoder {
     return List<int>.from([...List<int>.filled(padLen, 0), ...bytes]);
   }
 
-  /// Decode and verify the provided Base58 encoded [data] into a List<int> of data bytes using a specified Base58 alphabet.
+  /// Decode and verify the provided Base58 encoded [data] into a List of data bytes using a specified Base58 alphabet.
   ///
   /// This method verifies the checksum of the decoded data to ensure its integrity.
   ///
@@ -150,7 +150,7 @@ class Base58Decoder {
   /// - base58alphabets: Optional Base58Alphabets enum to choose the alphabet (default is Base58Alphabets.bitcoin).
   ///
   /// Returns:
-  /// A List<int> containing the decoded data bytes if the checksum is valid.
+  /// A List containing the decoded data bytes if the checksum is valid.
   ///
   /// Throws:
   /// - Base58ChecksumError: If the checksum verification fails.

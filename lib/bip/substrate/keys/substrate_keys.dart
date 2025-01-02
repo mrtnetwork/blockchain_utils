@@ -14,7 +14,7 @@ class SubstratePrvKey {
     return SubstratePrvKey._(_keyFromBytes(keyBytes, coinConf.type), coinConf);
   }
 
-  /// Gets the raw representation of the private key as a List<int>.
+  /// Gets the raw representation of the private key as a `List<int>`.
   List<int> get raw {
     return privKey.raw;
   }

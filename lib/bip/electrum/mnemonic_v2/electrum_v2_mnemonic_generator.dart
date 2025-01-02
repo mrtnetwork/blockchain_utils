@@ -3,7 +3,7 @@ import 'package:blockchain_utils/bip/electrum/mnemonic_v2/electrum_v2_entropy_ge
 import 'package:blockchain_utils/bip/electrum/mnemonic_v2/electrum_v2_mnemonic.dart';
 import 'package:blockchain_utils/bip/electrum/mnemonic_v2/electrum_v2_mnemonic_encoder.dart';
 import 'package:blockchain_utils/bip/mnemonic/mnemonic.dart';
-import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 
 /// Constants related to Electrum V2 mnemonic generation.
 class ElectrumV2MnemonicGeneratorConst {

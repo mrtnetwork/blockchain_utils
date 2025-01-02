@@ -32,7 +32,6 @@ class Bip49Coins extends BipCoins {
   static const Bip49Coins pepecoinTestnet = Bip49Coins._('pepecoinTestnet');
   static const Bip49Coins electraProtocolTestnet =
       Bip49Coins._('electraProtocolTestnet');
-
   final String name;
 
   const Bip49Coins._(this.name);

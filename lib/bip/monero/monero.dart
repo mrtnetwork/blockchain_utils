@@ -1,6 +1,6 @@
 /// The 'monero' library provides tools for working with Monero cryptocurrency, including
 /// configuration data, mnemonic phrases, keys, and address generation.
-library monero;
+library;
 
 /// Export statement for Monero coin definitions and configuration.
 export 'conf/monero_coins.dart';

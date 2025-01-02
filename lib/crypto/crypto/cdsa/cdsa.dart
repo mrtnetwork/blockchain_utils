@@ -1,6 +1,6 @@
 /// The 'cdsa' library provides tools and components for working with various cryptographic
 /// algorithms, including elliptic curve cryptography (ECDSA and EDDSA) and related functionality.
-library cdsa;
+library;
 
 /// Export statement for cryptographic curve definitions.
 export 'curve/curves.dart';

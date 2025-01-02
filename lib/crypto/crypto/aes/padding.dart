@@ -1,4 +1,4 @@
-import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 
 /// Enumeration representing various padding algorithms for block ciphers.
 enum PaddingAlgorithm { pkcs7, iso7816, x923 }
@@ -19,7 +19,7 @@ class BlockCipherPadding {
   /// - A new `List<int>` containing the input data with the added padding.
   static List<int> pad(List<int> dataToPad, int blockSize,
       {PaddingAlgorithm style = PaddingAlgorithm.pkcs7}) {
-    int paddingLen = blockSize - dataToPad.length % blockSize;
+    final int paddingLen = blockSize - dataToPad.length % blockSize;
     List<int> padding;
 
     if (style == PaddingAlgorithm.pkcs7) {
@@ -41,7 +41,7 @@ class BlockCipherPadding {
       }
     }
 
-    List<int> result = List<int>.filled(dataToPad.length + paddingLen, 0);
+    final List<int> result = List<int>.filled(dataToPad.length + paddingLen, 0);
     result.setAll(0, dataToPad);
     result.setAll(dataToPad.length, padding);
 
@@ -64,7 +64,7 @@ class BlockCipherPadding {
   /// - `Exception` for various scenarios, such as incorrect padding or zero-length input.
   static List<int> unpad(List<int> paddedData, int blockSize,
       {PaddingAlgorithm style = PaddingAlgorithm.pkcs7}) {
-    int paddedDataLen = paddedData.length;
+    final int paddedDataLen = paddedData.length;
 
     if (paddedDataLen == 0) {
       throw const ArgumentException('Zero-length input cannot be unpadded');
@@ -96,7 +96,7 @@ class BlockCipherPadding {
         }
       }
     } else {
-      int index = paddedData.lastIndexOf(128);
+      final int index = paddedData.lastIndexOf(128);
       if (index < 0) {
         throw const ArgumentException('incorrect padding');
       }

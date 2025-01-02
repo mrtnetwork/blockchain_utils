@@ -1,5 +1,5 @@
 /// AN address_decoder library for decoding blockchain addresses
-library address_decoder;
+library;
 
 /// Export statement for Ada Byron address decoder.
 export 'ada/ada_byron_addr.dart' show AdaByronAddrDecoder;
@@ -25,7 +25,14 @@ export 'algo_addr.dart' show AlgoAddrDecoder;
 export 'aptos_addr.dart' show AptosAddrDecoder;
 
 /// Export statement for Atom address decoder.
-export 'atom_addr.dart' show AtomAddrDecoder;
+export 'atom_addr.dart'
+    show
+        AtomAddrDecoder,
+        AtomAddressUtils,
+        AtomNist256P1AddrDecoder,
+        AtomEd25519AddrDecoder,
+        AtomAddressDecodeResult,
+        AtomEthSecp256k1AddrDecoder;
 
 /// Export statements for Avalanche (AVAX) address decoders.
 export 'avax_addr.dart' show AvaxPChainAddrDecoder, AvaxXChainAddrDecoder;
@@ -40,7 +47,7 @@ export 'eos_addr.dart' show EosAddrDecoder;
 export 'ergo.dart' show ErgoP2PKHAddrDecoder;
 
 /// Export statement for Ethereum address decoder.
-export 'eth_addr.dart' show EthAddrDecoder;
+export 'eth_addr.dart' show EthAddrDecoder, EthAddrUtils;
 
 /// Export statement for Filecoin (FIL) address decoder.
 export 'fil_addr.dart' show FilSecp256k1AddrDecoder;
@@ -96,7 +103,8 @@ export 'trx_addr.dart' show TrxAddrDecoder;
 export 'xlm_addr.dart' show XlmAddrDecoder;
 
 /// Export statements for Monero (XMR) address decoders.
-export 'xmr_addr.dart' show XmrAddrDecoder, XmrIntegratedAddrDecoder;
+export 'xmr_addr.dart'
+    show XmrAddrDecoder, XmrIntegratedAddrDecoder, XmrAddressType;
 
 /// Export statement for Ripple (XRP) address decoder.
 export 'xrp_addr.dart' show XrpAddrDecoder, XrpXAddrDecoder, XRPAddressUtils;

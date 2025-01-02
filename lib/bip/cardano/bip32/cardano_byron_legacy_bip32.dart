@@ -22,36 +22,29 @@ import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
 /// - [CardanoByronLegacyBip32.fromPublicKey]: Creates a Bip32 key pair from a public key.
 class CardanoByronLegacyBip32 extends Bip32Base {
   /// Private constructor for creating an instance with specified parameters.
-  CardanoByronLegacyBip32._({
-    required List<int>? privKey,
-    required List<int>? pubKey,
-    required Bip32KeyData keyData,
-    required Bip32KeyNetVersions keyNetVer,
-  }) : super(
-            privKey: privKey,
-            pubKey: pubKey,
-            keyData: keyData,
-            keyNetVer: keyNetVer);
+  CardanoByronLegacyBip32._(
+      {required super.privKey,
+      required super.pubKey,
+      required super.keyData,
+      required super.keyNetVer});
 
   /// Creates a [CardanoByronLegacyBip32] instance from a private key.
-  CardanoByronLegacyBip32.fromPrivateKey(List<int> privKey,
-      [Bip32KeyData? keyData, Bip32KeyNetVersions? keyNetVer])
-      : super.fromPrivateKey(privKey, keyData, keyNetVer);
+  CardanoByronLegacyBip32.fromPrivateKey(super.privKey,
+      [super.keyData, super.keyNetVer])
+      : super.fromPrivateKey();
 
   /// Creates a [CardanoByronLegacyBip32] instance from a extended key.
-  CardanoByronLegacyBip32.fromExtendedKey(String exKeyStr,
-      [Bip32KeyNetVersions? keyNetVer])
-      : super.fromExtendedKey(exKeyStr, keyNetVer);
+  CardanoByronLegacyBip32.fromExtendedKey(super.exKeyStr, [super.keyNetVer])
+      : super.fromExtendedKey();
 
   /// Creates a [CardanoByronLegacyBip32] instance from a public key.
-  CardanoByronLegacyBip32.fromPublicKey(List<int> pubkey,
-      [Bip32KeyData? keyData, Bip32KeyNetVersions? keyNetVer])
-      : super.fromPublicKey(pubkey, keyData, keyNetVer);
+  CardanoByronLegacyBip32.fromPublicKey(super.pubkey,
+      [super.keyData, super.keyNetVer])
+      : super.fromPublicKey();
 
   /// Creates a [CardanoByronLegacyBip32] instance from a seed.
-  CardanoByronLegacyBip32.fromSeed(List<int> seedBytes,
-      [Bip32KeyNetVersions? keyNetVer])
-      : super.fromSeed(seedBytes, keyNetVer);
+  CardanoByronLegacyBip32.fromSeed(super.seedBytes, [super.keyNetVer])
+      : super.fromSeed();
 
   /// Generates a child key based on the given [index].
   ///

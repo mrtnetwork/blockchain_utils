@@ -1,6 +1,6 @@
 import 'package:blockchain_utils/crypto/crypto/aes/padding.dart';
 import 'package:blockchain_utils/crypto/crypto/crypto.dart';
-import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/utils/utils.dart';
 
 /// QuickCrypto provides a set of utility methods for cryptographic operations.
@@ -16,7 +16,7 @@ class QuickCrypto {
 
   /// Calculate the SHA-256 hash of the SHA-256 hash of the input data
   static List<int> sha256DoubleHash(List<int> data) {
-    List<int> tmp = sha256Hash(data);
+    final List<int> tmp = sha256Hash(data);
     return sha256Hash(tmp);
   }
 
@@ -41,7 +41,7 @@ class QuickCrypto {
 
   /// Calculate the RIPEMD-160 hash of the SHA-256 hash of the input data
   static List<int> hash160(List<int> data) {
-    List<int> tmp = SHA256.hash(data);
+    final List<int> tmp = SHA256.hash(data);
     return RIPEMD160.hash(tmp);
   }
 
@@ -161,8 +161,6 @@ class QuickCrypto {
     return _xxHash(data, twoX256DigestSize);
   }
 
-  //  Twox128: (data) => utilCrypto.xxhashAsU8a(data, 128),
-  //       Twox256: (data) => utilCrypto.xxhashAsU8a(data, 256),
   /// Calculate the SHA-512/256 hash of the input data
   static List<int> sha512256Hash(List<int> data) {
     return SHA512256.hash(data);
@@ -297,7 +295,7 @@ class QuickCrypto {
     }
   }
 
-  /// This function generates a random List<int> of the specified size (default is 32 bytes).
+  /// This function generates a random `List<int>` of the specified size (default is 32 bytes).
   static List<int> generateRandom([int size = 32]) {
     /// Generate the random bytes of the specified size using the _randomGenerator.
     final r = _generateRandom(size);

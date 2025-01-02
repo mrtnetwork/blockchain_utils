@@ -8,12 +8,12 @@ part of 'package:blockchain_utils/crypto/crypto/hash/hash.dart';
 /// - [RIPEMD320]: Initializes an instance of the RIPEMD-320 hash.
 ///
 /// Static Method:
-/// - [hash]: Computes the RIPEMD-320 hash of the provided data and returns the digest as a List<int>.
+/// - [hash]: Computes the RIPEMD-320 hash of the provided data and returns the digest as a `List<int>`.
 ///   It creates a new instance, updates it with the data, retrieves the digest, and then cleans up the internal state.
 ///
 /// Example:
 /// ```dart
-/// final data = List<int>.from([0x48, 0x65, 0x6C, 0x6C, 0x6F, 0x2C, 0x20, 0x57, 0x6F, 0x72, 0x6C, 0x64]);
+/// final data = `List<int>`.from([0x48, 0x65, 0x6C, 0x6C, 0x6F, 0x2C, 0x20, 0x57, 0x6F, 0x72, 0x6C, 0x64]);
 /// final hashDigest = RIPEMD320.hash(data);
 /// ```
 class RIPEMD320 extends _RIPEMD {
@@ -38,12 +38,12 @@ class RIPEMD320 extends _RIPEMD {
 /// - [RIPEMD256]: Initializes an instance of the RIPEMD-256 hash.
 ///
 /// Static Method:
-/// - [hash]: Computes the RIPEMD-256 hash of the provided data and returns the digest as a List<int>.
+/// - [hash]: Computes the RIPEMD-256 hash of the provided data and returns the digest as a `List<int>`.
 ///   It creates a new instance, updates it with the data, retrieves the digest, and then cleans up the internal state.
 ///
 /// Example:
 /// ```dart
-/// final data = List<int>.from([0x48, 0x65, 0x6C, 0x6C, 0x6F, 0x2C, 0x20, 0x57, 0x6F, 0x72, 0x6C, 0x64]);
+/// final data = `List<int>`.from([0x48, 0x65, 0x6C, 0x6C, 0x6F, 0x2C, 0x20, 0x57, 0x6F, 0x72, 0x6C, 0x64]);
 /// final hashDigest = RIPEMD256.hash(data);
 /// ```
 class RIPEMD256 extends _RIPEMD {
@@ -68,12 +68,12 @@ class RIPEMD256 extends _RIPEMD {
 /// - [RIPEMD160]: Initializes an instance of the RIPEMD-160 hash.
 ///
 /// Static Method:
-/// - [hash]: Computes the RIPEMD-160 hash of the provided data and returns the digest as a List<int>.
+/// - [hash]: Computes the RIPEMD-160 hash of the provided data and returns the digest as a `List<int>`.
 ///   It creates a new instance, updates it with the data, retrieves the digest, and then cleans up the internal state.
 ///
 /// Example:
 /// ```dart
-/// final data = List<int>.from([0x48, 0x65, 0x6C, 0x6C, 0x6F, 0x2C, 0x20, 0x57, 0x6F, 0x72, 0x6C, 0x64]);
+/// final data = `List<int>`.from([0x48, 0x65, 0x6C, 0x6C, 0x6F, 0x2C, 0x20, 0x57, 0x6F, 0x72, 0x6C, 0x64]);
 /// final hashDigest = RIPEMD160.hash(data);
 /// ```
 class RIPEMD160 extends _RIPEMD {
@@ -98,12 +98,12 @@ class RIPEMD160 extends _RIPEMD {
 /// - [RIPEMD128]: Initializes an instance of the RIPEMD-128 hash.
 ///
 /// Static Method:
-/// - [hash]: Computes the RIPEMD-128 hash of the provided data and returns the digest as a List<int>.
+/// - [hash]: Computes the RIPEMD-128 hash of the provided data and returns the digest as a `List<int>`.
 ///   It creates a new instance, updates it with the data, retrieves the digest, and then cleans up the internal state.
 ///
 /// Example:
 /// ```dart
-/// final data = List<int>.from([0x48, 0x65, 0x6C, 0x6C, 0x6F, 0x2C, 0x20, 0x57, 0x6F, 0x72, 0x6C, 0x64]);
+/// final data = `List<int>`.from([0x48, 0x65, 0x6C, 0x6C, 0x6F, 0x2C, 0x20, 0x57, 0x6F, 0x72, 0x6C, 0x64]);
 /// final hashDigest = RIPEMD128.hash(data);
 /// ```
 class RIPEMD128 extends _RIPEMD {
@@ -167,13 +167,13 @@ class _RIPEMD implements SerializableHash<SH1State> {
     savedState.length = 0;
   }
 
-  /// Generates the final hash digest by assembling and returning the hash state in a List<int>.
+  /// Generates the final hash digest by assembling and returning the hash state in a `List<int>`.
   ///
   /// This function produces the hash digest by combining the current hash state into a single
-  /// List<int> output. It finalizes the hash if it hasn't been finished, effectively completing
+  /// `List<int>` output. It finalizes the hash if it hasn't been finished, effectively completing
   /// the hash computation and returning the result.
   ///
-  /// Returns the List<int> containing the computed hash digest.
+  /// Returns the `List<int>` containing the computed hash digest.
   @override
   List<int> digest() {
     final out = List<int>.filled(getDigestLength, 0);
@@ -181,14 +181,14 @@ class _RIPEMD implements SerializableHash<SH1State> {
     return out;
   }
 
-  /// Finalizes the hash computation and stores the hash state in the provided List<int> [out].
+  /// Finalizes the hash computation and stores the hash state in the provided `List<int>` [out].
   ///
   /// This function completes the hash computation, finalizes the state, and stores the resulting
-  /// hash in the provided [out] List<int>. If the hash has already been finished, this method
+  /// hash in the provided [out] `List<int>`. If the hash has already been finished, this method
   /// will return the existing state without re-computing.
   ///
   /// Parameters:
-  ///   - [out]: The List<int> in which the hash digest is stored.
+  ///   - [out]: The `List<int>` in which the hash digest is stored.
   ///
   /// Returns the current instance of the hash algorithm.
   @override
@@ -213,7 +213,7 @@ class _RIPEMD implements SerializableHash<SH1State> {
       _buffer.add(0);
     }
 
-    var lengthInBits = _lengthInBytes * 8;
+    final lengthInBits = _lengthInBytes * 8;
 
     // Add the full length of the input data as a 64-bit value at the end of the
     // hash. Note: we're only writing out 64 bits, so skip ahead 8 if the
@@ -224,8 +224,8 @@ class _RIPEMD implements SerializableHash<SH1State> {
     // We're essentially doing byteData.setUint64(offset, lengthInBits, _endian)
     // here, but that method isn't supported on dart2js so we implement it
     // manually instead.
-    var highBits = lengthInBits ~/ 0x100000000; // >> 32
-    var lowBits = lengthInBits & mask32;
+    final highBits = lengthInBits ~/ 0x100000000; // >> 32
+    final lowBits = lengthInBits & mask32;
     writeUint32LE(lowBits, _buffer, offset);
     writeUint32LE(highBits, _buffer, offset + 4);
   }
@@ -294,7 +294,7 @@ class _RIPEMD implements SerializableHash<SH1State> {
   /// If the hash has already been finished using the `finish` method, calling this method will result in an error.
   ///
   /// Parameters:
-  /// - [data]: The List<int> containing the data to be hashed.
+  /// - [data]: The `List<int>` containing the data to be hashed.
   ///
   /// Returns this [Hash] object for method chaining.
   @override
@@ -311,7 +311,7 @@ class _RIPEMD implements SerializableHash<SH1State> {
 
   void _iterate() {
     // var pendingDataBytes = _buffer.buffer.asByteData();
-    var pendingDataChunks = _buffer.length ~/ getBlockSize;
+    final pendingDataChunks = _buffer.length ~/ getBlockSize;
     for (var i = 0; i < pendingDataChunks; i++) {
       // Copy words from the pending data buffer into the current chunk buffer.
       for (var j = 0; j < _currentChunk.length; j++) {
@@ -369,7 +369,7 @@ class _RIPEMD implements SerializableHash<SH1State> {
       br = t;
     }
 
-    int t = add32(add32(_state[1], cl), dr);
+    final int t = add32(add32(_state[1], cl), dr);
     _state[1] = add32(add32(_state[2], dl), ar);
     _state[2] = add32(add32(_state[3], al), br);
 
@@ -414,27 +414,27 @@ class _RIPEMD implements SerializableHash<SH1State> {
 
       switch (i) {
         case 15:
-          int temp = bl;
+          final int temp = bl;
           bl = br;
           br = temp;
           break;
         case 31:
-          int temp = dl;
+          final int temp = dl;
           dl = dr;
           dr = temp;
           break;
         case 47:
-          int temp = al;
+          final int temp = al;
           al = ar;
           ar = temp;
           break;
         case 63:
-          int temp = cl;
+          final int temp = cl;
           cl = cr;
           cr = temp;
           break;
         case 79:
-          int temp = el;
+          final int temp = el;
           el = er;
           er = temp;
           break;
@@ -484,22 +484,22 @@ class _RIPEMD implements SerializableHash<SH1State> {
 
       switch (i) {
         case 15:
-          int temp = al;
+          final int temp = al;
           al = ar;
           ar = temp;
           break;
         case 31:
-          int temp = bl;
+          final int temp = bl;
           bl = br;
           br = temp;
           break;
         case 47:
-          int temp = cl;
+          final int temp = cl;
           cl = cr;
           cr = temp;
           break;
         case 63:
-          int temp = dl;
+          final int temp = dl;
           dl = dr;
           dr = temp;
           break;
@@ -552,7 +552,7 @@ class _RIPEMD implements SerializableHash<SH1State> {
       br = t;
     }
 
-    int t = add32(add32(_state[1], cl), dr);
+    final int t = add32(add32(_state[1], cl), dr);
     _state[1] = add32(add32(_state[2], dl), er);
     _state[2] = add32(add32(_state[3], el), ar);
     _state[3] = add32(add32(_state[4], al), br);

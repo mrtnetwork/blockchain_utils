@@ -1,11 +1,11 @@
 import 'package:blockchain_utils/bip/address/encoder.dart';
 import 'package:blockchain_utils/bip/address/encoders.dart';
-import 'package:blockchain_utils/bip/address/p2pkh_addr.dart';
 import 'package:blockchain_utils/bip/bip/bip32/bip32_key_data.dart';
 import 'package:blockchain_utils/bip/bip/bip32/bip32_keys.dart';
 import 'package:blockchain_utils/bip/bip/conf/config/bip_coin_conf.dart';
+import 'package:blockchain_utils/bip/bip/types/types.dart';
 import 'package:blockchain_utils/bip/wif/wif.dart';
-import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 
 /// Represents a BIP44 public key for a specific cryptocurrency coin. This class
 /// ensures that the elliptic curve type of the public key matches the coin's
@@ -65,7 +65,7 @@ class Bip44PublicKey {
   /// Shelley or Monero, which require using specific classes to generate
   /// addresses.
   String get toAddress {
-    BlockchainAddressEncoder encoder = coinConf.encoder();
+    final BlockchainAddressEncoder encoder = coinConf.encoder();
     if (encoder is AdaShelleyAddrEncoder) {
       throw const ArgumentException(
           'Use the CardanoShelley class to get Cardano Shelley addresses');

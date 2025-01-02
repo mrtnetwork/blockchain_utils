@@ -2,10 +2,10 @@ import 'package:blockchain_utils/blockchain_utils.dart';
 import 'package:test/test.dart';
 
 void main() {
-  List<int> buffer1 = List<int>.from(
+  final List<int> buffer1 = List<int>.from(
       [174, 91, 168, 91, 107, 15, 78, 26, 181, 132, 151, 91, 160, 7, 157, 152]);
 
-  List<int> buffer2 = List<int>.from([
+  final List<int> buffer2 = List<int>.from([
     42,
     118,
     243,
@@ -23,9 +23,9 @@ void main() {
     219,
     178
   ]);
-  List<int> buffer3 = List<int>.from(
+  final List<int> buffer3 = List<int>.from(
       [115, 181, 16, 102, 139, 73, 65, 95, 181, 34, 94, 80, 60, 118, 197, 55]);
-  List<int> buffer4 = List<int>.from([
+  final List<int> buffer4 = List<int>.from([
     215,
     154,
     165,
@@ -43,7 +43,7 @@ void main() {
     165,
     177
   ]);
-  List<int> buffer5 = List<int>.from(
+  final List<int> buffer5 = List<int>.from(
       [97, 148, 163, 150, 135, 56, 166, 2, 171, 26, 194, 71, 2, 140, 199, 132]);
 
   // Test cases for UUID operations

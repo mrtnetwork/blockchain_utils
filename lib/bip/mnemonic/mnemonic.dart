@@ -1,3 +1,5 @@
+import 'package:blockchain_utils/helper/extensions/extensions.dart';
+
 /// Represents a mnemonic phrase used for various cryptographic purposes.
 /// It encapsulates a list of mnemonic words and provides methods for working
 /// with these words.
@@ -10,7 +12,7 @@ class Mnemonic {
   /// Creates a new Mnemonic instance from a mnemonic phrase provided as a string.
   /// The provided mnemonic string is normalized into a list of words.
   Mnemonic.fromString(String mnemonicStr)
-      : _mnemonicList = List<String>.unmodifiable(_normalize(mnemonicStr));
+      : _mnemonicList = _normalize(mnemonicStr);
 
   /// Creates a new Mnemonic instance from a list of mnemonic words.
   Mnemonic.fromList(List<String> mnemonicList)
@@ -23,7 +25,7 @@ class Mnemonic {
 
   /// Returns the mnemonic phrase as a list of words.
   List<String> toList() {
-    return _mnemonicList;
+    return _mnemonicList.clone();
   }
 
   /// Returns the mnemonic phrase as a string with words separated by spaces.
@@ -34,11 +36,16 @@ class Mnemonic {
   /// Returns the mnemonic phrase as a string with words separated by spaces.
   @override
   String toString() {
-    return "${toStr().substring(0, toStr().length ~/ 3)}...";
+    return "${_mnemonicList.sublist(0, _mnemonicList.length ~/ 3).join(",")}...";
   }
 
   /// Normalizes a mnemonic string by splitting it into a list of words.
   static List<String> _normalize(String mnemonic) {
-    return mnemonic.split(' ');
+    return mnemonic
+        .replaceAll(RegExp(r'\s+'), " ")
+        .split(" ")
+        .where((element) => element.isNotEmpty)
+        .toList()
+        .immutable;
   }
 }

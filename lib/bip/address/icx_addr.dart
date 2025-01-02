@@ -21,24 +21,24 @@ class IcxAddrDecoder implements BlockchainAddressDecoder {
   /// keyword arguments for custom ICON address parameters. The method performs the following steps:
   /// 1. Removes the ICON address prefix.
   /// 2. Validates the length of the decoded public key hash.
-  /// 3. Returns the decoded public key hash as a List<int>.
+  /// 3. Returns the decoded public key hash as a `List<int>`.
   ///
   /// Parameters:
   ///   - addr: The ICON address to be decoded as a string.
   ///   - kwargs: Optional keyword arguments for custom ICON address parameters (not used in this implementation).
   ///
   /// Returns:
-  ///   A List<int> containing the decoded public key hash of the ICON address.
+  ///   A `List<int>` containing the decoded public key hash of the ICON address.
   @override
   List<int> decodeAddr(String addr, [Map<String, dynamic> kwargs = const {}]) {
     /// Remove the ICON address prefix.
-    String addrNoPrefix = AddrDecUtils.validateAndRemovePrefix(
+    final String addrNoPrefix = AddrDecUtils.validateAndRemovePrefix(
       addr,
       CoinsConf.icon.params.addrPrefix!,
     );
 
-    /// Convert the remaining string to a List<int> and validate its length.
-    List<int> pubKeyHashBytes = BytesUtils.fromHexString(addrNoPrefix);
+    /// Convert the remaining string to a `List<int>` and validate its length.
+    final List<int> pubKeyHashBytes = BytesUtils.fromHexString(addrNoPrefix);
     AddrDecUtils.validateBytesLength(
         pubKeyHashBytes, IcxAddrConst.keyHashByteLen);
 
@@ -50,14 +50,14 @@ class IcxAddrDecoder implements BlockchainAddressDecoder {
 class IcxAddrEncoder implements BlockchainAddressEncoder {
   /// Overrides the base class method to encode a public key as an ICON (ICX) address.
   ///
-  /// This method encodes a public key as an ICON address. It expects the public key as a List<int>
+  /// This method encodes a public key as an ICON address. It expects the public key as a `List<int>`
   /// and returns the ICON address as a string. The encoding process involves:
   /// 1. Validating and transforming the public key into a 32-byte hash.
   /// 2. Truncating the hash to the required ICON address length.
   /// 3. Adding the ICON address prefix to the hash.
   ///
   /// Parameters:
-  ///   - pubKey: The public key to be encoded as an ICON address in the form of a List<int>.
+  ///   - pubKey: The public key to be encoded as an ICON address in the form of a `List<int>`.
   ///   - kwargs: Optional keyword arguments (not used in this implementation).
   ///
   /// Returns:
@@ -65,7 +65,8 @@ class IcxAddrEncoder implements BlockchainAddressEncoder {
   @override
   String encodeKey(List<int> pubKey, [Map<String, dynamic> kwargs = const {}]) {
     /// Validate and transform the public key into a 32-byte hash.
-    IPublicKey pubKeyObj = AddrKeyValidator.validateAndGetSecp256k1Key(pubKey);
+    final IPublicKey pubKeyObj =
+        AddrKeyValidator.validateAndGetSecp256k1Key(pubKey);
     List<int> pubKeyHashBytes =
         QuickCrypto.sha3256Hash(pubKeyObj.uncompressed.sublist(1));
 

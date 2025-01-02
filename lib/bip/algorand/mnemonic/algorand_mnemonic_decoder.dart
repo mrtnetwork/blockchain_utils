@@ -4,7 +4,7 @@ import 'package:blockchain_utils/bip/bip/bip39/bip39_mnemonic_utils.dart';
 import 'package:blockchain_utils/bip/mnemonic/mnemonic_decoder_base.dart';
 import 'package:blockchain_utils/bip/mnemonic/mnemonic_ex.dart';
 import 'package:blockchain_utils/bip/mnemonic/mnemonic_utils.dart';
-import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 
 /// Decodes Algorand mnemonics to obtain the corresponding entropy.
 class AlgorandMnemonicDecoder extends MnemonicDecoderBase {
@@ -34,7 +34,7 @@ class AlgorandMnemonicDecoder extends MnemonicDecoderBase {
 
     final words = mnemonicObj.toList();
     final wordsList = findLanguage(mnemonicObj).item1;
-    final wordIndexes = [for (var w in words) wordsList.getWordIdx(w)];
+    final wordIndexes = [for (final w in words) wordsList.getWordIdx(w)];
     final entropyList = AlgorandMnemonicUtils.convertBits(
         wordIndexes.getRange(0, words.length - 1).toList(), 11, 8);
     assert(entropyList != null);

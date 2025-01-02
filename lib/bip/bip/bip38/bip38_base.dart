@@ -1,5 +1,5 @@
-import 'package:blockchain_utils/bip/address/p2pkh_addr.dart';
 import 'package:blockchain_utils/bip/bip/bip38/bip38_no_ec.dart';
+import 'package:blockchain_utils/bip/bip/types/types.dart';
 
 import 'bip38_ec.dart';
 import 'package:blockchain_utils/utils/utils.dart';
@@ -68,7 +68,7 @@ class Bip38Decrypter {
   ///
   /// - [privKeyEnc]: The BIP38-encrypted Bitcoin private key.
   /// - [passphrase]: The passphrase for decryption.
-  /// - Returns: A tuple (pair) containing the decrypted private key as a List<int>
+  /// - Returns: A tuple (pair) containing the decrypted private key as a `List<int>`
   ///   and the selected public key mode (compressed or uncompressed).
   static Tuple<List<int>, PubKeyModes> decryptNoEc(
       String privKeyEnc, String passphrase) {
@@ -84,7 +84,7 @@ class Bip38Decrypter {
   ///
   /// - [privKeyEnc]: The BIP38-encrypted Bitcoin private key.
   /// - [passphrase]: The passphrase for decryption.
-  /// - Returns: A tuple (pair) containing the decrypted private key as a List<int>
+  /// - Returns: A tuple (pair) containing the decrypted private key as a `List<int>`
   ///   and the selected public key mode (compressed or uncompressed).
   static Tuple<List<int>, PubKeyModes> decryptEc(
       String privKeyEnc, String passphrase) {

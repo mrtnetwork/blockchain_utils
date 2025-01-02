@@ -1,7 +1,7 @@
 import 'package:blockchain_utils/bip/bip/bip32/base/ibip32_mst_key_generator.dart';
 import 'package:blockchain_utils/bip/bip/bip32/slip10/bip32_slip10_mst_key_generator.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
-import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/utils/utils.dart';
 
 /// Constants for generating master keys for Bip32KholawEd25519 keys.
@@ -96,7 +96,7 @@ class Bip32KholawEd25519MstKeyGenerator implements IBip32MstKeyGenerator {
   /// Note: This method is called within the `generateFromSeed` method to prepare
   /// the master key bits.
   static List<int> _tweakMasterKeyBits(List<int> keyBytes) {
-    List<int> keyBytesList = keyBytes.toList();
+    final List<int> keyBytesList = keyBytes.toList();
     // Clear the lowest 3 bits of the first byte of kL
     keyBytesList[0] = keyBytesList[0] & 0xF8;
     // Clear the highest bit of the last byte of kL

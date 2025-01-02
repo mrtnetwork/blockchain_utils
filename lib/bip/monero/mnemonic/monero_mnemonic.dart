@@ -1,5 +1,6 @@
 import 'package:blockchain_utils/bip/mnemonic/mnemonic.dart';
 import 'package:blockchain_utils/bip/mnemonic/mnemonic_utils.dart';
+import 'package:blockchain_utils/exception/const/const.dart';
 import 'words_list/languages.dart' as languages;
 
 /// An enumeration representing the number of words in a Monero mnemonic.
@@ -26,6 +27,19 @@ class MoneroWordsNum {
 
   /// Constructs a MoneroWordsNum with the specified integer value.
   const MoneroWordsNum._(this.value);
+
+  static const List<MoneroWordsNum> values = [
+    wordsNum12,
+    wordsNum13,
+    wordsNum24,
+    wordsNum25
+  ];
+
+  static MoneroWordsNum fromValue(int? value) {
+    return values.firstWhere((e) => e.value == value,
+        orElse: () =>
+            throw ExceptionConst.itemNotFound(item: "Monero words number"));
+  }
 }
 
 /// An enumeration of Monero-supported languages for mnemonics.
@@ -93,6 +107,12 @@ class MoneroLanguages implements MnemonicLanguages {
     spanish,
     russian,
   ];
+
+  static MoneroLanguages fromValue(String? value) {
+    return values.firstWhere((e) => e.name == value,
+        orElse: () => throw ExceptionConst.itemNotFound(
+            item: "Monero ${value ?? ''} language"));
+  }
 }
 
 /// A class containing constants related to Monero mnemonics.
@@ -142,8 +162,8 @@ class MoneroMnemonicConst {
 /// list of mnemonic words.
 class MoneroMnemonic extends Mnemonic {
   /// Constructs a MoneroMnemonic from a mnemonic string.
-  MoneroMnemonic.fromString(String mnemonic) : super.fromString(mnemonic);
+  MoneroMnemonic.fromString(super.mnemonic) : super.fromString();
 
   /// Constructs a MoneroMnemonic from a list of mnemonic words.
-  MoneroMnemonic.fromList(List<String> mnemonic) : super.fromList(mnemonic);
+  MoneroMnemonic.fromList(super.mnemonic) : super.fromList();
 }

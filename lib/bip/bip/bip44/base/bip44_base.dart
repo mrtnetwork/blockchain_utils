@@ -10,7 +10,7 @@ import 'package:blockchain_utils/bip/bip/bip44/base/bip44_base_ex.dart';
 import 'package:blockchain_utils/bip/bip/conf/config/bip_coin_conf.dart';
 import 'package:blockchain_utils/bip/cardano/bip32/cardano_icarus_bip32.dart';
 import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
-import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/utils/utils.dart';
 
 import 'bip44_keys.dart';
@@ -232,7 +232,7 @@ abstract class Bip44Base {
   /// Internal validation method for checking the depth of the BIP object.
   static Tuple<Bip32Base, BipCoinConfig> _validate(
       Bip32Base bip32Obj, BipCoinConfig coinConf) {
-    int depth = bip32Obj.depth.depth;
+    final int depth = bip32Obj.depth.depth;
 
     if (bip32Obj.isPublicOnly) {
       if (depth < Bip44Levels.account.value ||

@@ -5,7 +5,7 @@ import 'package:blockchain_utils/bip/electrum/mnemonic_v2/electrum_v2_mnemonic.d
 import 'package:blockchain_utils/bip/electrum/mnemonic_v2/electrum_v2_mnemonic_utils.dart';
 import 'package:blockchain_utils/bip/mnemonic/mnemonic.dart';
 import 'package:blockchain_utils/bip/mnemonic/mnemonic_encoder_base.dart';
-import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 
 /// A class for encoding data into Electrum V2 mnemonics, extending the MnemonicEncoderBase class.
 class ElectrumV2MnemonicEncoder extends MnemonicEncoderBase {
@@ -24,7 +24,7 @@ class ElectrumV2MnemonicEncoder extends MnemonicEncoderBase {
 
   /// Encodes entropy bytes into an Electrum V2 mnemonic.
   ///
-  /// This method takes a List<int> of entropy bytes as input and encodes them into an Electrum V2 mnemonic. It ensures
+  /// This method takes a `List<int>` of entropy bytes as input and encodes them into an Electrum V2 mnemonic. It ensures
   /// that the entropy bits are sufficient for generating a valid mnemonic, and that the resulting mnemonic is valid for
   /// the specified mnemonic type. The method performs the encoding by repeatedly dividing the entropy value by the number
   /// of words in the word list and adding the corresponding words to the mnemonic.

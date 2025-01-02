@@ -5,7 +5,7 @@ import 'package:blockchain_utils/crypto/crypto/hash/hash.dart';
 import 'package:blockchain_utils/crypto/crypto/hmac/hmac.dart';
 import 'package:blockchain_utils/crypto/crypto/pbkdf2/pbkdf2.dart';
 import 'package:blockchain_utils/utils/utils.dart';
-import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 
 /// A class that holds constants related to the Cardano Icarus master key generation process.
 class CardanoIcarusMasterKeyGeneratorConst {

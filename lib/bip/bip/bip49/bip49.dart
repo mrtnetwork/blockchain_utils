@@ -3,6 +3,6 @@
 
 /// Export statement for the BIP-49 base implementation, which includes key
 /// derivation and wallet management functions.
-library bip49;
+library;
 
 export 'bip49_base.dart';

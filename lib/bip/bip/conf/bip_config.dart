@@ -3,7 +3,7 @@
 /// and BIP-86. It defines coin names, parameters, and coin configuration data for
 /// hierarchical deterministic wallets in cryptocurrencies, facilitating wallet development
 /// and key derivation for a variety of blockchain networks.
-library bip_config;
+library;
 
 export 'bip/bip_coins.dart';
 

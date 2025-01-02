@@ -1,3 +1,8 @@
+## 4.0.0
+
+- Minimum required Dart SDK version updated to 3.3.
+- Ensure compatibility with the latest Dart features and improvements.
+
 ## 3.5.0
 
 - Implemented Monero cryptographic operations.

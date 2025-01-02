@@ -55,7 +55,7 @@ class ElectrumV2MnemonicUtils {
     final h = BytesUtils.toHexString(QuickCrypto.hmacSha512Hash(
         ElectrumV2MnemonicUtilsConst.hmacKey,
         StringUtils.encode(mnemonic.toStr())));
-    for (var mnemonicType in ElectrumV2MnemonicTypes.values) {
+    for (final mnemonicType in ElectrumV2MnemonicTypes.values) {
       if (h.startsWith(ElectrumV2MnemonicConst.typeToPrefix[mnemonicType]!)) {
         return true;
       }

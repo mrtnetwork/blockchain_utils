@@ -2,7 +2,7 @@
 /// for different languages as defined in BIP-39 (Bitcoin Improvement Proposal 39).
 /// These word lists are used for creating and recovering cryptocurrency wallets.
 
-library bip39_menemonic_languages;
+library;
 
 import 'package:blockchain_utils/bip/bip/bip39/bip39_mnemonic.dart';
 

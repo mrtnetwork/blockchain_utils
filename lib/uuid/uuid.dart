@@ -6,12 +6,12 @@
 ///
 /// The `UUID` class within this library allows for the generation UUID V4
 
-library uuid;
+library;
 
 import 'dart:math' as math;
 
 import 'package:blockchain_utils/utils/utils.dart';
-import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 
 class UUID {
   /// Generates a version 4 (random) UUID (Universally Unique Identifier).
@@ -63,7 +63,7 @@ class UUID {
   /// - [uuidString]: The UUID string to convert to a binary buffer.
   ///
   /// Returns:
-  /// A binary buffer (List<int>) representing the UUID.
+  /// A binary buffer (`List<int>`) representing the UUID.
   static List<int> toBuffer(String uuidString, {bool validate = true}) {
     if (validate && !isValidUUIDv4(uuidString)) {
       throw ArgumentException("invalid uuid string.",
@@ -90,7 +90,7 @@ class UUID {
   /// UUIDv4 string is commonly used to represent unique identifiers.
   ///
   /// Parameters:
-  /// - [buffer]: The binary buffer (List<int>) representing the UUID.
+  /// - [buffer]: The binary buffer (`List<int>`) representing the UUID.
   ///
   /// Returns:
   /// A UUIDv4 string.

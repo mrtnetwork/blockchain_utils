@@ -1,17 +1,22 @@
 import 'package:blockchain_utils/cbor/core/tags.dart';
+import 'package:blockchain_utils/helper/helper.dart';
 import 'package:blockchain_utils/utils/utils.dart';
 
-/// A class for tracking and building a sequence of bytes (List<int>) for CBOR encoding.
+/// A class for tracking and building a sequence of bytes (`List<int>`) for CBOR encoding.
 class CborBytesTracker {
   /// Constructor for creating a CborBytesTracker instance.
   CborBytesTracker();
 
   /// A buffer used to accumulate the bytes for CBOR encoding.
-  final DynamicByteTracker _buffer = DynamicByteTracker();
+  final List<int> _buffer = [];
 
-  /// Retrieve the accumulated bytes as a List<int> from the buffer.
+  /// Retrieve the accumulated bytes as a `List<int>` from the buffer.
   List<int> toBytes() {
-    return _buffer.toBytes();
+    return _buffer.asBytes;
+  }
+
+  List<int> buffer() {
+    return _buffer;
   }
 
   /// Append a single UInt8 value to the byte sequence in the buffer.
@@ -21,13 +26,12 @@ class CborBytesTracker {
 
   /// Append a list of integer values (chunk) to the byte sequence in the buffer.
   void pushBytes(List<int> chunk) {
-    BytesUtils.validateBytes(chunk);
-    _buffer.add(chunk);
+    _buffer.addAll(chunk);
   }
 
   /// Append a list of CBOR tags to the byte sequence in the buffer.
   void pushTags(List<int> tags) {
-    for (int i in tags) {
+    for (final i in tags) {
       pushInt(MajorTags.tag, i);
     }
   }
@@ -55,7 +59,7 @@ class CborBytesTracker {
     int value,
   ) {
     majorTag <<= 5;
-    int? length = bytesLength(value);
+    final int? length = bytesLength(value);
     pushUInt8(majorTag | (length ?? value));
     if (length == null) return;
     final int len = 1 << (length - 24);

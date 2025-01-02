@@ -69,14 +69,13 @@ class Bip84Coins extends BipCoins {
   static const Bip84Coins litecoinTestnet = Bip84Coins._('litecoinTestnet');
   static const Bip84Coins electraProtocolTestnet =
       Bip84Coins._('electraProtocolTestnet');
-
   static const List<Bip84Coins> values = [
     bitcoin,
     litecoin,
     electraProtocol,
     bitcoinTestnet,
     litecoinTestnet,
-    electraProtocolTestnet,
+    electraProtocolTestnet
   ];
   final String name;
 

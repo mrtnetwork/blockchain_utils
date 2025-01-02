@@ -1,5 +1,6 @@
 import 'package:blockchain_utils/base58/base58.dart';
 import 'package:blockchain_utils/bech32/bch_bech32.dart';
+import 'package:blockchain_utils/bip/bip/types/types.dart';
 import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/bip/address/addr_dec_utils.dart';
 import 'package:blockchain_utils/bip/address/addr_key_validator.dart';
@@ -8,15 +9,6 @@ import 'package:blockchain_utils/crypto/quick_crypto.dart';
 import 'decoder.dart';
 import 'exception/exception.dart';
 
-/// Enumeration representing different modes for public keys used in P2PKH addresses.
-///
-/// This enum defines different modes for public keys that can be used in P2PKH (Pay-to-Public-Key-Hash)
-/// addresses. These modes may include compressed and uncompressed public keys, among others.
-enum PubKeyModes {
-  compressed,
-  uncompressed,
-}
-
 /// Implementation of the [BlockchainAddressDecoder] for P2PKH (Pay-to-Public-Key-Hash) addresses.
 class P2PKHAddrDecoder implements BlockchainAddressDecoder {
   /// Overrides the base class method to decode a P2PKH (Pay-to-Public-Key-Hash) address.
@@ -24,25 +16,25 @@ class P2PKHAddrDecoder implements BlockchainAddressDecoder {
   /// This method decodes a P2PKH address from the provided input string using Base58 encoding.
   /// It expects an optional map of keyword arguments with 'net_ver' specifying the network version bytes,
   /// and 'base58_alph' for the Base58 alphabet. It validates the arguments, decodes the address,
-  /// checks its length and network version, and returns the decoded P2PKH address as a List<int>.
+  /// checks its length and network version, and returns the decoded P2PKH address as a `List<int>`.
   ///
   /// Parameters:
   ///   - addr: The P2PKH address to be decoded.
   ///   - kwargs: Optional keyword arguments with 'net_ver' for the network version and 'base58_alph' for Base58 alphabet.
   ///
   /// Returns:
-  ///   A List<int> containing the decoded P2PKH address bytes.
+  ///   A `List<int>` containing the decoded P2PKH address bytes.
   @override
   List<int> decodeAddr(String addr, [Map<String, dynamic> kwargs = const {}]) {
     /// Validate network version and Base58 alphabet arguments.
     AddrKeyValidator.validateAddressArgs<List<int>>(kwargs, "net_ver");
-    List<int> netVarBytes = kwargs["net_ver"];
+    final List<int> netVarBytes = kwargs["net_ver"];
 
     final Base58Alphabets alphabet =
         kwargs["base58_alph"] ?? Base58Alphabets.bitcoin;
 
     /// Decode the address using the specified Base58 alphabet.
-    List<int> addrDecBytes = Base58Decoder.checkDecode(addr, alphabet);
+    final List<int> addrDecBytes = Base58Decoder.checkDecode(addr, alphabet);
 
     /// Validate the length of the decoded address and its network version.
     AddrDecUtils.validateBytesLength(
@@ -110,14 +102,14 @@ class BchP2PKHAddrDecoder implements BlockchainAddressDecoder {
   /// This method decodes a P2PKH address from the provided input string using Bech32 encoding.
   /// It expects an optional map of keyword arguments with 'net_ver' specifying the network version bytes
   /// and 'hrp' for the Human-Readable Part (HRP). It validates the arguments, decodes the Bech32 address,
-  /// checks its network version, length, and checksum, and returns the decoded P2PKH address as a List<int>.
+  /// checks its network version, length, and checksum, and returns the decoded P2PKH address as a `List<int>`.
   ///
   /// Parameters:
   ///   - addr: The Bech32-encoded P2PKH address to be decoded.
   ///   - kwargs: Optional keyword arguments with 'net_ver' for the network version and 'hrp' for HRP.
   ///
   /// Returns:
-  ///   A List<int> containing the decoded P2PKH address bytes.
+  ///   A `List<int>` containing the decoded P2PKH address bytes.
   @override
   List<int> decodeAddr(String addr, [Map<String, dynamic> kwargs = const {}]) {
     /// Validate network version and HRP arguments.
@@ -128,8 +120,8 @@ class BchP2PKHAddrDecoder implements BlockchainAddressDecoder {
 
     /// Decode the Bech32 address and retrieve network version and decoded bytes.
     final result = BchBech32Decoder.decode(hrp, addr);
-    List<int> netVerBytesGot = result.item1;
-    List<int> addrDecBytes = result.item2;
+    final List<int> netVerBytesGot = result.item1;
+    final List<int> addrDecBytes = result.item2;
 
     /// Validate that the decoded network version matches the expected network version.
     if (!BytesUtils.bytesEqual(netVerBytes, netVerBytesGot)) {
@@ -163,8 +155,8 @@ class BchP2PKHAddrEncoder implements BlockchainAddressEncoder {
     /// Validate network version and HRP arguments.
     AddrKeyValidator.validateAddressArgs<List<int>>(kwargs, "net_ver");
     AddrKeyValidator.validateAddressArgs<String>(kwargs, "hrp");
-    String hrp = kwargs['hrp'];
-    List<int> netVerBytes = kwargs['net_ver'];
+    final String hrp = kwargs['hrp'];
+    final List<int> netVerBytes = kwargs['net_ver'];
 
     /// Validate and process the public key as a Secp256k1 key.
     final pubKeyObj = AddrKeyValidator.validateAndGetSecp256k1Key(pubKey);

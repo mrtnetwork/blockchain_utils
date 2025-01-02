@@ -49,7 +49,7 @@ class _Keccack {
   /// If the hash has already been finished using the `finish` method, calling this method will result in an error.
   ///
   /// Parameters:
-  /// - [data]: The List<int> containing the data to be hashed.
+  /// - [data]: The `List<int>` containing the data to be hashed.
   ///
   /// Returns this [Hash] object for method chaining.
   _Keccack update(List<int> data) {
@@ -139,7 +139,7 @@ class Keccack extends _Keccack {
   /// If the hash has already been finished using the `finish` method, calling this method will result in an error.
   ///
   /// Parameters:
-  /// - [data]: The List<int> containing the data to be hashed.
+  /// - [data]: The `List<int>` containing the data to be hashed.
   ///
   /// Returns this [Hash] object for method chaining.
   @override
@@ -148,14 +148,14 @@ class Keccack extends _Keccack {
     return this;
   }
 
-  /// Finalizes the hash computation and stores the hash state in the provided List<int> [out].
+  /// Finalizes the hash computation and stores the hash state in the provided `List<int>` [out].
   ///
   /// This function completes the hash computation, finalizes the state, and stores the resulting
-  /// hash in the provided [out] List<int>. If the hash has already been finished, this method
+  /// hash in the provided [out] `List<int>`. If the hash has already been finished, this method
   /// will return the existing state without re-computing.
   ///
   /// Parameters:
-  ///   - [out]: The List<int> in which the hash digest is stored.
+  ///   - [out]: The `List<int>` in which the hash digest is stored.
   ///
   /// Returns the current instance of the hash algorithm.
   Keccack finish(List<int> dst) {
@@ -170,13 +170,13 @@ class Keccack extends _Keccack {
     return this;
   }
 
-  /// Generates the final hash digest by assembling and returning the hash state in a List<int>.
+  /// Generates the final hash digest by assembling and returning the hash state in a `List<int>`.
   ///
   /// This function produces the hash digest by combining the current hash state into a single
-  /// List<int> output. It finalizes the hash if it hasn't been finished, effectively completing
+  /// `List<int>` output. It finalizes the hash if it hasn't been finished, effectively completing
   /// the hash computation and returning the result.
   ///
-  /// Returns the List<int> containing the computed hash digest.
+  /// Returns the `List<int>` containing the computed hash digest.
   List<int> digest() {
     final out = List<int>.filled(digestLength, 0);
     finish(out);
@@ -256,7 +256,7 @@ class SHA3 extends _Keccack implements SerializableHash<HashBytesState> {
   /// If the hash has already been finished using the `finish` method, calling this method will result in an error.
   ///
   /// Parameters:
-  /// - [data]: The List<int> containing the data to be hashed.
+  /// - [data]: The `List<int>` containing the data to be hashed.
   ///
   /// Returns this [Hash] object for method chaining.
   SHA3 update(List<int> data) {
@@ -264,14 +264,14 @@ class SHA3 extends _Keccack implements SerializableHash<HashBytesState> {
     return this;
   }
 
-  /// Finalizes the hash computation and stores the hash state in the provided List<int> [out].
+  /// Finalizes the hash computation and stores the hash state in the provided `List<int>` [out].
   ///
   /// This function completes the hash computation, finalizes the state, and stores the resulting
-  /// hash in the provided [out] List<int>. If the hash has already been finished, this method
+  /// hash in the provided [out] `List<int>`. If the hash has already been finished, this method
   /// will return the existing state without re-computing.
   ///
   /// Parameters:
-  ///   - [out]: The List<int> in which the hash digest is stored.
+  ///   - [out]: The `List<int>` in which the hash digest is stored.
   ///
   /// Returns the current instance of the hash algorithm.
   @override
@@ -287,13 +287,13 @@ class SHA3 extends _Keccack implements SerializableHash<HashBytesState> {
     return this;
   }
 
-  /// Generates the final hash digest by assembling and returning the hash state in a List<int>.
+  /// Generates the final hash digest by assembling and returning the hash state in a `List<int>`.
   ///
   /// This function produces the hash digest by combining the current hash state into a single
-  /// List<int> output. It finalizes the hash if it hasn't been finished, effectively completing
+  /// `List<int>` output. It finalizes the hash if it hasn't been finished, effectively completing
   /// the hash computation and returning the result.
   ///
-  /// Returns the List<int> containing the computed hash digest.
+  /// Returns the `List<int>` containing the computed hash digest.
   @override
   List<int> digest() {
     final out = List<int>.filled(getDigestLength, 0);
@@ -475,7 +475,7 @@ class SHAKE extends _Keccack implements SerializableHash<HashBytesState> {
   /// If the hash has already been finished using the `finish` method, calling this method will result in an error.
   ///
   /// Parameters:
-  /// - [data]: The List<int> containing the data to be hashed.
+  /// - [data]: The `List<int>` containing the data to be hashed.
   ///
   /// Returns this [Hash] object for method chaining.
   SHAKE update(List<int> data) {
@@ -512,13 +512,13 @@ class SHAKE extends _Keccack implements SerializableHash<HashBytesState> {
     zero(savedState);
   }
 
-  /// Generates the final hash digest by assembling and returning the hash state in a List<int>.
+  /// Generates the final hash digest by assembling and returning the hash state in a `List<int>`.
   ///
   /// This function produces the hash digest by combining the current hash state into a single
-  /// List<int> output. It finalizes the hash if it hasn't been finished, effectively completing
+  /// `List<int>` output. It finalizes the hash if it hasn't been finished, effectively completing
   /// the hash computation and returning the result.
   ///
-  /// Returns the List<int> containing the computed hash digest.
+  /// Returns the `List<int>` containing the computed hash digest.
   @override
   List<int> digest([int outlen = 32]) {
     final out = List<int>.filled(outlen, 0);
@@ -526,14 +526,14 @@ class SHAKE extends _Keccack implements SerializableHash<HashBytesState> {
     return out;
   }
 
-  /// Finalizes the hash computation and stores the hash state in the provided List<int> [out].
+  /// Finalizes the hash computation and stores the hash state in the provided `List<int>` [out].
   ///
   /// This function completes the hash computation, finalizes the state, and stores the resulting
-  /// hash in the provided [out] List<int>. If the hash has already been finished, this method
+  /// hash in the provided [out] `List<int>`. If the hash has already been finished, this method
   /// will return the existing state without re-computing.
   ///
   /// Parameters:
-  ///   - [out]: The List<int> in which the hash digest is stored.
+  ///   - [out]: The `List<int>` in which the hash digest is stored.
   ///
   /// Returns the current instance of the hash algorithm.
   @override
@@ -569,7 +569,7 @@ class SHAKE extends _Keccack implements SerializableHash<HashBytesState> {
 /// Example of usage:
 /// ```dart
 /// final shake = SHAKE128();
-/// shake.update(List<int>.from([0x01, 0x02, 0x03]));
+/// shake.update(`List<int>`.from([0x01, 0x02, 0x03]));
 /// final digest = shake.digest();
 /// shake.clean();
 /// ```
@@ -589,7 +589,7 @@ class SHAKE128 extends SHAKE {
 /// Example of usage:
 /// ```dart
 /// final shake = SHAKE256();
-/// shake.update(List<int>.from([0x01, 0x02, 0x03]));
+/// shake.update(`List<int>`.from([0x01, 0x02, 0x03]));
 /// final digest = shake.digest();
 /// shake.clean();
 /// ```

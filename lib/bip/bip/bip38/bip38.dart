@@ -1,6 +1,6 @@
 /// The 'bip38' library provides tools for working with BIP-38, a standard for
 /// encrypting and decrypting private keys in a human-readable format.
-library bip38;
+library;
 
 /// Export statement for BIP-38 address-related functions and utilities.
 export 'bip38_addr.dart';

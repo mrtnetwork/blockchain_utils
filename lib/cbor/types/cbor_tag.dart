@@ -24,7 +24,7 @@ class CborTagValue<T> implements CborObject {
     bytes.pushTags(tags);
     final obj = CborObject.fromDynamic(_value).encode();
     bytes.pushBytes(obj);
-    return bytes.toBytes();
+    return bytes.buffer();
   }
 
   /// Encode the value into CBOR bytes an then to hex

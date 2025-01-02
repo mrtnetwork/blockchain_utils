@@ -16,7 +16,7 @@ class EgldAddrDecoder implements BlockchainAddressDecoder {
   /// This method decodes the Egld address by validating and removing the prefix and verifying
   /// the Bech32 checksum.
   ///
-  /// Returns a List<int> containing the decoded Egld address.
+  /// Returns a List containing the decoded Egld address.
   @override
   List<int> decodeAddr(String addr, [Map<String, dynamic> kwargs = const {}]) {
     /// Decode the Bech32 address with the specified Human-Readable Part (HRP)
@@ -37,7 +37,7 @@ class EgldAddrDecoder implements BlockchainAddressDecoder {
 class EgldAddrEncoder implements BlockchainAddressEncoder {
   /// Overrides the method to encode an Egld (Elrond) address based on the provided [pubKey].
   ///
-  /// [pubKey]: The List<int> representing the public key to be encoded.
+  /// [pubKey]: The List representing the public key to be encoded.
   /// [kwargs]: A map of optional keyword arguments.
   ///
   /// This method encodes the Egld address by using the specified Human-Readable Part (HRP)

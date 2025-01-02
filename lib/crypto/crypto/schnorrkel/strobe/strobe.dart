@@ -1,6 +1,6 @@
 import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/crypto/crypto/hash/hash.dart';
-import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 
 class StrobeSecParam {
   /// 128-bit security level
@@ -153,7 +153,7 @@ class Strobe {
   /// This factory constructor ensures that the Strobe instance is properly initialized and configured based on the provided parameters, allowing it to be used for secure protocol operations.
   factory Strobe(String customizationString, StrobeSecParam security) {
     final int rate = (1600 ~/ 8) - security.value ~/ 4;
-    Strobe s = Strobe._(
+    final Strobe s = Strobe._(
       io: 2,
       rate: rate,
       strober: rate - 2,
@@ -162,7 +162,7 @@ class Strobe {
       storage: List<int>.filled(rate, 0),
       buffer: List.empty(growable: true),
     );
-    List<int> domain = [1, rate, 1, 0, 1, 12 * 8];
+    final List<int> domain = [1, rate, 1, 0, 1, 12 * 8];
     domain.addAll(version.codeUnits);
 
     s._duplex(domain, false, false, true);
@@ -184,7 +184,7 @@ class Strobe {
       _buffer.add(_posBegin);
       _buffer.add(0x04);
       _st.setAll(0, _buffer);
-      int zerosStart = _buffer.length;
+      final int zerosStart = _buffer.length;
       _buffer = _st.sublist(0, rate);
       for (int i = zerosStart; i < rate; i++) {
         _buffer[i] = 0;
@@ -193,7 +193,7 @@ class Strobe {
       _st.setAll(0, _buffer);
       _xor(_state, _buffer);
     } else if (_buffer.isNotEmpty) {
-      int zerosStart = _buffer.length;
+      final int zerosStart = _buffer.length;
       _buffer = _st.sublist(0, rate);
       for (int i = zerosStart; i < rate; i++) {
         _buffer[i] = 0;
@@ -306,9 +306,10 @@ class Strobe {
     }
 
     // Operation
-    bool cAfter = ((flags & (StrobeFlags.C | StrobeFlags.I | StrobeFlags.T)) ==
-        (StrobeFlags.C | StrobeFlags.T));
-    bool cBefore = ((flags & StrobeFlags.C) != 0) && (!cAfter);
+    final bool cAfter =
+        ((flags & (StrobeFlags.C | StrobeFlags.I | StrobeFlags.T)) ==
+            (StrobeFlags.C | StrobeFlags.T));
+    final bool cBefore = ((flags & StrobeFlags.C) != 0) && (!cAfter);
 
     _duplex(data, cBefore, cAfter, false);
     if ((flags & (StrobeFlags.I | StrobeFlags.A)) ==
@@ -323,7 +324,7 @@ class Strobe {
             "Not supposed to check a MAC with the 'more' streaming option");
       }
       int failures = 0;
-      for (int dataByte in data) {
+      for (final dataByte in data) {
         failures |= dataByte;
       }
       return List<int>.from([failures]); // 0 if correct, 1 if not
@@ -341,7 +342,7 @@ class Strobe {
   ///
   /// Usage:
   /// ```dart
-  /// List<int> secretKey = ...; // Your secret key.
+  /// `List<int>` secretKey = ...; // Your secret key.
   /// strobeInstance.key(secretKey);
   /// // Set the secret key for cryptographic operations.
   /// ```
@@ -366,7 +367,7 @@ class Strobe {
   /// Usage:
   /// ```dart
   /// int outputLength = 32; // Length of the desired pseudo-random data.
-  /// List<int> randomData = strobeInstance.pseudoRandomData(outputLength);
+  /// `List<int>` randomData = strobeInstance.pseudoRandomData(outputLength);
   /// // Generate pseudo-random data for a specific use case.
   /// ```
   ///
@@ -392,8 +393,8 @@ class Strobe {
   ///
   /// Usage:
   /// ```dart
-  /// List<int> plaintext = ...; // Data to be encrypted and sent.
-  /// List<int> ciphertext = strobeInstance.sendEncUnauthenticated(true, plaintext);
+  /// `List<int>` plaintext = ...; // Data to be encrypted and sent.
+  /// `List<int>` ciphertext = strobeInstance.sendEncUnauthenticated(true, plaintext);
   /// // Encrypt and send data without authentication.
   /// ```
   ///
@@ -419,8 +420,8 @@ class Strobe {
   ///
   /// Usage:
   /// ```dart
-  /// List<int> ciphertext = ...; // Received unauthenticated ciphertext.
-  /// List<int> plaintext = strobeInstance.recvUnauthenticatedEncryptMessage(true, ciphertext);
+  /// `List<int>` ciphertext = ...; // Received unauthenticated ciphertext.
+  /// `List<int>` plaintext = strobeInstance.recvUnauthenticatedEncryptMessage(true, ciphertext);
   /// // Receive and process unauthenticated encrypted message.
   /// ```
   ///
@@ -441,7 +442,7 @@ class Strobe {
   ///
   /// Usage:
   /// ```dart
-  /// List<int> metadata = ...; // Additional data or metadata to include.
+  /// `List<int>` metadata = ...; // Additional data or metadata to include.
   /// strobeInstance.additionalData(true, metadata);
   /// // Process and add additional data to the Strobe protocol state.
   /// ```
@@ -459,11 +460,11 @@ class Strobe {
   ///
   /// Parameters:
   /// - `meta`: A boolean flag indicating whether metadata is included in the operation.
-  /// - `cleartext`: A List<int> containing the clear text data to be processed and sent.
+  /// - `cleartext`: A `List<int>` containing the clear text data to be processed and sent.
   ///
   /// Usage:
   /// ```dart
-  /// List<int> dataToSend = ...; // Clear text data to send.
+  /// `List<int>` dataToSend = ...; // Clear text data to send.
   /// strobeInstance.sendClearText(true, dataToSend);
   /// // Process and send the clear text data within the Strobe protocol.
   /// ```
@@ -480,11 +481,11 @@ class Strobe {
   ///
   /// Parameters:
   /// - `meta`: A boolean flag indicating whether metadata is included in the operation.
-  /// - `cleartext`: A List<int> containing the received clear text data to be processed.
+  /// - `cleartext`: A `List<int>` containing the received clear text data to be processed.
   ///
   /// Usage:
   /// ```dart
-  /// List<int> receivedData = ...; // Received clear text data.
+  /// `List<int>` receivedData = ...; // Received clear text data.
   /// strobeInstance.receivedClearText(true, receivedData);
   /// // Process the received clear text data within the Strobe protocol.
   /// ```
@@ -505,12 +506,12 @@ class Strobe {
   /// - `outputLength`: The desired output length of the generated MAC.
   ///
   /// Returns:
-  /// - A List<int> containing the generated MAC of the specified length.
+  /// - A `List<int>` containing the generated MAC of the specified length.
   ///
   /// Usage:
   /// ```dart
   /// int desiredMacLength = 16; // Specify the desired MAC length in bytes.
-  /// List<int> generatedMac = strobeInstance.sendMac(true, desiredMacLength);
+  /// `List<int>` generatedMac = strobeInstance.sendMac(true, desiredMacLength);
   /// // Append the generated MAC to the data to be sent.
   /// ```
   ///

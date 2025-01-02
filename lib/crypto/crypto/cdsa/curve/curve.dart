@@ -24,7 +24,7 @@ class CurveFp extends Curve {
 
   /// Check if a given point (x, y) lies on the curve
   bool containsPoint(BigInt x, BigInt y) {
-    BigInt leftSide = (y * y - ((x * x + a) * x + b)) % p;
+    final BigInt leftSide = (y * y - ((x * x + a) * x + b)) % p;
 
     return leftSide == BigInt.zero;
   }
@@ -79,7 +79,8 @@ class CurveED extends Curve {
 
   /// Check if a given point (x, y) lies on the curve
   bool containsPoint(BigInt x, BigInt y) {
-    BigInt leftSide = (a * x * x + y * y - BigInt.one - d * x * x * y * y) % p;
+    final BigInt leftSide =
+        (a * x * x + y * y - BigInt.one - d * x * x * y * y) % p;
     return leftSide == BigInt.zero;
   }
 

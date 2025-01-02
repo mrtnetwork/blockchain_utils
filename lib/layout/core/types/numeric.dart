@@ -10,8 +10,7 @@ import 'package:blockchain_utils/utils/numbers/numbers.dart';
 
 /// Represents an external layout.
 abstract class ExternalLayout extends Layout<int> {
-  const ExternalLayout(int span, {String? property})
-      : super(span, property: property);
+  const ExternalLayout(super.span, {super.property});
   bool isCount() => false;
 }
 
@@ -54,8 +53,7 @@ class GreedyCount extends ExternalLayout {
 }
 
 abstract class BaseIntiger<T> extends Layout<T> {
-  const BaseIntiger(int span, {String? property})
-      : super(span, property: property);
+  const BaseIntiger(super.span, {super.property});
   void validate(T value);
   bool get sign;
   Endian get order;
@@ -171,9 +169,8 @@ class BigIntLayout extends BaseIntiger<BigInt> {
   final bool sign;
   @override
   final Endian order;
-  BigIntLayout(int span,
-      {this.sign = false, this.order = Endian.little, String? property})
-      : super(span, property: property);
+  BigIntLayout(super.span,
+      {this.sign = false, this.order = Endian.little, super.property});
   @override
   void validate(BigInt value) {
     if (value.isNegative && !sign) {

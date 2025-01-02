@@ -1,8 +1,6 @@
 // ignore_for_file: depend_on_referenced_packages
 
-import 'package:blockchain_utils/bip/address/p2pkh_addr.dart';
-import 'package:blockchain_utils/bip/bip/bip38/bip38_addr.dart';
-import 'package:blockchain_utils/utils/utils.dart';
+import 'package:blockchain_utils/blockchain_utils.dart';
 import 'package:test/test.dart';
 
 List<Map<String, dynamic>> _testVector = [

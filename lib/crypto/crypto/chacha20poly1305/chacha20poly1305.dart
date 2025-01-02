@@ -2,7 +2,7 @@ import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/crypto/crypto/aead/aead.dart';
 import 'package:blockchain_utils/crypto/crypto/chacha/chacha.dart';
 import 'package:blockchain_utils/crypto/crypto/poly1305/poly1305.dart';
-import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 
 const int _nonceLength = 12;
 const int _tagLength = 16;
@@ -36,7 +36,7 @@ class ChaCha20Poly1305 implements AEAD {
   /// to hold the result.
   ///
   /// Parameters:
-  /// - `nonce`: The nonce as a List<int>, with a maximum length of 16 bytes.
+  /// - `nonce`: The nonce as a `List<int>`, with a maximum length of 16 bytes.
   /// - `plaintext`: The plaintext data to be encrypted.
   /// - `associatedData`: Optional associated data that is not encrypted but included in the tag calculation.
   /// - `dst`: An optional destination `List<int>` where the encrypted data and tag will be written.
@@ -66,7 +66,7 @@ class ChaCha20Poly1305 implements AEAD {
 
     final resultLength = plaintext.length + tagLength;
 
-    List<int> result = dst ?? List<int>.filled(resultLength, 0);
+    final List<int> result = dst ?? List<int>.filled(resultLength, 0);
     if (result.length != resultLength) {
       throw const ArgumentException(
           "ChaCha20Poly1305: incorrect destination length");
@@ -92,7 +92,7 @@ class ChaCha20Poly1305 implements AEAD {
   /// incorrect tag or nonce), `null` is returned.
   ///
   /// Parameters:
-  /// - `nonce`: The nonce as a List<int>, with a maximum length of 16 bytes.
+  /// - `nonce`: The nonce as a `List<int>`, with a maximum length of 16 bytes.
   /// - `sealed`: The sealed data, including the ciphertext and authentication tag.
   /// - `associatedData`: Optional associated data that is not encrypted but used in the tag verification.
   /// - `dst`: An optional destination `List<int>` where the decrypted plaintext will be written.
@@ -134,7 +134,7 @@ class ChaCha20Poly1305 implements AEAD {
 
     final resultLength = sealed.length - tagLength;
 
-    List<int> result = dst ?? List<int>.filled(resultLength, 0);
+    final List<int> result = dst ?? List<int>.filled(resultLength, 0);
     if (result.length != resultLength) {
       throw const ArgumentException(
           "ChaCha20Poly1305: incorrect destination length");

@@ -1,7 +1,6 @@
-import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 
 /// An exception representing an error related to mnemonic.
 class MnemonicException extends BlockchainUtilsException {
-  const MnemonicException(String message, {Map<String, dynamic>? details})
-      : super(message, details: details);
+  const MnemonicException(super.message, {super.details});
 }

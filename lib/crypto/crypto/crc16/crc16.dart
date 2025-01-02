@@ -5,10 +5,10 @@ class Crc16 {
 
   static List<int> quickIntDigest(List<int> data) {
     int reg = 0;
-    List<int> message = List<int>.filled(data.length + 2, 0);
+    final List<int> message = List<int>.filled(data.length + 2, 0);
     message.setAll(0, data);
 
-    for (int byte in message) {
+    for (final byte in message) {
       int mask = 0x80;
       while (mask > 0) {
         reg <<= 1;

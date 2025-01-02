@@ -52,7 +52,7 @@ class _ErgoAddrUtils {
   /// Computes the checksum for an Ergo address.
   ///
   /// [pubKeyBytes]: The public key bytes to generate the checksum from.
-  /// Returns a List<int> representing the computed checksum.
+  /// Returns a `List` representing the computed checksum.
   static List<int> computeChecksum(List<int> pubKeyBytes) {
     final checksum = QuickCrypto.blake2b256Hash(pubKeyBytes);
     return checksum.sublist(0, ErgoAddrConst.checksumByteLen);
@@ -62,7 +62,7 @@ class _ErgoAddrUtils {
   ///
   /// [addrType]: The address type (e.g., p2pkh or p2sh).
   /// [netType]: The network type (e.g., mainnet or testnet).
-  /// Returns a List<int> representing the encoded prefix.
+  /// Returns a `List` representing the encoded prefix.
   static List<int> encodePrefix(
       ErgoAddressTypes addrType, ErgoNetworkTypes netType) {
     final prefixInt = addrType.value + netType.value;
@@ -80,7 +80,7 @@ class ErgoP2PKHAddrDecoder implements BlockchainAddressDecoder {
   /// [kwargs]: Optional parameters.
   ///   - [net_type]: The network type for the Ergo address (mainnet or testnet).
   ///
-  /// Returns a List<int> representing the public key bytes decoded from the address.
+  /// Returns a `List` representing the public key bytes decoded from the address.
   /// Throws an ArgumentException if the address type is not of ErgoNetworkTypes.
   @override
   List<int> decodeAddr(String addr, [Map<String, dynamic> kwargs = const {}]) {

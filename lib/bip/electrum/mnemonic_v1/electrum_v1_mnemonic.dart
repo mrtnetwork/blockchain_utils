@@ -64,8 +64,8 @@ class ElectrumV1MnemonicConst {
 /// A class representing Electrum V1 mnemonics, extending the Bip39Mnemonic class.
 class ElectrumV1Mnemonic extends Bip39Mnemonic {
   /// Constructs an Electrum V1 mnemonic from a string representation.
-  ElectrumV1Mnemonic.fromString(String mnemonic) : super.fromString(mnemonic);
+  ElectrumV1Mnemonic.fromString(super.mnemonic) : super.fromString();
 
   /// Constructs an Electrum V1 mnemonic from a list of words.
-  ElectrumV1Mnemonic.fromList(List<String> mnemonic) : super.fromList(mnemonic);
+  ElectrumV1Mnemonic.fromList(super.mnemonic) : super.fromList();
 }

@@ -4,7 +4,7 @@ import 'package:blockchain_utils/bip/monero/mnemonic/monero_mnemonic.dart';
 import 'package:blockchain_utils/bip/monero/mnemonic/monero_mnemonic_utils.dart';
 import 'package:blockchain_utils/bip/mnemonic/mnemonic_decoder_base.dart';
 import 'package:blockchain_utils/bip/mnemonic/mnemonic_utils.dart';
-import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 
 import '../../mnemonic/mnemonic_ex.dart';
 
@@ -18,7 +18,7 @@ class MoneroMnemonicDecoder extends MnemonicDecoderBase {
             wordsListFinder: MoneroWordsListFinder(),
             wordsListGetter: MoneroWordsListGetter());
 
-  /// Decodes a Monero mnemonic string into a List<int> representing entropy.
+  /// Decodes a Monero mnemonic string into a `List<int>` representing entropy.
   ///
   /// This method takes a Monero mnemonic string as input and processes it to obtain
   /// the corresponding entropy bytes. It validates the mnemonic's word count and detects
@@ -27,7 +27,7 @@ class MoneroMnemonicDecoder extends MnemonicDecoderBase {
   ///
   /// Throws a StateError if the mnemonic words count is not valid.
   ///
-  /// Returns a List<int> containing the decoded entropy bytes.
+  /// Returns a `List<int>` containing the decoded entropy bytes.
   ///
   /// [mnemonic]: The Monero mnemonic string to decode.
   @override
@@ -45,10 +45,10 @@ class MoneroMnemonicDecoder extends MnemonicDecoderBase {
     validateCheckSum(words, lang.item2 as MoneroLanguages);
     List<int> entropyBytes = List.empty();
     for (int i = 0; i < words.length ~/ 3; i++) {
-      String word1 = words[i * 3];
-      String word2 = words[i * 3 + 1];
-      String word3 = words[i * 3 + 2];
-      List<int> chunkBytes = MnemonicUtils.wordsToBytesChunk(
+      final String word1 = words[i * 3];
+      final String word2 = words[i * 3 + 1];
+      final String word3 = words[i * 3 + 2];
+      final List<int> chunkBytes = MnemonicUtils.wordsToBytesChunk(
           word1, word2, word3, lang.item1,
           endian: Endian.little);
       entropyBytes = List<int>.from([...entropyBytes, ...chunkBytes]);

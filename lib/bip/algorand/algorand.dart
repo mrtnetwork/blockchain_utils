@@ -2,7 +2,7 @@
 // for working with Algorand mnemonics, a critical component in the Algorand
 // blockchain ecosystem.
 
-library algorand_mnemonic;
+library;
 
 // Export statement for the entropy generator module.
 export 'mnemonic/algorand_entropy_generator.dart';

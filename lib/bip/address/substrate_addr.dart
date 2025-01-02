@@ -44,14 +44,14 @@ class SubstrateEd25519AddrDecoder implements BlockchainAddressDecoder {
   /// This method decodes a Substrate address from the given input string. It expects a
   /// map of optional keyword arguments, with the 'ss58_format' key specifying the expected
   /// SS58 format for the address. It validates the arguments, decodes the address, and returns
-  /// the decoded address as a List<int>.
+  /// the decoded address as a `List<int>`.
   ///
   /// Parameters:
   ///   - addr: The address to be decoded.
   ///   - kwargs: Optional keyword arguments (e.g., 'ss58_format') for customization.
   ///
   /// Returns:
-  ///   A List<int> containing the decoded address bytes.
+  ///   A `List<int>` containing the decoded address bytes.
   ///
   /// Throws:
   ///   - FormatException if the provided address is not in the expected SS58 format.
@@ -69,7 +69,7 @@ class SubstrateEd25519AddrDecoder implements BlockchainAddressDecoder {
 class SubstrateEd25519AddrEncoder implements BlockchainAddressEncoder {
   /// Encodes a public key into a Substrate address.
   ///
-  /// This method takes a public key as a List<int> and an optional map of keyword
+  /// This method takes a public key as a `List<int>` and an optional map of keyword
   /// arguments, with the 'ss58_format' key specifying the desired SS58 format for
   /// the address. It validates the arguments, encodes the public key, and returns
   /// the resulting Substrate address as a String.
@@ -101,14 +101,14 @@ class SubstrateSr25519AddrDecoder implements BlockchainAddressDecoder {
   /// This method decodes a Substrate address from the given input string. It expects a
   /// map of optional keyword arguments, with the 'ss58_format' key specifying the expected
   /// SS58 format for the address. It validates the arguments, decodes the address, and returns
-  /// the decoded address as a List<int>.
+  /// the decoded address as a `List<int>`.
   ///
   /// Parameters:
   ///   - addr: The address to be decoded.
   ///   - kwargs: Optional keyword arguments (e.g., 'ss58_format') for customization.
   ///
   /// Returns:
-  ///   A List<int> containing the decoded address bytes.
+  ///   A `List<int>` containing the decoded address bytes.
   ///
   /// Throws:
   ///   - FormatException if the provided address is not in the expected SS58 format.
@@ -126,7 +126,7 @@ class SubstrateSr25519AddrDecoder implements BlockchainAddressDecoder {
 class SubstrateSr25519AddrEncoder implements BlockchainAddressEncoder {
   /// Encodes a public key into a Substrate address.
   ///
-  /// This method takes a public key as a List<int> and an optional map of keyword
+  /// This method takes a public key as a `List<int>` and an optional map of keyword
   /// arguments, with the 'ss58_format' key specifying the desired SS58 format for
   /// the address. It validates the arguments, encodes the public key, and returns
   /// the resulting Substrate address as a String.
@@ -157,14 +157,14 @@ class SubstrateSecp256k1AddrDecoder implements BlockchainAddressDecoder {
   /// This method decodes a Substrate address from the given input string. It expects a
   /// map of optional keyword arguments, with the 'ss58_format' key specifying the expected
   /// SS58 format for the address. It validates the arguments, decodes the address, and returns
-  /// the decoded address as a List<int>.
+  /// the decoded address as a `List<int>`.
   ///
   /// Parameters:
   ///   - addr: The address to be decoded.
   ///   - kwargs: Optional keyword arguments (e.g., 'ss58_format') for customization.
   ///
   /// Returns:
-  ///   A List<int> containing the decoded address bytes.
+  ///   A `List<int>` containing the decoded address bytes.
   ///
   /// Throws:
   ///   - FormatException if the provided address is not in the expected SS58 format.
@@ -181,7 +181,7 @@ class SubstrateSecp256k1AddrDecoder implements BlockchainAddressDecoder {
 class SubstrateSecp256k1AddrEncoder implements BlockchainAddressEncoder {
   /// Encodes a public key into a Substrate address.
   ///
-  /// This method takes a public key as a List<int> and an optional map of keyword
+  /// This method takes a public key as a `List<int>` and an optional map of keyword
   /// arguments, with the 'ss58_format' key specifying the desired SS58 format for
   /// the address. It validates the arguments, encodes the public key, and returns
   /// the resulting Substrate address as a String.

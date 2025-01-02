@@ -3,7 +3,7 @@ import 'package:blockchain_utils/bip/electrum/mnemonic_v1/electrum_v1_mnemonic.d
 import 'package:blockchain_utils/bip/electrum/mnemonic_v1/electrum_v1_mnemonic_utils.dart';
 import 'package:blockchain_utils/bip/mnemonic/mnemonic_decoder_base.dart';
 import 'package:blockchain_utils/bip/mnemonic/mnemonic_utils.dart';
-import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 
 /// A class for decoding Electrum V1 mnemonics, extending the MnemonicDecoderBase class.
 class ElectrumV1MnemonicDecoder extends MnemonicDecoderBase {
@@ -16,7 +16,7 @@ class ElectrumV1MnemonicDecoder extends MnemonicDecoderBase {
           wordsListGetter: ElectrumV1WordsListGetter(),
         );
 
-  /// Decodes an Electrum V1 mnemonic string into a List<int> representing entropy.
+  /// Decodes an Electrum V1 mnemonic string into a `List<int>` representing entropy.
   ///
   /// This method takes an Electrum V1 mnemonic string as input and processes it to obtain
   /// the corresponding entropy bytes. It validates the mnemonic's word count and detects
@@ -25,7 +25,7 @@ class ElectrumV1MnemonicDecoder extends MnemonicDecoderBase {
   ///
   /// Throws an ArgumentException if the mnemonic words count is not valid.
   ///
-  /// Returns a List<int> containing the decoded entropy bytes.
+  /// Returns a `List<int>` containing the decoded entropy bytes.
   ///
   /// [mnemonic]: The Electrum V1 mnemonic string to decode.
   @override

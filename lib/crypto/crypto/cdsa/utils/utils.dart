@@ -1,5 +1,5 @@
 import 'package:blockchain_utils/crypto/crypto/cdsa/utils/exp.dart';
-import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 
 class ECDSAUtils {
   /// Computes the modular exponentiation of a polynomial represented by [base]
@@ -97,7 +97,8 @@ class ECDSAUtils {
   /// Multiply two polynomials represented by lists 'm1' and 'm2', reducing modulo 'polymod' and prime 'p'.
   static List<BigInt> polynomialMultiplyMod(
       List<BigInt> m1, List<BigInt> m2, List<BigInt> polymod, BigInt p) {
-    List<BigInt> prod = List.filled(m1.length + m2.length - 1, BigInt.zero);
+    final List<BigInt> prod =
+        List.filled(m1.length + m2.length - 1, BigInt.zero);
 
     // Add together all the cross-terms:
     for (int i = 0; i < m1.length; i++) {

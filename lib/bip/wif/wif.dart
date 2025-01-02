@@ -53,10 +53,10 @@
 */
 
 import 'package:blockchain_utils/base58/base58.dart';
-import 'package:blockchain_utils/bip/address/p2pkh_addr.dart';
+import 'package:blockchain_utils/bip/bip/types/types.dart';
 import 'package:blockchain_utils/bip/ecc/keys/secp256k1_keys_ecdsa.dart';
 import 'package:blockchain_utils/utils/utils.dart';
-import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 
 /// Constants related to Wallet Import Format (WIF).
 class WifConst {

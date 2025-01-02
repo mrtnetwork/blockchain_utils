@@ -1,5 +1,4 @@
 import 'package:blockchain_utils/bip/bip/bip32/bip32_key_data.dart';
-import 'package:blockchain_utils/bip/bip/bip32/bip32_key_net_ver.dart';
 import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
 
 import 'bip32_slip10_ed25519.dart';
@@ -22,35 +21,28 @@ import 'bip32_slip10_ed25519.dart';
 class Bip32Slip10Ed25519Blake2b extends Bip32Slip10Ed25519 {
   /// constructor for creating an instance with provided key data.
   Bip32Slip10Ed25519Blake2b(
-      {required Bip32KeyData keyData,
-      required Bip32KeyNetVersions keyNetVer,
-      required List<int>? privKey,
-      required List<int>? pubKey})
-      : super(
-            keyData: keyData,
-            keyNetVer: keyNetVer,
-            pubKey: pubKey,
-            privKey: privKey);
+      {required super.keyData,
+      required super.keyNetVer,
+      required super.privKey,
+      required super.pubKey});
 
   /// constructor for creating a key from a seed.
-  Bip32Slip10Ed25519Blake2b.fromSeed(List<int> seedBytes,
-      [Bip32KeyNetVersions? keyNetVer])
-      : super.fromSeed(seedBytes, keyNetVer);
+  Bip32Slip10Ed25519Blake2b.fromSeed(super.seedBytes, [super.keyNetVer])
+      : super.fromSeed();
 
   /// constructor for creating a key from a private key.
-  Bip32Slip10Ed25519Blake2b.fromExtendedKey(String exKeyStr,
-      [Bip32KeyNetVersions? keyNetVer])
-      : super.fromExtendedKey(exKeyStr, keyNetVer);
+  Bip32Slip10Ed25519Blake2b.fromExtendedKey(super.exKeyStr, [super.keyNetVer])
+      : super.fromExtendedKey();
 
   /// constructor for creating a key from a public key.
-  Bip32Slip10Ed25519Blake2b.fromPrivateKey(List<int> privKey,
-      {Bip32KeyData? keyData, Bip32KeyNetVersions? keyNetVer})
-      : super.fromPrivateKey(privKey, keyData: keyData, keyNetVer: keyNetVer);
+  Bip32Slip10Ed25519Blake2b.fromPrivateKey(super.privKey,
+      {super.keyData, super.keyNetVer})
+      : super.fromPrivateKey();
 
   /// constructor for creating a key from an extended key string.
-  Bip32Slip10Ed25519Blake2b.fromPublicKey(List<int> pubkey,
-      {Bip32KeyData? keyData, Bip32KeyNetVersions? keyNetVer})
-      : super.fromPublicKey(pubkey, keyData: keyData, keyNetVer: keyNetVer);
+  Bip32Slip10Ed25519Blake2b.fromPublicKey(super.pubkey,
+      {super.keyData, super.keyNetVer})
+      : super.fromPublicKey();
 
   /// Returns the curve type Ed25519-blake2b.
   @override

@@ -27,25 +27,18 @@ import 'bip32_slip10_key_derivator.dart';
 /// working with this curve, such as key derivation and management.
 class Bip32Slip10Nist256p1 extends Bip32Base {
   Bip32Slip10Nist256p1._(
-      {required Bip32KeyData keyData,
-      required Bip32KeyNetVersions keyNetVer,
-      required List<int>? privKey,
-      required List<int>? pubKey})
-      : super(
-            keyData: keyData,
-            keyNetVer: keyNetVer,
-            privKey: privKey,
-            pubKey: pubKey);
+      {required super.keyData,
+      required super.keyNetVer,
+      required super.privKey,
+      required super.pubKey});
 
   /// constructor for creating a key from a seed.
-  Bip32Slip10Nist256p1.fromSeed(List<int> seedBytes,
-      [Bip32KeyNetVersions? keyNetVer])
-      : super.fromSeed(seedBytes, keyNetVer);
+  Bip32Slip10Nist256p1.fromSeed(super.seedBytes, [super.keyNetVer])
+      : super.fromSeed();
 
   /// constructor for creating a key from an extended key string.
-  Bip32Slip10Nist256p1.fromExtendedKey(String exKeyStr,
-      [Bip32KeyNetVersions? keyNetVer])
-      : super.fromExtendedKey(exKeyStr, keyNetVer);
+  Bip32Slip10Nist256p1.fromExtendedKey(super.exKeyStr, [super.keyNetVer])
+      : super.fromExtendedKey();
 
   /// constructor for creating a key from a private key.
   Bip32Slip10Nist256p1.fromPrivateKey(List<int> privKey,

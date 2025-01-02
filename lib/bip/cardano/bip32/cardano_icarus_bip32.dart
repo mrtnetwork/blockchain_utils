@@ -22,16 +22,11 @@ import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
 /// - [CardanoIcarusBip32.fromPublicKey]: Creates a Bip32 key pair from a public key.
 class CardanoIcarusBip32 extends Bip32Base {
   /// Private constructor for creating an instance with specified parameters.
-  CardanoIcarusBip32._({
-    required List<int>? privKey,
-    required List<int>? pubKey,
-    required Bip32KeyData keyData,
-    required Bip32KeyNetVersions keyNetVer,
-  }) : super(
-            keyData: keyData,
-            keyNetVer: keyNetVer,
-            pubKey: pubKey,
-            privKey: privKey);
+  CardanoIcarusBip32._(
+      {required super.privKey,
+      required super.pubKey,
+      required super.keyData,
+      required super.keyNetVer});
 
   /// Creates a [CardanoIcarusBip32] instance from a private key.
   CardanoIcarusBip32.fromPrivateKey(List<int> privKey,
@@ -39,9 +34,8 @@ class CardanoIcarusBip32 extends Bip32Base {
       : super.fromPrivateKey(privKey, keyData, keyNetVer);
 
   /// Creates a [CardanoIcarusBip32] instance from a extended key.
-  CardanoIcarusBip32.fromExtendedKey(String exKeyStr,
-      [Bip32KeyNetVersions? keyNetVer])
-      : super.fromExtendedKey(exKeyStr, keyNetVer);
+  CardanoIcarusBip32.fromExtendedKey(super.exKeyStr, [super.keyNetVer])
+      : super.fromExtendedKey();
 
   /// Creates a [CardanoIcarusBip32] instance from a public key.
   CardanoIcarusBip32.fromPublicKey(List<int> pubkey,
@@ -49,9 +43,8 @@ class CardanoIcarusBip32 extends Bip32Base {
       : super.fromPublicKey(pubkey, keyData, keyNetVer);
 
   /// Creates a [CardanoIcarusBip32] instance from a seed.
-  CardanoIcarusBip32.fromSeed(List<int> seedBytes,
-      [Bip32KeyNetVersions? keyNetVer])
-      : super.fromSeed(seedBytes, keyNetVer);
+  CardanoIcarusBip32.fromSeed(super.seedBytes, [super.keyNetVer])
+      : super.fromSeed();
 
   /// Generates a child key based on the given [index].
   ///

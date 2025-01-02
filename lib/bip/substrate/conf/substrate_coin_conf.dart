@@ -1,6 +1,7 @@
 import 'package:blockchain_utils/bip/bip/bip32/bip32_key_net_ver.dart';
 import 'package:blockchain_utils/bip/bip/conf/core/coin_conf.dart';
-import 'package:blockchain_utils/bip/coin_conf/conf.dart';
+import 'package:blockchain_utils/bip/coin_conf/models/coin_conf.dart';
+import 'package:blockchain_utils/bip/coin_conf/models/coins_name.dart';
 import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
 
 /// A class representing the configuration for a Substrate-based cryptocurrency.
@@ -22,22 +23,23 @@ class SubstrateCoinConf implements CoinConfig {
       required this.addressEncoder,
       required this.type,
       this.addrParams = const {},
-      this.isTestnet});
+      required this.chainType});
 
   /// Factory method to create a SubstrateCoinConf from a generic CoinConf.
   ///
   /// This method takes a generic `CoinConf` instance and extracts the coin names
   /// and SS58 address format information to create a `SubstrateCoinConf`.
-  factory SubstrateCoinConf.fromCoinConf({
-    required CoinConf coinConf,
-    required AddrEncoder addressEncode,
-    required EllipticCurveTypes type,
-  }) {
+  factory SubstrateCoinConf.fromCoinConf(
+      {required CoinConf coinConf,
+      required AddrEncoder addressEncode,
+      required EllipticCurveTypes type,
+      required ChainType chainType}) {
     return SubstrateCoinConf(
         coinNames: coinConf.coinName,
         ss58Format: coinConf.params.addrSs58Format!,
         addressEncoder: addressEncode,
-        type: type);
+        type: type,
+        chainType: chainType);
   }
 
   @override
@@ -50,7 +52,7 @@ class SubstrateCoinConf implements CoinConfig {
   final Map<String, dynamic> addrParams;
 
   @override
-  final bool? isTestnet;
+  final ChainType chainType;
 
   @override
   bool get hasExtendedKeys => false;

@@ -1,6 +1,6 @@
 /// Library for Electrum V1 mnemonic language support.
 
-library elctrum_v1_mnemonic_languages;
+library;
 
 /// Part for the English Electrum V1 mnemonic language.
 part 'english.dart';

@@ -17,18 +17,21 @@ void _decodeInt() {
   const cb = CborIntValue(0);
   final dec2 = CborObject.fromCbor(cb.encode());
   expect(dec2.value, cb.value);
+  expect(dec2.encode(), cb.encode());
 }
 
 void _decodeFloat() {
   final cb = CborFloatValue(2.0);
   final dec2 = CborObject.fromCbor(cb.encode());
   expect(dec2.value, cb.value);
+  expect(dec2.encode(), cb.encode());
 }
 
 void _decodeString() {
   final cb = CborStringValue("mrtnetwork");
   final dec = CborObject.fromCbor(cb.encode());
   expect(dec.value, cb.value);
+  expect(dec.encode(), cb.encode());
 }
 
 void _decodeStringIndefinite() {
@@ -37,13 +40,15 @@ void _decodeStringIndefinite() {
   expect(dec.runtimeType, CborIndefiniteStringValue);
   dec as CborIndefiniteStringValue;
   expect(CompareUtils.iterableIsEqual(dec.value, cb.value), true);
+  expect(dec.encode(), cb.encode());
 }
 
 void _decodeMap() {
   final cb = CborMapValue.fixedLength(
-      {0: "mrtnetwork", BigInt.one: BigInt.two, "metnetwork": "mrtnetwork"});
+      {0: "mrtnetwork", BigInt.one: BigInt.two, "mrtnetwork": "mrtnetwork"});
   final dec = CborObject.fromCbor(cb.encode());
   expect(dec is CborMapValue, true);
+  expect(dec.encode(), cb.encode());
 
   dec as CborMapValue<CborObject, CborObject>;
   final keys = cb.value.keys.map((e) => e).toList();
@@ -61,6 +66,7 @@ void _decodeMapDynamic() {
     "metnetwork": "mrtnetwork",
   });
   final dec = CborObject.fromCbor(cb.encode());
+  expect(dec.encode(), cb.encode());
   expect(dec is CborMapValue, true);
 
   dec as CborMapValue<CborObject, CborObject>;
@@ -83,6 +89,7 @@ void _decodeList() {
   ]);
   final dec = CborObject.fromCbor(cb.encode());
   expect(dec is CborListValue, true);
+  expect(dec.encode(), cb.encode());
 
   dec as CborListValue;
   final valuesDec = dec.value.map((e) => e.value).toList();
@@ -94,19 +101,129 @@ void _decodeDateTime() {
   final decode = CborObject.fromCbor(cb.encode());
   expect(decode is CborStringDateValue, true);
   expect(cb.value.difference(decode.value).inMilliseconds, 0);
+  expect(decode.encode(), cb.encode());
   final cb2 = CborEpochFloatValue(DateTime.now());
   final decode2 = CborObject.fromCbor(cb2.encode());
   expect(decode2 is CborEpochFloatValue, true);
   expect(cb2.value.difference(decode2.value).inMilliseconds, 0);
+  expect(decode2.encode(), cb2.encode());
 
   final cb3 = CborEpochIntValue(DateTime.now());
   final decode3 = CborObject.fromCbor(cb3.encode());
   expect(decode3 is CborEpochIntValue, true);
   expect(cb3.value.difference(decode3.value).inSeconds, 0);
+  expect(decode3.encode(), cb3.encode());
+}
+
+void _nestedList() {
+  final list = CborListValue.fixedLength([
+    0,
+    CborListValue.fixedLength([
+      1,
+      2,
+      BigInt.parse("111111111111111111111111110"),
+    ]),
+    CborListValue.fixedLength([
+      1,
+      2,
+      BigInt.parse("111111111111111111111111110"),
+      CborListValue.fixedLength([
+        -1,
+        2,
+        BigInt.parse("111111111111111111111111110"),
+      ]),
+      false,
+      false,
+      false,
+      true
+    ]),
+    CborBytesValue(List<int>.filled(100, 12)),
+    CborMapValue.fixedLength({
+      1: 1,
+      "one": "one",
+      BigInt.two: CborBytesValue(List<int>.filled(19, 31)),
+      CborListValue.fixedLength([
+        -1,
+        2,
+        BigInt.parse("111111111111111111111111110"),
+      ]): CborListValue.fixedLength([
+        -1,
+        2,
+        BigInt.parse("111111111111111111111111110"),
+      ])
+    }),
+    null,
+    BigInt.one,
+    BigInt.two,
+    "metnetwork",
+    "mrtnetwork",
+    CborFloatValue.from16BytesFloat(2.0),
+    CborFloatValue(-2.0),
+    CborFloatValue.from64BytesFloat(233333333333.100000)
+  ]);
+  final cb = CborTagValue(list, [1, 2, 3]);
+  final dec = CborObject.fromCbor(cb.encode());
+  expect(dec is CborTagValue, true);
+  expect(dec.encode(), cb.encode());
+}
+
+void _tag() {
+  CborObject cborTag = CborTagValue(const CborNullValue(), [1, 2, 3]);
+  expect(cborTag.encode(), CborObject.fromCbor(cborTag.encode()).encode());
+  cborTag = CborTagValue(
+      CborListValue.fixedLength([
+        1,
+        2,
+        3,
+        BigInt.from(-1),
+        BigInt.from(-2),
+        BigInt.from(-3),
+        const CborUriValue("https://github.com/mrtnetwork"),
+        const CborRegxpValue(r'[A-Za-z0-9+/_-]+'),
+        const CborMimeValue("image/svg+xml"),
+        const CborBaseUrlValue("cXdlbHF3amVsa3Fqd2VranFrd2pla2xxd2pla2xxdw==",
+            CborBase64Types.base64),
+        const CborBaseUrlValue("cXdlbHF3amVsa3Fqd2VranFrd2pla2xxd2pla2xxdw",
+            CborBase64Types.base64Url),
+        "mystrig",
+
+        ///
+        CborListValue.dynamicLength([
+          CborEpochFloatValue(DateTime.now()),
+          CborDecimalFracValue(
+              BigInt.from(123123), BigInt.parse("123123123123123")),
+          CborEpochIntValue(DateTime.now()),
+          CborTagValue(
+              CborListValue.fixedLength([
+                1,
+                CborBytesValue(List<int>.filled(32, 32)),
+              ]),
+              [
+                1,
+                2,
+                3,
+              ])
+        ]),
+        CborMapValue.fixedLength({
+          "key1": 1,
+          "key2": "2",
+          "key3": CborBytesValue([3]),
+          4: CborStringValue("value 4"),
+          BigInt.parse("11111111111111111111111111"): 5,
+          "key6": CborListValue.dynamicLength([1, 2, 3, 4, 5]),
+          "key7": CborTagValue(
+              CborMapValue.dynamicLength({"1": "1", "2": "2", 1: 1}),
+              [100, 1001, 100002])
+        }),
+      ]),
+      [1, 2, 3]);
+  expect(cborTag.encode(), CborObject.fromCbor(cborTag.encode()).encode());
 }
 
 void main() {
   test("cbor decode", () {
+    _tag();
+    _nestedList();
     _decodeInt();
     _decodeFloat();
     _decodeString();

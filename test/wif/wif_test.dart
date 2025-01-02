@@ -1,6 +1,5 @@
 // ignore_for_file: depend_on_referenced_packages
 
-import 'package:blockchain_utils/bip/address/p2pkh_addr.dart';
 import 'package:blockchain_utils/blockchain_utils.dart';
 import 'package:test/test.dart';
 
@@ -10,7 +9,7 @@ final List<Map<String, dynamic>> _testVector = [
         "5e9441950b3918772cc3da1fc6735b7c33f1bbe08a8f1e704be46cb664f7e457",
     "encode": "5JXwUhNu98kXkyhR8EpvpaTGRjj8JZEP7hWboB5xscgjbgK2zNk",
     "pub_key_mode": PubKeyModes.uncompressed,
-    "net_ver": CoinsConf.bitcoinMainNet.params.wifNetVer,
+    "net_ver": CoinsConf.bitcoinMainNet.params.wifNetVer
   },
   {
     "key_bytes":

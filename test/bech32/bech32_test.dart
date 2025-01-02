@@ -1,6 +1,6 @@
 import 'package:blockchain_utils/bech32/bech32_base.dart';
 import 'package:blockchain_utils/utils/utils.dart';
-import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:test/test.dart';
 
 final List<Map<String, String>> _testVect = [

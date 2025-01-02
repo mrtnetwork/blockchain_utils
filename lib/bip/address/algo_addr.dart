@@ -79,7 +79,7 @@ class _AlgoAddrUtils {
   /// - `pubKeyBytes`: The bytes of the public key for which to compute the checksum.
   ///
   /// Returns:
-  /// - A List<int> containing the computed checksum bytes.
+  /// - A List containing the computed checksum bytes.
   ///
   /// This method is used to generate the checksum for an Algorand blockchain address.
   static List<int> computeChecksum(List<int> pubKeyBytes) {
@@ -104,7 +104,7 @@ class AlgoAddrDecoder implements BlockchainAddressDecoder {
   /// - `addr`: The Algorand blockchain address to decode.
   ///
   /// Returns:
-  /// - A List<int> containing the public key bytes extracted from the address.
+  /// - A List containing the public key bytes extracted from the address.
   ///
   /// This method is used to convert an Algorand blockchain address back to its public key bytes.
   @override
@@ -138,7 +138,7 @@ class AlgoAddrEncoder implements BlockchainAddressEncoder {
   /// 4. Concatenate the public key bytes and the checksum, then encode them using Base32 without padding.
   ///
   /// Parameters:
-  /// - `pubKey`: A List<int> representing the public key.
+  /// - `pubKey`: A List representing the public key.
   ///
   /// Returns:
   /// - The Algorand blockchain address obtained by encoding the public key.

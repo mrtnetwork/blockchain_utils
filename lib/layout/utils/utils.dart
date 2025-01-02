@@ -1,6 +1,6 @@
 import 'dart:typed_data' show Endian;
 import 'package:blockchain_utils/bip/substrate/scale/substrate_scale_enc_cuint.dart';
-import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/utils/utils.dart';
 
 class LayoutSerializationUtils {

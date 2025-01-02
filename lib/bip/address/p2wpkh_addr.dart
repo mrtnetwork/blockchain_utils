@@ -20,14 +20,14 @@ class P2WPKHAddrDecoder implements BlockchainAddressDecoder {
   /// This method decodes a P2WPKH address from the given input string using the Bech32
   /// encoding. It expects an optional map of keyword arguments, with the 'hrp' key
   /// specifying the Human-Readable Part (HRP) of the address. It validates the arguments,
-  /// decodes the address, checks the witness version, and returns the decoded address as a List<int>.
+  /// decodes the address, checks the witness version, and returns the decoded address as a `List<int>`.
   ///
   /// Parameters:
   ///   - addr: The Bech32-encoded P2WPKH address to be decoded.
   ///   - kwargs: Optional keyword arguments, with 'hrp' for the Human-Readable Part.
   ///
   /// Returns:
-  ///   A List<int> containing the decoded P2WPKH address bytes.
+  ///   A `List<int>` containing the decoded P2WPKH address bytes.
   ///
   /// Throws:
   ///   - FormatException if the provided address has an incorrect witness version.
@@ -49,7 +49,7 @@ class P2WPKHAddrDecoder implements BlockchainAddressDecoder {
           'Invalid witness version (expected ${P2WPKHAddrConst.witnessVer}, got $witVerGot)');
     }
 
-    /// Return the decoded P2WPKH address as a List<int>.
+    /// Return the decoded P2WPKH address as a `List<int>`.
     return List<int>.from(addrDecBytes);
   }
 }

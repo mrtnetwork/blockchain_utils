@@ -2,7 +2,7 @@ import 'package:blockchain_utils/bip/bip/conf/bip/bip_coins.dart';
 import 'package:blockchain_utils/bip/cardano/cip1852/conf/cip1852_coins.dart';
 import 'package:blockchain_utils/bip/monero/conf/monero_coins.dart';
 import 'package:blockchain_utils/bip/substrate/conf/substrate_coins.dart';
-import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 import 'coin_conf.dart';
 
 /// An abstract class representing a collection of cryptocurrency coins.

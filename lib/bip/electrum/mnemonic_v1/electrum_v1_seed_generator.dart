@@ -29,7 +29,7 @@ class ElectrumV1SeedGenerator {
 
   /// Generates the Electrum V1 seed.
   ///
-  /// Returns the generated Electrum V1 seed as a List<int>.
+  /// Returns the generated Electrum V1 seed as a `List<int>`.
   List<int> generate() {
     return List<int>.from(_seed);
   }

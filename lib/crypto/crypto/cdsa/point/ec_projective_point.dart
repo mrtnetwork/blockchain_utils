@@ -27,7 +27,7 @@ import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/curve/curve.dart';
 import 'base.dart';
 import 'point.dart';
-import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 
 /// Represents a point in projective coordinates on an elliptic curve.
 class ProjectiveECCPoint extends AbstractPoint {
@@ -118,15 +118,15 @@ class ProjectiveECCPoint extends AbstractPoint {
     BigInt newOrder = order!;
 
     // Initialize a list to store precomputed values.
-    List<List<BigInt>> precomputedPoints = [];
+    final List<List<BigInt>> precomputedPoints = [];
 
     BigInt i = BigInt.one;
     newOrder *= BigInt.two;
 
     // Extract projective coordinates.
-    BigInt xCoord = _coords[0];
-    BigInt yCoord = _coords[1];
-    BigInt zCoord = _coords[2];
+    final BigInt xCoord = _coords[0];
+    final BigInt yCoord = _coords[1];
+    final BigInt zCoord = _coords[2];
 
     // Create a projective point for doubling.
     ProjectiveECCPoint doubler =
@@ -363,10 +363,10 @@ class ProjectiveECCPoint extends AbstractPoint {
   /// Doubles a point
   List<BigInt> _doubleWithZ1(BigInt x1, BigInt y1, BigInt p, BigInt a) {
     // Calculate x-coordinate squared
-    BigInt xSquared = (x1 * x1) % p;
+    final BigInt xSquared = (x1 * x1) % p;
 
     // Calculate y-coordinate squared
-    BigInt ySquared = (y1 * y1) % p;
+    final BigInt ySquared = (y1 * y1) % p;
 
     // Check if y-coordinate squared is zero
     if (ySquared == BigInt.zero) {
@@ -375,22 +375,22 @@ class ProjectiveECCPoint extends AbstractPoint {
     }
 
     // Calculate y-coordinate squared squared
-    BigInt ySquaredSquared = (ySquared * ySquared) % p;
+    final BigInt ySquaredSquared = (ySquared * ySquared) % p;
 
     // Calculate 's' value
-    BigInt s = (BigInt.two *
+    final BigInt s = (BigInt.two *
             ((x1 + ySquared) * (x1 + ySquared) - xSquared - ySquaredSquared)) %
         p;
 
     // Calculate 'm' value
-    BigInt m = (BigInt.from(3) * xSquared + a) % p;
+    final BigInt m = (BigInt.from(3) * xSquared + a) % p;
 
     // Calculate 't' value
-    BigInt t = (m * m - BigInt.from(2) * s) % p;
+    final BigInt t = (m * m - BigInt.from(2) * s) % p;
 
     // Calculate y-coordinate of the result and update Z-coordinate
-    BigInt yResult = (m * (s - t) - BigInt.from(8) * ySquaredSquared) % p;
-    BigInt zResult = (BigInt.two * y1) % p;
+    final BigInt yResult = (m * (s - t) - BigInt.from(8) * ySquaredSquared) % p;
+    final BigInt zResult = (BigInt.two * y1) % p;
 
     return [t, yResult, zResult];
   }
@@ -408,10 +408,10 @@ class ProjectiveECCPoint extends AbstractPoint {
     }
 
     // Calculate x-coordinate squared
-    BigInt xSquared = (x1 * x1) % p;
+    final BigInt xSquared = (x1 * x1) % p;
 
     // Calculate y-coordinate squared
-    BigInt ySquared = (y1 * y1) % p;
+    final BigInt ySquared = (y1 * y1) % p;
 
     // Check if y-coordinate squared is zero
     if (ySquared == BigInt.zero) {
@@ -420,27 +420,28 @@ class ProjectiveECCPoint extends AbstractPoint {
     }
 
     // Calculate y-coordinate squared squared
-    BigInt ySquaredSquared = (ySquared * ySquared) % p;
+    final BigInt ySquaredSquared = (ySquared * ySquared) % p;
 
     // Calculate z-coordinate squared
-    BigInt zSquared = (z1 * z1) % p;
+    final BigInt zSquared = (z1 * z1) % p;
 
     // Calculate 's' value
-    BigInt s = (BigInt.two *
+    final BigInt s = (BigInt.two *
             ((x1 + ySquared) * (x1 + ySquared) - xSquared - ySquaredSquared)) %
         p;
 
     // Calculate 'm' value
-    BigInt m = ((BigInt.from(3) * xSquared + a * zSquared * zSquared) % p);
+    final BigInt m =
+        ((BigInt.from(3) * xSquared + a * zSquared * zSquared) % p);
 
     // Calculate 't' value
-    BigInt t = (m * m - BigInt.from(2) * s) % p;
+    final BigInt t = (m * m - BigInt.from(2) * s) % p;
 
     // Calculate y-coordinate of the result
-    BigInt yResult = (m * (s - t) - BigInt.from(8) * ySquaredSquared) % p;
+    final BigInt yResult = (m * (s - t) - BigInt.from(8) * ySquaredSquared) % p;
 
     // Calculate z-coordinate of the result
-    BigInt zResult = ((y1 + z1) * (y1 + z1) - ySquared - zSquared) % p;
+    final BigInt zResult = ((y1 + z1) * (y1 + z1) - ySquared - zSquared) % p;
 
     return [t, yResult, zResult];
   }
@@ -448,19 +449,19 @@ class ProjectiveECCPoint extends AbstractPoint {
   /// Doubles a point in projective coordinates on an elliptic curve and returns the result.
   @override
   ProjectiveECCPoint doublePoint() {
-    BigInt x1 = _coords[0];
-    BigInt y1 = _coords[1];
-    BigInt z1 = _coords[2];
+    final BigInt x1 = _coords[0];
+    final BigInt y1 = _coords[1];
+    final BigInt z1 = _coords[2];
 
     if (y1 == BigInt.zero) {
       // If y-coordinate is zero, the result is the point at infinity
       return ProjectiveECCPoint.infinity(curve);
     }
 
-    BigInt primeField = curve.p;
-    BigInt curveA = curve.a;
+    final BigInt primeField = curve.p;
+    final BigInt curveA = curve.a;
 
-    List<BigInt> result = _double(x1, y1, z1, primeField, curveA);
+    final List<BigInt> result = _double(x1, y1, z1, primeField, curveA);
 
     if (result[1] == BigInt.zero || result[2] == BigInt.zero) {
       // If the y-coordinate or z-coordinate of the result is zero, return the point at infinity
@@ -476,15 +477,15 @@ class ProjectiveECCPoint extends AbstractPoint {
   List<BigInt> _addPointsWithZ1(
       BigInt x1, BigInt y1, BigInt x2, BigInt y2, BigInt p) {
     // Calculate the difference and its square
-    BigInt diff = x2 - x1;
-    BigInt diffSquare = diff * diff;
+    final BigInt diff = x2 - x1;
+    final BigInt diffSquare = diff * diff;
 
     // Calculate intermediate values I and J
-    BigInt I = (diffSquare * BigInt.from(4)) % p;
-    BigInt J = diff * I;
+    final BigInt I = (diffSquare * BigInt.from(4)) % p;
+    final BigInt J = diff * I;
 
     // Calculate the y-coordinate difference scaled by 2
-    BigInt scaledYDifference = (y2 - y1) * BigInt.from(2);
+    final BigInt scaledYDifference = (y2 - y1) * BigInt.from(2);
 
     if (diff == BigInt.zero && scaledYDifference == BigInt.zero) {
       // If the difference and scaled y-coordinate difference are both zero,
@@ -493,13 +494,14 @@ class ProjectiveECCPoint extends AbstractPoint {
     }
 
     // Calculate intermediate value V
-    BigInt V = x1 * I;
+    final BigInt V = x1 * I;
 
     // Calculate the x, y, and z coordinates of the result
-    BigInt x3 =
+    final BigInt x3 =
         (scaledYDifference * scaledYDifference - J - V * BigInt.from(2)) % p;
-    BigInt y3 = (scaledYDifference * (V - x3) - y1 * J * BigInt.from(2)) % p;
-    BigInt z3 = diff * BigInt.from(2) % p;
+    final BigInt y3 =
+        (scaledYDifference * (V - x3) - y1 * J * BigInt.from(2)) % p;
+    final BigInt z3 = diff * BigInt.from(2) % p;
 
     return [x3, y3, z3];
   }
@@ -509,10 +511,10 @@ class ProjectiveECCPoint extends AbstractPoint {
   List<BigInt> _addPointsWithCommonZ(
       BigInt x1, BigInt y1, BigInt z1, BigInt x2, BigInt y2, BigInt p) {
     // Calculate intermediate values A, B, C, and D
-    BigInt A = (x2 - x1).modPow(BigInt.from(2), p);
-    BigInt B = (x1 * A) % p;
-    BigInt C = x2 * A;
-    BigInt D = (y2 - y1).modPow(BigInt.from(2), p);
+    final BigInt A = (x2 - x1).modPow(BigInt.from(2), p);
+    final BigInt B = (x1 * A) % p;
+    final BigInt C = x2 * A;
+    final BigInt D = (y2 - y1).modPow(BigInt.from(2), p);
 
     if (A == BigInt.zero && D == BigInt.zero) {
       // If A and D are both zero, perform a doubling operation
@@ -520,9 +522,9 @@ class ProjectiveECCPoint extends AbstractPoint {
     }
 
     // Calculate the x, y, and z coordinates of the result
-    BigInt x3 = (D - B - C) % p;
-    BigInt y3 = ((y2 - y1) * (B - x3) - y1 * (C - B)) % p;
-    BigInt z3 = (z1 * (x2 - x1)) % p;
+    final BigInt x3 = (D - B - C) % p;
+    final BigInt y3 = ((y2 - y1) * (B - x3) - y1 * (C - B)) % p;
+    final BigInt z3 = (z1 * (x2 - x1)) % p;
 
     return [x3, y3, z3];
   }
@@ -532,16 +534,16 @@ class ProjectiveECCPoint extends AbstractPoint {
   List<BigInt> _addPointsWithZ2EqualOne(
       BigInt x1, BigInt y1, BigInt z1, BigInt x2, BigInt y2, BigInt p) {
     // Calculate Z1Z1, U2, and S2
-    BigInt z1z1 = (z1 * z1) % p;
-    BigInt u2 = (x2 * z1z1) % p;
-    BigInt s2 = (y2 * z1 * z1z1) % p;
+    final BigInt z1z1 = (z1 * z1) % p;
+    final BigInt u2 = (x2 * z1z1) % p;
+    final BigInt s2 = (y2 * z1 * z1z1) % p;
 
     // Calculate H, HH, I, and J
-    BigInt h = (u2 - x1) % p;
-    BigInt hh = (h * h) % p;
-    BigInt i = (BigInt.from(4) * hh) % p;
-    BigInt j = (h * i) % p;
-    BigInt r = (BigInt.from(2) * (s2 - y1)) % p;
+    final BigInt h = (u2 - x1) % p;
+    final BigInt hh = (h * h) % p;
+    final BigInt i = (BigInt.from(4) * hh) % p;
+    final BigInt j = (h * i) % p;
+    final BigInt r = (BigInt.from(2) * (s2 - y1)) % p;
 
     if (r == BigInt.zero && h == BigInt.zero) {
       // If r and h are both zero, perform a doubling operation
@@ -549,10 +551,10 @@ class ProjectiveECCPoint extends AbstractPoint {
     }
 
     // Calculate the x, y, and z coordinates of the result
-    BigInt v = (x1 * i) % p;
-    BigInt x3 = (r * r - j - BigInt.from(2) * v) % p;
-    BigInt y3 = (r * (v - x3) - BigInt.from(2) * y1 * j) % p;
-    BigInt z3 = (((z1 + h).modPow(BigInt.from(2), p) - z1z1) - hh) % p;
+    final BigInt v = (x1 * i) % p;
+    final BigInt x3 = (r * r - j - BigInt.from(2) * v) % p;
+    final BigInt y3 = (r * (v - x3) - BigInt.from(2) * y1 * j) % p;
+    final BigInt z3 = (((z1 + h).modPow(BigInt.from(2), p) - z1z1) - hh) % p;
 
     return [x3, y3, z3];
   }
@@ -562,18 +564,18 @@ class ProjectiveECCPoint extends AbstractPoint {
   List<BigInt> _addPointsWithZNotEqual(BigInt x1, BigInt y1, BigInt z1,
       BigInt x2, BigInt y2, BigInt z2, BigInt p) {
     // Calculate Z1Z1, Z2Z2, U1, U2, S1, S2
-    BigInt z1z1 = (z1 * z1) % p;
-    BigInt z2z2 = (z2 * z2) % p;
-    BigInt u1 = (x1 * z2z2) % p;
-    BigInt u2 = (x2 * z1z1) % p;
-    BigInt s1 = (y1 * z2 * z2z2) % p;
-    BigInt s2 = (y2 * z1 * z1z1) % p;
+    final BigInt z1z1 = (z1 * z1) % p;
+    final BigInt z2z2 = (z2 * z2) % p;
+    final BigInt u1 = (x1 * z2z2) % p;
+    final BigInt u2 = (x2 * z1z1) % p;
+    final BigInt s1 = (y1 * z2 * z2z2) % p;
+    final BigInt s2 = (y2 * z1 * z1z1) % p;
 
     // Calculate H, I, J, and r
-    BigInt h = (u2 - u1) % p;
-    BigInt i = (BigInt.from(4) * h * h) % p;
-    BigInt j = (h * i) % p;
-    BigInt r = (BigInt.from(2) * (s2 - s1)) % p;
+    final BigInt h = (u2 - u1) % p;
+    final BigInt i = (BigInt.from(4) * h * h) % p;
+    final BigInt j = (h * i) % p;
+    final BigInt r = (BigInt.from(2) * (s2 - s1)) % p;
 
     if (h == BigInt.zero && r == BigInt.zero) {
       // If h and r are both zero, perform a doubling operation
@@ -581,10 +583,11 @@ class ProjectiveECCPoint extends AbstractPoint {
     }
 
     // Calculate the x, y, and z coordinates of the result
-    BigInt v = (u1 * i) % p;
-    BigInt x3 = (r * r - j - BigInt.from(2) * v) % p;
-    BigInt y3 = (r * (v - x3) - BigInt.from(2) * s1 * j) % p;
-    BigInt z3 = (((z1 + z2).modPow(BigInt.from(2), p) - z1z1 - z2z2) * h) % p;
+    final BigInt v = (u1 * i) % p;
+    final BigInt x3 = (r * r - j - BigInt.from(2) * v) % p;
+    final BigInt y3 = (r * (v - x3) - BigInt.from(2) * s1 * j) % p;
+    final BigInt z3 =
+        (((z1 + z2).modPow(BigInt.from(2), p) - z1z1 - z2z2) * h) % p;
 
     return [x3, y3, z3];
   }
@@ -637,24 +640,24 @@ class ProjectiveECCPoint extends AbstractPoint {
     other as ProjectiveECCPoint;
 
     // Get the prime field value
-    BigInt primeField = curve.p;
+    final BigInt primeField = curve.p;
 
     // Extract coordinates of the first point
-    BigInt x1 = _coords[0];
-    BigInt y1 = _coords[1];
-    BigInt z1 = _coords[2];
+    final BigInt x1 = _coords[0];
+    final BigInt y1 = _coords[1];
+    final BigInt z1 = _coords[2];
 
     // Extract coordinates of the second point
-    BigInt x2 = other._coords[0];
-    BigInt y2 = other._coords[1];
-    BigInt z2 = other._coords[2];
+    final BigInt x2 = other._coords[0];
+    final BigInt y2 = other._coords[1];
+    final BigInt z2 = other._coords[2];
 
     // Perform point addition
-    List<BigInt> result = _addPoints(x1, y1, z1, x2, y2, z2, primeField);
+    final List<BigInt> result = _addPoints(x1, y1, z1, x2, y2, z2, primeField);
 
-    BigInt x3 = result[0];
-    BigInt y3 = result[1];
-    BigInt z3 = result[2];
+    final BigInt x3 = result[0];
+    final BigInt y3 = result[1];
+    final BigInt z3 = result[2];
 
     if (y3 == BigInt.zero || z3 == BigInt.zero) {
       return ProjectiveECCPoint.infinity(curve);
@@ -681,23 +684,23 @@ class ProjectiveECCPoint extends AbstractPoint {
         resultY = BigInt.zero,
         resultZ = BigInt.one,
         primeField = curve.p;
-    List<List<BigInt>> precompute = List.from(_precompute);
+    final List<List<BigInt>> precompute = List.from(_precompute);
 
     for (int i = 0; i < precompute.length; i++) {
-      BigInt x2 = precompute[i][0];
-      BigInt y2 = precompute[i][1];
+      final BigInt x2 = precompute[i][0];
+      final BigInt y2 = precompute[i][1];
 
       if (scalar.isOdd) {
         if (scalar.isOdd && scalar.isEven) {
           scalar = (scalar + BigInt.one) ~/ BigInt.two;
-          List<BigInt> addResult = _addPoints(
+          final List<BigInt> addResult = _addPoints(
               resultX, resultY, resultZ, x2, -y2, BigInt.one, primeField);
           resultX = addResult[0];
           resultY = addResult[1];
           resultZ = addResult[2];
         } else {
           scalar = (scalar - BigInt.one) ~/ BigInt.two;
-          List<BigInt> addResult = _addPoints(
+          final List<BigInt> addResult = _addPoints(
               resultX, resultY, resultZ, x2, y2, BigInt.one, primeField);
           resultX = addResult[0];
           resultY = addResult[1];
@@ -748,19 +751,19 @@ class ProjectiveECCPoint extends AbstractPoint {
     scale();
 
     // Initialize point coordinates
-    BigInt x2 = _coords[0];
-    BigInt y2 = _coords[1];
+    final BigInt x2 = _coords[0];
+    final BigInt y2 = _coords[1];
 
     BigInt x3 = BigInt.zero;
     BigInt y3 = BigInt.zero;
     BigInt z3 = BigInt.one;
 
-    BigInt primeField = curve.p;
-    BigInt curveA = curve.a;
+    final BigInt primeField = curve.p;
+    final BigInt curveA = curve.a;
 
     // Since adding points when at least one of them is scaled
     // is quicker, reverse the NAF order
-    List<BigInt> nafList = BigintUtils.computeNAF(scalar);
+    final List<BigInt> nafList = BigintUtils.computeNAF(scalar);
     for (int i = nafList.length - 1; i >= 0; i--) {
       final List<BigInt> double = _double(x3, y3, z3, primeField, curveA);
       x3 = double[0];
@@ -826,28 +829,28 @@ class ProjectiveECCPoint extends AbstractPoint {
     BigInt x3 = BigInt.zero;
     BigInt y3 = BigInt.zero;
     BigInt z3 = BigInt.one;
-    BigInt p = curve.p;
-    BigInt a = curve.a;
+    final BigInt p = curve.p;
+    final BigInt a = curve.a;
 
     scale();
-    BigInt x1 = _coords[0];
-    BigInt y1 = _coords[1];
-    BigInt z1 = _coords[2];
+    final BigInt x1 = _coords[0];
+    final BigInt y1 = _coords[1];
+    final BigInt z1 = _coords[2];
     other.scale();
-    BigInt x2 = other._coords[0];
-    BigInt y2 = other._coords[1];
-    BigInt z2 = other._coords[2];
+    final BigInt x2 = other._coords[0];
+    final BigInt y2 = other._coords[1];
+    final BigInt z2 = other._coords[2];
 
     // with NAF we have 3 options: no add, subtract, add
     // so with 2 points, we have 9 combinations:
     // 0, -A, +A, -B, -A-B, +A-B, +B, -A+B, +A+B
     // so we need 4 combined points:
-    List<BigInt> mAmB = _addPoints(x1, -y1, z1, x2, -y2, z2, p);
+    final List<BigInt> mAmB = _addPoints(x1, -y1, z1, x2, -y2, z2, p);
 
-    List<BigInt> pAmB = _addPoints(x1, y1, z1, x2, -y2, z2, p);
+    final List<BigInt> pAmB = _addPoints(x1, y1, z1, x2, -y2, z2, p);
 
-    List<BigInt> mApB = [pAmB[0], -pAmB[1], pAmB[2]];
-    List<BigInt> pApB = [mAmB[0], -mAmB[1], mAmB[2]];
+    final List<BigInt> mApB = [pAmB[0], -pAmB[1], pAmB[2]];
+    final List<BigInt> pApB = [mAmB[0], -mAmB[1], mAmB[2]];
 
     if (pApB[1] == BigInt.zero || pApB[2] == BigInt.zero) {
       return (this * selfMul + other * otherMul) as ProjectiveECCPoint;
@@ -865,8 +868,8 @@ class ProjectiveECCPoint extends AbstractPoint {
     }
 
     for (int i = 0; i < selfNaf.length; i++) {
-      BigInt A = selfNaf[i];
-      BigInt B = otherNaf[i];
+      final BigInt A = selfNaf[i];
+      final BigInt B = otherNaf[i];
 
       List<BigInt> result = _double(x3, y3, z3, p, a);
 

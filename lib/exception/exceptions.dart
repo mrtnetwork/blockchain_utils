@@ -1,2 +1,2 @@
-export 'exception.dart';
-export 'rpc_error.dart';
+export 'exception/exception.dart';
+export 'exception/rpc_error.dart';

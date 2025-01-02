@@ -54,7 +54,7 @@
 
 import 'package:blockchain_utils/helper/helper.dart';
 import 'package:blockchain_utils/utils/utils.dart';
-import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 
 /// Constants and data structures used for Base32 encoding and decoding.
 class _Base32Const {
@@ -113,7 +113,7 @@ class _Base32Utils {
     }
     int shift = 8;
     int carry = 0;
-    List<int> decoded = [];
+    final List<int> decoded = [];
     base32.split('').forEach((char) {
       if (char == '=') {
         return;
@@ -182,7 +182,7 @@ class _Base32Utils {
 
 /// A utility class for decoding Base32 encoded strings into bytes.
 class Base32Decoder {
-  /// Decode the provided Base32 string into a List<int> of bytes.
+  /// Decode the provided Base32 string into a List of bytes.
   /// Optionally, you can specify a custom alphabet for decoding.
   static List<int> decode(String data, [String? customAlphabet]) {
     try {
@@ -198,7 +198,7 @@ class Base32Decoder {
       /// Decode the Base32 string and obtain the decoded bytes.
       final decodedBytes = _Base32Utils._b32decode(_Base32Const.alphabet, data);
 
-      /// Return the decoded bytes as a List<int>.
+      /// Return the decoded bytes as a List.
       return List<int>.from(decodedBytes);
     } catch (ex) {
       /// Handle exceptions by throwing an error for invalid Base32 strings.
@@ -226,7 +226,7 @@ class Base32Encoder {
     return encoded;
   }
 
-  /// Encode the provided List<int> of bytes into a Base32 encoded string.
+  /// Encode the provided List of bytes into a Base32 encoded string.
   /// Optionally, you can specify a custom alphabet for encoding.
   static String encodeBytes(List<int> data, [String? customAlphabet]) {
     data = data.asImmutableBytes;
@@ -253,7 +253,7 @@ class Base32Encoder {
         .replaceAll(_Base32Const.paddingChar, '');
   }
 
-  /// Encode the provided List<int> of bytes into a Base32 encoded string without padding characters.
+  /// Encode the provided List of bytes into a Base32 encoded string without padding characters.
   /// Optionally, you can specify a custom alphabet for encoding.
   static String encodeNoPaddingBytes(List<int> data, [String? customAlphabet]) {
     /// Encode the input bytes and then remove any padding characters.

@@ -6,7 +6,7 @@
 abstract class BlockchainAddressEncoder {
   /// Encodes a public key into a blockchain address.
   ///
-  /// This method takes a public key in the form of a List<int> and optional keyword
+  /// This method takes a public key in the form of a List and optional keyword
   /// arguments (kwargs) for additional configuration if required. It encodes the
   /// public key into a blockchain-specific address.
   ///

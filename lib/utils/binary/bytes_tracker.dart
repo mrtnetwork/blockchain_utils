@@ -1,4 +1,4 @@
-import 'utils.dart';
+import 'package:blockchain_utils/helper/helper.dart';
 
 /// A utility class for tracking bytes dynamically.
 class DynamicByteTracker {
@@ -13,6 +13,6 @@ class DynamicByteTracker {
   }
 
   void add(List<int> chunk) {
-    _buffer.addAll(BytesUtils.toBytes(chunk));
+    _buffer.addAll(chunk.asBytes);
   }
 }

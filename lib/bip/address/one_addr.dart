@@ -13,7 +13,7 @@ class OneAddrDecoder implements BlockchainAddressDecoder {
   /// It expects an optional map of keyword arguments for custom behavior, but specifically, it skips
   /// the checksum encoding validation. The address Human-Readable Part (HRP) is retrieved from the
   /// Harmony ONE configuration. The method first decodes the Bech32 address, and then decodes it again
-  /// as an Ethereum address with a custom prefix. The result is returned as a List<int> containing
+  /// as an Ethereum address with a custom prefix. The result is returned as a `List<int>` containing
   /// the decoded Ethereum address bytes.
   ///
   /// Parameters:
@@ -21,10 +21,10 @@ class OneAddrDecoder implements BlockchainAddressDecoder {
   ///   - kwargs: Optional keyword arguments (with 'skip_chksum_enc' for skipping checksum encoding).
   ///
   /// Returns:
-  ///   A List<int> containing the decoded Ethereum address bytes derived from the Harmony ONE address.
+  ///   A `List<int>` containing the decoded Ethereum address bytes derived from the Harmony ONE address.
   @override
   List<int> decodeAddr(String addr, [Map<String, dynamic> kwargs = const {}]) {
-    List<int> addrDecBytes =
+    final List<int> addrDecBytes =
         Bech32Decoder.decode(CoinsConf.harmonyOne.params.addrHrp!, addr);
 
     /// Decode the address again as an Ethereum address with a custom prefix.
@@ -45,7 +45,7 @@ class OneAddrEncoder implements BlockchainAddressEncoder {
   /// Bech32-encoded Harmony ONE address.
   ///
   /// Parameters:
-  ///   - pubKey: The Ethereum address in the form of a List<int>.
+  ///   - pubKey: The Ethereum address in the form of a `List<int>`.
   ///   - kwargs: Optional keyword arguments.
   ///
   /// Returns:
@@ -53,7 +53,8 @@ class OneAddrEncoder implements BlockchainAddressEncoder {
   @override
   String encodeKey(List<int> pubKey, [Map<String, dynamic> kwargs = const {}]) {
     /// Encode the Ethereum address without the '0x' prefix.
-    String ethAddr = StringUtils.strip0x(EthAddrEncoder().encodeKey(pubKey));
+    final String ethAddr =
+        StringUtils.strip0x(EthAddrEncoder().encodeKey(pubKey));
 
     /// Encode the Ethereum address as a Harmony ONE address using Bech32 encoding.
     return Bech32Encoder.encode(

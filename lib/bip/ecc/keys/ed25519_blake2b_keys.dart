@@ -60,7 +60,7 @@ import 'package:blockchain_utils/crypto/crypto/cdsa/eddsa/keys/privatekey.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/eddsa/keys/publickey.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/point/edwards.dart';
 import 'package:blockchain_utils/crypto/crypto/hash/hash.dart';
-import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/utils/utils.dart';
 
 /// Represents an Ed25519 public key with Blake2b hashing, implementing the IPublicKey interface.

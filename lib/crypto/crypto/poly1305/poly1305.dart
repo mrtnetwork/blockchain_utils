@@ -1,6 +1,6 @@
 // import 'dart:typed_data';
 import 'package:blockchain_utils/utils/utils.dart';
-import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 
 const _digestLength = 16;
 
@@ -33,22 +33,22 @@ class Poly1305 {
     _init(key);
   }
   void _init(List<int> key) {
-    int t0 = key[0] | (key[1] << 8);
+    final int t0 = key[0] | (key[1] << 8);
     _r[0] = (t0) & mask13;
-    int t1 = key[2] | (key[3] << 8);
+    final int t1 = key[2] | (key[3] << 8);
     _r[1] = ((t0 >> 13) | (t1 << 3)) & mask13;
-    int t2 = key[4] | (key[5] << 8);
+    final int t2 = key[4] | (key[5] << 8);
     _r[2] = ((t1 >> 10) | (t2 << 6)) & 0x1f03;
-    int t3 = key[6] | (key[7] << 8);
+    final int t3 = key[6] | (key[7] << 8);
     _r[3] = ((t2 >> 7) | (t3 << 9)) & mask13;
-    int t4 = key[8] | (key[9] << 8);
+    final int t4 = key[8] | (key[9] << 8);
     _r[4] = ((t3 >> 4) | (t4 << 12)) & 0x00ff;
     _r[5] = ((t4 >> 1)) & 0x1ffe;
-    int t5 = key[10] | (key[11] << 8);
+    final int t5 = key[10] | (key[11] << 8);
     _r[6] = ((t4 >> 14) | (t5 << 2)) & mask13;
-    int t6 = key[12] | (key[13] << 8);
+    final int t6 = key[12] | (key[13] << 8);
     _r[7] = ((t5 >> 11) | (t6 << 5)) & 0x1f81;
-    int t7 = key[14] | (key[15] << 8);
+    final int t7 = key[14] | (key[15] << 8);
     _r[8] = ((t6 >> 8) | (t7 << 8)) & mask13;
     _r[9] = ((t7 >> 5)) & 0x007f;
     _pad[0] = key[16] | (key[17] << 8);
@@ -74,7 +74,7 @@ class Poly1305 {
         h8 = _h[8],
         h9 = _h[9];
 
-    int r0 = _r[0],
+    final int r0 = _r[0],
         r1 = _r[1],
         r2 = _r[2],
         r3 = _r[3],
@@ -454,7 +454,7 @@ class Poly1305 {
     if (_finished) {
       throw const MessageException("Poly1305 was finished");
     }
-    List<int> mac = List<int>.filled(16, 0);
+    final List<int> mac = List<int>.filled(16, 0);
     finish(mac);
     return mac;
   }
@@ -494,9 +494,9 @@ class Poly1305 {
   /// This method creates a `Poly1305` instance initialized with the provided key, updates it with the data,
   /// computes the MAC, and then cleans up the instance before returning the MAC.
   static List<int> auth(List<int> key, List<int> data) {
-    Poly1305 h = Poly1305(key);
+    final Poly1305 h = Poly1305(key);
     h.update(data);
-    List<int> digest = h.digest();
+    final List<int> digest = h.digest();
     h.clean();
     return digest;
   }

@@ -1,6 +1,5 @@
-import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 
 class CryptoOpsException extends BlockchainUtilsException {
-  const CryptoOpsException(String message, {Map<String, dynamic>? details})
-      : super(message, details: details);
+  const CryptoOpsException(super.message, {super.details});
 }

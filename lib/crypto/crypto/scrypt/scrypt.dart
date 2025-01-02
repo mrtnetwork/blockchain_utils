@@ -2,7 +2,7 @@ import 'package:blockchain_utils/crypto/crypto/hash/hash.dart';
 import 'package:blockchain_utils/crypto/crypto/hmac/hmac.dart';
 import 'package:blockchain_utils/crypto/crypto/pbkdf2/pbkdf2.dart';
 import 'package:blockchain_utils/utils/utils.dart';
-import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 
 /// A class for performing scrypt key derivation.
 ///
@@ -144,7 +144,7 @@ class Scrypt {
       ((sum << n) & mask32) | (sum & mask32) >> (32 - n);
 
   static void _salsaXOR(List<int> tmp, List<int> B, int bin, int bout) {
-    int j0 = tmp[0] ^ B[bin++],
+    final int j0 = tmp[0] ^ B[bin++],
         j1 = tmp[1] ^ B[bin++],
         j2 = tmp[2] ^ B[bin++],
         j3 = tmp[3] ^ B[bin++],
@@ -262,9 +262,9 @@ class Scrypt {
   }
 
   static void _smix(List<int> B, int r, int N, List<int> V, List<int> xy) {
-    var xi = 0;
-    var yi = 32 * r;
-    var tmp = List<int>.filled(16, 0);
+    const xi = 0;
+    final yi = 32 * r;
+    final tmp = List<int>.filled(16, 0);
 
     for (var i = 0; i < 32 * r; i++) {
       V[i] = readUint32LE(B, i * 4);

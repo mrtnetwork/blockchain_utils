@@ -2,7 +2,7 @@ import 'package:blockchain_utils/bip/algorand/mnemonic/algorand_entropy_generato
 import 'package:blockchain_utils/bip/algorand/mnemonic/algorand_mnemonic.dart';
 import 'package:blockchain_utils/bip/algorand/mnemonic/algorand_mnemonic_encoder.dart';
 import 'package:blockchain_utils/bip/mnemonic/mnemonic.dart';
-import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 
 /// Constants related to Algorand mnemonic generation.
 ///

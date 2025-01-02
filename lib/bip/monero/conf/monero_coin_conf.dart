@@ -1,6 +1,7 @@
 import 'package:blockchain_utils/bip/bip/bip32/bip32_key_net_ver.dart';
 import 'package:blockchain_utils/bip/bip/conf/core/coin_conf.dart';
-import 'package:blockchain_utils/bip/coin_conf/conf.dart';
+import 'package:blockchain_utils/bip/coin_conf/models/coin_conf.dart';
+import 'package:blockchain_utils/bip/coin_conf/models/coins_name.dart';
 import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
 
 /// Configuration class for Monero-based cryptocurrencies, specifying various parameters
@@ -18,16 +19,17 @@ class MoneroCoinConf implements CoinConfig {
 
   /// private constructor
   MoneroCoinConf._(this.coinNames, this.addrNetVer, this.intAddrNetVer,
-      this.subaddrNetVer, this.isTestnet);
+      this.subaddrNetVer, this.chainType);
 
   /// MoneroCoinConf from coinConf
-  factory MoneroCoinConf.fromCoinConf(CoinConf coinConf, {bool? isTestnet}) {
+  factory MoneroCoinConf.fromCoinConf(
+      {required CoinConf coinConf, required ChainType chainType}) {
     return MoneroCoinConf._(
         coinConf.coinName,
         coinConf.params.addrNetVer!,
         coinConf.params.addrIntNetVer!,
         coinConf.params.subaddrNetVer!,
-        isTestnet);
+        chainType);
   }
 
   @override
@@ -37,7 +39,7 @@ class MoneroCoinConf implements CoinConfig {
   EllipticCurveTypes get type => EllipticCurveTypes.ed25519Monero;
 
   @override
-  final bool? isTestnet;
+  final ChainType chainType;
 
   @override
   bool get hasExtendedKeys => false;

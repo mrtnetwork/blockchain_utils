@@ -52,7 +52,7 @@ class TonEntropyGeneratorUtils {
 /// entropy generation functionalities tailored for TON mnemonic phrases.
 class TonMnemonicEntropyGenerator extends EntropyGenerator {
   /// Constructor initializing the base EntropyGenerator with the given bit length.
-  TonMnemonicEntropyGenerator(int bitLen) : super(bitLen);
+  TonMnemonicEntropyGenerator(super.bitLen);
 
   /// Validates if the given bit length for entropy is within the acceptable range (88 to 528 bits).
   static bool isValidEntropyBitLen(int bitLen) {

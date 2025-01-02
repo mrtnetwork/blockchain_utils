@@ -10,7 +10,7 @@ part of 'package:blockchain_utils/crypto/crypto/hash/hash.dart';
 /// Example:
 /// ```dart
 /// final sha1 = SHA1();
-/// sha1.update(List<int>.from([0x48, 0x65, 0x6C, 0x6C, 0x6F]));
+/// sha1.update(`List<int>`.from([0x48, 0x65, 0x6C, 0x6C, 0x6F]));
 /// final hashDigest = sha1.digest();
 /// ```
 class SHA1 implements SerializableHash<SH1State> {
@@ -63,13 +63,13 @@ class SHA1 implements SerializableHash<SH1State> {
     savedState.length = 0;
   }
 
-  /// Generates the final hash digest by assembling and returning the hash state in a List<int>.
+  /// Generates the final hash digest by assembling and returning the hash state in a `List<int>`.
   ///
   /// This function produces the hash digest by combining the current hash state into a single
-  /// List<int> output. It finalizes the hash if it hasn't been finished, effectively completing
+  /// `List<int>` output. It finalizes the hash if it hasn't been finished, effectively completing
   /// the hash computation and returning the result.
   ///
-  /// Returns the List<int> containing the computed hash digest.
+  /// Returns the `List<int>` containing the computed hash digest.
   @override
   List<int> digest() {
     final out = List<int>.filled(getDigestLength, 0);
@@ -77,14 +77,14 @@ class SHA1 implements SerializableHash<SH1State> {
     return out;
   }
 
-  /// Finalizes the hash computation and stores the hash state in the provided List<int> [out].
+  /// Finalizes the hash computation and stores the hash state in the provided `List<int>` [out].
   ///
   /// This function completes the hash computation, finalizes the state, and stores the resulting
-  /// hash in the provided [out] List<int>. If the hash has already been finished, this method
+  /// hash in the provided [out] `List<int>`. If the hash has already been finished, this method
   /// will return the existing state without re-computing.
   ///
   /// Parameters:
-  ///   - [out]: The List<int> in which the hash digest is stored.
+  ///   - [out]: The `List<int>` in which the hash digest is stored.
   ///
   /// Returns the current instance of the hash algorithm.
   @override
@@ -109,7 +109,7 @@ class SHA1 implements SerializableHash<SH1State> {
       _buffer.add(0);
     }
 
-    var lengthInBits = _lengthInBytes * 8;
+    final lengthInBits = _lengthInBytes * 8;
 
     // Add the full length of the input data as a 64-bit value at the end of the
     // hash. Note: we're only writing out 64 bits, so skip ahead 8 if the
@@ -122,8 +122,8 @@ class SHA1 implements SerializableHash<SH1State> {
     // We're essentially doing byteData.setUint64(offset, lengthInBits, _endian)
     // here, but that method isn't supported on dart2js so we implement it
     // manually instead.
-    var highBits = lengthInBits ~/ 0x100000000; // >> 32
-    var lowBits = lengthInBits & mask32;
+    final highBits = lengthInBits ~/ 0x100000000; // >> 32
+    final lowBits = lengthInBits & mask32;
     writeUint32BE(highBits, _buffer, offset);
     writeUint32BE(lowBits, _buffer, offset + 4);
   }
@@ -234,7 +234,7 @@ class SHA1 implements SerializableHash<SH1State> {
   /// If the hash has already been finished using the `finish` method, calling this method will result in an error.
   ///
   /// Parameters:
-  /// - [data]: The List<int> containing the data to be hashed.
+  /// - [data]: The `List<int>` containing the data to be hashed.
   ///
   /// Returns this [Hash] object for method chaining.
   @override
@@ -250,7 +250,7 @@ class SHA1 implements SerializableHash<SH1State> {
   }
 
   void _iterate() {
-    var pendingDataChunks = _buffer.length ~/ getBlockSize;
+    final pendingDataChunks = _buffer.length ~/ getBlockSize;
     for (var i = 0; i < pendingDataChunks; i++) {
       // Copy words from the pending data buffer into the current chunk buffer.
       for (var j = 0; j < _currentChunk.length; j++) {

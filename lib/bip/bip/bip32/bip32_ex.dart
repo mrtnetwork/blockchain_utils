@@ -1,4 +1,4 @@
-import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 
 /// The `Bip32KeyError` class represents an exception that can be thrown in case
 /// of a key-related error during Bip32 key operations. It allows you to provide
@@ -6,8 +6,7 @@ import 'package:blockchain_utils/exception/exception.dart';
 /// can access the error message using the `toString()` method or the `message`
 /// property, if provided.
 class Bip32KeyError extends BlockchainUtilsException {
-  const Bip32KeyError(String message, {Map<String, dynamic>? details})
-      : super(message, details: details);
+  const Bip32KeyError(super.message, {super.details});
 }
 
 /// The `Bip32PathError` class represents an exception that can be thrown in case
@@ -16,6 +15,5 @@ class Bip32KeyError extends BlockchainUtilsException {
 /// an optional error message to describe the specific issue. To access the error
 /// message, use the `toString()` method or the `message` property, if provided.
 class Bip32PathError extends BlockchainUtilsException {
-  const Bip32PathError(String message, {Map<String, dynamic>? details})
-      : super(message, details: details);
+  const Bip32PathError(super.message, {super.details});
 }

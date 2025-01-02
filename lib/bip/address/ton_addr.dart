@@ -101,7 +101,7 @@ class TonAddressUtils {
       throw AddressConverterException("Invalid checksum",
           details: {"excepted": calcedCrc, "checksum": crc});
     }
-    List<FriendlyAddressFlags> flags = [];
+    final List<FriendlyAddressFlags> flags = [];
     // Parse tag
     int tag = addr[0];
     // bool isTestOnly = false;

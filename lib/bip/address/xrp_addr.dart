@@ -84,7 +84,7 @@ class XRPAddressUtils {
           "Invalid tag. Tag should be lower than 2^32 for Ripple X address");
     }
     List<int> addrBytes = [...xAddrPrefix, ...addrHash];
-    List<int> tagBytes = writeUint64LE(tag ?? 0);
+    final List<int> tagBytes = writeUint64LE(tag ?? 0);
     addrBytes = [...addrBytes, tag == null ? 0 : 1, ...tagBytes];
     return Base58Encoder.checkEncode(addrBytes, Base58Alphabets.ripple);
   }
@@ -100,7 +100,7 @@ class XRPAddressUtils {
   /// throws ArgumentException if the decoded address has invalid length, prefix mismatch, or an invalid tag.
   static XRPXAddressDecodeResult decodeXAddress(
       String addr, List<int>? prefix) {
-    List<int> addrDecBytes =
+    final List<int> addrDecBytes =
         Base58Decoder.checkDecode(addr, Base58Alphabets.ripple);
 
     AddrDecUtils.validateBytesLength(
@@ -132,7 +132,7 @@ class XRPAddressUtils {
 
     List<int> tagBytes = addrDecBytes
         .sublist(addrDecBytes.length - _XRPAddressConst.xAddressTagLength);
-    int tagFlag = tagBytes[0];
+    final int tagFlag = tagBytes[0];
     if (tagFlag != 0 && tagFlag != 1) {
       throw AddressConverterException(
           'Invalid tag flag, tag flag should be 0 or 1 but got ${tagBytes[0]}');
@@ -318,7 +318,7 @@ class XrpAddrEncoder implements BlockchainAddressEncoder {
   /// ```
   @override
   String encodeKey(List<int> pubKey, [Map<String, dynamic> kwargs = const {}]) {
-    var publicType = kwargs["curve_type"] ?? EllipticCurveTypes.secp256k1;
+    final publicType = kwargs["curve_type"] ?? EllipticCurveTypes.secp256k1;
     if (publicType is! EllipticCurveTypes ||
         (publicType != EllipticCurveTypes.secp256k1 &&
             publicType != EllipticCurveTypes.ed25519)) {

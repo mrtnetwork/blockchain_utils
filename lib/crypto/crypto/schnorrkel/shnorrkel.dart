@@ -1,6 +1,6 @@
 /// The 'schnorrkel' library provides tools for working with the Schnorrkel
 /// digital signature scheme, including key management and cryptographic functions.
-library schnorrkel;
+library;
 
 /// Export statement for Schnorrkel key management components.
 export 'keys/keys.dart';

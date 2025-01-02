@@ -3,6 +3,7 @@ import 'package:blockchain_utils/bip/address/ada/network.dart';
 import 'package:blockchain_utils/bip/bip/bip32/bip32_const.dart';
 import 'package:blockchain_utils/bip/bip/conf/config/bip_coin_conf.dart';
 import 'package:blockchain_utils/bip/bip/conf/const/bip_conf_const.dart';
+import 'package:blockchain_utils/bip/bip/conf/core/coin_conf.dart';
 import 'package:blockchain_utils/bip/coin_conf/constant/coins_conf.dart';
 import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
 import 'package:blockchain_utils/bip/slip/slip44/slip44.dart';
@@ -13,7 +14,7 @@ class Cip1852Conf {
   static final BipCoinConfig cardanoIcarusMainNet = BipCoinConfig(
     coinNames: CoinsConf.cardanoMainNet.coinName,
     coinIdx: Slip44.cardano,
-    isTestnet: false,
+    chainType: ChainType.mainnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: Bip32Const.kholawKeyNetVersions,
     wifNetVer: null,
@@ -29,7 +30,7 @@ class Cip1852Conf {
   static final BipCoinConfig cardanoIcarusTestNet = BipCoinConfig(
     coinNames: CoinsConf.cardanoTestNet.coinName,
     coinIdx: Slip44.testnet,
-    isTestnet: true,
+    chainType: ChainType.testnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: Bip32Const.testNetKeyNetVersions,
     wifNetVer: null,
@@ -45,7 +46,7 @@ class Cip1852Conf {
   static final BipCoinConfig cardanoLedgerMainNet = BipCoinConfig(
     coinNames: CoinsConf.cardanoMainNet.coinName,
     coinIdx: Slip44.cardano,
-    isTestnet: false,
+    chainType: ChainType.mainnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: Bip32Const.kholawKeyNetVersions,
     wifNetVer: null,
@@ -58,7 +59,7 @@ class Cip1852Conf {
   static final BipCoinConfig cardanoLedgerTestNet = BipCoinConfig(
     coinNames: CoinsConf.cardanoTestNet.coinName,
     coinIdx: Slip44.testnet,
-    isTestnet: true,
+    chainType: ChainType.testnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: Bip32Const.testNetKeyNetVersions,
     wifNetVer: null,

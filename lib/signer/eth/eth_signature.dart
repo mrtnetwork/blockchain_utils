@@ -1,5 +1,5 @@
 import 'package:blockchain_utils/utils/utils.dart';
-import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/signer/eth/evm_signer.dart';
 
 /// Utility class for Ethereum signature operations.
@@ -105,6 +105,10 @@ class ETHSignature {
   /// Optionally adjusts 'v' according to EIP-155.
   List<int> toBytes([bool eip155 = true]) {
     return [...rBytes, ...sBytes, !eip155 ? v - 27 : v];
+  }
+
+  List<int> ecdsaBytes() {
+    return [...rBytes, ...sBytes];
   }
 
   /// Gets the hexadecimal representation of the 'r', 's', and 'v' components.

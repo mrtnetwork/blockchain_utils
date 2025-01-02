@@ -19,7 +19,7 @@ class _EosAddrUtils {
   ///
   /// [pubKeyBytes]: The public key bytes used to compute the checksum.
   ///
-  /// Returns the computed checksum as a List<int>.
+  /// Returns the computed checksum as a `List<int>`.
   static List<int> computeChecksum(List<int> pubKeyBytes) {
     return QuickCrypto.ripemd160Hash(pubKeyBytes)
         .sublist(0, EosAddrConst.checksumByteLen);
@@ -36,7 +36,7 @@ class EosAddrDecoder implements BlockchainAddressDecoder {
   /// This method removes the address prefix, decodes the address bytes, and validates the checksum.
   /// It returns the decoded public key bytes of the EOS address.
   ///
-  /// Returns a List<int> containing the public key bytes.
+  /// Returns a `List<int>` containing the public key bytes.
   @override
   List<int> decodeAddr(String addr, [Map<String, dynamic> kwargs = const {}]) {
     /// Remove the address prefix from the given address

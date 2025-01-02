@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
-import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/bip/bip/types/types.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/bip/address/p2pkh_addr.dart';
 import 'package:blockchain_utils/bip/bip/bip32/bip32_key_data.dart';

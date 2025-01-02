@@ -25,7 +25,7 @@
 import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/curve/curve.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/point/ec_projective_point.dart';
-import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 
 import 'base.dart';
 
@@ -109,11 +109,11 @@ class AffinePointt extends AbstractPoint {
       }
     }
 
-    BigInt p = curve.p;
-    BigInt l = (other.y - y) * BigintUtils.inverseMod(other.x - x, p) % p;
+    final BigInt p = curve.p;
+    final BigInt l = (other.y - y) * BigintUtils.inverseMod(other.x - x, p) % p;
 
-    BigInt x3 = (l * l - x - other.x) % p;
-    BigInt y3 = (l * (x - x3) - y) % p;
+    final BigInt x3 = (l * l - x - other.x) % p;
+    final BigInt y3 = (l * (x - x3) - y) % p;
 
     return AffinePointt(curve, x3, y3, order: null);
   }
@@ -153,7 +153,7 @@ class AffinePointt extends AbstractPoint {
     }
 
     e *= BigInt.from(3);
-    AffinePointt negativeSelf = AffinePointt(curve, x, -y, order: order);
+    final AffinePointt negativeSelf = AffinePointt(curve, x, -y, order: order);
     BigInt i = leftmostBit(e) ~/ BigInt.from(2);
     AffinePointt result = this;
 
@@ -187,15 +187,15 @@ class AffinePointt extends AbstractPoint {
       return AffinePointt(curve, BigInt.zero, BigInt.zero);
     }
 
-    BigInt p = curve.p;
-    BigInt a = curve.a;
+    final BigInt p = curve.p;
+    final BigInt a = curve.a;
 
-    BigInt l = (BigInt.from(3) * x * x + a) *
+    final BigInt l = (BigInt.from(3) * x * x + a) *
         BigintUtils.inverseMod(BigInt.from(2) * y, p) %
         p;
 
-    BigInt x3 = (l * l - BigInt.from(2) * x) % p;
-    BigInt y3 = (l * (x - x3) - y) % p;
+    final BigInt x3 = (l * l - BigInt.from(2) * x) % p;
+    final BigInt y3 = (l * (x - x3) - y) % p;
 
     return AffinePointt(curve, x3, y3, order: null);
   }

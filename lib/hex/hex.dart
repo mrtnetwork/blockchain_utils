@@ -1,5 +1,5 @@
 import 'package:blockchain_utils/utils/utils.dart';
-import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 
 // ignore: library_private_types_in_public_api
 const _Hex hex = _Hex();
@@ -106,8 +106,8 @@ class _Hex {
     final result = List<int>.filled(hex.length ~/ 2, 0);
     bool haveBad = false;
     for (int i = 0; i < hex.length; i += 2) {
-      int v0 = _decodeNibble(hex.codeUnitAt(i));
-      int v1 = _decodeNibble(hex.codeUnitAt(i + 1));
+      final int v0 = _decodeNibble(hex.codeUnitAt(i));
+      final int v1 = _decodeNibble(hex.codeUnitAt(i + 1));
       result[i ~/ 2] = ((v0 << 4) | v1) & mask8;
       haveBad |= (v0 == _invalidHexNibble) | (v1 == _invalidHexNibble);
     }

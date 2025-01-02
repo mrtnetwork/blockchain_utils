@@ -147,9 +147,9 @@ class Bip39MnemonicConst {
 class Bip39Mnemonic extends Mnemonic {
   /// Constructs a BIP-39 mnemonic from a mnemonic phrase provided as a string.
   /// This constructor initializes a BIP-39 mnemonic object by parsing the input string.
-  Bip39Mnemonic.fromString(String mnemonic) : super.fromString(mnemonic);
+  Bip39Mnemonic.fromString(super.mnemonic) : super.fromString();
 
   /// Constructs a BIP-39 mnemonic from a list of words.
   /// This constructor initializes a BIP-39 mnemonic object using a list of BIP-39 words.
-  Bip39Mnemonic.fromList(List<String> mnemonic) : super.fromList(mnemonic);
+  Bip39Mnemonic.fromList(super.mnemonic) : super.fromList();
 }

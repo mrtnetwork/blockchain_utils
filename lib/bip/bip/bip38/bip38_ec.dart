@@ -1,15 +1,15 @@
 import 'dart:typed_data';
 
 import 'package:blockchain_utils/base58/base58.dart';
+import 'package:blockchain_utils/bip/bip/types/types.dart';
 import 'package:blockchain_utils/utils/utils.dart';
-import 'package:blockchain_utils/bip/address/p2pkh_addr.dart';
 import 'package:blockchain_utils/bip/bip/bip38/bip38_addr.dart';
 import 'package:blockchain_utils/bip/ecc/keys/ecdsa_keys.dart';
 import 'package:blockchain_utils/bip/ecc/keys/secp256k1_keys_ecdsa.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/curve/curves.dart';
 import 'package:blockchain_utils/crypto/crypto/scrypt/scrypt.dart';
-import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 
 //
 /// Constants for BIP38 encryption and decryption operations.
@@ -85,7 +85,7 @@ class Bip38EcUtils {
   ///
   /// - [lotNum]: The lot number to use for owner entropy.
   /// - [sequenceNum]: The sequence number to use for owner entropy.
-  /// - Returns: A List<int> representing the generated owner entropy.
+  /// - Returns: A `List<int>` representing the generated owner entropy.
   static List<int> ownerEntropyWithLotSeq(int lotNum, int sequenceNum) {
     if (lotNum < Bip38EcConst.lotNumMinVal ||
         lotNum > Bip38EcConst.lotNumMaxVal) {
@@ -111,7 +111,7 @@ class Bip38EcUtils {
   /// Generates owner entropy without including lot and sequence numbers. This
   /// method is used when BIP38 does not require lot and sequence numbers.
   ///
-  /// - Returns: A List<int> representing the generated owner entropy.
+  /// - Returns: A `List<int>` representing the generated owner entropy.
   static List<int> ownerEntropyNoLotSeq() {
     final ownerSalt =
         QuickCrypto.generateRandom(Bip38EcConst.ownerSaltNoLotSeqByteLen);
@@ -126,7 +126,7 @@ class Bip38EcUtils {
   /// - [ownerEntropy]: The owner entropy containing owner salt.
   /// - [hasLotSeq]: A boolean flag indicating whether lot and sequence numbers are
   ///   included in the owner entropy.
-  /// - Returns: A List<int> representing the extracted owner salt.
+  /// - Returns: A `List<int>` representing the extracted owner salt.
   static List<int> ownerSaltFromEntropy(
       List<int> ownerEntropy, bool hasLotSeq) {
     return hasLotSeq
@@ -145,7 +145,7 @@ class Bip38EcUtils {
   /// - [ownerEntropy]: The owner entropy from which the pass factor is derived.
   /// - [hasLotSeq]: A boolean flag indicating whether lot and sequence numbers are
   ///   included in the owner entropy.
-  /// - Returns: A List<int> representing the derived pass factor.
+  /// - Returns: A `List<int>` representing the derived pass factor.
   static List<int> passFactor(
       String passphrase, List<int> ownerEntropy, bool hasLotSeq) {
     final ownerSalt = ownerSaltFromEntropy(ownerEntropy, hasLotSeq);
@@ -176,7 +176,7 @@ class Bip38EcUtils {
   /// multiplication to derive the EC point.
   ///
   /// - [passfactor]: The pass factor for which the EC point is calculated.
-  /// - Returns: A List<int> representing the calculated EC point.
+  /// - Returns: A `List<int>` representing the calculated EC point.
   static List<int> passPoint(List<int> passfactor) {
     /// Get the generator point for the Secp256k1 curve.
     final generator = Curves.generatorSecp256k1;
@@ -201,7 +201,7 @@ class Bip38EcUtils {
   /// - [passpoint]: The passpoint used in key derivation.
   /// - [addressHash]: The address hash to be combined in key derivation.
   /// - [ownerEntropy]: The owner entropy used in key derivation.
-  /// - Returns: A tuple (pair) of List<int>s representing the two derived key halves.
+  /// - Returns: A tuple (pair) of `List<int>`s representing the two derived key halves.
   static Tuple<List<int>, List<int>> deriveKeyHalves(
       List<int> passpoint, List<int> addressHash, List<int> ownerEntropy) {
     /// Derive a key using Scrypt with combined data.
@@ -339,7 +339,7 @@ class Bip38EcKeysGenerator {
   /// - [seedb]: The 'seedb' value to be encrypted.
   /// - [derivedHalf1]: The first derived key half.
   /// - [derivedHalf2]: The second derived key half.
-  /// - Returns: A tuple (pair) of List<int>s representing the two encrypted parts.
+  /// - Returns: A tuple (pair) of `List<int>`s representing the two encrypted parts.
   static Tuple<List<int>, List<int>> _encryptSeedb(
       List<int> seedb, List<int> derivedHalf1, List<int> derivedHalf2) {
     /// Encrypt the first part of 'seedb'.
@@ -362,11 +362,11 @@ class Bip38EcKeysGenerator {
   /// This method sets specific flag bits in the 'flagbyte' to indicate the
   /// chosen public key mode (compressed or uncompressed) and the presence of
   /// lot and sequence numbers in the intermediate passphrase, as defined by the
-  /// provided magic number. It returns the modified 'flagbyte' as a List<int>.
+  /// provided magic number. It returns the modified 'flagbyte' as a `List<int>`.
   ///
   /// - [magic]: The magic number extracted from the intermediate passphrase.
   /// - [pubKeyMode]: The selected public key mode (compressed or uncompressed).
-  /// - Returns: A List<int> representing the 'flagbyte' with set bits.
+  /// - Returns: A `List<int>` representing the 'flagbyte' with set bits.
   static List<int> _setFlagbyteBits(List<int> magic, PubKeyModes pubKeyMode) {
     int flagbyteInt = 0;
 
@@ -466,7 +466,7 @@ class Bip38EcDecrypter {
   /// - [encryptedPart2]: The second encrypted segment.
   /// - [derivedHalf1]: The first derived key half.
   /// - [derivedHalf2]: The second derived key half.
-  /// - Returns: The decrypted 'factorb' as a List<int>.
+  /// - Returns: The decrypted 'factorb' as a `List<int>`.
   static List<int> _decryptAndGetFactorb(
       List<int> encryptedPart1Lower,
       List<int> encryptedPart2,

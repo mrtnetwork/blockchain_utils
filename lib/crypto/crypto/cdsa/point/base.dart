@@ -3,7 +3,7 @@ import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/curve/curve.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/point/edwards.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/utils/utils.dart';
-import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 
 /// An enumeration representing different types of encoding for elliptic curve points.
 enum EncodeType { comprossed, hybrid, raw, uncompressed }
@@ -58,7 +58,7 @@ abstract class AbstractPoint {
       prefix = List<int>.from([0x06]);
     }
 
-    List<int> result = List<int>.filled(prefix.length + raw.length, 0);
+    final List<int> result = List<int>.filled(prefix.length + raw.length, 0);
     result.setAll(0, prefix);
     result.setAll(prefix.length, raw);
 
@@ -67,7 +67,7 @@ abstract class AbstractPoint {
 
   /// Internal method to encode an elliptic curve point in compressed form.
   List<int> _compressedEncode() {
-    List<int> xStr =
+    final List<int> xStr =
         BigintUtils.toBytes(x, length: BigintUtils.orderLen(curve.p));
     List<int> prefix;
     if (y & BigInt.one != BigInt.zero) {
@@ -76,7 +76,7 @@ abstract class AbstractPoint {
       prefix = List<int>.from([0x02]);
     }
 
-    List<int> result = List<int>.filled(prefix.length + xStr.length, 0);
+    final List<int> result = List<int>.filled(prefix.length + xStr.length, 0);
     result.setAll(0, prefix);
     result.setAll(prefix.length, xStr);
 

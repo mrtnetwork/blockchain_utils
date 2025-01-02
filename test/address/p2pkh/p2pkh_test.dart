@@ -1,6 +1,5 @@
-import 'package:blockchain_utils/bip/address/p2pkh_addr.dart';
+import 'package:blockchain_utils/blockchain_utils.dart';
 import '../../quick_hex.dart';
-import 'package:blockchain_utils/utils/utils.dart';
 import 'package:test/test.dart';
 
 import 'comperesed_test_vector.dart' show compresedTestVector;

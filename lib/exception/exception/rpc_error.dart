@@ -9,7 +9,7 @@ class RPCError extends BlockchainUtilsException {
   /// The optional [request] parameter holds the details of the RPC request that resulted in the error.
   const RPCError(
       {required String message,
-      required this.errorCode,
+      this.errorCode,
       this.request,
       Map<String, dynamic>? details})
       : super(message, details: details);
@@ -19,6 +19,8 @@ class RPCError extends BlockchainUtilsException {
 
   /// Details of the RPC request that resulted in the error.
   final Map<String, dynamic>? request;
+
+  int? get statusCode => request?["statusCode"];
 
   @override
   String toString() {

@@ -1,5 +1,5 @@
 import 'dart:typed_data';
-import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/ecdsa/signature.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/point/ec_projective_point.dart';
@@ -39,10 +39,10 @@ class ECDSAPrivateKey {
   ///   An ECDSA signature.
   ///
   ECDSASignature sign(BigInt hash, BigInt randomK) {
-    BigInt n = publicKey.generator.order!;
-    BigInt k = randomK % n;
-    BigInt ks = k + n;
-    BigInt kt = ks + n;
+    final BigInt n = publicKey.generator.order!;
+    final BigInt k = randomK % n;
+    final BigInt ks = k + n;
+    final BigInt kt = ks + n;
 
     BigInt r;
     if (ks.bitLength == n.bitLength) {
@@ -55,7 +55,7 @@ class ECDSAPrivateKey {
       throw const MessageException("unlucky random number r");
     }
 
-    BigInt s =
+    final BigInt s =
         (BigintUtils.inverseMod(k, n) * (hash + (secretMultiplier * r) % n)) %
             n;
 

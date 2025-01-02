@@ -1,7 +1,7 @@
 import 'package:blockchain_utils/bip/ecc/bip_ecc.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/cdsa.dart';
 import 'package:blockchain_utils/crypto/crypto/hash/hash.dart';
-import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/utils/numbers/numbers.dart';
 
 /// Constants used by the Solana signer for cryptographic operations.

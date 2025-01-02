@@ -1,7 +1,7 @@
 import 'package:blockchain_utils/bip/ecc/bip_ecc.dart';
 import 'package:blockchain_utils/crypto/crypto/crypto.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
-import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/signer/ecdsa_signing_key.dart';
 import 'package:blockchain_utils/utils/utils.dart';
 
@@ -103,13 +103,13 @@ class XrpSigner {
       throw ArgumentException(
           "invalid digest. digest length must be ${_XrpSignerConst.digestLength} got ${digest.length}");
     }
-    ECDSASignature ecdsaSign = _ecdsaSigningKey!
+    final ECDSASignature ecdsaSign = _ecdsaSigningKey!
         .signDigestDeterminstic(digest: hash, hashFunc: () => SHA256());
     BigInt s = ecdsaSign.s;
     if (ecdsaSign.s > _XrpSignerConst.orderHalf) {
       s = _XrpSignerConst.curveOrder - s;
     }
-    List<int> derSignature = BigintUtils.toDer([ecdsaSign.r, s]);
+    final List<int> derSignature = BigintUtils.toDer([ecdsaSign.r, s]);
     final vr = toVerifyKey();
     final verify = vr._verifyEcdsa(hash, derSignature);
     if (!verify) {
@@ -197,12 +197,12 @@ class XrpVerifier {
   /// [derSignature] The DER-encoded ECDSA signature as a list of bytes.
   /// returns True if the signature is verified, false otherwise.
   bool _verifyEcdsa(List<int> digest, List<int> derSignature) {
-    int lengthR = derSignature[3];
-    int lengthS = derSignature[5 + lengthR];
+    final int lengthR = derSignature[3];
+    final int lengthS = derSignature[5 + lengthR];
 
-    List<int> rBytes = derSignature.sublist(4, 4 + lengthR);
+    final List<int> rBytes = derSignature.sublist(4, 4 + lengthR);
     final int sIndex = 4 + lengthR + 2;
-    List<int> sBytes = derSignature.sublist(sIndex, sIndex + lengthS);
+    final List<int> sBytes = derSignature.sublist(sIndex, sIndex + lengthS);
     final r = BigintUtils.fromBytes(rBytes);
     final s = BigintUtils.fromBytes(sBytes);
     final signature = ECDSASignature(r, s);

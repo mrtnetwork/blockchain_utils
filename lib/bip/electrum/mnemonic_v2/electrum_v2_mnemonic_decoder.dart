@@ -3,7 +3,7 @@ import 'package:blockchain_utils/bip/bip/bip39/bip39_mnemonic_utils.dart';
 import 'package:blockchain_utils/bip/electrum/mnemonic_v2/electrum_v2_mnemonic.dart';
 import 'package:blockchain_utils/bip/electrum/mnemonic_v2/electrum_v2_mnemonic_utils.dart';
 import 'package:blockchain_utils/bip/mnemonic/mnemonic_decoder_base.dart';
-import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 
 /// A class for decoding Electrum V2 mnemonics, extending the MnemonicDecoderBase class.
 class ElectrumV2MnemonicDecoder extends MnemonicDecoderBase {
@@ -33,7 +33,7 @@ class ElectrumV2MnemonicDecoder extends MnemonicDecoderBase {
   /// mnemonic type, and detecting the language if it was not specified during construction.
   ///
   /// [mnemonic]: The Electrum V2 mnemonic to decode into entropy bytes.
-  /// Returns a List<int> containing the decoded entropy bytes.
+  /// Returns a `List<int>` containing the decoded entropy bytes.
   @override
   List<int> decode(String mnemonic) {
     /// Parse the mnemonic string

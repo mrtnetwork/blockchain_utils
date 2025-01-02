@@ -1,5 +1,5 @@
 import 'package:blockchain_utils/utils/utils.dart';
-import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 
 class ChaCha20 {
   static void _quarterround(List<int> output, int a, int b, int c, int d) {
@@ -107,7 +107,7 @@ class ChaCha20 {
   /// be used with or without an inplace counter, depending on the value of `nonceInplaceCounterLength`.
   ///
   /// Parameters:
-  /// - `key`: The 256-bit (32-byte) encryption key as a List<int>.
+  /// - `key`: The 256-bit (32-byte) encryption key as a `List<int>`.
   /// - `nonce`: The nonce data, which must be either 8, 12, or 16 bytes in length depending on the
   ///   value of `nonceInplaceCounterLength`.
   /// - `src`: The source data to be encrypted or decrypted.
@@ -120,7 +120,7 @@ class ChaCha20 {
   ///   the nonce length is invalid.
   ///
   /// Returns:
-  /// - The `dst` List<int> containing the result of the XOR operation.
+  /// - The `dst` `List<int>` containing the result of the XOR operation.
   ///
   /// Note: This function securely zeros temporary data to protect sensitive information.
   static List<int> streamXOR(
@@ -183,14 +183,14 @@ class ChaCha20 {
   /// in the encrypted output. It also provides the option to incorporate a nonce inplace counter.
   ///
   /// Parameters:
-  /// - `key`: The encryption key as a List<int>.
-  /// - `nonce`: A unique nonce as a List<int>.
-  /// - `dst`: The destination List<int> where the generated stream will be XORed.
+  /// - `key`: The encryption key as a `List<int>`.
+  /// - `nonce`: A unique nonce as a `List<int>`.
+  /// - `dst`: The destination `List<int>` where the generated stream will be XORed.
   /// - `nonceInplaceCounterLength`: An optional parameter to specify the length of the nonce inplace counter
   ///   (default is 0, meaning no nonce inplace counter).
   ///
   /// Returns:
-  /// - The `dst` List<int> containing the encrypted data.
+  /// - The `dst` `List<int>` containing the encrypted data.
   ///
   /// Note: This function securely zeros the `dst` data before writing the generated stream and should
   /// be used for generating secure random data.

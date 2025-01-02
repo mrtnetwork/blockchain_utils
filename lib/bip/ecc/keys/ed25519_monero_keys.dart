@@ -59,7 +59,9 @@ import 'package:blockchain_utils/crypto/crypto/cdsa/curve/curves.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/eddsa/keys/privatekey.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/eddsa/keys/publickey.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/point/edwards.dart';
-import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/crypto/crypto/cdsa/utils/ed25519_utils.dart';
+import 'package:blockchain_utils/crypto/quick_crypto.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/utils/utils.dart';
 
 /// A class representing an Ed25519 Monero-compatible public key that implements the IPublicKey interface.
@@ -166,6 +168,9 @@ class MoneroPrivateKey implements IPrivateKey {
     if (keyBytes.length != Ed25519KeysConst.privKeyByteLen) {
       throw const ArgumentException("invalid private key length");
     }
+    if (!Ed25519Utils.isValidScalar(keyBytes)) {
+      throw const ArgumentException("Invalid monero private key.");
+    }
     final gn = Curves.generatorED25519;
     final prv = EDDSAPrivateKey.fromKhalow(gn, keyBytes);
     return MoneroPrivateKey._(prv);
@@ -174,6 +179,19 @@ class MoneroPrivateKey implements IPrivateKey {
   /// Factory method for creating an MoneroPrivateKey from a hex.
   factory MoneroPrivateKey.fromHex(String keyHex) {
     return MoneroPrivateKey.fromBytes(BytesUtils.fromHexString(keyHex));
+  }
+
+  /// Factory method for creating an MoneroPrivateKey from a BIP-44.
+  factory MoneroPrivateKey.fromBip44(List<int> keyBytes) {
+    final privateKey =
+        IPrivateKey.fromBytes(keyBytes, EllipticCurveTypes.ed25519);
+    return MoneroPrivateKey.fromBytes(
+        Ed25519Utils.scalarReduce(QuickCrypto.keccack256Hash(privateKey.raw)));
+  }
+
+  /// Factory method for creating an MoneroPrivateKey from a BIP-44 hex string.
+  factory MoneroPrivateKey.fromBip44Hex(String keyHex) {
+    return MoneroPrivateKey.fromBip44(BytesUtils.fromHexString(keyHex));
   }
 
   /// imutable key

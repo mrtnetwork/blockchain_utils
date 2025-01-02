@@ -7,7 +7,7 @@ import 'package:blockchain_utils/bip/bip/bip32/bip32_keys.dart';
 import 'package:blockchain_utils/bip/bip/bip32/bip32_path.dart';
 
 import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
-import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/helper/helper.dart';
 
 import 'ibip32_mst_key_generator.dart';
@@ -44,7 +44,7 @@ abstract class Bip32Base {
         Bip32KeyDeserializer.deserializeKey(exKeyStr, keyNetVer: keyNetVer);
 
     final keyBytes = deserKey.keyBytes;
-    Bip32KeyData keyData = deserKey.keyData;
+    final Bip32KeyData keyData = deserKey.keyData;
     final isPublic = deserKey.isPublic;
 
     if (keyData.depth.depth == 0) {

@@ -57,7 +57,7 @@ import 'package:blockchain_utils/bip/bip/bip32/bip32_key_net_ver.dart';
 import 'package:blockchain_utils/bip/bip/bip32/bip32_keys.dart';
 import 'package:blockchain_utils/bip/bip/conf/core/coin_conf.dart';
 import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
-import 'package:blockchain_utils/bip/coin_conf/conf.dart';
+import 'package:blockchain_utils/bip/coin_conf/models/coins_name.dart';
 
 /// A base class representing configuration parameters for a cryptocurrency coin.
 class BipCoinConfig implements CoinConfig {
@@ -71,7 +71,7 @@ class BipCoinConfig implements CoinConfig {
   final CoinNames coinNames;
   final int coinIdx;
   @override
-  final bool isTestnet;
+  final ChainType chainType;
   final String defPath;
   @override
   final Bip32KeyNetVersions keyNetVer;
@@ -88,7 +88,7 @@ class BipCoinConfig implements CoinConfig {
   BipCoinConfig copy({
     CoinNames? coinNames,
     int? coinIdx,
-    bool? isTestnet,
+    ChainType? chainType,
     String? defPath,
     Bip32KeyNetVersions? keyNetVer,
     List<int>? wifNetVer,
@@ -99,7 +99,7 @@ class BipCoinConfig implements CoinConfig {
     return BipCoinConfig(
         coinNames: coinNames ?? this.coinNames,
         coinIdx: coinIdx ?? this.coinIdx,
-        isTestnet: isTestnet ?? this.isTestnet,
+        chainType: chainType ?? this.chainType,
         defPath: defPath ?? this.defPath,
         keyNetVer: keyNetVer ?? this.keyNetVer,
         wifNetVer: wifNetVer ?? this.wifNetVer,
@@ -112,7 +112,7 @@ class BipCoinConfig implements CoinConfig {
   const BipCoinConfig({
     required this.coinNames,
     required this.coinIdx,
-    required this.isTestnet,
+    required this.chainType,
     required this.defPath,
     required this.keyNetVer,
     required this.wifNetVer,

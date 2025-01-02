@@ -30,16 +30,16 @@ abstract class Bip32KholawEd25519KeyDerivatorBase
   Tuple<List<int>, List<int>> ckdPriv(Bip32PrivateKey privKey,
       Bip32PublicKey pubKey, Bip32KeyIndex index, EllipticCurveTypes type) {
     /// Serialize the 'index' to bytes.
-    List<int> indexBytes = serializeIndex(index);
+    final List<int> indexBytes = serializeIndex(index);
 
     /// Get the chain code bytes from the 'privKey'.
     List<int> chainCodeBytes = privKey.chainCode.toBytes();
 
     /// Extract raw private key bytes from 'privKey'.
-    List<int> privKeyBytes = privKey.raw;
+    final List<int> privKeyBytes = privKey.raw;
 
     /// Extract compressed public key bytes from 'pubKey' and remove the compression flag.
-    List<int> pubKeyBytes = pubKey.compressed.sublist(1);
+    final List<int> pubKeyBytes = pubKey.compressed.sublist(1);
 
     List<int> zBytes;
     if (index.isHardened) {
@@ -62,9 +62,11 @@ abstract class Bip32KholawEd25519KeyDerivatorBase
 
     /// Compute left and right part of private key
     const hmacHalfLen = QuickCrypto.hmacSha512DigestSize ~/ 2;
-    List<int> pLBytes = newPrivateKeyLeftPart(zBytes.sublist(0, hmacHalfLen),
-        privKeyBytes.sublist(0, hmacHalfLen), type);
-    List<int> pRBytes = newPrivateKeyRightPart(
+    final List<int> pLBytes = newPrivateKeyLeftPart(
+        zBytes.sublist(0, hmacHalfLen),
+        privKeyBytes.sublist(0, hmacHalfLen),
+        type);
+    final List<int> pRBytes = newPrivateKeyRightPart(
         zBytes.sublist(hmacHalfLen), privKeyBytes.sublist(hmacHalfLen));
 
     /// Return the child private key bytes and the updated chain code.
@@ -78,23 +80,23 @@ abstract class Bip32KholawEd25519KeyDerivatorBase
   Tuple<List<int>, List<int>> ckdPub(
       Bip32PublicKey pubKey, Bip32KeyIndex index, EllipticCurveTypes type) {
     /// Serialize the 'index' to bytes.
-    List<int> indexBytes = serializeIndex(index);
+    final List<int> indexBytes = serializeIndex(index);
 
     /// Get the chain code bytes from the 'pubKey'.
     List<int> chainCodeBytes = pubKey.chainCode.toBytes();
 
     /// Extract compressed public key bytes from 'pubKey' and remove the compression flag.
-    List<int> pubKeyBytes = pubKey.compressed.sublist(1);
+    final List<int> pubKeyBytes = pubKey.compressed.sublist(1);
 
     /// Compute 'Z' and update the chain code.
-    List<int> zBytes = QuickCrypto.hmacSha512Hash(
+    final List<int> zBytes = QuickCrypto.hmacSha512Hash(
         chainCodeBytes, List<int>.from([0x02, ...pubKeyBytes, ...indexBytes]));
     chainCodeBytes = QuickCrypto.hmacSha512HashHalves(chainCodeBytes,
         List<int>.from([0x03, ...pubKeyBytes, ...indexBytes])).item2;
 
     /// Compute the new public key point based on 'pubKey' and 'zBytes'.
     const hmacHalfLen = QuickCrypto.hmacSha512DigestSize ~/ 2;
-    EDPoint newPubKeyPoint =
+    final EDPoint newPubKeyPoint =
         newPublicKeyPoint(pubKey, zBytes.sublist(0, hmacHalfLen));
 
     /// Check if the new public key point is the identity point (0, 1).

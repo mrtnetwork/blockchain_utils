@@ -56,6 +56,7 @@ import 'package:blockchain_utils/bip/address/p2tr_addr.dart';
 import 'package:blockchain_utils/bip/bip/bip32/bip32_const.dart';
 import 'package:blockchain_utils/bip/bip/conf/config/bip_coin_conf.dart';
 import 'package:blockchain_utils/bip/bip/conf/const/bip_conf_const.dart';
+import 'package:blockchain_utils/bip/bip/conf/core/coin_conf.dart';
 import 'package:blockchain_utils/bip/coin_conf/constant/coins_conf.dart';
 import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
 import 'package:blockchain_utils/bip/slip/slip44/slip44.dart';
@@ -73,7 +74,7 @@ class Bip86Conf {
   static BipCoinConfig bitcoinMainNet = BipCoinConfig(
     coinNames: CoinsConf.bitcoinMainNet.coinName,
     coinIdx: Slip44.bitcoin,
-    isTestnet: false,
+    chainType: ChainType.mainnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: bip86BtcKeyNetVer,
     wifNetVer: CoinsConf.bitcoinMainNet.params.wifNetVer,
@@ -88,7 +89,7 @@ class Bip86Conf {
   static BipCoinConfig bitcoinTestNet = BipCoinConfig(
     coinNames: CoinsConf.bitcoinTestNet.coinName,
     coinIdx: Slip44.testnet,
-    isTestnet: true,
+    chainType: ChainType.testnet,
     defPath: derPathNonHardenedFull,
     addressEncoder: ([dynamic kwargs]) => P2TRAddrEncoder(),
     keyNetVer: bip86BtcKeyNetVerTest,

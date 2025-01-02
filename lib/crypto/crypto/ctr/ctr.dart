@@ -1,6 +1,6 @@
 import 'package:blockchain_utils/crypto/crypto/blockcipher/blockcipher.dart';
 import 'package:blockchain_utils/utils/utils.dart';
-import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 
 /// Counter (CTR) mode for block ciphers.
 ///

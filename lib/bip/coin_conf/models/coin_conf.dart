@@ -1,4 +1,4 @@
-import 'package:blockchain_utils/bip/coin_conf/conf.dart';
+import 'coins_name.dart';
 
 /// A class representing the configuration of a specific cryptocurrency coin.
 class CoinConf {

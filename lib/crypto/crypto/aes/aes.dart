@@ -1,6 +1,6 @@
 import 'package:blockchain_utils/crypto/crypto/blockcipher/blockcipher.dart';
 import 'package:blockchain_utils/utils/utils.dart';
-import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 import 'aes_lib.dart' as aes_lib;
 
 /// Represents an Advanced Encryption Standard (AES) block cipher.
@@ -57,7 +57,7 @@ class AES implements BlockCipher {
   /// expands the key into internal key schedules for encryption and decryption if required.
   ///
   /// Parameters:
-  /// - `key`: The encryption key as a List<int>. It must be 16, 24, or 32 bytes in length
+  /// - `key`: The encryption key as a `List<int>`. It must be 16, 24, or 32 bytes in length
   ///   for AES-128, AES-192, or AES-256, respectively.
   /// - `noDecryption`: An optional boolean flag. If set to `true`, it disables decryption functionality
   ///   by securely wiping the decryption key schedule.
@@ -114,7 +114,7 @@ class AES implements BlockCipher {
 
   /// This method takes a source block of plaintext, encrypts it using the encryption key schedule,
   /// and returns the resulting ciphertext. Optionally, you can provide a destination block (`dst`)
-  /// to write the encrypted data into. If not provided, a new List<int> is created to hold the result.
+  /// to write the encrypted data into. If not provided, a new `List<int>` is created to hold the result.
   ///
   /// Parameters:
   /// - `src`: The source block of plaintext to be encrypted, which must have a length of 16 bytes.
@@ -126,7 +126,7 @@ class AES implements BlockCipher {
   /// - `StateError` if the encryption key is not available, indicating that the instance is not properly initialized.
   ///
   /// Returns:
-  /// - The encrypted ciphertext block as a List<int>.
+  /// - The encrypted ciphertext block as a `List<int>`.
   @override
   List<int> encryptBlock(List<int> src, [List<int>? dst]) {
     final out = dst ?? List<int>.filled(blockSize, 0);
@@ -147,7 +147,7 @@ class AES implements BlockCipher {
 
   /// This method takes a source block of ciphertext, decrypts it using the decryption key schedule,
   /// and returns the resulting plaintext. Optionally, you can provide a destination block (`dst`)
-  /// to write the decrypted data into. If not provided, a new List<int> is created to hold the result.
+  /// to write the decrypted data into. If not provided, a new `List<int>` is created to hold the result.
   ///
   /// Parameters:
   /// - `src`: The source block of ciphertext to be decrypted, which must have a length of 16 bytes.
@@ -160,7 +160,7 @@ class AES implements BlockCipher {
   ///   decryption is not supported by this instance.
   ///
   /// Returns:
-  /// - The decrypted plaintext block as a List<int>.
+  /// - The decrypted plaintext block as a `List<int>`.
   @override
   List<int> decryptBlock(List<int> src, [List<int>? dst]) {
     final out = dst ?? List<int>.filled(blockSize, 0);

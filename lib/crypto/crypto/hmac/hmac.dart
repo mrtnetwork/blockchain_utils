@@ -28,7 +28,7 @@ class HMAC implements SerializableHash {
   ///
   /// Example:
   /// ```dart
-  /// final key = List<int>.from([0x00, 0x01, 0x02]);
+  /// final key = `List<int>`.from([0x00, 0x01, 0x02]);
   /// final hmac = HMAC(()=>SHA256(), key);
   /// ```
   ///
@@ -115,7 +115,7 @@ class HMAC implements SerializableHash {
   /// If the hash has already been finished using the `finish` method, calling this method will result in an error.
   ///
   /// Parameters:
-  /// - [data]: The List<int> containing the data to be hashed.
+  /// - [data]: The `List<int>` containing the data to be hashed.
   ///
   /// Returns this [Hash] object for method chaining.
   @override
@@ -124,14 +124,14 @@ class HMAC implements SerializableHash {
     return this;
   }
 
-  /// Finalizes the hash computation and stores the hash state in the provided List<int> [out].
+  /// Finalizes the hash computation and stores the hash state in the provided `List<int>` [out].
   ///
   /// This function completes the hash computation, finalizes the state, and stores the resulting
-  /// hash in the provided [out] List<int>. If the hash has already been finished, this method
+  /// hash in the provided [out] `List<int>`. If the hash has already been finished, this method
   /// will return the existing state without re-computing.
   ///
   /// Parameters:
-  ///   - [out]: The List<int> in which the hash digest is stored.
+  ///   - [out]: The `List<int>` in which the hash digest is stored.
   ///
   /// Returns the current instance of the hash algorithm.
   @override
@@ -150,13 +150,13 @@ class HMAC implements SerializableHash {
     return this;
   }
 
-  /// Generates the final hash digest by assembling and returning the hash state in a List<int>.
+  /// Generates the final hash digest by assembling and returning the hash state in a `List<int>`.
   ///
   /// This function produces the hash digest by combining the current hash state into a single
-  /// List<int> output. It finalizes the hash if it hasn't been finished, effectively completing
+  /// `List<int>` output. It finalizes the hash if it hasn't been finished, effectively completing
   /// the hash computation and returning the result.
   ///
-  /// Returns the List<int> containing the computed hash digest.
+  /// Returns the `List<int>` containing the computed hash digest.
   @override
   List<int> digest() {
     final out = List<int>.filled(getDigestLength, 0);
@@ -210,8 +210,8 @@ class HMAC implements SerializableHash {
   ///
   /// Example:
   /// ```dart
-  /// final key = List<int>.from([0x00, 0x01, 0x02]);
-  /// final data = List<int>.from([0x10, 0x11, 0x12, 0x13]);
+  /// final key = `List<int>`.from([0x00, 0x01, 0x02]);
+  /// final data = `List<int>`.from([0x10, 0x11, 0x12, 0x13]);
   /// final hmac = hmac(()=>SHA256(), key, data);
   /// ```
   static List<int> hmac(HashFunc hash, List<int> key, List<int> data) {

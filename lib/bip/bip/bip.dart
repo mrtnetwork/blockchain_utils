@@ -1,6 +1,6 @@
 /// The 'bip' library serves as a comprehensive collection of libraries for working
 /// with various Bitcoin Improvement Proposals (BIPs) in the realm of cryptocurrency.
-library bip;
+library;
 
 /// Export statement for the 'bip32' library, providing tools for working with BIP-32,
 /// which defines hierarchical deterministic wallets and key derivation.
@@ -35,3 +35,5 @@ export 'bip86/bip86.dart';
 /// Export statement for the 'conf/bip_config' library, which centralizes coin-related
 /// definitions, coin names, parameters, and coin configuration information for different BIPs.
 export 'conf/bip_config.dart';
+
+export 'types/types.dart';

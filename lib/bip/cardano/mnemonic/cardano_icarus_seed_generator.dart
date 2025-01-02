@@ -17,7 +17,7 @@ class CardanoIcarusSeedGenerator {
     Bip39Languages? language,
   }) : _entropyBytes = Bip39MnemonicDecoder(language).decode(mnemonic);
 
-  /// Generates and returns the Cardano Icarus seed as a List<int>.
+  /// Generates and returns the Cardano Icarus seed as a `List<int>`.
   List<int> generate() {
     return List<int>.from(_entropyBytes);
   }

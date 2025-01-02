@@ -6,13 +6,13 @@ class AlgorandMnemonicUtils {
   /// Computes the checksum for the given [dataBytes] using SHA-512/256.
   ///
   /// The [dataBytes] parameter should be the data bytes for which the checksum
-  /// needs to be computed. The method returns a [List<int>] containing the
+  /// needs to be computed. The method returns a [`List<int>`] containing the
   /// computed checksum.
   ///
   /// Example usage:
   ///
   /// ```dart
-  /// final data = List<int>.from([1, 2, 3, 4, 5]);
+  /// final data = `List<int>`.from([1, 2, 3, 4, 5]);
   /// final checksum = AlgorandMnemonicUtils.computeChecksum(data);
   /// ```
   static List<int> computeChecksum(List<int> dataBytes) {
@@ -30,7 +30,7 @@ class AlgorandMnemonicUtils {
   /// Example usage:
   ///
   /// ```dart
-  /// final data = List<int>.from([1, 2, 3, 4, 5]);
+  /// final data = `List<int>`.from([1, 2, 3, 4, 5]);
   /// final checksumWordIndex = AlgorandMnemonicUtils.computeChecksumWordIndex(data);
   /// ```
   ///
@@ -53,19 +53,19 @@ class AlgorandMnemonicUtils {
   /// It returns a list of integers where every number is less than 2^toBits.
   ///
   /// Args:
-  ///   data (List<int>): Data to be converted
+  ///   data (`List<int>`): Data to be converted
   ///   fromBits (int)  : Number of bits to start from
   ///   toBits (int)    : Number of bits to end with
   ///
   /// Returns:
-  ///   List<int>: List of converted values, null in case of errors
+  ///   `List<int>`: List of converted values, null in case of errors
   static List<int>? convertBits(List<int> data, int fromBits, int toBits) {
-    int maxOutVal = (1 << toBits) - 1;
+    final int maxOutVal = (1 << toBits) - 1;
     int acc = 0;
     int bits = 0;
-    List<int> ret = <int>[];
+    final List<int> ret = <int>[];
 
-    for (var value in data) {
+    for (final value in data) {
       if (value < 0 || (value >> fromBits) > 0) {
         return null;
       }

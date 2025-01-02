@@ -13,12 +13,12 @@
 /// - Keccack: SHA-3, SHA-3/224, SHA-3/256, SHA-3/384, SHA-3/512, SHAKE128-256
 /// - Ridemp: RIPEMD-320, RIPEMD-256, RIPEMD-160, RIPEMD-128
 /// -....
-library hash;
+library;
 
 import 'package:blockchain_utils/utils/utils.dart';
 import 'dart:math' as math;
 
-import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 
 /// Export statement for the 'sha224' part, providing the SHA-224 hash algorithm.
 part 'sha224/sha224.dart';

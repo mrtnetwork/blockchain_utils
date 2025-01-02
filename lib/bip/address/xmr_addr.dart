@@ -266,9 +266,9 @@ class XmrAddrDecoder implements BlockchainAddressDecoder {
   /// Decodes a Monero (XMR) address.
   ///
   /// Given an XMR address and optional decoding parameters specified in [kwargs],
-  /// this method decodes the XMR address and returns the result as a List<int>.
+  /// this method decodes the XMR address and returns the result as a `List<int>`.
   ///
-  /// If decoding parameters are provided, ensure that "net_ver" is a List<int>
+  /// If decoding parameters are provided, ensure that "net_ver" is a `List<int>`
   /// representing the network version bytes.
   ///
   /// Parameters:
@@ -276,7 +276,7 @@ class XmrAddrDecoder implements BlockchainAddressDecoder {
   /// - kwargs: A map of optional decoding parameters, such as "net_ver."
   ///
   /// Returns:
-  /// A List<int> containing the decoded address data.
+  /// A `List<int>` containing the decoded address data.
   @override
   List<int> decodeAddr(String addr, [Map<String, dynamic> kwargs = const {}]) {
     final List<int> netVerBytes =
@@ -302,7 +302,7 @@ class XmrAddrEncoder extends BlockchainAddressEncoder {
   /// Given a public key, view key, and optional encoding parameters specified in [kwargs],
   /// this method encodes the public keys as an XMR address and returns the result as a string.
   ///
-  /// Ensure that the "net_ver" and "pub_vkey" parameters are provided as List<int> instances.
+  /// Ensure that the "net_ver" and "pub_vkey" parameters are provided as `List<int>` instances.
   ///
   /// Parameters:
   /// - pubKey: The public key to be encoded.
@@ -329,7 +329,7 @@ class XmrIntegratedAddrDecoder extends BlockchainAddressDecoder {
   /// Given an XMR address and optional decoding parameters specified in [kwargs],
   /// this method decodes the address to extract the public key and view key components.
   ///
-  /// Ensure that the "net_ver" and "payment_id" parameters are provided as List<int> instances.
+  /// Ensure that the "net_ver" and "payment_id" parameters are provided as `List<int>` instances.
   ///
   /// Parameters:
   /// - addr: The XMR address to be decoded.
@@ -337,7 +337,7 @@ class XmrIntegratedAddrDecoder extends BlockchainAddressDecoder {
   ///   and "payment_id" (payment ID bytes).
   ///
   /// Returns:
-  /// A List<int> representing the decoded public key and view key components.
+  /// A `List<int>` representing the decoded public key and view key components.
   @override
   List<int> decodeAddr(String addr, [Map<String, dynamic> kwargs = const {}]) {
     final List<int> netVerBytes =
@@ -357,7 +357,7 @@ class XmrIntegratedAddrEncoder implements BlockchainAddressEncoder {
   /// Given a public key, view key, and optional encoding parameters specified in [kwargs],
   /// this method encodes the public keys as an XMR address and returns the result as a string.
   ///
-  /// Ensure that the "net_ver" and "pub_vkey", "payment_id" parameters are provided as List<int> instances.
+  /// Ensure that the "net_ver" and "pub_vkey", "payment_id" parameters are provided as `List<int>` instances.
   ///
   /// Parameters:
   /// - pubKey: The public key to be encoded.

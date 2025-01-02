@@ -1,7 +1,7 @@
 import 'package:blockchain_utils/crypto/crypto/cdsa/cdsa.dart';
 import 'package:blockchain_utils/crypto/crypto/hash/hash.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
-import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/signer/ecdsa_signing_key.dart';
 
 class _NistSignerConst {

@@ -26,7 +26,7 @@ abstract class MoneroMnemonicEncoderBase extends MnemonicEncoderBase {
 
   /// Encodes the provided entropy bytes into a list of Monero mnemonic words.
   ///
-  /// This method takes a List<int> of entropy bytes as input and encodes it into
+  /// This method takes a `List<int>` of entropy bytes as input and encodes it into
   /// a list of Monero mnemonic words. It validates the entropy byte length and
   /// converts the bytes into words using the specified Monero language.
   ///
@@ -34,12 +34,12 @@ abstract class MoneroMnemonicEncoderBase extends MnemonicEncoderBase {
   ///
   /// [entropyBytes]: The entropy bytes to encode.
   List<String> _encodeToList(List<int> entropyBytes) {
-    int entropyByteLen = entropyBytes.length;
+    final int entropyByteLen = entropyBytes.length;
     if (!MoneroEntropyGenerator.isValidEntropyByteLen(entropyByteLen)) {
       throw ArgumentException(
           'Entropy byte length ($entropyByteLen) is not valid');
     }
-    List<String> mnemonic = [];
+    final List<String> mnemonic = [];
     for (int i = 0; i < entropyByteLen ~/ 4; i++) {
       mnemonic.addAll(MnemonicUtils.bytesChunkToWords(
           entropyBytes.sublist(i * 4, (i * 4) + 4), wordsList,
@@ -61,9 +61,7 @@ class MoneroMnemonicNoChecksumEncoder extends MoneroMnemonicEncoderBase {
   ///
   /// [language]: The Monero language to use for encoding. Defaults to the language
   /// specified in the superclass.
-  MoneroMnemonicNoChecksumEncoder(
-      [MoneroLanguages language = MoneroLanguages.english])
-      : super(language);
+  MoneroMnemonicNoChecksumEncoder([super.language]);
 
   /// Encodes the provided entropy bytes into a Monero mnemonic without a checksum.
   ///
@@ -88,9 +86,7 @@ class MoneroMnemonicWithChecksumEncoder extends MoneroMnemonicEncoderBase {
   ///
   /// [language]: The Monero language to use for encoding. Defaults to the language
   /// specified in the superclass.
-  MoneroMnemonicWithChecksumEncoder(
-      [MoneroLanguages language = MoneroLanguages.english])
-      : super(language);
+  MoneroMnemonicWithChecksumEncoder([super.language]);
 
   /// Encodes the provided entropy bytes into a Monero mnemonic with a checksum.
   ///
@@ -100,8 +96,9 @@ class MoneroMnemonicWithChecksumEncoder extends MoneroMnemonicEncoderBase {
   /// [entropyBytes]: The entropy bytes to encode.
   @override
   Mnemonic encode(List<int> entropyBytes) {
-    List<String> words = _encodeToList(entropyBytes);
-    String checksumWord = MoneroMnemonicUtils.computeChecksum(words, language);
+    final List<String> words = _encodeToList(entropyBytes);
+    final String checksumWord =
+        MoneroMnemonicUtils.computeChecksum(words, language);
 
     return Mnemonic.fromList([...words, checksumWord]);
   }

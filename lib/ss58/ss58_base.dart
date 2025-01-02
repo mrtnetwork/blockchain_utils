@@ -2,7 +2,7 @@ import 'dart:typed_data';
 import 'package:blockchain_utils/base58/base58_base.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
 import 'package:blockchain_utils/utils/utils.dart';
-import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 
 import 'ss58_ex.dart';
 

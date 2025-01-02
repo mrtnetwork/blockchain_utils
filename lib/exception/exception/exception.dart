@@ -23,14 +23,17 @@ abstract class BlockchainUtilsException implements Exception {
 /// This exception is used to represent errors related to invalid arguments in blockchain utility operations.
 class ArgumentException extends BlockchainUtilsException {
   /// Constructor to initialize the exception with a specific message.
-  const ArgumentException(String message, {Map<String, dynamic>? details})
-      : super(message, details: details);
+  const ArgumentException(super.message, {super.details});
 }
 
 /// Another specific exception class 'MessageException' that extends 'BlockchainUtilsException'.
 /// This exception is used to represent errors related to messages in blockchain utility operations.
 class MessageException extends BlockchainUtilsException {
   /// Constructor to initialize the exception with a specific message.
-  const MessageException(String message, {Map<String, dynamic>? details})
-      : super(message, details: details);
+  const MessageException(super.message, {super.details});
+}
+
+class GenericException extends BlockchainUtilsException {
+  /// Constructor to initialize the exception with a specific message.
+  const GenericException(super.message, {super.details});
 }

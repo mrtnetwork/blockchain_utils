@@ -1,6 +1,6 @@
 /// The 'bip44' library provides tools for working with BIP-44, a standard for
 /// hierarchical deterministic wallets and key derivation in cryptocurrencies.
-library bip44;
+library;
 
 /// Export statement for the base BIP-44 implementation and key-related functions.
 export 'base/bip44_base.dart';

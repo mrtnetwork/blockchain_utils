@@ -1,6 +1,6 @@
 /// The 'electrum' library provides tools for working with Electrum-style mnemonic phrases
 /// and address keys, including version 1 (v1) and version 2 (v2) of Electrum standards.
-library electrum;
+library;
 
 /// Export statements for Electrum-style mnemonic version 1 (v1) components.
 export 'mnemonic_v1/electrum_v1_entropy_generator.dart';

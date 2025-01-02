@@ -14,14 +14,14 @@ class InjAddrDecoder implements BlockchainAddressDecoder {
   /// keyword arguments for custom INJ address parameters. The method performs the following steps:
   /// 1. Decodes the Bech32-encoded address using the INJ address human-readable part (hrp).
   /// 2. Validates the length of the decoded address.
-  /// 3. Returns the decoded address as a List<int>.
+  /// 3. Returns the decoded address as a `List<int>`.
   ///
   /// Parameters:
   ///   - addr: The INJ address to be decoded as a string.
   ///   - kwargs: Optional keyword arguments for custom INJ address parameters (not used in this implementation).
   ///
   /// Returns:
-  ///   A List<int> containing the decoded INJ address.
+  ///   A `List<int>` containing the decoded INJ address.
   @override
   List<int> decodeAddr(String addr, [Map<String, dynamic> kwargs = const {}]) {
     /// Decode the Bech32-encoded address using the INJ address human-readable part (hrp).
@@ -43,13 +43,13 @@ class InjAddrDecoder implements BlockchainAddressDecoder {
 class InjAddrEncoder implements BlockchainAddressEncoder {
   /// Overrides the base class method to encode a public key as an INJ (Injective Protocol) address.
   ///
-  /// This method encodes a public key as an INJ address. It expects the public key as a List<int>
+  /// This method encodes a public key as an INJ address. It expects the public key as a `List<int>`
   /// and returns the INJ address as a string. The encoding process involves:
   /// 1. Encoding the public key as an Ethereum (ETH) address using EthAddrEncoder.
   /// 2. Encoding the ETH address using the INJ address human-readable part (hrp).
   ///
   /// Parameters:
-  ///   - pubKey: The public key to be encoded as an INJ address in the form of a List<int>.
+  ///   - pubKey: The public key to be encoded as an INJ address in the form of a `List<int>`.
   ///   - kwargs: Optional keyword arguments (not used in this implementation).
   ///
   /// Returns:

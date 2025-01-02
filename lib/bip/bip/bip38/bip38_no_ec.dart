@@ -1,11 +1,11 @@
 import 'package:blockchain_utils/base58/base58.dart';
-import 'package:blockchain_utils/bip/address/p2pkh_addr.dart';
 import 'package:blockchain_utils/bip/bip/bip38/bip38_addr.dart';
+import 'package:blockchain_utils/bip/bip/types/types.dart';
 import 'package:blockchain_utils/bip/ecc/keys/secp256k1_keys_ecdsa.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
 import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/crypto/crypto/scrypt/scrypt.dart';
-import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 
 /// Constants for BIP38 encryption and decryption without ECDSA.
 ///
@@ -50,7 +50,7 @@ class Bip38NoEcUtils {
   ///
   /// - [privKeyBytes]: The private key bytes.
   /// - [pubKeyMode]: The selected public key mode.
-  /// - Returns: The address hash as a List<int>.
+  /// - Returns: The address hash as a `List<int>`.
   static List<int> addressHash(List<int> privKeyBytes, PubKeyModes pubKeyMode) {
     final publicBytes = Secp256k1PrivateKeyEcdsa.fromBytes(privKeyBytes)
         .publicKey
@@ -68,7 +68,7 @@ class Bip38NoEcUtils {
   ///
   /// - [passphrase]: The passphrase for key derivation.
   /// - [addressHash]: The address hash as input for key derivation.
-  /// - Returns: A tuple (pair) containing the two derived key halves as List<int>s.
+  /// - Returns: A tuple (pair) containing the two derived key halves as `List<int>`s.
   static Tuple<List<int>, List<int>> deriveKeyHalves(
       String passphrase, List<int> addressHash) {
     final key = Scrypt.deriveKey(
@@ -153,7 +153,7 @@ class Bip38NoEcEncrypter {
   /// - [derivedHalf1]: The first derived key half.
   /// - [derivedHalf2]: The second derived key half.
   /// - Returns: A tuple (pair) containing the two encrypted private key halves
-  ///   as List<int>s.
+  ///   as `List<int>`s.
   static Tuple<List<int>, List<int>> _encryptPrivateKey(
       List<int> privKeyBytes, List<int> derivedHalf1, List<int> derivedHalf2) {
     /// Encrypt the first half of the private key.
@@ -186,7 +186,7 @@ class Bip38NoEcDecrypter {
   ///
   /// - [privKeyEnc]: The BIP38-encrypted Bitcoin private key.
   /// - [passphrase]: The passphrase for decryption.
-  /// - Returns: A tuple (pair) containing the decrypted private key as a List<int>
+  /// - Returns: A tuple (pair) containing the decrypted private key as a `List<int>`
   ///   and the selected public key mode (compressed or uncompressed).
   static Tuple<List<int>, PubKeyModes> decrypt(
       String privKeyEnc, String passphrase) {
@@ -245,13 +245,13 @@ class Bip38NoEcDecrypter {
   ///
   /// This method decrypts the Bitcoin private key from the encrypted halves using
   /// the derived key halves. It combines the two decrypted halves to reconstruct
-  /// the private key and returns it as a List<int>.
+  /// the private key and returns it as a `List<int>`.
   ///
   /// - [encryptedHalf1]: The first encrypted half of the private key.
   /// - [encryptedHalf2]: The second encrypted half of the private key.
   /// - [derivedHalf1]: The first derived key half.
   /// - [derivedHalf2]: The second derived key half.
-  /// - Returns: The decrypted private key as a List<int>.
+  /// - Returns: The decrypted private key as a `List<int>`.
   static List<int> _decryptAndGetPrivKey(
       List<int> encryptedHalf1,
       List<int> encryptedHalf2,

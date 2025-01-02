@@ -21,7 +21,7 @@ class MD4 implements SerializableHash<SH1State> {
   /// - [data]: The input data for which the MD4 hash is computed.
   ///
   /// Returns:
-  /// A List<int> representing the 128-bit MD4 hash value.
+  /// A `List<int>` representing the 128-bit MD4 hash value.
   static List<int> hash(List<int> data) {
     /// Create an MD4 hash object.
     final h = MD4();
@@ -133,14 +133,14 @@ class MD4 implements SerializableHash<SH1State> {
 
   @override
 
-  /// Computes the MD4 hash digest and returns it as a List<int>.
+  /// Computes the MD4 hash digest and returns it as a `List<int>`.
   ///
   /// This method calculates the MD4 hash of the data processed so far and returns
-  /// the resulting hash digest as a List<int>. It finalizes the hash computation
+  /// the resulting hash digest as a `List<int>`. It finalizes the hash computation
   /// if it hasn't been finished already and then returns the digest.
   ///
   /// Returns:
-  /// - A List<int> containing the MD4 hash digest.
+  /// - A `List<int>` containing the MD4 hash digest.
   List<int> digest() {
     final out = List<int>.filled(getDigestLength, 0);
     finish(out);
@@ -154,7 +154,7 @@ class MD4 implements SerializableHash<SH1State> {
   /// has already been finished, it won't be reprocessed.
   ///
   /// Parameters:
-  /// - [out]: The List<int> buffer where the hash digest will be stored.
+  /// - [out]: The `List<int>` buffer where the hash digest will be stored.
   ///
   /// Returns:
   /// - The MD4 hash object after finalization.
@@ -180,13 +180,13 @@ class MD4 implements SerializableHash<SH1State> {
       _buffer.add(0);
     }
 
-    var lengthInBits = _lengthInBytes * 8;
+    final lengthInBits = _lengthInBytes * 8;
 
     final offset = _buffer.length;
 
     _buffer.addAll(List<int>.filled(8, 0));
-    var highBits = lengthInBits ~/ 0x100000000; // >> 32
-    var lowBits = lengthInBits & mask32;
+    final highBits = lengthInBits ~/ 0x100000000; // >> 32
+    final lowBits = lengthInBits & mask32;
     writeUint32LE(lowBits, _buffer, offset);
     writeUint32LE(highBits, _buffer, offset + 4);
   }
@@ -259,7 +259,7 @@ class MD4 implements SerializableHash<SH1State> {
   }
 
   void _iterate() {
-    var pendingDataChunks = _buffer.length ~/ getBlockSize;
+    final pendingDataChunks = _buffer.length ~/ getBlockSize;
     for (var i = 0; i < pendingDataChunks; i++) {
       // Copy words from the pending data buffer into the current chunk buffer.
       for (var j = 0; j < _currentChunk.length; j++) {

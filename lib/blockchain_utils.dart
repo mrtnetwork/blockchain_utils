@@ -1,6 +1,6 @@
 /// The `blockchain_utils` library provides a collection of utilities and tools
 /// for working with various aspects of blockchain and cryptocurrency technologies.
-library blockchain_utils;
+library;
 
 /// Export for Base32 encoding and decoding utilities.
 export 'base32/base32.dart';
@@ -32,46 +32,9 @@ export 'ss58/ss58.dart';
 /// Export for UUID (Universally Unique Identifier) generation and manipulation.
 export 'uuid/uuid.dart';
 
-/// Export for cryptocurrency address encoding utilities.
-export 'bip/address/encoders.dart';
-
-/// Export for cryptocurrency address decoding utilities.
-export 'bip/address/decoders.dart';
-
-/// Export for Algorand blockchain-specific utilities.
-export 'bip/algorand/algorand.dart';
-
-/// Export for BIP (Bitcoin Improvement Proposals) utilities.
-export 'bip/bip/bip.dart';
-
-/// Export for Cardano blockchain-specific utilities.
-export 'bip/cardano/cardano.dart';
-
-/// Export for Electrum wallet and mnemonic utilities.
-export 'bip/electrum/electrum.dart';
-
-/// Export for Monero-specific utilities, including mnemonics.
-export 'bip/monero/monero.dart';
-
-/// Export for Substrate blockchain-specific utilities.
-export 'bip/substrate/substrate.dart';
-
-/// Export for Wallet Import Format (WIF) encoding and decoding utilities.
-export 'bip/wif/wif.dart';
-
-/// Exports the BitcoinSigner class for Bitcoin signing operations.
 export 'signer/signer.dart';
 
-/// Exports modules related to ECC (Elliptic Curve Cryptography) in the context of BIP.
-export 'bip/ecc/bip_ecc.dart';
-
-/// Exports utility functions related to TON mnemonic.
-export 'bip/ton/ton.dart';
-
-export 'bip/coin_conf/conf.dart';
-
-/// Exports utility functions related to mnemonic.
-export 'bip/mnemonic/mnemonic.dart';
+export 'bip/bip.dart';
 
 /// Exports utility functions related to numeric, bytes and strings.
 export 'utils/utils.dart';
@@ -87,3 +50,4 @@ export 'utils/compare/compare.dart';
 export 'layout/layout.dart';
 
 export 'helper/helper.dart';
+export 'service/service.dart';

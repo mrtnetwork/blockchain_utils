@@ -157,7 +157,7 @@ class XlmAddrDecoder implements BlockchainAddressDecoder {
 
   /// Decode a Stellar (XLM) address and return the public key.
   ///
-  /// This method decodes a Stellar address and extracts the public key part, returning it as a List<int>.
+  /// This method decodes a Stellar address and extracts the public key part, returning it as a `List<int>`.
   ///
   /// - [addr]: The Stellar address to decode.
   /// - [kwargs]: A map of optional keyword arguments.
@@ -193,7 +193,7 @@ class XlmAddrEncoder implements BlockchainAddressEncoder {
   /// Example usage:
   /// ```dart
   /// final encoder = XlmAddrEncoder();
-  /// final publicKey = List<int>.from([6, ...bytes]); // Replace 'bytes' with the actual public key bytes.
+  /// final publicKey = `List<int>`.from([6, ...bytes]); // Replace 'bytes' with the actual public key bytes.
   /// final addr = encoder.encodeKey(publicKey, {'addr_type': XlmAddrTypes.pubKey});
   /// ```
   @override
@@ -224,9 +224,9 @@ class XlmAddrEncoder implements BlockchainAddressEncoder {
       pubKey = [...pubKey, ...idBytes];
     }
 
-    List<int> payloadBytes = List<int>.from([addrType.value, ...pubKey]);
+    final List<int> payloadBytes = List<int>.from([addrType.value, ...pubKey]);
 
-    List<int> checksumBytes = _XlmAddrUtils.computeChecksum(payloadBytes);
+    final List<int> checksumBytes = _XlmAddrUtils.computeChecksum(payloadBytes);
     return Base32Encoder.encodeNoPaddingBytes(
         List<int>.from([...payloadBytes, ...checksumBytes]));
   }

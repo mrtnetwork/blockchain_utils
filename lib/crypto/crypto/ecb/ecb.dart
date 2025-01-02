@@ -1,6 +1,6 @@
 import 'package:blockchain_utils/crypto/crypto/aes/aes.dart';
 import 'package:blockchain_utils/crypto/crypto/aes/padding.dart';
-import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 
 /// Electronic Codebook (ECB) mode for AES encryption and decryption.
 ///
@@ -11,7 +11,7 @@ class ECB extends AES {
   ///
   /// Parameters:
   /// - `key`: The encryption key used for ECB mode.
-  ECB(List<int> key) : super(key);
+  ECB(super.key);
 
   /// Encrypts a single data block using the Electronic Codebook (ECB) mode.
   ///
@@ -57,7 +57,7 @@ class ECB extends AES {
     for (var i = 0; i < numBlocks; i++) {
       final start = i * blockSize;
       final end = (i + 1) * blockSize;
-      List<int> block = List<int>.from(input.sublist(start, end));
+      final List<int> block = List<int>.from(input.sublist(start, end));
       final enc = super.encryptBlock(block);
       out.setRange(start, end, enc);
     }

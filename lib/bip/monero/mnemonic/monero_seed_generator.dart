@@ -24,6 +24,6 @@ class MoneroSeedGenerator {
   /// This method generates a seed from the decoded entropy bytes obtained from the
   /// Monero mnemonic. The seed can be used for cryptographic purposes.
   ///
-  /// Returns a List<int> containing the generated seed.
+  /// Returns a `List<int>` containing the generated seed.
   List<int> generate() => List<int>.from(_entropyBytes);
 }

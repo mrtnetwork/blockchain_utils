@@ -1,4 +1,4 @@
-import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/hex/hex.dart' as hex;
 import 'package:blockchain_utils/utils/numbers/utils/bigint_utils.dart';
 import 'package:blockchain_utils/utils/string/string.dart';
@@ -30,8 +30,9 @@ class BytesUtils {
   /// Parses a binary string and converts it back to a list of bytes. An optional
   /// parameter allows padding the result with zeros to achieve a specific byte length.
   static List<int> fromBinary(String data, {int zeroPadByteLen = 0}) {
-    BigInt intValue = BigInt.parse(data, radix: 2);
-    String hexValue = intValue.toRadixString(16).padLeft(zeroPadByteLen, '0');
+    final BigInt intValue = BigInt.parse(data, radix: 2);
+    final String hexValue =
+        intValue.toRadixString(16).padLeft(zeroPadByteLen, '0');
     return fromHexString(hexValue);
   }
 
@@ -164,6 +165,24 @@ class BytesUtils {
         throw ArgumentException(
             "${onError ?? "Invalid bytes"} at index $i $byte");
       }
+    }
+  }
+
+  static void validateListOfBytes(List<int> bytes, {String? onError}) {
+    for (int i = 0; i < bytes.length; i++) {
+      final int byte = bytes[i];
+      if (byte < 0 || byte > mask8) {
+        throw ArgumentError("${onError ?? "Invalid bytes"} at index $i: $byte");
+      }
+    }
+  }
+
+  static bool isValidBytes(Iterable<int> bytes) {
+    try {
+      validateBytes(bytes);
+      return true;
+    } catch (e) {
+      return false;
     }
   }
 

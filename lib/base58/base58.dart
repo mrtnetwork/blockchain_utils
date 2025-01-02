@@ -1,5 +1,5 @@
 /// Library for working with Base58 encoding.
-library base58;
+library;
 
 /// Export statement for the core functionality of Base58 encoding.
 export 'base58_base.dart';

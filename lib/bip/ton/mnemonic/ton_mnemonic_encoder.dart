@@ -31,7 +31,7 @@ class TonMnemonicEncoder extends MnemonicEncoderBase {
         BytesUtils.toBinary(entropyBytes, zeroPadBitLen: entropyByteLen * 8);
 
     /// Converts the binary string to a list of mnemonic words.
-    List<String> mnemonic = [];
+    final List<String> mnemonic = [];
     for (int i = 0;
         i < entropyBinStr.length;
         i += Bip39MnemonicConst.wordBitLen) {

@@ -2,7 +2,7 @@ import 'package:blockchain_utils/bip/electrum/mnemonic_v1/electrum_v1_entropy_ge
 import 'package:blockchain_utils/bip/electrum/mnemonic_v1/electrum_v1_mnemonic.dart';
 import 'package:blockchain_utils/bip/electrum/mnemonic_v1/electrum_v1_mnemonic_encoder.dart';
 import 'package:blockchain_utils/bip/mnemonic/mnemonic.dart';
-import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 
 /// Constants related to Electrum V1 mnemonic generation, mapping the number of words to entropy length.
 class ElectrumV1MnemonicGeneratorConst {
@@ -49,7 +49,7 @@ class ElectrumV1MnemonicGenerator {
         .firstWhere((element) => element.value == wordsNum);
 
     /// Get the corresponding entropy bit length
-    int entropyBitLen =
+    final int entropyBitLen =
         ElectrumV1MnemonicGeneratorConst.wordsNumToEntropyLen[wNum]!;
 
     /// Generate entropy bytes with the specified bit length
@@ -60,15 +60,15 @@ class ElectrumV1MnemonicGenerator {
     return fromEntropy(entropyBytes);
   }
 
-  /// Generates an Electrum V1 mnemonic from a List<int> of entropy bytes.
+  /// Generates an Electrum V1 mnemonic from a `List<int>` of entropy bytes.
   ///
-  /// This method takes a List<int> of entropy bytes as input and encodes it into an Electrum V1 mnemonic
+  /// This method takes a `List<int>` of entropy bytes as input and encodes it into an Electrum V1 mnemonic
   /// using the associated `ElectrumV1MnemonicEncoder`. It essentially converts the raw entropy into a human-readable
   /// mnemonic for secure storage and recovery of data.
   ///
   /// Returns an Electrum V1 mnemonic generated from the provided entropy bytes.
   ///
-  /// [entropyBytes]: The List<int> of entropy bytes to use for mnemonic generation.
+  /// [entropyBytes]: The `List<int>` of entropy bytes to use for mnemonic generation.
   Mnemonic fromEntropy(List<int> entropyBytes) {
     return encoder.encode(entropyBytes);
   }

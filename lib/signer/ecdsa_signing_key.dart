@@ -6,7 +6,7 @@ import 'package:blockchain_utils/crypto/crypto/cdsa/rfc6979/rfc6979.dart';
 import 'package:blockchain_utils/crypto/crypto/hash/hash.dart';
 import 'package:blockchain_utils/utils/utils.dart';
 import 'dart:math' as math;
-import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 
 /// The [EcdsaSigningKey] class represents a key pair for ECDSA (Elliptic Curve Digital Signature Algorithm) signing.
 /// It encapsulates the private key and provides methods for signing digests and generating deterministic signatures.
@@ -38,8 +38,8 @@ class EcdsaSigningKey {
 
     BigInt toBig = BigintUtils.fromBytes(digest);
     if (truncate) {
-      int maxLength = toBig.bitLength;
-      int digestLen = digestBytes.length * 8;
+      final int maxLength = toBig.bitLength;
+      final int digestLen = digestBytes.length * 8;
 
       toBig >>= math.max(0, digestLen - maxLength);
     }

@@ -21,7 +21,7 @@ class SHA256 implements SerializableHash<SHA256State> {
   @override
   int get getBlockSize => blockSize;
 
-  // Note: List<int> is used instead of Uint32List for performance reasons.
+  // Note: `List<int>` is used instead of Uint32List for performance reasons.
   final List<int> _state = List<int>.filled(8, 0); // hash state
   final List<int> _temp = List<int>.filled(64, 0); // temporary state
   final List<int> _buffer = List<int>.filled(128, 0); // buffer for data to hash
@@ -49,7 +49,7 @@ class SHA256 implements SerializableHash<SHA256State> {
   /// If the hash has already been finished using the `finish` method, calling this method will result in an error.
   ///
   /// Parameters:
-  /// - [data]: The List<int> containing the data to be hashed.
+  /// - [data]: The `List<int>` containing the data to be hashed.
   ///
   /// Returns this [Hash] object for method chaining.
   @override
@@ -88,14 +88,14 @@ class SHA256 implements SerializableHash<SHA256State> {
     return this;
   }
 
-  /// Finalizes the hash computation and stores the hash state in the provided List<int> [out].
+  /// Finalizes the hash computation and stores the hash state in the provided `List<int>` [out].
   ///
   /// This function completes the hash computation, finalizes the state, and stores the resulting
-  /// hash in the provided [out] List<int>. If the hash has already been finished, this method
+  /// hash in the provided [out] `List<int>`. If the hash has already been finished, this method
   /// will return the existing state without re-computing.
   ///
   /// Parameters:
-  ///   - [out]: The List<int> in which the hash digest is stored.
+  ///   - [out]: The `List<int>` in which the hash digest is stored.
   ///
   /// Returns the current instance of the hash algorithm.
   @override
@@ -125,13 +125,13 @@ class SHA256 implements SerializableHash<SHA256State> {
     return this;
   }
 
-  /// Generates the final hash digest by assembling and returning the hash state in a List<int>.
+  /// Generates the final hash digest by assembling and returning the hash state in a `List<int>`.
   ///
   /// This function produces the hash digest by combining the current hash state into a single
-  /// List<int> output. It finalizes the hash if it hasn't been finished, effectively completing
+  /// `List<int>` output. It finalizes the hash if it hasn't been finished, effectively completing
   /// the hash computation and returning the result.
   ///
-  /// Returns the List<int> containing the computed hash digest.
+  /// Returns the `List<int>` containing the computed hash digest.
   @override
   List<int> digest() {
     final out = List<int>.filled(getDigestLength, 0);
@@ -299,22 +299,22 @@ class SHA256 implements SerializableHash<SHA256State> {
       int g = v[6];
       int h = v[7];
       for (int i = 0; i < 16; i++) {
-        int j = pos + i * 4;
+        final int j = pos + i * 4;
         w[i] = readUint32BE(p, j);
       }
       for (int i = 16; i < 64; i++) {
         int u = w[i - 2];
-        int t1 = rotr32(u, 17) ^ rotr32(u, 19) ^ (u >> 10);
+        final int t1 = rotr32(u, 17) ^ rotr32(u, 19) ^ (u >> 10);
         u = w[i - 15];
-        int t2 = rotr32(u, 7) ^ rotr32(u, 18) ^ (u >> 3);
+        final int t2 = rotr32(u, 7) ^ rotr32(u, 18) ^ (u >> 3);
         w[i] = add32(add32(add32(t1, w[i - 7]), t2), w[i - 16]);
       }
       for (int i = 0; i < 64; i++) {
-        int t1 = add32(
+        final int t1 = add32(
             add32(rotr32(e, 6) ^ rotr32(e, 11) ^ rotr32(e, 25),
                 (e & f) ^ (~e & g)),
             add32(add32(h, _k[i]), w[i]));
-        int t2 = add32((rotr32(a, 2) ^ rotr32(a, 13) ^ rotr32(a, 22)),
+        final int t2 = add32((rotr32(a, 2) ^ rotr32(a, 13) ^ rotr32(a, 22)),
             (a & b) ^ (a & c) ^ (b & c));
         h = g;
         g = f;

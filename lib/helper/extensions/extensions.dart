@@ -1,4 +1,4 @@
-import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/utils/utils.dart';
 
 typedef ItrableCondition<T> = bool Function(T);
@@ -59,12 +59,12 @@ extension IterableIntHelper on Iterable<int> {
 
 extension ListIntHelper on List<int> {
   List<int> get asBytes {
-    BytesUtils.validateBytes(this);
+    BytesUtils.validateListOfBytes(this);
     return this;
   }
 
   List<int> get asImmutableBytes {
-    BytesUtils.validateBytes(this);
+    BytesUtils.validateListOfBytes(this);
     return immutable;
   }
 

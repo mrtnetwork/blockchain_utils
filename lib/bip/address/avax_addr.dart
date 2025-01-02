@@ -70,7 +70,7 @@ class _AvaxAddrUtils {
   /// This method validates and removes the address prefix, then delegates
   /// the decoding process to the [AtomAddrDecoder], providing the [hrp] as a parameter.
   ///
-  /// Returns the decoded address as a List<int>.
+  /// Returns the decoded address as a List.
   static List<int> decodeAddr(String addr, String prefix, String hrp) {
     final addrNoPrefix = AddrDecUtils.validateAndRemovePrefix(addr, prefix);
     return AtomAddrDecoder().decodeAddr(addrNoPrefix, {"hrp": hrp});
@@ -88,7 +88,7 @@ class AvaxPChainAddrDecoder implements BlockchainAddressDecoder {
   /// [_AvaxAddrUtils.decodeAddr] method, providing the address prefix and Human-Readable Part (HRP)
   /// from the Avax P-Chain configuration.
   ///
-  /// Returns the decoded address as a List<int>.
+  /// Returns the decoded address as a List.
   @override
   List<int> decodeAddr(String addr, [Map<String, dynamic> kwargs = const {}]) {
     return _AvaxAddrUtils.decodeAddr(
@@ -113,7 +113,7 @@ class AvaxPChainAddrEncoder implements BlockchainAddressEncoder {
   /// Returns the encoded Avax P-Chain address as a String.
   @override
   String encodeKey(List<int> pubKey, [Map<String, dynamic> kwargs = const {}]) {
-    String prefix = CoinsConf.avaxPChain.params.addrPrefix!;
+    final String prefix = CoinsConf.avaxPChain.params.addrPrefix!;
     return prefix +
         AtomAddrEncoder().encodeKey(
           pubKey,
@@ -133,7 +133,7 @@ class AvaxXChainAddrDecoder implements BlockchainAddressDecoder {
   /// [_AvaxAddrUtils.decodeAddr] method, providing the address prefix and Human-Readable Part (HRP)
   /// from the Avax P-Chain configuration.
   ///
-  /// Returns the decoded address as a List<int>.
+  /// Returns the decoded address as a List.
   @override
   List<int> decodeAddr(String addr, [Map<String, dynamic> kwargs = const {}]) {
     return _AvaxAddrUtils.decodeAddr(
@@ -158,7 +158,7 @@ class AvaxXChainAddrEncoder implements BlockchainAddressEncoder {
   /// Returns the encoded Avax X-Chain address as a String.
   @override
   String encodeKey(List<int> pubKey, [Map<String, dynamic> kwargs = const {}]) {
-    String prefix = CoinsConf.avaxXChain.params.addrPrefix!;
+    final String prefix = CoinsConf.avaxXChain.params.addrPrefix!;
     return prefix +
         AtomAddrEncoder().encodeKey(
           pubKey,

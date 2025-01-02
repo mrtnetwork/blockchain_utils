@@ -14,11 +14,13 @@ class CardanoByronLegacyKeyDerivator
   @override
   List<int> newPrivateKeyLeftPart(
       List<int> zlBytes, List<int> klBytes, EllipticCurveTypes type) {
-    List<int> multiPly = zlBytes.map((e) => (e * 8) & mask8).toList();
-    BigInt zl8Int = BigintUtils.fromBytes(multiPly, byteOrder: Endian.little);
-    BigInt klInt = BigintUtils.fromBytes(klBytes, byteOrder: Endian.little);
+    final List<int> multiPly = zlBytes.map((e) => (e * 8) & mask8).toList();
+    final BigInt zl8Int =
+        BigintUtils.fromBytes(multiPly, byteOrder: Endian.little);
+    final BigInt klInt =
+        BigintUtils.fromBytes(klBytes, byteOrder: Endian.little);
     final curve = EllipticCurveGetter.generatorFromType(type);
-    BigInt newPrivateKeyInt = (zl8Int + klInt) % curve.order!;
+    final BigInt newPrivateKeyInt = (zl8Int + klInt) % curve.order!;
     return BigintUtils.toBytes(newPrivateKeyInt,
         length: 32, order: Endian.little);
   }
@@ -37,7 +39,8 @@ class CardanoByronLegacyKeyDerivator
   EDPoint newPublicKeyPoint(Bip32PublicKey pubKey, List<int> zlBytes) {
     final curve = EllipticCurveGetter.generatorFromType(pubKey.curveType);
     final multiply = zlBytes.map((e) => (e * 8) & mask8).toList();
-    BigInt zl8Int = BigintUtils.fromBytes(multiply, byteOrder: Endian.little);
+    final BigInt zl8Int =
+        BigintUtils.fromBytes(multiply, byteOrder: Endian.little);
 
     return pubKey.point + (curve * zl8Int) as EDPoint;
   }

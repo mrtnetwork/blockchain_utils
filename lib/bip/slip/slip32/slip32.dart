@@ -4,7 +4,7 @@ import 'package:blockchain_utils/bech32/bech32_base.dart';
 import 'package:blockchain_utils/bip/bip/bip32/bip32_key_data.dart';
 import 'package:blockchain_utils/bip/bip/bip32/bip32_path.dart';
 import 'package:blockchain_utils/bip/ecc/keys/i_keys.dart';
-import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 
 import 'slip32_key_net_ver.dart';
 
@@ -31,8 +31,8 @@ class Slip32KeySerializer {
     Bip32ChainCode chainCodeOrBip32ChainCode,
     String keyNetVerStr,
   ) {
-    Bip32Path path = Bip32PathParser.parse(pathOrBip32Path);
-    Bip32ChainCode chainCode = chainCodeOrBip32ChainCode;
+    final Bip32Path path = Bip32PathParser.parse(pathOrBip32Path);
+    final Bip32ChainCode chainCode = chainCodeOrBip32ChainCode;
 
     // Serialize key
     final serKey = List<int>.from([
@@ -145,15 +145,15 @@ class Slip32KeyDeserializer {
     String serKeyStr,
     Slip32KeyNetVersions keyNetVer,
   ) {
-    bool isPublic = _getIfPublic(serKeyStr, keyNetVer);
-    List<int> serKeyBytes = Bech32Decoder.decode(
+    final bool isPublic = _getIfPublic(serKeyStr, keyNetVer);
+    final List<int> serKeyBytes = Bech32Decoder.decode(
         isPublic ? keyNetVer.public : keyNetVer.private, serKeyStr);
 
     // Get parts back
-    List<dynamic> keyParts = _getPartsFromBytes(serKeyBytes, isPublic);
-    List<int> keyBytes = keyParts[0];
-    Bip32Path path = keyParts[1];
-    Bip32ChainCode chainCode = keyParts[2];
+    final List<dynamic> keyParts = _getPartsFromBytes(serKeyBytes, isPublic);
+    final List<int> keyBytes = keyParts[0];
+    final Bip32Path path = keyParts[1];
+    final Bip32ChainCode chainCode = keyParts[2];
 
     return Slip32DeserializedKey(keyBytes, path, chainCode, isPublic);
   }
@@ -173,24 +173,24 @@ class Slip32KeyDeserializer {
   /// Extract key parts from serialized key bytes.
   static List<dynamic> _getPartsFromBytes(
       List<int> serKeyBytes, bool isPublic) {
-    int depthIdx = 0;
-    int pathIdx = depthIdx + Bip32Depth.fixedLength();
+    const int depthIdx = 0;
+    final int pathIdx = depthIdx + Bip32Depth.fixedLength();
 
     // Get back depth and path
-    int depth = serKeyBytes[depthIdx];
+    final int depth = serKeyBytes[depthIdx];
     Bip32Path path = Bip32Path();
     for (int i = 0; i < depth; i++) {
-      List<int> keyIndexBytes = serKeyBytes.sublist(
+      final List<int> keyIndexBytes = serKeyBytes.sublist(
           pathIdx + (i * Bip32KeyIndex.fixedLength()),
           pathIdx + ((i + 1) * Bip32KeyIndex.fixedLength()));
       path = path.addElem(Bip32KeyIndex.fromBytes(keyIndexBytes));
     }
 
     // Get back chain code and key
-    int chainCodeIdx = pathIdx + (depth * Bip32KeyIndex.fixedLength());
-    int keyIdx = chainCodeIdx + Bip32ChainCode.fixedLength();
+    final int chainCodeIdx = pathIdx + (depth * Bip32KeyIndex.fixedLength());
+    final int keyIdx = chainCodeIdx + Bip32ChainCode.fixedLength();
 
-    List<int> chainCodeBytes = serKeyBytes.sublist(chainCodeIdx, keyIdx);
+    final List<int> chainCodeBytes = serKeyBytes.sublist(chainCodeIdx, keyIdx);
     List<int> keyBytes = serKeyBytes.sublist(keyIdx);
 
     // If private key, the first byte shall be zero and shall be removed

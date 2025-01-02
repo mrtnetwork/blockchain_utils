@@ -144,7 +144,7 @@ class BLAKE2b implements SerializableHash<Blake2bState> {
   /// - [config]: Optional configuration for BLAKE2b (e.g., key, salt, personalization).
   ///
   /// Returns:
-  /// A List<int> containing the computed BLAKE2b hash digest.
+  /// A `List<int>` containing the computed BLAKE2b hash digest.
   static List<int> hash(List<int> data,
       [int digestLength = 64, Blake2bConfig? config]) {
     final h = BLAKE2b(digestLength: digestLength, config: config);
@@ -298,7 +298,7 @@ class BLAKE2b implements SerializableHash<Blake2bState> {
           "blake2b: can't update because hash was finished.");
     }
 
-    int left = _blockSize - _bufferLength;
+    final int left = _blockSize - _bufferLength;
     int dataPos = 0;
 
     int dataLength = length ?? data.length;
@@ -338,17 +338,17 @@ class BLAKE2b implements SerializableHash<Blake2bState> {
     return this;
   }
 
-  /// Finalizes the BLAKE2b hash, producing the hash digest and writing it to the given output [List<int>].
+  /// Finalizes the BLAKE2b hash, producing the hash digest and writing it to the given output [`List<int>`].
   ///
   /// If the hash was already finished, this method simply returns the digest. Otherwise, it
   /// completes the hash computation, marking it as finished.
   ///
   /// Parameters:
-  /// - `out`: The [List<int>] where the hash digest will be written.
+  /// - `out`: The [`List<int>`] where the hash digest will be written.
   ///
   /// Returns:
   /// - The BLAKE2b instance with the finalized hash state. The hash digest is also written
-  ///   to the provided [List<int>] 'out'.
+  ///   to the provided [`List<int>`] 'out'.
   @override
   BLAKE2b finish(List<int> out) {
     if (!_finished) {
@@ -370,7 +370,7 @@ class BLAKE2b implements SerializableHash<Blake2bState> {
       _finished = true;
     }
 
-    List<int> tmp = List<int>.filled(64, 0);
+    final List<int> tmp = List<int>.filled(64, 0);
     for (int i = 0; i < 16; i++) {
       writeUint32LE(_state[i], tmp, i * 4);
     }
@@ -378,16 +378,16 @@ class BLAKE2b implements SerializableHash<Blake2bState> {
     return this;
   }
 
-  /// Returns the final hash digest as a [List<int>].
+  /// Returns the final hash digest as a [`List<int>`].
   ///
   /// This method calls the 'finish' method to complete the hash computation if it has
-  /// not already been finished, and then returns the hash digest as a [List<int>].
+  /// not already been finished, and then returns the hash digest as a [`List<int>`].
   ///
   /// Returns:
-  /// - The final hash digest as a [List<int>].
+  /// - The final hash digest as a [`List<int>`].
   @override
   List<int> digest() {
-    List<int> out = List<int>.filled(getDigestLength, 0);
+    final List<int> out = List<int>.filled(getDigestLength, 0);
     finish(out);
     return out;
   }
@@ -581,7 +581,7 @@ class BLAKE2b implements SerializableHash<Blake2bState> {
 
   void _processBlock(int length) {
     _incrementCounter(length);
-    var v = _vtmp;
+    final v = _vtmp;
     v.setAll(0, _state);
     v.setAll(16, _iv);
     v[12 * 2 + 0] ^= _ctr[0];
@@ -592,7 +592,7 @@ class BLAKE2b implements SerializableHash<Blake2bState> {
     v[14 * 2 + 1] ^= _flag[1];
     v[15 * 2 + 0] ^= _flag[2];
     v[15 * 2 + 1] ^= _flag[3];
-    var m = _mtmp;
+    final m = _mtmp;
     for (var i = 0; i < 32; i++) {
       m[i] = readUint32LE(_buffer, i * 4);
     }
@@ -720,7 +720,7 @@ class BLAKE2b implements SerializableHash<Blake2bState> {
 
   void _incrementCounter(int length) {
     for (int i = 0; i < 3; i++) {
-      int a = _ctr[i] + length;
+      final int a = _ctr[i] + length;
       _ctr[i] = a & mask32;
       if (_ctr[i] == a) {
         return;

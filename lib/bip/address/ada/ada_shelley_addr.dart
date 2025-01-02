@@ -154,9 +154,9 @@ class AdaShelleyAddrUtils {
   }
 
   static String encodeBytes(List<int> addrBytes) {
-    int header = addrBytes[0];
+    final int header = addrBytes[0];
     final netTag = ADANetwork.fromTag(decodeNetworkTag(header));
-    ADAAddressType addressType = ADAAddressType.decodeAddressType(header);
+    final ADAAddressType addressType = ADAAddressType.decodeAddressType(header);
     if (addressType == ADAAddressType.reward) {
       return Bech32Encoder.encode(
           AdaShelleyAddrConst.networkTagToRewardAddrHrp[netTag]!, addrBytes);

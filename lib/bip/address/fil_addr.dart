@@ -37,14 +37,14 @@ class _FilAddrUtils {
   /// Blake2b-32 hashing algorithm.
   ///
   /// Parameters:
-  ///   - pubKeyHash: The public key hash of the address as a List<int>.
+  ///   - pubKeyHash: The public key hash of the address as a `List<int>`.
   ///   - addrType: The address type (e.g., secp256k1 or bls).
   ///
   /// Returns:
-  ///   A List<int> representing the computed checksum.
+  ///   A `List<int>` representing the computed checksum.
   static List<int> computeChecksum(
       List<int> pubKeyHash, FillAddrTypes addrType) {
-    List<int> addrTypeByte = List<int>.from([addrType.value]);
+    final List<int> addrTypeByte = List<int>.from([addrType.value]);
     return QuickCrypto.blake2b32Hash(
         List<int>.from([...addrTypeByte, ...pubKeyHash]));
   }
@@ -60,20 +60,21 @@ class _FilAddrUtils {
   ///   - addrType: The expected address type (e.g., secp256k1 or bls).
   ///
   /// Returns:
-  ///   A List<int> representing the decoded public key hash.
+  ///   A `List<int>` representing the decoded public key hash.
   ///
   /// Throws:
   ///   - ArgumentException if the address type doesn't match the expected type.
   ///   - ArgumentException if the address format, length, or checksum is invalid.
   static List<int> decodeAddr(String addr, FillAddrTypes addrType) {
-    String addrNoPrefix = AddrDecUtils.validateAndRemovePrefix(
+    final String addrNoPrefix = AddrDecUtils.validateAndRemovePrefix(
         addr, CoinsConf.filecoin.params.addrPrefix!);
-    int addrTypeGot = addrNoPrefix[0].codeUnits.first - "0".codeUnits.first;
+    final int addrTypeGot =
+        addrNoPrefix[0].codeUnits.first - "0".codeUnits.first;
     if (addrType.value != addrTypeGot) {
       throw AddressConverterException(
           "Invalid address type (expected ${addrType.value}, got $addrTypeGot)");
     }
-    List<int> addrDecBytes = Base32Decoder.decode(
+    final List<int> addrDecBytes = Base32Decoder.decode(
         addrNoPrefix.substring(1), FilAddrConst.base32Alphabet);
     AddrDecUtils.validateBytesLength(addrDecBytes,
         QuickCrypto.blake2b160DigestSize + QuickCrypto.blake2b32DigestSize);
@@ -94,18 +95,18 @@ class _FilAddrUtils {
   /// in base32 using the specified alphabet.
   ///
   /// Parameters:
-  ///   - pubKeyBytes: The public key bytes of the address as a List<int>.
+  ///   - pubKeyBytes: The public key bytes of the address as a `List<int>`.
   ///   - addrType: The address type (e.g., secp256k1 or bls).
   ///
   /// Returns:
   ///   A string representing the encoded Filecoin address.
   static String encodeKeyBytes(List<int> pubKeyBytes, FillAddrTypes addrType) {
-    String addrTypeStr = String.fromCharCode(addrType.value + 48);
-    List<int> pubKeyHashBytes = QuickCrypto.blake2b160Hash(pubKeyBytes);
-    List<int> checksumBytes = computeChecksum(pubKeyHashBytes, addrType);
+    final String addrTypeStr = String.fromCharCode(addrType.value + 48);
+    final List<int> pubKeyHashBytes = QuickCrypto.blake2b160Hash(pubKeyBytes);
+    final List<int> checksumBytes = computeChecksum(pubKeyHashBytes, addrType);
     final bytesWithChecksum = List<int>.from(pubKeyHashBytes + checksumBytes);
 
-    String b32Enc = Base32Encoder.encodeNoPaddingBytes(
+    final String b32Enc = Base32Encoder.encodeNoPaddingBytes(
         bytesWithChecksum, FilAddrConst.base32Alphabet);
     return CoinsConf.filecoin.params.addrPrefix! + addrTypeStr + b32Enc;
   }
@@ -117,13 +118,13 @@ class FilSecp256k1AddrDecoder implements BlockchainAddressDecoder {
   ///
   /// This method decodes a Filecoin address by calling the internal utility method
   /// `_FilAddrUtils.decodeAddr`. It expects the address type to be provided as
-  /// `FillAddrTypes.secp256k1`. The decoded address is returned as a List<int>.
+  /// `FillAddrTypes.secp256k1`. The decoded address is returned as a `List<int>`.
   ///
   /// Parameters:
   ///   - addr: The Filecoin address to decode as a string.
   ///
   /// Returns:
-  ///   A List<int> representing the decoded Filecoin address
+  ///   A `List<int>` representing the decoded Filecoin address
   @override
   List<int> decodeAddr(String addr, [Map<String, dynamic> kwargs = const {}]) {
     return _FilAddrUtils.decodeAddr(addr, FillAddrTypes.secp256k1);
@@ -134,13 +135,13 @@ class FilSecp256k1AddrDecoder implements BlockchainAddressDecoder {
 class FilSecp256k1AddrEncoder implements BlockchainAddressEncoder {
   /// Encodes a Filecoin address for a public key using the secp256k1 address type.
   ///
-  /// This method takes a public key represented as a List<int>, validates it as a
+  /// This method takes a public key represented as a `List<int>`, validates it as a
   /// secp256k1 public key, converts it to raw uncompressed bytes, and then encodes
   /// a Filecoin address of the secp256k1 address type. The resulting address is
   /// returned as a string.
   ///
   /// Parameters:
-  ///   - pubKey: The public key to encode as a List<int>.
+  ///   - pubKey: The public key to encode as a `List<int>`.
   ///
   /// Returns:
   ///   A string representing the encoded Filecoin address.

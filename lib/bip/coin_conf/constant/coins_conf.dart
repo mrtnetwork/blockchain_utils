@@ -1,5 +1,6 @@
-import 'package:blockchain_utils/bip/coin_conf/conf.dart';
+import 'package:blockchain_utils/bip/coin_conf/models/coin_conf.dart';
 import 'package:blockchain_utils/bip/slip/slip173/slip173.dart';
+import 'package:blockchain_utils/bip/coin_conf/models/coins_name.dart';
 
 /// Bitcoin network parameters for mainnet and testnet.
 const btcP2PKHNetVerMn = [0x00];
@@ -712,7 +713,8 @@ class CoinsConf {
       p2pkhNetVer: [0x37],
       p2shNetVer: [0x89],
       wifNetVer: [0xa2],
-      p2wpkhHrp: "ep",
+      p2wpkhHrp: Slip173.electraProtocol,
+      p2wpkhWitVer: btcP2WPKHWitVerMn,
     ),
   );
 
@@ -723,7 +725,8 @@ class CoinsConf {
       p2pkhNetVer: [0x8d],
       p2shNetVer: [0x13],
       wifNetVer: [0xef],
-      p2wpkhHrp: "te",
+      p2wpkhHrp: Slip173.electraProtocolTestnet,
+      p2wpkhWitVer: btcP2WPKHWitVerMn,
     ),
   );
 }

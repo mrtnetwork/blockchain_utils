@@ -6,7 +6,7 @@ import 'package:blockchain_utils/bip/substrate/keys/substrate_keys.dart';
 import 'package:blockchain_utils/bip/substrate/path/substrate_path.dart';
 import 'package:blockchain_utils/crypto/crypto/schnorrkel/keys/keys.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
-import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 
 /// Constants used in Substrate-related operations.
 class SubstrateConst {
@@ -192,11 +192,8 @@ class Substrate {
     if (publicKey.coinConf.type == EllipticCurveTypes.sr25519) {
       return _ckdPrivSr25519(pathElem);
     }
-    // if (!pathElem.isHard) {
-    //   throw const SubstrateKeyError(
-    //       'Public child derivation cannot be used to create a hardened child key');
-    // }
-    List<int> hdkd = publicKey.coinConf.type == EllipticCurveTypes.ed25519
+
+    final List<int> hdkd = publicKey.coinConf.type == EllipticCurveTypes.ed25519
         ? SubstrateConst.hdkd
         : SubstrateConst.secp256k1HDKD;
     final key = QuickCrypto.blake2b256Hash([

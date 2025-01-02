@@ -1,26 +1,26 @@
 import 'package:blockchain_utils/crypto/crypto/cdsa/cdsa.dart';
 import 'package:blockchain_utils/crypto/crypto/hash/hash.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
-import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/signer/ecdsa_signing_key.dart';
 import 'package:blockchain_utils/signer/eth/evm_signer.dart';
 
 /// Cosmos Signer class for cryptographic operations, including signing and verification.
 ///
-/// The [CosmosSigner] class facilitates the creation of Cosmos signatures and
+/// The [CosmosSecp256k1Signer] class facilitates the creation of Cosmos signatures and
 /// provides methods for signing messages, personal messages, and converting to
 /// verification keys. It uses the ECDSA (Elliptic Curve Digital Signature Algorithm)
 /// for cryptographic operations on the secp256k1 elliptic curve.
-class CosmosSigner {
-  const CosmosSigner._(this._ecdsaSigningKey);
+class CosmosSecp256k1Signer {
+  const CosmosSecp256k1Signer._(this._ecdsaSigningKey);
 
   final EcdsaSigningKey _ecdsaSigningKey;
 
-  /// Factory method to create a [CosmosSigner] from a byte representation of a private key.
-  factory CosmosSigner.fromKeyBytes(List<int> keyBytes) {
+  /// Factory method to create a [CosmosSecp256k1Signer] from a byte representation of a private key.
+  factory CosmosSecp256k1Signer.fromKeyBytes(List<int> keyBytes) {
     final signingKey =
         ECDSAPrivateKey.fromBytes(keyBytes, ETHSignerConst.secp256);
-    return CosmosSigner._(EcdsaSigningKey(signingKey));
+    return CosmosSecp256k1Signer._(EcdsaSigningKey(signingKey));
   }
 
   List<int> _signEcdsa(List<int> digest, {bool hashMessage = true}) {
@@ -62,7 +62,7 @@ class CosmosSigner {
     return _signEcdsa(digest, hashMessage: hashMessage);
   }
 
-  /// Converts the [CosmosSigner] to a [CosmosVerifier] for verification purposes.
+  /// Converts the [CosmosSecp256k1Signer] to a [CosmosVerifier] for verification purposes.
   ///
   /// Returns:
   /// - A [CosmosVerifier] representing the verification key.

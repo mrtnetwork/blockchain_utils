@@ -54,8 +54,8 @@ class AlgorandMnemonicConst {
 /// Represents Algorand mnemonic phrases, extending the Bip39Mnemonic class.
 class AlgorandMnemonic extends Bip39Mnemonic {
   /// Constructs an AlgorandMnemonic instance from a string mnemonic.
-  AlgorandMnemonic.fromString(String mnemonic) : super.fromString(mnemonic);
+  AlgorandMnemonic.fromString(super.mnemonic) : super.fromString();
 
   /// Constructs an AlgorandMnemonic instance from a list of mnemonic words.
-  AlgorandMnemonic.fromList(List<String> mnemonic) : super.fromList(mnemonic);
+  AlgorandMnemonic.fromList(super.mnemonic) : super.fromList();
 }

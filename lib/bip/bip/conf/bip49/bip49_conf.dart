@@ -1,9 +1,10 @@
 import 'package:blockchain_utils/bip/address/p2sh_addr.dart';
 import 'package:blockchain_utils/bip/bip/bip32/bip32_key_net_ver.dart';
+import 'package:blockchain_utils/bip/bip/conf/const/bip_conf_const.dart';
 import 'package:blockchain_utils/bip/bip/conf/config/bip_bitcoin_cash_conf.dart';
 import 'package:blockchain_utils/bip/bip/conf/config/bip_coin_conf.dart';
 import 'package:blockchain_utils/bip/bip/conf/config/bip_litecoin_conf.dart';
-import 'package:blockchain_utils/bip/bip/conf/const/bip_conf_const.dart';
+import 'package:blockchain_utils/bip/bip/conf/core/coin_conf.dart';
 import 'package:blockchain_utils/bip/coin_conf/constant/coins_conf.dart';
 import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
 import 'package:blockchain_utils/bip/slip/slip44/slip44.dart';
@@ -27,7 +28,7 @@ class Bip49Conf {
   static final BipCoinConfig dashMainNet = BipCoinConfig(
       coinNames: CoinsConf.dashMainNet.coinName,
       coinIdx: Slip44.dash,
-      isTestnet: false,
+      chainType: ChainType.mainnet,
       defPath: derPathNonHardenedFull,
       keyNetVer: bip49BtcKeyNetVerMain,
       wifNetVer: CoinsConf.dashMainNet.params.wifNetVer,
@@ -41,7 +42,7 @@ class Bip49Conf {
   static final BipCoinConfig dashTestNet = BipCoinConfig(
       coinNames: CoinsConf.dashTestNet.coinName,
       coinIdx: Slip44.testnet,
-      isTestnet: true,
+      chainType: ChainType.testnet,
       defPath: derPathNonHardenedFull,
       keyNetVer: bip49BtcKeyNetVerTest,
       wifNetVer: CoinsConf.dashTestNet.params.wifNetVer,
@@ -55,7 +56,7 @@ class Bip49Conf {
   static final BipCoinConfig dogecoinMainNet = BipCoinConfig(
       coinNames: CoinsConf.dogecoinMainNet.coinName,
       coinIdx: Slip44.dogecoin,
-      isTestnet: false,
+      chainType: ChainType.mainnet,
       defPath: derPathNonHardenedFull,
       keyNetVer: Bip32KeyNetVersions(
         List<int>.from([0x02, 0xfa, 0xca, 0xfd]),
@@ -72,7 +73,7 @@ class Bip49Conf {
   static final BipCoinConfig dogecoinTestNet = BipCoinConfig(
       coinNames: CoinsConf.dogecoinTestNet.coinName,
       coinIdx: Slip44.testnet,
-      isTestnet: true,
+      chainType: ChainType.testnet,
       defPath: derPathNonHardenedFull,
       keyNetVer: Bip32KeyNetVersions(
         List<int>.from([0x04, 0x32, 0xa9, 0xa8]),
@@ -89,7 +90,7 @@ class Bip49Conf {
   static final BipLitecoinConf litecoinMainNet = BipLitecoinConf(
       coinNames: CoinsConf.litecoinMainNet.coinName,
       coinIdx: Slip44.litecoin,
-      isTestnet: false,
+      chainType: ChainType.mainnet,
       defPath: derPathNonHardenedFull,
       keyNetVer: bip49BtcKeyNetVerMain,
       altKeyNetVer: Bip32KeyNetVersions(
@@ -112,7 +113,7 @@ class Bip49Conf {
   static final BipLitecoinConf litecoinTestNet = BipLitecoinConf(
       coinNames: CoinsConf.litecoinTestNet.coinName,
       coinIdx: Slip44.testnet,
-      isTestnet: true,
+      chainType: ChainType.testnet,
       defPath: derPathNonHardenedFull,
       keyNetVer: Bip32KeyNetVersions(
         List<int>.from([0x04, 0x36, 0xf6, 0xe1]),
@@ -136,7 +137,7 @@ class Bip49Conf {
   static final BipCoinConfig zcashMainNet = BipCoinConfig(
       coinNames: CoinsConf.zcashMainNet.coinName,
       coinIdx: Slip44.zcash,
-      isTestnet: false,
+      chainType: ChainType.mainnet,
       defPath: derPathNonHardenedFull,
       keyNetVer: bip49BtcKeyNetVerMain,
       wifNetVer: CoinsConf.zcashMainNet.params.wifNetVer,
@@ -150,7 +151,7 @@ class Bip49Conf {
   static final BipCoinConfig zcashTestNet = BipCoinConfig(
       coinNames: CoinsConf.zcashTestNet.coinName,
       coinIdx: Slip44.testnet,
-      isTestnet: true,
+      chainType: ChainType.testnet,
       defPath: derPathNonHardenedFull,
       keyNetVer: bip49BtcKeyNetVerTest,
       wifNetVer: CoinsConf.zcashTestNet.params.wifNetVer,
@@ -166,7 +167,7 @@ class Bip49Conf {
   static final BipCoinConfig bitcoinMainNet = BipCoinConfig(
       coinNames: CoinsConf.bitcoinMainNet.coinName,
       coinIdx: Slip44.bitcoin,
-      isTestnet: false,
+      chainType: ChainType.mainnet,
       defPath: derPathNonHardenedFull,
       keyNetVer: bip49BtcKeyNetVerMain,
       wifNetVer: CoinsConf.bitcoinMainNet.params.wifNetVer,
@@ -180,7 +181,7 @@ class Bip49Conf {
   static final BipCoinConfig bitcoinTestNet = BipCoinConfig(
       coinNames: CoinsConf.bitcoinTestNet.coinName,
       coinIdx: Slip44.testnet,
-      isTestnet: true,
+      chainType: ChainType.testnet,
       defPath: derPathNonHardenedFull,
       keyNetVer: bip49BtcKeyNetVerTest,
       wifNetVer: CoinsConf.bitcoinTestNet.params.wifNetVer,
@@ -194,7 +195,7 @@ class Bip49Conf {
   static final BipCoinConfig bitcoinSvMainNet = BipCoinConfig(
       coinNames: CoinsConf.bitcoinSvMainNet.coinName,
       coinIdx: Slip44.bitcoinSv,
-      isTestnet: false,
+      chainType: ChainType.mainnet,
       defPath: derPathNonHardenedFull,
       keyNetVer: bip49BtcKeyNetVerMain,
       wifNetVer: CoinsConf.bitcoinSvMainNet.params.wifNetVer,
@@ -208,7 +209,7 @@ class Bip49Conf {
   static final BipCoinConfig bitcoinSvTestNet = BipCoinConfig(
       coinNames: CoinsConf.bitcoinSvTestNet.coinName,
       coinIdx: Slip44.testnet,
-      isTestnet: true,
+      chainType: ChainType.testnet,
       defPath: derPathNonHardenedFull,
       keyNetVer: bip49BtcKeyNetVerTest,
       wifNetVer: CoinsConf.bitcoinSvTestNet.params.wifNetVer,
@@ -223,7 +224,7 @@ class Bip49Conf {
   static final BipBitcoinCashConf bitcoinCashMainNet = BipBitcoinCashConf(
     coinNames: CoinsConf.bitcoinCashMainNet.coinName,
     coinIdx: Slip44.bitcoinCash,
-    isTestnet: false,
+    chainType: ChainType.mainnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: bip49BtcKeyNetVerMain,
     wifNetVer: CoinsConf.bitcoinCashMainNet.params.wifNetVer,
@@ -249,7 +250,7 @@ class Bip49Conf {
   static final BipBitcoinCashConf bitcoinCashTestNet = BipBitcoinCashConf(
     coinNames: CoinsConf.bitcoinCashTestNet.coinName,
     coinIdx: Slip44.testnet,
-    isTestnet: true,
+    chainType: ChainType.testnet,
     defPath: derPathNonHardenedFull,
     addressEncoder: ([dynamic legacy]) {
       if (legacy == true) {
@@ -275,7 +276,7 @@ class Bip49Conf {
   static final BipBitcoinCashConf bitcoinCashSlpMainNet = BipBitcoinCashConf(
     coinNames: CoinsConf.bitcoinCashSlpMainNet.coinName,
     coinIdx: Slip44.bitcoinCash,
-    isTestnet: false,
+    chainType: ChainType.mainnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: bip49BtcKeyNetVerMain,
     wifNetVer: CoinsConf.bitcoinCashSlpMainNet.params.wifNetVer,
@@ -301,7 +302,7 @@ class Bip49Conf {
   static final BipBitcoinCashConf bitcoinCashSlpTestNet = BipBitcoinCashConf(
     coinNames: CoinsConf.bitcoinCashSlpTestNet.coinName,
     coinIdx: Slip44.testnet,
-    isTestnet: true,
+    chainType: ChainType.testnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: bip49BtcKeyNetVerTest,
     wifNetVer: CoinsConf.bitcoinCashSlpTestNet.params.wifNetVer,
@@ -329,7 +330,7 @@ class Bip49Conf {
   static final BipBitcoinCashConf ecashMainNet = BipBitcoinCashConf(
     coinNames: CoinsConf.ecashMainNet.coinName,
     coinIdx: Slip44.bitcoinCash,
-    isTestnet: false,
+    chainType: ChainType.mainnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: bip49BtcKeyNetVerMain,
     wifNetVer: CoinsConf.ecashMainNet.params.wifNetVer,
@@ -355,7 +356,7 @@ class Bip49Conf {
   static final BipBitcoinCashConf ecashTestNet = BipBitcoinCashConf(
     coinNames: CoinsConf.ecashTestNet.coinName,
     coinIdx: Slip44.testnet,
-    isTestnet: true,
+    chainType: ChainType.testnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: bip49BtcKeyNetVerTest,
     wifNetVer: CoinsConf.ecashTestNet.params.wifNetVer,
@@ -381,7 +382,7 @@ class Bip49Conf {
   static final BipCoinConfig pepeMainnet = BipCoinConfig(
       coinNames: CoinsConf.pepeMainnet.coinName,
       coinIdx: Slip44.pepecoin,
-      isTestnet: false,
+      chainType: ChainType.mainnet,
       defPath: derPathNonHardenedFull,
       keyNetVer: Bip32KeyNetVersions(
         List<int>.from([0x02, 0xfa, 0xca, 0xfd]),
@@ -398,7 +399,7 @@ class Bip49Conf {
   static final BipCoinConfig pepeTestnet = BipCoinConfig(
       coinNames: CoinsConf.pepeTestnet.coinName,
       coinIdx: Slip44.testnet,
-      isTestnet: true,
+      chainType: ChainType.testnet,
       defPath: derPathNonHardenedFull,
       keyNetVer: Bip32KeyNetVersions(
         List<int>.from([0x04, 0x32, 0xa9, 0xa8]),
@@ -415,7 +416,7 @@ class Bip49Conf {
   static final BipCoinConfig electraProtocolMainNet = BipCoinConfig(
     coinNames: CoinsConf.electraProtocolMainNet.coinName,
     coinIdx: Slip44.electraProtocol,
-    isTestnet: false,
+    chainType: ChainType.mainnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: Bip32KeyNetVersions(
       List<int>.from([0x04, 0x88, 0xb2, 0x1e]),
@@ -433,7 +434,7 @@ class Bip49Conf {
   static final BipCoinConfig electraProtocolTestNet = BipCoinConfig(
     coinNames: CoinsConf.electraProtocolTestNet.coinName,
     coinIdx: Slip44.testnet,
-    isTestnet: true,
+    chainType: ChainType.testnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: Bip32KeyNetVersions(
       List<int>.from([0x04, 0x35, 0x87, 0xcf]),

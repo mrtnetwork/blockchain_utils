@@ -2,7 +2,7 @@ import 'package:blockchain_utils/bip/electrum/mnemonic_v1/electrum_v1_mnemonic.d
 import 'package:blockchain_utils/bip/mnemonic/mnemonic.dart';
 import 'package:blockchain_utils/bip/mnemonic/mnemonic_utils.dart';
 import 'package:blockchain_utils/utils/utils.dart';
-import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 
 /// A class responsible for fetching Electrum V1 mnemonic word lists based on language.
 class ElectrumV1WordsListGetter extends MnemonicWordsListGetterBase {

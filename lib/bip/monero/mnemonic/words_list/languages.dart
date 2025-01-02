@@ -1,5 +1,5 @@
 /// Library for Monero mnemonic language support.
-library monero_mnemonic_languages;
+library;
 
 import 'package:blockchain_utils/bip/monero/mnemonic/monero_mnemonic.dart';
 

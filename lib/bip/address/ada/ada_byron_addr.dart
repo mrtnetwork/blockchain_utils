@@ -124,13 +124,13 @@ class ADAByronAddrTypes {
 /// Constants related to Ada Byron era addresses in Cardano.
 ///
 /// The ADAByronAddrConst class contains various constants used for Ada Byron era addresses:
-/// - `chacha20Poly1305AssocData`: An empty List<int> used as associated data for encryption.
+/// - `chacha20Poly1305AssocData`: An empty List used as associated data for encryption.
 /// - `chacha20Poly1305Nonce`: A predefined nonce used for encryption purposes.
 /// - `payloadTag`: An integer representing the payload tag for Ada Byron era addresses.
 ///
 /// These constants are essential for handling and processing Ada Byron era addresses.
 class ADAByronAddrConst {
-  /// An empty List<int> used as associated data for encryption.
+  /// An empty List used as associated data for encryption.
   static final List<int> chacha20Poly1305AssocData = List.empty();
 
   /// A predefined nonce used for encryption purposes.

@@ -2,7 +2,7 @@ import 'package:blockchain_utils/bip/bip/bip32/bip32_key_net_ver.dart';
 import 'package:blockchain_utils/bip/bip/conf/config/bip_coin_conf.dart';
 import 'package:blockchain_utils/bip/bip/conf/core/coin_conf.dart';
 import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
-import 'package:blockchain_utils/bip/coin_conf/conf.dart';
+import 'package:blockchain_utils/bip/coin_conf/models/coins_name.dart';
 
 /// A class representing the configuration for Litecoin (LTC) based on the BIP framework.
 class BipLitecoinConf extends BipCoinConfig {
@@ -13,28 +13,19 @@ class BipLitecoinConf extends BipCoinConfig {
 
   /// Constructor for BipLitecoinConf.
   const BipLitecoinConf({
-    required CoinNames coinNames,
-    required int coinIdx,
-    required bool isTestnet,
-    required String defPath,
-    required Bip32KeyNetVersions keyNetVer,
-    required List<int>? wifNetVer,
-    required EllipticCurveTypes type,
-    required AddrEncoder addressEncoder,
-    required Map<String, dynamic> addrParams,
+    required super.coinNames,
+    required super.coinIdx,
+    required super.chainType,
+    required super.defPath,
+    required super.keyNetVer,
+    required super.wifNetVer,
+    required super.type,
+    required super.addressEncoder,
+    required super.addrParams,
     required this.altKeyNetVer,
     this.useAltKeyNetVer = false,
     this.useDeprAddress = false,
-  }) : super(
-            addrParams: addrParams,
-            addressEncoder: addressEncoder,
-            coinIdx: coinIdx,
-            coinNames: coinNames,
-            defPath: defPath,
-            isTestnet: isTestnet,
-            keyNetVer: keyNetVer,
-            type: type,
-            wifNetVer: wifNetVer);
+  });
 
   /// Overrides the 'addrParams' getter to return the appropriate address parameters
   /// based on the 'useDeprAddress' flag.
@@ -58,7 +49,7 @@ class BipLitecoinConf extends BipCoinConfig {
   BipLitecoinConf copy({
     CoinNames? coinNames,
     int? coinIdx,
-    bool? isTestnet,
+    ChainType? chainType,
     String? defPath,
     Bip32KeyNetVersions? keyNetVer,
     Bip32KeyNetVersions? altKeyNetVer,
@@ -72,7 +63,7 @@ class BipLitecoinConf extends BipCoinConfig {
     return BipLitecoinConf(
         coinNames: coinNames ?? this.coinNames,
         coinIdx: coinIdx ?? this.coinIdx,
-        isTestnet: isTestnet ?? this.isTestnet,
+        chainType: chainType ?? this.chainType,
         defPath: defPath ?? this.defPath,
         keyNetVer: keyNetVer ?? this.keyNetVer,
         wifNetVer: wifNetVer ?? this.wifNetVer,

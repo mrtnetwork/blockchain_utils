@@ -25,13 +25,13 @@ class _NanoAddrUtils {
   /// Computes the checksum for a Nano address based on the provided public key bytes.
   ///
   /// This method computes the checksum for a Nano address by taking the reversed Blake2b-40 hash
-  /// of the provided public key bytes. The result is returned as a List<int>.
+  /// of the provided public key bytes. The result is returned as a `List<int>`.
   ///
   /// Parameters:
   ///   - pubKeyBytes: The public key bytes used to compute the checksum.
   ///
   /// Returns:
-  ///   A List<int> containing the computed checksum for the Nano address.
+  ///   A `List<int>` containing the computed checksum for the Nano address.
   static List<int> computeChecksum(List<int> pubKeyBytes) {
     return QuickCrypto.blake2b40Hash(pubKeyBytes).reversed.toList();
   }
@@ -54,7 +54,7 @@ class NanoAddrDecoder implements BlockchainAddressDecoder {
   ///   - kwargs: Optional keyword arguments for custom Nano address parameters.
   ///
   /// Returns:
-  ///   A List<int> containing the decoded public key bytes for the Nano address.
+  ///   A `List<int>` containing the decoded public key bytes for the Nano address.
   @override
   List<int> decodeAddr(String addr, [Map<String, dynamic> kwargs = const {}]) {
     /// Validate and remove the Nano address prefix.
@@ -100,7 +100,7 @@ class NanoAddrDecoder implements BlockchainAddressDecoder {
 class NanoAddrEncoder implements BlockchainAddressEncoder {
   /// Overrides the base class method to encode a public key as a Nano address.
   ///
-  /// This method encodes a public key as a Nano address. It expects the public key as a List<int>
+  /// This method encodes a public key as a Nano address. It expects the public key as a `List<int>`
   /// and returns the Nano address as a string. The encoding process involves:
   /// 1. Validating and obtaining the Ed25519 Blake2b public key.
   /// 2. Calculating the Nano address payload by appending padding, public key bytes, and checksum.
@@ -108,7 +108,7 @@ class NanoAddrEncoder implements BlockchainAddressEncoder {
   /// 4. Prepending the Nano address prefix.
   ///
   /// Parameters:
-  ///   - pubKey: The public key to be encoded as a Nano address in the form of a List<int>.
+  ///   - pubKey: The public key to be encoded as a Nano address in the form of a `List<int>`.
   ///   - kwargs: Optional keyword arguments (not used in this implementation).
   ///
   /// Returns:

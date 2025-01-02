@@ -1,5 +1,5 @@
 import 'package:blockchain_utils/bip/mnemonic/entropy_generator.dart';
-import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 
 /// Contains constants representing different bit lengths for generating entropy.
 class MoneroEntropyBitLen {
@@ -15,7 +15,7 @@ class MoneroEntropyGeneratorConst {
   /// List of supported entropy bit lengths for Monero wallets.
   static final List<int> entropyBitLen = [
     MoneroEntropyBitLen.bitLen128,
-    MoneroEntropyBitLen.bitLen256,
+    MoneroEntropyBitLen.bitLen256
   ];
 }
 

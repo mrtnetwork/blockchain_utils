@@ -1,7 +1,7 @@
 import 'package:blockchain_utils/utils/utils.dart';
 
 import 'bech32_utils.dart';
-import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 
 /// An enumeration representing different Bech32 encodings.
 enum Bech32Encodings {
@@ -141,7 +141,9 @@ class Bech32Decoder extends Bech32DecoderBase {
         Bech32Const.separator,
         Bech32Const.checksumStrLen,
         Bech32Utils.verifyChecksum);
+
     final result = Bech32BaseUtils.convertFromBase32(decode.item2);
+
     return Tuple(decode.item1, result);
   }
 }

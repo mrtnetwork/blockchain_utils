@@ -28,20 +28,14 @@ import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
 class Bip32Slip10Ed25519 extends Bip32Base {
   /// constructor for creating an instance with provided key data.
   Bip32Slip10Ed25519(
-      {required Bip32KeyData keyData,
-      required Bip32KeyNetVersions keyNetVer,
-      required List<int>? privKey,
-      required List<int>? pubKey})
-      : super(
-            keyData: keyData,
-            keyNetVer: keyNetVer,
-            privKey: privKey,
-            pubKey: pubKey);
+      {required super.keyData,
+      required super.keyNetVer,
+      required super.privKey,
+      required super.pubKey});
 
   /// constructor for creating a key from a seed.
-  Bip32Slip10Ed25519.fromSeed(List<int> seedBytes,
-      [Bip32KeyNetVersions? keyNetVer])
-      : super.fromSeed(seedBytes, keyNetVer);
+  Bip32Slip10Ed25519.fromSeed(super.seedBytes, [super.keyNetVer])
+      : super.fromSeed();
 
   /// constructor for creating a key from a private key.
   Bip32Slip10Ed25519.fromPrivateKey(List<int> privKey,
@@ -54,9 +48,8 @@ class Bip32Slip10Ed25519 extends Bip32Base {
       : super.fromPublicKey(pubkey, keyData, keyNetVer);
 
   /// constructor for creating a key from an extended key string.
-  Bip32Slip10Ed25519.fromExtendedKey(String exKeyStr,
-      [Bip32KeyNetVersions? keyNetVer])
-      : super.fromExtendedKey(exKeyStr, keyNetVer);
+  Bip32Slip10Ed25519.fromExtendedKey(super.exKeyStr, [super.keyNetVer])
+      : super.fromExtendedKey();
 
   /// Derives a child key from the current key, based on the provided index.
   ///

@@ -95,7 +95,7 @@ class SHA512 implements SerializableHash<SHA512State> {
   /// If the hash has already been finished using the `finish` method, calling this method will result in an error.
   ///
   /// Parameters:
-  /// - [data]: The List<int> containing the data to be hashed.
+  /// - [data]: The `List<int>` containing the data to be hashed.
   ///
   /// Returns this [Hash] object for method chaining.
   @override
@@ -135,14 +135,14 @@ class SHA512 implements SerializableHash<SHA512State> {
     return this;
   }
 
-  /// Finalizes the hash computation and stores the hash state in the provided List<int> [out].
+  /// Finalizes the hash computation and stores the hash state in the provided `List<int>` [out].
   ///
   /// This function completes the hash computation, finalizes the state, and stores the resulting
-  /// hash in the provided [out] List<int>. If the hash has already been finished, this method
+  /// hash in the provided [out] `List<int>`. If the hash has already been finished, this method
   /// will return the existing state without re-computing.
   ///
   /// Parameters:
-  ///   - [out]: The List<int> in which the hash digest is stored.
+  ///   - [out]: The `List<int>` in which the hash digest is stored.
   ///
   /// Returns the current instance of the hash algorithm.
   @override
@@ -175,13 +175,13 @@ class SHA512 implements SerializableHash<SHA512State> {
     return this;
   }
 
-  /// Generates the final hash digest by assembling and returning the hash state in a List<int>.
+  /// Generates the final hash digest by assembling and returning the hash state in a `List<int>`.
   ///
   /// This function produces the hash digest by combining the current hash state into a single
-  /// List<int> output. It finalizes the hash if it hasn't been finished, effectively completing
+  /// `List<int>` output. It finalizes the hash if it hasn't been finished, effectively completing
   /// the hash computation and returning the result.
   ///
-  /// Returns the List<int> containing the computed hash digest.
+  /// Returns the `List<int>` containing the computed hash digest.
   @override
   List<int> digest() {
     final out = List<int>.filled(getDigestLength, 0);
@@ -415,73 +415,73 @@ class SHA512 implements SerializableHash<SHA512State> {
   int _sigma1A(int ah4, int al4) {
     ah4 &= mask32;
     al4 &= mask32;
-    int one1 = (ah4 >> 14);
-    int one2 = al4 << (32 - 14);
-    int one = (one1 | one2);
+    final int one1 = (ah4 >> 14);
+    final int one2 = al4 << (32 - 14);
+    final int one = (one1 | one2);
 
-    int two1 = ((ah4) >> 18);
-    int two2 = (al4 << (32 - 18));
-    int two = (two1 | two2);
-    int three1 = (al4 >> 9);
-    int three2 = (ah4 << 23);
-    int three = (three1 | three2);
-    int h = one ^ two ^ three;
+    final int two1 = ((ah4) >> 18);
+    final int two2 = (al4 << (32 - 18));
+    final int two = (two1 | two2);
+    final int three1 = (al4 >> 9);
+    final int three2 = (ah4 << 23);
+    final int three = (three1 | three2);
+    final int h = one ^ two ^ three;
     return h;
   }
 
   int _sigma1B(int ah0, int al0) {
     al0 &= mask32;
     ah0 &= mask32;
-    int one1 = (ah0 >> 28) & mask32;
-    int one2 = al0 << (32 - 28) & mask32;
-    int one = (one1 | one2);
-    int two1 = (al0 >> 2);
-    int two2 = (ah0 << (32 - (34 - 32))) & mask32;
-    int two = (two1 | two2);
-    int three1 = (al0 >> 7);
-    int three2 = (ah0 << (32 - (39 - 32))) & mask32;
-    int three = (three1 | three2);
-    int h = one ^ two ^ three;
+    final int one1 = (ah0 >> 28) & mask32;
+    final int one2 = al0 << (32 - 28) & mask32;
+    final int one = (one1 | one2);
+    final int two1 = (al0 >> 2);
+    final int two2 = (ah0 << (32 - (34 - 32))) & mask32;
+    final int two = (two1 | two2);
+    final int three1 = (al0 >> 7);
+    final int three2 = (ah0 << (32 - (39 - 32))) & mask32;
+    final int three = (three1 | three2);
+    final int h = one ^ two ^ three;
     return h;
   }
 
   int _sigma0A(int th, int tl) {
     th &= mask32;
     tl &= mask32;
-    int one = ((th >> 1) | (tl << (32 - 1))) & mask32;
-    int two = ((th >> 8) | (tl << (32 - 8))) & mask32;
-    int three = (th >> 7);
-    int h = one ^ two ^ three;
+    final int one = ((th >> 1) | (tl << (32 - 1))) & mask32;
+    final int two = ((th >> 8) | (tl << (32 - 8))) & mask32;
+    final int three = (th >> 7);
+    final int h = one ^ two ^ three;
     return h;
   }
 
   int _sigma0B(int th, int tl) {
     th &= mask32;
     tl &= mask32;
-    int one = ((tl >> 1) | (th << (32 - 1))) & mask32;
-    int two = ((tl >> 8) | (th << (32 - 8))) & mask32;
-    int three = ((tl >> 7) | (th << (32 - 7))) & mask32;
-    int h = one ^ two ^ three;
+    final int one = ((tl >> 1) | (th << (32 - 1))) & mask32;
+    final int two = ((tl >> 8) | (th << (32 - 8))) & mask32;
+    final int three = ((tl >> 7) | (th << (32 - 7))) & mask32;
+    final int h = one ^ two ^ three;
     return h;
   }
 
   int _sigma0C(int th, int tl) {
     th &= mask32;
     tl &= mask32;
-    int one = ((th >> 19) | (tl << (32 - 19))) & mask32;
-    int two = ((tl >> (61 - 32)) | (th << (32 - (61 - 32)))) & mask32;
-    int three = (th >> 6) & mask32;
-    int h = one ^ two ^ three;
+    final int one = ((th >> 19) | (tl << (32 - 19))) & mask32;
+    final int two = ((tl >> (61 - 32)) | (th << (32 - (61 - 32)))) & mask32;
+    final int three = (th >> 6) & mask32;
+    final int h = one ^ two ^ three;
     return h;
   }
 
   int _sigma0D(int th, int tl) {
     th &= mask32;
     tl &= mask32;
-    int one = ((tl >> 19) | (th << (32 - 19))) & mask32;
-    int two = ((th >> (61 - 32)) | (tl << (32 - (61 - 32)))) & mask32;
-    int three = ((tl >> 6) | (th << (32 - 6))) & mask32;
-    int h = one ^ two ^ three;
+    final int one = ((tl >> 19) | (th << (32 - 19))) & mask32;
+    final int two = ((th >> (61 - 32)) | (tl << (32 - (61 - 32)))) & mask32;
+    final int three = ((tl >> 6) | (th << (32 - 6))) & mask32;
+    final int h = one ^ two ^ three;
     return h;
   }
 
@@ -511,28 +511,28 @@ class SHA512 implements SerializableHash<SHA512State> {
 
     while (len >= 128) {
       for (int i = 0; i < 16; i++) {
-        int j = 8 * i + pos;
+        final int j = 8 * i + pos;
         wh[i] = readUint32BE(m, j);
         wl[i] = readUint32BE(m, j + 4);
       }
 
       for (int i = 0; i < 80; i++) {
-        int bh0 = ah0;
-        int bh1 = ah1;
-        int bh2 = ah2;
+        final int bh0 = ah0;
+        final int bh1 = ah1;
+        final int bh2 = ah2;
         int bh3 = ah3;
-        int bh4 = ah4;
-        int bh5 = ah5;
-        int bh6 = ah6;
+        final int bh4 = ah4;
+        final int bh5 = ah5;
+        final int bh6 = ah6;
         int bh7 = ah7;
 
-        int bl0 = al0;
-        int bl1 = al1;
-        int bl2 = al2;
+        final int bl0 = al0;
+        final int bl1 = al1;
+        final int bl2 = al2;
         int bl3 = al3;
-        int bl4 = al4;
-        int bl5 = al5;
-        int bl6 = al6;
+        final int bl4 = al4;
+        final int bl5 = al5;
+        final int bl6 = al6;
         int bl7 = al7;
 
         // add
@@ -921,7 +921,7 @@ class SHA512 implements SerializableHash<SHA512State> {
 /// final state = SHA512State(
 ///   stateHi: Int32List(8),
 ///   stateLo: Int32List(8),
-///   buffer:List<int>.filled(SHA512.blockSize),
+///   buffer:`List<int>`.filled(SHA512.blockSize),
 ///   bufferLength: 0,
 ///   bytesHashed: 0,
 /// );

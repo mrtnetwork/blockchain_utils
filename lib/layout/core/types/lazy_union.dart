@@ -102,7 +102,8 @@ class LazyUnion extends Layout<Map<String, dynamic>> {
 
   LazyVariantLayout? getVariant(LayoutByteReader variantBytes,
       {int offset = 0}) {
-    int variant = discriminator.decode(variantBytes, offset: offset).value;
+    final int variant =
+        discriminator.decode(variantBytes, offset: offset).value;
     return _registry[variant];
   }
 
@@ -140,7 +141,7 @@ class LazyVariantLayout extends Layout<Map<String, dynamic>> {
     if (!this.span.isNegative) {
       return this.span;
     }
-    int contentOffset = union.discriminator.layout.span;
+    final int contentOffset = union.discriminator.layout.span;
 
     int span = 0;
     span = layout.layout(property: layout.property).getSpan(bytes,
@@ -157,7 +158,7 @@ class LazyVariantLayout extends Layout<Map<String, dynamic>> {
           details: {"property": property});
     }
 
-    int contentOffset = union.discriminator.layout.span;
+    final int contentOffset = union.discriminator.layout.span;
 
     final Map<String, dynamic> dest = {};
     int consumed = 0;
@@ -173,7 +174,7 @@ class LazyVariantLayout extends Layout<Map<String, dynamic>> {
   @override
   int encode(Map<String, dynamic> source, LayoutByteWriter writer,
       {int offset = 0}) {
-    int contentOffset = union.discriminator.layout.span;
+    final int contentOffset = union.discriminator.layout.span;
     if (!source.containsKey(property)) {
       throw LayoutException("variant lacks property",
           details: {"property": property});

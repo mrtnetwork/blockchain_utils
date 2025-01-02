@@ -17,7 +17,7 @@ class Ed25519Utils {
   ///   - scalar: A byte array representing the scalar value.
   ///
   /// Returns:
-  ///   - List<int>: A reduced byte array representing the scalar modulo the Ed25519 curve order.
+  ///   - `List<int>`: A reduced byte array representing the scalar modulo the Ed25519 curve order.
   ///
   /// Details:
   ///   - The method converts the byte array to a BigInt, performs the reduction
@@ -40,9 +40,9 @@ class Ed25519Utils {
         "The provided scalar exceeds the allowed range.");
   }
 
-  /// Adds two scalar values represented as List<int>s and returns the result as a List<int>.
+  /// Adds two scalar values represented as `List<int>` and returns the result as a `List<int>`.
   ///
-  /// This method adds two scalar values, `scalar1` and `scalar2`, and stores the result in the `out` List<int>.
+  /// This method adds two scalar values, `scalar1` and `scalar2`, and stores the result in the `out` `List<int>`.
   /// The addition is performed according to Ristretto255 scalar operations.
   ///
   /// Parameters:
@@ -50,16 +50,16 @@ class Ed25519Utils {
   ///   - scalar2: The second scalar value to add.
   ///
   /// Returns:
-  ///   A List<int> representing the result of the addition.
+  ///   A `List<int>` representing the result of the addition.
   static List<int> add(List<int> scalar1, List<int> scalar2) {
     final out = List<int>.filled(32, 0);
     CryptoOps.scMulAdd(out, CryptoOpsConst.infinity, scalar1, scalar2);
     return BytesUtils.toBytes(out);
   }
 
-  /// Subtracts one scalar value from another and returns the result as a List<int>.
+  /// Subtracts one scalar value from another and returns the result as a `List<int>`.
   ///
-  /// This method subtracts `scalar2` from `scalar1` and stores the result in the `out` List<int>.
+  /// This method subtracts `scalar2` from `scalar1` and stores the result in the `out` `List<int>`.
   /// The subtraction is performed according to Ristretto255 scalar operations.
   ///
   /// Parameters:
@@ -67,23 +67,23 @@ class Ed25519Utils {
   ///   - scalar2: The scalar value to subtract.
   ///
   /// Returns:
-  ///   A List<int> representing the result of the subtraction.
+  ///   A `List<int>` representing the result of the subtraction.
   static List<int> sub(List<int> scalar1, List<int> scalar2) {
     final out = List<int>.filled(32, 0);
     CryptoOps.scMulAdd(out, CryptoOpsConst.scMinusOne, scalar2, scalar1);
     return BytesUtils.toBytes(out);
   }
 
-  /// Negates a scalar value and returns the result as a List<int>.
+  /// Negates a scalar value and returns the result as a `List<int>`.
   ///
-  /// This method negates the given `scalar` and stores the result in the `out` List<int>.
+  /// This method negates the given `scalar` and stores the result in the `out` `List<int>`.
   /// The negation is performed according to Ristretto255 scalar operations.
   ///
   /// Parameters:
   ///   - scalar: The scalar value to negate.
   ///
   /// Returns:
-  ///   A List<int> representing the negated scalar.
+  ///   A `List<int>` representing the negated scalar.
   static List<int> neg(List<int> scalar) {
     final out = List<int>.filled(32, 0);
     CryptoOps.scMulAdd(
@@ -91,9 +91,9 @@ class Ed25519Utils {
     return BytesUtils.toBytes(out);
   }
 
-  /// Multiplies two scalar values represented as List<int>s and returns the result as a List<int>.
+  /// Multiplies two scalar values represented as `List<int>` and returns the result as a `List<int>`.
   ///
-  /// This method multiplies two scalar values, `scalar1` and `scalar2`, and stores the result in the `out` List<int>.
+  /// This method multiplies two scalar values, `scalar1` and `scalar2`, and stores the result in the `out` `List<int>`.
   /// The multiplication is performed according to Ristretto255 scalar operations.
   ///
   /// Parameters:
@@ -101,7 +101,7 @@ class Ed25519Utils {
   ///   - scalar2: The second scalar value to multiply.
   ///
   /// Returns:
-  ///   A List<int> representing the result of the multiplication.
+  ///   A `List<int>` representing the result of the multiplication.
   static List<int> mul(List<int> scalar1, List<int> scalar2) {
     final out = List<int>.filled(32, 0);
     CryptoOps.scMulAdd(out, scalar1, scalar2, CryptoOpsConst.zero);
@@ -113,7 +113,7 @@ class Ed25519Utils {
   }
 
   static bool isValidPoint(List<int> bytes) {
-    GroupElementP3 p = GroupElementP3();
+    final GroupElementP3 p = GroupElementP3();
     return CryptoOps.geFromBytesVartime_(p, bytes) == 0;
   }
 

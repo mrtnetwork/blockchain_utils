@@ -132,14 +132,16 @@ class StringUtils {
   ///
   /// The input [data] is a Map representing the Dart object.
   static String fromJson(Object data,
-      {String? indent, bool toStringEncodable = false}) {
-    if (indent != null) {
-      return JsonEncoder.withIndent(
-              indent, toStringEncodable ? (c) => c.toString() : null)
-          .convert(data);
+      {String? indent,
+      bool toStringEncodable = false,
+      Object? Function(dynamic)? toEncodable}) {
+    if (toStringEncodable) {
+      toEncodable ??= (c) => c.toString();
     }
-    return jsonEncode(data,
-        toEncodable: toStringEncodable ? (c) => c.toString() : null);
+    if (indent != null) {
+      return JsonEncoder.withIndent(indent, toEncodable).convert(data);
+    }
+    return jsonEncode(data, toEncodable: toEncodable);
   }
 
   /// Converts a JSON-encoded string to a Dart object represented as a Map.
@@ -168,10 +170,14 @@ class StringUtils {
   ///
   /// The input [data] is a Map representing the Dart object.
   static String? tryFromJson(Object? data,
-      {String? indent, bool toStringEncodable = false}) {
+      {String? indent,
+      bool toStringEncodable = false,
+      Object? Function(dynamic)? toEncodable}) {
     try {
       return fromJson(data!,
-          indent: indent, toStringEncodable: toStringEncodable);
+          indent: indent,
+          toStringEncodable: toStringEncodable,
+          toEncodable: toEncodable);
     } catch (e) {
       return null;
     }

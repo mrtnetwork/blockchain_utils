@@ -6,3 +6,4 @@ export 'tron/tron_signer.dart';
 export 'solana/solana_signer.dart';
 export 'cardano/cardano_signer.dart';
 export 'substrate/substrate.dart';
+export 'cosmos/cosmos.dart';

@@ -2,7 +2,7 @@ import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/crypto/crypto/aead/aead.dart';
 import 'package:blockchain_utils/crypto/crypto/blockcipher/blockcipher.dart';
 import 'package:blockchain_utils/crypto/crypto/ctr/ctr.dart';
-import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 
 import 'dart:math' as math;
 
@@ -65,7 +65,7 @@ class GCM implements AEAD {
     final blockSize = _cipher.blockSize;
 
     final resultLength = plaintext.length + tagLength;
-    List<int> result = dst ?? List<int>.filled(resultLength, 0);
+    final List<int> result = dst ?? List<int>.filled(resultLength, 0);
     if (result.length != resultLength) {
       throw const ArgumentException("GCM: incorrect destination length");
     }
@@ -143,7 +143,7 @@ class GCM implements AEAD {
     }
 
     final resultLength = sealed.length - tagLength;
-    List<int> result = dst ?? List<int>.filled(resultLength, 0);
+    final List<int> result = dst ?? List<int>.filled(resultLength, 0);
     if (result.length != resultLength) {
       throw const ArgumentException("GCM: incorrect destination length");
     }

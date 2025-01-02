@@ -1,7 +1,7 @@
 /// The 'cardano' library provides tools and components related to Cardano blockchain,
 /// including key derivation, hierarchical deterministic wallets, mnemonic seed generation,
 /// and more.
-library cardano;
+library;
 
 /// Export statement for Cardano Byron Legacy BIP-32 related components.
 export 'bip32/cardano_byron_legacy_bip32.dart';

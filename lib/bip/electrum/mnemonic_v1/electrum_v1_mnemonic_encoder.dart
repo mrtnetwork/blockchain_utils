@@ -6,7 +6,7 @@ import 'package:blockchain_utils/bip/electrum/mnemonic_v1/electrum_v1_mnemonic_u
 import 'package:blockchain_utils/bip/mnemonic/mnemonic.dart';
 import 'package:blockchain_utils/bip/mnemonic/mnemonic_encoder_base.dart';
 import 'package:blockchain_utils/bip/mnemonic/mnemonic_utils.dart';
-import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 
 /// A class for encoding data into Electrum V1 mnemonics, extending the MnemonicEncoderBase class.
 class ElectrumV1MnemonicEncoder extends MnemonicEncoderBase {
@@ -20,26 +20,26 @@ class ElectrumV1MnemonicEncoder extends MnemonicEncoderBase {
       [ElectrumV1Languages language = ElectrumV1Languages.english])
       : super(language, ElectrumV1WordsListGetter());
 
-  /// Encodes a List<int> of entropy bytes into an Electrum V1 mnemonic.
+  /// Encodes a `List<int>` of entropy bytes into an Electrum V1 mnemonic.
   ///
-  /// This method takes a List<int> of entropy bytes as input and generates an Electrum V1 mnemonic by
+  /// This method takes a `List<int>` of entropy bytes as input and generates an Electrum V1 mnemonic by
   /// dividing the entropy into 4-byte chunks and converting each chunk into a list of mnemonic words.
   /// It checks the validity of the entropy byte length and throws an ArgumentException if it's not valid.
   ///
   /// Returns an Electrum V1 mnemonic representing the encoded data.
   ///
-  /// [entropyBytes]: The List<int> of entropy bytes to encode.
+  /// [entropyBytes]: The `List<int>` of entropy bytes to encode.
   @override
   Mnemonic encode(List<int> entropyBytes) {
     // Check entropy length
-    int entropyByteLen = entropyBytes.length;
+    final int entropyByteLen = entropyBytes.length;
     if (!ElectrumV1EntropyGenerator.isValidEntropyByteLength(entropyByteLen)) {
       throw ArgumentException(
           'Entropy byte length ($entropyByteLen) is not valid');
     }
 
     // Build mnemonic
-    List<String> mnemonic = [];
+    final List<String> mnemonic = [];
     for (int i = 0; i < entropyBytes.length ~/ 4; i++) {
       mnemonic.addAll(MnemonicUtils.bytesChunkToWords(
           entropyBytes.sublist(i * 4, (i * 4) + 4), wordsList,

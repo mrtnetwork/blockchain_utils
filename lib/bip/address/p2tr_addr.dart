@@ -39,7 +39,7 @@ class P2TRUtils {
   ///   - dataBytes: The data bytes to be hashed.
   ///
   /// Returns:
-  ///   A List<int> representing the tagged hash.
+  ///   A `List<int>` representing the tagged hash.
   ///
   /// Throws:
   ///   - ArgumentException if the tag is not a string or bytes.
@@ -47,7 +47,7 @@ class P2TRUtils {
     if (tag! is String && tag! is List<int>) {
       throw const AddressConverterException("tag must be bytes or string");
     }
-    List<int> tagHash =
+    final List<int> tagHash =
         tag is String ? QuickCrypto.sha256Hash(StringUtils.encode(tag)) : tag;
     return QuickCrypto.sha256Hash(
         List<int>.from([...tagHash, ...tagHash, ...dataBytes]));
@@ -61,7 +61,7 @@ class P2TRUtils {
   ///   - pubKey: The public key for which to compute the TapTweak.
   ///
   /// Returns:
-  ///   A List<int> representing the TapTweak hash.
+  ///   A `List<int>` representing the TapTweak hash.
   static List<int> hashTapTweak(ProjectiveECCPoint pubPoint) {
     return P2TRUtils.taggedHash(
       P2TRConst.tapTweakSHA256,
@@ -93,7 +93,7 @@ class P2TRUtils {
     if (y.modPow(BigInt.two, p) != ySq) {
       throw const AddressConverterException("Unable to compute LiftX point");
     }
-    BigInt result = (y & BigInt.one) == BigInt.zero ? y : p - y;
+    final BigInt result = (y & BigInt.one) == BigInt.zero ? y : p - y;
     return ProjectiveECCPoint(
         curve: Curves.curveSecp256k1, x: x, y: result, z: BigInt.one);
   }
@@ -163,8 +163,8 @@ class P2TRUtils {
   // ///   - pubKey: The public key to be tweaked.
   // ///
   // /// Returns:
-  // ///   A List<int> representing the tweaked public key for P2TR.
-  // static List<int> tweakPublicKey(ProjectiveECCPoint pubPoint) {
+  // ///   A `List<int>` representing the tweaked public key for P2TR.
+  // static `List<int>` tweakPublicKey(ProjectiveECCPoint pubPoint) {
   //   final h = hashTapTweak(pubPoint);
   //   final n = Curves.generatorSecp256k1 * BigintUtils.fromBytes(h);
   //   final outPoint = liftX(pubPoint) + n;
@@ -189,14 +189,14 @@ class P2TRAddrDecoder implements BlockchainAddressDecoder {
   /// This method decodes a P2TR address from the given input string using Bech32 encoding.
   /// It expects an optional map of keyword arguments, with the 'hrp' key specifying the
   /// Human-Readable Part (HRP) of the address. It validates the arguments, decodes the
-  /// address, checks the witness version, and returns the decoded address as a List<int>.
+  /// address, checks the witness version, and returns the decoded address as a `List<int>`.
   ///
   /// Parameters:
   ///   - addr: The Bech32-encoded P2TR address to be decoded.
   ///   - kwargs: Optional keyword arguments, with 'hrp' for the Human-Readable Part.
   ///
   /// Returns:
-  ///   A List<int> containing the decoded P2TR address bytes.
+  ///   A `List<int>` containing the decoded P2TR address bytes.
   ///
   /// Throws:
   ///   - ArgumentException if the provided address has an incorrect witness version,
@@ -222,7 +222,7 @@ class P2TRAddrDecoder implements BlockchainAddressDecoder {
           'Invalid witness version (expected ${P2TRConst.witnessVer}, got $witVerGot)');
     }
 
-    /// Return the decoded P2TR address as a List<int>.
+    /// Return the decoded P2TR address as a `List<int>`.
     return addrDecBytes;
   }
 }

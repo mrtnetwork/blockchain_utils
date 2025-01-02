@@ -53,7 +53,7 @@
 */
 
 import 'package:blockchain_utils/bech32/bech32_ex.dart';
-import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/utils/utils.dart';
 
 /// A utility class containing constants for Bech32 encoding and decoding.
@@ -70,12 +70,12 @@ class Bech32BaseUtils {
   /// - data: The input data to be converted to base32.
   ///
   /// Returns:
-  /// A List<int> containing the data in base32 encoding.
+  /// A List containing the data in base32 encoding.
   ///
   /// Throws:
   /// - ArgumentException: If the data cannot be converted to base32.
   static List<int> convertToBase32(List<int> data) {
-    List<int>? convData = _convertBits(data, 8, 5);
+    final List<int>? convData = _convertBits(data, 8, 5);
     if (convData == null) {
       throw const ArgumentException(
           'Invalid data, cannot perform conversion to base32');
@@ -90,12 +90,12 @@ class Bech32BaseUtils {
   /// - data: A List of integers representing the data in base32 encoding.
   ///
   /// Returns:
-  /// A List<int> containing the data converted from base32 encoding.
+  /// A List containing the data converted from base32 encoding.
   ///
   /// Throws:
   /// - ArgumentException: If the data cannot be converted from base32.
   static List<int> convertFromBase32(List<int> data) {
-    List<int>? convData = _convertBits(data, 5, 8, pad: false);
+    final List<int>? convData = _convertBits(data, 5, 8, pad: false);
     if (convData == null) {
       throw const ArgumentException(
           'Invalid data, cannot perform conversion from base32');
@@ -152,7 +152,7 @@ abstract class Bech32EncoderBase {
   ///
   /// Parameters:
   /// - hrp: The Human-Readable Part (prefix) of the Bech32 string.
-  /// - data: The data to be encoded as a List<int>.
+  /// - data: The data to be encoded as a List.
   /// - sep: The separator character used in the Bech32 string.
   /// - computeChecksum: A function that computes the checksum for the Bech32 string.
   ///

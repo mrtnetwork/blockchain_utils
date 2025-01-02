@@ -1,6 +1,6 @@
 /// The 'substrate' library provides tools for working with the Substrate blockchain
 /// ecosystem, including coin definitions, configuration data, and encoding utilities.
-library substrate;
+library;
 
 /// Export statement for Substrate coin definitions and configuration.
 export 'conf/substrate_coins.dart';

@@ -1,5 +1,5 @@
 /// Library for working with Bech32 encoding.
-library bech32;
+library;
 
 /// Export statement for the core Bech32 functionality.
 export 'bech32_base.dart';

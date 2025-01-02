@@ -19,7 +19,7 @@ class CborBytesValue implements CborObject {
     final bytes = CborBytesTracker();
     bytes.pushInt(MajorTags.byteString, value.length);
     bytes.pushBytes(value);
-    return bytes.toBytes();
+    return bytes.buffer();
   }
 
   /// Encode the value into CBOR bytes an then to hex
@@ -39,6 +39,11 @@ class CborBytesValue implements CborObject {
   /// ovveride hash code
   @override
   int get hashCode => value.hashCode;
+
+  @override
+  String toString() {
+    return BytesUtils.toHexString(value);
+  }
 }
 
 /// A class representing a CBOR (Concise Binary Object Representation) bytes value with indefinite tag.
@@ -63,7 +68,7 @@ class CborDynamicBytesValue implements CborObject {
       bytes.pushBytes(v);
     }
     bytes.breakDynamic();
-    return bytes.toBytes();
+    return bytes.buffer();
   }
 
   /// Returns the string representation of the value.

@@ -26,7 +26,7 @@ class AptosAddrDecoder implements BlockchainAddressDecoder {
   /// - `kwargs` (optional): Additional arguments, though none are used in this method.
   ///
   /// Returns:
-  /// - A List<int> containing the decoded address bytes.
+  /// - A List containing the decoded address bytes.
   ///
   /// Throws:
   /// - ArgumentException if the provided string is not a valid hex encoding.

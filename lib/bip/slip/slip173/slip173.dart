@@ -22,4 +22,6 @@ class Slip173 {
   static const String secretNetwork = "secret";
   static const String terra = "terra";
   static const String zilliqa = "zil";
+  static const String electraProtocol = "ep";
+  static const String electraProtocolTestnet = "te";
 }

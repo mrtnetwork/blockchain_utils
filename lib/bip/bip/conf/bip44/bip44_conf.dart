@@ -1,10 +1,12 @@
+import 'package:blockchain_utils/bip/address/atom_addr.dart';
 import 'package:blockchain_utils/bip/address/encoders.dart';
 import 'package:blockchain_utils/bip/bip/bip32/bip32_const.dart';
 import 'package:blockchain_utils/bip/bip/bip32/bip32_key_net_ver.dart';
 import 'package:blockchain_utils/bip/bip/conf/config/bip_bitcoin_cash_conf.dart';
 import 'package:blockchain_utils/bip/bip/conf/config/bip_coin_conf.dart';
-import 'package:blockchain_utils/bip/bip/conf/config/bip_litecoin_conf.dart';
 import 'package:blockchain_utils/bip/bip/conf/const/bip_conf_const.dart';
+import 'package:blockchain_utils/bip/bip/conf/config/bip_litecoin_conf.dart';
+import 'package:blockchain_utils/bip/bip/conf/core/coin_conf.dart';
 import 'package:blockchain_utils/bip/coin_conf/constant/coins_conf.dart';
 import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
 import 'package:blockchain_utils/bip/slip/slip44/slip44.dart';
@@ -24,7 +26,7 @@ class Bip44Conf {
   static final BipCoinConfig akashNetwork = BipCoinConfig(
     coinNames: CoinsConf.akashNetwork.coinName,
     coinIdx: Slip44.atom,
-    isTestnet: false,
+    chainType: ChainType.mainnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: bip44BtcKeyNetVerMain,
     wifNetVer: null,
@@ -40,7 +42,7 @@ class Bip44Conf {
     coinNames: CoinsConf.algorand.coinName,
     addressEncoder: ([dynamic kwargs]) => AlgoAddrEncoder(),
     coinIdx: Slip44.algorand,
-    isTestnet: false,
+    chainType: ChainType.mainnet,
     defPath: derPathHardenedFull,
     keyNetVer: bip44BtcKeyNetVerMain,
     wifNetVer: null,
@@ -52,7 +54,7 @@ class Bip44Conf {
   static final BipCoinConfig aptos = BipCoinConfig(
     coinNames: CoinsConf.aptos.coinName,
     coinIdx: Slip44.aptos,
-    isTestnet: false,
+    chainType: ChainType.mainnet,
     defPath: derPathHardenedFull,
     keyNetVer: bip44BtcKeyNetVerMain,
     wifNetVer: null,
@@ -65,7 +67,7 @@ class Bip44Conf {
   static final BipCoinConfig avaxCChain = BipCoinConfig(
     coinNames: CoinsConf.avaxCChain.coinName,
     coinIdx: Slip44.ethereum,
-    isTestnet: false,
+    chainType: ChainType.mainnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: bip44BtcKeyNetVerMain,
     wifNetVer: null,
@@ -78,7 +80,7 @@ class Bip44Conf {
   static final BipCoinConfig avaxPChain = BipCoinConfig(
     coinNames: CoinsConf.avaxPChain.coinName,
     coinIdx: Slip44.avalanche,
-    isTestnet: false,
+    chainType: ChainType.mainnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: bip44BtcKeyNetVerMain,
     wifNetVer: null,
@@ -91,7 +93,7 @@ class Bip44Conf {
   static final BipCoinConfig avaxXChain = BipCoinConfig(
     coinNames: CoinsConf.avaxXChain.coinName,
     coinIdx: Slip44.avalanche,
-    isTestnet: false,
+    chainType: ChainType.mainnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: bip44BtcKeyNetVerMain,
     wifNetVer: null,
@@ -104,7 +106,7 @@ class Bip44Conf {
   static final BipCoinConfig axelar = BipCoinConfig(
     coinNames: CoinsConf.axelar.coinName,
     coinIdx: Slip44.atom,
-    isTestnet: false,
+    chainType: ChainType.mainnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: bip44BtcKeyNetVerMain,
     wifNetVer: null,
@@ -119,7 +121,7 @@ class Bip44Conf {
   static final BipCoinConfig bandProtocol = BipCoinConfig(
     coinNames: CoinsConf.bandProtocol.coinName,
     coinIdx: Slip44.bandProtocol,
-    isTestnet: false,
+    chainType: ChainType.mainnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: bip44BtcKeyNetVerMain,
     wifNetVer: null,
@@ -134,7 +136,7 @@ class Bip44Conf {
   static final BipCoinConfig binanceChain = BipCoinConfig(
     coinNames: CoinsConf.binanceChain.coinName,
     coinIdx: Slip44.binanceChain,
-    isTestnet: false,
+    chainType: ChainType.mainnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: bip44BtcKeyNetVerMain,
     wifNetVer: null,
@@ -149,7 +151,7 @@ class Bip44Conf {
   static final BipCoinConfig binanceSmartChain = BipCoinConfig(
     coinNames: CoinsConf.binanceSmartChain.coinName,
     coinIdx: Slip44.ethereum,
-    isTestnet: false,
+    chainType: ChainType.mainnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: bip44BtcKeyNetVerMain,
     wifNetVer: null,
@@ -162,7 +164,7 @@ class Bip44Conf {
   static final BipCoinConfig bitcoinMainNet = BipCoinConfig(
     coinNames: CoinsConf.bitcoinMainNet.coinName,
     coinIdx: Slip44.bitcoin,
-    isTestnet: false,
+    chainType: ChainType.mainnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: bip44BtcKeyNetVerMain,
     wifNetVer: CoinsConf.bitcoinMainNet.params.wifNetVer,
@@ -177,7 +179,7 @@ class Bip44Conf {
   static final BipCoinConfig bitcoinTestNet = BipCoinConfig(
     coinNames: CoinsConf.bitcoinTestNet.coinName,
     coinIdx: Slip44.testnet,
-    isTestnet: true,
+    chainType: ChainType.testnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: bip44BtcKeyNetVerTest,
     wifNetVer: CoinsConf.bitcoinTestNet.params.wifNetVer,
@@ -192,7 +194,7 @@ class Bip44Conf {
   static final BipBitcoinCashConf bitcoinCashMainNet = BipBitcoinCashConf(
     coinNames: CoinsConf.bitcoinCashMainNet.coinName,
     coinIdx: Slip44.bitcoinCash,
-    isTestnet: false,
+    chainType: ChainType.mainnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: bip44BtcKeyNetVerMain,
     wifNetVer: CoinsConf.bitcoinCashMainNet.params.wifNetVer,
@@ -218,7 +220,7 @@ class Bip44Conf {
   static final BipBitcoinCashConf bitcoinCashTestNet = BipBitcoinCashConf(
     coinNames: CoinsConf.bitcoinCashTestNet.coinName,
     coinIdx: Slip44.testnet,
-    isTestnet: true,
+    chainType: ChainType.testnet,
     defPath: derPathNonHardenedFull,
     addressEncoder: ([dynamic legacy]) {
       if (legacy == true) {
@@ -244,7 +246,7 @@ class Bip44Conf {
   static final BipBitcoinCashConf bitcoinCashSlpMainNet = BipBitcoinCashConf(
     coinNames: CoinsConf.bitcoinCashSlpMainNet.coinName,
     coinIdx: Slip44.bitcoinCash,
-    isTestnet: false,
+    chainType: ChainType.mainnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: bip44BtcKeyNetVerMain,
     wifNetVer: CoinsConf.bitcoinCashSlpMainNet.params.wifNetVer,
@@ -270,7 +272,7 @@ class Bip44Conf {
   static final BipBitcoinCashConf bitcoinCashSlpTestNet = BipBitcoinCashConf(
     coinNames: CoinsConf.bitcoinCashSlpTestNet.coinName,
     coinIdx: Slip44.testnet,
-    isTestnet: true,
+    chainType: ChainType.testnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: bip44BtcKeyNetVerTest,
     wifNetVer: CoinsConf.bitcoinCashSlpTestNet.params.wifNetVer,
@@ -296,7 +298,7 @@ class Bip44Conf {
   static final BipCoinConfig bitcoinSvMainNet = BipCoinConfig(
     coinNames: CoinsConf.bitcoinSvMainNet.coinName,
     coinIdx: Slip44.bitcoinSv,
-    isTestnet: false,
+    chainType: ChainType.mainnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: bip44BtcKeyNetVerMain,
     wifNetVer: CoinsConf.bitcoinSvMainNet.params.wifNetVer,
@@ -313,7 +315,7 @@ class Bip44Conf {
   static final BipCoinConfig bitcoinSvTestNet = BipCoinConfig(
     coinNames: CoinsConf.bitcoinSvTestNet.coinName,
     coinIdx: Slip44.testnet,
-    isTestnet: true,
+    chainType: ChainType.testnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: bip44BtcKeyNetVerTest,
     wifNetVer: CoinsConf.bitcoinSvTestNet.params.wifNetVer,
@@ -327,7 +329,7 @@ class Bip44Conf {
   static final BipCoinConfig cardanoByronIcarus = BipCoinConfig(
     coinNames: CoinsConf.cardanoMainNet.coinName,
     coinIdx: Slip44.cardano,
-    isTestnet: false,
+    chainType: ChainType.mainnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: Bip32Const.kholawKeyNetVersions,
     wifNetVer: null,
@@ -340,7 +342,7 @@ class Bip44Conf {
   static final BipCoinConfig cardanoByronLedger = BipCoinConfig(
     coinNames: CoinsConf.cardanoMainNet.coinName,
     coinIdx: Slip44.cardano,
-    isTestnet: false,
+    chainType: ChainType.mainnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: Bip32Const.kholawKeyNetVersions,
     wifNetVer: null,
@@ -351,7 +353,7 @@ class Bip44Conf {
   static final BipCoinConfig cardanoByronIcarusTestnet = BipCoinConfig(
     coinNames: CoinsConf.cardanoMainNet.coinName,
     coinIdx: Slip44.testnet,
-    isTestnet: true,
+    chainType: ChainType.testnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: Bip32Const.kholawKeyNetVersions,
     wifNetVer: null,
@@ -364,7 +366,7 @@ class Bip44Conf {
   static final BipCoinConfig cardanoByronLedgerTestnet = BipCoinConfig(
     coinNames: CoinsConf.cardanoMainNet.coinName,
     coinIdx: Slip44.testnet,
-    isTestnet: true,
+    chainType: ChainType.testnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: Bip32Const.kholawKeyNetVersions,
     wifNetVer: null,
@@ -377,7 +379,7 @@ class Bip44Conf {
   static final BipCoinConfig celo = BipCoinConfig(
     coinNames: CoinsConf.celo.coinName,
     coinIdx: Slip44.celo,
-    isTestnet: false,
+    chainType: ChainType.mainnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: bip44BtcKeyNetVerMain,
     wifNetVer: null,
@@ -390,7 +392,7 @@ class Bip44Conf {
   static final BipCoinConfig certik = BipCoinConfig(
     coinNames: CoinsConf.certik.coinName,
     coinIdx: Slip44.atom,
-    isTestnet: false,
+    chainType: ChainType.mainnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: bip44BtcKeyNetVerMain,
     wifNetVer: null,
@@ -405,7 +407,7 @@ class Bip44Conf {
   static final BipCoinConfig chihuahua = BipCoinConfig(
     coinNames: CoinsConf.chihuahua.coinName,
     coinIdx: Slip44.atom,
-    isTestnet: false,
+    chainType: ChainType.mainnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: bip44BtcKeyNetVerMain,
     wifNetVer: null,
@@ -420,7 +422,7 @@ class Bip44Conf {
   static final BipCoinConfig cosmos = BipCoinConfig(
     coinNames: CoinsConf.cosmos.coinName,
     coinIdx: Slip44.atom,
-    isTestnet: false,
+    chainType: ChainType.mainnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: bip44BtcKeyNetVerMain,
     wifNetVer: null,
@@ -433,7 +435,7 @@ class Bip44Conf {
   static final BipCoinConfig cosmosTestnet = BipCoinConfig(
     coinNames: CoinsConf.cosmos.coinName,
     coinIdx: Slip44.testnet,
-    isTestnet: false,
+    chainType: ChainType.testnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: bip44BtcKeyNetVerMain,
     wifNetVer: null,
@@ -444,11 +446,38 @@ class Bip44Conf {
     },
   );
 
+  static final BipCoinConfig cosmosEthSecp256k1 = BipCoinConfig(
+    coinNames: CoinsConf.cosmos.coinName,
+    coinIdx: Slip44.atom,
+    chainType: ChainType.mainnet,
+    defPath: derPathNonHardenedFull,
+    keyNetVer: bip44BtcKeyNetVerMain,
+    wifNetVer: null,
+    type: EllipticCurveTypes.secp256k1,
+    addressEncoder: ([dynamic kwargs]) => AtomEthSecp256k1AddrEncoder(),
+    addrParams: {
+      "hrp": CoinsConf.cosmos.params.addrHrp!,
+    },
+  );
+  static final BipCoinConfig cosmosTestnetEthSecp256k1 = BipCoinConfig(
+    coinNames: CoinsConf.cosmos.coinName,
+    coinIdx: Slip44.testnet,
+    chainType: ChainType.testnet,
+    defPath: derPathNonHardenedFull,
+    keyNetVer: bip44BtcKeyNetVerMain,
+    wifNetVer: null,
+    type: EllipticCurveTypes.secp256k1,
+    addressEncoder: ([dynamic kwargs]) => AtomEthSecp256k1AddrEncoder(),
+    addrParams: {
+      "hrp": CoinsConf.cosmos.params.addrHrp!,
+    },
+  );
+
   /// Configuration for Cosmos
   static final BipCoinConfig cosmosNist256p1 = BipCoinConfig(
     coinNames: CoinsConf.cosmos.coinName,
     coinIdx: Slip44.atom,
-    isTestnet: false,
+    chainType: ChainType.mainnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: bip44BtcKeyNetVerMain,
     wifNetVer: null,
@@ -461,7 +490,7 @@ class Bip44Conf {
   static final BipCoinConfig cosmosTestnetNist256p1 = BipCoinConfig(
     coinNames: CoinsConf.cosmos.coinName,
     coinIdx: Slip44.testnet,
-    isTestnet: false,
+    chainType: ChainType.testnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: bip44BtcKeyNetVerMain,
     wifNetVer: null,
@@ -472,11 +501,39 @@ class Bip44Conf {
     },
   );
 
+  /// Configuration for Cosmos
+  static final BipCoinConfig cosmosEd25519 = BipCoinConfig(
+    coinNames: CoinsConf.cosmos.coinName,
+    coinIdx: Slip44.atom,
+    chainType: ChainType.mainnet,
+    defPath: derPathHardenedFull,
+    keyNetVer: bip44BtcKeyNetVerMain,
+    wifNetVer: null,
+    type: EllipticCurveTypes.ed25519,
+    addressEncoder: ([dynamic kwargs]) => AtomEd25519AddrEncoder(),
+    addrParams: {
+      "hrp": CoinsConf.cosmos.params.addrHrp!,
+    },
+  );
+  static final BipCoinConfig cosmosTestnetEd25519 = BipCoinConfig(
+    coinNames: CoinsConf.cosmos.coinName,
+    coinIdx: Slip44.testnet,
+    chainType: ChainType.testnet,
+    defPath: derPathHardenedFull,
+    keyNetVer: bip44BtcKeyNetVerMain,
+    wifNetVer: null,
+    type: EllipticCurveTypes.ed25519,
+    addressEncoder: ([dynamic kwargs]) => AtomEd25519AddrEncoder(),
+    addrParams: {
+      "hrp": CoinsConf.cosmos.params.addrHrp!,
+    },
+  );
+
   /// Configuration for Dash main net
   static final BipCoinConfig dashMainNet = BipCoinConfig(
     coinNames: CoinsConf.dashMainNet.coinName,
     coinIdx: Slip44.dash,
-    isTestnet: false,
+    chainType: ChainType.mainnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: bip44BtcKeyNetVerMain,
     wifNetVer: CoinsConf.dashMainNet.params.wifNetVer,
@@ -491,7 +548,7 @@ class Bip44Conf {
   static final BipCoinConfig dashTestNet = BipCoinConfig(
     coinNames: CoinsConf.dashTestNet.coinName,
     coinIdx: Slip44.testnet,
-    isTestnet: true,
+    chainType: ChainType.testnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: bip44BtcKeyNetVerTest,
     wifNetVer: CoinsConf.dashTestNet.params.wifNetVer,
@@ -506,7 +563,7 @@ class Bip44Conf {
   static final BipCoinConfig dogecoinMainNet = BipCoinConfig(
     coinNames: CoinsConf.dogecoinMainNet.coinName,
     coinIdx: Slip44.dogecoin,
-    isTestnet: false,
+    chainType: ChainType.mainnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: Bip32KeyNetVersions(List<int>.from([0x02, 0xfa, 0xca, 0xfd]),
         List<int>.from([0x02, 0xfa, 0xc3, 0x98])),
@@ -522,7 +579,7 @@ class Bip44Conf {
   static final BipCoinConfig dogecoinTestNet = BipCoinConfig(
     coinNames: CoinsConf.dogecoinTestNet.coinName,
     coinIdx: Slip44.testnet,
-    isTestnet: true,
+    chainType: ChainType.testnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: Bip32KeyNetVersions(List<int>.from([0x04, 0x32, 0xa9, 0xa8]),
         List<int>.from([0x04, 0x32, 0xa2, 0x43])),
@@ -538,7 +595,7 @@ class Bip44Conf {
   static final BipCoinConfig pepeMainnet = BipCoinConfig(
     coinNames: CoinsConf.pepeMainnet.coinName,
     coinIdx: Slip44.pepecoin,
-    isTestnet: false,
+    chainType: ChainType.mainnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: Bip32KeyNetVersions(List<int>.from([0x02, 0xfa, 0xca, 0xfd]),
         List<int>.from([0x02, 0xfa, 0xc3, 0x98])),
@@ -552,7 +609,7 @@ class Bip44Conf {
   static final BipCoinConfig pepeTestnet = BipCoinConfig(
     coinNames: CoinsConf.pepeTestnet.coinName,
     coinIdx: Slip44.testnet,
-    isTestnet: true,
+    chainType: ChainType.testnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: Bip32KeyNetVersions(List<int>.from([0x04, 0x32, 0xa9, 0xa8]),
         List<int>.from([0x04, 0x32, 0xa2, 0x43])),
@@ -566,7 +623,7 @@ class Bip44Conf {
   static final BipBitcoinCashConf ecashMainNet = BipBitcoinCashConf(
     coinNames: CoinsConf.ecashMainNet.coinName,
     coinIdx: Slip44.bitcoinCash,
-    isTestnet: false,
+    chainType: ChainType.mainnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: bip44BtcKeyNetVerMain,
     wifNetVer: CoinsConf.ecashMainNet.params.wifNetVer,
@@ -592,7 +649,7 @@ class Bip44Conf {
   static final BipBitcoinCashConf ecashTestNet = BipBitcoinCashConf(
     coinNames: CoinsConf.ecashTestNet.coinName,
     coinIdx: Slip44.testnet,
-    isTestnet: true,
+    chainType: ChainType.testnet,
     addressEncoder: ([dynamic legacy]) {
       if (legacy == true) {
         return P2PKHAddrEncoder();
@@ -620,7 +677,7 @@ class Bip44Conf {
   static final BipCoinConfig elrond = BipCoinConfig(
     coinNames: CoinsConf.elrond.coinName,
     coinIdx: Slip44.elrond,
-    isTestnet: false,
+    chainType: ChainType.mainnet,
     defPath: derPathHardenedFull,
     keyNetVer: bip44BtcKeyNetVerMain,
     wifNetVer: null,
@@ -633,7 +690,7 @@ class Bip44Conf {
   static final BipCoinConfig eos = BipCoinConfig(
     coinNames: CoinsConf.eos.coinName,
     coinIdx: Slip44.eos,
-    isTestnet: false,
+    chainType: ChainType.mainnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: bip44BtcKeyNetVerMain,
     wifNetVer: null,
@@ -646,7 +703,7 @@ class Bip44Conf {
   static final BipCoinConfig ergoMainNet = BipCoinConfig(
     coinNames: CoinsConf.ergoMainNet.coinName,
     coinIdx: Slip44.ergo,
-    isTestnet: false,
+    chainType: ChainType.mainnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: bip44BtcKeyNetVerMain,
     wifNetVer: null,
@@ -661,7 +718,7 @@ class Bip44Conf {
   static final BipCoinConfig ergoTestNet = BipCoinConfig(
     coinNames: CoinsConf.ergoTestNet.coinName,
     coinIdx: Slip44.ergo,
-    isTestnet: true,
+    chainType: ChainType.testnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: bip44BtcKeyNetVerTest,
     wifNetVer: null,
@@ -676,7 +733,7 @@ class Bip44Conf {
   static final BipCoinConfig ethereum = BipCoinConfig(
     coinNames: CoinsConf.ethereum.coinName,
     coinIdx: Slip44.ethereum,
-    isTestnet: false,
+    chainType: ChainType.mainnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: bip44BtcKeyNetVerMain,
     wifNetVer: null,
@@ -689,7 +746,7 @@ class Bip44Conf {
   static final BipCoinConfig ethereumTestnet = BipCoinConfig(
     coinNames: CoinsConf.ethereum.coinName,
     coinIdx: Slip44.testnet,
-    isTestnet: true,
+    chainType: ChainType.testnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: bip44BtcKeyNetVerMain,
     wifNetVer: null,
@@ -702,7 +759,7 @@ class Bip44Conf {
   static final BipCoinConfig ethereumClassic = BipCoinConfig(
     coinNames: CoinsConf.ethereumClassic.coinName,
     coinIdx: Slip44.ethereumClassic,
-    isTestnet: false,
+    chainType: ChainType.mainnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: bip44BtcKeyNetVerMain,
     wifNetVer: null,
@@ -715,7 +772,7 @@ class Bip44Conf {
   static final BipCoinConfig fantomOpera = BipCoinConfig(
     coinNames: CoinsConf.fantomOpera.coinName,
     coinIdx: Slip44.ethereum,
-    isTestnet: false,
+    chainType: ChainType.mainnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: bip44BtcKeyNetVerMain,
     wifNetVer: null,
@@ -728,7 +785,7 @@ class Bip44Conf {
   static final BipCoinConfig filecoin = BipCoinConfig(
     coinNames: CoinsConf.filecoin.coinName,
     coinIdx: Slip44.filecoin,
-    isTestnet: false,
+    chainType: ChainType.mainnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: bip44BtcKeyNetVerMain,
     wifNetVer: null,
@@ -741,7 +798,7 @@ class Bip44Conf {
   static final BipCoinConfig harmonyOneMetamask = BipCoinConfig(
     coinNames: CoinsConf.harmonyOne.coinName,
     coinIdx: Slip44.ethereum,
-    isTestnet: false,
+    chainType: ChainType.mainnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: bip44BtcKeyNetVerMain,
     wifNetVer: null,
@@ -754,7 +811,7 @@ class Bip44Conf {
   static final BipCoinConfig harmonyOneEth = BipCoinConfig(
     coinNames: CoinsConf.harmonyOne.coinName,
     coinIdx: Slip44.harmonyOne,
-    isTestnet: false,
+    chainType: ChainType.mainnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: bip44BtcKeyNetVerMain,
     wifNetVer: null,
@@ -767,7 +824,7 @@ class Bip44Conf {
   static final BipCoinConfig harmonyOneAtom = BipCoinConfig(
     coinNames: CoinsConf.harmonyOne.coinName,
     coinIdx: Slip44.harmonyOne,
-    isTestnet: false,
+    chainType: ChainType.mainnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: bip44BtcKeyNetVerMain,
     wifNetVer: null,
@@ -780,7 +837,7 @@ class Bip44Conf {
   static final BipCoinConfig huobiChain = BipCoinConfig(
     coinNames: CoinsConf.huobiChain.coinName,
     coinIdx: Slip44.ethereum,
-    isTestnet: false,
+    chainType: ChainType.mainnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: bip44BtcKeyNetVerMain,
     wifNetVer: null,
@@ -793,7 +850,7 @@ class Bip44Conf {
   static final BipCoinConfig icon = BipCoinConfig(
     coinNames: CoinsConf.icon.coinName,
     coinIdx: Slip44.icon,
-    isTestnet: false,
+    chainType: ChainType.mainnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: bip44BtcKeyNetVerMain,
     wifNetVer: null,
@@ -806,7 +863,7 @@ class Bip44Conf {
   static final BipCoinConfig injective = BipCoinConfig(
     coinNames: CoinsConf.injective.coinName,
     coinIdx: Slip44.ethereum,
-    isTestnet: false,
+    chainType: ChainType.mainnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: bip44BtcKeyNetVerMain,
     wifNetVer: null,
@@ -819,7 +876,7 @@ class Bip44Conf {
   static final BipCoinConfig irisNet = BipCoinConfig(
     coinNames: CoinsConf.irisNet.coinName,
     coinIdx: Slip44.atom,
-    isTestnet: false,
+    chainType: ChainType.mainnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: bip44BtcKeyNetVerMain,
     wifNetVer: null,
@@ -834,7 +891,7 @@ class Bip44Conf {
   static final BipCoinConfig kava = BipCoinConfig(
     coinNames: CoinsConf.kava.coinName,
     coinIdx: Slip44.kava,
-    isTestnet: false,
+    chainType: ChainType.mainnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: bip44BtcKeyNetVerMain,
     wifNetVer: null,
@@ -849,7 +906,7 @@ class Bip44Conf {
   static final BipCoinConfig kusamaEd25519Slip = BipCoinConfig(
     coinNames: CoinsConf.kusama.coinName,
     coinIdx: Slip44.kusama,
-    isTestnet: false,
+    chainType: ChainType.mainnet,
     defPath: derPathHardenedFull,
     keyNetVer: bip44BtcKeyNetVerMain,
     wifNetVer: null,
@@ -864,7 +921,7 @@ class Bip44Conf {
   static final BipCoinConfig kusamaTestnetEd25519Slip = BipCoinConfig(
     coinNames: CoinsConf.kusama.coinName,
     coinIdx: Slip44.testnet,
-    isTestnet: false,
+    chainType: ChainType.mainnet,
     defPath: derPathHardenedFull,
     keyNetVer: bip44BtcKeyNetVerMain,
     wifNetVer: null,
@@ -879,7 +936,7 @@ class Bip44Conf {
   static final BipLitecoinConf litecoinMainNet = BipLitecoinConf(
     coinNames: CoinsConf.litecoinMainNet.coinName,
     coinIdx: Slip44.litecoin,
-    isTestnet: false,
+    chainType: ChainType.mainnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: bip44BtcKeyNetVerMain,
     addressEncoder: ([dynamic kwargs]) => P2PKHAddrEncoder(),
@@ -899,7 +956,7 @@ class Bip44Conf {
   static final BipLitecoinConf litecoinTestNet = BipLitecoinConf(
     coinNames: CoinsConf.litecoinTestNet.coinName,
     coinIdx: Slip44.testnet,
-    isTestnet: true,
+    chainType: ChainType.testnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: Bip32KeyNetVersions(
       List<int>.from([0x04, 0x36, 0xf6, 0xe1]),
@@ -922,7 +979,7 @@ class Bip44Conf {
   static final BipCoinConfig moneroEd25519Slip = BipCoinConfig(
     coinNames: CoinsConf.moneroMainNet.coinName,
     coinIdx: Slip44.monero,
-    isTestnet: false,
+    chainType: ChainType.mainnet,
     defPath: derPathHardenedFull,
     keyNetVer: bip44BtcKeyNetVerMain,
     wifNetVer: null,
@@ -935,7 +992,7 @@ class Bip44Conf {
   static final BipCoinConfig moneroSecp256k1 = BipCoinConfig(
     coinNames: CoinsConf.moneroMainNet.coinName,
     coinIdx: Slip44.monero,
-    isTestnet: false,
+    chainType: ChainType.mainnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: bip44BtcKeyNetVerMain,
     wifNetVer: null,
@@ -948,7 +1005,7 @@ class Bip44Conf {
   static final BipCoinConfig nano = BipCoinConfig(
     coinNames: CoinsConf.nano.coinName,
     coinIdx: Slip44.nano,
-    isTestnet: false,
+    chainType: ChainType.mainnet,
     defPath: derPathHardenedShort,
     keyNetVer: bip44BtcKeyNetVerMain,
     wifNetVer: null,
@@ -961,7 +1018,7 @@ class Bip44Conf {
   static final BipCoinConfig nearProtocol = BipCoinConfig(
     coinNames: CoinsConf.nearProtocol.coinName,
     coinIdx: Slip44.nearProtocol,
-    isTestnet: false,
+    chainType: ChainType.mainnet,
     defPath: derPathHardenedShort,
     keyNetVer: bip44BtcKeyNetVerMain,
     wifNetVer: null,
@@ -974,7 +1031,7 @@ class Bip44Conf {
   static final BipCoinConfig neo = BipCoinConfig(
     coinNames: CoinsConf.neo.coinName,
     coinIdx: Slip44.neo,
-    isTestnet: false,
+    chainType: ChainType.mainnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: bip44BtcKeyNetVerMain,
     wifNetVer: null,
@@ -989,7 +1046,7 @@ class Bip44Conf {
   static final BipCoinConfig nineChroniclesGold = BipCoinConfig(
     coinNames: CoinsConf.nineChroniclesGold.coinName,
     coinIdx: Slip44.nineChronicles,
-    isTestnet: false,
+    chainType: ChainType.mainnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: bip44BtcKeyNetVerMain,
     wifNetVer: null,
@@ -1002,7 +1059,7 @@ class Bip44Conf {
   static final BipCoinConfig okexChainEth = BipCoinConfig(
     coinNames: CoinsConf.okexChain.coinName,
     coinIdx: Slip44.ethereum,
-    isTestnet: false,
+    chainType: ChainType.mainnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: bip44BtcKeyNetVerMain,
     wifNetVer: null,
@@ -1015,7 +1072,7 @@ class Bip44Conf {
   static final BipCoinConfig okexChainAtom = BipCoinConfig(
     coinNames: CoinsConf.okexChain.coinName,
     coinIdx: Slip44.ethereum,
-    isTestnet: false,
+    chainType: ChainType.mainnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: bip44BtcKeyNetVerMain,
     wifNetVer: null,
@@ -1028,7 +1085,7 @@ class Bip44Conf {
   static final BipCoinConfig okexChainAtomOld = BipCoinConfig(
     coinNames: CoinsConf.okexChain.coinName,
     coinIdx: Slip44.okexChain,
-    isTestnet: false,
+    chainType: ChainType.mainnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: bip44BtcKeyNetVerMain,
     wifNetVer: null,
@@ -1041,7 +1098,7 @@ class Bip44Conf {
   static final BipCoinConfig ontology = BipCoinConfig(
     coinNames: CoinsConf.ontology.coinName,
     coinIdx: Slip44.ontology,
-    isTestnet: false,
+    chainType: ChainType.mainnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: bip44BtcKeyNetVerMain,
     wifNetVer: null,
@@ -1056,7 +1113,7 @@ class Bip44Conf {
   static final BipCoinConfig osmosis = BipCoinConfig(
     coinNames: CoinsConf.osmosis.coinName,
     coinIdx: Slip44.atom,
-    isTestnet: false,
+    chainType: ChainType.mainnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: bip44BtcKeyNetVerMain,
     wifNetVer: null,
@@ -1071,7 +1128,7 @@ class Bip44Conf {
   static final BipCoinConfig piNetwork = BipCoinConfig(
     coinNames: CoinsConf.piNetwork.coinName,
     coinIdx: Slip44.piNetwork,
-    isTestnet: false,
+    chainType: ChainType.mainnet,
     defPath: derPathHardenedShort,
     keyNetVer: bip44BtcKeyNetVerMain,
     wifNetVer: null,
@@ -1084,7 +1141,7 @@ class Bip44Conf {
   static final BipCoinConfig polkadotEd25519Slip = BipCoinConfig(
     coinNames: CoinsConf.polkadot.coinName,
     coinIdx: Slip44.polkadot,
-    isTestnet: false,
+    chainType: ChainType.mainnet,
     defPath: derPathHardenedFull,
     keyNetVer: bip44BtcKeyNetVerMain,
     wifNetVer: null,
@@ -1097,7 +1154,7 @@ class Bip44Conf {
   static final BipCoinConfig polkadotTestnetEd25519Slip = BipCoinConfig(
     coinNames: CoinsConf.polkadot.coinName,
     coinIdx: Slip44.testnet,
-    isTestnet: true,
+    chainType: ChainType.testnet,
     defPath: derPathHardenedFull,
     keyNetVer: bip44BtcKeyNetVerMain,
     wifNetVer: null,
@@ -1112,7 +1169,7 @@ class Bip44Conf {
   static final BipCoinConfig polygon = BipCoinConfig(
     coinNames: CoinsConf.polygon.coinName,
     coinIdx: Slip44.ethereum,
-    isTestnet: false,
+    chainType: ChainType.mainnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: bip44BtcKeyNetVerMain,
     wifNetVer: null,
@@ -1125,7 +1182,7 @@ class Bip44Conf {
   static final BipCoinConfig ripple = BipCoinConfig(
     coinNames: CoinsConf.ripple.coinName,
     coinIdx: Slip44.ripple,
-    isTestnet: false,
+    chainType: ChainType.mainnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: bip44BtcKeyNetVerMain,
     wifNetVer: null,
@@ -1138,7 +1195,7 @@ class Bip44Conf {
   static final BipCoinConfig rippleTestnet = BipCoinConfig(
     coinNames: CoinsConf.ripple.coinName,
     coinIdx: Slip44.testnet,
-    isTestnet: true,
+    chainType: ChainType.testnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: bip44BtcKeyNetVerMain,
     wifNetVer: null,
@@ -1151,7 +1208,7 @@ class Bip44Conf {
   static final BipCoinConfig rippleEd25519 = BipCoinConfig(
     coinNames: CoinsConf.ripple.coinName,
     coinIdx: Slip44.ripple,
-    isTestnet: false,
+    chainType: ChainType.mainnet,
     defPath: derPathHardenedFull,
     keyNetVer: bip44BtcKeyNetVerMain,
     wifNetVer: null,
@@ -1167,7 +1224,7 @@ class Bip44Conf {
   static final BipCoinConfig rippleTestnetEd25519 = BipCoinConfig(
     coinNames: CoinsConf.ripple.coinName,
     coinIdx: Slip44.testnet,
-    isTestnet: true,
+    chainType: ChainType.testnet,
     defPath: derPathHardenedFull,
     keyNetVer: bip44BtcKeyNetVerMain,
     wifNetVer: null,
@@ -1181,7 +1238,7 @@ class Bip44Conf {
   static final BipCoinConfig secretNetworkOld = BipCoinConfig(
     coinNames: CoinsConf.secretNetwork.coinName,
     coinIdx: Slip44.atom,
-    isTestnet: false,
+    chainType: ChainType.mainnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: bip44BtcKeyNetVerMain,
     wifNetVer: null,
@@ -1196,7 +1253,7 @@ class Bip44Conf {
   static final BipCoinConfig secretNetworkNew = BipCoinConfig(
     coinNames: CoinsConf.secretNetwork.coinName,
     coinIdx: Slip44.secretNetwork,
-    isTestnet: false,
+    chainType: ChainType.mainnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: bip44BtcKeyNetVerMain,
     wifNetVer: null,
@@ -1211,7 +1268,7 @@ class Bip44Conf {
   static final BipCoinConfig solana = BipCoinConfig(
     coinNames: CoinsConf.solana.coinName,
     coinIdx: Slip44.solana,
-    isTestnet: false,
+    chainType: ChainType.mainnet,
     defPath: derPathHardenedShort,
     keyNetVer: bip44BtcKeyNetVerMain,
     wifNetVer: null,
@@ -1224,7 +1281,7 @@ class Bip44Conf {
   static final BipCoinConfig solanaTestnet = BipCoinConfig(
     coinNames: CoinsConf.solana.coinName,
     coinIdx: Slip44.testnet,
-    isTestnet: true,
+    chainType: ChainType.testnet,
     defPath: derPathHardenedShort,
     keyNetVer: bip44BtcKeyNetVerMain,
     wifNetVer: null,
@@ -1237,7 +1294,7 @@ class Bip44Conf {
   static final BipCoinConfig stellar = BipCoinConfig(
     coinNames: CoinsConf.stellar.coinName,
     coinIdx: Slip44.stellar,
-    isTestnet: false,
+    chainType: ChainType.mainnet,
     defPath: derPathHardenedShort,
     keyNetVer: bip44BtcKeyNetVerMain,
     wifNetVer: null,
@@ -1250,7 +1307,7 @@ class Bip44Conf {
   static final BipCoinConfig stellarTestnet = BipCoinConfig(
     coinNames: CoinsConf.stellar.coinName,
     coinIdx: Slip44.testnet,
-    isTestnet: true,
+    chainType: ChainType.testnet,
     defPath: derPathHardenedShort,
     keyNetVer: bip44BtcKeyNetVerMain,
     wifNetVer: null,
@@ -1263,7 +1320,7 @@ class Bip44Conf {
   static final BipCoinConfig terra = BipCoinConfig(
     coinNames: CoinsConf.terra.coinName,
     coinIdx: Slip44.terra,
-    isTestnet: false,
+    chainType: ChainType.mainnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: bip44BtcKeyNetVerMain,
     wifNetVer: null,
@@ -1278,7 +1335,7 @@ class Bip44Conf {
   static final BipCoinConfig tezos = BipCoinConfig(
     coinNames: CoinsConf.tezos.coinName,
     coinIdx: Slip44.tezos,
-    isTestnet: false,
+    chainType: ChainType.mainnet,
     defPath: "0'/0'",
     keyNetVer: bip44BtcKeyNetVerMain,
     wifNetVer: null,
@@ -1291,7 +1348,7 @@ class Bip44Conf {
   static final BipCoinConfig theta = BipCoinConfig(
     coinNames: CoinsConf.theta.coinName,
     coinIdx: Slip44.theta,
-    isTestnet: false,
+    chainType: ChainType.mainnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: bip44BtcKeyNetVerMain,
     wifNetVer: null,
@@ -1304,7 +1361,7 @@ class Bip44Conf {
   static final BipCoinConfig tron = BipCoinConfig(
     coinNames: CoinsConf.tron.coinName,
     coinIdx: Slip44.tron,
-    isTestnet: false,
+    chainType: ChainType.mainnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: bip44BtcKeyNetVerMain,
     wifNetVer: null,
@@ -1317,7 +1374,7 @@ class Bip44Conf {
   static final BipCoinConfig tronTestnet = BipCoinConfig(
     coinNames: CoinsConf.tron.coinName,
     coinIdx: Slip44.testnet,
-    isTestnet: true,
+    chainType: ChainType.testnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: bip44BtcKeyNetVerMain,
     wifNetVer: null,
@@ -1330,7 +1387,7 @@ class Bip44Conf {
   static final BipCoinConfig vechain = BipCoinConfig(
     coinNames: CoinsConf.veChain.coinName,
     coinIdx: Slip44.vechain,
-    isTestnet: false,
+    chainType: ChainType.mainnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: bip44BtcKeyNetVerMain,
     wifNetVer: null,
@@ -1343,7 +1400,7 @@ class Bip44Conf {
   static final BipCoinConfig verge = BipCoinConfig(
     coinNames: CoinsConf.verge.coinName,
     coinIdx: Slip44.verge,
-    isTestnet: false,
+    chainType: ChainType.mainnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: bip44BtcKeyNetVerMain,
     wifNetVer: CoinsConf.verge.params.wifNetVer,
@@ -1358,7 +1415,7 @@ class Bip44Conf {
   static final BipCoinConfig zcashMainNet = BipCoinConfig(
     coinNames: CoinsConf.zcashMainNet.coinName,
     coinIdx: Slip44.zcash,
-    isTestnet: false,
+    chainType: ChainType.mainnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: bip44BtcKeyNetVerMain,
     wifNetVer: CoinsConf.zcashMainNet.params.wifNetVer,
@@ -1373,7 +1430,7 @@ class Bip44Conf {
   static final BipCoinConfig zcashTestNet = BipCoinConfig(
     coinNames: CoinsConf.zcashTestNet.coinName,
     coinIdx: Slip44.testnet,
-    isTestnet: true,
+    chainType: ChainType.testnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: bip44BtcKeyNetVerTest,
     wifNetVer: CoinsConf.zcashTestNet.params.wifNetVer,
@@ -1388,7 +1445,7 @@ class Bip44Conf {
   static final BipCoinConfig zilliqa = BipCoinConfig(
     coinNames: CoinsConf.zilliqa.coinName,
     coinIdx: Slip44.zilliqa,
-    isTestnet: false,
+    chainType: ChainType.mainnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: bip44BtcKeyNetVerMain,
     wifNetVer: null,
@@ -1400,7 +1457,7 @@ class Bip44Conf {
   static final BipCoinConfig tonMainnet = BipCoinConfig(
     coinNames: CoinsConf.tonMainnet.coinName,
     coinIdx: Slip44.ton,
-    isTestnet: false,
+    chainType: ChainType.mainnet,
     defPath: derPathHardenedShort,
     keyNetVer: Bip44Conf.bip44BtcKeyNetVerMain,
     wifNetVer: null,
@@ -1408,11 +1465,10 @@ class Bip44Conf {
     addressEncoder: ([dynamic kwargs]) => TonAddrEncoder(),
     addrParams: {"workchain": CoinsConf.tonMainnet.params.workchain},
   );
-
   static final BipCoinConfig tonTestnet = BipCoinConfig(
     coinNames: CoinsConf.tonTestnet.coinName,
     coinIdx: Slip44.testnet,
-    isTestnet: true,
+    chainType: ChainType.testnet,
     defPath: derPathHardenedShort,
     keyNetVer: Bip44Conf.bip44BtcKeyNetVerMain,
     wifNetVer: null,
@@ -1425,7 +1481,7 @@ class Bip44Conf {
   static final BipCoinConfig electraProtocolMainNet = BipCoinConfig(
     coinNames: CoinsConf.electraProtocolMainNet.coinName,
     coinIdx: Slip44.electraProtocol,
-    isTestnet: false,
+    chainType: ChainType.mainnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: Bip32KeyNetVersions(
       List<int>.from([0x04, 0x88, 0xb2, 0x1e]),
@@ -1443,7 +1499,7 @@ class Bip44Conf {
   static final BipCoinConfig electraProtocolTestNet = BipCoinConfig(
     coinNames: CoinsConf.electraProtocolTestNet.coinName,
     coinIdx: Slip44.testnet,
-    isTestnet: true,
+    chainType: ChainType.testnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: Bip32KeyNetVersions(
       List<int>.from([0x04, 0x35, 0x87, 0xcf]),

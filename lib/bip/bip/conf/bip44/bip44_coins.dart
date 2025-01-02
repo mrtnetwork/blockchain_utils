@@ -141,6 +141,19 @@ class Bip44Coins extends BipCoins {
   /// Cosmos
   static const cosmosTestnetNist256p1 = Bip44Coins._('cosmosTestnetNist256p1');
 
+  /// Cosmos
+  static const cosmosEd25519 = Bip44Coins._('cosmosEd25519');
+
+  /// Cosmos
+  static const cosmosTestnetEd25519 = Bip44Coins._('cosmosTestnetEd25519');
+
+  /// Cosmos
+  static const cosmosEthSecp256k1 = Bip44Coins._('cosmosEthSecp256k1');
+
+  /// Cosmos
+  static const cosmosTestnetEthSecp256k1 =
+      Bip44Coins._('cosmosTestnetEthSecp256k1');
+
   /// Dash
   static const dash = Bip44Coins._('dash');
 
@@ -418,6 +431,10 @@ class Bip44Coins extends BipCoins {
     Bip44Coins.cosmosTestnet: Bip44Conf.cosmosTestnet,
     Bip44Coins.cosmosNist256p1: Bip44Conf.cosmosNist256p1,
     Bip44Coins.cosmosTestnetNist256p1: Bip44Conf.cosmosTestnetNist256p1,
+    Bip44Coins.cosmosEd25519: Bip44Conf.cosmosEd25519,
+    Bip44Coins.cosmosTestnetEd25519: Bip44Conf.cosmosTestnetEd25519,
+    Bip44Coins.cosmosEthSecp256k1: Bip44Conf.cosmosEthSecp256k1,
+    Bip44Coins.cosmosTestnetEthSecp256k1: Bip44Conf.cosmosTestnetEthSecp256k1,
     Bip44Coins.dash: Bip44Conf.dashMainNet,
     Bip44Coins.dashTestnet: Bip44Conf.dashTestNet,
     Bip44Coins.dogecoin: Bip44Conf.dogecoinMainNet,
@@ -487,7 +504,6 @@ class Bip44Coins extends BipCoins {
     Bip44Coins.electraProtocol: Bip44Conf.electraProtocolMainNet,
     Bip44Coins.electraProtocolTestnet: Bip44Conf.electraProtocolTestNet,
   };
-
   @override
   BipProposal get proposal => BipProposal.bip44;
 

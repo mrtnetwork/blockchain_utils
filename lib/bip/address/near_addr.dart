@@ -12,18 +12,18 @@ class NearAddrDecoder implements BlockchainAddressDecoder {
   /// This method decodes a Near Protocol address from the provided input string, which is expected
   /// to be a hexadecimal representation of the public key bytes. It validates the length of the input,
   /// ensuring it matches the expected compressed Ed25519 public key length. The decoded public key bytes
-  /// are returned as a List<int>.
+  /// are returned as a `List<int>`.
   ///
   /// Parameters:
   ///   - addr: The hexadecimal representation of the public key bytes for the Near Protocol address.
   ///   - kwargs: Optional keyword arguments (not used in this implementation).
   ///
   /// Returns:
-  ///   A List<int> containing the decoded public key bytes for the Near Protocol address.
+  ///   A `List<int>` containing the decoded public key bytes for the Near Protocol address.
   @override
   List<int> decodeAddr(String addr, [Map<String, dynamic> kwargs = const {}]) {
     /// Convert the hexadecimal input to bytes.
-    List<int> pubKeyBytes = BytesUtils.fromHexString(addr);
+    final List<int> pubKeyBytes = BytesUtils.fromHexString(addr);
 
     /// Validate the length of the public key bytes.
     AddrDecUtils.validateBytesLength(
@@ -37,11 +37,11 @@ class NearAddrDecoder implements BlockchainAddressDecoder {
 class NearAddrEncoder implements BlockchainAddressEncoder {
   /// Overrides the base class method to encode a public key as a Near Protocol address.
   ///
-  /// This method encodes a public key as a Near Protocol address. It expects the public key as a List<int>
+  /// This method encodes a public key as a Near Protocol address. It expects the public key as a `List<int>`
   /// and returns it as a hexadecimal representation, stripping the '0x' prefix from the result.
   ///
   /// Parameters:
-  ///   - pubKey: The public key to be encoded as a Near Protocol address in the form of a List<int>.
+  ///   - pubKey: The public key to be encoded as a Near Protocol address in the form of a `List<int>`.
   ///   - kwargs: Optional keyword arguments (not used in this implementation).
   ///
   /// Returns:

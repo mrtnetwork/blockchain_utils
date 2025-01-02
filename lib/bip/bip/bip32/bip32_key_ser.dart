@@ -24,7 +24,7 @@ class _Bip32KeySerializer {
   /// Serialize the specified key bytes.
   static String serialize(
       List<int> keyBytes, Bip32KeyData keyData, List<int> keyNetVerBytes) {
-    List<int> serKey = List<int>.from([
+    final List<int> serKey = List<int>.from([
       ...keyNetVerBytes,
       ...keyData.depth.toBytes(),
       ...keyData.parentFingerPrint.toBytes(),

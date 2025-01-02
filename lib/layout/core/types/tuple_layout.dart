@@ -16,7 +16,7 @@ class TupleLayout extends Layout<List> {
 
   @override
   LayoutDecodeResult<List> decode(LayoutByteReader bytes, {int offset = 0}) {
-    List encoded = [];
+    final List encoded = [];
     int pos = offset;
     for (final i in layouts) {
       final decode = i.decode(bytes, offset: pos);
@@ -78,7 +78,7 @@ class TupleCompactLayout extends Layout<List> {
       throw LayoutException("Source length must match layout length.",
           details: {"property": property});
     }
-    List encoded = [];
+    final List encoded = [];
     int pos = decodeLength.item1 + offset;
     for (int i = 0; i < layouts.length; i++) {
       final layout = layouts[i];

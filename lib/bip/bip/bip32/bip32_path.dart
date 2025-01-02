@@ -136,7 +136,7 @@ class Bip32PathParser {
       isAbsolute = true;
     }
 
-    List<Bip32KeyIndex> parsedElems = pathElems.map(_parseElem).toList();
+    final List<Bip32KeyIndex> parsedElems = pathElems.map(_parseElem).toList();
     return Bip32Path(elems: parsedElems, isAbsolute: isAbsolute);
   }
 
@@ -145,14 +145,14 @@ class Bip32PathParser {
   /// [pathElem] is the path element to be parsed.
   static Bip32KeyIndex _parseElem(String pathElem) {
     pathElem = pathElem.trim();
-    bool isHardened = Bip32PathConst.hardenedChars
+    final bool isHardened = Bip32PathConst.hardenedChars
         .where((element) => pathElem.endsWith(element))
         .isNotEmpty;
 
     if (isHardened) {
       pathElem = pathElem.substring(0, pathElem.length - 1);
     }
-    bool isNumeric = int.tryParse(pathElem) != null;
+    final bool isNumeric = int.tryParse(pathElem) != null;
     if (!isNumeric) {
       throw Bip32PathError("Invalid path element ($pathElem)");
     }

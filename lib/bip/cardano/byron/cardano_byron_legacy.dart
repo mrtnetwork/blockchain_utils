@@ -97,7 +97,7 @@ class CardanoByronLegacy {
   /// the wallet's public key (compressed), chain code, and specified parameters.
   ///
   /// Returns:
-  /// - A List<int> containing the derived HD path key.
+  /// - A `List<int>` containing the derived HD path key.
   List<int> get hdPathKey {
     final hdPath = QuickCrypto.pbkdf2DeriveKey(
         password: List<int>.from([

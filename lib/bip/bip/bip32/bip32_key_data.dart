@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 import 'package:blockchain_utils/utils/utils.dart';
-import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 
 /// Class container for BIP32 key data constants.
 class Bip32KeyDataConst {

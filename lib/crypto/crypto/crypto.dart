@@ -1,6 +1,6 @@
 /// The 'crypto' library provides a collection of cryptographic algorithms and utilities
 /// for various cryptographic operations and security functions.
-library crypto;
+library;
 
 /// Export statement for AEAD (Authenticated Encryption with Associated Data) components.
 export 'aead/aead.dart';

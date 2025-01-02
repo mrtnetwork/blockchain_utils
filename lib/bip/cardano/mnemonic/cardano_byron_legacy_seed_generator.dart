@@ -77,7 +77,7 @@ class CardanoByronLegacySeedGenerator {
     _seedBytes = QuickCrypto.blake2b256Hash(cborData);
   }
 
-  /// Generates and returns the Cardano Byron Legacy seed as a List<int>.
+  /// Generates and returns the Cardano Byron Legacy seed as a `List<int>`.
   List<int> generate() {
     return List<int>.from(_seedBytes);
   }

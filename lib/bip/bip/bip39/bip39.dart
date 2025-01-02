@@ -1,7 +1,7 @@
 /// The 'bip39' library provides a comprehensive set of tools for working with
 /// BIP-39 mnemonics, a standard for creating human-readable mnemonic phrases
 /// for cryptographic keys.
-library bip39;
+library;
 
 /// Export statement for word list languages used in BIP-39 mnemonics.
 export 'word_list/languages.dart';

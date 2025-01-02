@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 
-import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/curve/curve.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/curve/curves.dart';
@@ -28,21 +28,14 @@ class RistrettoPoint extends EDPoint {
   ///   - super.generator: A flag indicating if the point is a generator (default is false).
   ///   - super.order: The order of the point in the group (optional).
   RistrettoPoint._(
-      {required CurveED curve,
-      required BigInt x,
-      required BigInt y,
-      required BigInt z,
-      required BigInt t,
+      {required super.curve,
+      required super.x,
+      required super.y,
+      required super.z,
+      required super.t,
       bool generator = false,
-      BigInt? order})
-      : super(
-            curve: curve,
-            t: t,
-            x: x,
-            y: y,
-            z: z,
-            generator: false,
-            order: order);
+      super.order})
+      : super(generator: false);
 
   /// Create a RistrettoPoint from an EdwardsPoint.
   ///
@@ -86,7 +79,7 @@ class RistrettoPoint extends EDPoint {
   ///   - ArgumentException: If the input bytes result in an invalid RistrettoPoint.
   ///   - Exception: If the RistrettoPoint creation fails any validity checks.
   factory RistrettoPoint.fromBytes(List<int> bytes, {CurveED? curveEdTw}) {
-    List<int> hex = bytes;
+    final List<int> hex = bytes;
     final c = curveEdTw ?? Curves.curveEd25519;
     final a = c.a;
     final d = c.d;
@@ -198,7 +191,7 @@ class RistrettoPoint extends EDPoint {
   /// as a RistrettoPoint.
   ///
   /// Parameters:
-  ///   - hash: A List<int> representing the uniform byte value to be converted.
+  ///   - hash: A `List<int>` representing the uniform byte value to be converted.
   ///
   /// Returns:
   ///   - RistrettoPoint: A RistrettoPoint instance created from the uniform byte input.
@@ -232,7 +225,7 @@ class RistrettoPoint extends EDPoint {
   ///   - encodeType: The encoding type for the output byte array (default is compressed).
   ///
   /// Returns:
-  ///   - List<int>: A byte array representing the RistrettoPoint in Edwards encoding.
+  ///   - `List<int>`: A byte array representing the RistrettoPoint in Edwards encoding.
   List<int> toEdwardBytes([EncodeType encodeType = EncodeType.comprossed]) {
     return super.toBytes(encodeType);
   }
@@ -293,7 +286,7 @@ class RistrettoPoint extends EDPoint {
   /// for serialization and other data storage or transmission purposes.
   ///
   /// Returns:
-  ///   - List<int>: A byte array representing the RistrettoPoint.
+  ///   - `List<int>`: A byte array representing the RistrettoPoint.
   ///
   /// Details:
   ///   - The method calculates intermediate values and applies encoding-specific
@@ -306,8 +299,8 @@ class RistrettoPoint extends EDPoint {
     final pointCoords = getCoords();
     BigInt x = pointCoords[0];
     BigInt y = pointCoords[1];
-    BigInt z = pointCoords[2];
-    BigInt t = pointCoords[3];
+    final BigInt z = pointCoords[2];
+    final BigInt t = pointCoords[3];
 
     final u1 = ristretto_tools.positiveMod(
         ristretto_tools.positiveMod(z + y, primeP) *

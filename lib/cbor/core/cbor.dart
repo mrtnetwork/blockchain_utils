@@ -1,4 +1,5 @@
 import 'package:blockchain_utils/cbor/exception/exception.dart';
+import 'package:blockchain_utils/cbor/extention/extenton.dart';
 import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/cbor/types/types.dart';
 import 'package:blockchain_utils/cbor/utils/cbor_utils.dart';
@@ -7,7 +8,7 @@ import 'package:blockchain_utils/cbor/utils/cbor_utils.dart';
 /// CBOR objects can hold various data types and optional tags, providing a flexible way
 /// to represent structured data in a compact binary format.
 abstract class CborObject {
-  /// Encode the object's value to its CBOR representation and return it as a List<int>.
+  /// Encode the object's value to its CBOR representation and return it as a `List<int>`.
   List<int> encode();
 
   /// Convert the object's CBOR representation to a hexadecimal string.
@@ -38,13 +39,15 @@ abstract class CborObject {
       return CborIntValue(value);
     } else if (value is double) {
       return CborFloatValue(value);
+    } else if (value is DateTime) {
+      return CborEpochFloatValue(value);
     } else if (value is BigInt) {
       return CborBigIntValue(value);
     } else if (value is String) {
       return CborStringValue(value);
     } else if (value is List<String>) {
       return CborIndefiniteStringValue(value);
-    } else if (value is List<int>) {
+    } else if (value is List<int> && BytesUtils.isValidBytes(value)) {
       return CborBytesValue(value);
     } else if (value is List<List<int>>) {
       return CborDynamicBytesValue(value);
@@ -53,11 +56,15 @@ abstract class CborObject {
         for (final i in value.entries)
           CborObject.fromDynamic(i.key): CborObject.fromDynamic(i.value)
       });
-    } else if (value is List<dynamic>) {
+    } else if (value is List) {
       return CborListValue.fixedLength(
           value.map((e) => CborObject.fromDynamic(e)).toList());
     }
-    throw const CborException("does not supported");
+    throw CborException("cbor encoder not found for type ${value.runtimeType}");
+  }
+
+  static T deserialize<T extends CborObject>(List<int> bytes) {
+    return CborObject.fromCbor(bytes).cast();
   }
 }
 

@@ -1,6 +1,6 @@
 import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
 import 'package:blockchain_utils/bip/substrate/substrate.dart';
-import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/signer/substrate/signers/substrate_ecdsa.dart';
 import 'package:blockchain_utils/signer/substrate/signers/substrate_eddsa.dart';
 import 'package:blockchain_utils/signer/substrate/signers/substrate_sr25519.dart';

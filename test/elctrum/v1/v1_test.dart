@@ -1,12 +1,8 @@
-import 'package:blockchain_utils/bip/address/p2pkh_addr.dart';
-import 'package:blockchain_utils/bip/coin_conf/constant/coins_conf.dart';
-import 'package:blockchain_utils/bip/electrum/electrum_v1.dart';
-import 'package:blockchain_utils/bip/wif/wif.dart';
-import 'package:blockchain_utils/utils/utils.dart';
 import 'package:test/test.dart';
 
 import '../../quick_hex.dart';
 import 'test_vectors.dart';
+import 'package:blockchain_utils/blockchain_utils.dart';
 
 void main() {
   test("electrum v1", () {

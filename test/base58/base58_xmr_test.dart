@@ -2,7 +2,7 @@
 
 import 'package:blockchain_utils/base58/base58_xmr.dart';
 import 'package:blockchain_utils/utils/utils.dart';
-import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:test/test.dart';
 
 var _testVect = [

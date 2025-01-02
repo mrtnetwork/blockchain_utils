@@ -78,7 +78,7 @@ class SegwitBech32Decoder extends Bech32DecoderBase {
   /// - [addr]: The Bech32-encoded SegWit address to decode.
   ///
   /// Returns a tuple containing the SegWit version (witness version) and the
-  /// decoded witness program as a List<int>.
+  /// decoded witness program as a List.
   static Tuple<int, List<int>> decode(String? hrp, String addr) {
     final decoded = Bech32DecoderBase.decodeBech32(
         addr,

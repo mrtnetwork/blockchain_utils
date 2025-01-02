@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 import 'package:blockchain_utils/bip/mnemonic/mnemonic.dart';
 import 'package:blockchain_utils/utils/utils.dart';
-import 'package:blockchain_utils/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 
 /// An abstract class representing different languages for mnemonic phrases.
 /// Classes implementing this interface must provide word lists and language values.
