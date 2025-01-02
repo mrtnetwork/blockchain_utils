@@ -1,7 +1,8 @@
 ## 4.0.0
 
 - Minimum required Dart SDK version updated to 3.3.
-- Ensure compatibility with the latest Dart features and improvements.
+- Implemented an abstract class for chain services.
+- Unified service provider design to support a single provider architecture across all `MRTNETWORK` packages.
 
 ## 3.5.0
 
