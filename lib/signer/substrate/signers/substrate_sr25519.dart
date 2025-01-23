@@ -88,6 +88,32 @@ class SubstrateSr25519Signer implements BaseSubstrateSigner {
     }
     return vrfResult;
   }
+
+  bool vrfVerify(List<int> message, List<int> vrfSign,
+      {List<int>? context, List<int>? extra}) {
+    if (vrfSign.length != _SubstrateSr25519SignerConst.vrfResultLength &&
+        vrfSign.length != SchnorrkelKeyCost.vrfProofLength) {
+      throw ArgumentException(
+          "Invalid VrfSign bytes length. excepted: ${_SubstrateSr25519SignerConst.vrfResultLength}, ${SchnorrkelKeyCost.vrfProofLength} got: ${vrfSign.length} ");
+    }
+    final MerlinTranscript script =
+        _SubstrateSr25519SignerUtils.substrateVrfSignScript(message, context);
+    VRFPreOut output;
+    VRFProof proof;
+    if (vrfSign.length == SchnorrkelKeyCost.vrfProofLength) {
+      output = _signer.vrfInOut(script).toVRFPreOut();
+      proof = VRFProof.fromBytes(vrfSign);
+    } else {
+      output = VRFPreOut(vrfSign.sublist(0, SchnorrkelKeyCost.vrfPreOutLength));
+      proof = VRFProof.fromBytes(
+          vrfSign.sublist(SchnorrkelKeyCost.vrfPreOutLength));
+    }
+    return _signer.publicKey().vrfVerify(
+        _SubstrateSr25519SignerUtils.substrateVrfSignScript(message, context),
+        output,
+        proof,
+        verifyScript: _SubstrateSr25519SignerUtils.vrfScript(extra: extra));
+  }
 }
 
 /// Class representing an Substrate SR25519 Verifier for signature verification.

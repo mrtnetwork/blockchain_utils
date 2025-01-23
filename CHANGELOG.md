@@ -1,3 +1,7 @@
+## 4.0.1
+  
+  - Fix schnorr vrf verification.
+
 ## 4.0.0
 
 - Minimum required Dart SDK version updated to 3.3.

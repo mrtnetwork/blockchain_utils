@@ -606,16 +606,26 @@ class SchnorrkelSecretKey {
       {GenerateRandom? nonceGenerator,
       bool kusamaVRF = true,
       MerlinTranscript? verifyScript}) {
-    final publicHashPoint = publicKey().vrfHash(script);
-    final keyBig = BigintUtils.fromBytes(key(), byteOrder: Endian.little);
-    final mul = publicHashPoint * keyBig;
-    final vrf = VRFInOut._(publicHashPoint.toBytes(), mul.toBytes());
+    final vrf = vrfInOut(script);
     return Tuple(
         vrf,
         dleqProve(vrf,
             nonceGenerator: nonceGenerator,
             kusamaVRF: kusamaVRF,
             verifyScript: verifyScript));
+  }
+
+  /// This function computes the VRF (Verifiable Random Function) input and output
+  /// using the provided `MerlinTranscript` as the cryptographic context.
+  ///
+  /// The process involves hashing a transcript with the public key to generate
+  /// a curve point, multiplying this point with the private key, and returning
+  /// the corresponding VRF input and output.
+  VRFInOut vrfInOut(MerlinTranscript script) {
+    final publicHashPoint = publicKey().vrfHash(script);
+    final keyBig = BigintUtils.fromBytes(key(), byteOrder: Endian.little);
+    final mul = publicHashPoint * keyBig;
+    return VRFInOut._(publicHashPoint.toBytes(), mul.toBytes());
   }
 
   /// Generates a Discrete Logarithm Equality Proof (DLEQ) for a Verifiable Random Function (VRF) output.

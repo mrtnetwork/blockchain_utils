@@ -16,23 +16,26 @@ class LayoutSerializationUtils {
     return const SubstrateScaleCUintEncoder().encode(value.toString());
   }
 
-  static Tuple<int, BigInt> decodeLength(List<int> bytes, {bool sign = false}) {
-    switch (bytes[0] & 0x03) {
+  static Tuple<int, BigInt> decodeLength(List<int> bytes,
+      {bool sign = false, int offset = 0}) {
+    final byte = bytes[offset];
+
+    switch (byte & 0x03) {
       case 0x00:
-        return Tuple(1, BigInt.from(bytes[0]) >> 2);
+        return Tuple(1, BigInt.from(byte) >> 2);
       case 0x01:
-        final val = BigintUtils.fromBytes(bytes.sublist(0, 2),
+        final val = BigintUtils.fromBytes(bytes.sublist(offset, offset + 2),
             sign: sign, byteOrder: Endian.little);
         return Tuple(2, val >> 2);
       case 0x02:
-        final val = BigintUtils.fromBytes(bytes.sublist(0, 4),
+        final val = BigintUtils.fromBytes(bytes.sublist(offset, offset + 4),
             sign: sign, byteOrder: Endian.little);
         return Tuple(4, val >> 2);
       default:
-        final int offset = (bytes[0] >> 2) + 5;
-        final val = BigintUtils.fromBytes(bytes.sublist(1, offset),
+        final int o = (byte >> 2) + 5;
+        final val = BigintUtils.fromBytes(bytes.sublist(offset + 1, offset + o),
             sign: sign, byteOrder: Endian.little);
-        return Tuple(offset, val);
+        return Tuple(o, val);
     }
   }
 

@@ -25,13 +25,14 @@ abstract class BaseSubstrateVerifier {
     }
   }
   factory BaseSubstrateVerifier.fromSubstrate(Substrate substrate) {
+    final publicKey = substrate.publicKey.compressed;
     switch (substrate.coinConf.type) {
       case EllipticCurveTypes.ed25519:
-        return SubstrateED25519Verifier.fromKeyBytes(substrate.priveKey.raw);
+        return SubstrateED25519Verifier.fromKeyBytes(publicKey);
       case EllipticCurveTypes.secp256k1:
-        return SubstrateEcdsaVerifier.fromKeyBytes(substrate.priveKey.raw);
+        return SubstrateEcdsaVerifier.fromKeyBytes(publicKey);
       default:
-        return SubstrateSr25519Verifier.fromKeyBytes(substrate.priveKey.raw);
+        return SubstrateSr25519Verifier.fromKeyBytes(publicKey);
     }
   }
 }
