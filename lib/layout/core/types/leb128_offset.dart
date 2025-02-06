@@ -14,7 +14,7 @@ class LEB128U32OffsetLayout extends ExternalOffsetLayout {
   LEB128U32OffsetLayout({super.property});
 
   /// Internal layout used for encoding and decoding LEB128 integers.
-  final LEB128DIntLayout layout = LEB128DIntLayout(LayoutConst.u32());
+  final LEB128IntLayout layout = LEB128IntLayout(LayoutConst.u32());
 
   /// Indicates that this layout represents a count (such as the length of a vector).
   @override
@@ -43,7 +43,7 @@ class LEB128U32OffsetLayout extends ExternalOffsetLayout {
   /// Returns the number of bytes written after encoding.
   @override
   int encode(int source, LayoutByteWriter writer, {int offset = 0}) {
-    final encodeLength = LEB128DIntLayout.writeVarint(source);
+    final encodeLength = LEB128IntLayout.writeVarint(source);
     writer.setAll(offset, encodeLength);
     return encodeLength.length;
   }

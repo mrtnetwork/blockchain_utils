@@ -5,12 +5,12 @@ import 'package:blockchain_utils/layout/core/core.dart';
 ///
 /// LEB128 is a variable-length encoding method that is efficient for representing small numbers compactly.
 /// This layout is used in serialization frameworks like BCS (Binary Canonical Serialization).
-class LEB128DIntLayout extends Layout<int> {
+class LEB128IntLayout extends Layout<int> {
   /// Constructor for [LEB128IntLayout].
   ///
   /// [layout] is the underlying integer layout used for validation.
   /// [property] is an optional key associated with this layout for structured data handling.
-  LEB128DIntLayout(this.layout, {String? property})
+  LEB128IntLayout(this.layout, {String? property})
       : super(-1, property: property);
 
   /// The integer layout used to validate values before encoding.
@@ -97,7 +97,7 @@ class LEB128DIntLayout extends Layout<int> {
   ///
   /// Useful when reusing the layout structure with different property associations.
   @override
-  LEB128DIntLayout clone({String? newProperty}) {
-    return LEB128DIntLayout(layout, property: newProperty);
+  LEB128IntLayout clone({String? newProperty}) {
+    return LEB128IntLayout(layout, property: newProperty);
   }
 }
