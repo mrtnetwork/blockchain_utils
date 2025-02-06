@@ -1,6 +1,7 @@
 import 'package:blockchain_utils/bip/address/atom_addr.dart';
 import 'package:blockchain_utils/bip/address/encoders.dart';
 import 'package:blockchain_utils/bip/bip/bip32/bip32_const.dart';
+import 'package:blockchain_utils/bip/bip/bip32/bip32_key_data.dart';
 import 'package:blockchain_utils/bip/bip/bip32/bip32_key_net_ver.dart';
 import 'package:blockchain_utils/bip/bip/conf/config/bip_bitcoin_cash_conf.dart';
 import 'package:blockchain_utils/bip/bip/conf/config/bip_coin_conf.dart';
@@ -62,6 +63,31 @@ class Bip44Conf {
     addressEncoder: ([dynamic kwargs]) => AptosAddrEncoder(),
     addrParams: {},
   );
+
+  /// Configuration for Aptos (Secp256k1) SingleKey Address
+  static final BipCoinConfig aptosSingleKeySecp256k1 = BipCoinConfig(
+    coinNames: CoinsConf.aptos.coinName,
+    coinIdx: Slip44.aptos,
+    chainType: ChainType.mainnet,
+    defPath: derPathNonHardenedFull,
+    keyNetVer: bip44BtcKeyNetVerMain,
+    wifNetVer: null,
+    type: EllipticCurveTypes.secp256k1,
+    addressEncoder: ([dynamic kwargs]) => AptosSingleKeySecp256k1AddrEncoder(),
+    addrParams: {},
+  );
+
+  /// Configuration for Aptos (Ed25519) SingleKey Address
+  static final BipCoinConfig aptosSingleKeyEd25519 = BipCoinConfig(
+      coinNames: CoinsConf.aptos.coinName,
+      coinIdx: Slip44.aptos,
+      chainType: ChainType.mainnet,
+      defPath: derPathHardenedFull,
+      keyNetVer: bip44BtcKeyNetVerMain,
+      wifNetVer: null,
+      type: EllipticCurveTypes.ed25519,
+      addressEncoder: ([dynamic kwargs]) => AptosSingleKeyEd25519AddrEncoder(),
+      addrParams: {});
 
   /// Configuration for Avax C-Chain
   static final BipCoinConfig avaxCChain = BipCoinConfig(
@@ -1511,5 +1537,46 @@ class Bip44Conf {
     addrParams: {
       "net_ver": CoinsConf.electraProtocolTestNet.params.p2pkhNetVer!
     },
+  );
+
+  /// Configuration for Sui mainnet (Secp256k1)
+  static final BipCoinConfig suiSecp256k1 = BipCoinConfig(
+    coinNames: CoinsConf.sui.coinName,
+    coinIdx: Slip44.sui,
+    chainType: ChainType.mainnet,
+    defPath: derPathNonHardenedFull,
+    keyNetVer: bip44BtcKeyNetVerMain,
+    wifNetVer: null,
+    purpose: Bip32KeyIndex.hardenIndex(54),
+    type: EllipticCurveTypes.secp256k1,
+    addressEncoder: ([dynamic kwargs]) => SuiSecp256k1AddrEncoder(),
+    addrParams: {},
+  );
+
+  /// Configuration for Sui mainnet (Secp256r1)
+  static final BipCoinConfig suiSecp256r1 = BipCoinConfig(
+    coinNames: CoinsConf.sui.coinName,
+    coinIdx: Slip44.sui,
+    chainType: ChainType.mainnet,
+    defPath: derPathNonHardenedFull,
+    purpose: Bip32KeyIndex.hardenIndex(74),
+    keyNetVer: bip44BtcKeyNetVerMain,
+    wifNetVer: null,
+    type: EllipticCurveTypes.nist256p1Hybrid,
+    addressEncoder: ([dynamic kwargs]) => SuiSecp256r1AddrEncoder(),
+    addrParams: {},
+  );
+
+  /// Configuration for Sui mainnet (Ed25519)
+  static final BipCoinConfig suiEd25519 = BipCoinConfig(
+    coinNames: CoinsConf.sui.coinName,
+    coinIdx: Slip44.sui,
+    chainType: ChainType.mainnet,
+    defPath: derPathHardenedFull,
+    keyNetVer: bip44BtcKeyNetVerMain,
+    wifNetVer: null,
+    type: EllipticCurveTypes.ed25519,
+    addressEncoder: ([dynamic kwargs]) => SuiAddrEncoder(),
+    addrParams: {},
   );
 }

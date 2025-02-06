@@ -378,7 +378,7 @@ class BigintUtils {
   /// from BigInt, int, `List<int>`, and String types. If [v] is a String and
   /// represents a hexadecimal number (prefixed with '0x' or not), it is parsed
   /// accordingly.
-  ///
+  /// allowHex: convert hexadecimal to integer
   /// Parameters:
   /// - [v]: The dynamic value to be parsed into a BigInt.
   ///
@@ -388,39 +388,38 @@ class BigintUtils {
   /// Throws:
   /// - [ArgumentException] if the input value cannot be parsed into a BigInt.
   ///
-  static BigInt parse(dynamic v) {
+  static BigInt parse(dynamic v, {bool allowHex = true}) {
     try {
       if (v is BigInt) return v;
       if (v is int) return BigInt.from(v);
-      if (v is List<int>) {
-        return fromBytes(v, sign: true);
-      }
       if (v is String) {
         BigInt? parse = BigInt.tryParse(v);
-        if (parse == null && StringUtils.ixHexaDecimalNumber(v)) {
+        if (parse == null && allowHex && StringUtils.ixHexaDecimalNumber(v)) {
           parse = BigInt.parse(StringUtils.strip0x(v), radix: 16);
         }
         return parse!;
       }
       // ignore: empty_catches
     } catch (e) {}
-    throw const ArgumentException("invalid input for parse bigint");
+    throw ArgumentException("invalid input for parse bigint",
+        details: {"value": "$v"});
   }
 
   /// Tries to parse a dynamic value [v] into a BigInt, returning null if parsing fails.
   ///
   /// Attempts to parse the dynamic value [v] into a BigInt using the [parse] method.
   /// If successful, returns the resulting BigInt; otherwise, returns null.
-  ///
+  /// allowHex: convert hexadecimal to integer
   /// Parameters:
   /// - [v]: The dynamic value to be parsed into a BigInt.
   ///
   /// Returns:
   /// - A BigInt if parsing is successful; otherwise, returns null.
   ///
-  static BigInt? tryParse(dynamic v) {
+  static BigInt? tryParse(dynamic v, {bool allowHex = true}) {
+    if (v == null) return null;
     try {
-      return parse(v);
+      return parse(v, allowHex: allowHex);
     } on ArgumentException {
       return null;
     }

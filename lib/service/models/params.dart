@@ -32,7 +32,7 @@ abstract class BaseServiceResponse<T> {
   E cast<E extends BaseServiceResponse>() {
     if (this is! E) {
       throw ArgumentException("BaseServiceResponse casting faild.",
-          details: {"excepted": "$T", "type": type.name});
+          details: {"expected": "$T", "type": type.name});
     }
     return this as E;
   }
@@ -69,8 +69,14 @@ abstract class BaseServiceRequestParams {
   final Map<String, String> headers;
   final RequestServiceType type;
   final int requestID;
+  final List<int>? successStatusCodes;
+  final List<int>? errorStatusCodes;
   const BaseServiceRequestParams(
-      {required this.headers, required this.type, required this.requestID});
+      {required this.headers,
+      required this.type,
+      required this.requestID,
+      this.successStatusCodes,
+      this.errorStatusCodes});
   Uri toUri(String uri);
   List<int>? body();
   Map<String, dynamic> toJson();
@@ -97,7 +103,31 @@ abstract class BaseServiceRequestParams {
     throw RPCError(
         message: "Parsing response failed.",
         request: toJson(),
-        details: {"excepted": "$T"});
+        details: {"expected": "$T"});
+  }
+
+  BaseServiceResponse<T> parseResponse<T>(List<int> bodyBytes,
+      [int? statusCode]) {
+    statusCode ??= 200;
+    if (!ServiceProviderUtils.isSuccessStatusCode(statusCode,
+        allowSuccessStatusCodes: successStatusCodes)) {
+      return ServiceErrorResponse(
+          statusCode: statusCode,
+          error: ServiceProviderUtils.findError(
+              object: bodyBytes,
+              statusCode: statusCode,
+              allowStatusCode: errorStatusCodes));
+    }
+    try {
+      T response = ServiceProviderUtils.toResult<T>(bodyBytes);
+      return ServiceSuccessRespose<T>(
+          statusCode: statusCode, response: response);
+    } catch (_) {}
+
+    throw RPCError(
+        message: "Parsing response failed.",
+        request: toJson(),
+        details: {"expected": "$T"});
   }
 }
 

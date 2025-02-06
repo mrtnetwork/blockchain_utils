@@ -39,7 +39,7 @@ final List<Map<String, dynamic>> testVector = [
     "public":
         "38752a8c0a8c3b717c1dca8b9065f9986f8e9a53460c6c1c44fc3ed73c1c4123",
     "address":
-        "0xa923c0b56623e687d1b0dd7bb701c700b1bc084eceb021f8368d557f8240ba9",
+        "0x0a923c0b56623e687d1b0dd7bb701c700b1bc084eceb021f8368d557f8240ba9",
     "decode":
         "0a923c0b56623e687d1b0dd7bb701c700b1bc084eceb021f8368d557f8240ba9",
     "params": {}
@@ -237,7 +237,7 @@ final List<Map<String, dynamic>> testVector = [
     "public":
         "7bb8a4cc00d8d8109630068401a49bad1bc0f5476180a7f6783d45dc3d5b232b",
     "address":
-        "0x9fa67a3ed77b0b19e1ddfb70a8a9c46b3f95a27974033c87844c7337cf40dcb",
+        "0x09fa67a3ed77b0b19e1ddfb70a8a9c46b3f95a27974033c87844c7337cf40dcb",
     "decode":
         "09fa67a3ed77b0b19e1ddfb70a8a9c46b3f95a27974033c87844c7337cf40dcb",
     "params": {}
@@ -399,7 +399,7 @@ final List<Map<String, dynamic>> testVector = [
     "public":
         "0136e0495a98bdaecc3429650273089f14a259404ee807d479d0fb6c988f7e51",
     "address":
-        "0x676a73d2a779e53e67885cf7c69433c509ed1d9fd96537dd8d9d381afb3d657",
+        "0x0676a73d2a779e53e67885cf7c69433c509ed1d9fd96537dd8d9d381afb3d657",
     "decode":
         "0676a73d2a779e53e67885cf7c69433c509ed1d9fd96537dd8d9d381afb3d657",
     "params": {}
@@ -444,7 +444,7 @@ final List<Map<String, dynamic>> testVector = [
     "public":
         "e007c4a308f44e420ebb8ea9a0a919de4fde93c897488c1fa6a7c7fab22feebf",
     "address":
-        "0x7d439eba2cd32a21e0d7b62d95b3d366429872c34ae32e81212e4afcce78f50",
+        "0x07d439eba2cd32a21e0d7b62d95b3d366429872c34ae32e81212e4afcce78f50",
     "decode":
         "07d439eba2cd32a21e0d7b62d95b3d366429872c34ae32e81212e4afcce78f50",
     "params": {}

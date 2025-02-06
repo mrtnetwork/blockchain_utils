@@ -73,6 +73,22 @@ class Bip44Coins extends BipCoins {
   /// Aptos
   static const aptos = Bip44Coins._('aptos');
 
+  /// Aptos Ed25519 SingleKey
+  static const aptosEd25519SingleKey = Bip44Coins._('aptosEd25519SingleKey');
+
+  /// Aptos Secp256k1 SingleKey
+  static const aptosSecp256k1SingleKey =
+      Bip44Coins._('aptosSecp256k1SingleKey');
+
+  /// sui
+  static const sui = Bip44Coins._('sui');
+
+  /// sui Secp256k1 SingleKey
+  static const suiSecp256k1 = Bip44Coins._('suiSecp256k1');
+
+  /// sui Secp256R1 SingleKey
+  static const suiSecp256r1 = Bip44Coins._('suiSecp256r1');
+
   /// Avalanche C-Chain
   static const avaxCChain = Bip44Coins._('avaxCChain');
 
@@ -405,6 +421,11 @@ class Bip44Coins extends BipCoins {
     Bip44Coins.akashNetwork: Bip44Conf.akashNetwork,
     Bip44Coins.algorand: Bip44Conf.algorand,
     Bip44Coins.aptos: Bip44Conf.aptos,
+    Bip44Coins.aptosEd25519SingleKey: Bip44Conf.aptosSingleKeyEd25519,
+    Bip44Coins.aptosSecp256k1SingleKey: Bip44Conf.aptosSingleKeySecp256k1,
+    Bip44Coins.sui: Bip44Conf.suiEd25519,
+    Bip44Coins.suiSecp256k1: Bip44Conf.suiSecp256k1,
+    Bip44Coins.suiSecp256r1: Bip44Conf.suiSecp256r1,
     Bip44Coins.avaxCChain: Bip44Conf.avaxCChain,
     Bip44Coins.avaxPChain: Bip44Conf.avaxPChain,
     Bip44Coins.avaxXChain: Bip44Conf.avaxXChain,

@@ -131,7 +131,7 @@ final List<Map<String, dynamic>> testVector = [
         "account_public":
             "xpub6DXTe9rzS56ezLEDmb2D9FEWPr5NCeueDQDxWv1AquSAWSDA5HtPwKmgZWbLtbvyiB924SNvUTVLJQmM9NYQ6e373zixmdAmugmZtNiGNaX",
         "address":
-            "0x2f961b62e1ff88d77cb469c3a7bb3f9b3c2a7a68426d5240397fae3a4726ec5"
+            "0x02f961b62e1ff88d77cb469c3a7bb3f9b3c2a7a68426d5240397fae3a4726ec5"
       },
       {
         "account":

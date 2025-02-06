@@ -9,3 +9,4 @@ export 'keys/i_keys.dart';
 export 'keys/nist256p1_keys.dart';
 export 'keys/secp256k1_keys_ecdsa.dart';
 export 'keys/sr25519_keys.dart';
+export 'keys/nist256p1_keys_hybrid.dart';

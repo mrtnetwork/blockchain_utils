@@ -99,7 +99,7 @@ class TonAddressUtils {
     final calcedCrc = Crc16.quickIntDigest(addr);
     if (!BytesUtils.bytesEqual(crc, calcedCrc)) {
       throw AddressConverterException("Invalid checksum",
-          details: {"excepted": calcedCrc, "checksum": crc});
+          details: {"expected": calcedCrc, "checksum": crc});
     }
     final List<FriendlyAddressFlags> flags = [];
     // Parse tag
@@ -180,7 +180,7 @@ class TonAddressUtils {
   static List<int> validateAddressHash(List<int> bytes) {
     if (bytes.length != _TonAddressConst.addressHashLength) {
       throw AddressConverterException("Invalid address hash length.", details: {
-        "excepted": _TonAddressConst.addressHashLength,
+        "expected": _TonAddressConst.addressHashLength,
         "length": bytes.length
       });
     }
@@ -196,7 +196,7 @@ class TonAddrDecoder implements BlockchainAddressDecoder {
     final decode = TonAddressUtils.decodeAddress(addr);
     if (workChain != null && workChain != decode.workchain) {
       throw AddressConverterException("Invalid address workchain.",
-          details: {"excepted": workChain, "workchain": decode.workchain});
+          details: {"expected": workChain, "workchain": decode.workchain});
     }
     return decode.hash;
   }
@@ -208,7 +208,7 @@ class TonAddrDecoder implements BlockchainAddressDecoder {
     final decode = TonAddressUtils.decodeAddress(addr);
     if (workChain != null && workChain != decode.workchain) {
       throw AddressConverterException("Invalid address workchain.",
-          details: {"excepted": workChain, "workchain": decode.workchain});
+          details: {"expected": workChain, "workchain": decode.workchain});
     }
     return decode;
   }

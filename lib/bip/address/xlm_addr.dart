@@ -54,7 +54,7 @@ class XlmAddrTypes {
         orElse: () => throw AddressConverterException(
                 "Invalid or unsuported xlm address type.",
                 details: {
-                  "excepted": values.map((e) => e.value).join(", "),
+                  "expected": values.map((e) => e.value).join(", "),
                   "got": tag
                 }));
   }

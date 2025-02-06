@@ -53,6 +53,7 @@
 */
 
 import 'package:blockchain_utils/bip/address/encoder.dart';
+import 'package:blockchain_utils/bip/bip/bip32/bip32_key_data.dart';
 import 'package:blockchain_utils/bip/bip/bip32/bip32_key_net_ver.dart';
 import 'package:blockchain_utils/bip/bip/bip32/bip32_keys.dart';
 import 'package:blockchain_utils/bip/bip/conf/core/coin_conf.dart';
@@ -84,6 +85,8 @@ class BipCoinConfig implements CoinConfig {
   @override
   final EllipticCurveTypes type;
 
+  final Bip32KeyIndex? purpose;
+
   /// Creates a copy of the BipCoinConfig object with optional properties updated.
   BipCoinConfig copy({
     CoinNames? coinNames,
@@ -95,6 +98,7 @@ class BipCoinConfig implements CoinConfig {
     Map<String, dynamic>? addrParams,
     EllipticCurveTypes? type,
     AddrEncoder? addressEncoder,
+    Bip32KeyIndex? purpose,
   }) {
     return BipCoinConfig(
         coinNames: coinNames ?? this.coinNames,
@@ -105,7 +109,8 @@ class BipCoinConfig implements CoinConfig {
         wifNetVer: wifNetVer ?? this.wifNetVer,
         addrParams: addrParams ?? this.addrParams,
         type: type ?? this.type,
-        addressEncoder: addressEncoder ?? this.addressEncoder);
+        addressEncoder: addressEncoder ?? this.addressEncoder,
+        purpose: purpose ?? this.purpose);
   }
 
   /// Constructor for BipCoinConfig.
@@ -119,6 +124,7 @@ class BipCoinConfig implements CoinConfig {
     required this.addrParams,
     required this.type,
     required this.addressEncoder,
+    this.purpose,
   });
 
   /// Get address parameters with optional chain code inclusion.

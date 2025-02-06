@@ -44,7 +44,8 @@ class Bip86 extends Bip44Base {
       throw Bip44DepthError(
           "Current depth (${bip32.depth.toInt()}) is not suitable for deriving purpose");
     }
-    return Bip86._(bip32.childKey(Bip86Const.purpose), coinConf);
+    return Bip86._(
+        bip32.childKey(coinConf.purpose ?? Bip86Const.purpose), coinConf);
   }
 
   /// derive coin

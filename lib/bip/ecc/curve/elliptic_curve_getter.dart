@@ -15,6 +15,7 @@ class EllipticCurveGetter {
       case EllipticCurveTypes.secp256k1:
         return Curves.generatorSecp256k1;
       case EllipticCurveTypes.nist256p1:
+      case EllipticCurveTypes.nist256p1Hybrid:
         return Curves.generator256;
       case EllipticCurveTypes.ed25519:
       case EllipticCurveTypes.ed25519Kholaw:

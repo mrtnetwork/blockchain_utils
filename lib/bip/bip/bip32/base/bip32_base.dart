@@ -197,13 +197,7 @@ abstract class Bip32Base {
       Bip32KeyNetVersions keyNetVer,
       EllipticCurveTypes curve) {
     if (privKey != null) {
-      final prv = Bip32PrivateKey.fromBytes(
-        privKey,
-        keyData,
-        keyNetVer,
-        curve,
-      );
-      return prv;
+      return Bip32PrivateKey.fromBytes(privKey, keyData, keyNetVer, curve);
     }
     return null;
   }
@@ -216,20 +210,11 @@ abstract class Bip32Base {
       Bip32KeyNetVersions keyNetVer,
       EllipticCurveTypes curve) {
     if (privKey != null) {
-      final bip32PrivateKey = Bip32PrivateKey.fromBytes(
-        privKey,
-        keyData,
-        keyNetVer,
-        curve,
-      );
+      final bip32PrivateKey =
+          Bip32PrivateKey.fromBytes(privKey, keyData, keyNetVer, curve);
       return bip32PrivateKey.publicKey;
     } else {
-      return Bip32PublicKey.fromBytes(
-        pubKey!,
-        keyData,
-        keyNetVer,
-        curve,
-      );
+      return Bip32PublicKey.fromBytes(pubKey!, keyData, keyNetVer, curve);
     }
   }
 

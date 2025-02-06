@@ -59,7 +59,7 @@ abstract class KDFParam {
         return KDF2.fromJson(params);
       default:
         throw Web3SecretStorageDefinationV3Exception("Invalid kdf.", details: {
-          "excepted": ["scrypt", "pbkdf2"].join(", "),
+          "expected": ["scrypt", "pbkdf2"].join(", "),
           "kdf": kdf
         });
     }
@@ -75,7 +75,7 @@ class KDF2 extends KDFParam {
     if (salt.length != _SecretStorageConst.saltLength) {
       throw Web3SecretStorageDefinationV3Exception("Invalid salt length.",
           details: {
-            "excepted": _SecretStorageConst.saltLength,
+            "expected": _SecretStorageConst.saltLength,
             "length": salt.length
           });
     }
@@ -84,7 +84,7 @@ class KDF2 extends KDFParam {
   factory KDF2.fromJson(Map<String, dynamic> json) {
     if (json["prf"] != "hmac-sha256") {
       throw Web3SecretStorageDefinationV3Exception("Invalid prf.",
-          details: {"excepted": "hmac-sha256", "prf": json["prf"]});
+          details: {"expected": "hmac-sha256", "prf": json["prf"]});
     }
     return KDF2(
       iterations: json["c"],
@@ -103,7 +103,7 @@ class KDF2 extends KDFParam {
     final String prf = v.value[2].value;
     if (prf != "hmac-sha256") {
       throw Web3SecretStorageDefinationV3Exception("Invalid prf.",
-          details: {"excepted": "hmac-sha256", "prf": prf});
+          details: {"expected": "hmac-sha256", "prf": prf});
     }
     final List<int> salt = v.value[3].value;
     return KDF2(iterations: c, salt: salt, dklen: dklen);
@@ -157,7 +157,7 @@ class KDFScrypt extends KDFParam {
     if (salt.length != _SecretStorageConst.saltLength) {
       throw Web3SecretStorageDefinationV3Exception("Invalid salt length.",
           details: {
-            "excepted": _SecretStorageConst.saltLength,
+            "expected": _SecretStorageConst.saltLength,
             "length": salt.length
           });
     }
@@ -227,7 +227,7 @@ class CryptoParam {
     if (iv.length != _SecretStorageConst.ivLength) {
       throw Web3SecretStorageDefinationV3Exception("Invalid iv length.",
           details: {
-            "excepted": _SecretStorageConst.ivLength,
+            "expected": _SecretStorageConst.ivLength,
             "length": iv.length
           });
     }
@@ -375,7 +375,7 @@ class Web3SecretStorageDefinationV3 {
     }
     if (crypto["cipher"] != "aes-128-ctr") {
       throw Web3SecretStorageDefinationV3Exception("Invalid Cypher.",
-          details: {"excepted": "aes-128-ctr", "cipher": crypto["cipher"]});
+          details: {"expected": "aes-128-ctr", "cipher": crypto["cipher"]});
     }
     final iv = BytesUtils.fromHexString(crypto['cipherparams']['iv']);
     final encryptText = List<int>.from(encryptedPrivateKey);
@@ -419,7 +419,7 @@ class Web3SecretStorageDefinationV3 {
       final String cipher = params.value[0].value;
       if (cipher != "aes-128-ctr") {
         throw Web3SecretStorageDefinationV3Exception("Invalid cypher type.",
-            details: {"excepted": "aes-128-ctr", "cypher": cipher});
+            details: {"expected": "aes-128-ctr", "cypher": cipher});
       }
       final List<int> iv = params.value[1].value;
       final kdf = KDFParam.fromCbor(params.value[3]);

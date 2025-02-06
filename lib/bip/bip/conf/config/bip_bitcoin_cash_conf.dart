@@ -1,4 +1,5 @@
 import 'package:blockchain_utils/bip/address/encoder.dart';
+import 'package:blockchain_utils/bip/bip/bip32/bip32_key_data.dart';
 import 'package:blockchain_utils/bip/bip/bip32/bip32_key_net_ver.dart';
 import 'package:blockchain_utils/bip/bip/conf/config/bip_coin_conf.dart';
 import 'package:blockchain_utils/bip/bip/conf/core/coin_conf.dart';
@@ -28,6 +29,7 @@ class BipBitcoinCashConf extends BipCoinConfig {
     required super.type,
     required super.addressEncoder,
     required super.addrParams,
+    super.purpose,
     this.useLagacyAdder = false,
   });
 
@@ -55,6 +57,7 @@ class BipBitcoinCashConf extends BipCoinConfig {
     EllipticCurveTypes? type,
     AddrEncoder? addressEncoder,
     bool? useLagacyAdder,
+    Bip32KeyIndex? purpose,
   }) {
     return BipBitcoinCashConf(
         coinNames: coinNames ?? this.coinNames,
@@ -66,6 +69,7 @@ class BipBitcoinCashConf extends BipCoinConfig {
         addrParams: addrParams ?? this.addrParams,
         type: type ?? this.type,
         addressEncoder: addressEncoder ?? this.addressEncoder,
-        useLagacyAdder: useLagacyAdder ?? this.useLagacyAdder);
+        useLagacyAdder: useLagacyAdder ?? this.useLagacyAdder,
+        purpose: purpose ?? this.purpose);
   }
 }

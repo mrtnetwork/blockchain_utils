@@ -1,4 +1,4 @@
-import 'package:blockchain_utils/signer/bitcoin_signer.dart';
+import 'package:blockchain_utils/signer/bitcoin/bitcoin_signer.dart';
 import 'package:blockchain_utils/utils/binary/utils.dart';
 import 'package:test/test.dart';
 

@@ -5,6 +5,7 @@ import 'package:blockchain_utils/bip/bip/bip32/khalow/bip32_kholaw_ed25519.dart'
 import 'package:blockchain_utils/bip/bip/bip32/slip10/bip32_slip10_ed25519.dart';
 import 'package:blockchain_utils/bip/bip/bip32/slip10/bip32_slip10_ed25519_blake2b.dart';
 import 'package:blockchain_utils/bip/bip/bip32/slip10/bip32_slip10_nist256p1.dart';
+import 'package:blockchain_utils/bip/bip/bip32/slip10/bip32_slip10_nist256p1_hybrid.dart';
 import 'package:blockchain_utils/bip/bip/bip32/slip10/bip32_slip10_secp256k1.dart';
 import 'package:blockchain_utils/bip/bip/bip44/base/bip44_base_ex.dart';
 import 'package:blockchain_utils/bip/bip/conf/config/bip_coin_conf.dart';
@@ -111,6 +112,9 @@ abstract class Bip44Base {
       case EllipticCurveTypes.nist256p1:
         bip = Bip32Slip10Nist256p1.fromSeed(seedBytes, coin.keyNetVer);
         break;
+      case EllipticCurveTypes.nist256p1Hybrid:
+        bip = Bip32Slip10Nist256p1Hybrid.fromSeed(seedBytes, coin.keyNetVer);
+        break;
       default:
         throw ArgumentException("Bip44 does not supported ${coin.type}");
     }
@@ -145,8 +149,15 @@ abstract class Bip44Base {
       case EllipticCurveTypes.nist256p1:
         bip = Bip32Slip10Nist256p1.fromExtendedKey(extendedKey, coin.keyNetVer);
         break;
+      case EllipticCurveTypes.nist256p1Hybrid:
+        bip = Bip32Slip10Nist256p1Hybrid.fromExtendedKey(
+            extendedKey, coin.keyNetVer);
+        break;
       default:
-        throw const ArgumentException("invaid type");
+        throw ArgumentException("Unsuported curve type.", details: {
+          "coin": coinConf.coinNames.name,
+          "curve": coinConf.type.toString()
+        });
     }
     final validate = _validate(bip, coin);
     bip32 = validate.item1;
@@ -184,7 +195,10 @@ abstract class Bip44Base {
             keyData: keyData, keyNetVer: coin.keyNetVer);
         break;
       default:
-        throw const ArgumentException("invaid type");
+        throw ArgumentException("Unsuported curve type.", details: {
+          "coin": coinConf.coinNames.name,
+          "curve": coinConf.type.toString()
+        });
     }
     final validate = _validate(bip, coin);
     bip32 = validate.item1;
@@ -222,7 +236,10 @@ abstract class Bip44Base {
             keyData: keyData, keyNetVer: coin.keyNetVer);
         break;
       default:
-        throw const ArgumentException("invaid type");
+        throw ArgumentException("Unsuported curve type.", details: {
+          "coin": coinConf.coinNames.name,
+          "curve": coinConf.type.toString()
+        });
     }
     final validate = _validate(bip, coin);
     bip32 = validate.item1;

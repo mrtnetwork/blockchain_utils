@@ -1,6 +1,12 @@
+## 4.1.0
+
+- Added support for Sui addresses using Secp256k1, Secp256r1, Ed25519, and MultiSig.  
+- Implemented support for Sui BIP44 coin derivation.
+
+
 ## 4.0.1
   
-  - Fix schnorr vrf verification.
+- Fix schnorr vrf verification.
 
 ## 4.0.0
 

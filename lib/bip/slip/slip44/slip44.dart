@@ -104,4 +104,7 @@ class Slip44 {
   static const int piNetwork = 314159;
   static const int pepecoin = 3434;
   static const int electraProtocol = 597;
+
+  /// sui
+  static const int sui = 784;
 }

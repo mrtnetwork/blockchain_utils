@@ -44,9 +44,11 @@ class CoinsConf {
   /// Configuration for Aptos
   static const CoinConf aptos = CoinConf(
       coinName: CoinNames("Aptos", "APTOS"),
-      params: CoinParams(
-        addrPrefix: "0x",
-      ));
+      params: CoinParams(addrPrefix: "0x"));
+
+  /// Configuration for SUI
+  static const CoinConf sui = CoinConf(
+      coinName: CoinNames("Sui", "SUI"), params: CoinParams(addrPrefix: "0x"));
 
   /// Configuration for Avax C-Chain
   static const CoinConf avaxCChain = CoinConf(

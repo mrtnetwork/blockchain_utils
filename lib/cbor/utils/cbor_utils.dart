@@ -144,7 +144,7 @@ class CborUtils {
     }
     if (value is! T) {
       throw CborException("decode length casting faild.",
-          details: {"excepted": "$T", "value": value.runtimeType});
+          details: {"expected": "$T", "value": value.runtimeType});
     }
     return _DecodeCborResult(value: value as T, consumed: consumed);
   }

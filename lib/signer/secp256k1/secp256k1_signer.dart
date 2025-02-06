@@ -2,25 +2,25 @@ import 'package:blockchain_utils/crypto/crypto/cdsa/cdsa.dart';
 import 'package:blockchain_utils/crypto/crypto/hash/hash.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
 import 'package:blockchain_utils/exception/exceptions.dart';
-import 'package:blockchain_utils/signer/ecdsa_signing_key.dart';
+import 'package:blockchain_utils/signer/signing_key/ecdsa_signing_key.dart';
 import 'package:blockchain_utils/signer/eth/evm_signer.dart';
 
-/// Cosmos Signer class for cryptographic operations, including signing and verification.
+/// Secp256k1 Signer class for cryptographic operations, including signing and verification.
 ///
-/// The [CosmosSecp256k1Signer] class facilitates the creation of Cosmos signatures and
+/// The [Secp256k1Signer] class facilitates the creation of Ecdsa signatures and
 /// provides methods for signing messages, personal messages, and converting to
 /// verification keys. It uses the ECDSA (Elliptic Curve Digital Signature Algorithm)
 /// for cryptographic operations on the secp256k1 elliptic curve.
-class CosmosSecp256k1Signer {
-  const CosmosSecp256k1Signer._(this._ecdsaSigningKey);
+class Secp256k1Signer {
+  const Secp256k1Signer._(this._ecdsaSigningKey);
 
   final EcdsaSigningKey _ecdsaSigningKey;
 
-  /// Factory method to create a [CosmosSecp256k1Signer] from a byte representation of a private key.
-  factory CosmosSecp256k1Signer.fromKeyBytes(List<int> keyBytes) {
+  /// Factory method to create a [Secp256k1Signer] from a byte representation of a private key.
+  factory Secp256k1Signer.fromKeyBytes(List<int> keyBytes) {
     final signingKey =
         ECDSAPrivateKey.fromBytes(keyBytes, ETHSignerConst.secp256);
-    return CosmosSecp256k1Signer._(EcdsaSigningKey(signingKey));
+    return Secp256k1Signer._(EcdsaSigningKey(signingKey));
   }
 
   List<int> _signEcdsa(List<int> digest, {bool hashMessage = true}) {
@@ -62,32 +62,32 @@ class CosmosSecp256k1Signer {
     return _signEcdsa(digest, hashMessage: hashMessage);
   }
 
-  /// Converts the [CosmosSecp256k1Signer] to a [CosmosVerifier] for verification purposes.
+  /// Converts the [Secp256k1Signer] to a [Secp256k1Verifier] for verification purposes.
   ///
   /// Returns:
-  /// - A [CosmosVerifier] representing the verification key.
-  CosmosVerifier toVerifyKey() {
-    return CosmosVerifier.fromKeyBytes(
+  /// - A [Secp256k1Verifier] representing the verification key.
+  Secp256k1Verifier toVerifyKey() {
+    return Secp256k1Verifier.fromKeyBytes(
         _ecdsaSigningKey.privateKey.publicKey.toBytes());
   }
 }
 
-/// Cosmos Verifier class for cryptographic operations, including signature verification.
+/// Secp256k1 Verifier class for cryptographic operations, including signature verification.
 ///
-/// The [CosmosVerifier] class allows the verification of Cosmos signatures and
+/// The [Secp256k1Verifier] class allows the verification of Secp256k1 signatures and
 /// public keys. It uses the ECDSA (Elliptic Curve Digital Signature Algorithm)
 /// for cryptographic operations on the secp256k1 elliptic curve.
-class CosmosVerifier {
+class Secp256k1Verifier {
   final ECDSAVerifyKey edsaVerifyKey;
 
-  CosmosVerifier._(this.edsaVerifyKey);
+  Secp256k1Verifier._(this.edsaVerifyKey);
 
-  /// Factory method to create a [CosmosVerifier] from a byte representation of a public key.
-  factory CosmosVerifier.fromKeyBytes(List<int> keyBytes) {
+  /// Factory method to create a [Secp256k1Verifier] from a byte representation of a public key.
+  factory Secp256k1Verifier.fromKeyBytes(List<int> keyBytes) {
     final point = ProjectiveECCPoint.fromBytes(
         curve: ETHSignerConst.secp256.curve, data: keyBytes, order: null);
     final verifyingKey = ECDSAPublicKey(ETHSignerConst.secp256, point);
-    return CosmosVerifier._(ECDSAVerifyKey(verifyingKey));
+    return Secp256k1Verifier._(ECDSAVerifyKey(verifyingKey));
   }
   bool _verifyEcdsa(List<int> digest, List<int> sigBytes) {
     final signature =
@@ -95,7 +95,7 @@ class CosmosVerifier {
     return edsaVerifyKey.verify(signature, digest);
   }
 
-  /// Verifies a Cosmos signature against a message digest.
+  /// Verifies a Secp256k1 signature against a message digest.
   ///
   /// Parameters:
   /// - [message]: The message digest.
@@ -103,7 +103,11 @@ class CosmosVerifier {
   ///
   /// Returns:
   /// - True if the signature is valid, false otherwise.
-  bool verify(List<int> message, List<int> signature) {
+  bool verify(List<int> message, List<int> signature,
+      {bool hashMessage = false}) {
+    if (hashMessage) {
+      message = QuickCrypto.sha256Hash(message);
+    }
     return _verifyEcdsa(message, signature);
   }
 }

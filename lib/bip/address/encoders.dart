@@ -5,6 +5,16 @@ library;
 export 'ada/ada_byron_addr.dart'
     show AdaByronIcarusAddrEncoder, AdaByronLegacyAddrEncoder;
 
+/// Export statements for Sui address encoders.
+export 'sui.dart'
+    show
+        SuiAddrEncoder,
+        SuiSecp256k1AddrEncoder,
+        SuiSecp256r1AddrEncoder,
+        SuiAddressUtils,
+        SuiPublicKeyAndWeight,
+        SuiAddrConst;
+
 /// Export statements for Ada Shelley address encoders.
 export 'ada/ada.dart'
     show
@@ -24,7 +34,11 @@ export 'ada/network.dart';
 export 'algo_addr.dart' show AlgoAddrEncoder;
 
 /// Export statement for Aptos address encoder.
-export 'aptos_addr.dart' show AptosAddrEncoder;
+export 'aptos_addr.dart'
+    show
+        AptosAddrEncoder,
+        AptosSingleKeySecp256k1AddrEncoder,
+        AptosSingleKeyEd25519AddrEncoder;
 
 /// Export statement for Atom address encoder.
 export 'atom_addr.dart'

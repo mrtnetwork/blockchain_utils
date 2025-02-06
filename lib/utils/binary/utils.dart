@@ -120,10 +120,10 @@ class BytesUtils {
   /// If [data] is null, returns null. Otherwise, attempts to parse the
   /// hexadecimal string using the [fromHexString] function. If successful,
   /// returns the resulting List of integers; otherwise, returns null.
-  static List<int>? tryFromHexString(String? data) {
+  static List<int>? tryFromHexString(String? data, {bool paddingZero = false}) {
     if (data == null) return null;
     try {
-      return fromHexString(data);
+      return fromHexString(data, paddingZero: paddingZero);
     } catch (e) {
       return null;
     }

@@ -1,3 +1,4 @@
+import 'package:blockchain_utils/bip/bip/bip32/bip32_key_data.dart';
 import 'package:blockchain_utils/bip/bip/bip32/bip32_key_net_ver.dart';
 import 'package:blockchain_utils/bip/bip/conf/config/bip_coin_conf.dart';
 import 'package:blockchain_utils/bip/bip/conf/core/coin_conf.dart';
@@ -12,20 +13,20 @@ class BipLitecoinConf extends BipCoinConfig {
   final bool useAltKeyNetVer;
 
   /// Constructor for BipLitecoinConf.
-  const BipLitecoinConf({
-    required super.coinNames,
-    required super.coinIdx,
-    required super.chainType,
-    required super.defPath,
-    required super.keyNetVer,
-    required super.wifNetVer,
-    required super.type,
-    required super.addressEncoder,
-    required super.addrParams,
-    required this.altKeyNetVer,
-    this.useAltKeyNetVer = false,
-    this.useDeprAddress = false,
-  });
+  const BipLitecoinConf(
+      {required super.coinNames,
+      required super.coinIdx,
+      required super.chainType,
+      required super.defPath,
+      required super.keyNetVer,
+      required super.wifNetVer,
+      required super.type,
+      required super.addressEncoder,
+      required super.addrParams,
+      required this.altKeyNetVer,
+      this.useAltKeyNetVer = false,
+      this.useDeprAddress = false,
+      super.purpose});
 
   /// Overrides the 'addrParams' getter to return the appropriate address parameters
   /// based on the 'useDeprAddress' flag.
@@ -59,6 +60,7 @@ class BipLitecoinConf extends BipCoinConfig {
     AddrEncoder? addressEncoder,
     bool? useAltKeyNetVer,
     bool? useDeprAddress,
+    Bip32KeyIndex? purpose,
   }) {
     return BipLitecoinConf(
         coinNames: coinNames ?? this.coinNames,
@@ -72,6 +74,7 @@ class BipLitecoinConf extends BipCoinConfig {
         addressEncoder: addressEncoder ?? this.addressEncoder,
         altKeyNetVer: altKeyNetVer ?? this.altKeyNetVer,
         useAltKeyNetVer: useAltKeyNetVer ?? this.useAltKeyNetVer,
-        useDeprAddress: useDeprAddress ?? this.useDeprAddress);
+        useDeprAddress: useDeprAddress ?? this.useDeprAddress,
+        purpose: purpose ?? this.purpose);
   }
 }

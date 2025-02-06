@@ -129,7 +129,7 @@ class VRFPreOut {
   factory VRFPreOut(List<int> bytes) {
     if (bytes.length != SchnorrkelKeyCost.vrfPreOutLength) {
       throw ArgumentException(
-          "Invalid VRFPreOut bytes length. excepted: ${SchnorrkelKeyCost.vrfPreOutLength} got: ${bytes.length}");
+          "Invalid VRFPreOut bytes length. expected: ${SchnorrkelKeyCost.vrfPreOutLength} got: ${bytes.length}");
     }
     return VRFPreOut._(output: bytes);
   }

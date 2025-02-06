@@ -31,7 +31,7 @@ class _SubstrateAddrUtils {
   static String encode(List<int> pubKeyBytes, int ss58Format) {
     if (pubKeyBytes.length != encodeBytesLength) {
       throw AddressConverterException(
-          "Invalid pubkey length (excepted $encodeBytesLength, got ${pubKeyBytes.length}) ");
+          "Invalid pubkey length (expected $encodeBytesLength, got ${pubKeyBytes.length}) ");
     }
     return SS58Encoder.encode(pubKeyBytes, ss58Format);
   }

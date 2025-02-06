@@ -220,6 +220,10 @@ class LayoutConst {
   static BigIntLayout u128({String? property}) =>
       BigIntLayout(16, property: property);
 
+  /// [BigIntLayout] (little-endian unsigned int layouts) interpreted as Numbers.
+  static BigIntLayout u256({String? property}) =>
+      BigIntLayout(32, property: property);
+
   /// [BigIntLayout] (little-endian signed int layouts) interpreted as Numbers.
   static BigIntLayout i128({String? property}) =>
       BigIntLayout(16, sign: true, property: property);
@@ -655,4 +659,80 @@ class LayoutConst {
 
   static CompactLayout compact(Layout layout, {String? property}) =>
       CompactLayout(layout, property: property);
+
+  /// Serializes and deserializes raw bytes with a length prefix encoded as LEB128.
+  ///
+  /// The structure is: [...LEB128, data bytes...]
+  /// [property] is an optional key to map the serialized data.
+  static CustomLayout<Map<String, dynamic>, List<int>> bcsBytes(
+      {String? property}) {
+    return bcsVector(LayoutConst.u8(), property: property);
+  }
+
+  /// Serializes and deserializes UTF-8 encoded strings.
+  ///
+  /// Internally uses [bcsBytes] to handle the byte representation of the string.
+  /// - [decoder]: Converts bytes back to a UTF-8 string.
+  /// - [encoder]: Converts a string to UTF-8 bytes.
+  /// [property] is optional for mapping the data.
+  static Layout<String> bcsString({String? property}) {
+    return CustomLayout<List<int>, String>(
+        layout: bcsBytes(),
+        decoder: (bytes) {
+          return StringUtils.decode(bytes);
+        },
+        encoder: (src) {
+          return StringUtils.encode(src);
+        },
+        property: property);
+  }
+
+  /// Serializes and deserializes a vector (list) of elements using the provided [elementLayout].
+  ///
+  /// The vector layout includes:
+  /// - Length prefix (using [bcsOffset]).
+  /// - Serialized list of elements (`values`).
+  ///
+  /// [T] is the type of elements in the list.
+  /// [property] is optional for nested mapping.
+  static CustomLayout<Map<String, dynamic>, List<T>> bcsVector<T>(
+      Layout<T> elementLayout,
+      {String? property}) {
+    final layout = LayoutConst.struct(
+        [LayoutConst.seq(elementLayout, bcsOffset(), property: 'values')]);
+    return CustomLayout<Map<String, dynamic>, List<T>>(
+        layout: layout,
+        encoder: (data) => {"values": data},
+        decoder: (data) => (data["values"] as List).cast<T>(),
+        property: property);
+  }
+
+  /// Creates an offset layout using LEB128 encoding (used for compact integer representation).
+  ///
+  /// This is commonly used to define offsets or lengths in BCS data structures.
+  static LEB128U32OffsetLayout bcsOffset({String? property}) =>
+      LEB128U32OffsetLayout(property: property);
+
+  /// Handles lazy serialization and deserialization of enums (variant types).
+  ///
+  /// [variants] - A list of variants defining the enum structure.
+  /// [property] - Optional mapping key for nested structures.
+  static CustomLayout<Map<String, dynamic>, Map<String, dynamic>> bcsLazyEnum(
+    List<LazyVariantModel> variants, {
+    String? property,
+  }) {
+    final unionLayout = LazyUnion.offset(bcsOffset());
+    variants
+        .asMap()
+        .forEach((index, variant) => unionLayout.addVariant(variant));
+    return CustomLayout<Map<String, dynamic>, Map<String, dynamic>>(
+        layout: unionLayout,
+        decoder: (value) {
+          return {"key": value.keys.first, "value": value.values.first};
+        },
+        encoder: (src) {
+          return src;
+        },
+        property: property);
+  }
 }

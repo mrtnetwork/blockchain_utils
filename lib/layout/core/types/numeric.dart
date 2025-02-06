@@ -17,8 +17,6 @@ abstract class ExternalLayout extends Layout<int> {
 abstract class ExternalOffsetLayout extends ExternalLayout {
   const ExternalOffsetLayout({String? property})
       : super(-1, property: property);
-  LayoutDecodeResult<int> getLenAndSpan(LayoutByteReader bytes,
-      {int offset = 0});
 }
 
 /// Represents a layout that greedily consumes bytes until the end.
@@ -125,6 +123,7 @@ class IntegerLayout extends BaseIntiger<int> {
   IntegerLayout(int span,
       {this.sign = false, this.order = Endian.little, String? property})
       : super(span, property: property) {
+    assert(!span.isNegative, "Invalid integer layout span");
     if (6 < this.span) {
       throw LayoutException("span must not exceed 6 bytes", details: {
         "property": property,

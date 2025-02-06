@@ -3,6 +3,7 @@ import 'package:blockchain_utils/bip/ecc/keys/ed25519_blake2b_keys.dart';
 import 'package:blockchain_utils/bip/ecc/keys/ed25519_kholaw_keys.dart';
 import 'package:blockchain_utils/bip/ecc/keys/ed25519_monero_keys.dart';
 import 'package:blockchain_utils/bip/ecc/keys/nist256p1_keys.dart';
+import 'package:blockchain_utils/bip/ecc/keys/nist256p1_keys_hybrid.dart';
 import 'package:blockchain_utils/bip/ecc/keys/secp256k1_keys_ecdsa.dart';
 import 'package:blockchain_utils/bip/ecc/keys/sr25519_keys.dart';
 import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
@@ -16,6 +17,8 @@ abstract class IPublicKey {
     switch (type) {
       case EllipticCurveTypes.nist256p1:
         return Nist256p1PublicKey.fromBytes(keybytes);
+      case EllipticCurveTypes.nist256p1Hybrid:
+        return Nist256p1HybridPublicKey.fromBytes(keybytes);
       case EllipticCurveTypes.sr25519:
         return Sr25519PublicKey.fromBytes(keybytes);
       case EllipticCurveTypes.ed25519:
@@ -39,6 +42,8 @@ abstract class IPublicKey {
     switch (type) {
       case EllipticCurveTypes.nist256p1:
         return Nist256p1PublicKey.isValidBytes(keyBytes);
+      case EllipticCurveTypes.nist256p1Hybrid:
+        return Nist256p1HybridPublicKey.isValidBytes(keyBytes);
       case EllipticCurveTypes.sr25519:
         return Sr25519PublicKey.isValidBytes(keyBytes);
       case EllipticCurveTypes.ed25519:
@@ -86,6 +91,8 @@ abstract class IPrivateKey {
     switch (type) {
       case EllipticCurveTypes.nist256p1:
         return Nist256p1PrivateKey.fromBytes(keyBytes);
+      case EllipticCurveTypes.nist256p1Hybrid:
+        return Nist256p1HybridPrivateKey.fromBytes(keyBytes);
       case EllipticCurveTypes.ed25519:
         return Ed25519PrivateKey.fromBytes(keyBytes);
       case EllipticCurveTypes.ed25519Kholaw:
@@ -120,6 +127,8 @@ abstract class IPrivateKey {
     switch (type) {
       case EllipticCurveTypes.nist256p1:
         return Nist256p1PrivateKey.isValidBytes(keyBytes);
+      case EllipticCurveTypes.nist256p1Hybrid:
+        return Nist256p1HybridPrivateKey.isValidBytes(keyBytes);
       case EllipticCurveTypes.ed25519:
         return Ed25519PrivateKey.isValidBytes(keyBytes);
       case EllipticCurveTypes.ed25519Kholaw:

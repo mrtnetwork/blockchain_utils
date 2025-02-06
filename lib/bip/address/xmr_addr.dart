@@ -154,7 +154,7 @@ class _XmrAddrUtils {
       if (netVerBytes.length != XmrAddrConst.prefixLength ||
           netVerBytes[0] != netVersion) {
         throw AddressConverterException("Invalid address prefix.",
-            details: {"excepted": netVersion, "network_version": netVersion});
+            details: {"expected": netVersion, "network_version": netVersion});
       }
     }
 
@@ -184,7 +184,7 @@ class _XmrAddrUtils {
         if (paymentIdBytes != null &&
             !BytesUtils.bytesEqual(paymentIdBytes, paymentBytes)) {
           throw AddressConverterException('Invalid payment ID.', details: {
-            "excepted": BytesUtils.toHexString(paymentIdBytes),
+            "expected": BytesUtils.toHexString(paymentIdBytes),
             "payment_id": BytesUtils.toHexString(paymentBytes)
           });
         }
@@ -194,7 +194,7 @@ class _XmrAddrUtils {
             payloadBytesWithoutPrefix, Ed25519KeysConst.pubKeyByteLen * 2);
         if (paymentIdBytes != null) {
           throw AddressConverterException('Invalid address type.', details: {
-            "excepted": XmrAddressType.integrated.toString(),
+            "expected": XmrAddressType.integrated.toString(),
             "type": addrType.toString()
           });
         }

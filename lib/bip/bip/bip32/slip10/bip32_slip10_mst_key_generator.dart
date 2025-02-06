@@ -166,9 +166,8 @@ class Bip32Slip10Secp256k1MstKeyGenerator extends IBip32MstKeyGenerator {
   @override
   Tuple<List<int>, List<int>> generateFromSeed(List<int> seedBytes) {
     return _Bip32Slip10MstKeyGenerator.generateFromSeed(
-      seedBytes,
-      List<int>.from(Bip32Slip10MstKeyGeneratorConst.hmacKeySecp256k1Bytes),
-      EllipticCurveTypes.secp256k1,
-    );
+        seedBytes,
+        List<int>.from(Bip32Slip10MstKeyGeneratorConst.hmacKeySecp256k1Bytes),
+        EllipticCurveTypes.secp256k1);
   }
 }

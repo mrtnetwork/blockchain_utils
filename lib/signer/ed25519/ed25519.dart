@@ -3,8 +3,8 @@ import 'package:blockchain_utils/crypto/crypto/crypto.dart';
 import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/utils/utils.dart';
 
-/// Constants used by the Solana signer for cryptographic operations.
-class SolanaSignerConst {
+/// Constants used by the Ed25519 signer for cryptographic operations.
+class Ed25519SignerConst {
   /// The ED25519 elliptic curve generator point.
   static final EDPoint ed25519Generator = Curves.generatorED25519;
 
@@ -12,22 +12,22 @@ class SolanaSignerConst {
       BigintUtils.orderLen(ed25519Generator.curve.p) * 2;
 }
 
-/// Class for signing Solana transactions using either EDDSA algorithm.
-class SolanaSigner {
-  /// Constructs a new SolanaSigner instance with the provided signing keys.
+/// Class for signing Ed25519.
+class Ed25519Signer {
+  /// Constructs a new Ed25519Signer instance with the provided signing keys.
   ///
   /// This constructor is marked as private and takes an EDDSA private key [_signingKey]
-  const SolanaSigner._(this._signingKey);
+  const Ed25519Signer._(this._signingKey);
 
   /// The EDDSA private key for signing.
   final EDDSAPrivateKey _signingKey;
 
-  /// Factory method to create an SolanaSigner instance from key bytes.
-  factory SolanaSigner.fromKeyBytes(List<int> keyBytes) {
+  /// Factory method to create an Ed25519Signer instance from key bytes.
+  factory Ed25519Signer.fromKeyBytes(List<int> keyBytes) {
     // Create an EDDSA private key from the key bytes using the ED25519 curve.
     final signingKey = EDDSAPrivateKey(
-        SolanaSignerConst.ed25519Generator, keyBytes, () => SHA512());
-    return SolanaSigner._(signingKey);
+        Ed25519SignerConst.ed25519Generator, keyBytes, () => SHA512());
+    return Ed25519Signer._(signingKey);
   }
 
   /// Signs the provided digest using the ED25519 algorithm.
@@ -60,30 +60,30 @@ class SolanaSigner {
     return _signEdward(digest);
   }
 
-  /// Returns an SolanaVerifier instance based on the available signing key type.
+  /// Returns an Ed25519Verifier instance based on the available signing key type.
   ///
-  /// This method constructs and returns an SolanaVerifier instance for signature verification.
+  /// This method constructs and returns an Ed25519Verifier instance for signature verification.
   ///
-  /// returns An SolanaVerifier instance based on the available signing key type.
-  SolanaVerifier toVerifyKey() {
+  /// returns An Ed25519Verifier instance based on the available signing key type.
+  Ed25519Verifier toVerifyKey() {
     final keyBytes = _signingKey.publicKey.toBytes();
-    return SolanaVerifier.fromKeyBytes(keyBytes);
+    return Ed25519Verifier.fromKeyBytes(keyBytes);
   }
 }
 
-/// Class representing an Solana Verifier for signature verification.
-class SolanaVerifier {
+/// Class representing an Ed25519Verifier for signature verification.
+class Ed25519Verifier {
   final EDDSAPublicKey _eddsaPublicKey;
 
-  /// Private constructor to create an SolanaVerifier instance.
-  const SolanaVerifier._(this._eddsaPublicKey);
+  /// Private constructor to create an Ed25519Verifier instance.
+  const Ed25519Verifier._(this._eddsaPublicKey);
 
-  /// Factory method to create an SolanaVerifier instance from key bytes.
-  factory SolanaVerifier.fromKeyBytes(List<int> keyBytes) {
+  /// Factory method to create an Ed25519Verifier instance from key bytes.
+  factory Ed25519Verifier.fromKeyBytes(List<int> keyBytes) {
     final pub = Ed25519PublicKey.fromBytes(keyBytes);
     final verifyingKey = EDDSAPublicKey(
-        SolanaSignerConst.ed25519Generator, pub.compressed.sublist(1));
-    return SolanaVerifier._(verifyingKey);
+        Ed25519SignerConst.ed25519Generator, pub.compressed.sublist(1));
+    return Ed25519Verifier._(verifyingKey);
   }
 
   /// Verifies the EDDSA signature for the provided digest.

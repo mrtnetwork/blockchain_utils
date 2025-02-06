@@ -2,7 +2,7 @@ import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/crypto/crypto/crypto.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
 import 'package:blockchain_utils/exception/exceptions.dart';
-import 'package:blockchain_utils/signer/ecdsa_signing_key.dart';
+import 'package:blockchain_utils/signer/signing_key/ecdsa_signing_key.dart';
 import 'package:blockchain_utils/signer/eth/eth_signature.dart';
 import 'package:blockchain_utils/signer/eth/evm_signer.dart';
 import 'package:blockchain_utils/signer/substrate/core/signer.dart';
@@ -223,7 +223,7 @@ class SubstrateEcdsaVerifier implements BaseSubstrateVerifier {
       {List<int>? context, List<int>? extra}) {
     if (vrfSign.length != _SubstrateEcdsaSignerCons.vrfLength) {
       throw ArgumentException(
-          "Invalid vrf length. excepted: ${_SubstrateEcdsaSignerCons.vrfLength} got: ${vrfSign.length}");
+          "Invalid vrf length. expected: ${_SubstrateEcdsaSignerCons.vrfLength} got: ${vrfSign.length}");
     }
     final List<int> signature =
         vrfSign.sublist(QuickCrypto.blake2b256DigestSize);

@@ -169,7 +169,7 @@ class StringUtils {
     final decode = jsonDecode(data, reviver: reviver);
     if (decode is! T) {
       throw ArgumentException(
-          "Invalid json casting. excepted: $T got: ${decode.runtimeType}");
+          "Invalid json casting. expected: $T got: ${decode.runtimeType}");
     }
     return decode;
   }

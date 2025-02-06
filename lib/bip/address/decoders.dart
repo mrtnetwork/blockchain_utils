@@ -4,6 +4,10 @@ library;
 /// Export statement for Ada Byron address decoder.
 export 'ada/ada_byron_addr.dart' show AdaByronAddrDecoder;
 
+/// Export statement for Sui address decoder.
+export 'sui.dart'
+    show SuiAddrEncoder, SuiAddressUtils, SuiPublicKeyAndWeight, SuiAddrConst;
+
 /// Export statements for Ada Shelley address decoders.
 export 'ada/ada.dart'
     show

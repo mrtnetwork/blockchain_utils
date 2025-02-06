@@ -19,4 +19,5 @@ export 'types/bit_sequence.dart';
 export 'types/xdr_bytes.dart';
 export 'types/lazy_union.dart';
 export 'types/lazy_struct.dart';
-// export 'types/';
+export 'types/leb128.dart';
+export 'types/leb128_offset.dart';

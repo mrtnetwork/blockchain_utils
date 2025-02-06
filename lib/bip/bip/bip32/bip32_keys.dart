@@ -77,17 +77,10 @@ class Bip32PublicKey extends Bip32KeyBase {
   }
 
   /// Creates a [Bip32PublicKey] from a byte representation, key data, key network versions, and curve type.
-  static Bip32PublicKey fromBytes(
-    List<int> keyBytes,
-    Bip32KeyData keyData,
-    Bip32KeyNetVersions keyNetVer,
-    EllipticCurveTypes curveType,
-  ) {
+  static Bip32PublicKey fromBytes(List<int> keyBytes, Bip32KeyData keyData,
+      Bip32KeyNetVersions keyNetVer, EllipticCurveTypes curveType) {
     return Bip32PublicKey(
-      IPublicKey.fromBytes(keyBytes, curveType),
-      keyData,
-      keyNetVer,
-    );
+        IPublicKey.fromBytes(keyBytes, curveType), keyData, keyNetVer);
   }
 
   @override
@@ -122,11 +115,7 @@ class Bip32PrivateKey extends Bip32KeyBase {
 
   /// Gets the corresponding public key derived from this private key.
   Bip32PublicKey get publicKey {
-    return Bip32PublicKey(
-      privKey.publicKey,
-      keyData,
-      keyNetVer,
-    );
+    return Bip32PublicKey(privKey.publicKey, keyData, keyNetVer);
   }
 
   /// Gets the extended key of private key.
@@ -136,12 +125,8 @@ class Bip32PrivateKey extends Bip32KeyBase {
   }
 
   /// Creates a Bip32PrivateKey from a byte representation, key data, key network versions, and curve type.
-  static Bip32PrivateKey fromBytes(
-    List<int> keyBytes,
-    Bip32KeyData keyData,
-    Bip32KeyNetVersions keyNetVer,
-    EllipticCurveTypes curveType,
-  ) {
+  static Bip32PrivateKey fromBytes(List<int> keyBytes, Bip32KeyData keyData,
+      Bip32KeyNetVersions keyNetVer, EllipticCurveTypes curveType) {
     return Bip32PrivateKey(
         IPrivateKey.fromBytes(keyBytes, curveType), keyData, keyNetVer);
   }

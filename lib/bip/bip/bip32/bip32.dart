@@ -39,6 +39,8 @@ export 'slip10/bip32_slip10_nist256p1.dart';
 /// Export the Slip-10 BIP-32 implementation for SECG P-256k1.
 export 'slip10/bip32_slip10_secp256k1.dart';
 
+export 'slip10/bip32_slip10_nist256p1_hybrid.dart';
+
 /// Export statements for general BIP-32 components:
 /// Export BIP-32 path utilities for working with paths.
 export 'bip32_path.dart';

@@ -2,7 +2,7 @@ import 'package:blockchain_utils/crypto/crypto/cdsa/cdsa.dart';
 import 'package:blockchain_utils/crypto/crypto/hash/hash.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
 import 'package:blockchain_utils/exception/exceptions.dart';
-import 'package:blockchain_utils/signer/ecdsa_signing_key.dart';
+import 'package:blockchain_utils/signer/signing_key/ecdsa_signing_key.dart';
 
 class _NistSignerConst {
   /// The projective ECC point representing the secp256r1 elliptic curve.
@@ -18,22 +18,22 @@ class _NistSignerConst {
   static final BigInt orderHalf = curveOrder >> 1;
 }
 
-/// Cosmos nist256p1 Signer class for cryptographic operations, including signing and verification.
+/// Nist256p1Signer Signer class for cryptographic operations, including signing and verification.
 ///
-/// The [CosmosNist256p1Signer] class facilitates the creation of Cosmos signatures and
+/// The [Nist256p1Signer] class facilitates the creation of Nist256p1 signatures and
 /// provides methods for signing messages, personal messages, and converting to
 /// verification keys. It uses the ECDSA (Elliptic Curve Digital Signature Algorithm)
 /// for cryptographic operations on the secp256R1 elliptic curve.
-class CosmosNist256p1Signer {
-  const CosmosNist256p1Signer._(this._ecdsaSigningKey);
+class Nist256p1Signer {
+  const Nist256p1Signer._(this._ecdsaSigningKey);
 
   final EcdsaSigningKey _ecdsaSigningKey;
 
-  /// Factory method to create a [CosmosNist256p1Signer] from a byte representation of a private key.
-  factory CosmosNist256p1Signer.fromKeyBytes(List<int> keyBytes) {
+  /// Factory method to create a [Nist256p1Signer] from a byte representation of a private key.
+  factory Nist256p1Signer.fromKeyBytes(List<int> keyBytes) {
     final signingKey =
         ECDSAPrivateKey.fromBytes(keyBytes, _NistSignerConst.nist256256);
-    return CosmosNist256p1Signer._(EcdsaSigningKey(signingKey));
+    return Nist256p1Signer._(EcdsaSigningKey(signingKey));
   }
 
   List<int> _signEcdsa(List<int> digest, {bool hashMessage = true}) {
@@ -76,32 +76,32 @@ class CosmosNist256p1Signer {
     return _signEcdsa(digest, hashMessage: hashMessage);
   }
 
-  /// Converts the [CosmosNist256p1Signer] to a [CosmosNist256p1Verifier] for verification purposes.
+  /// Converts the [Nist256p1Signer] to a [Nist256p1Verifier] for verification purposes.
   ///
   /// Returns:
-  /// - A [CosmosNist256p1Verifier] representing the verification key.
-  CosmosNist256p1Verifier toVerifyKey() {
-    return CosmosNist256p1Verifier.fromKeyBytes(
+  /// - A [Nist256p1Verifier] representing the verification key.
+  Nist256p1Verifier toVerifyKey() {
+    return Nist256p1Verifier.fromKeyBytes(
         _ecdsaSigningKey.privateKey.publicKey.toBytes());
   }
 }
 
-/// [CosmosNist256p1Verifier] class for cryptographic operations, including signature verification.
+/// [Nist256p1Verifier] class for cryptographic operations, including signature verification.
 ///
-/// The [CosmosNist256p1Verifier] class allows the verification of Cosmos signatures and
+/// The [Nist256p1Verifier] class allows the verification of Nist256p1 signatures and
 /// public keys. It uses the ECDSA (Elliptic Curve Digital Signature Algorithm)
 /// for cryptographic operations on the secp256r1 elliptic curve.
-class CosmosNist256p1Verifier {
+class Nist256p1Verifier {
   final ECDSAVerifyKey edsaVerifyKey;
 
-  CosmosNist256p1Verifier._(this.edsaVerifyKey);
+  Nist256p1Verifier._(this.edsaVerifyKey);
 
-  /// Factory method to create a [CosmosNist256p1Verifier] from a byte representation of a public key.
-  factory CosmosNist256p1Verifier.fromKeyBytes(List<int> keyBytes) {
+  /// Factory method to create a [Nist256p1Verifier] from a byte representation of a public key.
+  factory Nist256p1Verifier.fromKeyBytes(List<int> keyBytes) {
     final point = ProjectiveECCPoint.fromBytes(
         curve: _NistSignerConst.nist256256.curve, data: keyBytes, order: null);
     final verifyingKey = ECDSAPublicKey(_NistSignerConst.nist256256, point);
-    return CosmosNist256p1Verifier._(ECDSAVerifyKey(verifyingKey));
+    return Nist256p1Verifier._(ECDSAVerifyKey(verifyingKey));
   }
   bool _verifyEcdsa(List<int> digest, List<int> sigBytes) {
     final signature =
@@ -109,7 +109,7 @@ class CosmosNist256p1Verifier {
     return edsaVerifyKey.verify(signature, digest);
   }
 
-  /// Verifies a Cosmos signature against a message digest.
+  /// Verifies a Nist256p1 signature against a message digest.
   ///
   /// Parameters:
   /// - [message]: The message digest.
@@ -117,7 +117,11 @@ class CosmosNist256p1Verifier {
   ///
   /// Returns:
   /// - True if the signature is valid, false otherwise.
-  bool verify(List<int> message, List<int> signature) {
+  bool verify(List<int> message, List<int> signature,
+      {bool hashMessage = false}) {
+    if (hashMessage) {
+      message = QuickCrypto.sha256Hash(message);
+    }
     return _verifyEcdsa(message, signature);
   }
 }

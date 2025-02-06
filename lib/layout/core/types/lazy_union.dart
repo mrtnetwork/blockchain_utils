@@ -27,6 +27,12 @@ class LazyUnion extends Layout<Map<String, dynamic>> {
         span: -1,
         property: property);
   }
+  factory LazyUnion.offset(ExternalOffsetLayout discr, {String? property}) {
+    return LazyUnion._(
+        discriminator: UnionLayoutDiscriminatorLayout(discr),
+        span: -1,
+        property: property);
+  }
 
   @override
   int getSpan(LayoutByteReader? bytes,
@@ -141,7 +147,12 @@ class LazyVariantLayout extends Layout<Map<String, dynamic>> {
     if (!this.span.isNegative) {
       return this.span;
     }
-    final int contentOffset = union.discriminator.layout.span;
+    int contentOffset = union.discriminator.layout.span;
+    if (contentOffset.isNegative) {
+      contentOffset = union.discriminator.layout
+          .getSpan(bytes, offset: offset, source: layout.index);
+    }
+    assert(contentOffset >= 0, "span cannot be negative.");
 
     int span = 0;
     span = layout.layout(property: layout.property).getSpan(bytes,
@@ -158,7 +169,12 @@ class LazyVariantLayout extends Layout<Map<String, dynamic>> {
           details: {"property": property});
     }
 
-    final int contentOffset = union.discriminator.layout.span;
+    int contentOffset = union.discriminator.layout.span;
+    if (contentOffset.isNegative) {
+      contentOffset =
+          union.discriminator.decode(bytes, offset: offset).consumed;
+    }
+    assert(contentOffset >= 0, "span cannot be negative.");
 
     final Map<String, dynamic> dest = {};
     int consumed = 0;
@@ -174,7 +190,12 @@ class LazyVariantLayout extends Layout<Map<String, dynamic>> {
   @override
   int encode(Map<String, dynamic> source, LayoutByteWriter writer,
       {int offset = 0}) {
-    final int contentOffset = union.discriminator.layout.span;
+    int contentOffset = union.discriminator.layout.span;
+    if (contentOffset.isNegative) {
+      contentOffset =
+          union.discriminator.encode(this.layout.index, writer, offset: offset);
+    }
+    assert(contentOffset >= 0, "span cannot be negative.");
     if (!source.containsKey(property)) {
       throw LayoutException("variant lacks property",
           details: {"property": property});

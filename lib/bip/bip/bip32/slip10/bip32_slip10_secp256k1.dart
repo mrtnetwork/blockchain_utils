@@ -112,7 +112,6 @@ class Bip32Slip10Secp256k1 extends Bip32Base {
       assert(!isPublicOnly);
       final result =
           keyDerivator.ckdPriv(privateKey, publicKey, index, curveType);
-
       return Bip32Slip10Secp256k1._(
           keyData: Bip32KeyData(
             chainCode: Bip32ChainCode(result.item2),

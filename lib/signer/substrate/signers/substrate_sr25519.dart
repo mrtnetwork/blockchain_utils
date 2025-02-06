@@ -94,7 +94,7 @@ class SubstrateSr25519Signer implements BaseSubstrateSigner {
     if (vrfSign.length != _SubstrateSr25519SignerConst.vrfResultLength &&
         vrfSign.length != SchnorrkelKeyCost.vrfProofLength) {
       throw ArgumentException(
-          "Invalid VrfSign bytes length. excepted: ${_SubstrateSr25519SignerConst.vrfResultLength}, ${SchnorrkelKeyCost.vrfProofLength} got: ${vrfSign.length} ");
+          "Invalid VrfSign bytes length. expected: ${_SubstrateSr25519SignerConst.vrfResultLength}, ${SchnorrkelKeyCost.vrfProofLength} got: ${vrfSign.length} ");
     }
     final MerlinTranscript script =
         _SubstrateSr25519SignerUtils.substrateVrfSignScript(message, context);
@@ -151,7 +151,7 @@ class SubstrateSr25519Verifier implements BaseSubstrateVerifier {
       {List<int>? context, List<int>? extra}) {
     if (vrfSign.length != _SubstrateSr25519SignerConst.vrfResultLength) {
       throw ArgumentException(
-          "Invalid VrfSign bytes length. excepted: ${_SubstrateSr25519SignerConst.vrfResultLength} got: ${vrfSign.length} ");
+          "Invalid VrfSign bytes length. expected: ${_SubstrateSr25519SignerConst.vrfResultLength} got: ${vrfSign.length} ");
     }
     final MerlinTranscript vrfScript =
         _SubstrateSr25519SignerUtils.vrfScript(extra: extra);

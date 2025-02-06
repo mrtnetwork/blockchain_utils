@@ -10,13 +10,18 @@ class ServiceProviderUtils {
   /// If the status code is `401` or `403` and the object is a list of bytes or a string,
   /// it attempts to decode the error message.
   /// Returns: A decoded error message if applicable, otherwise `null`.
-  static String? findError({Object? object, required int statusCode}) {
-    if (statusCode == 401 || statusCode == 403) {
-      if (object is List<int>) {
-        return StringUtils.tryDecode(object);
-      } else if (object is String) {
-        return object;
-      }
+  static String? findError(
+      {Object? object, required int statusCode, List<int>? allowStatusCode}) {
+    String? error;
+    if (object is List<int>) {
+      error = StringUtils.tryDecode(object);
+    } else if (object is String) {
+      error = object;
+    }
+    if (allowStatusCode != null && allowStatusCode.contains(statusCode)) {
+      return error;
+    } else if (statusCode == 401 || statusCode == 403) {
+      return error;
     }
     return null;
   }
@@ -66,7 +71,11 @@ class ServiceProviderUtils {
   /// - [statusCode]: The HTTP status code to check.
   ///
   /// Returns: `true` if the status code is in the range 200–299, otherwise `false`.
-  static bool isSuccessStatusCode(int statusCode) {
+  static bool isSuccessStatusCode(int statusCode,
+      {List<int>? allowSuccessStatusCodes}) {
+    if (allowSuccessStatusCodes != null) {
+      return allowSuccessStatusCodes.contains(statusCode);
+    }
     return statusCode >= 200 && statusCode < 300;
   }
 
@@ -85,18 +94,34 @@ class ServiceProviderUtils {
     if (dynamic is T) {
       return StringUtils.toJson(StringUtils.decode(bytes));
     }
-    if (<String, dynamic>{} is T) {
+    if (<dynamic>[] is T) {
       return StringUtils.toJson(StringUtils.decode(bytes));
-    }
-    if (<Map<String, dynamic>>[] is T) {
-      return StringUtils.toJson<List>(StringUtils.decode(bytes))
-          .map((e) => (e as Map).cast<String, dynamic>())
-          .toList() as T;
     }
     if (<int>[] is T) {
       return bytes as T;
     }
-    return StringUtils.decode(bytes) as T;
+    final resultString = StringUtils.decode(bytes);
+    if (<String>[] is T) {
+      return StringUtils.toJson<List>(resultString).cast<String>() as T;
+    }
+    if (<bool>[] is T) {
+      return StringUtils.toJson<List>(resultString).cast<bool>() as T;
+    }
+    if (0 is T) {
+      return IntUtils.parse(resultString) as T;
+    }
+    if (BigInt.zero is T) {
+      return BigintUtils.parse(resultString) as T;
+    }
+    if (<String, dynamic>{} is T) {
+      return StringUtils.toJson(resultString);
+    }
+    if (<Map<String, dynamic>>[] is T) {
+      return StringUtils.toJson<List>(resultString)
+          .map((e) => (e as Map).cast<String, dynamic>())
+          .toList() as T;
+    }
+    return resultString as T;
   }
 
   /// Parses a response object into a result of type `T`.
@@ -144,7 +169,7 @@ class ServiceProviderUtils {
       throw RPCError(
           message: "Parsing response failed.",
           request: params.toJson(),
-          details: {"error": e.toString()});
+          details: {"error": e.toString(), "excepted": "$T"});
     }
   }
 }

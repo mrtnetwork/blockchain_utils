@@ -22,16 +22,12 @@ class AddrDecUtils {
   }
 
   /// Validate and remove prefix from an address.
-  static String validateAndRemovePrefix(
-    String addr,
-    String prefix,
-  ) {
+  static String validateAndRemovePrefix(String addr, String prefix) {
     final prefixGot = addr.substring(0, prefix.length);
 
     if (prefix != prefixGot) {
       throw AddressConverterException(
-        'Invalid prefix (expected $prefix, got $prefixGot)',
-      );
+          'Invalid prefix (expected $prefix, got $prefixGot)');
     }
 
     return addr.substring(prefix.length);
