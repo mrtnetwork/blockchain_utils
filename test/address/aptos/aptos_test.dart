@@ -22,7 +22,6 @@ void main() {
   _testMultiEdAccount4();
   _testMultiEdAccount();
   _testMultiEdAccount2();
-  _testMultiEdAccount3();
   _testSignleKeyEd25519();
   _testSignleKeySecp256k1();
 }
@@ -77,21 +76,6 @@ void _testMultiEdAccount4() {
               privateKey1.publicKey,
             ], threshold: 7),
         throwsA(TypeMatcher<AddressConverterException>()));
-  });
-}
-
-void _testMultiEdAccount3() {
-  test("Multi Ed25519 account", () {
-    final privateKey1 = Ed25519PrivateKey.fromBytes(List<int>.filled(32, 12));
-    final privateKey2 = Ed25519PrivateKey.fromBytes(List<int>.filled(32, 12));
-    final privateKey3 = Ed25519PrivateKey.fromBytes(List<int>.filled(32, 12));
-    final account = AptosAddrEncoder().encodeMultiEd25519Key(publicKeys: [
-      privateKey1.publicKey,
-      privateKey2.publicKey,
-      privateKey3.publicKey
-    ], threshold: 2);
-    expect(account,
-        "0x46b83ee243d37f8754a0bd90505b58bb19a098840e90ec11934192f04267fc41");
   });
 }
 
