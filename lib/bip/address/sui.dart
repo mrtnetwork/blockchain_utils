@@ -15,7 +15,7 @@ class SuiPublicKeyAndWeight {
       {required this.publicKey, required this.weight});
   factory SuiPublicKeyAndWeight(
       {required IPublicKey publicKey, required int weight}) {
-    if (weight < 1 || weight >= mask8) {
+    if (weight < 1 || weight > mask8) {
       throw AddressConverterException(
           "Invalid signer wieght. weight must be between 1 and $mask8 .");
     }
@@ -23,6 +23,7 @@ class SuiPublicKeyAndWeight {
       case EllipticCurveTypes.ed25519:
       case EllipticCurveTypes.secp256k1:
       case EllipticCurveTypes.nist256p1:
+      case EllipticCurveTypes.nist256p1Hybrid:
         break;
       default:
         throw AddressConverterException(
@@ -62,6 +63,12 @@ class SuiAddrConst {
 
   /// A multi-key signing scheme flag where multiple different types of keys are involved
   static const int multisigAddressFlag = 3;
+
+  static const int multisigAccountMaxThreshold = mask16;
+  static const int multisigAccountMinThreshold = 1;
+  static const int multisigAccountMaxPublicKey = 10;
+  static const int multisigAccountPublicKeyMaxWeight = 255;
+  static const int multisigAccountPublicKeyMinWeight = 1;
 }
 
 class SuiAddressUtils {
@@ -144,8 +151,17 @@ class SuiAddressUtils {
       if (keys.length != publicKeys.length) {
         throw AddressConverterException("Duplicate public key detected.");
       }
+      if (keys.length > SuiAddrConst.multisigAccountMaxPublicKey) {
+        throw AddressConverterException(
+            "Exceeded the maximum allowed public keys for a multisig account.",
+            details: {
+              "maximum": SuiAddrConst.multisigAccountMaxPublicKey,
+              "length": publicKeys.length
+            });
+      }
 
-      if (threshold < 1 || threshold >= mask16) {
+      if (threshold < SuiAddrConst.multisigAccountMinThreshold ||
+          threshold > SuiAddrConst.multisigAccountMaxThreshold) {
         throw AddressConverterException(
             "Invalid threshold. threshold must be between 1 and $mask16 .");
       }

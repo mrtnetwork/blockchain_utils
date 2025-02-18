@@ -37,6 +37,11 @@ class AptosAddrConst {
 
   static const int shortAddressLength = 63;
 
+  static const int multikeyMinPublicKey = 1;
+  static const int multikeyMaxPublicKey = mask32;
+
+  static const int multiKeyMaxSignature = 32;
+
   /// Bcs layout for encdoing multikey address
   static final multiKeyAddressLayout = LayoutConst.struct([
     LayoutConst.bcsVector(
@@ -154,6 +159,10 @@ class AptosAddressUtils {
   static List<int> encodeMultiEd25519Key(
       List<Ed25519PublicKey> publicKeys, int threshold) {
     try {
+      final keys = publicKeys.toSet();
+      if (keys.length != publicKeys.length) {
+        throw AddressConverterException("Duplicate public key detected.");
+      }
       if (publicKeys.length < AptosAddrConst.minPublicKeys ||
           publicKeys.length > AptosAddrConst.maximumPublicKeys) {
         throw AddressConverterException(
@@ -191,15 +200,24 @@ class AptosAddressUtils {
               "Unsupported public key: Aptos Multikey address can only be generated from secp256k1 or ed25519 public keys.")
         };
       }).toList();
-      if (publicKeys.length < AptosAddrConst.minPublicKeys ||
-          publicKeys.length > AptosAddrConst.maximumPublicKeys) {
-        throw AddressConverterException(
-            "The number of public keys provided is invalid. It must be between ${AptosAddrConst.minPublicKeys} and ${AptosAddrConst.maximumPublicKeys}.");
+      final keys = publicKeys.toSet();
+      if (keys.length != publicKeys.length) {
+        throw AddressConverterException("Duplicate public key detected.");
       }
-      if (requiredSignature < AptosAddrConst.minthreshold ||
-          requiredSignature > publicKeys.length) {
+      if (publicKeys.length < AptosAddrConst.multikeyMinPublicKey ||
+          publicKeys.length > AptosAddrConst.multikeyMaxPublicKey) {
         throw AddressConverterException(
-            "Invalid threshold. The threshold must be between ${AptosAddrConst.minthreshold} and the number of provided public keys (${publicKeys.length}).");
+            "The number of public keys provided is invalid. It must be between ${AptosAddrConst.multikeyMinPublicKey} and ${AptosAddrConst.multikeyMaxPublicKey}.");
+      }
+
+      if (requiredSignature < AptosAddrConst.minthreshold ||
+          requiredSignature > AptosAddrConst.multiKeyMaxSignature) {
+        throw AddressConverterException(
+            "Invalid threshold. The threshold must be between ${AptosAddrConst.minthreshold} and ${AptosAddrConst.multiKeyMaxSignature}.");
+      }
+      if (publicKeys.length < requiredSignature) {
+        throw AddressConverterException(
+            "The number of public keys must be at least equal to the required signatures.");
       }
       final layoutStruct = {
         "requiredSignature": requiredSignature,

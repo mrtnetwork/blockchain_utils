@@ -1,3 +1,8 @@
+## 4.2.0
+
+- Added support for aptos addresses using Secp256k1, Secp256r1, Multikey and MultiEd25519.
+- Fix sui multisig address validator  
+
 ## 4.1.0
 
 - Added support for Sui addresses using Secp256k1, Secp256r1, Ed25519, and MultiSig.  
