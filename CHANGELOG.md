@@ -1,3 +1,11 @@
+## 4.3.0
+
+- Added support for MuSig2
+  - Signing and verification
+  - Nonce generation
+  - Aggregate public key computation
+  - Aggregate nonce computation
+
 ## 4.2.0
 
 - Added support for aptos addresses using Secp256k1, Secp256r1, Multikey and MultiEd25519.

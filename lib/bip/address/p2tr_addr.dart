@@ -82,9 +82,8 @@ class P2TRUtils {
   ///
   /// Throws:
   ///   - Exception if the x-coordinate cannot be lifted.
-  static ProjectiveECCPoint liftX(ProjectiveECCPoint pubKeyPoint) {
+  static ProjectiveECCPoint liftX(BigInt x) {
     final BigInt p = Curves.curveSecp256k1.p;
-    final BigInt x = pubKeyPoint.x;
     if (x >= p) {
       throw const AddressConverterException("Unable to compute LiftX point");
     }
@@ -155,28 +154,12 @@ class P2TRUtils {
     final tweek = taggedHash("TapTweak", [...keyX, ...merkleRoot]);
     return tweek;
   }
-  // /// Tweak a public key to create a P2TR address.
-  // ///
-  // /// This method tweaks a public key using a hashTapTweak and lifting the x-coordinate.
-  // ///
-  // /// Parameters:
-  // ///   - pubKey: The public key to be tweaked.
-  // ///
-  // /// Returns:
-  // ///   A `List<int>` representing the tweaked public key for P2TR.
-  // static `List<int>` tweakPublicKey(ProjectiveECCPoint pubPoint) {
-  //   final h = hashTapTweak(pubPoint);
-  //   final n = Curves.generatorSecp256k1 * BigintUtils.fromBytes(h);
-  //   final outPoint = liftX(pubPoint) + n;
-  // return BigintUtils.toBytes(outPoint.x,
-  //     length: Curves.curveSecp256k1.baselen);
-  // }
 
   static ProjectiveECCPoint tweakPublicKey(ProjectiveECCPoint pubPoint,
       {List<dynamic>? script}) {
     final h = calculateTweek(pubPoint, script: script);
     final n = Curves.generatorSecp256k1 * BigintUtils.fromBytes(h);
-    final outPoint = liftX(pubPoint) + n;
+    final outPoint = liftX(pubPoint.x) + n;
 
     return outPoint as ProjectiveECCPoint;
   }

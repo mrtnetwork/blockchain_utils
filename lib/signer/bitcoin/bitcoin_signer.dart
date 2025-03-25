@@ -266,6 +266,84 @@ class BitcoinSigner {
     return sig;
   }
 
+  /// Signs a given Schnorr-based transaction digest using the Schnorr signature scheme.
+  List<int> signSchnorrTx(List<int> digest,
+      {List<int>? tweak, List<int>? auxRand}) {
+    if (digest.length != 32) {
+      throw const ArgumentException("The message must be a 32-byte array.");
+    }
+    if (tweak != null && tweak.length != 32) {
+      throw const ArgumentException("The message must be a 32-byte array.");
+    }
+    List<int> byteKey = <int>[];
+    if (tweak != null) {
+      byteKey = BitcoinSignerUtils.calculatePrivateTweek(
+          signingKey.privateKey.toBytes(), BigintUtils.fromBytes(tweak));
+    } else {
+      byteKey = signingKey.privateKey.toBytes();
+    }
+    final List<int> aux =
+        auxRand ?? QuickCrypto.sha256Hash(<int>[...digest, ...byteKey]);
+    final d0 = BigintUtils.fromBytes(byteKey);
+
+    if (!(BigInt.one <= d0 && d0 <= BitcoinSignerUtils._order - BigInt.one)) {
+      throw const ArgumentException(
+          "The secret key must be an integer in the range 1..n-1.");
+    }
+    final P = Curves.generatorSecp256k1 * d0;
+    BigInt d = d0;
+    if (P.y.isOdd) {
+      d = BitcoinSignerUtils._order - d;
+    }
+
+    final t = BytesUtils.xor(
+        BigintUtils.toBytes(d, length: BitcoinSignerUtils.baselen),
+        P2TRUtils.taggedHash("BIP0340/aux", aux));
+
+    final kHash = P2TRUtils.taggedHash(
+      "BIP0340/nonce",
+      <int>[
+        ...t,
+        ...BigintUtils.toBytes(P.x, length: BitcoinSignerUtils.baselen),
+        ...digest
+      ],
+    );
+    final k0 = BigintUtils.fromBytes(kHash) % BitcoinSignerUtils._order;
+
+    if (k0 == BigInt.zero) {
+      throw const MessageException(
+          'Failure. This happens only with negligible probability.');
+    }
+    final R = (Curves.generatorSecp256k1 * k0);
+    BigInt k = k0;
+    if (R.y.isOdd) {
+      k = BitcoinSignerUtils._order - k;
+    }
+
+    final eHash = P2TRUtils.taggedHash(
+      "BIP0340/challenge",
+      List<int>.from([
+        ...BigintUtils.toBytes(R.x, length: BitcoinSignerUtils.baselen),
+        ...BigintUtils.toBytes(P.x, length: BitcoinSignerUtils.baselen),
+        ...digest
+      ]),
+    );
+
+    final e = BigintUtils.fromBytes(eHash) % BitcoinSignerUtils._order;
+
+    final eKey = (k + e * d) % BitcoinSignerUtils._order;
+    final sig = List<int>.from([
+      ...BigintUtils.toBytes(R.x, length: BitcoinSignerUtils.baselen),
+      ...BigintUtils.toBytes(eKey, length: BitcoinSignerUtils.baselen)
+    ]);
+    final verify = verifyKey.verifySchnorrSig(digest, sig, tweak: tweak);
+    if (!verify) {
+      throw const MessageException(
+          'The created signature does not pass verification.');
+    }
+    return sig;
+  }
+
   /// Returns a [BitcoinVerifier] instance associated with the verification key derived from the signer's private key.
   BitcoinVerifier get verifyKey {
     return BitcoinVerifier._(ECDSAVerifyKey(signingKey.privateKey.publicKey));
@@ -292,6 +370,13 @@ class BitcoinVerifier {
 
   /// Verifies an ECDSA signature against a given transaction digest.
   bool verifyTransaction(List<int> digest, List<int> derSignature) {
+    if (derSignature.length < 9 || derSignature.length > 73) {
+      return false;
+    }
+
+    if (derSignature[0] != 0x30) {
+      return false;
+    }
     final int lengthR = derSignature[3];
     final int lengthS = derSignature[5 + lengthR];
     final List<int> rBytes = derSignature.sublist(4, 4 + lengthR);
@@ -317,7 +402,7 @@ class BitcoinVerifier {
     final P = isTweak
         ? P2TRUtils.tweakPublicKey(verifyKey.publicKey.point,
             script: tapleafScripts)
-        : P2TRUtils.liftX(verifyKey.publicKey.point);
+        : P2TRUtils.liftX(verifyKey.publicKey.point.x);
 
     final r = BigintUtils.fromBytes(signature.sublist(0, 32));
 
@@ -354,6 +439,67 @@ class BitcoinVerifier {
     return true;
   }
 
+  static bool verifySchnorrSignature(
+      {required List<int> xOnly,
+      required List<int> message,
+      required List<int> signature,
+      List<int>? tweak}) {
+    if (message.length != 32) {
+      throw const ArgumentException("The message must be a 32-byte array.");
+    }
+
+    if (signature.length != 64 && signature.length != 65) {
+      throw const ArgumentException(
+          "The signature must be a 64-byte array or 65-bytes with sighash");
+    }
+    final x = BigintUtils.fromBytes(xOnly);
+    final P =
+        tweak != null ? tweakKey(xBig: x, tweak: tweak) : P2TRUtils.liftX(x);
+
+    final r = BigintUtils.fromBytes(signature.sublist(0, 32));
+
+    final s = BigintUtils.fromBytes(signature.sublist(32, 64));
+
+    final ProjectiveECCPoint generator = BitcoinSignerUtils._generator;
+    final BigInt prime = BitcoinSignerUtils._generator.curve.p;
+
+    if (r >= prime || s >= BitcoinSignerUtils._order) {
+      return false;
+    }
+    final eHash = P2TRUtils.taggedHash(
+      "BIP0340/challenge",
+      List<int>.from([
+        ...signature.sublist(0, 32),
+        ...BigintUtils.toBytes(P.x, length: BitcoinSignerUtils.baselen),
+        ...message
+      ]),
+    );
+    BigInt e = BigintUtils.fromBytes(eHash) % BitcoinSignerUtils._order;
+    final sp = generator * s;
+
+    if (P.y.isEven) {
+      e = BitcoinSignerUtils._order - e;
+    }
+    final ProjectiveECCPoint eP = P * e;
+
+    final R = sp + eP;
+
+    if (R.y.isOdd || R.x != r) {
+      return false;
+    }
+
+    return true;
+  }
+
+  bool verifySchnorrSig(List<int> message, List<int> signature,
+      {List<int>? tweak}) {
+    return verifySchnorrSignature(
+        xOnly: verifyKey.publicKey.point.toXonly(),
+        message: message,
+        signature: signature,
+        tweak: tweak);
+  }
+
   /// Verifies an ECDSA signature against a given message, considering the message prefix.
   bool verifyMessage(
       List<int> message, String messagePrefix, List<int> signature) {
@@ -371,5 +517,12 @@ class BitcoinVerifier {
         BigintUtils.fromBytes(rBytes), BigintUtils.fromBytes(sBytes));
 
     return verifyKey.verify(ecdsaSignature, messgaeHash);
+  }
+
+  static ProjectiveECCPoint tweakKey(
+      {required BigInt xBig, required List<int> tweak}) {
+    final n = Curves.generatorSecp256k1 * BigintUtils.fromBytes(tweak);
+    final outPoint = P2TRUtils.liftX(xBig) + n;
+    return outPoint as ProjectiveECCPoint;
   }
 }

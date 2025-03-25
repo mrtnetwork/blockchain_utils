@@ -50,37 +50,22 @@ abstract class AbstractPoint {
   /// Internal method to encode an elliptic curve point in hybrid form.
   List<int> _hybridEncode() {
     final raw = _encode();
-    List<int> prefix;
-
+    int prefix = 0x06;
     if (y.isOdd) {
-      prefix = List<int>.from([0x07]);
-    } else {
-      prefix = List<int>.from([0x06]);
+      prefix = 0x07;
     }
-
-    final List<int> result = List<int>.filled(prefix.length + raw.length, 0);
-    result.setAll(0, prefix);
-    result.setAll(prefix.length, raw);
-
-    return result;
+    return [prefix, ...raw];
   }
 
   /// Internal method to encode an elliptic curve point in compressed form.
   List<int> _compressedEncode() {
-    final List<int> xStr =
+    final List<int> xBytes =
         BigintUtils.toBytes(x, length: BigintUtils.orderLen(curve.p));
-    List<int> prefix;
-    if (y & BigInt.one != BigInt.zero) {
-      prefix = List<int>.from([0x03]);
-    } else {
-      prefix = List<int>.from([0x02]);
+    int prefix = 0x02;
+    if (y.isOdd) {
+      prefix = 0x03;
     }
-
-    final List<int> result = List<int>.filled(prefix.length + xStr.length, 0);
-    result.setAll(0, prefix);
-    result.setAll(prefix.length, xStr);
-
-    return result;
+    return [prefix, ...xBytes];
   }
 
   /// Internal method to encode an elliptic curve point.
@@ -89,7 +74,7 @@ abstract class AbstractPoint {
         BigintUtils.toBytes(x, length: BigintUtils.orderLen(curve.p));
     final yBytes =
         BigintUtils.toBytes(y, length: BigintUtils.orderLen(curve.p));
-    return List<int>.from([...xBytes, ...yBytes]);
+    return [...xBytes, ...yBytes];
   }
 
   /// An abstract property representing the elliptic curve associated with the point.
@@ -245,6 +230,13 @@ abstract class AbstractPoint {
     }
 
     return Tuple(x, y);
+  }
+
+  T cast<T extends AbstractPoint>() {
+    if (this is! T) {
+      throw ArgumentException("Cannot cast $runtimeType to $T");
+    }
+    return this as T;
   }
 
   @override

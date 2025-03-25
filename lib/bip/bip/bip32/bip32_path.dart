@@ -104,7 +104,7 @@ class Bip32Path {
       if (!elem.isHardened) {
         pathStr += "${elem.toInt()}/";
       } else {
-        pathStr += "${Bip32KeyIndex.unhardenIndex(elem.toInt())}'/";
+        pathStr += "${Bip32KeyIndex.unhardenIndex(elem.toInt()).toInt()}'/";
       }
     }
     return pathStr.substring(0, pathStr.length - 1);

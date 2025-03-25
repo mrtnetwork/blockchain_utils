@@ -10,3 +10,4 @@ export 'secp256k1/secp256k1_signer.dart';
 export 'secp256r1/secp256r1_signer.dart';
 export 'ed25519/ed25519.dart';
 export 'signing_key/ecdsa_signing_key.dart';
+export 'utils/utils.dart';

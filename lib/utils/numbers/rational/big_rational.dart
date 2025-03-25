@@ -292,7 +292,7 @@ class BigRational {
   /// Rounds this BigRational towards positive infinity and returns the result as a BigRational.
   ///
   /// Returns a new BigRational representing the ceiling of this BigRational.
-  BigRational ceil(toBigInt) {
+  BigRational ceil() {
     final BigInt divmod = _truncate;
     final BigInt remind = _remainder;
     BigInt ceil;

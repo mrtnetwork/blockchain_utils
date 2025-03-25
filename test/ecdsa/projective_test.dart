@@ -10,7 +10,7 @@ import 'package:test/test.dart';
 void _testEqualWithAffinePoint() {
   final point1 = ProjectiveECCPoint.fromAffine(Curves.generatorSecp256k1);
   final point2 = point1.toAffine();
-  expect(point1 == point2 && point2 == point1, true);
+  expect(point1.toAffine() == point2 && point2 == point1.toAffine(), true);
 }
 
 void _testInfinityPoint() {
@@ -35,7 +35,7 @@ void _testAffineWithZero() {
 void _testWithAffinePoint() {
   final point1 = ProjectiveECCPoint.fromAffine(Curves.generator256);
   final aff = point1.toAffine();
-  final sum = point1 + aff;
+  final sum = point1 + ProjectiveECCPoint.fromAffine(aff);
 
   final doublePoint = point1.doublePoint();
   expect(sum, doublePoint);
@@ -44,7 +44,7 @@ void _testWithAffinePoint() {
 void _testWithAffinePointAndRightAdd() {
   final point1 = ProjectiveECCPoint.fromAffine(Curves.generator256);
   final aff = point1.toAffine();
-  final sum = aff + point1;
+  final sum = aff + point1.toAffine();
   final doublePoint = point1.doublePoint();
   expect(sum, doublePoint);
 }

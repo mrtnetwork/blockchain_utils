@@ -24,5 +24,6 @@ export 'point/ec_projective_point.dart';
 /// Export statement for RFC 6979, which provides deterministic ECDSA signatures,
 /// allowing for secure signature generation.
 export 'rfc6979/rfc6979.dart';
-
 export 'crypto_ops/crypto_ops.dart';
+
+export 'musig2/musig2.dart';

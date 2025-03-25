@@ -149,6 +149,13 @@ These features make your package a comprehensive solution for encoding, cryptogr
 - XRP (EDDSA, ECDSA)
 - Solana (EDDSA, EDDSA Khalow)
 
+26. **MuSig2 Operation:**
+
+- Signing and verification
+- Nonce generation
+- Aggregate public key computation
+- Aggregate nonce computation
+
 **Example: Explore Our Toolkit**
 
 Discover the capabilities of our comprehensive crypto and blockchain toolkit through interactive tests. Visit our [test page](https://github.com/mrtnetwork/blockchain_utils/tree/main/test) to access thousands of examples, showcasing pure Dart's cross-platform functionality. Learn encoding, cryptography, address management, mnemonics, and more.

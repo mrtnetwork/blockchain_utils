@@ -23,8 +23,8 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
 
-import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/curve/curve.dart';
+import 'package:blockchain_utils/utils/numbers/numbers.dart';
 import 'base.dart';
 import 'point.dart';
 import 'package:blockchain_utils/exception/exceptions.dart';
@@ -922,4 +922,10 @@ class ProjectiveECCPoint extends AbstractPoint {
 
   @override
   int get hashCode => curve.hashCode ^ x.hashCode ^ y.hashCode;
+
+  bool get isOdd => y.isOdd;
+  bool get isEven => y.isEven;
+  List<int> toXonly() {
+    return toBytes().sublist(1);
+  }
 }
