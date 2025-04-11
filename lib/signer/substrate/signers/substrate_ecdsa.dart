@@ -1,17 +1,17 @@
+import 'package:blockchain_utils/signer/const/constants.dart';
+import 'package:blockchain_utils/signer/exception/signing_exception.dart';
 import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/crypto/crypto/crypto.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
-import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/signer/signing_key/ecdsa_signing_key.dart';
-import 'package:blockchain_utils/signer/eth/eth_signature.dart';
-import 'package:blockchain_utils/signer/eth/evm_signer.dart';
+import 'package:blockchain_utils/signer/types/eth_signature.dart';
 import 'package:blockchain_utils/signer/substrate/core/signer.dart';
 import 'package:blockchain_utils/signer/substrate/core/verifier.dart';
 
 class _SubstrateEcdsaSignerCons {
-  static const int vrfLength = ETHSignerConst.ethSignatureLength +
-      ETHSignerConst.ethSignatureRecoveryIdLength +
-      QuickCrypto.blake2b256DigestSize;
+  static const int vrfLength =
+      CryptoSignerConst.ecdsaSignatureWithRecoveryIdLength +
+          QuickCrypto.blake2b256DigestSize;
 }
 
 /// Ethereum Signer class for cryptographic operations, including signing and verification.
@@ -23,13 +23,13 @@ class _SubstrateEcdsaSignerCons {
 class SubstrateEcdsaSigner implements BaseSubstrateSigner {
   const SubstrateEcdsaSigner._(this._ecdsaSigningKey);
 
-  final EcdsaSigningKey _ecdsaSigningKey;
+  final ECDSASigningKey _ecdsaSigningKey;
 
   /// Factory method to create an ETHSigner from a byte representation of a private key.
   factory SubstrateEcdsaSigner.fromKeyBytes(List<int> keyBytes) {
-    final signingKey =
-        ECDSAPrivateKey.fromBytes(keyBytes, ETHSignerConst.secp256);
-    return SubstrateEcdsaSigner._(EcdsaSigningKey(signingKey));
+    final signingKey = ECDSAPrivateKey.fromBytes(
+        keyBytes, CryptoSignerConst.generatorSecp256k1);
+    return SubstrateEcdsaSigner._(ECDSASigningKey(signingKey));
   }
 
   /// Signs a message digest using the ECDSA algorithm on the secp256k1 curve.
@@ -44,20 +44,22 @@ class SubstrateEcdsaSigner implements BaseSubstrateSigner {
   /// - An ETHSignature representing the signature of the message digest.
   ETHSignature _signEcdsa(List<int> digest, {bool hashMessage = true}) {
     final hash = hashMessage ? QuickCrypto.blake2b256Hash(digest) : digest;
-    if (hash.length != ETHSignerConst.digestLength) {
-      throw ArgumentException(
-          "invalid digest. digest length must be ${ETHSignerConst.digestLength} got ${digest.length}");
+    if (hash.length != CryptoSignerConst.digestLength) {
+      throw CryptoSignException(
+          "invalid digest. digest length must be ${CryptoSignerConst.digestLength} got ${digest.length}");
     }
     ECDSASignature ecdsaSign = _ecdsaSigningKey.signDigestDeterminstic(
         digest: hash, hashFunc: () => SHA256());
-    if (ecdsaSign.s > ETHSignerConst.orderHalf) {
-      ecdsaSign =
-          ECDSASignature(ecdsaSign.r, ETHSignerConst.curveOrder - ecdsaSign.s);
+    if (ecdsaSign.s > CryptoSignerConst.orderHalf) {
+      ecdsaSign = ECDSASignature(
+          ecdsaSign.r, CryptoSignerConst.secp256k1Order - ecdsaSign.s);
     }
-    final sigBytes = ecdsaSign.toBytes(ETHSignerConst.secp256.curve.baselen);
+    final sigBytes =
+        ecdsaSign.toBytes(CryptoSignerConst.generatorSecp256k1.curve.baselen);
     final verifyKey = toVerifyKey();
     if (verifyKey.verify(hash, sigBytes, hashMessage: false)) {
-      final recover = ecdsaSign.recoverPublicKeys(hash, ETHSignerConst.secp256);
+      final recover = ecdsaSign.recoverPublicKeys(
+          hash, CryptoSignerConst.generatorSecp256k1);
       for (int i = 0; i < recover.length; i++) {
         if (recover[i].point == verifyKey.edsaVerifyKey.publicKey.point) {
           return ETHSignature(ecdsaSign.r, ecdsaSign.s, i + 27);
@@ -65,21 +67,10 @@ class SubstrateEcdsaSigner implements BaseSubstrateSigner {
       }
     }
 
-    throw const MessageException(
+    throw const CryptoSignException(
         'The created signature does not pass verification.');
   }
 
-  /// Signs a personal message digest with an optional payload length.
-  ///
-  /// The Ethereum personal sign prefix is applied to the message, and the resulting
-  /// signature is returned as a byte list. Optionally, a payload length can be provided.
-  ///
-  /// Parameters:
-  /// - [digest]: The personal message digest to be signed.
-  /// - [payloadLength]: An optional payload length to include in the message prefix.
-  ///
-  /// Returns:
-  /// - A byte list representing the signature of the personal message.
   @override
   List<int> sign(List<int> digest, {bool hashMessage = true}) {
     return _signEcdsa(digest, hashMessage: hashMessage).toBytes(false);
@@ -98,24 +89,20 @@ class SubstrateEcdsaSigner implements BaseSubstrateSigner {
     final verify = toVerifyKey()
         .vrfVerify(List.from(vrfResult), msg, context: context, extra: extra);
     if (!verify) {
-      throw const MessageException(
+      throw const CryptoSignException(
           'The created signature does not pass verification.');
     }
     return vrfResult;
   }
 
   List<int> signProsonalMessage(List<int> digest, {int? payloadLength}) {
-    final prefix = ETHSignerConst.ethPersonalSignPrefix +
+    final prefix = CryptoSignerConst.ethPersonalSignPrefix +
         (payloadLength?.toString() ?? digest.length.toString());
     final prefixBytes = StringUtils.encode(prefix, type: StringEncoding.ascii);
     final sign = _signEcdsa(<int>[...prefixBytes, ...digest]);
     return sign.toBytes(true);
   }
 
-  /// Converts the ETHSigner to an ETHVerifier for verification purposes.
-  ///
-  /// Returns:
-  /// - An ETHVerifier representing the verification key.
   SubstrateEcdsaVerifier toVerifyKey() {
     return SubstrateEcdsaVerifier.fromKeyBytes(
         _ecdsaSigningKey.privateKey.publicKey.toBytes());
@@ -135,21 +122,17 @@ class SubstrateEcdsaVerifier implements BaseSubstrateVerifier {
   /// Factory method to create an ETHVerifier from a byte representation of a public key.
   factory SubstrateEcdsaVerifier.fromKeyBytes(List<int> keyBytes) {
     final point = ProjectiveECCPoint.fromBytes(
-        curve: ETHSignerConst.secp256.curve, data: keyBytes, order: null);
-    final verifyingKey = ECDSAPublicKey(ETHSignerConst.secp256, point);
+        curve: CryptoSignerConst.generatorSecp256k1.curve,
+        data: keyBytes,
+        order: null);
+    final verifyingKey =
+        ECDSAPublicKey(CryptoSignerConst.generatorSecp256k1, point);
     return SubstrateEcdsaVerifier._(ECDSAVerifyKey(verifyingKey));
   }
 
-  bool _verifyEcdsa(List<int> digest, List<int> sigBytes) {
-    final signature =
-        ECDSASignature.fromBytes(sigBytes, ETHSignerConst.secp256);
-    return edsaVerifyKey.verify(signature, digest);
-  }
-
-  /// Verifies an Ethereum signature against a message digest.
+  /// Verifies an signature against a message digest.
   ///
   /// Parameters:
-  /// - [digest]: The message digest.
   /// - [signature]: The signature bytes.
   /// - [hashMessage]: Whether to hash the message before verification (default is true).
   ///
@@ -158,71 +141,19 @@ class SubstrateEcdsaVerifier implements BaseSubstrateVerifier {
   @override
   bool verify(List<int> message, List<int> signature,
       {bool hashMessage = true}) {
-    final sigBytes = signature.sublist(0, ETHSignerConst.ethSignatureLength);
-    final hashDigest =
-        hashMessage ? QuickCrypto.blake2b256Hash(message) : message;
-    return _verifyEcdsa(hashDigest, sigBytes);
-  }
-
-  /// Verifies an Ethereum signature of a personal message against the message digest.
-  ///
-  /// Parameters:
-  /// - [message]: The personal message.
-  /// - [signature]: The signature bytes.
-  /// - [hashMessage]: Whether to hash the message before verification (default is true).
-  /// - [payloadLength]: An optional payload length to include in the message prefix.
-  ///
-  /// Returns:
-  /// - True if the signature is valid, false otherwise.
-  bool verifyPersonalMessage(List<int> message, List<int> signature,
-      {bool hashMessage = true, int? payloadLength}) {
-    final List<int> messagaeHash = _hashMessage(message,
-        hashMessage: hashMessage, payloadLength: payloadLength);
-    return _verifyEcdsa(
-        messagaeHash, signature.sublist(0, ETHSignerConst.ethSignatureLength));
-  }
-
-  static List<int> _hashMessage(List<int> message,
-      {bool hashMessage = true, int? payloadLength}) {
-    if (hashMessage) {
-      final prefix = ETHSignerConst.ethPersonalSignPrefix +
-          (payloadLength?.toString() ?? message.length.toString());
-      final prefixBytes =
-          StringUtils.encode(prefix, type: StringEncoding.ascii);
-      return QuickCrypto.blake2b256Hash(<int>[...prefixBytes, ...message]);
-    }
-    return message;
-  }
-
-  /// Gets the recovered ECDSAPublicKey from a message and signature.
-  ///
-  /// Parameters:
-  /// - [message]: The message.
-  /// - [signature]: The signature bytes.
-  /// - [hashMessage]: Whether to hash the message before recovering the public key (default is true).
-  /// - [payloadLength]: An optional payload length to include in the message prefix.
-  ///
-  /// Returns:
-  /// - The recovered ECDSAPublicKey.
-  static ECDSAPublicKey? getPublicKey(List<int> message, List<int> signature,
-      {bool hashMessage = true, int? payloadLength}) {
-    final List<int> messagaeHash = _hashMessage(message,
-        hashMessage: hashMessage, payloadLength: payloadLength);
-    final ethSignature = ETHSignature.fromBytes(signature);
-    final toBytes = ethSignature.toBytes(false);
-    final recoverId = toBytes[ETHSignerConst.ethSignatureLength];
-    final signatureBytes = ECDSASignature.fromBytes(
-        toBytes.sublist(0, ETHSignerConst.ethSignatureLength),
-        ETHSignerConst.secp256);
-    return signatureBytes.recoverPublicKey(
-        messagaeHash, ETHSignerConst.secp256, recoverId);
+    final sigBytes =
+        signature.sublist(0, CryptoSignerConst.ecdsaSignatureLength);
+    final digest = hashMessage ? QuickCrypto.blake2b256Hash(message) : message;
+    final ecdsaSignature = ECDSASignature.fromBytes(
+        sigBytes, CryptoSignerConst.generatorSecp256k1);
+    return edsaVerifyKey.verify(ecdsaSignature, digest);
   }
 
   @override
   bool vrfVerify(List<int> message, List<int> vrfSign,
       {List<int>? context, List<int>? extra}) {
     if (vrfSign.length != _SubstrateEcdsaSignerCons.vrfLength) {
-      throw ArgumentException(
+      throw CryptoSignException(
           "Invalid vrf length. expected: ${_SubstrateEcdsaSignerCons.vrfLength} got: ${vrfSign.length}");
     }
     final List<int> signature =

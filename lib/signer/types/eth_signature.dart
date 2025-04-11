@@ -1,6 +1,6 @@
+import 'package:blockchain_utils/signer/const/constants.dart';
+import 'package:blockchain_utils/signer/exception/signing_exception.dart';
 import 'package:blockchain_utils/utils/utils.dart';
-import 'package:blockchain_utils/exception/exceptions.dart';
-import 'package:blockchain_utils/signer/eth/evm_signer.dart';
 
 /// Utility class for Ethereum signature operations.
 class ETHSignatureUtils {
@@ -17,7 +17,7 @@ class ETHSignatureUtils {
   /// - The canonicalized recovery id (27 or 28).
   ///
   /// Throws:
-  /// - [MessageException] if the input recovery id is invalid or out of range.
+  /// - [CryptoSignException] if the input recovery id is invalid or out of range.
   ///
   static int getSignatureV(int v) {
     if (v == 0 || v == 27) {
@@ -27,7 +27,7 @@ class ETHSignatureUtils {
       return 28;
     }
     if (v < 35) {
-      throw MessageException("Invalid signature recovery id",
+      throw CryptoSignException("Invalid signature recovery id",
           details: {"input": v});
     }
     return (v & 1) != 0 ? 27 : 28;
@@ -42,36 +42,36 @@ class ETHSignatureUtils {
 class ETHSignature {
   /// Creates an Ethereum signature from the 'r', 's', and 'v' components.
   ///
-  /// Throws a [MessageException] if the provided 'v' is not 27 or 28.
+  /// Throws a [CryptoSignException] if the provided 'v' is not 27 or 28.
   ETHSignature(this.r, this.s, this.v) {
     if (v != 28 && v != 27) {
-      throw MessageException("Invalid signature recovery id",
+      throw CryptoSignException("Invalid signature recovery id",
           details: {"input": v});
     }
   }
 
   /// Creates an Ethereum signature from a byte representation.
   ///
-  /// Throws a [MessageException] if the provided bytes are invalid.
+  /// Throws a [CryptoSignException] if the provided bytes are invalid.
   factory ETHSignature.fromBytes(List<int> bytes) {
-    if (bytes.length != ETHSignerConst.ethSignatureLength &&
-        bytes.length !=
-            ETHSignerConst.ethSignatureLength +
-                ETHSignerConst.ethSignatureRecoveryIdLength) {
-      throw MessageException("Invalid signature bytes",
+    if (bytes.length != CryptoSignerConst.ecdsaSignatureLength &&
+        bytes.length != CryptoSignerConst.ecdsaSignatureWithRecoveryIdLength) {
+      throw CryptoSignException("Invalid signature bytes",
           details: {"input": BytesUtils.tryToHexString(bytes)});
     }
-    final rBytes = bytes.sublist(0, ETHSignerConst.secp256.curve.baselen);
-    final sBytes = bytes.sublist(ETHSignerConst.secp256.curve.baselen,
-        ETHSignerConst.secp256.curve.baselen * 2);
+    final rBytes =
+        bytes.sublist(0, CryptoSignerConst.generatorSecp256k1.curve.baselen);
+    final sBytes = bytes.sublist(
+        CryptoSignerConst.generatorSecp256k1.curve.baselen,
+        CryptoSignerConst.generatorSecp256k1.curve.baselen * 2);
 
     int v;
-    if (bytes.length == ETHSignerConst.ethSignatureLength) {
+    if (bytes.length == CryptoSignerConst.ecdsaSignatureLength) {
       v = (sBytes[0] & 0x80) != 0 ? 28 : 27;
       sBytes[0] &= 0x7f;
     } else {
       v = ETHSignatureUtils.getSignatureV(
-          bytes[ETHSignerConst.ethSignatureLength]);
+          bytes[CryptoSignerConst.ecdsaSignatureLength]);
     }
     final r = BigintUtils.fromBytes(rBytes);
     final s = BigintUtils.fromBytes(sBytes);
@@ -90,7 +90,7 @@ class ETHSignature {
   /// Returns:
   /// - A List of integers representing the byte representation of 'r'.
   List<int> get rBytes =>
-      BigintUtils.toBytes(r, length: ETHSignerConst.digestLength);
+      BigintUtils.toBytes(r, length: CryptoSignerConst.digestLength);
 
   /// Gets the byte representation of the 's' component of an Ethereum signature.
   ///
@@ -98,7 +98,7 @@ class ETHSignature {
   /// generated during the signature process. The bytes are obtained by converting
   /// the 's' component BigInt to a byte list with a specified length.
   List<int> get sBytes =>
-      BigintUtils.toBytes(s, length: ETHSignerConst.digestLength);
+      BigintUtils.toBytes(s, length: CryptoSignerConst.digestLength);
 
   /// Gets the byte representation of the 'r', 's', and 'v' components.
   ///

@@ -1,13 +1,14 @@
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
-import 'package:blockchain_utils/exception/exceptions.dart';
+import 'package:blockchain_utils/signer/const/constants.dart';
 import 'package:blockchain_utils/signer/ed25519/ed25519.dart';
+import 'package:blockchain_utils/signer/exception/signing_exception.dart';
 import 'package:blockchain_utils/signer/substrate/core/signer.dart';
 import 'package:blockchain_utils/signer/substrate/core/verifier.dart';
 import 'package:blockchain_utils/utils/utils.dart';
 
 class _SubstrateED25519SignerConstant {
-  static final int vrfLength =
-      Ed25519SignerConst.signatureLen + QuickCrypto.blake2b256DigestSize;
+  static final int vrfLength = CryptoSignerConst.ed25519SignatureLength +
+      QuickCrypto.blake2b256DigestSize;
 }
 
 /// Class for signing Substrate transactions using either EDDSA algorithm.
@@ -51,7 +52,7 @@ class SubstrateED25519Signer implements BaseSubstrateSigner {
     final verify = toVerifyKey()
         .vrfVerify(List.from(vrfResult), msg, context: context, extra: extra);
     if (!verify) {
-      throw const MessageException(
+      throw const CryptoSignException(
           'The created signature does not pass verification.');
     }
     return vrfResult;
@@ -86,7 +87,7 @@ class SubstrateED25519Verifier implements BaseSubstrateVerifier {
   bool vrfVerify(List<int> message, List<int> vrfSign,
       {List<int>? context, List<int>? extra}) {
     if (vrfSign.length != _SubstrateED25519SignerConstant.vrfLength) {
-      throw ArgumentException(
+      throw CryptoSignException(
           "Invalid vrf length. expected: ${_SubstrateED25519SignerConstant.vrfLength} got: ${vrfSign.length}");
     }
     final List<int> signature =

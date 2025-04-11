@@ -1,3 +1,7 @@
+## 4.4.0
+- Added support for BCH schnor signig and verifying
+- Fix schnorr signature validation
+
 ## 4.3.0
 
 - Added support for MuSig2

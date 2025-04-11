@@ -27,7 +27,7 @@ class ECDSASignature {
   ///   - r: The `r` component of the signature.
   ///   - s: The `s` component of the signature.
   ///
-  ECDSASignature(this.r, this.s);
+  const ECDSASignature(this.r, this.s);
   @override
   String toString() {
     return "($r, $s)";
@@ -70,7 +70,7 @@ class ECDSASignature {
     return [pk1, pk2];
   }
 
-  ECDSAPublicKey? recoverPublicKey(
+  ECDSAPublicKey recoverPublicKey(
       List<int> hash, ProjectiveECCPoint generator, int recId) {
     final curve = generator.curve;
     final order = generator.order!;
@@ -87,6 +87,15 @@ class ECDSASignature {
     final ProjectiveECCPoint q1 = ((r1 * s) + (generator * (-secret % order))) *
         BigintUtils.inverseMod(r, order) as ProjectiveECCPoint;
     return ECDSAPublicKey(generator, q1);
+  }
+
+  int? recoverId({required List<int> hash, required ECDSAPublicKey publicKey}) {
+    final keys = recoverPublicKeys(hash, publicKey.generator);
+    final recId = keys.indexOf(publicKey);
+    if (recId.isNegative) {
+      return null;
+    }
+    return recId;
   }
 
   List<int> toBytes(int baselen) {

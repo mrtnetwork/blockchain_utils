@@ -1,3 +1,5 @@
+import 'dart:typed_data' show Endian;
+
 import 'package:blockchain_utils/crypto/crypto/cdsa/curve/curves.dart';
 import 'package:blockchain_utils/signer/const/constants.dart';
 import 'package:blockchain_utils/utils/numbers/numbers.dart';
@@ -26,7 +28,7 @@ class CryptoSignatureUtils {
     if (signature[0] != 0x30) {
       return false;
     }
-    if (signature[1] != signature.length - 3) {
+    if (signature[1] > signature.length - 2) {
       return false;
     }
     int lenR = signature[3];
@@ -35,7 +37,8 @@ class CryptoSignatureUtils {
     }
 
     int lenS = signature[5 + lenR];
-    if ((7 + lenR + lenS) != signature.length) {
+    int total = lenR + lenS + 6;
+    if (total != signature.length && total + 1 != signature.length) {
       return false;
     }
 
@@ -43,7 +46,7 @@ class CryptoSignatureUtils {
     if (signature[4] & 0x80 != 0) {
       return false;
     }
-    if (lenR > 1 && (signature[4] == 0x00) && (signature[5] & 0x80 != 0)) {
+    if (lenR > 1 && (signature[4] == 0x00) && (signature[5] & 0x80 == 0)) {
       return false;
     }
     if (signature[lenR + 4] != 0x02) return false;
@@ -54,9 +57,82 @@ class CryptoSignatureUtils {
     // interpreted as a negative number.
     if (lenS > 1 &&
         (signature[lenR + 6] == 0x00) &&
-        (signature[lenR + 7] & 0x80 != 0)) {
+        (signature[lenR + 7] & 0x80 == 0)) {
       return false;
     }
     return true;
+  }
+
+  /// Converts a list of BigInt values to DER-encoded bytes.
+  ///
+  /// The [toDer] method takes a list of BigInt values [bigIntList] and encodes them in DER format.
+  /// It returns a list of bytes representing the DER-encoded sequence of integers.
+  ///
+  /// Example Usage:
+  /// ```dart
+  /// List<BigInt> values = [BigInt.from(123), BigInt.from(456)];
+  /// `List<int>` derBytes = DEREncoding.toDer(values);
+  /// ```
+  ///
+  /// Parameters:
+  /// - [bigIntList]: The list of BigInt values to be DER-encoded.
+  /// Returns: A list of bytes representing the DER-encoded sequence of integers.
+  static List<int> toDer(List<BigInt> bigIntList) {
+    final List<List<int>> encodedIntegers = bigIntList.map((bi) {
+      final List<int> bytes = _encodeInteger(bi);
+      return bytes;
+    }).toList();
+    final content = encodedIntegers.expand((e) => e);
+    final List<int> lengthBytes = _encodeLength(content.length);
+    final derBytes = [
+      0x30,
+      ...lengthBytes,
+      ...encodedIntegers.expand((e) => e)
+    ];
+
+    return derBytes;
+  }
+
+  /// Encodes the length of DER content.
+  ///
+  /// The [_encodeLength] method takes an integer [length] and returns a list of bytes
+  /// representing the DER-encoded length for the content.
+  ///
+  /// Parameters:
+  /// - [length]: The length of the DER content.
+  /// Returns: A list of bytes representing the DER-encoded length.
+  static List<int> _encodeLength(int length) {
+    if (length < 128) {
+      return [length];
+    } else {
+      final encodeLen = IntUtils.toBytes(length,
+          length: IntUtils.bitlengthInBytes(length), byteOrder: Endian.little);
+      return [0x80 | encodeLen.length, ...encodeLen];
+    }
+  }
+
+  /// Encodes a BigInt as a DER-encoded integer.
+  ///
+  /// The [_encodeInteger] method takes a BigInt [r] and returns a list of bytes
+  /// representing the DER-encoded integer.
+  ///
+  /// Parameters:
+  /// - [r]: The BigInt value to be DER-encoded.
+  /// Returns: A list of bytes representing the DER-encoded integer.
+  static List<int> _encodeInteger(BigInt r) {
+    /// can't support negative numbers yet
+    assert(r >= BigInt.zero);
+
+    final len = BigintUtils.orderLen(r);
+    final List<int> s = BigintUtils.toBytes(r, length: len);
+    final int num = s[0];
+    if (num <= 0x7F) {
+      return [0x02, ..._encodeLength(s.length), ...s];
+    } else {
+      /// DER integers are two's complement, so if the first byte is
+      /// 0x80-0xff then we need an extra 0x00 byte to prevent it from
+      /// looking negative.
+      return [0x02, ..._encodeLength(s.length + 1), 0x00, ...s];
+    }
   }
 }

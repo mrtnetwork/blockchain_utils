@@ -4,32 +4,32 @@ import 'package:blockchain_utils/crypto/crypto/cdsa/ecdsa/signature.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/point/ec_projective_point.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/rfc6979/rfc6979.dart';
 import 'package:blockchain_utils/crypto/crypto/hash/hash.dart';
+import 'package:blockchain_utils/signer/exception/signing_exception.dart';
 import 'package:blockchain_utils/utils/utils.dart';
 import 'dart:math' as math;
-import 'package:blockchain_utils/exception/exceptions.dart';
 
-/// The [EcdsaSigningKey] class represents a key pair for ECDSA (Elliptic Curve Digital Signature Algorithm) signing.
+/// The [ECDSASigningKey] class represents a key pair for ECDSA (Elliptic Curve Digital Signature Algorithm) signing.
 /// It encapsulates the private key and provides methods for signing digests and generating deterministic signatures.
-class EcdsaSigningKey {
+class ECDSASigningKey {
   /// The ECDSA private key associated with this signing key.
   final ECDSAPrivateKey privateKey;
 
-  /// Constructs an [EcdsaSigningKey] instance with the given private key.
-  EcdsaSigningKey(this.privateKey) : generator = privateKey.publicKey.generator;
+  /// Constructs an [ECDSASigningKey] instance with the given private key.
+  ECDSASigningKey(this.privateKey) : generator = privateKey.publicKey.generator;
 
   /// The projective ECC (Elliptic Curve Cryptography) point generator associated with the key.
   final ProjectiveECCPoint generator;
 
   /// Truncates and converts a digest into a BigInt, based on the provided [generator].
   ///
-  /// Throws an [ArgumentException] if the digest length exceeds the curve's base length when [truncate] is false.
+  /// Throws an [CryptoSignException] if the digest length exceeds the curve's base length when [truncate] is false.
   static BigInt _truncateAndConvertDigest(
       List<int> digest, ProjectiveECCPoint generator,
       {bool truncate = false}) {
     List<int> digestBytes = List.from(digest);
     if (!truncate) {
       if (digest.length > generator.curve.baselen) {
-        throw const ArgumentException(
+        throw const CryptoSignException(
             "this curve is too short for digest length");
       }
     } else {
@@ -61,28 +61,20 @@ class EcdsaSigningKey {
   /// Generates a deterministic signature for a given digest using the private key.
   ///
   /// Uses RFC 6979 for 'k' value generation to mitigate certain vulnerabilities associated with random 'k' generation.
-  ECDSASignature signDigestDeterminstic({
-    required List<int> digest,
-    required HashFunc hashFunc,
-    List<int> extraEntropy = const [],
-    bool truncate = false,
-  }) {
-    ECDSASignature sig;
-    int retry = 0;
-    while (true) {
-      final k = RFC6979.generateK(
-          generator.order!, privateKey.secretMultiplier, hashFunc, digest,
-          extraEntropy: extraEntropy, retryGn: retry);
-
-      try {
-        sig = signDigest(digest: digest, k: k, truncate: truncate);
-
-        break;
-      } on StateError {
-        retry++;
-      }
-    }
-    return sig;
+  ECDSASignature signDigestDeterminstic(
+      {required List<int> digest,
+      required HashFunc hashFunc,
+      List<int> extraEntropy = const [],
+      bool truncate = false,
+      int retry = 0}) {
+    final k = RFC6979.generateK(
+        order: generator.order!,
+        secexp: privateKey.secretMultiplier,
+        hashFunc: hashFunc,
+        data: digest,
+        extraEntropy: extraEntropy,
+        retryGn: retry);
+    return signDigest(digest: digest, k: k, truncate: truncate);
   }
 }
 
@@ -103,7 +95,7 @@ class ECDSAVerifyKey {
   /// Returns true if the signature is valid for the provided digest, false otherwise.
   bool verify(ECDSASignature signature, List<int> digest) {
     final digestNumber =
-        EcdsaSigningKey._truncateAndConvertDigest(digest, publicKey.generator);
+        ECDSASigningKey._truncateAndConvertDigest(digest, publicKey.generator);
     return publicKey.verifies(digestNumber, signature);
   }
 }

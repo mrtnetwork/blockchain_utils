@@ -1,18 +1,10 @@
 import 'package:blockchain_utils/bip/ecc/bip_ecc.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/cdsa.dart';
 import 'package:blockchain_utils/crypto/crypto/hash/hash.dart';
-import 'package:blockchain_utils/exception/exceptions.dart';
-import 'package:blockchain_utils/utils/numbers/numbers.dart';
+import 'package:blockchain_utils/signer/const/constants.dart';
+import 'package:blockchain_utils/signer/exception/signing_exception.dart';
 
-/// Constants used by the Solana signer for cryptographic operations.
-class CardanoSignerConst {
-  /// The ED25519 elliptic curve generator point.
-  static final EDPoint ed25519Generator = Curves.generatorED25519;
-
-  static final int signatureLen =
-      BigintUtils.orderLen(ed25519Generator.curve.p) * 2;
-}
-
+//
 /// Class for signing Solana transactions using either EDDSA algorithm.
 class CardanoSigner {
   /// The EDDSA private key for signing.
@@ -27,7 +19,7 @@ class CardanoSigner {
   factory CardanoSigner.fromKeyBytes(List<int> keyBytes) {
     if (keyBytes.length != Ed25519KholawKeysConst.privKeyByteLen &&
         keyBytes.length != Ed25519KeysConst.privKeyByteLen) {
-      throw MessageException("Invalid key bytes length.", details: {
+      throw CryptoSignException("Invalid key bytes length.", details: {
         "length": keyBytes.length,
         "Excepted":
             "${Ed25519KholawKeysConst.privKeyByteLen} or ${Ed25519KeysConst.privKeyByteLen}"
@@ -37,10 +29,10 @@ class CardanoSigner {
     final EDDSAPrivateKey signingKey;
     if (keyBytes.length == Ed25519KholawKeysConst.privKeyByteLen) {
       signingKey = EDDSAPrivateKey.fromKhalow(
-          CardanoSignerConst.ed25519Generator, keyBytes);
+          CryptoSignerConst.generatorED25519, keyBytes);
     } else {
       signingKey = EDDSAPrivateKey(
-          CardanoSignerConst.ed25519Generator, keyBytes, () => SHA512());
+          CryptoSignerConst.generatorED25519, keyBytes, () => SHA512());
     }
     return CardanoSigner._(signingKey);
   }
@@ -58,7 +50,7 @@ class CardanoSigner {
     final verifyKey = toVerifyKey();
     final verify = verifyKey._verifyEddsa(digest, sig);
     if (!verify) {
-      throw const MessageException(
+      throw const CryptoSignException(
           'The created signature does not pass verification.');
     }
     return sig;
@@ -97,7 +89,7 @@ class CardanoVerifier {
   factory CardanoVerifier.fromKeyBytes(List<int> keyBytes) {
     final pub = Ed25519PublicKey.fromBytes(keyBytes);
     final verifyingKey = EDDSAPublicKey(
-        CardanoSignerConst.ed25519Generator, pub.compressed.sublist(1));
+        CryptoSignerConst.generatorED25519, pub.compressed.sublist(1));
     return CardanoVerifier._(verifyingKey);
   }
 

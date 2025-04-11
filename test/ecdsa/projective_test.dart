@@ -144,8 +144,11 @@ void _testKeys() {
   final msgDigest = BigInt.zero;
   final sig = privateKey.sign(
       msgDigest,
-      RFC6979.generateK(Curves.generatorSecp256k1.order!, secexp,
-          () => SHA256(), Uint8List(32)));
+      RFC6979.generateK(
+          order: Curves.generatorSecp256k1.order!,
+          secexp: secexp,
+          hashFunc: () => SHA256(),
+          data: Uint8List(32)));
 
   final verify = privateKey.publicKey.verifies(msgDigest, sig);
   expect(verify, true);

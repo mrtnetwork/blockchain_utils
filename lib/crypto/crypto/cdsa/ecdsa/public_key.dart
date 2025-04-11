@@ -83,8 +83,8 @@ class ECDSAPublicKey {
 
   @override
   bool operator ==(Object other) {
+    if (identical(this, other)) return true;
     if (other is ECDSAPublicKey) {
-      if (identical(this, other)) return true;
       return generator.curve == other.generator.curve && point == other.point;
     }
     return false;

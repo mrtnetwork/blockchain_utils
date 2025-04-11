@@ -58,7 +58,7 @@ class ECDSAUtils {
 
     final jacobiSymbol = jacobi(a, p);
 
-    if (jacobiSymbol == BigInt.from(-1)) {
+    if (jacobiSymbol.isNegative) {
       throw SquareRootError("$a has no square root modulo $p");
     }
 
@@ -80,7 +80,7 @@ class ECDSAUtils {
     }
 
     for (BigInt b = BigInt.from(2); b < p; b += BigInt.one) {
-      if (jacobi(b * b - BigInt.from(4) * a, p) == BigInt.from(-1)) {
+      if (jacobi(b * b - BigInt.from(4) * a, p).isNegative) {
         final quadraticForm = [a, -b, BigInt.one];
         final result = polynomialExponentiationMod([BigInt.zero, BigInt.one],
             (p + BigInt.one) ~/ BigInt.from(2), quadraticForm, p);
@@ -142,20 +142,20 @@ class ECDSAUtils {
   ///
   /// Throws a JacobiError if 'n' is not an odd integer greater than or equal to 3.
   ///
-  static BigInt jacobi(BigInt a, BigInt n) {
+  static int jacobi(BigInt a, BigInt n) {
     if (!(n >= BigInt.from(3))) {
-      throw const JacobiError("n must be larger than 2");
+      throw const JacobiError("n must be larger than 2.");
     }
     if (!(n % BigInt.two == BigInt.one)) {
-      throw const JacobiError("n must be odd");
+      throw const JacobiError("n must be odd.");
     }
 
     a = a % n;
     if (a == BigInt.zero) {
-      return BigInt.zero;
+      return 0;
     }
     if (a == BigInt.one) {
-      return BigInt.one;
+      return 1;
     }
 
     BigInt a1 = a, e = BigInt.zero;
@@ -164,14 +164,14 @@ class ECDSAUtils {
       e = e + BigInt.one;
     }
 
-    BigInt s = BigInt.one;
+    int s = 1;
 
     if (e % BigInt.two == BigInt.zero ||
         n % BigInt.from(8) == BigInt.one ||
         n % BigInt.from(8) == BigInt.from(7)) {
       // s remains 1
     } else {
-      s = BigInt.from(-1);
+      s = -1;
     }
 
     if (a1 == BigInt.one) {

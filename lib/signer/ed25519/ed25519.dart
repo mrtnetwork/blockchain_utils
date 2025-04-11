@@ -1,16 +1,7 @@
 import 'package:blockchain_utils/bip/ecc/keys/ed25519_keys.dart';
 import 'package:blockchain_utils/crypto/crypto/crypto.dart';
-import 'package:blockchain_utils/exception/exceptions.dart';
-import 'package:blockchain_utils/utils/utils.dart';
-
-/// Constants used by the Ed25519 signer for cryptographic operations.
-class Ed25519SignerConst {
-  /// The ED25519 elliptic curve generator point.
-  static final EDPoint ed25519Generator = Curves.generatorED25519;
-
-  static final int signatureLen =
-      BigintUtils.orderLen(ed25519Generator.curve.p) * 2;
-}
+import 'package:blockchain_utils/signer/const/constants.dart';
+import 'package:blockchain_utils/signer/exception/signing_exception.dart';
 
 /// Class for signing Ed25519.
 class Ed25519Signer {
@@ -26,7 +17,7 @@ class Ed25519Signer {
   factory Ed25519Signer.fromKeyBytes(List<int> keyBytes) {
     // Create an EDDSA private key from the key bytes using the ED25519 curve.
     final signingKey = EDDSAPrivateKey(
-        Ed25519SignerConst.ed25519Generator, keyBytes, () => SHA512());
+        CryptoSignerConst.generatorED25519, keyBytes, () => SHA512());
     return Ed25519Signer._(signingKey);
   }
 
@@ -43,7 +34,7 @@ class Ed25519Signer {
     final verifyKey = toVerifyKey();
     final verify = verifyKey._verifyEddsa(digest, sig);
     if (!verify) {
-      throw const MessageException(
+      throw const CryptoSignException(
           'The created signature does not pass verification.');
     }
     return sig;
@@ -82,7 +73,7 @@ class Ed25519Verifier {
   factory Ed25519Verifier.fromKeyBytes(List<int> keyBytes) {
     final pub = Ed25519PublicKey.fromBytes(keyBytes);
     final verifyingKey = EDDSAPublicKey(
-        Ed25519SignerConst.ed25519Generator, pub.compressed.sublist(1));
+        CryptoSignerConst.generatorED25519, pub.compressed.sublist(1));
     return Ed25519Verifier._(verifyingKey);
   }
 

@@ -15,7 +15,7 @@ void main() {
     expect(verify, true);
     final publicKey = TronVerifier.getPublicKey(message, sign);
     expect(
-        BytesUtils.bytesEqual(publicKey?.toBytes(),
+        BytesUtils.bytesEqual(publicKey.toBytes(),
             signer.toVerifyKey().edsaVerifyKey.publicKey.toBytes()),
         true);
   });

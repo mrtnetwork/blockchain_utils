@@ -1,22 +1,9 @@
 import 'package:blockchain_utils/crypto/crypto/cdsa/cdsa.dart';
 import 'package:blockchain_utils/crypto/crypto/hash/hash.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
-import 'package:blockchain_utils/exception/exceptions.dart';
+import 'package:blockchain_utils/signer/const/constants.dart';
+import 'package:blockchain_utils/signer/exception/signing_exception.dart';
 import 'package:blockchain_utils/signer/signing_key/ecdsa_signing_key.dart';
-
-class _NistSignerConst {
-  /// The projective ECC point representing the secp256r1 elliptic curve.
-  static final ProjectiveECCPoint nist256256 = Curves.generator256;
-
-  /// The length of the digest (or component) in bytes for the secp256r1 curve.
-  static final int digestLength = nist256256.curve.baselen;
-
-  /// The order of the secp256R1 elliptic curve.
-  static final curveOrder = nist256256.order!;
-
-  /// Half of the order of the secp256R1 elliptic curve.
-  static final BigInt orderHalf = curveOrder >> 1;
-}
 
 /// Nist256p1Signer Signer class for cryptographic operations, including signing and verification.
 ///
@@ -27,35 +14,34 @@ class _NistSignerConst {
 class Nist256p1Signer {
   const Nist256p1Signer._(this._ecdsaSigningKey);
 
-  final EcdsaSigningKey _ecdsaSigningKey;
+  final ECDSASigningKey _ecdsaSigningKey;
 
   /// Factory method to create a [Nist256p1Signer] from a byte representation of a private key.
   factory Nist256p1Signer.fromKeyBytes(List<int> keyBytes) {
     final signingKey =
-        ECDSAPrivateKey.fromBytes(keyBytes, _NistSignerConst.nist256256);
-    return Nist256p1Signer._(EcdsaSigningKey(signingKey));
+        ECDSAPrivateKey.fromBytes(keyBytes, CryptoSignerConst.nist256);
+    return Nist256p1Signer._(ECDSASigningKey(signingKey));
   }
 
   List<int> _signEcdsa(List<int> digest, {bool hashMessage = true}) {
     final hash = hashMessage ? QuickCrypto.sha256Hash(digest) : digest;
-    if (hash.length != _NistSignerConst.digestLength) {
-      throw ArgumentException(
-          "invalid digest. digest length must be ${_NistSignerConst.digestLength} got ${digest.length}");
+    if (hash.length != CryptoSignerConst.nist256DigestLength) {
+      throw CryptoSignException(
+          "invalid digest. digest length must be ${CryptoSignerConst.nist256DigestLength} got ${digest.length}");
     }
     ECDSASignature ecdsaSign = _ecdsaSigningKey.signDigestDeterminstic(
         digest: hash, hashFunc: () => SHA256());
-    if (ecdsaSign.s > _NistSignerConst.orderHalf) {
+    if (ecdsaSign.s > CryptoSignerConst.orderHalf) {
       ecdsaSign = ECDSASignature(
-          ecdsaSign.r, _NistSignerConst.curveOrder - ecdsaSign.s);
+          ecdsaSign.r, CryptoSignerConst.nist256256Order - ecdsaSign.s);
     }
-    final sigBytes =
-        ecdsaSign.toBytes(_NistSignerConst.nist256256.curve.baselen);
+    final sigBytes = ecdsaSign.toBytes(CryptoSignerConst.nist256.curve.baselen);
     final verifyKey = toVerifyKey();
     if (verifyKey.verify(hash, sigBytes)) {
-      return ecdsaSign.toBytes(_NistSignerConst.digestLength);
+      return ecdsaSign.toBytes(CryptoSignerConst.nist256DigestLength);
     }
 
-    throw const MessageException(
+    throw const CryptoSignException(
         'The created signature does not pass verification.');
   }
 
@@ -71,7 +57,7 @@ class Nist256p1Signer {
   /// - A byte list representing the signature of the message digest.
   ///
   /// Throws:
-  /// - [ArgumentException] if the digest length is invalid.
+  /// - [CryptoSignException] if the digest length is invalid.
   List<int> sign(List<int> digest, {bool hashMessage = true}) {
     return _signEcdsa(digest, hashMessage: hashMessage);
   }
@@ -99,14 +85,9 @@ class Nist256p1Verifier {
   /// Factory method to create a [Nist256p1Verifier] from a byte representation of a public key.
   factory Nist256p1Verifier.fromKeyBytes(List<int> keyBytes) {
     final point = ProjectiveECCPoint.fromBytes(
-        curve: _NistSignerConst.nist256256.curve, data: keyBytes, order: null);
-    final verifyingKey = ECDSAPublicKey(_NistSignerConst.nist256256, point);
+        curve: CryptoSignerConst.nist256.curve, data: keyBytes, order: null);
+    final verifyingKey = ECDSAPublicKey(CryptoSignerConst.nist256, point);
     return Nist256p1Verifier._(ECDSAVerifyKey(verifyingKey));
-  }
-  bool _verifyEcdsa(List<int> digest, List<int> sigBytes) {
-    final signature =
-        ECDSASignature.fromBytes(sigBytes, _NistSignerConst.nist256256);
-    return edsaVerifyKey.verify(signature, digest);
   }
 
   /// Verifies a Nist256p1 signature against a message digest.
@@ -122,6 +103,8 @@ class Nist256p1Verifier {
     if (hashMessage) {
       message = QuickCrypto.sha256Hash(message);
     }
-    return _verifyEcdsa(message, signature);
+    final ecdsaSignature =
+        ECDSASignature.fromBytes(signature, CryptoSignerConst.nist256);
+    return edsaVerifyKey.verify(ecdsaSignature, message);
   }
 }

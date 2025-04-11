@@ -32,6 +32,7 @@ class CurveFp extends Curve {
   /// Check if two CurveFp objects are equal based on their properties
   @override
   operator ==(other) {
+    if (identical(this, other)) return true;
     if (other is CurveFp) {
       return (p == other.p && a == other.a && b == other.b && h == other.h);
     }
@@ -87,8 +88,8 @@ class CurveED extends Curve {
   /// Check if two CurveED objects are equal based on their properties
   @override
   operator ==(other) {
+    if (identical(this, other)) return true;
     if (other is CurveED) {
-      if (identical(this, other)) return true;
       return (p == other.p && a == other.a && d == other.d && h == other.h);
     }
     return false;

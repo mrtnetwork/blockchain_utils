@@ -1,5 +1,5 @@
 import 'package:blockchain_utils/crypto/crypto/crypto.dart';
-import 'package:blockchain_utils/exception/exceptions.dart';
+import 'package:blockchain_utils/signer/exception/signing_exception.dart';
 import 'package:blockchain_utils/signer/substrate/core/signer.dart';
 import 'package:blockchain_utils/signer/substrate/core/verifier.dart';
 
@@ -60,7 +60,7 @@ class SubstrateSr25519Signer implements BaseSubstrateSigner {
     final verifier = toVerifyKey();
     final signature = _signer.sign(signingScript);
     if (!verifier.verifyScript(signature.toBytes(), cloneScript)) {
-      throw const MessageException(
+      throw const CryptoSignException(
           'The created signature does not pass verification.');
     }
     return signature.toBytes();
@@ -83,7 +83,7 @@ class SubstrateSr25519Signer implements BaseSubstrateSigner {
     final verifier = toVerifyKey();
     if (!verifier.vrfVerify(message, List<int>.from(vrfResult),
         context: context, extra: extra)) {
-      throw const MessageException(
+      throw const CryptoSignException(
           'The created vrfSign does not pass verification.');
     }
     return vrfResult;
@@ -93,7 +93,7 @@ class SubstrateSr25519Signer implements BaseSubstrateSigner {
       {List<int>? context, List<int>? extra}) {
     if (vrfSign.length != _SubstrateSr25519SignerConst.vrfResultLength &&
         vrfSign.length != SchnorrkelKeyCost.vrfProofLength) {
-      throw ArgumentException(
+      throw CryptoSignException(
           "Invalid VrfSign bytes length. expected: ${_SubstrateSr25519SignerConst.vrfResultLength}, ${SchnorrkelKeyCost.vrfProofLength} got: ${vrfSign.length} ");
     }
     final MerlinTranscript script =
@@ -150,7 +150,7 @@ class SubstrateSr25519Verifier implements BaseSubstrateVerifier {
   bool vrfVerify(List<int> message, List<int> vrfSign,
       {List<int>? context, List<int>? extra}) {
     if (vrfSign.length != _SubstrateSr25519SignerConst.vrfResultLength) {
-      throw ArgumentException(
+      throw CryptoSignException(
           "Invalid VrfSign bytes length. expected: ${_SubstrateSr25519SignerConst.vrfResultLength} got: ${vrfSign.length} ");
     }
     final MerlinTranscript vrfScript =

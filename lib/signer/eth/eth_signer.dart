@@ -1,38 +1,10 @@
 import 'package:blockchain_utils/crypto/crypto/crypto.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
-import 'package:blockchain_utils/exception/exceptions.dart';
+import 'package:blockchain_utils/signer/const/constants.dart';
+import 'package:blockchain_utils/signer/exception/signing_exception.dart';
 import 'package:blockchain_utils/signer/signing_key/ecdsa_signing_key.dart';
-import 'package:blockchain_utils/signer/eth/eth_signature.dart';
+import 'package:blockchain_utils/signer/types/eth_signature.dart';
 import 'package:blockchain_utils/utils/utils.dart';
-
-/// Constants used by the Ethereum Signer for cryptographic operations.
-///
-/// This class provides essential constants related to the Ethereum Signer,
-/// including curve parameters, signature lengths, and the Ethereum personal
-/// sign prefix. These constants are used in cryptographic operations for
-/// signing and verifying Ethereum transactions and messages.
-class ETHSignerConst {
-  /// The projective ECC point representing the secp256k1 elliptic curve.
-  static final ProjectiveECCPoint secp256 = Curves.generatorSecp256k1;
-
-  /// The length of the digest (or component) in bytes for the secp256k1 curve.
-  static final int digestLength = secp256.curve.baselen;
-
-  /// The order of the secp256k1 elliptic curve.
-  static final curveOrder = secp256.order!;
-
-  /// Half of the order of the secp256k1 elliptic curve.
-  static final BigInt orderHalf = curveOrder >> 1;
-
-  /// The length of an Ethereum signature (r + s) in bytes.
-  static const int ethSignatureLength = 64;
-
-  /// The length of the recovery id in an Ethereum signature in bytes.
-  static const int ethSignatureRecoveryIdLength = 1;
-
-  /// The Ethereum personal sign prefix used in message signing.+
-  static const ethPersonalSignPrefix = '\u0019Ethereum Signed Message:\n';
-}
 
 /// Ethereum Signer class for cryptographic operations, including signing and verification.
 ///
@@ -43,13 +15,13 @@ class ETHSignerConst {
 class ETHSigner {
   const ETHSigner._(this._ecdsaSigningKey);
 
-  final EcdsaSigningKey _ecdsaSigningKey;
+  final ECDSASigningKey _ecdsaSigningKey;
 
   /// Factory method to create an ETHSigner from a byte representation of a private key.
   factory ETHSigner.fromKeyBytes(List<int> keyBytes) {
-    final signingKey =
-        ECDSAPrivateKey.fromBytes(keyBytes, ETHSignerConst.secp256);
-    return ETHSigner._(EcdsaSigningKey(signingKey));
+    final signingKey = ECDSAPrivateKey.fromBytes(
+        keyBytes, CryptoSignerConst.generatorSecp256k1);
+    return ETHSigner._(ECDSASigningKey(signingKey));
   }
 
   /// Signs a message digest using the ECDSA algorithm on the secp256k1 curve.
@@ -64,20 +36,22 @@ class ETHSigner {
   /// - An ETHSignature representing the signature of the message digest.
   ETHSignature _signEcdsa(List<int> digest, {bool hashMessage = true}) {
     final hash = hashMessage ? QuickCrypto.keccack256Hash(digest) : digest;
-    if (hash.length != ETHSignerConst.digestLength) {
-      throw ArgumentException(
-          "invalid digest. digest length must be ${ETHSignerConst.digestLength} got ${digest.length}");
+    if (hash.length != CryptoSignerConst.digestLength) {
+      throw CryptoSignException(
+          "invalid digest. digest length must be ${CryptoSignerConst.digestLength} got ${digest.length}");
     }
     ECDSASignature ecdsaSign = _ecdsaSigningKey.signDigestDeterminstic(
         digest: hash, hashFunc: () => SHA256());
-    if (ecdsaSign.s > ETHSignerConst.orderHalf) {
-      ecdsaSign =
-          ECDSASignature(ecdsaSign.r, ETHSignerConst.curveOrder - ecdsaSign.s);
+    if (ecdsaSign.s > CryptoSignerConst.orderHalf) {
+      ecdsaSign = ECDSASignature(
+          ecdsaSign.r, CryptoSignerConst.secp256k1Order - ecdsaSign.s);
     }
-    final sigBytes = ecdsaSign.toBytes(ETHSignerConst.secp256.curve.baselen);
+    final sigBytes =
+        ecdsaSign.toBytes(CryptoSignerConst.generatorSecp256k1.curve.baselen);
     final verifyKey = toVerifyKey();
     if (verifyKey.verify(hash, sigBytes, hashMessage: false)) {
-      final recover = ecdsaSign.recoverPublicKeys(hash, ETHSignerConst.secp256);
+      final recover = ecdsaSign.recoverPublicKeys(
+          hash, CryptoSignerConst.generatorSecp256k1);
       for (int i = 0; i < recover.length; i++) {
         if (recover[i].point == verifyKey.edsaVerifyKey.publicKey.point) {
           return ETHSignature(ecdsaSign.r, ecdsaSign.s, i + 27);
@@ -85,27 +59,16 @@ class ETHSigner {
       }
     }
 
-    throw const MessageException(
+    throw const CryptoSignException(
         'The created signature does not pass verification.');
   }
 
-  /// Signs a personal message digest with an optional payload length.
-  ///
-  /// The Ethereum personal sign prefix is applied to the message, and the resulting
-  /// signature is returned as a byte list. Optionally, a payload length can be provided.
-  ///
-  /// Parameters:
-  /// - [digest]: The personal message digest to be signed.
-  /// - [payloadLength]: An optional payload length to include in the message prefix.
-  ///
-  /// Returns:
-  /// - A byte list representing the signature of the personal message.
   ETHSignature sign(List<int> digest, {bool hashMessage = true}) {
     return _signEcdsa(digest, hashMessage: hashMessage);
   }
 
   List<int> signProsonalMessage(List<int> digest, {int? payloadLength}) {
-    final prefix = ETHSignerConst.ethPersonalSignPrefix +
+    final prefix = CryptoSignerConst.ethPersonalSignPrefix +
         (payloadLength?.toString() ?? digest.length.toString());
     final prefixBytes = StringUtils.encode(prefix, type: StringEncoding.ascii);
     final sign = _signEcdsa(<int>[...prefixBytes, ...digest]);
@@ -135,14 +98,17 @@ class ETHVerifier {
   /// Factory method to create an ETHVerifier from a byte representation of a public key.
   factory ETHVerifier.fromKeyBytes(List<int> keyBytes) {
     final point = ProjectiveECCPoint.fromBytes(
-        curve: ETHSignerConst.secp256.curve, data: keyBytes, order: null);
-    final verifyingKey = ECDSAPublicKey(ETHSignerConst.secp256, point);
+        curve: CryptoSignerConst.generatorSecp256k1.curve,
+        data: keyBytes,
+        order: null);
+    final verifyingKey =
+        ECDSAPublicKey(CryptoSignerConst.generatorSecp256k1, point);
     return ETHVerifier._(ECDSAVerifyKey(verifyingKey));
   }
 
   bool _verifyEcdsa(List<int> digest, List<int> sigBytes) {
-    final signature =
-        ECDSASignature.fromBytes(sigBytes, ETHSignerConst.secp256);
+    final signature = ECDSASignature.fromBytes(
+        sigBytes, CryptoSignerConst.generatorSecp256k1);
     return edsaVerifyKey.verify(signature, digest);
   }
 
@@ -157,7 +123,8 @@ class ETHVerifier {
   /// - True if the signature is valid, false otherwise.
   bool verify(List<int> digest, List<int> signature,
       {bool hashMessage = true}) {
-    final sigBytes = signature.sublist(0, ETHSignerConst.ethSignatureLength);
+    final sigBytes =
+        signature.sublist(0, CryptoSignerConst.ecdsaSignatureLength);
     final hashDigest =
         hashMessage ? QuickCrypto.keccack256Hash(digest) : digest;
     return _verifyEcdsa(hashDigest, sigBytes);
@@ -177,14 +144,14 @@ class ETHVerifier {
       {bool hashMessage = true, int? payloadLength}) {
     final List<int> messagaeHash = _hashMessage(message,
         hashMessage: hashMessage, payloadLength: payloadLength);
-    return _verifyEcdsa(
-        messagaeHash, signature.sublist(0, ETHSignerConst.ethSignatureLength));
+    return _verifyEcdsa(messagaeHash,
+        signature.sublist(0, CryptoSignerConst.ecdsaSignatureLength));
   }
 
   static List<int> _hashMessage(List<int> message,
       {bool hashMessage = true, int? payloadLength}) {
     if (hashMessage) {
-      final prefix = ETHSignerConst.ethPersonalSignPrefix +
+      final prefix = CryptoSignerConst.ethPersonalSignPrefix +
           (payloadLength?.toString() ?? message.length.toString());
       final prefixBytes =
           StringUtils.encode(prefix, type: StringEncoding.ascii);
@@ -209,11 +176,11 @@ class ETHVerifier {
         hashMessage: hashMessage, payloadLength: payloadLength);
     final ethSignature = ETHSignature.fromBytes(signature);
     final toBytes = ethSignature.toBytes(false);
-    final recoverId = toBytes[ETHSignerConst.ethSignatureLength];
+    final recoverId = toBytes[CryptoSignerConst.ecdsaSignatureLength];
     final signatureBytes = ECDSASignature.fromBytes(
-        toBytes.sublist(0, ETHSignerConst.ethSignatureLength),
-        ETHSignerConst.secp256);
+        toBytes.sublist(0, CryptoSignerConst.ecdsaSignatureLength),
+        CryptoSignerConst.generatorSecp256k1);
     return signatureBytes.recoverPublicKey(
-        messagaeHash, ETHSignerConst.secp256, recoverId);
+        messagaeHash, CryptoSignerConst.generatorSecp256k1, recoverId);
   }
 }
