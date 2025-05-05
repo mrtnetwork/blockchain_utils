@@ -22,6 +22,10 @@ class SubstrateSigner {
     return _signer.sign(digest.asBytes);
   }
 
+  List<int> signConst(List<int> digest) {
+    return _signer.signConst(digest.asBytes);
+  }
+
   List<int> vrfSign(List<int> message, {List<int>? context, List<int>? extra}) {
     return _signer.vrfSign(message.asBytes,
         extra: extra?.asBytes, context: context?.asBytes);

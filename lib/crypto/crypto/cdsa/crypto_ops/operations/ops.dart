@@ -54,6 +54,8 @@
 //   OF THE POSSIBILITY OF SUCH DAMAGE.
 import 'package:blockchain_utils/crypto/crypto/cdsa/crypto_ops/const/const.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/crypto_ops/models/models.dart';
+import 'package:blockchain_utils/crypto/crypto/cdsa/point/edwards.dart';
+import 'package:blockchain_utils/crypto/crypto/cdsa/utils/ed25519.dart';
 import 'package:blockchain_utils/crypto/crypto/exception/exception.dart';
 import 'package:blockchain_utils/helper/extensions/extensions.dart';
 import 'package:blockchain_utils/utils/binary/utils.dart';
@@ -5047,6 +5049,268 @@ class CryptoOps {
 
       geP1P1ToP2(r, t);
     }
+  }
+
+  /// these method is not related to cryptoOps
+  static List<EDPoint> geDsmPrecompVartimeFast(EDPoint point) {
+    final List<EDPoint> oddMultiples = [];
+    final twoP = point.doublePoint();
+    var current = point;
+
+    for (int i = 0; i < 8; i++) {
+      oddMultiples.add(current);
+      current = current + twoP; // Next odd multiple
+    }
+
+    return oddMultiples;
+  }
+
+  static EDPoint geDoubleScalarMultPrecompVartimeFast(
+      List<int> a, List<EDPoint> aI, List<int> b, List<EDPoint> bI) {
+    final aslide = List<int>.filled(256, 0);
+    final bslide = List<int>.filled(256, 0);
+    CryptoOps.slide(aslide, a);
+    CryptoOps.slide(bslide, b);
+
+    EDPoint? r;
+
+    for (int i = 255; i >= 0; i--) {
+      final aVal = aslide[i];
+      final bVal = bslide[i];
+
+      if (r == null) {
+        if (aVal != 0) {
+          final idx = (aVal.abs() - 1) ~/ 2;
+          final ai = aI[idx];
+          r = aVal > 0 ? ai : -ai;
+        }
+
+        if (bVal != 0) {
+          final idx = (bVal.abs() - 1) ~/ 2;
+          final bi = bI[idx];
+          r = (r == null) ? (bVal > 0 ? bi : -bi) : (r + (bVal > 0 ? bi : -bi));
+        }
+
+        if (r == null) continue; // still no op
+      } else {
+        r = r * BigInt.two;
+
+        if (aVal != 0) {
+          final idx = (aVal.abs() - 1) ~/ 2;
+          final ai = aI[idx];
+          r += aVal > 0 ? ai : -ai;
+        }
+
+        if (bVal != 0) {
+          final idx = (bVal.abs() - 1) ~/ 2;
+          final bi = bI[idx];
+          r += bVal > 0 ? bi : -bi;
+        }
+      }
+    }
+
+    if (r == null) {
+      throw Exception(
+          "Both scalars are zero; result undefined without identity support.");
+    }
+
+    return r;
+  }
+
+  static EDPoint geTripleScalarMultBaseVartimeFast(
+      {required List<int> a,
+      required List<int> b,
+      required List<EDPoint> bI,
+      required List<int> c,
+      required List<EDPoint> cI}) {
+    final aslide = List<int>.filled(256, 0);
+    final bslide = List<int>.filled(256, 0);
+    final cslide = List<int>.filled(256, 0);
+    CryptoOps.slide(aslide, a);
+    CryptoOps.slide(bslide, b);
+    CryptoOps.slide(cslide, c);
+
+    EDPoint? r;
+    // Logg.error("calll ?!");
+    for (int i = 255; i >= 0; i--) {
+      final aVal = aslide[i];
+      final bVal = bslide[i];
+      final cVal = cslide[i];
+
+      if (r == null) {
+        if (aVal != 0) {
+          final idx = (aVal.abs() - 1) ~/ 2;
+          final ai = Ed25519Utils.asPoint(
+              BytesUtils.fromHexString(CryptoOpsConst.geBiPointBytes[idx]));
+          r = aVal > 0 ? ai : -ai;
+        }
+
+        if (bVal != 0) {
+          final idx = (bVal.abs() - 1) ~/ 2;
+          final bi = bI[idx];
+          r = (r == null) ? (bVal > 0 ? bi : -bi) : (r + (bVal > 0 ? bi : -bi));
+        }
+
+        if (cVal != 0) {
+          final idx = (cVal.abs() - 1) ~/ 2;
+          final ci = cI[idx];
+          r = (r == null) ? (cVal > 0 ? ci : -ci) : (r + (cVal > 0 ? ci : -ci));
+        }
+
+        if (r == null) continue;
+      } else {
+        r = r * BigInt.two;
+
+        if (aVal != 0) {
+          final idx = (aVal.abs() - 1) ~/ 2;
+          final ai = Ed25519Utils.asPoint(
+              BytesUtils.fromHexString(CryptoOpsConst.geBiPointBytes[idx]));
+          r += aVal > 0 ? ai : -ai;
+        }
+
+        if (bVal != 0) {
+          final idx = (bVal.abs() - 1) ~/ 2;
+          final bi = bI[idx];
+          r += bVal > 0 ? bi : -bi;
+        }
+
+        if (cVal != 0) {
+          final idx = (cVal.abs() - 1) ~/ 2;
+          final ci = cI[idx];
+          r += cVal > 0 ? ci : -ci;
+        }
+      }
+    }
+
+    if (r == null) {
+      throw Exception(
+          "All scalars are zero; result undefined without identity support.");
+    }
+
+    return r;
+  }
+
+  static EDPoint geDoubleScalarMultBaseVartimeFast(
+      {required List<int> a, required EDPoint gA, required List<int> b}) {
+    final aslide = List<int>.filled(256, 0);
+    final bslide = List<int>.filled(256, 0);
+    CryptoOps.slide(aslide, a);
+    CryptoOps.slide(bslide, b);
+    final aI = geDsmPrecompVartimeFast(gA);
+    final Map<int, String> res = {};
+    EDPoint? r;
+    // Logg.error("calll ?!");
+    for (int i = 255; i >= 0; i--) {
+      final aVal = aslide[i];
+      final bVal = bslide[i];
+
+      if (r == null) {
+        if (aVal != 0) {
+          final idx = (aVal.abs() - 1) ~/ 2;
+          final bi = aI[idx];
+          r = aVal > 0 ? bi : -bi;
+        }
+        if (bVal != 0) {
+          final idx = (bVal.abs() - 1) ~/ 2;
+          final ai = Ed25519Utils.asPoint(
+              BytesUtils.fromHexString(CryptoOpsConst.geBiPointBytes[idx]));
+          r = (r == null) ? (bVal > 0 ? ai : -ai) : (r + (bVal > 0 ? ai : -ai));
+        }
+
+        // if (r == null) continue;
+      } else {
+        r = r * BigInt.two;
+
+        if (aVal != 0) {
+          final idx = (aVal.abs() - 1) ~/ 2;
+          final bi = aI[idx];
+          r += aVal > 0 ? bi : -bi;
+        }
+        if (bVal != 0) {
+          final idx = (bVal.abs() - 1) ~/ 2;
+          final ai = Ed25519Utils.asPoint(
+              BytesUtils.fromHexString(CryptoOpsConst.geBiPointBytes[idx]));
+          r += bVal > 0 ? ai : -ai;
+        }
+        res.addAll({i: r.toHex()});
+      }
+    }
+
+    if (r == null) {
+      throw Exception(
+          "All scalars are zero; result undefined without identity support.");
+    }
+
+    return r;
+  }
+
+  static EDPoint geTripleScalarMultPrecompVartimeFast(
+      List<int> a,
+      List<EDPoint> aI,
+      List<int> b,
+      List<EDPoint> bI,
+      List<int> c,
+      List<EDPoint> cI) {
+    final aslide = List<int>.filled(256, 0);
+    final bslide = List<int>.filled(256, 0);
+    final cslide = List<int>.filled(256, 0);
+
+    CryptoOps.slide(aslide, a);
+    CryptoOps.slide(bslide, b);
+    CryptoOps.slide(cslide, c);
+
+    EDPoint? r;
+
+    for (int i = 255; i >= 0; i--) {
+      final aVal = aslide[i];
+      final bVal = bslide[i];
+      final cVal = cslide[i];
+
+      if (r == null) {
+        if (aVal != 0) {
+          final idx = (aVal.abs() - 1) ~/ 2;
+          final ai = aI[idx];
+          r = aVal > 0 ? ai : -ai;
+        }
+        if (bVal != 0) {
+          final idx = (bVal.abs() - 1) ~/ 2;
+          final bi = bI[idx];
+          r = (r == null) ? (bVal > 0 ? bi : -bi) : (r + (bVal > 0 ? bi : -bi));
+        }
+        if (cVal != 0) {
+          final idx = (cVal.abs() - 1) ~/ 2;
+          final ci = cI[idx];
+          r = (r == null) ? (cVal > 0 ? ci : -ci) : (r + (cVal > 0 ? ci : -ci));
+        }
+
+        if (r == null) continue; // still no op
+      } else {
+        r = r * BigInt.two;
+
+        if (aVal != 0) {
+          final idx = (aVal.abs() - 1) ~/ 2;
+          final ai = aI[idx];
+          r += aVal > 0 ? ai : -ai;
+        }
+        if (bVal != 0) {
+          final idx = (bVal.abs() - 1) ~/ 2;
+          final bi = bI[idx];
+          r += bVal > 0 ? bi : -bi;
+        }
+        if (cVal != 0) {
+          final idx = (cVal.abs() - 1) ~/ 2;
+          final ci = cI[idx];
+          r += cVal > 0 ? ci : -ci;
+        }
+      }
+    }
+
+    if (r == null) {
+      throw CryptoException(
+          "All scalars are zero; result undefined without identity support.");
+    }
+
+    return r;
   }
 }
 

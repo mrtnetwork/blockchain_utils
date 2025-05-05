@@ -146,15 +146,6 @@ class Secp256k1Const {
           ]),
           modulusInv: BigInt.parse("3815112494326173377"));
 
-  static Secp256k1ModinvInfo get secp256k1FieldModinfo => Secp256k1ModinvInfo(
-      modulus: Secp256k1ModinvSigned.constants([
-        BigInt.from(0x414036CD8BFD25BB),
-        BigInt.from(0x03A64AF6DCEBAE00),
-        BigInt.from(0xFFFFFEFFFFFEFFFF),
-        BigInt.from(0xFFFFFFFFFFFFFFFF),
-        BigInt.from(0xFFFFFFFFFFFFFFFF),
-      ]),
-      modulusInv: BigInt.from(0xD838091DD2253531));
   static Secp256k1ModinvSigned get modeInvOne =>
       Secp256k1ModinvSigned.constants([
         BigInt.one,
