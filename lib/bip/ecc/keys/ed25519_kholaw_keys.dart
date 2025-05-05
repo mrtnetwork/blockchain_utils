@@ -108,23 +108,20 @@ class Ed25519KholawPublicKey implements IPublicKey {
 class Ed25519KholawPrivateKey implements IPrivateKey {
   /// Private constructor for creating an Ed25519-KholawPrivateKey instance from an extended key
   /// and an EDDSAPrivateKey.
-  Ed25519KholawPrivateKey._(this._extendKey, this._privateKey);
-  final List<int> _extendKey;
+  Ed25519KholawPrivateKey._(this._privateKey);
+  // final List<int> _extendKey;
   final EDDSAPrivateKey _privateKey;
 
-  /// Factory method for creating an Ed25519-KholawPrivateKey from a byte array.
-  /// It checks the length of the provided keyBytes to ensure it matches the expected length.
-  /// Then, it initializes an EdDSA private key using the Ed25519 generator and the specified keyBytes,
-  /// and stores any extended key data.
   factory Ed25519KholawPrivateKey.fromBytes(List<int> keyBytes) {
     if (keyBytes.length != Ed25519KholawKeysConst.privKeyByteLen) {
       throw const ArgumentException("invalid private key length");
     }
     final edwardGenerator = Curves.generatorED25519;
-    final eddsaPrivateKey =
-        EDDSAPrivateKey.fromKhalow(edwardGenerator, keyBytes);
-    return Ed25519KholawPrivateKey._(
-        keyBytes.sublist(Ed25519KeysConst.privKeyByteLen), eddsaPrivateKey);
+    final eddsaPrivateKey = EDDSAPrivateKey(
+        generator: edwardGenerator,
+        privateKey: keyBytes,
+        type: EllipticCurveTypes.ed25519Kholaw);
+    return Ed25519KholawPrivateKey._(eddsaPrivateKey);
   }
 
   /// check if bytes is valid for this key
@@ -158,7 +155,8 @@ class Ed25519KholawPrivateKey implements IPrivateKey {
   /// private key raw bytes
   @override
   List<int> get raw {
-    return List<int>.from([..._privateKey.privateKey, ..._extendKey]);
+    return List<int>.from(
+        [..._privateKey.privateKey, ..._privateKey.extendedKey]);
   }
 
   @override

@@ -25,35 +25,16 @@ class CardanoSigner {
             "${Ed25519KholawKeysConst.privKeyByteLen} or ${Ed25519KeysConst.privKeyByteLen}"
       });
     }
-    // Create an EDDSA private key from the key bytes using the ED25519 curve.
-    final EDDSAPrivateKey signingKey;
-    if (keyBytes.length == Ed25519KholawKeysConst.privKeyByteLen) {
-      signingKey = EDDSAPrivateKey.fromKhalow(
-          CryptoSignerConst.generatorED25519, keyBytes);
-    } else {
-      signingKey = EDDSAPrivateKey(
-          CryptoSignerConst.generatorED25519, keyBytes, () => SHA512());
-    }
-    return CardanoSigner._(signingKey);
-  }
+    final algorithm = keyBytes.length == Ed25519KholawKeysConst.privKeyByteLen
+        ? EllipticCurveTypes.ed25519Kholaw
+        : EllipticCurveTypes.ed25519;
 
-  /// Signs the provided digest using the ED25519 algorithm.
-  ///
-  /// This method takes a digest as input and uses the private signing key to generate
-  /// a signature based on the ED25519 algorithm. It then verifies the signature using
-  /// the corresponding verification key and throws an exception if the verification fails.
-  ///
-  /// [digest] The digest to be signed.
-  /// returns A list of bytes representing the generated signature.
-  List<int> _signEdward(List<int> digest) {
-    final sig = _signingKey.sign(digest, () => SHA512());
-    final verifyKey = toVerifyKey();
-    final verify = verifyKey._verifyEddsa(digest, sig);
-    if (!verify) {
-      throw const CryptoSignException(
-          'The created signature does not pass verification.');
-    }
-    return sig;
+    // Create an EDDSA private key from the key bytes using the ED25519 curve.
+    final EDDSAPrivateKey signingKey = EDDSAPrivateKey(
+        generator: CryptoSignerConst.generatorED25519,
+        privateKey: keyBytes,
+        type: algorithm);
+    return CardanoSigner._(signingKey);
   }
 
   /// Signs the provided digest using the appropriate algorithm based on the available signing key.
@@ -64,7 +45,11 @@ class CardanoSigner {
   /// [digest] The digest to be signed.
   /// returns A list of bytes representing the generated signature using the appropriate algorithm.
   List<int> sign(List<int> digest) {
-    return _signEdward(digest);
+    return _signingKey.sign(digest, () => SHA512());
+  }
+
+  List<int> signConst(List<int> digest) {
+    return _signingKey.signConst(digest, () => SHA512());
   }
 
   /// Returns an SolanaVerifier instance based on the available signing key type.

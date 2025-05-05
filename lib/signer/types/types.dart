@@ -1,3 +1,4 @@
+import 'package:blockchain_utils/crypto/crypto/cdsa/ecdsa/signature.dart';
 import 'package:blockchain_utils/signer/bitcoin/bitcoin_signer.dart';
 import 'package:blockchain_utils/signer/const/constants.dart';
 import 'package:blockchain_utils/signer/exception/signing_exception.dart';
@@ -51,6 +52,10 @@ class BitcoinSchnorrSignature {
 class Secp256k1EcdsaSignature {
   final BigInt r;
   final BigInt s;
+  ECDSASignature toEcdsaSignature() {
+    return ECDSASignature(r, s);
+  }
+
   const Secp256k1EcdsaSignature._(this.r, this.s);
   factory Secp256k1EcdsaSignature({required BigInt r, required BigInt s}) {
     if (r < BigInt.one || r >= BitcoinSignerUtils.order) {
@@ -69,11 +74,23 @@ class Secp256k1EcdsaSignature {
     }
     final int lengthR = derSignature[3];
     final int lengthS = derSignature[5 + lengthR];
-    final List<int> rBytes = derSignature.sublist(4, 4 + lengthR);
+    final rBytes = CryptoSignatureUtils.derStripLeadingZeroIfNeeded(
+        derSignature.sublist(4, 4 + lengthR));
+
     final int sIndex = 4 + lengthR + 2;
-    final List<int> sBytes = derSignature.sublist(sIndex, sIndex + lengthS);
-    return Secp256k1EcdsaSignature.fromBytes([...rBytes, ...sBytes]);
+    final sBytes = CryptoSignatureUtils.derStripLeadingZeroIfNeeded(
+        derSignature.sublist(sIndex, sIndex + lengthS));
+    if (sBytes.length > BitcoinSignerUtils.baselen ||
+        rBytes.length > BitcoinSignerUtils.baselen) {
+      throw CryptoSignException(
+          "Invalid ECDSA signature: must be ${BitcoinSignerUtils.baselen * 2} bytes.");
+    }
+    return Secp256k1EcdsaSignature.fromBytes([
+      ...BytesUtils.padBytesLeft(rBytes, BitcoinSignerUtils.baselen),
+      ...BytesUtils.padBytesLeft(sBytes, BitcoinSignerUtils.baselen)
+    ]);
   }
+
   factory Secp256k1EcdsaSignature.fromBytes(List<int> signature) {
     if (signature.length != BitcoinSignerUtils.baselen * 2) {
       throw CryptoSignException(

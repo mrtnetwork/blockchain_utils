@@ -32,9 +32,11 @@ class ServiceProviderUtils {
   ///
   /// Returns: A map containing the status code and an error message (if any).
   static Map<String, dynamic> findErrorDetails(
-      {Object? object, required int statusCode}) {
+      {Object? object, required int statusCode, List<int>? errorStatusCodes}) {
     String? error;
-    if (statusCode == 401 || statusCode == 403) {
+    if ((errorStatusCodes != null && errorStatusCodes.contains(statusCode)) &&
+            statusCode == 401 ||
+        statusCode == 403) {
       if (object is List<int>) {
         error = StringUtils.tryDecode(object);
       } else if (object is String) {

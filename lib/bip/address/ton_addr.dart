@@ -25,6 +25,7 @@ import 'package:blockchain_utils/bip/address/addr_key_validator.dart';
 import 'package:blockchain_utils/bip/address/decoder.dart';
 import 'package:blockchain_utils/bip/address/encoder.dart';
 import 'package:blockchain_utils/crypto/crypto/crc16/crc16.dart';
+import 'package:blockchain_utils/helper/helper.dart';
 import 'package:blockchain_utils/utils/utils.dart';
 import 'exception/exception.dart';
 
@@ -184,7 +185,7 @@ class TonAddressUtils {
         "length": bytes.length
       });
     }
-    return BytesUtils.toBytes(bytes, unmodifiable: true);
+    return bytes.asImmutableBytes;
   }
 }
 

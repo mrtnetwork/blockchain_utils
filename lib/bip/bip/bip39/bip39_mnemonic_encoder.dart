@@ -18,7 +18,6 @@ import 'package:blockchain_utils/exception/exceptions.dart';
 /// final entropy = List<int>.from([/* your entropy bytes here */]);
 /// final encoder = Bip39MnemonicEncoder(Bip39Languages.english);
 /// final mnemonic = encoder.encode(entropy);
-/// print("Generated BIP39 mnemonic phrase: $mnemonic");
 /// ```
 class Bip39MnemonicEncoder extends MnemonicEncoderBase {
   /// Create a new instance of the BIP39 Mnemonic Encoder.

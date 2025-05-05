@@ -4,9 +4,7 @@ import 'package:blockchain_utils/crypto/quick_crypto.dart';
 import 'package:blockchain_utils/signer/const/constants.dart';
 import 'package:blockchain_utils/signer/exception/signing_exception.dart';
 import 'package:blockchain_utils/signer/signing_key/ecdsa_signing_key.dart';
-import 'package:blockchain_utils/signer/utils/utils.dart'
-    show CryptoSignatureUtils;
-import 'package:blockchain_utils/utils/utils.dart';
+import 'package:blockchain_utils/signer/types/types.dart';
 
 /// Class for signing XRP transactions using either EDDSA or ECDSA algorithm.
 class XrpSigner {
@@ -21,7 +19,7 @@ class XrpSigner {
   final EDDSAPrivateKey? _signingKey;
 
   /// The ECDSA signing key for signing.
-  final ECDSASigningKey? _ecdsaSigningKey;
+  final Secp256k1SigningKey? _ecdsaSigningKey;
 
   /// Factory method to create an XrpSigner instance from key bytes and curve type.
   ///
@@ -36,13 +34,13 @@ class XrpSigner {
       case EllipticCurveTypes.ed25519:
         // Create an EDDSA private key from the key bytes using the ED25519 curve.
         final signingKey = EDDSAPrivateKey(
-            CryptoSignerConst.generatorED25519, keyBytes, () => SHA512());
+            generator: CryptoSignerConst.generatorED25519,
+            privateKey: keyBytes,
+            type: EllipticCurveTypes.ed25519);
         return XrpSigner._(signingKey, null);
       case EllipticCurveTypes.secp256k1:
-        // Create an ECDSA private key from the key bytes using the SECP256K1 curve.
-        final signingKey = ECDSAPrivateKey.fromBytes(
-            keyBytes, CryptoSignerConst.generatorSecp256k1);
-        return XrpSigner._(null, ECDSASigningKey(signingKey));
+        return XrpSigner._(
+            null, Secp256k1SigningKey.fromBytes(keyBytes: keyBytes));
       default:
         // Throw an error if the curve type is not supported.
         throw CryptoSignException(
@@ -50,43 +48,24 @@ class XrpSigner {
     }
   }
 
-  /// Signs the provided digest using the ED25519 algorithm.
-  ///
-  /// This method takes a digest as input and uses the private signing key to generate
-  /// a signature based on the ED25519 algorithm. It then verifies the signature using
-  /// the corresponding verification key and throws an exception if the verification fails.
-  ///
-  /// [digest] The digest to be signed.
-  /// returns A list of bytes representing the generated signature.
-  List<int> _signEdward(List<int> digest) {
-    final sig = _signingKey!.sign(digest, () => SHA512());
-    final verifyKey = toVerifyKey();
-    final verify = verifyKey._verifyEddsa(digest, sig);
-    if (!verify) {
-      throw const CryptoSignException(
-          'The created signature does not pass verification.');
-    }
-    return sig;
-  }
-
-  List<int> _signEcdsa(List<int> digest) {
-    final hash = QuickCrypto.sha512Hash(digest)
-        .sublist(0, CryptoSignerConst.digestLength);
-    final ECDSASignature ecdsaSign = _ecdsaSigningKey!
-        .signDigestDeterminstic(digest: hash, hashFunc: () => SHA256());
-    BigInt s = ecdsaSign.s;
-    if (ecdsaSign.s > CryptoSignerConst.secp256k1OrderHalf) {
-      s = CryptoSignerConst.secp256k1Order - s;
-    }
-    final List<int> derSignature = CryptoSignatureUtils.toDer([ecdsaSign.r, s]);
-    final vr = toVerifyKey();
-    final verify = vr._verifyEcdsa(hash, derSignature);
-    if (!verify) {
-      throw const CryptoSignException(
-          'The created signature does not pass verification.');
-    }
-    return derSignature;
-  }
+  // /// Signs the provided digest using the ED25519 algorithm.
+  // ///
+  // /// This method takes a digest as input and uses the private signing key to generate
+  // /// a signature based on the ED25519 algorithm. It then verifies the signature using
+  // /// the corresponding verification key and throws an exception if the verification fails.
+  // ///
+  // /// [digest] The digest to be signed.
+  // /// returns A list of bytes representing the generated signature.
+  // List<int> _signEdward(List<int> digest) {
+  //   final sig = _signingKey!.sign(digest, () => SHA512());
+  //   final verifyKey = toVerifyKey();
+  //   final verify = verifyKey._verifyEddsa(digest, sig);
+  //   if (!verify) {
+  //     throw const CryptoSignException(
+  //         'The created signature does not pass verification.');
+  //   }
+  //   return sig;
+  // }
 
   /// Signs the provided digest using the appropriate algorithm based on the available signing key.
   ///
@@ -95,13 +74,31 @@ class XrpSigner {
   ///
   /// [digest] The digest to be signed.
   /// returns A list of bytes representing the generated signature using the appropriate algorithm.
-  List<int> sign(List<int> digest) {
+  /// The [hashMessage] and [extraEntropy] parameters are only applicable for ECDSA signing.
+  List<int> sign(List<int> digest,
+      {bool hashMessage = true, List<int>? extraEntropy}) {
     if (_signingKey != null) {
-      // If an EDDSA private key is available, use the ED25519 algorithm for signing.
-      return _signEdward(digest);
+      return _signingKey.sign(digest, () => SHA512());
     } else {
       // If an ECDSA signing key is available, use the ECDSA algorithm for signing.
-      return _signEcdsa(digest);
+      final hash =
+          hashMessage ? QuickCrypto.sha512HashHalves(digest).item1 : digest;
+      return _ecdsaSigningKey!
+          .signDer(digest: hash, extraEntropy: extraEntropy);
+    }
+  }
+
+  /// The [hashMessage] and [extraEntropy] parameters are only applicable for ECDSA signing.
+  List<int> signConst(List<int> digest,
+      {bool hashMessage = true, List<int>? extraEntropy}) {
+    if (_signingKey != null) {
+      // If an EDDSA private key is available, use the ED25519 algorithm for signing.
+      return _signingKey.signConst(digest, () => SHA512());
+    } else {
+      final hash =
+          hashMessage ? QuickCrypto.sha512HashHalves(digest).item1 : digest;
+      return _ecdsaSigningKey!
+          .signConstDer(digest: hash, extraEntropy: extraEntropy);
     }
   }
 
@@ -169,15 +166,8 @@ class XrpVerifier {
   /// [derSignature] The DER-encoded ECDSA signature as a list of bytes.
   /// returns True if the signature is verified, false otherwise.
   bool _verifyEcdsa(List<int> digest, List<int> derSignature) {
-    final int lengthR = derSignature[3];
-    final int lengthS = derSignature[5 + lengthR];
-
-    final List<int> rBytes = derSignature.sublist(4, 4 + lengthR);
-    final int sIndex = 4 + lengthR + 2;
-    final List<int> sBytes = derSignature.sublist(sIndex, sIndex + lengthS);
-    final r = BigintUtils.fromBytes(rBytes);
-    final s = BigintUtils.fromBytes(sBytes);
-    final signature = ECDSASignature(r, s);
+    final signature =
+        Secp256k1EcdsaSignature.fromDer(derSignature).toEcdsaSignature();
     return _edsaVerifyKey!.verify(signature, digest);
   }
 
@@ -205,6 +195,7 @@ class XrpVerifier {
   /// [signature] The signature to be verified.
   /// [hashMessage] Whether to hash the message before verification, defaults to true.
   /// returns True if the signature is verified, false otherwise.
+  /// The [hashMessage] parameter is only applicable for ECDSA signature.
   bool verify(List<int> digest, List<int> signature,
       {bool hashMessage = true}) {
     if (_edsaVerifyKey != null) {

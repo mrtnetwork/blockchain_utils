@@ -180,11 +180,7 @@ class Substrate {
     }
     final privateKey = SubstratePrvKey.fromBytes(result.toBytes(), coinConf);
     return Substrate._(
-      privateKey,
-      privateKey.publicKey,
-      path.addElem(pathElem),
-      coinConf,
-    );
+        privateKey, privateKey.publicKey, path.addElem(pathElem), coinConf);
   }
 
   /// Perform private child key derivation for the current context.

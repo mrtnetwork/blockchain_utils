@@ -114,6 +114,17 @@ class SubstrateSr25519Signer implements BaseSubstrateSigner {
         proof,
         verifyScript: _SubstrateSr25519SignerUtils.vrfScript(extra: extra));
   }
+
+  @override
+  List<int> signConst(List<int> digest) {
+    return sign(digest);
+  }
+
+  @override
+  List<int> vrfSignConst(List<int> message,
+      {List<int>? context, List<int>? extra}) {
+    return vrfSign(message, context: context, extra: extra);
+  }
 }
 
 /// Class representing an Substrate SR25519 Verifier for signature verification.

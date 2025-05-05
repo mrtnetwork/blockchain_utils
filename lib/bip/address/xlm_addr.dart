@@ -4,8 +4,8 @@ import 'package:blockchain_utils/bip/address/addr_key_validator.dart';
 import 'package:blockchain_utils/bip/address/decoder.dart';
 import 'package:blockchain_utils/bip/ecc/keys/ed25519_keys.dart';
 import 'package:blockchain_utils/crypto/crypto/x_modem_crc/x_modem_crc.dart';
+import 'package:blockchain_utils/helper/helper.dart';
 import 'package:blockchain_utils/utils/binary/binary_operation.dart';
-import 'package:blockchain_utils/utils/binary/utils.dart';
 import 'package:blockchain_utils/utils/numbers/numbers.dart';
 import 'exception/exception.dart';
 import 'encoder.dart';
@@ -98,7 +98,7 @@ class XlmAddrDecoderResult {
       required List<int> pubKeyBytes,
       required this.baseAddress,
       required this.accountId})
-      : pubKeyBytes = BytesUtils.toBytes(pubKeyBytes, unmodifiable: true);
+      : pubKeyBytes = pubKeyBytes.asImmutableBytes;
   @override
   String toString() {
     return baseAddress;

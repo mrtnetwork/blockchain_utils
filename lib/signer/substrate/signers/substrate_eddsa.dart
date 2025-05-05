@@ -1,4 +1,5 @@
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
+import 'package:blockchain_utils/helper/helper.dart';
 import 'package:blockchain_utils/signer/const/constants.dart';
 import 'package:blockchain_utils/signer/ed25519/ed25519.dart';
 import 'package:blockchain_utils/signer/exception/signing_exception.dart';
@@ -39,23 +40,41 @@ class SubstrateED25519Signer implements BaseSubstrateSigner {
     return _signer.sign(digest);
   }
 
-  @override
-  List<int> vrfSign(List<int> message, {List<int>? context, List<int>? extra}) {
-    final msg = BytesUtils.toBytes(message, unmodifiable: true);
-    final signature = _signer.sign(message);
+  List<int> _vrfSign(List<int> message, List<int> signature,
+      {List<int>? context, List<int>? extra}) {
     final vrf = QuickCrypto.blake2b256Hash([
-      ...BytesUtils.tryToBytes(context) ?? [],
-      ...BytesUtils.tryToBytes(extra) ?? [],
+      ...context?.asBytes ?? [],
+      ...extra?.asBytes ?? [],
       ...signature,
     ]);
     final List<int> vrfResult = [...vrf, ...signature];
-    final verify = toVerifyKey()
-        .vrfVerify(List.from(vrfResult), msg, context: context, extra: extra);
+    final verify = toVerifyKey().vrfVerify(List.from(vrfResult), message,
+        context: context, extra: extra);
     if (!verify) {
       throw const CryptoSignException(
           'The created signature does not pass verification.');
     }
     return vrfResult;
+  }
+
+  @override
+  List<int> vrfSign(List<int> message, {List<int>? context, List<int>? extra}) {
+    final msg = message.asImmutableBytes;
+    final signature = _signer.sign(msg);
+    return _vrfSign(msg, signature, extra: extra, context: context);
+  }
+
+  @override
+  List<int> signConst(List<int> digest) {
+    return _signer.signConst(digest);
+  }
+
+  @override
+  List<int> vrfSignConst(List<int> message,
+      {List<int>? context, List<int>? extra}) {
+    final msg = message.asImmutableBytes;
+    final signature = _signer.signConst(msg);
+    return _vrfSign(msg, signature, extra: extra, context: context);
   }
 }
 
@@ -97,8 +116,8 @@ class SubstrateED25519Verifier implements BaseSubstrateVerifier {
     if (verifySignature) {
       final vrfHash = vrfSign.sublist(0, QuickCrypto.blake2b256DigestSize);
       final vrf = QuickCrypto.blake2b256Hash([
-        ...BytesUtils.tryToBytes(context) ?? [],
-        ...BytesUtils.tryToBytes(extra) ?? [],
+        ...context?.asBytes ?? [],
+        ...extra?.asBytes ?? [],
         ...signature,
       ]);
       return BytesUtils.bytesEqual(vrf, vrfHash);

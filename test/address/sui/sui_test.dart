@@ -32,8 +32,8 @@ void main() {
         final IPublicKey key = switch (e["type"]) {
           "secp256r1" =>
             Nist256p1PublicKey.fromBytes(BytesUtils.fromHexString(e["key"])),
-          "secp256k1" => Secp256k1PublicKeyEcdsa.fromBytes(
-              BytesUtils.fromHexString(e["key"])),
+          "secp256k1" =>
+            Secp256k1PublicKey.fromBytes(BytesUtils.fromHexString(e["key"])),
           "Ed25519" =>
             Ed25519PublicKey.fromBytes(BytesUtils.fromHexString(e["key"])),
           _ => throw UnimplementedError()

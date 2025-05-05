@@ -6,6 +6,7 @@ import 'package:blockchain_utils/bip/address/addr_dec_utils.dart';
 import 'package:blockchain_utils/bip/address/decoder.dart';
 import 'package:blockchain_utils/bip/address/exception/exception.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
+import 'package:blockchain_utils/helper/extensions/extensions.dart';
 import 'package:blockchain_utils/utils/utils.dart';
 
 import 'ada_addres_type.dart';
@@ -21,8 +22,8 @@ class AdaGenericAddrDecoderResult {
       this.stakeHashBytes,
       this.pointer,
       this.byronAddrPayload})
-      : addressBytes = BytesUtils.toBytes(addressBytes, unmodifiable: true),
-        prefixBytes = BytesUtils.tryToBytes(prefixBytes, unmodifiable: true);
+      : addressBytes = addressBytes.asImmutableBytes,
+        prefixBytes = prefixBytes?.asImmutableBytes;
   final ADAAddressType type;
   final List<int> addressBytes;
   final AdaStakeCredential? baseHashBytes;

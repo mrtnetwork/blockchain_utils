@@ -1,6 +1,7 @@
 import 'dart:typed_data';
+import 'package:blockchain_utils/helper/extensions/extensions.dart';
 import 'package:blockchain_utils/utils/utils.dart';
-import 'package:blockchain_utils/crypto/crypto/cdsa/utils/ed25519_utils.dart';
+import 'package:blockchain_utils/crypto/crypto/cdsa/utils/ed25519.dart';
 import 'package:blockchain_utils/crypto/crypto/schnorrkel/strobe/strobe.dart';
 
 /// A transcript object for the Merlin cryptographic protocol.
@@ -93,7 +94,7 @@ class MerlinTranscript {
     strobe.additionalData(true, labelSize);
 
     final List<int> outBytes = strobe.pseudoRandomData(outLen);
-    return BytesUtils.toBytes(outBytes);
+    return outBytes.asBytes;
   }
 
   /// Generates pseudo-random bytes and reduces them using scalar reduction.
@@ -118,7 +119,7 @@ class MerlinTranscript {
   ///
   /// This method is particularly useful for generating random scalars used in cryptographic operations.
   List<int> toBytesWithReduceScalar(List<int> label, int outLen) {
-    return Ed25519Utils.scalarReduce(toBytes(label, outLen));
+    return Ed25519Utils.scalarReduceConst(toBytes(label, outLen));
   }
 
   /// Converts pseudo-random bytes into a `BigInt` with scalar reduction.

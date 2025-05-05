@@ -52,10 +52,8 @@ class Bip38NoEcUtils {
   /// - [pubKeyMode]: The selected public key mode.
   /// - Returns: The address hash as a `List<int>`.
   static List<int> addressHash(List<int> privKeyBytes, PubKeyModes pubKeyMode) {
-    final publicBytes = Secp256k1PrivateKeyEcdsa.fromBytes(privKeyBytes)
-        .publicKey
-        .point
-        .toBytes();
+    final publicBytes =
+        Secp256k1PrivateKey.fromBytes(privKeyBytes).publicKey.point.toBytes();
 
     return Bip38Addr.addressHash(publicBytes, pubKeyMode);
   }

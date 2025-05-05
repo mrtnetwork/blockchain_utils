@@ -23,10 +23,10 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
 
+import 'package:blockchain_utils/crypto/crypto/exception/exception.dart';
 import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/curve/curve.dart';
 import 'base.dart';
-import 'package:blockchain_utils/exception/exceptions.dart';
 
 /// A class representing a point on an Edwards curve, extending the abstract [AbstractPoint] class.
 class EDPoint extends AbstractPoint {
@@ -391,11 +391,11 @@ class EDPoint extends AbstractPoint {
   /// - A new Edwards curve point representing the result of the addition.
   ///
   /// Throws:
-  /// - ArgumentException: If the 'other' point is on a different curve or at infinity.
+  /// - CryptoException: If the 'other' point is on a different curve or at infinity.
   @override
   EDPoint operator +(AbstractPoint other) {
     if (other is! EDPoint || curve != other.curve) {
-      throw const ArgumentException("The other point is on a different curve.");
+      throw const CryptoException("The other point is on a different curve.");
     }
     if (other.isInfinity) {
       return this;
@@ -414,9 +414,6 @@ class EDPoint extends AbstractPoint {
     final BigInt t2 = other._coords[3];
 
     final List<BigInt> result = _add(x1, y1, z1, t1, x2, y2, z2, t2, p, a);
-    if (result[0] == BigInt.zero || result[3] == BigInt.zero) {
-      return EDPoint.infinity(curve: curve);
-    }
 
     return EDPoint(
         curve: curve,
@@ -430,16 +427,21 @@ class EDPoint extends AbstractPoint {
   /// Negation operator for an Edwards curve point.
   ///
   /// This operator computes the negation (negate y-coordinate) of the Edwards curve point and returns a new Edwards curve point representing the negated point.
-  ///
-  /// Returns:
-  /// - A new Edwards curve point representing the negation of this point.
+
   EDPoint operator -() {
     final BigInt x1 = _coords[0];
     final BigInt y1 = _coords[1];
+    final BigInt z1 = _coords[2];
     final BigInt t1 = _coords[3];
     final BigInt p = curve.p;
-
-    return EDPoint._(curve, [x1, (p - y1) % p, _coords[2], (p - t1) % p],
+    return EDPoint._(
+        curve,
+        [
+          (p - x1) % p, // NEGATE X
+          y1, // KEEP Y
+          z1, // KEEP Z
+          (p - t1) % p // NEGATE T
+        ],
         order: order);
   }
 

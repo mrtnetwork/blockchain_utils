@@ -1,11 +1,11 @@
 import 'dart:typed_data';
 import 'package:blockchain_utils/bip/ecc/keys/ed25519_monero_keys.dart';
 import 'package:blockchain_utils/exception/exceptions.dart';
+import 'package:blockchain_utils/helper/helper.dart';
 import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/bip/address/xmr_addr.dart';
-import 'package:blockchain_utils/crypto/crypto/cdsa/utils/ed25519_utils.dart';
+import 'package:blockchain_utils/crypto/crypto/cdsa/utils/ed25519.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
-import 'package:blockchain_utils/crypto/crypto/cdsa/curve/curves.dart';
 
 /// A class containing constants related to Monero subaddresses.
 class MoneroSubaddressConst {
@@ -85,23 +85,23 @@ class MoneroSubaddress {
 
     final List<int> privVKeyBytes = privVKey.raw;
 
-    final List<int> mBytes = QuickCrypto.keccack256Hash(List<int>.from([
+    final List<int> mBytes = QuickCrypto.keccack256Hash([
       ...MoneroSubaddressConst.subaddrPrefix,
       ...privVKeyBytes,
       ...majorIdxBytes,
       ...minorIdxBytes
-    ]));
-    final List<int> secretKey = Ed25519Utils.scalarReduce(mBytes);
-    final BigInt mInt =
-        BigintUtils.fromBytes(secretKey, byteOrder: Endian.little);
-    final newPoint = pubSKey.point + (Curves.generatorED25519 * mInt);
+    ]);
+    final List<int> secretKey =
+        Ed25519Utils.scalarReduceConst(mBytes).asImmutableBytes;
+    final mult = Ed25519Utils.scalarMultBase(secretKey);
+    final newPoint = Ed25519Utils.pointAdd(mult, pubSKey.point.toBytes());
+    final MoneroPublicKey subaddrPubSKey = MoneroPublicKey.fromBytes(newPoint);
+    final subaddrPubVKeyPoint =
+        Ed25519Utils.pointScalarMult(newPoint, privVKey.raw);
+    final MoneroPublicKey subaddrPubVKey =
+        MoneroPublicKey.fromBytes(subaddrPubVKeyPoint);
 
-    final MoneroPublicKey subaddrPubSKey = MoneroPublicKey.fromPoint(newPoint);
-    final MoneroPublicKey subaddrPubVKey = MoneroPublicKey.fromPoint(
-        (subaddrPubSKey.point *
-            BigintUtils.fromBytes(privVKey.raw, byteOrder: Endian.little)));
     final sKey = MoneroPrivateKey.fromBytes(secretKey);
-
     return MoneroComputeKey(
         pubSKey: subaddrPubSKey, pubVKey: subaddrPubVKey, privateKey: sKey);
   }
@@ -116,7 +116,6 @@ class MoneroSubaddress {
   String computeAndEncodeKeys(
       int minorIndex, int majorIndex, List<int> netVer) {
     final keys = computeKeys(minorIndex, majorIndex);
-
     return XmrAddrEncoder().encodeKey(keys.pubSKey.compressed,
         {"pub_vkey": keys.pubVKey.compressed, "net_ver": netVer});
   }

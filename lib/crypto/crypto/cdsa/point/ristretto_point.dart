@@ -1,13 +1,11 @@
 import 'dart:typed_data';
-
-import 'package:blockchain_utils/exception/exceptions.dart';
+import 'package:blockchain_utils/crypto/crypto/exception/exception.dart';
 import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/curve/curve.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/curve/curves.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/point/base.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/point/edwards.dart';
-import 'package:blockchain_utils/crypto/crypto/cdsa/utils/ristretto_utils.dart'
-    as ristretto_tools;
+import 'package:blockchain_utils/crypto/crypto/cdsa/utils/ristretto.dart';
 
 /// A class representing a RistrettoPoint, a point on an elliptic curve
 /// in the Ristretto255 group, derived from an Edwards curve point.
@@ -61,6 +59,11 @@ class RistrettoPoint extends EDPoint {
         order: point.order);
   }
 
+  factory RistrettoPoint.fromEdwardBytes(List<int> bytes) {
+    return RistrettoPoint.fromEdwardsPoint(
+        EDPoint.fromBytes(curve: Curves.curveEd25519, data: bytes));
+  }
+
   /// Factory method to create a RistrettoPoint from a byte representation.
   ///
   /// This factory method creates a RistrettoPoint instance from a byte
@@ -76,7 +79,7 @@ class RistrettoPoint extends EDPoint {
   ///   - RistrettoPoint: A RistrettoPoint instance created from the input bytes.
   ///
   /// Throws:
-  ///   - ArgumentException: If the input bytes result in an invalid RistrettoPoint.
+  ///   - CryptoException: If the input bytes result in an invalid RistrettoPoint.
   ///   - Exception: If the RistrettoPoint creation fails any validity checks.
   factory RistrettoPoint.fromBytes(List<int> bytes, {CurveED? curveEdTw}) {
     final List<int> hex = bytes;
@@ -85,29 +88,29 @@ class RistrettoPoint extends EDPoint {
     final d = c.d;
     final P = c.p;
     final s = BigintUtils.fromBytes(hex, byteOrder: Endian.little);
-    if (ristretto_tools.isOdd(s, P)) {
-      throw const ArgumentException("Invalid RistrettoPoint");
+    if (RistrettoUtils.isOdd(s, P)) {
+      throw const CryptoException("Invalid RistrettoPoint");
     }
-    final s2 = ristretto_tools.positiveMod(s * s, P);
-    final u1 = ristretto_tools.positiveMod(BigInt.one + a * s2, P);
-    final u2 = ristretto_tools.positiveMod(BigInt.one - a * s2, P);
-    final u1_2 = ristretto_tools.positiveMod(u1 * u1, P);
-    final u2_2 = ristretto_tools.positiveMod(u2 * u2, P);
-    final v = ristretto_tools.positiveMod(a * d * u1_2 - u2_2, P);
-    final invSqrt = ristretto_tools.sqrtUV(
-        BigInt.one, ristretto_tools.positiveMod(v * u2_2, P));
-    final x2 = ristretto_tools.positiveMod(invSqrt.item2 * u2, P);
-    final y2 = ristretto_tools.positiveMod(invSqrt.item2 * x2 * v, P);
+    final s2 = RistrettoUtils.positiveMod(s * s, P);
+    final u1 = RistrettoUtils.positiveMod(BigInt.one + a * s2, P);
+    final u2 = RistrettoUtils.positiveMod(BigInt.one - a * s2, P);
+    final u1_2 = RistrettoUtils.positiveMod(u1 * u1, P);
+    final u2_2 = RistrettoUtils.positiveMod(u2 * u2, P);
+    final v = RistrettoUtils.positiveMod(a * d * u1_2 - u2_2, P);
+    final invSqrt = RistrettoUtils.sqrtUV(
+        BigInt.one, RistrettoUtils.positiveMod(v * u2_2, P));
+    final x2 = RistrettoUtils.positiveMod(invSqrt.item2 * u2, P);
+    final y2 = RistrettoUtils.positiveMod(invSqrt.item2 * x2 * v, P);
 
-    BigInt x = ristretto_tools.positiveMod((s + s) * x2, P);
-    if (ristretto_tools.isOdd(x, P)) {
-      x = ristretto_tools.positiveMod(-x, P);
+    BigInt x = RistrettoUtils.positiveMod((s + s) * x2, P);
+    if (RistrettoUtils.isOdd(x, P)) {
+      x = RistrettoUtils.positiveMod(-x, P);
     }
 
-    final y = ristretto_tools.positiveMod(u1 * y2, P);
-    final t = ristretto_tools.positiveMod(x * y, P);
-    if (!invSqrt.item1 || ristretto_tools.isOdd(t, P) || y == BigInt.zero) {
-      throw const ArgumentException("Invalid RistrettoPoint");
+    final y = RistrettoUtils.positiveMod(u1 * y2, P);
+    final t = RistrettoUtils.positiveMod(x * y, P);
+    if (!invSqrt.item1 || RistrettoUtils.isOdd(t, P) || y == BigInt.zero) {
+      throw const CryptoException("Invalid RistrettoPoint");
     }
     return RistrettoPoint.fromEdwardsPoint(
         EDPoint(curve: c, x: x, y: y, z: BigInt.one, t: t));
@@ -134,26 +137,26 @@ class RistrettoPoint extends EDPoint {
     final primeP = Curves.curveEd25519.p;
 
     final rSquared =
-        ristretto_tools.positiveMod(ristretto_tools.sqrtM1 * r0 * r0, primeP);
-    final numeratorS = ristretto_tools.positiveMod(
-        (rSquared + BigInt.one) * ristretto_tools.oneMinusDSq, primeP);
+        RistrettoUtils.positiveMod(RistrettoUtils.sqrtM1 * r0 * r0, primeP);
+    final numeratorS = RistrettoUtils.positiveMod(
+        (rSquared + BigInt.one) * RistrettoUtils.oneMinusDSq, primeP);
 
     var c = BigInt.from(-1);
 
-    final D = ristretto_tools.positiveMod(
+    final D = RistrettoUtils.positiveMod(
         (c - curveD * rSquared) *
-            ristretto_tools.positiveMod(rSquared + curveD, primeP),
+            RistrettoUtils.positiveMod(rSquared + curveD, primeP),
         primeP);
 
-    final uvRatio = ristretto_tools.sqrtUV(numeratorS, D);
+    final uvRatio = RistrettoUtils.sqrtUV(numeratorS, D);
 
     final useSecondRoot = uvRatio.item1;
     BigInt sValue = uvRatio.item2;
 
-    BigInt sComputed = ristretto_tools.positiveMod(sValue * r0, primeP);
+    BigInt sComputed = RistrettoUtils.positiveMod(sValue * r0, primeP);
 
-    if (!ristretto_tools.isOdd(sComputed, primeP)) {
-      sComputed = ristretto_tools.positiveMod(-sComputed, primeP);
+    if (!RistrettoUtils.isOdd(sComputed, primeP)) {
+      sComputed = RistrettoUtils.positiveMod(-sComputed, primeP);
     }
 
     if (!useSecondRoot) {
@@ -164,22 +167,22 @@ class RistrettoPoint extends EDPoint {
       c = rSquared;
     }
 
-    final ntValue = ristretto_tools.positiveMod(
-        c * (rSquared - BigInt.one) * ristretto_tools.minusOneSq - D, primeP);
+    final ntValue = RistrettoUtils.positiveMod(
+        c * (rSquared - BigInt.one) * RistrettoUtils.minusOneSq - D, primeP);
 
     final sSquared = sValue * sValue;
-    final w0 = ristretto_tools.positiveMod((sValue + sValue) * D, primeP);
-    final w1 = ristretto_tools.positiveMod(
-        ntValue * ristretto_tools.sqrtAdMinusOne, primeP);
-    final w2 = ristretto_tools.positiveMod(BigInt.one - sSquared, primeP);
-    final w3 = ristretto_tools.positiveMod(BigInt.one + sSquared, primeP);
+    final w0 = RistrettoUtils.positiveMod((sValue + sValue) * D, primeP);
+    final w1 = RistrettoUtils.positiveMod(
+        ntValue * RistrettoUtils.sqrtAdMinusOne, primeP);
+    final w2 = RistrettoUtils.positiveMod(BigInt.one - sSquared, primeP);
+    final w3 = RistrettoUtils.positiveMod(BigInt.one + sSquared, primeP);
 
     return EDPoint(
         curve: Curves.curveEd25519,
-        x: ristretto_tools.positiveMod(w0 * w3, primeP),
-        y: ristretto_tools.positiveMod(w2 * w1, primeP),
-        z: ristretto_tools.positiveMod(w1 * w3, primeP),
-        t: ristretto_tools.positiveMod(w0 * w2, primeP));
+        x: RistrettoUtils.positiveMod(w0 * w3, primeP),
+        y: RistrettoUtils.positiveMod(w2 * w1, primeP),
+        z: RistrettoUtils.positiveMod(w1 * w3, primeP),
+        t: RistrettoUtils.positiveMod(w0 * w2, primeP));
   }
 
   /// Factory method to create a RistrettoPoint from a uniform byte representation.
@@ -203,12 +206,12 @@ class RistrettoPoint extends EDPoint {
   factory RistrettoPoint.fromUniform(List<int> hash) {
     final rB =
         BigintUtils.fromBytes(hash.sublist(0, 32), byteOrder: Endian.little) &
-            ristretto_tools.mask255;
+            RistrettoUtils.mask255;
     final rPoint = mapToPoint(rB);
 
     final lB =
         BigintUtils.fromBytes(hash.sublist(32, 64), byteOrder: Endian.little) &
-            ristretto_tools.mask255;
+            RistrettoUtils.mask255;
     final lPoint = mapToPoint(lB);
 
     final sumPoint = rPoint + lPoint;
@@ -292,7 +295,6 @@ class RistrettoPoint extends EDPoint {
   ///   - The method calculates intermediate values and applies encoding-specific
   ///     transformations to the point's coordinates in accordance with Ristretto
   ///     encoding rules. The result is a compact byte array representation.
-  /// [encodeType] works only for [toEdwardBytes]
   @override
   List<int> toBytes([EncodeType encodeType = EncodeType.comprossed]) {
     final primeP = Curves.curveEd25519.p;
@@ -302,37 +304,35 @@ class RistrettoPoint extends EDPoint {
     final BigInt z = pointCoords[2];
     final BigInt t = pointCoords[3];
 
-    final u1 = ristretto_tools.positiveMod(
-        ristretto_tools.positiveMod(z + y, primeP) *
-            ristretto_tools.positiveMod(z - y, primeP),
+    final u1 = RistrettoUtils.positiveMod(
+        RistrettoUtils.positiveMod(z + y, primeP) *
+            RistrettoUtils.positiveMod(z - y, primeP),
         primeP);
-    final u2 = ristretto_tools.positiveMod(x * y, primeP);
+    final u2 = RistrettoUtils.positiveMod(x * y, primeP);
 
-    final u2Squared = ristretto_tools.positiveMod(u2 * u2, primeP);
-    final invSqrt = ristretto_tools
-        .sqrtUV(BigInt.one, ristretto_tools.positiveMod(u1 * u2Squared, primeP))
+    final u2Squared = RistrettoUtils.positiveMod(u2 * u2, primeP);
+    final invSqrt = RistrettoUtils.sqrtUV(
+            BigInt.one, RistrettoUtils.positiveMod(u1 * u2Squared, primeP))
         .item2;
-    final d1 = ristretto_tools.positiveMod(invSqrt * u1, primeP);
-    final d2 = ristretto_tools.positiveMod(invSqrt * u2, primeP);
-    final zInverse = ristretto_tools.positiveMod(d1 * d2 * t, primeP);
+    final d1 = RistrettoUtils.positiveMod(invSqrt * u1, primeP);
+    final d2 = RistrettoUtils.positiveMod(invSqrt * u2, primeP);
+    final zInverse = RistrettoUtils.positiveMod(d1 * d2 * t, primeP);
     BigInt D;
-    if (ristretto_tools.isOdd(t * zInverse, primeP)) {
-      final x2 =
-          ristretto_tools.positiveMod(y * ristretto_tools.sqrtM1, primeP);
-      final y2 =
-          ristretto_tools.positiveMod(x * ristretto_tools.sqrtM1, primeP);
+    if (RistrettoUtils.isOdd(t * zInverse, primeP)) {
+      final x2 = RistrettoUtils.positiveMod(y * RistrettoUtils.sqrtM1, primeP);
+      final y2 = RistrettoUtils.positiveMod(x * RistrettoUtils.sqrtM1, primeP);
       x = x2;
       y = y2;
-      D = ristretto_tools.positiveMod(d1 * ristretto_tools.invSqrt, primeP);
+      D = RistrettoUtils.positiveMod(d1 * RistrettoUtils.invSqrt, primeP);
     } else {
       D = d2;
     }
-    if (ristretto_tools.isOdd(x * zInverse, primeP)) {
-      y = ristretto_tools.positiveMod(-y, primeP);
+    if (RistrettoUtils.isOdd(x * zInverse, primeP)) {
+      y = RistrettoUtils.positiveMod(-y, primeP);
     }
-    BigInt s = ristretto_tools.positiveMod((z - y) * D, primeP);
-    if (ristretto_tools.isOdd(s, primeP)) {
-      s = ristretto_tools.positiveMod(-s, primeP);
+    BigInt s = RistrettoUtils.positiveMod((z - y) * D, primeP);
+    if (RistrettoUtils.isOdd(s, primeP)) {
+      s = RistrettoUtils.positiveMod(-s, primeP);
     }
     return BigintUtils.toBytes(s, order: Endian.little, length: 32);
   }

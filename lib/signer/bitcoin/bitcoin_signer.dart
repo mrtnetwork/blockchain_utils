@@ -1,3 +1,4 @@
+import 'package:blockchain_utils/bip/ecc/keys/ecdsa_keys.dart';
 import 'package:blockchain_utils/signer/const/constants.dart';
 import 'package:blockchain_utils/signer/exception/signing_exception.dart';
 import 'package:blockchain_utils/signer/utils/utils.dart';
@@ -41,8 +42,9 @@ class BitcoinSignerUtils {
     BigInt negatedKey = BigintUtils.fromBytes(secret);
     final publicBytes =
         (generator * negatedKey).toBytes(EncodeType.uncompressed);
-    final toBigInt = BigintUtils.fromBytes(publicBytes.sublist(33));
-    if (toBigInt.isOdd) {
+    final yBig = BigintUtils.fromBytes(
+        publicBytes.sublist(EcdsaKeysConst.pubKeyCompressedByteLen));
+    if (yBig.isOdd) {
       negatedKey = order - negatedKey;
     }
     final tw = (negatedKey + tweakBig) % order;

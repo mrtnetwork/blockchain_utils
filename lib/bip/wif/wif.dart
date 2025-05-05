@@ -78,7 +78,7 @@ class WifEncoder {
   static String encode(List<int> privKey,
       {List<int> netVer = const [],
       PubKeyModes pubKeyMode = PubKeyModes.compressed}) {
-    final prv = Secp256k1PrivateKeyEcdsa.fromBytes(privKey);
+    final prv = Secp256k1PrivateKey.fromBytes(privKey);
 
     List<int> privKeyBytes = prv.raw;
 
@@ -110,7 +110,7 @@ class WifDecoder {
     }
     privKeyBytes = privKeyBytes.sublist(1);
     PubKeyModes pubKeyMode;
-    if (Secp256k1PrivateKeyEcdsa.isValidBytes(
+    if (Secp256k1PrivateKey.isValidBytes(
         privKeyBytes.sublist(0, privKeyBytes.length - 1))) {
       // Check the compressed public key suffix
       if (privKeyBytes[privKeyBytes.length - 1] != WifConst.comprPubKeySuffix) {
@@ -119,7 +119,7 @@ class WifDecoder {
       privKeyBytes = privKeyBytes.sublist(0, privKeyBytes.length - 1);
       pubKeyMode = PubKeyModes.compressed;
     } else {
-      if (!Secp256k1PrivateKeyEcdsa.isValidBytes(privKeyBytes)) {
+      if (!Secp256k1PrivateKey.isValidBytes(privKeyBytes)) {
         throw const ArgumentException('Invalid decoded key');
       }
       pubKeyMode = PubKeyModes.uncompressed;

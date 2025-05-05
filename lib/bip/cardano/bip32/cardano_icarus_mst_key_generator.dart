@@ -38,10 +38,8 @@ class CardanoIcarusMstKeyGenerator implements IBip32MstKeyGenerator {
 
     keyBytes = _tweakMasterKeyBits(keyBytes);
 
-    return Tuple(
-      keyBytes.sublist(0, Ed25519KholawKeysConst.privKeyByteLen),
-      keyBytes.sublist(Ed25519KholawKeysConst.privKeyByteLen),
-    );
+    return Tuple(keyBytes.sublist(0, Ed25519KholawKeysConst.privKeyByteLen),
+        keyBytes.sublist(Ed25519KholawKeysConst.privKeyByteLen));
   }
 
   /// Tweak the master key bits as part of the derivation process.

@@ -8,3 +8,4 @@ export 'compare/hash_code.dart';
 export 'numbers/numbers.dart';
 export 'string/string.dart';
 export 'tuple/tuple.dart';
+export 'equatable/equatable.dart';

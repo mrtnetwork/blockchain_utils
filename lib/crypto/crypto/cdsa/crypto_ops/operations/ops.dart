@@ -53,8 +53,10 @@
 //   OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
 //   OF THE POSSIBILITY OF SUCH DAMAGE.
 import 'package:blockchain_utils/crypto/crypto/cdsa/crypto_ops/const/const.dart';
-import 'package:blockchain_utils/crypto/crypto/cdsa/crypto_ops/exception/exception.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/crypto_ops/models/models.dart';
+import 'package:blockchain_utils/crypto/crypto/exception/exception.dart';
+import 'package:blockchain_utils/helper/extensions/extensions.dart';
+import 'package:blockchain_utils/utils/binary/utils.dart';
 
 class CryptoOps {
   static final BigInt _bitMaskFor25 = BigInt.one << 25;
@@ -94,14 +96,14 @@ class CryptoOps {
     final BigInt s5 = _load4(s, 20);
     final BigInt s6 = _load4(s, 24);
     final BigInt s7 = _load4(s, 28);
-    final r = (signum(1559614444.toBig - s0) +
-            (signum(1477600026.toBig - s1) << 1) +
-            (signum(2734136534.toBig - s2) << 2) +
-            (signum(350157278.toBig - s3) << 3) +
+    final r = (signum(1559614444.toBigInt - s0) +
+            (signum(1477600026.toBigInt - s1) << 1) +
+            (signum(2734136534.toBigInt - s2) << 2) +
+            (signum(350157278.toBigInt - s3) << 3) +
             (signum(-s4) << 4) +
             (signum(-s5) << 5) +
             (signum(-s6) << 6) +
-            (signum(268435456.toBig - s7) << 7)) >>
+            (signum(268435456.toBigInt - s7) << 7)) >>
         8;
     return r.toInt();
   }
@@ -173,13 +175,13 @@ class CryptoOps {
     s12 += carry11;
     s11 -= carry11 << 21;
 
-    s0 += s12 * 666643.toBig;
-    s1 += s12 * 470296.toBig;
-    s2 += s12 * 654183.toBig;
-    s3 -= s12 * 997805.toBig;
-    s4 += s12 * 136657.toBig;
-    s5 -= s12 * 683901.toBig;
-    s12 = 0.toBig;
+    s0 += s12 * 666643.toBigInt;
+    s1 += s12 * 470296.toBigInt;
+    s2 += s12 * 654183.toBigInt;
+    s3 -= s12 * 997805.toBigInt;
+    s4 += s12 * 136657.toBigInt;
+    s5 -= s12 * 683901.toBigInt;
+    s12 = 0.toBigInt;
 
     carry0 = s0 >> 21;
     s1 += carry0;
@@ -218,12 +220,12 @@ class CryptoOps {
     s12 += carry11;
     s11 -= carry11 << 21;
 
-    s0 += s12 * 666643.toBig;
-    s1 += s12 * 470296.toBig;
-    s2 += s12 * 654183.toBig;
-    s3 -= s12 * 997805.toBig;
-    s4 += s12 * 136657.toBig;
-    s5 -= s12 * 683901.toBig;
+    s0 += s12 * 666643.toBigInt;
+    s1 += s12 * 470296.toBigInt;
+    s2 += s12 * 654183.toBigInt;
+    s3 -= s12 * 997805.toBigInt;
+    s4 += s12 * 136657.toBigInt;
+    s5 -= s12 * 683901.toBigInt;
 
     carry0 = s0 >> 21;
     s1 += carry0;
@@ -292,7 +294,7 @@ class CryptoOps {
     sBig[30] = s11 >> 9;
     sBig[31] = s11 >> 17;
     for (int i = 0; i < sBig.length; i++) {
-      scopy[i] = sBig[i].toUnsigned8;
+      scopy[i] = sBig[i].toUnsignedInt8;
     }
   }
 
@@ -347,10 +349,8 @@ class CryptoOps {
     h.h[9] = h9;
   }
 
-  static void pr(String name, dynamic v) {}
-
   static int _xor32(int a, int b) {
-    return (a ^ b).toInt32;
+    return (a ^ b).toSigned32;
   }
 
   static void feCmov(FieldElement f, FieldElement g, int b) {
@@ -442,75 +442,75 @@ class CryptoOps {
     final int f7 = f.h[7];
     final int f8 = f.h[8];
     final int f9 = f.h[9];
-    final int f0_2 = (2 * f0).toInt32;
-    final int f1_2 = (2 * f1).toInt32;
-    final int f2_2 = (2 * f2).toInt32;
-    final int f3_2 = (2 * f3).toInt32;
-    final int f4_2 = (2 * f4).toInt32;
-    final int f5_2 = (2 * f5).toInt32;
-    final int f6_2 = (2 * f6).toInt32;
-    final int f7_2 = (2 * f7).toInt32;
-    final int f5_38 = (38 * f5).toInt32; /* 1.959375*2^30 */
-    final int f6_19 = (19 * f6).toInt32; /* 1.959375*2^30 */
-    final int f7_38 = (38 * f7).toInt32; /* 1.959375*2^30 */
-    final int f8_19 = (19 * f8).toInt32; /* 1.959375*2^30 */
-    final int f9_38 = (38 * f9).toInt32; /* 1.959375*2^30 */
+    final int f0_2 = (2 * f0).toSigned32;
+    final int f1_2 = (2 * f1).toSigned32;
+    final int f2_2 = (2 * f2).toSigned32;
+    final int f3_2 = (2 * f3).toSigned32;
+    final int f4_2 = (2 * f4).toSigned32;
+    final int f5_2 = (2 * f5).toSigned32;
+    final int f6_2 = (2 * f6).toSigned32;
+    final int f7_2 = (2 * f7).toSigned32;
+    final int f5_38 = (38 * f5).toSigned32; /* 1.959375*2^30 */
+    final int f6_19 = (19 * f6).toSigned32; /* 1.959375*2^30 */
+    final int f7_38 = (38 * f7).toSigned32; /* 1.959375*2^30 */
+    final int f8_19 = (19 * f8).toSigned32; /* 1.959375*2^30 */
+    final int f9_38 = (38 * f9).toSigned32; /* 1.959375*2^30 */
 
-    final BigInt f0f0 = f0.toBig * f0.toBig;
-    final BigInt f0f1_2 = f0_2.toBig * f1.toBig;
-    final BigInt f0f2_2 = f0_2.toBig * f2.toBig;
-    final BigInt f0f3_2 = f0_2.toBig * f3.toBig;
-    final BigInt f0f4_2 = f0_2.toBig * f4.toBig;
-    final BigInt f0f5_2 = f0_2.toBig * f5.toBig;
-    final BigInt f0f6_2 = f0_2.toBig * f6.toBig;
-    final BigInt f0f7_2 = f0_2.toBig * f7.toBig;
-    final BigInt f0f8_2 = f0_2.toBig * f8.toBig;
-    final BigInt f0f9_2 = f0_2.toBig * f9.toBig;
-    final BigInt f1f1_2 = f1_2.toBig * f1.toBig;
-    final BigInt f1f2_2 = f1_2.toBig * f2.toBig;
-    final BigInt f1f3_4 = f1_2.toBig * f3_2.toBig;
-    final BigInt f1f4_2 = f1_2.toBig * f4.toBig;
-    final BigInt f1f5_4 = f1_2.toBig * f5_2.toBig;
-    final BigInt f1f6_2 = f1_2.toBig * f6.toBig;
-    final BigInt f1f7_4 = f1_2.toBig * f7_2.toBig;
-    final BigInt f1f8_2 = f1_2.toBig * f8.toBig;
-    final BigInt f1f9_76 = f1_2.toBig * f9_38.toBig;
-    final BigInt f2f2 = f2.toBig * f2.toBig;
-    final BigInt f2f3_2 = f2_2.toBig * f3.toBig;
-    final BigInt f2f4_2 = f2_2.toBig * f4.toBig;
-    final BigInt f2f5_2 = f2_2.toBig * f5.toBig;
-    final BigInt f2f6_2 = f2_2.toBig * f6.toBig;
-    final BigInt f2f7_2 = f2_2.toBig * f7.toBig;
-    final BigInt f2f8_38 = f2_2.toBig * f8_19.toBig;
-    final BigInt f2f9_38 = f2.toBig * f9_38.toBig;
-    final BigInt f3f3_2 = f3_2.toBig * f3.toBig;
-    final BigInt f3f4_2 = f3_2.toBig * f4.toBig;
-    final BigInt f3f5_4 = f3_2.toBig * f5_2.toBig;
-    final BigInt f3f6_2 = f3_2.toBig * f6.toBig;
-    final BigInt f3f7_76 = f3_2.toBig * f7_38.toBig;
-    final BigInt f3f8_38 = f3_2.toBig * f8_19.toBig;
-    final BigInt f3f9_76 = f3_2.toBig * f9_38.toBig;
-    final BigInt f4f4 = f4.toBig * f4.toBig;
-    final BigInt f4f5_2 = f4_2.toBig * f5.toBig;
-    final BigInt f4f6_38 = f4_2.toBig * f6_19.toBig;
-    final BigInt f4f7_38 = f4.toBig * f7_38.toBig;
-    final BigInt f4f8_38 = f4_2.toBig * f8_19.toBig;
-    final BigInt f4f9_38 = f4.toBig * f9_38.toBig;
-    final BigInt f5f5_38 = f5.toBig * f5_38.toBig;
-    final BigInt f5f6_38 = f5_2.toBig * f6_19.toBig;
-    final BigInt f5f7_76 = f5_2.toBig * f7_38.toBig;
-    final BigInt f5f8_38 = f5_2.toBig * f8_19.toBig;
-    final BigInt f5f9_76 = f5_2.toBig * f9_38.toBig;
-    final BigInt f6f6_19 = f6.toBig * f6_19.toBig;
-    final BigInt f6f7_38 = f6.toBig * f7_38.toBig;
-    final BigInt f6f8_38 = f6_2.toBig * f8_19.toBig;
-    final BigInt f6f9_38 = f6.toBig * f9_38.toBig;
-    final BigInt f7f7_38 = f7.toBig * f7_38.toBig;
-    final BigInt f7f8_38 = f7_2.toBig * f8_19.toBig;
-    final BigInt f7f9_76 = f7_2.toBig * f9_38.toBig;
-    final BigInt f8f8_19 = f8.toBig * f8_19.toBig;
-    final BigInt f8f9_38 = f8.toBig * f9_38.toBig;
-    final BigInt f9f9_38 = f9.toBig * f9_38.toBig;
+    final BigInt f0f0 = f0.toBigInt * f0.toBigInt;
+    final BigInt f0f1_2 = f0_2.toBigInt * f1.toBigInt;
+    final BigInt f0f2_2 = f0_2.toBigInt * f2.toBigInt;
+    final BigInt f0f3_2 = f0_2.toBigInt * f3.toBigInt;
+    final BigInt f0f4_2 = f0_2.toBigInt * f4.toBigInt;
+    final BigInt f0f5_2 = f0_2.toBigInt * f5.toBigInt;
+    final BigInt f0f6_2 = f0_2.toBigInt * f6.toBigInt;
+    final BigInt f0f7_2 = f0_2.toBigInt * f7.toBigInt;
+    final BigInt f0f8_2 = f0_2.toBigInt * f8.toBigInt;
+    final BigInt f0f9_2 = f0_2.toBigInt * f9.toBigInt;
+    final BigInt f1f1_2 = f1_2.toBigInt * f1.toBigInt;
+    final BigInt f1f2_2 = f1_2.toBigInt * f2.toBigInt;
+    final BigInt f1f3_4 = f1_2.toBigInt * f3_2.toBigInt;
+    final BigInt f1f4_2 = f1_2.toBigInt * f4.toBigInt;
+    final BigInt f1f5_4 = f1_2.toBigInt * f5_2.toBigInt;
+    final BigInt f1f6_2 = f1_2.toBigInt * f6.toBigInt;
+    final BigInt f1f7_4 = f1_2.toBigInt * f7_2.toBigInt;
+    final BigInt f1f8_2 = f1_2.toBigInt * f8.toBigInt;
+    final BigInt f1f9_76 = f1_2.toBigInt * f9_38.toBigInt;
+    final BigInt f2f2 = f2.toBigInt * f2.toBigInt;
+    final BigInt f2f3_2 = f2_2.toBigInt * f3.toBigInt;
+    final BigInt f2f4_2 = f2_2.toBigInt * f4.toBigInt;
+    final BigInt f2f5_2 = f2_2.toBigInt * f5.toBigInt;
+    final BigInt f2f6_2 = f2_2.toBigInt * f6.toBigInt;
+    final BigInt f2f7_2 = f2_2.toBigInt * f7.toBigInt;
+    final BigInt f2f8_38 = f2_2.toBigInt * f8_19.toBigInt;
+    final BigInt f2f9_38 = f2.toBigInt * f9_38.toBigInt;
+    final BigInt f3f3_2 = f3_2.toBigInt * f3.toBigInt;
+    final BigInt f3f4_2 = f3_2.toBigInt * f4.toBigInt;
+    final BigInt f3f5_4 = f3_2.toBigInt * f5_2.toBigInt;
+    final BigInt f3f6_2 = f3_2.toBigInt * f6.toBigInt;
+    final BigInt f3f7_76 = f3_2.toBigInt * f7_38.toBigInt;
+    final BigInt f3f8_38 = f3_2.toBigInt * f8_19.toBigInt;
+    final BigInt f3f9_76 = f3_2.toBigInt * f9_38.toBigInt;
+    final BigInt f4f4 = f4.toBigInt * f4.toBigInt;
+    final BigInt f4f5_2 = f4_2.toBigInt * f5.toBigInt;
+    final BigInt f4f6_38 = f4_2.toBigInt * f6_19.toBigInt;
+    final BigInt f4f7_38 = f4.toBigInt * f7_38.toBigInt;
+    final BigInt f4f8_38 = f4_2.toBigInt * f8_19.toBigInt;
+    final BigInt f4f9_38 = f4.toBigInt * f9_38.toBigInt;
+    final BigInt f5f5_38 = f5.toBigInt * f5_38.toBigInt;
+    final BigInt f5f6_38 = f5_2.toBigInt * f6_19.toBigInt;
+    final BigInt f5f7_76 = f5_2.toBigInt * f7_38.toBigInt;
+    final BigInt f5f8_38 = f5_2.toBigInt * f8_19.toBigInt;
+    final BigInt f5f9_76 = f5_2.toBigInt * f9_38.toBigInt;
+    final BigInt f6f6_19 = f6.toBigInt * f6_19.toBigInt;
+    final BigInt f6f7_38 = f6.toBigInt * f7_38.toBigInt;
+    final BigInt f6f8_38 = f6_2.toBigInt * f8_19.toBigInt;
+    final BigInt f6f9_38 = f6.toBigInt * f9_38.toBigInt;
+    final BigInt f7f7_38 = f7.toBigInt * f7_38.toBigInt;
+    final BigInt f7f8_38 = f7_2.toBigInt * f8_19.toBigInt;
+    final BigInt f7f9_76 = f7_2.toBigInt * f9_38.toBigInt;
+    final BigInt f8f8_19 = f8.toBigInt * f8_19.toBigInt;
+    final BigInt f8f9_38 = f8.toBigInt * f9_38.toBigInt;
+    final BigInt f9f9_38 = f9.toBigInt * f9_38.toBigInt;
     BigInt h0 = f0f0 + f1f9_76 + f2f8_38 + f3f7_76 + f4f6_38 + f5f5_38;
     BigInt h1 = f0f1_2 + f2f9_38 + f3f8_38 + f4f7_38 + f5f6_38;
     BigInt h2 = f0f2_2 + f1f1_2 + f3f9_76 + f4f8_38 + f5f7_76 + f6f6_19;
@@ -568,23 +568,23 @@ class CryptoOps {
     h8 -= carry8 << 26;
 
     carry9 = (h9 + _bitMaskFor24) >> 25;
-    h0 += carry9 * 19.toBig;
+    h0 += carry9 * 19.toBigInt;
     h9 -= carry9 << 25;
 
     carry0 = (h0 + _bitMaskFor25) >> 26;
     h1 += carry0;
     h0 -= carry0 << 26;
 
-    h.h[0] = h0.toInt32;
-    h.h[1] = h1.toInt32;
-    h.h[2] = h2.toInt32;
-    h.h[3] = h3.toInt32;
-    h.h[4] = h4.toInt32;
-    h.h[5] = h5.toInt32;
-    h.h[6] = h6.toInt32;
-    h.h[7] = h7.toInt32;
-    h.h[8] = h8.toInt32;
-    h.h[9] = h9.toInt32;
+    h.h[0] = h0.toSignedInt32;
+    h.h[1] = h1.toSignedInt32;
+    h.h[2] = h2.toSignedInt32;
+    h.h[3] = h3.toSignedInt32;
+    h.h[4] = h4.toSignedInt32;
+    h.h[5] = h5.toSignedInt32;
+    h.h[6] = h6.toSignedInt32;
+    h.h[7] = h7.toSignedInt32;
+    h.h[8] = h8.toSignedInt32;
+    h.h[9] = h9.toSignedInt32;
   }
 
   static void feSq2(FieldElement h, FieldElement f) {
@@ -598,75 +598,75 @@ class CryptoOps {
     final int f7 = f.h[7];
     final int f8 = f.h[8];
     final int f9 = f.h[9];
-    final int f0_2 = (2 * f0).toInt32;
-    final int f1_2 = (2 * f1).toInt32;
-    final int f2_2 = (2 * f2).toInt32;
-    final int f3_2 = (2 * f3).toInt32;
-    final int f4_2 = (2 * f4).toInt32;
-    final int f5_2 = (2 * f5).toInt32;
-    final int f6_2 = (2 * f6).toInt32;
-    final int f7_2 = (2 * f7).toInt32;
-    final int f5_38 = (38 * f5).toInt32; /* 1.959375*2^30 */
-    final int f6_19 = (19 * f6).toInt32; /* 1.959375*2^30 */
-    final int f7_38 = (38 * f7).toInt32; /* 1.959375*2^30 */
-    final int f8_19 = (19 * f8).toInt32; /* 1.959375*2^30 */
-    final int f9_38 = (38 * f9).toInt32; /* 1.959375*2^30 */
-    final BigInt f0f0 = f0.toBig * f0.toBig;
+    final int f0_2 = (2 * f0).toSigned32;
+    final int f1_2 = (2 * f1).toSigned32;
+    final int f2_2 = (2 * f2).toSigned32;
+    final int f3_2 = (2 * f3).toSigned32;
+    final int f4_2 = (2 * f4).toSigned32;
+    final int f5_2 = (2 * f5).toSigned32;
+    final int f6_2 = (2 * f6).toSigned32;
+    final int f7_2 = (2 * f7).toSigned32;
+    final int f5_38 = (38 * f5).toSigned32; /* 1.959375*2^30 */
+    final int f6_19 = (19 * f6).toSigned32; /* 1.959375*2^30 */
+    final int f7_38 = (38 * f7).toSigned32; /* 1.959375*2^30 */
+    final int f8_19 = (19 * f8).toSigned32; /* 1.959375*2^30 */
+    final int f9_38 = (38 * f9).toSigned32; /* 1.959375*2^30 */
+    final BigInt f0f0 = f0.toBigInt * f0.toBigInt;
 
-    final BigInt f0f1_2 = f0_2.toBig * f1.toBig;
-    final BigInt f0f2_2 = f0_2.toBig * f2.toBig;
-    final BigInt f0f3_2 = f0_2.toBig * f3.toBig;
-    final BigInt f0f4_2 = f0_2.toBig * f4.toBig;
-    final BigInt f0f5_2 = f0_2.toBig * f5.toBig;
-    final BigInt f0f6_2 = f0_2.toBig * f6.toBig;
-    final BigInt f0f7_2 = f0_2.toBig * f7.toBig;
-    final BigInt f0f8_2 = f0_2.toBig * f8.toBig;
-    final BigInt f0f9_2 = f0_2.toBig * f9.toBig;
-    final BigInt f1f1_2 = f1_2.toBig * f1.toBig;
-    final BigInt f1f2_2 = f1_2.toBig * f2.toBig;
-    final BigInt f1f3_4 = f1_2.toBig * f3_2.toBig;
-    final BigInt f1f4_2 = f1_2.toBig * f4.toBig;
-    final BigInt f1f5_4 = f1_2.toBig * f5_2.toBig;
-    final BigInt f1f6_2 = f1_2.toBig * f6.toBig;
-    final BigInt f1f7_4 = f1_2.toBig * f7_2.toBig;
-    final BigInt f1f8_2 = f1_2.toBig * f8.toBig;
-    final BigInt f1f9_76 = f1_2.toBig * f9_38.toBig;
-    final BigInt f2f2 = f2.toBig * f2.toBig;
-    final BigInt f2f3_2 = f2_2.toBig * f3.toBig;
-    final BigInt f2f4_2 = f2_2.toBig * f4.toBig;
-    final BigInt f2f5_2 = f2_2.toBig * f5.toBig;
-    final BigInt f2f6_2 = f2_2.toBig * f6.toBig;
-    final BigInt f2f7_2 = f2_2.toBig * f7.toBig;
-    final BigInt f2f8_38 = f2_2.toBig * f8_19.toBig;
-    final BigInt f2f9_38 = f2.toBig * f9_38.toBig;
-    final BigInt f3f3_2 = f3_2.toBig * f3.toBig;
-    final BigInt f3f4_2 = f3_2.toBig * f4.toBig;
-    final BigInt f3f5_4 = f3_2.toBig * f5_2.toBig;
-    final BigInt f3f6_2 = f3_2.toBig * f6.toBig;
-    final BigInt f3f7_76 = f3_2.toBig * f7_38.toBig;
-    final BigInt f3f8_38 = f3_2.toBig * f8_19.toBig;
-    final BigInt f3f9_76 = f3_2.toBig * f9_38.toBig;
-    final BigInt f4f4 = f4.toBig * f4.toBig;
-    final BigInt f4f5_2 = f4_2.toBig * f5.toBig;
-    final BigInt f4f6_38 = f4_2.toBig * f6_19.toBig;
-    final BigInt f4f7_38 = f4.toBig * f7_38.toBig;
-    final BigInt f4f8_38 = f4_2.toBig * f8_19.toBig;
-    final BigInt f4f9_38 = f4.toBig * f9_38.toBig;
-    final BigInt f5f5_38 = f5.toBig * f5_38.toBig;
-    final BigInt f5f6_38 = f5_2.toBig * f6_19.toBig;
-    final BigInt f5f7_76 = f5_2.toBig * f7_38.toBig;
-    final BigInt f5f8_38 = f5_2.toBig * f8_19.toBig;
-    final BigInt f5f9_76 = f5_2.toBig * f9_38.toBig;
-    final BigInt f6f6_19 = f6.toBig * f6_19.toBig;
-    final BigInt f6f7_38 = f6.toBig * f7_38.toBig;
-    final BigInt f6f8_38 = f6_2.toBig * f8_19.toBig;
-    final BigInt f6f9_38 = f6.toBig * f9_38.toBig;
-    final BigInt f7f7_38 = f7.toBig * f7_38.toBig;
-    final BigInt f7f8_38 = f7_2.toBig * f8_19.toBig;
-    final BigInt f7f9_76 = f7_2.toBig * f9_38.toBig;
-    final BigInt f8f8_19 = f8.toBig * f8_19.toBig;
-    final BigInt f8f9_38 = f8.toBig * f9_38.toBig;
-    final BigInt f9f9_38 = f9.toBig * f9_38.toBig;
+    final BigInt f0f1_2 = f0_2.toBigInt * f1.toBigInt;
+    final BigInt f0f2_2 = f0_2.toBigInt * f2.toBigInt;
+    final BigInt f0f3_2 = f0_2.toBigInt * f3.toBigInt;
+    final BigInt f0f4_2 = f0_2.toBigInt * f4.toBigInt;
+    final BigInt f0f5_2 = f0_2.toBigInt * f5.toBigInt;
+    final BigInt f0f6_2 = f0_2.toBigInt * f6.toBigInt;
+    final BigInt f0f7_2 = f0_2.toBigInt * f7.toBigInt;
+    final BigInt f0f8_2 = f0_2.toBigInt * f8.toBigInt;
+    final BigInt f0f9_2 = f0_2.toBigInt * f9.toBigInt;
+    final BigInt f1f1_2 = f1_2.toBigInt * f1.toBigInt;
+    final BigInt f1f2_2 = f1_2.toBigInt * f2.toBigInt;
+    final BigInt f1f3_4 = f1_2.toBigInt * f3_2.toBigInt;
+    final BigInt f1f4_2 = f1_2.toBigInt * f4.toBigInt;
+    final BigInt f1f5_4 = f1_2.toBigInt * f5_2.toBigInt;
+    final BigInt f1f6_2 = f1_2.toBigInt * f6.toBigInt;
+    final BigInt f1f7_4 = f1_2.toBigInt * f7_2.toBigInt;
+    final BigInt f1f8_2 = f1_2.toBigInt * f8.toBigInt;
+    final BigInt f1f9_76 = f1_2.toBigInt * f9_38.toBigInt;
+    final BigInt f2f2 = f2.toBigInt * f2.toBigInt;
+    final BigInt f2f3_2 = f2_2.toBigInt * f3.toBigInt;
+    final BigInt f2f4_2 = f2_2.toBigInt * f4.toBigInt;
+    final BigInt f2f5_2 = f2_2.toBigInt * f5.toBigInt;
+    final BigInt f2f6_2 = f2_2.toBigInt * f6.toBigInt;
+    final BigInt f2f7_2 = f2_2.toBigInt * f7.toBigInt;
+    final BigInt f2f8_38 = f2_2.toBigInt * f8_19.toBigInt;
+    final BigInt f2f9_38 = f2.toBigInt * f9_38.toBigInt;
+    final BigInt f3f3_2 = f3_2.toBigInt * f3.toBigInt;
+    final BigInt f3f4_2 = f3_2.toBigInt * f4.toBigInt;
+    final BigInt f3f5_4 = f3_2.toBigInt * f5_2.toBigInt;
+    final BigInt f3f6_2 = f3_2.toBigInt * f6.toBigInt;
+    final BigInt f3f7_76 = f3_2.toBigInt * f7_38.toBigInt;
+    final BigInt f3f8_38 = f3_2.toBigInt * f8_19.toBigInt;
+    final BigInt f3f9_76 = f3_2.toBigInt * f9_38.toBigInt;
+    final BigInt f4f4 = f4.toBigInt * f4.toBigInt;
+    final BigInt f4f5_2 = f4_2.toBigInt * f5.toBigInt;
+    final BigInt f4f6_38 = f4_2.toBigInt * f6_19.toBigInt;
+    final BigInt f4f7_38 = f4.toBigInt * f7_38.toBigInt;
+    final BigInt f4f8_38 = f4_2.toBigInt * f8_19.toBigInt;
+    final BigInt f4f9_38 = f4.toBigInt * f9_38.toBigInt;
+    final BigInt f5f5_38 = f5.toBigInt * f5_38.toBigInt;
+    final BigInt f5f6_38 = f5_2.toBigInt * f6_19.toBigInt;
+    final BigInt f5f7_76 = f5_2.toBigInt * f7_38.toBigInt;
+    final BigInt f5f8_38 = f5_2.toBigInt * f8_19.toBigInt;
+    final BigInt f5f9_76 = f5_2.toBigInt * f9_38.toBigInt;
+    final BigInt f6f6_19 = f6.toBigInt * f6_19.toBigInt;
+    final BigInt f6f7_38 = f6.toBigInt * f7_38.toBigInt;
+    final BigInt f6f8_38 = f6_2.toBigInt * f8_19.toBigInt;
+    final BigInt f6f9_38 = f6.toBigInt * f9_38.toBigInt;
+    final BigInt f7f7_38 = f7.toBigInt * f7_38.toBigInt;
+    final BigInt f7f8_38 = f7_2.toBigInt * f8_19.toBigInt;
+    final BigInt f7f9_76 = f7_2.toBigInt * f9_38.toBigInt;
+    final BigInt f8f8_19 = f8.toBigInt * f8_19.toBigInt;
+    final BigInt f8f9_38 = f8.toBigInt * f9_38.toBigInt;
+    final BigInt f9f9_38 = f9.toBigInt * f9_38.toBigInt;
     BigInt h0 = f0f0 + f1f9_76 + f2f8_38 + f3f7_76 + f4f6_38 + f5f5_38;
     BigInt h1 = f0f1_2 + f2f9_38 + f3f8_38 + f4f7_38 + f5f6_38;
     BigInt h2 = f0f2_2 + f1f1_2 + f3f9_76 + f4f8_38 + f5f7_76 + f6f6_19;
@@ -742,16 +742,16 @@ class CryptoOps {
     h1 += carry0;
     h0 -= carry0 << 26;
 
-    h.h[0] = h0.toInt32;
-    h.h[1] = h1.toInt32;
-    h.h[2] = h2.toInt32;
-    h.h[3] = h3.toInt32;
-    h.h[4] = h4.toInt32;
-    h.h[5] = h5.toInt32;
-    h.h[6] = h6.toInt32;
-    h.h[7] = h7.toInt32;
-    h.h[8] = h8.toInt32;
-    h.h[9] = h9.toInt32;
+    h.h[0] = h0.toSignedInt32;
+    h.h[1] = h1.toSignedInt32;
+    h.h[2] = h2.toSignedInt32;
+    h.h[3] = h3.toSignedInt32;
+    h.h[4] = h4.toSignedInt32;
+    h.h[5] = h5.toSignedInt32;
+    h.h[6] = h6.toSignedInt32;
+    h.h[7] = h7.toSignedInt32;
+    h.h[8] = h8.toSignedInt32;
+    h.h[9] = h9.toSignedInt32;
   }
 
   static void feSub(FieldElement h, FieldElement f, FieldElement g) {
@@ -799,16 +799,16 @@ class CryptoOps {
 
   static void feTobytes(List<int> s, FieldElement h) {
     s.asMin32("feTobytes");
-    BigInt h0 = h.h[0].toBig;
-    BigInt h1 = h.h[1].toBig;
-    BigInt h2 = h.h[2].toBig;
-    BigInt h3 = h.h[3].toBig;
-    BigInt h4 = h.h[4].toBig;
-    BigInt h5 = h.h[5].toBig;
-    BigInt h6 = h.h[6].toBig;
-    BigInt h7 = h.h[7].toBig;
-    BigInt h8 = h.h[8].toBig;
-    BigInt h9 = h.h[9].toBig;
+    BigInt h0 = h.h[0].toBigInt;
+    BigInt h1 = h.h[1].toBigInt;
+    BigInt h2 = h.h[2].toBigInt;
+    BigInt h3 = h.h[3].toBigInt;
+    BigInt h4 = h.h[4].toBigInt;
+    BigInt h5 = h.h[5].toBigInt;
+    BigInt h6 = h.h[6].toBigInt;
+    BigInt h7 = h.h[7].toBigInt;
+    BigInt h8 = h.h[8].toBigInt;
+    BigInt h9 = h.h[9].toBigInt;
     BigInt q;
     BigInt carry0;
     BigInt carry1;
@@ -821,7 +821,7 @@ class CryptoOps {
     BigInt carry8;
     BigInt carry9;
 
-    q = (BigInt.from(19) * h9 + ((1) << 24).toBig) >> 25;
+    q = (BigInt.from(19) * h9 + ((1) << 24).toBigInt) >> 25;
     q = (h0 + q) >> 26;
     q = (h1 + q) >> 25;
     q = (h2 + q) >> 26;
@@ -907,7 +907,7 @@ class CryptoOps {
     sBig[30] = h9 >> 10;
     sBig[31] = h9 >> 18;
     for (int i = 0; i < s.length; i++) {
-      s[i] = sBig[i].toUnsigned8;
+      s[i] = sBig[i].toUnsignedInt8;
     }
   }
 
@@ -932,121 +932,121 @@ class CryptoOps {
     final int g7 = g.h[7];
     final int g8 = g.h[8];
     final int g9 = g.h[9];
-    final int g1_19 = (19 * g1).toInt32; /* 1.959375*2^29 */
-    final int g2_19 = (19 * g2).toInt32; /* 1.959375*2^30; still ok */
-    final int g3_19 = (19 * g3).toInt32;
-    final int g4_19 = (19 * g4).toInt32;
-    final int g5_19 = (19 * g5).toInt32;
-    final int g6_19 = (19 * g6).toInt32;
-    final int g7_19 = (19 * g7).toInt32;
-    final int g8_19 = (19 * g8).toInt32;
-    final int g9_19 = (19 * g9).toInt32;
-    final int f1_2 = (2 * f1).toInt32;
-    final int f3_2 = (2 * f3).toInt32;
-    final int f5_2 = (2 * f5).toInt32;
-    final int f7_2 = (2 * f7).toInt32;
-    final int f9_2 = (2 * f9).toInt32;
+    final int g1_19 = (19 * g1).toSigned32; /* 1.959375*2^29 */
+    final int g2_19 = (19 * g2).toSigned32; /* 1.959375*2^30; still ok */
+    final int g3_19 = (19 * g3).toSigned32;
+    final int g4_19 = (19 * g4).toSigned32;
+    final int g5_19 = (19 * g5).toSigned32;
+    final int g6_19 = (19 * g6).toSigned32;
+    final int g7_19 = (19 * g7).toSigned32;
+    final int g8_19 = (19 * g8).toSigned32;
+    final int g9_19 = (19 * g9).toSigned32;
+    final int f1_2 = (2 * f1).toSigned32;
+    final int f3_2 = (2 * f3).toSigned32;
+    final int f5_2 = (2 * f5).toSigned32;
+    final int f7_2 = (2 * f7).toSigned32;
+    final int f9_2 = (2 * f9).toSigned32;
 
-    final BigInt f0g0 = f0.toBig * g0.toBig;
-    final BigInt f0g1 = f0.toBig * g1.toBig;
-    final BigInt f0g2 = f0.toBig * g2.toBig;
-    final BigInt f0g3 = f0.toBig * g3.toBig;
-    final BigInt f0g4 = f0.toBig * g4.toBig;
-    final BigInt f0g5 = f0.toBig * g5.toBig;
-    final BigInt f0g6 = f0.toBig * g6.toBig;
-    final BigInt f0g7 = f0.toBig * g7.toBig;
-    final BigInt f0g8 = f0.toBig * g8.toBig;
-    final BigInt f0g9 = f0.toBig * g9.toBig;
-    final BigInt f1g0 = f1.toBig * g0.toBig;
-    final BigInt f1g1_2 = f1_2.toBig * g1.toBig;
-    final BigInt f1g2 = f1.toBig * g2.toBig;
-    final BigInt f1g3_2 = f1_2.toBig * g3.toBig;
-    final BigInt f1g4 = f1.toBig * g4.toBig;
-    final BigInt f1g5_2 = f1_2.toBig * g5.toBig;
-    final BigInt f1g6 = f1.toBig * g6.toBig;
-    final BigInt f1g7_2 = f1_2.toBig * g7.toBig;
-    final BigInt f1g8 = f1.toBig * g8.toBig;
-    final BigInt f1g9_38 = f1_2.toBig * g9_19.toBig;
-    final BigInt f2g0 = f2.toBig * g0.toBig;
-    final BigInt f2g1 = f2.toBig * g1.toBig;
-    final BigInt f2g2 = f2.toBig * g2.toBig;
-    final BigInt f2g3 = f2.toBig * g3.toBig;
-    final BigInt f2g4 = f2.toBig * g4.toBig;
-    final BigInt f2g5 = f2.toBig * g5.toBig;
-    final BigInt f2g6 = f2.toBig * g6.toBig;
-    final BigInt f2g7 = f2.toBig * g7.toBig;
-    final BigInt f2g8_19 = f2.toBig * g8_19.toBig;
-    final BigInt f2g9_19 = f2.toBig * g9_19.toBig;
-    final BigInt f3g0 = f3.toBig * g0.toBig;
-    final BigInt f3g1_2 = f3_2.toBig * g1.toBig;
-    final BigInt f3g2 = f3.toBig * g2.toBig;
-    final BigInt f3g3_2 = f3_2.toBig * g3.toBig;
-    final BigInt f3g4 = f3.toBig * g4.toBig;
-    final BigInt f3g5_2 = f3_2.toBig * g5.toBig;
-    final BigInt f3g6 = f3.toBig * g6.toBig;
-    final BigInt f3g7_38 = f3_2.toBig * g7_19.toBig;
-    final BigInt f3g8_19 = f3.toBig * g8_19.toBig;
-    final BigInt f3g9_38 = f3_2.toBig * g9_19.toBig;
-    final BigInt f4g0 = f4.toBig * g0.toBig;
-    final BigInt f4g1 = f4.toBig * g1.toBig;
-    final BigInt f4g2 = f4.toBig * g2.toBig;
-    final BigInt f4g3 = f4.toBig * g3.toBig;
-    final BigInt f4g4 = f4.toBig * g4.toBig;
-    final BigInt f4g5 = f4.toBig * g5.toBig;
-    final BigInt f4g6_19 = f4.toBig * g6_19.toBig;
-    final BigInt f4g7_19 = f4.toBig * g7_19.toBig;
-    final BigInt f4g8_19 = f4.toBig * g8_19.toBig;
-    final BigInt f4g9_19 = f4.toBig * g9_19.toBig;
-    final BigInt f5g0 = f5.toBig * g0.toBig;
-    final BigInt f5g1_2 = f5_2.toBig * g1.toBig;
-    final BigInt f5g2 = f5.toBig * g2.toBig;
-    final BigInt f5g3_2 = f5_2.toBig * g3.toBig;
-    final BigInt f5g4 = f5.toBig * g4.toBig;
-    final BigInt f5g5_38 = f5_2.toBig * g5_19.toBig;
-    final BigInt f5g6_19 = f5.toBig * g6_19.toBig;
-    final BigInt f5g7_38 = f5_2.toBig * g7_19.toBig;
-    final BigInt f5g8_19 = f5.toBig * g8_19.toBig;
-    final BigInt f5g9_38 = f5_2.toBig * g9_19.toBig;
-    final BigInt f6g0 = f6.toBig * g0.toBig;
-    final BigInt f6g1 = f6.toBig * g1.toBig;
-    final BigInt f6g2 = f6.toBig * g2.toBig;
-    final BigInt f6g3 = f6.toBig * g3.toBig;
-    final BigInt f6g4_19 = f6.toBig * g4_19.toBig;
-    final BigInt f6g5_19 = f6.toBig * g5_19.toBig;
-    final BigInt f6g6_19 = f6.toBig * g6_19.toBig;
-    final BigInt f6g7_19 = f6.toBig * g7_19.toBig;
-    final BigInt f6g8_19 = f6.toBig * g8_19.toBig;
-    final BigInt f6g9_19 = f6.toBig * g9_19.toBig;
-    final BigInt f7g0 = f7.toBig * g0.toBig;
-    final BigInt f7g1_2 = f7_2.toBig * g1.toBig;
-    final BigInt f7g2 = f7.toBig * g2.toBig;
-    final BigInt f7g3_38 = f7_2.toBig * g3_19.toBig;
-    final BigInt f7g4_19 = f7.toBig * g4_19.toBig;
-    final BigInt f7g5_38 = f7_2.toBig * g5_19.toBig;
-    final BigInt f7g6_19 = f7.toBig * g6_19.toBig;
-    final BigInt f7g7_38 = f7_2.toBig * g7_19.toBig;
-    final BigInt f7g8_19 = f7.toBig * g8_19.toBig;
-    final BigInt f7g9_38 = f7_2.toBig * g9_19.toBig;
-    final BigInt f8g0 = f8.toBig * g0.toBig;
-    final BigInt f8g1 = f8.toBig * g1.toBig;
-    final BigInt f8g2_19 = f8.toBig * g2_19.toBig;
-    final BigInt f8g3_19 = f8.toBig * g3_19.toBig;
-    final BigInt f8g4_19 = f8.toBig * g4_19.toBig;
-    final BigInt f8g5_19 = f8.toBig * g5_19.toBig;
-    final BigInt f8g6_19 = f8.toBig * g6_19.toBig;
-    final BigInt f8g7_19 = f8.toBig * g7_19.toBig;
-    final BigInt f8g8_19 = f8.toBig * g8_19.toBig;
-    final BigInt f8g9_19 = f8.toBig * g9_19.toBig;
-    final BigInt f9g0 = f9.toBig * g0.toBig;
-    final BigInt f9g1_38 = f9_2.toBig * g1_19.toBig;
-    final BigInt f9g2_19 = f9.toBig * g2_19.toBig;
-    final BigInt f9g3_38 = f9_2.toBig * g3_19.toBig;
-    final BigInt f9g4_19 = f9.toBig * g4_19.toBig;
-    final BigInt f9g5_38 = f9_2.toBig * g5_19.toBig;
-    final BigInt f9g6_19 = f9.toBig * g6_19.toBig;
-    final BigInt f9g7_38 = f9_2.toBig * g7_19.toBig;
-    final BigInt f9g8_19 = f9.toBig * g8_19.toBig;
-    final BigInt f9g9_38 = f9_2.toBig * g9_19.toBig;
+    final BigInt f0g0 = f0.toBigInt * g0.toBigInt;
+    final BigInt f0g1 = f0.toBigInt * g1.toBigInt;
+    final BigInt f0g2 = f0.toBigInt * g2.toBigInt;
+    final BigInt f0g3 = f0.toBigInt * g3.toBigInt;
+    final BigInt f0g4 = f0.toBigInt * g4.toBigInt;
+    final BigInt f0g5 = f0.toBigInt * g5.toBigInt;
+    final BigInt f0g6 = f0.toBigInt * g6.toBigInt;
+    final BigInt f0g7 = f0.toBigInt * g7.toBigInt;
+    final BigInt f0g8 = f0.toBigInt * g8.toBigInt;
+    final BigInt f0g9 = f0.toBigInt * g9.toBigInt;
+    final BigInt f1g0 = f1.toBigInt * g0.toBigInt;
+    final BigInt f1g1_2 = f1_2.toBigInt * g1.toBigInt;
+    final BigInt f1g2 = f1.toBigInt * g2.toBigInt;
+    final BigInt f1g3_2 = f1_2.toBigInt * g3.toBigInt;
+    final BigInt f1g4 = f1.toBigInt * g4.toBigInt;
+    final BigInt f1g5_2 = f1_2.toBigInt * g5.toBigInt;
+    final BigInt f1g6 = f1.toBigInt * g6.toBigInt;
+    final BigInt f1g7_2 = f1_2.toBigInt * g7.toBigInt;
+    final BigInt f1g8 = f1.toBigInt * g8.toBigInt;
+    final BigInt f1g9_38 = f1_2.toBigInt * g9_19.toBigInt;
+    final BigInt f2g0 = f2.toBigInt * g0.toBigInt;
+    final BigInt f2g1 = f2.toBigInt * g1.toBigInt;
+    final BigInt f2g2 = f2.toBigInt * g2.toBigInt;
+    final BigInt f2g3 = f2.toBigInt * g3.toBigInt;
+    final BigInt f2g4 = f2.toBigInt * g4.toBigInt;
+    final BigInt f2g5 = f2.toBigInt * g5.toBigInt;
+    final BigInt f2g6 = f2.toBigInt * g6.toBigInt;
+    final BigInt f2g7 = f2.toBigInt * g7.toBigInt;
+    final BigInt f2g8_19 = f2.toBigInt * g8_19.toBigInt;
+    final BigInt f2g9_19 = f2.toBigInt * g9_19.toBigInt;
+    final BigInt f3g0 = f3.toBigInt * g0.toBigInt;
+    final BigInt f3g1_2 = f3_2.toBigInt * g1.toBigInt;
+    final BigInt f3g2 = f3.toBigInt * g2.toBigInt;
+    final BigInt f3g3_2 = f3_2.toBigInt * g3.toBigInt;
+    final BigInt f3g4 = f3.toBigInt * g4.toBigInt;
+    final BigInt f3g5_2 = f3_2.toBigInt * g5.toBigInt;
+    final BigInt f3g6 = f3.toBigInt * g6.toBigInt;
+    final BigInt f3g7_38 = f3_2.toBigInt * g7_19.toBigInt;
+    final BigInt f3g8_19 = f3.toBigInt * g8_19.toBigInt;
+    final BigInt f3g9_38 = f3_2.toBigInt * g9_19.toBigInt;
+    final BigInt f4g0 = f4.toBigInt * g0.toBigInt;
+    final BigInt f4g1 = f4.toBigInt * g1.toBigInt;
+    final BigInt f4g2 = f4.toBigInt * g2.toBigInt;
+    final BigInt f4g3 = f4.toBigInt * g3.toBigInt;
+    final BigInt f4g4 = f4.toBigInt * g4.toBigInt;
+    final BigInt f4g5 = f4.toBigInt * g5.toBigInt;
+    final BigInt f4g6_19 = f4.toBigInt * g6_19.toBigInt;
+    final BigInt f4g7_19 = f4.toBigInt * g7_19.toBigInt;
+    final BigInt f4g8_19 = f4.toBigInt * g8_19.toBigInt;
+    final BigInt f4g9_19 = f4.toBigInt * g9_19.toBigInt;
+    final BigInt f5g0 = f5.toBigInt * g0.toBigInt;
+    final BigInt f5g1_2 = f5_2.toBigInt * g1.toBigInt;
+    final BigInt f5g2 = f5.toBigInt * g2.toBigInt;
+    final BigInt f5g3_2 = f5_2.toBigInt * g3.toBigInt;
+    final BigInt f5g4 = f5.toBigInt * g4.toBigInt;
+    final BigInt f5g5_38 = f5_2.toBigInt * g5_19.toBigInt;
+    final BigInt f5g6_19 = f5.toBigInt * g6_19.toBigInt;
+    final BigInt f5g7_38 = f5_2.toBigInt * g7_19.toBigInt;
+    final BigInt f5g8_19 = f5.toBigInt * g8_19.toBigInt;
+    final BigInt f5g9_38 = f5_2.toBigInt * g9_19.toBigInt;
+    final BigInt f6g0 = f6.toBigInt * g0.toBigInt;
+    final BigInt f6g1 = f6.toBigInt * g1.toBigInt;
+    final BigInt f6g2 = f6.toBigInt * g2.toBigInt;
+    final BigInt f6g3 = f6.toBigInt * g3.toBigInt;
+    final BigInt f6g4_19 = f6.toBigInt * g4_19.toBigInt;
+    final BigInt f6g5_19 = f6.toBigInt * g5_19.toBigInt;
+    final BigInt f6g6_19 = f6.toBigInt * g6_19.toBigInt;
+    final BigInt f6g7_19 = f6.toBigInt * g7_19.toBigInt;
+    final BigInt f6g8_19 = f6.toBigInt * g8_19.toBigInt;
+    final BigInt f6g9_19 = f6.toBigInt * g9_19.toBigInt;
+    final BigInt f7g0 = f7.toBigInt * g0.toBigInt;
+    final BigInt f7g1_2 = f7_2.toBigInt * g1.toBigInt;
+    final BigInt f7g2 = f7.toBigInt * g2.toBigInt;
+    final BigInt f7g3_38 = f7_2.toBigInt * g3_19.toBigInt;
+    final BigInt f7g4_19 = f7.toBigInt * g4_19.toBigInt;
+    final BigInt f7g5_38 = f7_2.toBigInt * g5_19.toBigInt;
+    final BigInt f7g6_19 = f7.toBigInt * g6_19.toBigInt;
+    final BigInt f7g7_38 = f7_2.toBigInt * g7_19.toBigInt;
+    final BigInt f7g8_19 = f7.toBigInt * g8_19.toBigInt;
+    final BigInt f7g9_38 = f7_2.toBigInt * g9_19.toBigInt;
+    final BigInt f8g0 = f8.toBigInt * g0.toBigInt;
+    final BigInt f8g1 = f8.toBigInt * g1.toBigInt;
+    final BigInt f8g2_19 = f8.toBigInt * g2_19.toBigInt;
+    final BigInt f8g3_19 = f8.toBigInt * g3_19.toBigInt;
+    final BigInt f8g4_19 = f8.toBigInt * g4_19.toBigInt;
+    final BigInt f8g5_19 = f8.toBigInt * g5_19.toBigInt;
+    final BigInt f8g6_19 = f8.toBigInt * g6_19.toBigInt;
+    final BigInt f8g7_19 = f8.toBigInt * g7_19.toBigInt;
+    final BigInt f8g8_19 = f8.toBigInt * g8_19.toBigInt;
+    final BigInt f8g9_19 = f8.toBigInt * g9_19.toBigInt;
+    final BigInt f9g0 = f9.toBigInt * g0.toBigInt;
+    final BigInt f9g1_38 = f9_2.toBigInt * g1_19.toBigInt;
+    final BigInt f9g2_19 = f9.toBigInt * g2_19.toBigInt;
+    final BigInt f9g3_38 = f9_2.toBigInt * g3_19.toBigInt;
+    final BigInt f9g4_19 = f9.toBigInt * g4_19.toBigInt;
+    final BigInt f9g5_38 = f9_2.toBigInt * g5_19.toBigInt;
+    final BigInt f9g6_19 = f9.toBigInt * g6_19.toBigInt;
+    final BigInt f9g7_38 = f9_2.toBigInt * g7_19.toBigInt;
+    final BigInt f9g8_19 = f9.toBigInt * g8_19.toBigInt;
+    final BigInt f9g9_38 = f9_2.toBigInt * g9_19.toBigInt;
     BigInt h0 = f0g0 +
         f1g9_38 +
         f2g8_19 +
@@ -1224,16 +1224,16 @@ class CryptoOps {
     /* |h0| <= 2^25; from now on fits into int32 unchanged */
     /* |h1| <= 1.01*2^24 */
 
-    h.h[0] = h0.toInt32;
-    h.h[1] = h1.toInt32;
-    h.h[2] = h2.toInt32;
-    h.h[3] = h3.toInt32;
-    h.h[4] = h4.toInt32;
-    h.h[5] = h5.toInt32;
-    h.h[6] = h6.toInt32;
-    h.h[7] = h7.toInt32;
-    h.h[8] = h8.toInt32;
-    h.h[9] = h9.toInt32;
+    h.h[0] = h0.toSignedInt32;
+    h.h[1] = h1.toSignedInt32;
+    h.h[2] = h2.toSignedInt32;
+    h.h[3] = h3.toSignedInt32;
+    h.h[4] = h4.toSignedInt32;
+    h.h[5] = h5.toSignedInt32;
+    h.h[6] = h6.toSignedInt32;
+    h.h[7] = h7.toSignedInt32;
+    h.h[8] = h8.toSignedInt32;
+    h.h[9] = h9.toSignedInt32;
   }
 
   static void feDivpowm1(FieldElement r, FieldElement u, FieldElement v) {
@@ -1663,47 +1663,47 @@ class CryptoOps {
     s22 += carry21;
     s21 -= carry21 << 21;
 
-    s11 += s23 * 666643.toBig;
-    s12 += s23 * 470296.toBig;
-    s13 += s23 * 654183.toBig;
-    s14 -= s23 * 997805.toBig;
-    s15 += s23 * 136657.toBig;
-    s16 -= s23 * 683901.toBig;
+    s11 += s23 * 666643.toBigInt;
+    s12 += s23 * 470296.toBigInt;
+    s13 += s23 * 654183.toBigInt;
+    s14 -= s23 * 997805.toBigInt;
+    s15 += s23 * 136657.toBigInt;
+    s16 -= s23 * 683901.toBigInt;
 
-    s10 += s22 * 666643.toBig;
-    s11 += s22 * 470296.toBig;
-    s12 += s22 * 654183.toBig;
-    s13 -= s22 * 997805.toBig;
-    s14 += s22 * 136657.toBig;
-    s15 -= s22 * 683901.toBig;
+    s10 += s22 * 666643.toBigInt;
+    s11 += s22 * 470296.toBigInt;
+    s12 += s22 * 654183.toBigInt;
+    s13 -= s22 * 997805.toBigInt;
+    s14 += s22 * 136657.toBigInt;
+    s15 -= s22 * 683901.toBigInt;
 
-    s9 += s21 * 666643.toBig;
-    s10 += s21 * 470296.toBig;
-    s11 += s21 * 654183.toBig;
-    s12 -= s21 * 997805.toBig;
-    s13 += s21 * 136657.toBig;
-    s14 -= s21 * 683901.toBig;
+    s9 += s21 * 666643.toBigInt;
+    s10 += s21 * 470296.toBigInt;
+    s11 += s21 * 654183.toBigInt;
+    s12 -= s21 * 997805.toBigInt;
+    s13 += s21 * 136657.toBigInt;
+    s14 -= s21 * 683901.toBigInt;
 
-    s8 += s20 * 666643.toBig;
-    s9 += s20 * 470296.toBig;
-    s10 += s20 * 654183.toBig;
-    s11 -= s20 * 997805.toBig;
-    s12 += s20 * 136657.toBig;
-    s13 -= s20 * 683901.toBig;
+    s8 += s20 * 666643.toBigInt;
+    s9 += s20 * 470296.toBigInt;
+    s10 += s20 * 654183.toBigInt;
+    s11 -= s20 * 997805.toBigInt;
+    s12 += s20 * 136657.toBigInt;
+    s13 -= s20 * 683901.toBigInt;
 
-    s7 += s19 * 666643.toBig;
-    s8 += s19 * 470296.toBig;
-    s9 += s19 * 654183.toBig;
-    s10 -= s19 * 997805.toBig;
-    s11 += s19 * 136657.toBig;
-    s12 -= s19 * 683901.toBig;
+    s7 += s19 * 666643.toBigInt;
+    s8 += s19 * 470296.toBigInt;
+    s9 += s19 * 654183.toBigInt;
+    s10 -= s19 * 997805.toBigInt;
+    s11 += s19 * 136657.toBigInt;
+    s12 -= s19 * 683901.toBigInt;
 
-    s6 += s18 * 666643.toBig;
-    s7 += s18 * 470296.toBig;
-    s8 += s18 * 654183.toBig;
-    s9 -= s18 * 997805.toBig;
-    s10 += s18 * 136657.toBig;
-    s11 -= s18 * 683901.toBig;
+    s6 += s18 * 666643.toBigInt;
+    s7 += s18 * 470296.toBigInt;
+    s8 += s18 * 654183.toBigInt;
+    s9 -= s18 * 997805.toBigInt;
+    s10 += s18 * 136657.toBigInt;
+    s11 -= s18 * 683901.toBigInt;
 
     carry6 = (s6 + _bitMaskFor20) >> 21;
     s7 += carry6;
@@ -1740,47 +1740,47 @@ class CryptoOps {
     s16 += carry15;
     s15 -= carry15 << 21;
 
-    s5 += s17 * 666643.toBig;
-    s6 += s17 * 470296.toBig;
-    s7 += s17 * 654183.toBig;
-    s8 -= s17 * 997805.toBig;
-    s9 += s17 * 136657.toBig;
-    s10 -= s17 * 683901.toBig;
+    s5 += s17 * 666643.toBigInt;
+    s6 += s17 * 470296.toBigInt;
+    s7 += s17 * 654183.toBigInt;
+    s8 -= s17 * 997805.toBigInt;
+    s9 += s17 * 136657.toBigInt;
+    s10 -= s17 * 683901.toBigInt;
 
-    s4 += s16 * 666643.toBig;
-    s5 += s16 * 470296.toBig;
-    s6 += s16 * 654183.toBig;
-    s7 -= s16 * 997805.toBig;
-    s8 += s16 * 136657.toBig;
-    s9 -= s16 * 683901.toBig;
+    s4 += s16 * 666643.toBigInt;
+    s5 += s16 * 470296.toBigInt;
+    s6 += s16 * 654183.toBigInt;
+    s7 -= s16 * 997805.toBigInt;
+    s8 += s16 * 136657.toBigInt;
+    s9 -= s16 * 683901.toBigInt;
 
-    s3 += s15 * 666643.toBig;
-    s4 += s15 * 470296.toBig;
-    s5 += s15 * 654183.toBig;
-    s6 -= s15 * 997805.toBig;
-    s7 += s15 * 136657.toBig;
-    s8 -= s15 * 683901.toBig;
+    s3 += s15 * 666643.toBigInt;
+    s4 += s15 * 470296.toBigInt;
+    s5 += s15 * 654183.toBigInt;
+    s6 -= s15 * 997805.toBigInt;
+    s7 += s15 * 136657.toBigInt;
+    s8 -= s15 * 683901.toBigInt;
 
-    s2 += s14 * 666643.toBig;
-    s3 += s14 * 470296.toBig;
-    s4 += s14 * 654183.toBig;
-    s5 -= s14 * 997805.toBig;
-    s6 += s14 * 136657.toBig;
-    s7 -= s14 * 683901.toBig;
+    s2 += s14 * 666643.toBigInt;
+    s3 += s14 * 470296.toBigInt;
+    s4 += s14 * 654183.toBigInt;
+    s5 -= s14 * 997805.toBigInt;
+    s6 += s14 * 136657.toBigInt;
+    s7 -= s14 * 683901.toBigInt;
 
-    s1 += s13 * 666643.toBig;
-    s2 += s13 * 470296.toBig;
-    s3 += s13 * 654183.toBig;
-    s4 -= s13 * 997805.toBig;
-    s5 += s13 * 136657.toBig;
-    s6 -= s13 * 683901.toBig;
+    s1 += s13 * 666643.toBigInt;
+    s2 += s13 * 470296.toBigInt;
+    s3 += s13 * 654183.toBigInt;
+    s4 -= s13 * 997805.toBigInt;
+    s5 += s13 * 136657.toBigInt;
+    s6 -= s13 * 683901.toBigInt;
 
-    s0 += s12 * 666643.toBig;
-    s1 += s12 * 470296.toBig;
-    s2 += s12 * 654183.toBig;
-    s3 -= s12 * 997805.toBig;
-    s4 += s12 * 136657.toBig;
-    s5 -= s12 * 683901.toBig;
+    s0 += s12 * 666643.toBigInt;
+    s1 += s12 * 470296.toBigInt;
+    s2 += s12 * 654183.toBigInt;
+    s3 -= s12 * 997805.toBigInt;
+    s4 += s12 * 136657.toBigInt;
+    s5 -= s12 * 683901.toBigInt;
     s12 = BigInt.zero;
 
     carry0 = (s0 + _bitMaskFor20) >> 21;
@@ -1821,12 +1821,12 @@ class CryptoOps {
     s12 += carry11;
     s11 -= carry11 << 21;
 
-    s0 += s12 * 666643.toBig;
-    s1 += s12 * 470296.toBig;
-    s2 += s12 * 654183.toBig;
-    s3 -= s12 * 997805.toBig;
-    s4 += s12 * 136657.toBig;
-    s5 -= s12 * 683901.toBig;
+    s0 += s12 * 666643.toBigInt;
+    s1 += s12 * 470296.toBigInt;
+    s2 += s12 * 654183.toBigInt;
+    s3 -= s12 * 997805.toBigInt;
+    s4 += s12 * 136657.toBigInt;
+    s5 -= s12 * 683901.toBigInt;
     s12 = BigInt.zero;
 
     carry0 = s0 >> 21;
@@ -1866,12 +1866,12 @@ class CryptoOps {
     s12 += carry11;
     s11 -= carry11 << 21;
 
-    s0 += s12 * 666643.toBig;
-    s1 += s12 * 470296.toBig;
-    s2 += s12 * 654183.toBig;
-    s3 -= s12 * 997805.toBig;
-    s4 += s12 * 136657.toBig;
-    s5 -= s12 * 683901.toBig;
+    s0 += s12 * 666643.toBigInt;
+    s1 += s12 * 470296.toBigInt;
+    s2 += s12 * 654183.toBigInt;
+    s3 -= s12 * 997805.toBigInt;
+    s4 += s12 * 136657.toBigInt;
+    s5 -= s12 * 683901.toBigInt;
 
     carry0 = s0 >> 21;
     s1 += carry0;
@@ -1940,7 +1940,7 @@ class CryptoOps {
     sBig[30] = s11 >> 9;
     sBig[31] = s11 >> 17;
     for (int i = 0; i < sBig.length; i++) {
-      s[i] = sBig[i].toUnsigned8;
+      s[i] = sBig[i].toUnsignedInt8;
     }
   }
 
@@ -2227,47 +2227,47 @@ class CryptoOps {
     s22 += carry21;
     s21 -= carry21 << 21;
 
-    s11 += s23 * 666643.toBig;
-    s12 += s23 * 470296.toBig;
-    s13 += s23 * 654183.toBig;
-    s14 -= s23 * 997805.toBig;
-    s15 += s23 * 136657.toBig;
-    s16 -= s23 * 683901.toBig;
+    s11 += s23 * 666643.toBigInt;
+    s12 += s23 * 470296.toBigInt;
+    s13 += s23 * 654183.toBigInt;
+    s14 -= s23 * 997805.toBigInt;
+    s15 += s23 * 136657.toBigInt;
+    s16 -= s23 * 683901.toBigInt;
 
-    s10 += s22 * 666643.toBig;
-    s11 += s22 * 470296.toBig;
-    s12 += s22 * 654183.toBig;
-    s13 -= s22 * 997805.toBig;
-    s14 += s22 * 136657.toBig;
-    s15 -= s22 * 683901.toBig;
+    s10 += s22 * 666643.toBigInt;
+    s11 += s22 * 470296.toBigInt;
+    s12 += s22 * 654183.toBigInt;
+    s13 -= s22 * 997805.toBigInt;
+    s14 += s22 * 136657.toBigInt;
+    s15 -= s22 * 683901.toBigInt;
 
-    s9 += s21 * 666643.toBig;
-    s10 += s21 * 470296.toBig;
-    s11 += s21 * 654183.toBig;
-    s12 -= s21 * 997805.toBig;
-    s13 += s21 * 136657.toBig;
-    s14 -= s21 * 683901.toBig;
+    s9 += s21 * 666643.toBigInt;
+    s10 += s21 * 470296.toBigInt;
+    s11 += s21 * 654183.toBigInt;
+    s12 -= s21 * 997805.toBigInt;
+    s13 += s21 * 136657.toBigInt;
+    s14 -= s21 * 683901.toBigInt;
 
-    s8 += s20 * 666643.toBig;
-    s9 += s20 * 470296.toBig;
-    s10 += s20 * 654183.toBig;
-    s11 -= s20 * 997805.toBig;
-    s12 += s20 * 136657.toBig;
-    s13 -= s20 * 683901.toBig;
+    s8 += s20 * 666643.toBigInt;
+    s9 += s20 * 470296.toBigInt;
+    s10 += s20 * 654183.toBigInt;
+    s11 -= s20 * 997805.toBigInt;
+    s12 += s20 * 136657.toBigInt;
+    s13 -= s20 * 683901.toBigInt;
 
-    s7 += s19 * 666643.toBig;
-    s8 += s19 * 470296.toBig;
-    s9 += s19 * 654183.toBig;
-    s10 -= s19 * 997805.toBig;
-    s11 += s19 * 136657.toBig;
-    s12 -= s19 * 683901.toBig;
+    s7 += s19 * 666643.toBigInt;
+    s8 += s19 * 470296.toBigInt;
+    s9 += s19 * 654183.toBigInt;
+    s10 -= s19 * 997805.toBigInt;
+    s11 += s19 * 136657.toBigInt;
+    s12 -= s19 * 683901.toBigInt;
 
-    s6 += s18 * 666643.toBig;
-    s7 += s18 * 470296.toBig;
-    s8 += s18 * 654183.toBig;
-    s9 -= s18 * 997805.toBig;
-    s10 += s18 * 136657.toBig;
-    s11 -= s18 * 683901.toBig;
+    s6 += s18 * 666643.toBigInt;
+    s7 += s18 * 470296.toBigInt;
+    s8 += s18 * 654183.toBigInt;
+    s9 -= s18 * 997805.toBigInt;
+    s10 += s18 * 136657.toBigInt;
+    s11 -= s18 * 683901.toBigInt;
 
     carry6 = (s6 + _bitMaskFor20) >> 21;
     s7 += carry6;
@@ -2304,47 +2304,47 @@ class CryptoOps {
     s16 += carry15;
     s15 -= carry15 << 21;
 
-    s5 += s17 * 666643.toBig;
-    s6 += s17 * 470296.toBig;
-    s7 += s17 * 654183.toBig;
-    s8 -= s17 * 997805.toBig;
-    s9 += s17 * 136657.toBig;
-    s10 -= s17 * 683901.toBig;
+    s5 += s17 * 666643.toBigInt;
+    s6 += s17 * 470296.toBigInt;
+    s7 += s17 * 654183.toBigInt;
+    s8 -= s17 * 997805.toBigInt;
+    s9 += s17 * 136657.toBigInt;
+    s10 -= s17 * 683901.toBigInt;
 
-    s4 += s16 * 666643.toBig;
-    s5 += s16 * 470296.toBig;
-    s6 += s16 * 654183.toBig;
-    s7 -= s16 * 997805.toBig;
-    s8 += s16 * 136657.toBig;
-    s9 -= s16 * 683901.toBig;
+    s4 += s16 * 666643.toBigInt;
+    s5 += s16 * 470296.toBigInt;
+    s6 += s16 * 654183.toBigInt;
+    s7 -= s16 * 997805.toBigInt;
+    s8 += s16 * 136657.toBigInt;
+    s9 -= s16 * 683901.toBigInt;
 
-    s3 += s15 * 666643.toBig;
-    s4 += s15 * 470296.toBig;
-    s5 += s15 * 654183.toBig;
-    s6 -= s15 * 997805.toBig;
-    s7 += s15 * 136657.toBig;
-    s8 -= s15 * 683901.toBig;
+    s3 += s15 * 666643.toBigInt;
+    s4 += s15 * 470296.toBigInt;
+    s5 += s15 * 654183.toBigInt;
+    s6 -= s15 * 997805.toBigInt;
+    s7 += s15 * 136657.toBigInt;
+    s8 -= s15 * 683901.toBigInt;
 
-    s2 += s14 * 666643.toBig;
-    s3 += s14 * 470296.toBig;
-    s4 += s14 * 654183.toBig;
-    s5 -= s14 * 997805.toBig;
-    s6 += s14 * 136657.toBig;
-    s7 -= s14 * 683901.toBig;
+    s2 += s14 * 666643.toBigInt;
+    s3 += s14 * 470296.toBigInt;
+    s4 += s14 * 654183.toBigInt;
+    s5 -= s14 * 997805.toBigInt;
+    s6 += s14 * 136657.toBigInt;
+    s7 -= s14 * 683901.toBigInt;
 
-    s1 += s13 * 666643.toBig;
-    s2 += s13 * 470296.toBig;
-    s3 += s13 * 654183.toBig;
-    s4 -= s13 * 997805.toBig;
-    s5 += s13 * 136657.toBig;
-    s6 -= s13 * 683901.toBig;
+    s1 += s13 * 666643.toBigInt;
+    s2 += s13 * 470296.toBigInt;
+    s3 += s13 * 654183.toBigInt;
+    s4 -= s13 * 997805.toBigInt;
+    s5 += s13 * 136657.toBigInt;
+    s6 -= s13 * 683901.toBigInt;
 
-    s0 += s12 * 666643.toBig;
-    s1 += s12 * 470296.toBig;
-    s2 += s12 * 654183.toBig;
-    s3 -= s12 * 997805.toBig;
-    s4 += s12 * 136657.toBig;
-    s5 -= s12 * 683901.toBig;
+    s0 += s12 * 666643.toBigInt;
+    s1 += s12 * 470296.toBigInt;
+    s2 += s12 * 654183.toBigInt;
+    s3 -= s12 * 997805.toBigInt;
+    s4 += s12 * 136657.toBigInt;
+    s5 -= s12 * 683901.toBigInt;
     s12 = BigInt.zero;
 
     carry0 = (s0 + _bitMaskFor20) >> 21;
@@ -2385,13 +2385,13 @@ class CryptoOps {
     s12 += carry11;
     s11 -= carry11 << 21;
 
-    s0 += s12 * 666643.toBig;
-    s1 += s12 * 470296.toBig;
-    s2 += s12 * 654183.toBig;
-    s3 -= s12 * 997805.toBig;
-    s4 += s12 * 136657.toBig;
-    s5 -= s12 * 683901.toBig;
-    s12 = 0.toBig;
+    s0 += s12 * 666643.toBigInt;
+    s1 += s12 * 470296.toBigInt;
+    s2 += s12 * 654183.toBigInt;
+    s3 -= s12 * 997805.toBigInt;
+    s4 += s12 * 136657.toBigInt;
+    s5 -= s12 * 683901.toBigInt;
+    s12 = 0.toBigInt;
 
     carry0 = s0 >> 21;
     s1 += carry0;
@@ -2430,12 +2430,12 @@ class CryptoOps {
     s12 += carry11;
     s11 -= carry11 << 21;
 
-    s0 += s12 * 666643.toBig;
-    s1 += s12 * 470296.toBig;
-    s2 += s12 * 654183.toBig;
-    s3 -= s12 * 997805.toBig;
-    s4 += s12 * 136657.toBig;
-    s5 -= s12 * 683901.toBig;
+    s0 += s12 * 666643.toBigInt;
+    s1 += s12 * 470296.toBigInt;
+    s2 += s12 * 654183.toBigInt;
+    s3 -= s12 * 997805.toBigInt;
+    s4 += s12 * 136657.toBigInt;
+    s5 -= s12 * 683901.toBigInt;
 
     carry0 = s0 >> 21;
     s1 += carry0;
@@ -2504,7 +2504,7 @@ class CryptoOps {
     sBig[30] = s11 >> 9;
     sBig[31] = s11 >> 17;
     for (int i = 0; i < sBig.length; i++) {
-      s[i] = sBig[i].toUnsigned8;
+      s[i] = sBig[i].toUnsignedInt8;
     }
   }
 
@@ -2640,7 +2640,7 @@ class CryptoOps {
     }
   }
 
-  static void geDoubleScalarMultBaseVartime(
+  static Map<int, String> geDoubleScalarMultBaseVartime(
       GroupElementP2 r, List<int> a, GroupElementP3 gA, List<int> b) {
     b.asMin32("geDoubleScalarMultBaseVartime");
     final List<int> aslide = List<int>.filled(256, 0);
@@ -2649,6 +2649,7 @@ class CryptoOps {
     final GroupElementP1P1 t = GroupElementP1P1();
     final GroupElementP3 u = GroupElementP3();
     int i;
+    final Map<int, String> res = {};
 
     slide(aslide, a);
     slide(bslide, b);
@@ -2679,9 +2680,12 @@ class CryptoOps {
         geP1P1ToP3(u, t);
         geMsub(t, u, CryptoOpsConst.geBi[(-bslide[i]) ~/ 2]);
       }
-
+      final re = GroupElementP3();
+      geP1P1ToP3(re, t.clone());
+      res.addAll({i: BytesUtils.toHexString(geP3Tobytes_(re))});
       geP1P1ToP2(r, t);
     }
+    return res;
   }
 
   static void geFromfeFrombytesVartime(GroupElementP2 r, List<int> s) {
@@ -2748,16 +2752,16 @@ class CryptoOps {
     h9 += carry8;
     h8 -= carry8 << 26;
 
-    u.h[0] = h0.toInt32;
-    u.h[1] = h1.toInt32;
-    u.h[2] = h2.toInt32;
-    u.h[3] = h3.toInt32;
-    u.h[4] = h4.toInt32;
-    u.h[5] = h5.toInt32;
-    u.h[6] = h6.toInt32;
-    u.h[7] = h7.toInt32;
-    u.h[8] = h8.toInt32;
-    u.h[9] = h9.toInt32;
+    u.h[0] = h0.toSignedInt32;
+    u.h[1] = h1.toSignedInt32;
+    u.h[2] = h2.toSignedInt32;
+    u.h[3] = h3.toSignedInt32;
+    u.h[4] = h4.toSignedInt32;
+    u.h[5] = h5.toSignedInt32;
+    u.h[6] = h6.toSignedInt32;
+    u.h[7] = h7.toSignedInt32;
+    u.h[8] = h8.toSignedInt32;
+    u.h[9] = h9.toSignedInt32;
 
     /* End fe_frombytes.c */
 
@@ -2825,6 +2829,331 @@ class CryptoOps {
     return s;
   }
 
+  static void scReduce(List<int> r, List<int> s) {
+    BigInt s0 = _b2097151 & _load3(s, 0);
+    BigInt s1 = _b2097151 & (_load4(s, 2) >> 5);
+    BigInt s2 = _b2097151 & (_load3(s, 5) >> 2);
+    BigInt s3 = _b2097151 & (_load4(s, 7) >> 7);
+    BigInt s4 = _b2097151 & (_load4(s, 10) >> 4);
+    BigInt s5 = _b2097151 & (_load3(s, 13) >> 1);
+    BigInt s6 = _b2097151 & (_load4(s, 15) >> 6);
+    BigInt s7 = _b2097151 & (_load3(s, 18) >> 3);
+    BigInt s8 = _b2097151 & _load3(s, 21);
+    BigInt s9 = _b2097151 & (_load4(s, 23) >> 5);
+    BigInt s10 = _b2097151 & (_load3(s, 26) >> 2);
+    BigInt s11 = _b2097151 & (_load4(s, 28) >> 7);
+    BigInt s12 = _b2097151 & (_load4(s, 31) >> 4);
+    BigInt s13 = _b2097151 & (_load3(s, 34) >> 1);
+    BigInt s14 = _b2097151 & (_load4(s, 36) >> 6);
+    BigInt s15 = _b2097151 & (_load3(s, 39) >> 3);
+    BigInt s16 = _b2097151 & _load3(s, 42);
+    BigInt s17 = _b2097151 & (_load4(s, 44) >> 5);
+    BigInt s18 = _b2097151 & (_load3(s, 47) >> 2);
+    BigInt s19 = _b2097151 & (_load4(s, 49) >> 7);
+    BigInt s20 = _b2097151 & (_load4(s, 52) >> 4);
+    BigInt s21 = _b2097151 & (_load3(s, 55) >> 1);
+    BigInt s22 = _b2097151 & (_load4(s, 57) >> 6);
+    BigInt s23 = (_load4(s, 60) >> 3);
+    BigInt carry0;
+    BigInt carry1;
+    BigInt carry2;
+    BigInt carry3;
+    BigInt carry4;
+    BigInt carry5;
+    BigInt carry6;
+    BigInt carry7;
+    BigInt carry8;
+    BigInt carry9;
+    BigInt carry10;
+    BigInt carry11;
+    BigInt carry12;
+    BigInt carry13;
+    BigInt carry14;
+    BigInt carry15;
+    BigInt carry16;
+
+    s11 += s23 * 666643.toBigInt;
+    s12 += s23 * 470296.toBigInt;
+    s13 += s23 * 654183.toBigInt;
+    s14 -= s23 * 997805.toBigInt;
+    s15 += s23 * 136657.toBigInt;
+    s16 -= s23 * 683901.toBigInt;
+
+    s10 += s22 * 666643.toBigInt;
+    s11 += s22 * 470296.toBigInt;
+    s12 += s22 * 654183.toBigInt;
+    s13 -= s22 * 997805.toBigInt;
+    s14 += s22 * 136657.toBigInt;
+    s15 -= s22 * 683901.toBigInt;
+
+    s9 += s21 * 666643.toBigInt;
+    s10 += s21 * 470296.toBigInt;
+    s11 += s21 * 654183.toBigInt;
+    s12 -= s21 * 997805.toBigInt;
+    s13 += s21 * 136657.toBigInt;
+    s14 -= s21 * 683901.toBigInt;
+
+    s8 += s20 * 666643.toBigInt;
+    s9 += s20 * 470296.toBigInt;
+    s10 += s20 * 654183.toBigInt;
+    s11 -= s20 * 997805.toBigInt;
+    s12 += s20 * 136657.toBigInt;
+    s13 -= s20 * 683901.toBigInt;
+
+    s7 += s19 * 666643.toBigInt;
+    s8 += s19 * 470296.toBigInt;
+    s9 += s19 * 654183.toBigInt;
+    s10 -= s19 * 997805.toBigInt;
+    s11 += s19 * 136657.toBigInt;
+    s12 -= s19 * 683901.toBigInt;
+
+    s6 += s18 * 666643.toBigInt;
+    s7 += s18 * 470296.toBigInt;
+    s8 += s18 * 654183.toBigInt;
+    s9 -= s18 * 997805.toBigInt;
+    s10 += s18 * 136657.toBigInt;
+    s11 -= s18 * 683901.toBigInt;
+
+    carry6 = (s6 + (BigInt.one << 20)) >> 21;
+    s7 += carry6;
+    s6 -= carry6 << 21;
+    carry8 = (s8 + (BigInt.one << 20)) >> 21;
+    s9 += carry8;
+    s8 -= carry8 << 21;
+    carry10 = (s10 + (BigInt.one << 20)) >> 21;
+    s11 += carry10;
+    s10 -= carry10 << 21;
+    carry12 = (s12 + (BigInt.one << 20)) >> 21;
+    s13 += carry12;
+    s12 -= carry12 << 21;
+    carry14 = (s14 + (BigInt.one << 20)) >> 21;
+    s15 += carry14;
+    s14 -= carry14 << 21;
+    carry16 = (s16 + (BigInt.one << 20)) >> 21;
+    s17 += carry16;
+    s16 -= carry16 << 21;
+
+    carry7 = (s7 + (BigInt.one << 20)) >> 21;
+    s8 += carry7;
+    s7 -= carry7 << 21;
+    carry9 = (s9 + (BigInt.one << 20)) >> 21;
+    s10 += carry9;
+    s9 -= carry9 << 21;
+    carry11 = (s11 + (BigInt.one << 20)) >> 21;
+    s12 += carry11;
+    s11 -= carry11 << 21;
+    carry13 = (s13 + (BigInt.one << 20)) >> 21;
+    s14 += carry13;
+    s13 -= carry13 << 21;
+    carry15 = (s15 + (BigInt.one << 20)) >> 21;
+    s16 += carry15;
+    s15 -= carry15 << 21;
+
+    s5 += s17 * 666643.toBigInt;
+    s6 += s17 * 470296.toBigInt;
+    s7 += s17 * 654183.toBigInt;
+    s8 -= s17 * 997805.toBigInt;
+    s9 += s17 * 136657.toBigInt;
+    s10 -= s17 * 683901.toBigInt;
+
+    s4 += s16 * 666643.toBigInt;
+    s5 += s16 * 470296.toBigInt;
+    s6 += s16 * 654183.toBigInt;
+    s7 -= s16 * 997805.toBigInt;
+    s8 += s16 * 136657.toBigInt;
+    s9 -= s16 * 683901.toBigInt;
+
+    s3 += s15 * 666643.toBigInt;
+    s4 += s15 * 470296.toBigInt;
+    s5 += s15 * 654183.toBigInt;
+    s6 -= s15 * 997805.toBigInt;
+    s7 += s15 * 136657.toBigInt;
+    s8 -= s15 * 683901.toBigInt;
+
+    s2 += s14 * 666643.toBigInt;
+    s3 += s14 * 470296.toBigInt;
+    s4 += s14 * 654183.toBigInt;
+    s5 -= s14 * 997805.toBigInt;
+    s6 += s14 * 136657.toBigInt;
+    s7 -= s14 * 683901.toBigInt;
+
+    s1 += s13 * 666643.toBigInt;
+    s2 += s13 * 470296.toBigInt;
+    s3 += s13 * 654183.toBigInt;
+    s4 -= s13 * 997805.toBigInt;
+    s5 += s13 * 136657.toBigInt;
+    s6 -= s13 * 683901.toBigInt;
+
+    s0 += s12 * 666643.toBigInt;
+    s1 += s12 * 470296.toBigInt;
+    s2 += s12 * 654183.toBigInt;
+    s3 -= s12 * 997805.toBigInt;
+    s4 += s12 * 136657.toBigInt;
+    s5 -= s12 * 683901.toBigInt;
+    s12 = BigInt.zero;
+
+    carry0 = (s0 + (BigInt.one << 20)) >> 21;
+    s1 += carry0;
+    s0 -= carry0 << 21;
+    carry2 = (s2 + (BigInt.one << 20)) >> 21;
+    s3 += carry2;
+    s2 -= carry2 << 21;
+    carry4 = (s4 + (BigInt.one << 20)) >> 21;
+    s5 += carry4;
+    s4 -= carry4 << 21;
+    carry6 = (s6 + (BigInt.one << 20)) >> 21;
+    s7 += carry6;
+    s6 -= carry6 << 21;
+    carry8 = (s8 + (BigInt.one << 20)) >> 21;
+    s9 += carry8;
+    s8 -= carry8 << 21;
+    carry10 = (s10 + (BigInt.one << 20)) >> 21;
+    s11 += carry10;
+    s10 -= carry10 << 21;
+
+    carry1 = (s1 + (BigInt.one << 20)) >> 21;
+    s2 += carry1;
+    s1 -= carry1 << 21;
+    carry3 = (s3 + (BigInt.one << 20)) >> 21;
+    s4 += carry3;
+    s3 -= carry3 << 21;
+    carry5 = (s5 + (BigInt.one << 20)) >> 21;
+    s6 += carry5;
+    s5 -= carry5 << 21;
+    carry7 = (s7 + (BigInt.one << 20)) >> 21;
+    s8 += carry7;
+    s7 -= carry7 << 21;
+    carry9 = (s9 + (BigInt.one << 20)) >> 21;
+    s10 += carry9;
+    s9 -= carry9 << 21;
+    carry11 = (s11 + (BigInt.one << 20)) >> 21;
+    s12 += carry11;
+    s11 -= carry11 << 21;
+
+    s0 += s12 * 666643.toBigInt;
+    s1 += s12 * 470296.toBigInt;
+    s2 += s12 * 654183.toBigInt;
+    s3 -= s12 * 997805.toBigInt;
+    s4 += s12 * 136657.toBigInt;
+    s5 -= s12 * 683901.toBigInt;
+    s12 = BigInt.zero;
+
+    carry0 = s0 >> 21;
+    s1 += carry0;
+    s0 -= carry0 << 21;
+    carry1 = s1 >> 21;
+    s2 += carry1;
+    s1 -= carry1 << 21;
+    carry2 = s2 >> 21;
+    s3 += carry2;
+    s2 -= carry2 << 21;
+    carry3 = s3 >> 21;
+    s4 += carry3;
+    s3 -= carry3 << 21;
+    carry4 = s4 >> 21;
+    s5 += carry4;
+    s4 -= carry4 << 21;
+    carry5 = s5 >> 21;
+    s6 += carry5;
+    s5 -= carry5 << 21;
+    carry6 = s6 >> 21;
+    s7 += carry6;
+    s6 -= carry6 << 21;
+    carry7 = s7 >> 21;
+    s8 += carry7;
+    s7 -= carry7 << 21;
+    carry8 = s8 >> 21;
+    s9 += carry8;
+    s8 -= carry8 << 21;
+    carry9 = s9 >> 21;
+    s10 += carry9;
+    s9 -= carry9 << 21;
+    carry10 = s10 >> 21;
+    s11 += carry10;
+    s10 -= carry10 << 21;
+    carry11 = s11 >> 21;
+    s12 += carry11;
+    s11 -= carry11 << 21;
+
+    s0 += s12 * 666643.toBigInt;
+    s1 += s12 * 470296.toBigInt;
+    s2 += s12 * 654183.toBigInt;
+    s3 -= s12 * 997805.toBigInt;
+    s4 += s12 * 136657.toBigInt;
+    s5 -= s12 * 683901.toBigInt;
+
+    carry0 = s0 >> 21;
+    s1 += carry0;
+    s0 -= carry0 << 21;
+    carry1 = s1 >> 21;
+    s2 += carry1;
+    s1 -= carry1 << 21;
+    carry2 = s2 >> 21;
+    s3 += carry2;
+    s2 -= carry2 << 21;
+    carry3 = s3 >> 21;
+    s4 += carry3;
+    s3 -= carry3 << 21;
+    carry4 = s4 >> 21;
+    s5 += carry4;
+    s4 -= carry4 << 21;
+    carry5 = s5 >> 21;
+    s6 += carry5;
+    s5 -= carry5 << 21;
+    carry6 = s6 >> 21;
+    s7 += carry6;
+    s6 -= carry6 << 21;
+    carry7 = s7 >> 21;
+    s8 += carry7;
+    s7 -= carry7 << 21;
+    carry8 = s8 >> 21;
+    s9 += carry8;
+    s8 -= carry8 << 21;
+    carry9 = s9 >> 21;
+    s10 += carry9;
+    s9 -= carry9 << 21;
+    carry10 = s10 >> 21;
+    s11 += carry10;
+    s10 -= carry10 << 21;
+    final List<BigInt> sBig = List<BigInt>.filled(32, BigInt.zero);
+
+    sBig[0] = s0 >> 0;
+    sBig[1] = s0 >> 8;
+    sBig[2] = (s0 >> 16) | (s1 << 5);
+    sBig[3] = s1 >> 3;
+    sBig[4] = s1 >> 11;
+    sBig[5] = (s1 >> 19) | (s2 << 2);
+    sBig[6] = s2 >> 6;
+    sBig[7] = (s2 >> 14) | (s3 << 7);
+    sBig[8] = s3 >> 1;
+    sBig[9] = s3 >> 9;
+    sBig[10] = (s3 >> 17) | (s4 << 4);
+    sBig[11] = s4 >> 4;
+    sBig[12] = s4 >> 12;
+    sBig[13] = (s4 >> 20) | (s5 << 1);
+    sBig[14] = s5 >> 7;
+    sBig[15] = (s5 >> 15) | (s6 << 6);
+    sBig[16] = s6 >> 2;
+    sBig[17] = s6 >> 10;
+    sBig[18] = (s6 >> 18) | (s7 << 3);
+    sBig[19] = s7 >> 5;
+    sBig[20] = s7 >> 13;
+    sBig[21] = s8 >> 0;
+    sBig[22] = s8 >> 8;
+    sBig[23] = (s8 >> 16) | (s9 << 5);
+    sBig[24] = s9 >> 3;
+    sBig[25] = s9 >> 11;
+    sBig[26] = (s9 >> 19) | (s10 << 2);
+    sBig[27] = s10 >> 6;
+    sBig[28] = (s10 >> 14) | (s11 << 7);
+    sBig[29] = s11 >> 1;
+    sBig[30] = s11 >> 9;
+    sBig[31] = s11 >> 17;
+    for (int i = 0; i < sBig.length; i++) {
+      r[i] = sBig[i].toUnsignedInt8;
+    }
+  }
+
   static void geP3Tobytes(List<int> s, GroupElementP3 h) {
     final FieldElement recip = FieldElement();
     final FieldElement x = FieldElement();
@@ -2861,7 +3190,7 @@ class CryptoOps {
   }
 
   static int negative(int b) {
-    BigInt x = b.toBig;
+    BigInt x = b.toBigInt;
     x >>= 63;
     return (x & BigInt.one).toInt();
   }
@@ -2999,6 +3328,15 @@ class CryptoOps {
       geMadd(r, h, t);
       geP1P1ToP3(h, r);
     }
+  }
+
+  static List<int> scalarmultBase_(List<int> a) {
+    final List<int> ag = List<int>.filled(32, 0);
+    final GroupElementP3 point = GroupElementP3();
+    CryptoOps.scReduce32Copy(ag, a);
+    CryptoOps.geScalarMultBase(point, ag);
+    CryptoOps.geP3Tobytes(ag, point);
+    return ag;
   }
 
   static void geScalarMult(GroupElementP2 r, List<int> a, GroupElementP3 gA) {
@@ -3392,47 +3730,47 @@ class CryptoOps {
     s22 += carry21;
     s21 -= carry21 << 21;
 
-    s11 += s23 * 666643.toBig;
-    s12 += s23 * 470296.toBig;
-    s13 += s23 * 654183.toBig;
-    s14 -= s23 * 997805.toBig;
-    s15 += s23 * 136657.toBig;
-    s16 -= s23 * 683901.toBig;
+    s11 += s23 * 666643.toBigInt;
+    s12 += s23 * 470296.toBigInt;
+    s13 += s23 * 654183.toBigInt;
+    s14 -= s23 * 997805.toBigInt;
+    s15 += s23 * 136657.toBigInt;
+    s16 -= s23 * 683901.toBigInt;
 
-    s10 += s22 * 666643.toBig;
-    s11 += s22 * 470296.toBig;
-    s12 += s22 * 654183.toBig;
-    s13 -= s22 * 997805.toBig;
-    s14 += s22 * 136657.toBig;
-    s15 -= s22 * 683901.toBig;
+    s10 += s22 * 666643.toBigInt;
+    s11 += s22 * 470296.toBigInt;
+    s12 += s22 * 654183.toBigInt;
+    s13 -= s22 * 997805.toBigInt;
+    s14 += s22 * 136657.toBigInt;
+    s15 -= s22 * 683901.toBigInt;
 
-    s9 += s21 * 666643.toBig;
-    s10 += s21 * 470296.toBig;
-    s11 += s21 * 654183.toBig;
-    s12 -= s21 * 997805.toBig;
-    s13 += s21 * 136657.toBig;
-    s14 -= s21 * 683901.toBig;
+    s9 += s21 * 666643.toBigInt;
+    s10 += s21 * 470296.toBigInt;
+    s11 += s21 * 654183.toBigInt;
+    s12 -= s21 * 997805.toBigInt;
+    s13 += s21 * 136657.toBigInt;
+    s14 -= s21 * 683901.toBigInt;
 
-    s8 += s20 * 666643.toBig;
-    s9 += s20 * 470296.toBig;
-    s10 += s20 * 654183.toBig;
-    s11 -= s20 * 997805.toBig;
-    s12 += s20 * 136657.toBig;
-    s13 -= s20 * 683901.toBig;
+    s8 += s20 * 666643.toBigInt;
+    s9 += s20 * 470296.toBigInt;
+    s10 += s20 * 654183.toBigInt;
+    s11 -= s20 * 997805.toBigInt;
+    s12 += s20 * 136657.toBigInt;
+    s13 -= s20 * 683901.toBigInt;
 
-    s7 += s19 * 666643.toBig;
-    s8 += s19 * 470296.toBig;
-    s9 += s19 * 654183.toBig;
-    s10 -= s19 * 997805.toBig;
-    s11 += s19 * 136657.toBig;
-    s12 -= s19 * 683901.toBig;
+    s7 += s19 * 666643.toBigInt;
+    s8 += s19 * 470296.toBigInt;
+    s9 += s19 * 654183.toBigInt;
+    s10 -= s19 * 997805.toBigInt;
+    s11 += s19 * 136657.toBigInt;
+    s12 -= s19 * 683901.toBigInt;
 
-    s6 += s18 * 666643.toBig;
-    s7 += s18 * 470296.toBig;
-    s8 += s18 * 654183.toBig;
-    s9 -= s18 * 997805.toBig;
-    s10 += s18 * 136657.toBig;
-    s11 -= s18 * 683901.toBig;
+    s6 += s18 * 666643.toBigInt;
+    s7 += s18 * 470296.toBigInt;
+    s8 += s18 * 654183.toBigInt;
+    s9 -= s18 * 997805.toBigInt;
+    s10 += s18 * 136657.toBigInt;
+    s11 -= s18 * 683901.toBigInt;
 
     carry6 = (s6 + _bitMaskFor20) >> 21;
     s7 += carry6;
@@ -3469,47 +3807,47 @@ class CryptoOps {
     s16 += carry15;
     s15 -= carry15 << 21;
 
-    s5 += s17 * 666643.toBig;
-    s6 += s17 * 470296.toBig;
-    s7 += s17 * 654183.toBig;
-    s8 -= s17 * 997805.toBig;
-    s9 += s17 * 136657.toBig;
-    s10 -= s17 * 683901.toBig;
+    s5 += s17 * 666643.toBigInt;
+    s6 += s17 * 470296.toBigInt;
+    s7 += s17 * 654183.toBigInt;
+    s8 -= s17 * 997805.toBigInt;
+    s9 += s17 * 136657.toBigInt;
+    s10 -= s17 * 683901.toBigInt;
 
-    s4 += s16 * 666643.toBig;
-    s5 += s16 * 470296.toBig;
-    s6 += s16 * 654183.toBig;
-    s7 -= s16 * 997805.toBig;
-    s8 += s16 * 136657.toBig;
-    s9 -= s16 * 683901.toBig;
+    s4 += s16 * 666643.toBigInt;
+    s5 += s16 * 470296.toBigInt;
+    s6 += s16 * 654183.toBigInt;
+    s7 -= s16 * 997805.toBigInt;
+    s8 += s16 * 136657.toBigInt;
+    s9 -= s16 * 683901.toBigInt;
 
-    s3 += s15 * 666643.toBig;
-    s4 += s15 * 470296.toBig;
-    s5 += s15 * 654183.toBig;
-    s6 -= s15 * 997805.toBig;
-    s7 += s15 * 136657.toBig;
-    s8 -= s15 * 683901.toBig;
+    s3 += s15 * 666643.toBigInt;
+    s4 += s15 * 470296.toBigInt;
+    s5 += s15 * 654183.toBigInt;
+    s6 -= s15 * 997805.toBigInt;
+    s7 += s15 * 136657.toBigInt;
+    s8 -= s15 * 683901.toBigInt;
 
-    s2 += s14 * 666643.toBig;
-    s3 += s14 * 470296.toBig;
-    s4 += s14 * 654183.toBig;
-    s5 -= s14 * 997805.toBig;
-    s6 += s14 * 136657.toBig;
-    s7 -= s14 * 683901.toBig;
+    s2 += s14 * 666643.toBigInt;
+    s3 += s14 * 470296.toBigInt;
+    s4 += s14 * 654183.toBigInt;
+    s5 -= s14 * 997805.toBigInt;
+    s6 += s14 * 136657.toBigInt;
+    s7 -= s14 * 683901.toBigInt;
 
-    s1 += s13 * 666643.toBig;
-    s2 += s13 * 470296.toBig;
-    s3 += s13 * 654183.toBig;
-    s4 -= s13 * 997805.toBig;
-    s5 += s13 * 136657.toBig;
-    s6 -= s13 * 683901.toBig;
+    s1 += s13 * 666643.toBigInt;
+    s2 += s13 * 470296.toBigInt;
+    s3 += s13 * 654183.toBigInt;
+    s4 -= s13 * 997805.toBigInt;
+    s5 += s13 * 136657.toBigInt;
+    s6 -= s13 * 683901.toBigInt;
 
-    s0 += s12 * 666643.toBig;
-    s1 += s12 * 470296.toBig;
-    s2 += s12 * 654183.toBig;
-    s3 -= s12 * 997805.toBig;
-    s4 += s12 * 136657.toBig;
-    s5 -= s12 * 683901.toBig;
+    s0 += s12 * 666643.toBigInt;
+    s1 += s12 * 470296.toBigInt;
+    s2 += s12 * 654183.toBigInt;
+    s3 -= s12 * 997805.toBigInt;
+    s4 += s12 * 136657.toBigInt;
+    s5 -= s12 * 683901.toBigInt;
     s12 = BigInt.zero;
 
     carry0 = (s0 + _bitMaskFor20) >> 21;
@@ -3550,12 +3888,12 @@ class CryptoOps {
     s12 += carry11;
     s11 -= carry11 << 21;
 
-    s0 += s12 * 666643.toBig;
-    s1 += s12 * 470296.toBig;
-    s2 += s12 * 654183.toBig;
-    s3 -= s12 * 997805.toBig;
-    s4 += s12 * 136657.toBig;
-    s5 -= s12 * 683901.toBig;
+    s0 += s12 * 666643.toBigInt;
+    s1 += s12 * 470296.toBigInt;
+    s2 += s12 * 654183.toBigInt;
+    s3 -= s12 * 997805.toBigInt;
+    s4 += s12 * 136657.toBigInt;
+    s5 -= s12 * 683901.toBigInt;
     s12 = BigInt.zero;
 
     carry0 = s0 >> 21;
@@ -3595,12 +3933,12 @@ class CryptoOps {
     s12 += carry11;
     s11 -= carry11 << 21;
 
-    s0 += s12 * 666643.toBig;
-    s1 += s12 * 470296.toBig;
-    s2 += s12 * 654183.toBig;
-    s3 -= s12 * 997805.toBig;
-    s4 += s12 * 136657.toBig;
-    s5 -= s12 * 683901.toBig;
+    s0 += s12 * 666643.toBigInt;
+    s1 += s12 * 470296.toBigInt;
+    s2 += s12 * 654183.toBigInt;
+    s3 -= s12 * 997805.toBigInt;
+    s4 += s12 * 136657.toBigInt;
+    s5 -= s12 * 683901.toBigInt;
 
     carry0 = s0 >> 21;
     s1 += carry0;
@@ -3669,7 +4007,7 @@ class CryptoOps {
     sBig[30] = s11 >> 9;
     sBig[31] = s11 >> 17;
     for (int i = 0; i < sBig.length; i++) {
-      s[i] = sBig[i].toUnsigned8;
+      s[i] = sBig[i].toUnsignedInt8;
     }
   }
 
@@ -3765,12 +4103,12 @@ class CryptoOps {
     s12 += carry11;
     s11 -= carry11 << 21;
 
-    s0 += s12 * 666643.toBig;
-    s1 += s12 * 470296.toBig;
-    s2 += s12 * 654183.toBig;
-    s3 -= s12 * 997805.toBig;
-    s4 += s12 * 136657.toBig;
-    s5 -= s12 * 683901.toBig;
+    s0 += s12 * 666643.toBigInt;
+    s1 += s12 * 470296.toBigInt;
+    s2 += s12 * 654183.toBigInt;
+    s3 -= s12 * 997805.toBigInt;
+    s4 += s12 * 136657.toBigInt;
+    s5 -= s12 * 683901.toBigInt;
     s12 = BigInt.zero;
 
     carry0 = s0 >> 21;
@@ -3810,12 +4148,12 @@ class CryptoOps {
     s12 += carry11;
     s11 -= carry11 << 21;
 
-    s0 += s12 * 666643.toBig;
-    s1 += s12 * 470296.toBig;
-    s2 += s12 * 654183.toBig;
-    s3 -= s12 * 997805.toBig;
-    s4 += s12 * 136657.toBig;
-    s5 -= s12 * 683901.toBig;
+    s0 += s12 * 666643.toBigInt;
+    s1 += s12 * 470296.toBigInt;
+    s2 += s12 * 654183.toBigInt;
+    s3 -= s12 * 997805.toBigInt;
+    s4 += s12 * 136657.toBigInt;
+    s5 -= s12 * 683901.toBigInt;
 
     carry0 = s0 >> 21;
     s1 += carry0;
@@ -3884,7 +4222,7 @@ class CryptoOps {
     sBig[30] = s11 >> 9;
     sBig[31] = s11 >> 17;
     for (int i = 0; i < sBig.length; i++) {
-      s[i] = sBig[i].toUnsigned8;
+      s[i] = sBig[i].toUnsignedInt8;
     }
   }
 
@@ -4032,12 +4370,12 @@ class CryptoOps {
     s12 += carry11;
     s11 -= carry11 << 21;
 
-    s0 += s12 * 666643.toBig;
-    s1 += s12 * 470296.toBig;
-    s2 += s12 * 654183.toBig;
-    s3 -= s12 * 997805.toBig;
-    s4 += s12 * 136657.toBig;
-    s5 -= s12 * 683901.toBig;
+    s0 += s12 * 666643.toBigInt;
+    s1 += s12 * 470296.toBigInt;
+    s2 += s12 * 654183.toBigInt;
+    s3 -= s12 * 997805.toBigInt;
+    s4 += s12 * 136657.toBigInt;
+    s5 -= s12 * 683901.toBigInt;
     s12 = BigInt.zero;
 
     carry0 = s0 >> 21;
@@ -4077,12 +4415,12 @@ class CryptoOps {
     s12 += carry11;
     s11 -= carry11 << 21;
 
-    s0 += s12 * 666643.toBig;
-    s1 += s12 * 470296.toBig;
-    s2 += s12 * 654183.toBig;
-    s3 -= s12 * 997805.toBig;
-    s4 += s12 * 136657.toBig;
-    s5 -= s12 * 683901.toBig;
+    s0 += s12 * 666643.toBigInt;
+    s1 += s12 * 470296.toBigInt;
+    s2 += s12 * 654183.toBigInt;
+    s3 -= s12 * 997805.toBigInt;
+    s4 += s12 * 136657.toBigInt;
+    s5 -= s12 * 683901.toBigInt;
 
     carry0 = s0 >> 21;
     s1 += carry0;
@@ -4151,8 +4489,9 @@ class CryptoOps {
     sBig[30] = s11 >> 9;
     sBig[31] = s11 >> 17;
     for (int i = 0; i < sBig.length; i++) {
-      s[i] = sBig[i].toUnsigned8;
+      s[i] = sBig[i].toUnsignedInt8;
     }
+    0xFFFFFFFF;
   }
 
   static void scReduce32(List<int> s) {
@@ -4221,12 +4560,12 @@ class CryptoOps {
     s12 += carry11;
     s11 -= carry11 << 21;
 
-    s0 += s12 * 666643.toBig;
-    s1 += s12 * 470296.toBig;
-    s2 += s12 * 654183.toBig;
-    s3 -= s12 * 997805.toBig;
-    s4 += s12 * 136657.toBig;
-    s5 -= s12 * 683901.toBig;
+    s0 += s12 * 666643.toBigInt;
+    s1 += s12 * 470296.toBigInt;
+    s2 += s12 * 654183.toBigInt;
+    s3 -= s12 * 997805.toBigInt;
+    s4 += s12 * 136657.toBigInt;
+    s5 -= s12 * 683901.toBigInt;
     s12 = BigInt.zero;
 
     carry0 = s0 >> 21;
@@ -4266,12 +4605,12 @@ class CryptoOps {
     s12 += carry11;
     s11 -= carry11 << 21;
 
-    s0 += s12 * 666643.toBig;
-    s1 += s12 * 470296.toBig;
-    s2 += s12 * 654183.toBig;
-    s3 -= s12 * 997805.toBig;
-    s4 += s12 * 136657.toBig;
-    s5 -= s12 * 683901.toBig;
+    s0 += s12 * 666643.toBigInt;
+    s1 += s12 * 470296.toBigInt;
+    s2 += s12 * 654183.toBigInt;
+    s3 -= s12 * 997805.toBigInt;
+    s4 += s12 * 136657.toBigInt;
+    s5 -= s12 * 683901.toBigInt;
 
     carry0 = s0 >> 21;
     s1 += carry0;
@@ -4340,7 +4679,7 @@ class CryptoOps {
     sBig[30] = s11 >> 9;
     sBig[31] = s11 >> 17;
     for (int i = 0; i < sBig.length; i++) {
-      s[i] = sBig[i].toUnsigned8;
+      s[i] = sBig[i].toUnsignedInt8;
     }
   }
 
@@ -4363,7 +4702,7 @@ class CryptoOps {
     s.asMin32("geFromBytesVartime");
     final p = GroupElementP3();
     if (geFromBytesVartime_(p, s) != 0) {
-      throw const CryptoOpsException("Invalid point bytes.");
+      throw const CryptoException("Invalid point bytes.");
     }
     return p;
   }
@@ -4399,16 +4738,16 @@ class CryptoOps {
     BigInt carry9;
 
     /* Validate the number to be canonical */
-    if (h9 == 33554428.toBig &&
-        h8 == 268435440.toBig &&
-        h7 == 536870880.toBig &&
-        h6 == 2147483520.toBig &&
-        h5 == 4294967295.toBig &&
-        h4 == 67108860.toBig &&
-        h3 == 134217720.toBig &&
-        h2 == 536870880.toBig &&
-        h1 == 1073741760.toBig &&
-        h0 >= 4294967277.toBig) {
+    if (h9 == 33554428.toBigInt &&
+        h8 == 268435440.toBigInt &&
+        h7 == 536870880.toBigInt &&
+        h6 == 2147483520.toBigInt &&
+        h5 == 4294967295.toBigInt &&
+        h4 == 67108860.toBigInt &&
+        h3 == 134217720.toBigInt &&
+        h2 == 536870880.toBigInt &&
+        h1 == 1073741760.toBigInt &&
+        h0 >= 4294967277.toBigInt) {
       return -1;
     }
 
@@ -4444,16 +4783,16 @@ class CryptoOps {
     h9 += carry8;
     h8 -= carry8 << 26;
 
-    h.y.h[0] = h0.toInt32;
-    h.y.h[1] = h1.toInt32;
-    h.y.h[2] = h2.toInt32;
-    h.y.h[3] = h3.toInt32;
-    h.y.h[4] = h4.toInt32;
-    h.y.h[5] = h5.toInt32;
-    h.y.h[6] = h6.toInt32;
-    h.y.h[7] = h7.toInt32;
-    h.y.h[8] = h8.toInt32;
-    h.y.h[9] = h9.toInt32;
+    h.y.h[0] = h0.toSignedInt32;
+    h.y.h[1] = h1.toSignedInt32;
+    h.y.h[2] = h2.toSignedInt32;
+    h.y.h[3] = h3.toSignedInt32;
+    h.y.h[4] = h4.toSignedInt32;
+    h.y.h[5] = h5.toSignedInt32;
+    h.y.h[6] = h6.toSignedInt32;
+    h.y.h[7] = h7.toSignedInt32;
+    h.y.h[8] = h8.toSignedInt32;
+    h.y.h[9] = h9.toSignedInt32;
 
     /* End fe_frombytes.c */
 
@@ -4711,25 +5050,11 @@ class CryptoOps {
   }
 }
 
-extension _NumericHelper on int {
-  int get toInt32 {
-    final n = toSigned(32);
-    return n;
-  }
-
-  BigInt get toBig => BigInt.from(this);
-}
-
-extension _BigNumericHelper on BigInt {
-  int get toInt32 => toSigned(32).toInt();
-  int get toUnsigned8 => toUnsigned(8).toInt();
-}
-
 extension _BytesHelper on List<int> {
   void asMin32(String methodName) {
     if (length < 32 || any((e) => e.isNegative || e > 0xFF)) {
-      throw CryptoOpsException(
-          "$methodName operation failed. invalid key provided.");
+      throw CryptoException(
+          "$methodName operation failed. invalid bytes length.");
     }
   }
 }

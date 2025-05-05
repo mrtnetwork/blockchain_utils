@@ -1,11 +1,11 @@
 import 'dart:typed_data';
+import 'package:blockchain_utils/crypto/crypto/cdsa/cdsa.dart';
 import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/bip/bip/bip32/bip32_key_data.dart';
 import 'package:blockchain_utils/bip/bip/bip32/bip32_keys.dart';
 import 'package:blockchain_utils/bip/bip/bip32/khalow/bip32_kholaw_key_derivator_base.dart';
 import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_getter.dart';
 import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
-import 'package:blockchain_utils/crypto/crypto/cdsa/point/edwards.dart';
 
 /// A class responsible for deriving key pairs using the Cardano Byron legacy key derivation process
 class CardanoByronLegacyKeyDerivator
@@ -15,14 +15,8 @@ class CardanoByronLegacyKeyDerivator
   List<int> newPrivateKeyLeftPart(
       List<int> zlBytes, List<int> klBytes, EllipticCurveTypes type) {
     final List<int> multiPly = zlBytes.map((e) => (e * 8) & mask8).toList();
-    final BigInt zl8Int =
-        BigintUtils.fromBytes(multiPly, byteOrder: Endian.little);
-    final BigInt klInt =
-        BigintUtils.fromBytes(klBytes, byteOrder: Endian.little);
-    final curve = EllipticCurveGetter.generatorFromType(type);
-    final BigInt newPrivateKeyInt = (zl8Int + klInt) % curve.order!;
-    return BigintUtils.toBytes(newPrivateKeyInt,
-        length: 32, order: Endian.little);
+    final mul = Ed25519Utils.add(multiPly, klBytes);
+    return mul;
   }
 
   /// Derives the right part of a new private key based on input bytes.
@@ -41,7 +35,6 @@ class CardanoByronLegacyKeyDerivator
     final multiply = zlBytes.map((e) => (e * 8) & mask8).toList();
     final BigInt zl8Int =
         BigintUtils.fromBytes(multiply, byteOrder: Endian.little);
-
     return pubKey.point + (curve * zl8Int) as EDPoint;
   }
 

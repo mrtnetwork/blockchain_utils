@@ -1,8 +1,8 @@
 import 'dart:math';
 import 'package:blockchain_utils/crypto/crypto/aes/aes.dart';
 import 'package:blockchain_utils/crypto/crypto/ctr/ctr.dart';
+import 'package:blockchain_utils/crypto/crypto/exception/exception.dart';
 import 'package:blockchain_utils/crypto/crypto/hash/hash.dart';
-import 'package:blockchain_utils/exception/exceptions.dart';
 
 /// The `GenerateRandom` typedef defines a function signature for generating random data with a specified length.
 typedef GenerateRandom = List<int> Function(int length);
@@ -68,7 +68,7 @@ class FortunaPRNG {
     }
 
     if (n > 65536) {
-      throw const MessageException('Size is too large!');
+      throw const CryptoException('Size is too large!');
     }
 
     final tempBlock = List<int>.filled(32, 0);

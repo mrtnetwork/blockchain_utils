@@ -1,4 +1,3 @@
-import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/bip/ecc/keys/ecdsa_keys.dart';
 import 'package:blockchain_utils/bip/ecc/keys/i_keys.dart';
 import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
@@ -7,20 +6,21 @@ import 'package:blockchain_utils/crypto/crypto/cdsa/ecdsa/private_key.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/ecdsa/public_key.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/point/base.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/point/ec_projective_point.dart';
+import 'package:blockchain_utils/utils/binary/utils.dart';
 
 /// A class representing a Secp256k1 public key using the ECDSA algorithm that implements the IPublicKey interface.
-class Secp256k1PublicKeyEcdsa implements IPublicKey {
+class Secp256k1PublicKey implements IPublicKey {
   final ECDSAPublicKey publicKey;
 
-  /// Private constructor for creating a Secp256k1PublicKeyEcdsa instance from an ECDSAPublicKey.
-  Secp256k1PublicKeyEcdsa._(this.publicKey);
+  /// Private constructor for creating a Secp256k1PublicKey instance from an ECDSAPublicKey.
+  Secp256k1PublicKey._(this.publicKey);
 
-  /// Factory method for creating a Secp256k1PublicKeyEcdsa from a byte array.
-  factory Secp256k1PublicKeyEcdsa.fromBytes(List<int> keyBytes) {
+  /// Factory method for creating a Secp256k1PublicKey from a byte array.
+  factory Secp256k1PublicKey.fromBytes(List<int> keyBytes) {
     final point = ProjectiveECCPoint.fromBytes(
         curve: Curves.curveSecp256k1, data: keyBytes, order: null);
     final pub = ECDSAPublicKey(Curves.generatorSecp256k1, point);
-    return Secp256k1PublicKeyEcdsa._(pub);
+    return Secp256k1PublicKey._(pub);
   }
 
   /// public key compressed bytes length
@@ -38,7 +38,7 @@ class Secp256k1PublicKeyEcdsa implements IPublicKey {
   /// check if bytes is valid for this key.
   static bool isValidBytes(List<int> keyBytes) {
     try {
-      Secp256k1PublicKeyEcdsa.fromBytes(keyBytes);
+      Secp256k1PublicKey.fromBytes(keyBytes);
       return true;
     } catch (e) {
       return false;
@@ -78,7 +78,7 @@ class Secp256k1PublicKeyEcdsa implements IPublicKey {
 
   @override
   operator ==(other) {
-    if (other is! Secp256k1PublicKeyEcdsa) return false;
+    if (other is! Secp256k1PublicKey) return false;
     return publicKey == other.publicKey && curve == other.curve;
   }
 
@@ -87,16 +87,16 @@ class Secp256k1PublicKeyEcdsa implements IPublicKey {
 }
 
 /// A class representing a Secp256k1 private key using the ECDSA algorithm that implements the IPrivateKey interface.
-class Secp256k1PrivateKeyEcdsa implements IPrivateKey {
+class Secp256k1PrivateKey implements IPrivateKey {
   final ECDSAPrivateKey privateKey;
 
-  /// Private constructor for creating a Secp256k1PrivateKeyEcdsa instance from an ECDSAPrivateKey.
-  Secp256k1PrivateKeyEcdsa._(this.privateKey);
+  /// Private constructor for creating a Secp256k1PrivateKey instance from an ECDSAPrivateKey.
+  Secp256k1PrivateKey._(this.privateKey);
 
-  /// Factory method for creating a Secp256k1PrivateKeyEcdsa from a byte array.
-  factory Secp256k1PrivateKeyEcdsa.fromBytes(List<int> keyBytes) {
-    final prv = ECDSAPrivateKey.fromBytes(keyBytes, Curves.generatorSecp256k1);
-    return Secp256k1PrivateKeyEcdsa._(prv);
+  /// Factory method for creating a Secp256k1PrivateKey from a byte array.
+  factory Secp256k1PrivateKey.fromBytes(List<int> keyBytes) {
+    final prv = ECDSAPrivateKey.fromBytesConst(bytes: keyBytes);
+    return Secp256k1PrivateKey._(prv);
   }
 
   /// curve type
@@ -108,7 +108,7 @@ class Secp256k1PrivateKeyEcdsa implements IPrivateKey {
   /// check if bytes is valid for this key.
   static bool isValidBytes(List<int> keyBytes) {
     try {
-      ECDSAPrivateKey.fromBytes(keyBytes, Curves.generatorSecp256k1);
+      Secp256k1PrivateKey.fromBytes(keyBytes);
       return true;
     } catch (e) {
       return false;
@@ -123,8 +123,8 @@ class Secp256k1PrivateKeyEcdsa implements IPrivateKey {
 
   /// accsess to public key.
   @override
-  IPublicKey get publicKey {
-    return Secp256k1PublicKeyEcdsa._(privateKey.publicKey);
+  Secp256k1PublicKey get publicKey {
+    return Secp256k1PublicKey._(privateKey.publicKey);
   }
 
   /// private key raw bytes.
@@ -140,7 +140,7 @@ class Secp256k1PrivateKeyEcdsa implements IPrivateKey {
 
   @override
   operator ==(other) {
-    if (other is! Secp256k1PrivateKeyEcdsa) return false;
+    if (other is! Secp256k1PrivateKey) return false;
     return privateKey == other.privateKey && curve == other.curve;
   }
 

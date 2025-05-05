@@ -30,8 +30,7 @@ void _testMultiKey2() {
   test("MultiKey account 2", () {
     final privateKey1 = Ed25519PrivateKey.fromBytes(List<int>.filled(32, 12));
     final privateKey2 = Ed25519PrivateKey.fromBytes(List<int>.filled(32, 13));
-    final privateKey3 =
-        Secp256k1PrivateKeyEcdsa.fromBytes(List<int>.filled(32, 14));
+    final privateKey3 = Secp256k1PrivateKey.fromBytes(List<int>.filled(32, 14));
     final account = AptosAddrEncoder().encodeMultiKey(publicKeys: [
       privateKey1.publicKey,
       privateKey2.publicKey,
@@ -120,8 +119,7 @@ void _testSignleKeyEd25519() {
 
 void _testSignleKeySecp256k1() {
   test("Secp256k1 singleKey account", () {
-    final privateKey =
-        Secp256k1PrivateKeyEcdsa.fromBytes(List<int>.filled(32, 12));
+    final privateKey = Secp256k1PrivateKey.fromBytes(List<int>.filled(32, 12));
     final account = AptosAddrEncoder().encodeSingleKey(privateKey.publicKey);
     expect(account,
         "0x89dd43dcedf165f975202fae5f8aecf03013ebc14bb3c09a1431313b4ee52b02");

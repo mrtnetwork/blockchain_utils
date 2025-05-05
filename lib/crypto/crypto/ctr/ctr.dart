@@ -1,6 +1,6 @@
 import 'package:blockchain_utils/crypto/crypto/blockcipher/blockcipher.dart';
+import 'package:blockchain_utils/crypto/crypto/exception/exception.dart';
 import 'package:blockchain_utils/utils/utils.dart';
-import 'package:blockchain_utils/exception/exceptions.dart';
 
 /// Counter (CTR) mode for block ciphers.
 ///
@@ -60,7 +60,7 @@ class CTR {
   /// - `iv`: The initialization vector (IV) for the CTR mode.
   ///
   /// Throws:
-  /// - `ArgumentException` if the IV length is not equal to the block size of the cipher.
+  /// - `CryptoException` if the IV length is not equal to the block size of the cipher.
   ///
   /// Returns:
   /// - The updated CTR instance after setting the cipher and IV.
@@ -71,7 +71,7 @@ class CTR {
     _cipher = null;
 
     if (iv != null && iv.length != _counter.length) {
-      throw const ArgumentException(
+      throw const CryptoException(
           "CTR: iv length must be equal to cipher block size");
     }
     _cipher = cipher;
@@ -160,6 +160,6 @@ void _incrementCounter(List<int> counter) {
     carry >>= 8;
   }
   if (carry > 0) {
-    throw const ArgumentException("CTR: counter overflow");
+    throw const CryptoException("CTR: counter overflow");
   }
 }

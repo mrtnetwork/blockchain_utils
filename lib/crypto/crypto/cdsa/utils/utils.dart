@@ -1,23 +1,8 @@
-import 'package:blockchain_utils/crypto/crypto/cdsa/utils/exp.dart';
-import 'package:blockchain_utils/exception/exceptions.dart';
+import 'package:blockchain_utils/crypto/crypto/exception/exception.dart';
 
 class ECDSAUtils {
   /// Computes the modular exponentiation of a polynomial represented by [base]
   /// to the power of [exponent], using the specified [polymod] and modulus [p].
-  ///
-  /// This function efficiently calculates (base^exponent) % polymod, where
-  /// base, polymod, and p are all polynomials with coefficients represented as
-  /// BigInt. The result is also a polynomial with coefficients mod p.
-  ///
-  /// The function iteratively squares and multiplies the base polynomial using
-  /// the exponent to achieve the modular exponentiation.
-  ///
-  /// - [base]: The base polynomial.
-  /// - [exponent]: The non-negative exponent.
-  /// - [polymod]: The modulus polynomial.
-  /// - [p]: The modulus value.
-  ///
-  /// Returns the polynomial resulting from (base^exponent) % polymod.
   static List<BigInt> polynomialExponentiationMod(
       List<BigInt> base, BigInt exponent, List<BigInt> polymod, BigInt p) {
     assert(exponent < p);
@@ -42,8 +27,8 @@ class ECDSAUtils {
     return s;
   }
 
-  // Calculate the modular square root of 'a' modulo prime 'p' using algorithms from the Handbook of Applied Cryptography (3.34 to 3.39).
-  // Preconditions: a should be in the range [0, p), and p should be a prime number.
+  /// Calculate the modular square root of 'a' modulo prime 'p' using algorithms from the Handbook of Applied
+  /// Cryptography (3.34 to 3.39).
   static BigInt modularSquareRootPrime(BigInt a, BigInt p) {
     assert(BigInt.zero <= a && a < p);
     assert(p > BigInt.one);
@@ -91,7 +76,7 @@ class ECDSAUtils {
       }
     }
 
-    throw const MessageException("No suitable 'b' found.");
+    throw const SquareRootError("No suitable 'b' found.");
   }
 
   /// Multiply two polynomials represented by lists 'm1' and 'm2', reducing modulo 'polymod' and prime 'p'.
@@ -133,15 +118,6 @@ class ECDSAUtils {
   }
 
   /// Calculates the Jacobi symbol (a/n) for given integers 'a' and 'n'.
-  ///
-  /// The Jacobi symbol is defined for an odd positive integer 'n' and any integer 'a'.
-  ///
-  /// Returns 0 if 'a' is congruent to 0 modulo 'n'.
-  /// Returns 1 if 'a' is a quadratic residue modulo 'n'.
-  /// Returns -1 if 'a' is a non-quadratic residue modulo 'n'.
-  ///
-  /// Throws a JacobiError if 'n' is not an odd integer greater than or equal to 3.
-  ///
   static int jacobi(BigInt a, BigInt n) {
     if (!(n >= BigInt.from(3))) {
       throw const JacobiError("n must be larger than 2.");

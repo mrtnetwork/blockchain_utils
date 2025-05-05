@@ -46,6 +46,7 @@ abstract class BaseServiceResponse<T> {
           request: params.toJson(),
           details: ServiceProviderUtils.findErrorDetails(
               statusCode: statusCode,
+              errorStatusCodes: params.errorStatusCodes,
               object: cast<ServiceErrorResponse>().error)),
       ServiceResponseType.success => cast<ServiceSuccessRespose<T>>().response
     };

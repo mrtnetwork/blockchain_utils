@@ -1,7 +1,7 @@
 import 'package:blockchain_utils/crypto/crypto/cdsa/ecdsa/public_key.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/point/ec_projective_point.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/utils/utils.dart';
-import 'package:blockchain_utils/exception/exceptions.dart';
+import 'package:blockchain_utils/crypto/crypto/exception/exception.dart';
 import 'package:blockchain_utils/utils/utils.dart';
 
 /// Represents an ECDSA (Elliptic Curve Digital Signature Algorithm) signature
@@ -10,8 +10,7 @@ class ECDSASignature {
   factory ECDSASignature.fromBytes(
       List<int> bytes, ProjectiveECCPoint generator) {
     if (bytes.length != generator.curve.baselen * 2) {
-      throw ArgumentException(
-          "incorrect signatureBytes length ${bytes.length}");
+      throw CryptoException("incorrect signatureBytes length ${bytes.length}");
     }
     final r = BigintUtils.fromBytes(bytes.sublist(0, generator.curve.baselen));
     final s = BigintUtils.fromBytes(

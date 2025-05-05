@@ -38,7 +38,7 @@ class IntUtils {
     final BigInt value = BigintUtils.fromBytes(byteint.sublist(1, 1 + size),
         byteOrder: Endian.little);
     if (!value.isValidInt) {
-      throw const MessageException(
+      throw const ArgumentException(
           "cannot read variable-length in this environment");
     }
     return Tuple(value.toInt(), size + 1);
@@ -136,7 +136,14 @@ class IntUtils {
   /// Returns the corresponding integer value.
   static int fromBytes(List<int> bytes,
       {Endian byteOrder = Endian.big, bool sign = false}) {
-    assert(bytes.length <= 8);
+    if (bytes.length > 6) {
+      final big =
+          BigintUtils.fromBytes(bytes, byteOrder: byteOrder, sign: sign);
+      if (big.isValidInt) {
+        return big.toInt();
+      }
+      throw ArgumentException('Value too large to fit in a Dart int');
+    }
     if (byteOrder == Endian.little) {
       bytes = List<int>.from(bytes.reversed.toList());
     }

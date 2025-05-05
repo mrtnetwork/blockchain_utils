@@ -1,6 +1,6 @@
 // import 'dart:typed_data';
+import 'package:blockchain_utils/crypto/crypto/exception/exception.dart';
 import 'package:blockchain_utils/utils/utils.dart';
-import 'package:blockchain_utils/exception/exceptions.dart';
 
 const _digestLength = 16;
 
@@ -452,7 +452,7 @@ class Poly1305 {
   /// after the `Poly1305` instance has been finished.
   List<int> digest() {
     if (_finished) {
-      throw const MessageException("Poly1305 was finished");
+      throw const CryptoException("Poly1305 was finished");
     }
     final List<int> mac = List<int>.filled(16, 0);
     finish(mac);

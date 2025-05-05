@@ -1,7 +1,6 @@
 import 'package:blockchain_utils/crypto/crypto/crypto.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
 import 'package:blockchain_utils/signer/const/constants.dart';
-import 'package:blockchain_utils/signer/exception/signing_exception.dart';
 import 'package:blockchain_utils/signer/signing_key/ecdsa_signing_key.dart';
 import 'package:blockchain_utils/signer/types/eth_signature.dart';
 import 'package:blockchain_utils/utils/utils.dart';
@@ -15,63 +14,48 @@ import 'package:blockchain_utils/utils/utils.dart';
 class ETHSigner {
   const ETHSigner._(this._ecdsaSigningKey);
 
-  final ECDSASigningKey _ecdsaSigningKey;
+  final Secp256k1SigningKey _ecdsaSigningKey;
 
   /// Factory method to create an ETHSigner from a byte representation of a private key.
   factory ETHSigner.fromKeyBytes(List<int> keyBytes) {
-    final signingKey = ECDSAPrivateKey.fromBytes(
-        keyBytes, CryptoSignerConst.generatorSecp256k1);
-    return ETHSigner._(ECDSASigningKey(signingKey));
+    return ETHSigner._(Secp256k1SigningKey.fromBytes(keyBytes: keyBytes));
   }
 
-  /// Signs a message digest using the ECDSA algorithm on the secp256k1 curve.
-  ///
-  /// Optionally, the message can be hashed before signing.
-  ///
-  /// Parameters:
-  /// - [digest]: The message digest to be signed.
-  /// - [hashMessage]: Whether to hash the message before signing (default is true).
-  ///
-  /// Returns:
-  /// - An ETHSignature representing the signature of the message digest.
-  ETHSignature _signEcdsa(List<int> digest, {bool hashMessage = true}) {
+  ETHSignature sign(List<int> digest,
+      {bool hashMessage = true, List<int>? extraEntropy}) {
     final hash = hashMessage ? QuickCrypto.keccack256Hash(digest) : digest;
-    if (hash.length != CryptoSignerConst.digestLength) {
-      throw CryptoSignException(
-          "invalid digest. digest length must be ${CryptoSignerConst.digestLength} got ${digest.length}");
-    }
-    ECDSASignature ecdsaSign = _ecdsaSigningKey.signDigestDeterminstic(
-        digest: hash, hashFunc: () => SHA256());
-    if (ecdsaSign.s > CryptoSignerConst.orderHalf) {
-      ecdsaSign = ECDSASignature(
-          ecdsaSign.r, CryptoSignerConst.secp256k1Order - ecdsaSign.s);
-    }
-    final sigBytes =
-        ecdsaSign.toBytes(CryptoSignerConst.generatorSecp256k1.curve.baselen);
-    final verifyKey = toVerifyKey();
-    if (verifyKey.verify(hash, sigBytes, hashMessage: false)) {
-      final recover = ecdsaSign.recoverPublicKeys(
-          hash, CryptoSignerConst.generatorSecp256k1);
-      for (int i = 0; i < recover.length; i++) {
-        if (recover[i].point == verifyKey.edsaVerifyKey.publicKey.point) {
-          return ETHSignature(ecdsaSign.r, ecdsaSign.s, i + 27);
-        }
-      }
-    }
-
-    throw const CryptoSignException(
-        'The created signature does not pass verification.');
+    final signature =
+        _ecdsaSigningKey.sign(digest: hash, extraEntropy: extraEntropy);
+    return ETHSignature(
+        signature.item1.r, signature.item1.s, signature.item2 + 27);
   }
 
-  ETHSignature sign(List<int> digest, {bool hashMessage = true}) {
-    return _signEcdsa(digest, hashMessage: hashMessage);
+  ETHSignature signConst(List<int> digest,
+      {bool hashMessage = true, List<int>? extraEntropy}) {
+    final hash = hashMessage ? QuickCrypto.keccack256Hash(digest) : digest;
+    final signature =
+        _ecdsaSigningKey.signConst(digest: hash, extraEntropy: extraEntropy);
+    return ETHSignature(
+        signature.item1.r, signature.item1.s, signature.item2 + 27);
   }
 
-  List<int> signProsonalMessage(List<int> digest, {int? payloadLength}) {
+  List<int> signProsonalMessage(List<int> digest,
+      {int? payloadLength, List<int>? extraEntropy}) {
     final prefix = CryptoSignerConst.ethPersonalSignPrefix +
         (payloadLength?.toString() ?? digest.length.toString());
     final prefixBytes = StringUtils.encode(prefix, type: StringEncoding.ascii);
-    final sign = _signEcdsa(<int>[...prefixBytes, ...digest]);
+    final signature =
+        sign([...prefixBytes, ...digest], extraEntropy: extraEntropy);
+    return signature.toBytes(true);
+  }
+
+  List<int> signProsonalMessageConst(List<int> digest,
+      {int? payloadLength, List<int>? extraEntropy}) {
+    final prefix = CryptoSignerConst.ethPersonalSignPrefix +
+        (payloadLength?.toString() ?? digest.length.toString());
+    final prefixBytes = StringUtils.encode(prefix, type: StringEncoding.ascii);
+    final sign =
+        signConst([...prefixBytes, ...digest], extraEntropy: extraEntropy);
     return sign.toBytes(true);
   }
 

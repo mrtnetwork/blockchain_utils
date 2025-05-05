@@ -1,4 +1,4 @@
-import 'package:blockchain_utils/exception/exceptions.dart';
+import 'package:blockchain_utils/crypto/crypto/exception/exception.dart';
 
 /// Enumeration representing various padding algorithms for block ciphers.
 enum PaddingAlgorithm { pkcs7, iso7816, x923 }
@@ -67,11 +67,11 @@ class BlockCipherPadding {
     final int paddedDataLen = paddedData.length;
 
     if (paddedDataLen == 0) {
-      throw const ArgumentException('Zero-length input cannot be unpadded');
+      throw const CryptoException('Zero-length input cannot be unpadded');
     }
 
     if (paddedDataLen % blockSize != 0) {
-      throw const ArgumentException('Input data is not padded');
+      throw const CryptoException('Input data is not padded');
     }
 
     int paddingLen;
@@ -79,34 +79,34 @@ class BlockCipherPadding {
     if (style == PaddingAlgorithm.pkcs7 || style == PaddingAlgorithm.x923) {
       paddingLen = paddedData[paddedDataLen - 1];
       if (paddingLen < 1 || paddingLen > blockSize) {
-        throw const ArgumentException('incorrect padding');
+        throw const CryptoException('incorrect padding');
       }
 
       if (style == PaddingAlgorithm.pkcs7) {
         for (int i = 1; i <= paddingLen; i++) {
           if (paddedData[paddedDataLen - i] != paddingLen) {
-            throw const ArgumentException('incorrect padding');
+            throw const CryptoException('incorrect padding');
           }
         }
       } else {
         for (int i = 1; i < paddingLen; i++) {
           if (paddedData[paddedDataLen - i - 1] != 0) {
-            throw const ArgumentException('incorrect padding');
+            throw const CryptoException('incorrect padding');
           }
         }
       }
     } else {
       final int index = paddedData.lastIndexOf(128);
       if (index < 0) {
-        throw const ArgumentException('incorrect padding');
+        throw const CryptoException('incorrect padding');
       }
       paddingLen = paddedDataLen - index;
       if (paddingLen < 1 || paddingLen > blockSize) {
-        throw const ArgumentException('incorrect padding');
+        throw const CryptoException('incorrect padding');
       }
       for (int i = 1; i < paddingLen; i++) {
         if (paddedData[index + i] != 0) {
-          throw const ArgumentException('incorrect padding');
+          throw const CryptoException('incorrect padding');
         }
       }
     }

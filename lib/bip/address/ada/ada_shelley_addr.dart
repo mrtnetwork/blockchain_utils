@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 import 'package:blockchain_utils/bech32/bech32_base.dart';
+import 'package:blockchain_utils/helper/helper.dart';
 import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/bip/address/addr_dec_utils.dart';
 import 'package:blockchain_utils/bip/address/addr_key_validator.dart';
@@ -57,7 +58,7 @@ class AdaStakeCredential {
   final AdaStakeCredType type;
   final List<int> hash;
   AdaStakeCredential._(this.type, List<int> hash)
-      : hash = BytesUtils.toBytes(hash, unmodifiable: true);
+      : hash = hash.asImmutableBytes;
 
   factory AdaStakeCredential(
       {required List<int> hash, required AdaStakeCredType type}) {

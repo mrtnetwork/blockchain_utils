@@ -1,7 +1,7 @@
 import 'package:blockchain_utils/bip/address/xmr_addr.dart';
 import 'package:blockchain_utils/bip/ecc/keys/ed25519_keys.dart';
 import 'package:blockchain_utils/bip/ecc/keys/ed25519_monero_keys.dart';
-import 'package:blockchain_utils/crypto/crypto/cdsa/utils/ed25519_utils.dart';
+import 'package:blockchain_utils/crypto/crypto/cdsa/utils/ed25519.dart';
 import 'package:blockchain_utils/bip/monero/conf/monero_coin_conf.dart';
 import 'package:blockchain_utils/bip/monero/conf/monero_coins.dart';
 import 'package:blockchain_utils/bip/monero/monero_exc.dart';
@@ -105,7 +105,7 @@ class MoneroAccount {
             ? seedBytes
             : QuickCrypto.keccack256Hash(seedBytes);
     return MoneroAccount.fromPrivateSpendKey(
-        Ed25519Utils.scalarReduce(privSkeyBytes),
+        Ed25519Utils.scalarReduceConst(privSkeyBytes),
         coinType: coinType);
   }
 
@@ -192,8 +192,8 @@ class MoneroAccount {
 
   /// Calculate and return the private view key from the private spend key.
   static MoneroPrivateKey _viewFromSpendKey(MoneroPrivateKey privSkey) {
-    final List<int> privVkeyBytes =
-        Ed25519Utils.scalarReduce(QuickCrypto.keccack256Hash(privSkey.raw));
+    final List<int> privVkeyBytes = Ed25519Utils.scalarReduceConst(
+        QuickCrypto.keccack256Hash(privSkey.raw));
     return MoneroPrivateKey.fromBytes(privVkeyBytes);
   }
 }

@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:blockchain_utils/crypto/crypto/crypto.dart';
 import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/bip/bip/bip32/bip32_ex.dart';
 import 'package:blockchain_utils/bip/bip/bip32/bip32_key_data.dart';
@@ -8,7 +9,6 @@ import 'package:blockchain_utils/bip/bip/bip32/khalow/bip32_kholaw_key_derivator
 import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_getter.dart';
 import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
 import 'package:blockchain_utils/bip/ecc/keys/ed25519_kholaw_keys.dart';
-import 'package:blockchain_utils/crypto/crypto/cdsa/point/edwards.dart';
 
 /// Define a class, 'Bip32KholawEd25519KeyDerivator', that extends 'Bip32KholawEd25519KeyDerivatorBase'
 /// for Ed25519 key derivation.
@@ -43,16 +43,16 @@ class Bip32KholawEd25519KeyDerivator
     final BigInt klInt =
         BigintUtils.fromBytes(klBytes, byteOrder: Endian.little);
 
-    final EDPoint generator =
-        EllipticCurveGetter.generatorFromType(curve) as EDPoint;
     final BigInt prvlInt = (zlInt * BigInt.from(8)) + klInt;
-    if (prvlInt % generator.order! == BigInt.zero) {
-      throw const Bip32KeyError(
-          'Computed child key is not valid, very unlucky index');
-    }
     final tobytes = BigintUtils.toBytes(prvlInt,
         order: Endian.little,
         length: Ed25519KholawKeysConst.privKeyByteLen ~/ 2);
+    final sc = Ed25519Utils.scalarReduceConst(tobytes);
+    if (BytesUtils.bytesEqual(sc, CryptoOpsConst.zero)) {
+      throw const Bip32KeyError(
+          'Computed child key is not valid, very unlucky index');
+    }
+
     return tobytes;
   }
 

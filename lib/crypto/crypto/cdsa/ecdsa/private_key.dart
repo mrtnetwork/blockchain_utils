@@ -1,5 +1,8 @@
 import 'dart:typed_data';
-import 'package:blockchain_utils/exception/exceptions.dart';
+import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
+import 'package:blockchain_utils/crypto/crypto/cdsa/curve/curves.dart';
+import 'package:blockchain_utils/crypto/crypto/cdsa/utils/secp256k1.dart';
+import 'package:blockchain_utils/crypto/crypto/exception/exception.dart';
 import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/ecdsa/signature.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/point/ec_projective_point.dart';
@@ -9,7 +12,7 @@ import 'public_key.dart';
 class ECDSAPrivateKey {
   final ECDSAPublicKey publicKey;
   final BigInt secretMultiplier;
-  ECDSAPrivateKey._(this.publicKey, this.secretMultiplier);
+  ECDSAPrivateKey(this.publicKey, this.secretMultiplier);
 
   /// Creates an ECDSA private key from bytes.
   ///
@@ -22,11 +25,40 @@ class ECDSAPrivateKey {
   ///
   factory ECDSAPrivateKey.fromBytes(List<int> bytes, ProjectiveECCPoint curve) {
     if (bytes.length != curve.curve.baselen) {
-      throw const ArgumentException("Invalid length of private key");
+      throw const CryptoException("Invalid length of private key");
     }
     final secexp = BigintUtils.fromBytes(bytes, byteOrder: Endian.big);
     final ECDSAPublicKey publicKey = ECDSAPublicKey(curve, curve * secexp);
-    return ECDSAPrivateKey._(publicKey, secexp);
+    return ECDSAPrivateKey(publicKey, secexp);
+  }
+
+  /// Creates an ECDSA private key from bytes.
+  ///
+  /// Parameters:
+  ///   - bytes: A byte representation of the private key.
+  ///   - curve: The elliptic curve used for the key pair.
+  ///
+  /// Returns:
+  ///   An ECDSA private key.
+  ///
+  factory ECDSAPrivateKey.fromBytesConst(
+      {required List<int> bytes,
+      EllipticCurveTypes type = EllipticCurveTypes.secp256k1}) {
+    if (type != EllipticCurveTypes.secp256k1) {
+      throw CryptoException(
+          "Unsuported constant public key generation for curve ${type.name}");
+    }
+    final generator = Curves.generatorSecp256k1;
+    if (bytes.length != generator.curve.baselen) {
+      throw const CryptoException("Invalid length of private key");
+    }
+    final pubkeyBytes = Secp256k1Utils.generatePublicKeyBlind(bytes);
+    if (pubkeyBytes == null) {
+      throw const CryptoException("Invalid secp256k1 private key.");
+    }
+    final publicKey = ECDSAPublicKey.fromBytes(pubkeyBytes, generator);
+    final secexp = BigintUtils.fromBytes(bytes, byteOrder: Endian.big);
+    return ECDSAPrivateKey(publicKey, secexp);
   }
 
   /// Signs a hash value using the private key.
@@ -52,7 +84,7 @@ class ECDSAPrivateKey {
     }
 
     if (r == BigInt.zero) {
-      throw const MessageException("unlucky random number r");
+      throw const CryptoException("unlucky random number r");
     }
 
     final BigInt s =
@@ -60,7 +92,7 @@ class ECDSAPrivateKey {
             n;
 
     if (s == BigInt.zero) {
-      throw const MessageException("unlucky random number s");
+      throw const CryptoException("unlucky random number s");
     }
 
     return ECDSASignature(r, s);

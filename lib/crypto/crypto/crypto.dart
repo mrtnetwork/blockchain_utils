@@ -64,3 +64,4 @@ export 'scrypt/scrypt.dart';
 export 'x_modem_crc/x_modem_crc.dart';
 
 export 'crc16/crc16.dart';
+export 'exception/exception.dart';

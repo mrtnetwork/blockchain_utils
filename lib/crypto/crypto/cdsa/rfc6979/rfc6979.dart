@@ -23,6 +23,8 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
 
+import 'package:blockchain_utils/crypto/crypto/cdsa/curve/curves.dart';
+import 'package:blockchain_utils/crypto/crypto/cdsa/secp256k1/secp256k1.dart';
 import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/crypto/crypto/hash/hash.dart';
 import 'package:blockchain_utils/crypto/crypto/hmac/hmac.dart';
@@ -128,6 +130,82 @@ class RFC6979 {
       }
 
       k = HMAC(hashFunc, k).update(List<int>.from([...v, 0x00])).digest();
+      v = HMAC(hashFunc, k).update(v).digest();
+    }
+  }
+
+  static List<int> generateSecp256k1KBytes(
+      {required List<int> secexp,
+      required HashFunc hashFunc,
+      required List<int> data,
+      int retryGn = 0,
+      List<int>? extraEntropy}) {
+    final order = Curves.generatorSecp256k1.order!;
+    final int qlen = order.bitLength;
+    final hx = hashFunc();
+    final int holen = hx.getDigestLength;
+    final int rolen = (qlen + 7) ~/ 8;
+
+    final List<List<int>> bx = [
+      secexp,
+      BigintUtils.bitsToOctetsWithOrderPadding(data, order),
+      extraEntropy ?? List.empty()
+    ];
+
+    List<int> v = List<int>.filled(holen, 0x01);
+    // v.fillRange(0, holen, 0x01);
+
+    List<int> k = List<int>.filled(holen, 0);
+
+    HMAC hmac = HMAC(hashFunc, k);
+
+    hmac.update([...v, 0x00]);
+
+    for (final i in bx) {
+      hmac.update(i);
+    }
+    k = hmac.digest();
+
+    hmac.clean();
+    hmac = HMAC(hashFunc, k);
+    hmac.update(v);
+    v = hmac.digest();
+
+    hmac.clean();
+    hmac = HMAC(hashFunc, k);
+    hmac.update([...v, 0x01]);
+
+    for (final i in bx) {
+      hmac.update(i);
+    }
+    k = hmac.digest();
+
+    // Step G
+    v = HMAC(hashFunc, k).update(v).digest();
+
+    // Step H
+    while (true) {
+      // Step H1
+      List<int> t = [];
+
+      // Step H2
+      while (t.length < rolen) {
+        v = HMAC(hashFunc, k).update(v).digest();
+        t = [...t, ...v];
+      }
+
+      // Step H3
+      Secp256k1Scalar sc = Secp256k1Scalar();
+      Secp256k1.secp256k1ScalarSetB32(sc, t);
+
+      if (Secp256k1.secp256k1ScalarCheckOverflow(sc) == 0) {
+        if (retryGn <= 0) {
+          return t;
+        }
+        retryGn -= 1;
+      }
+
+      k = HMAC(hashFunc, k).update([...v, 0x00]).digest();
       v = HMAC(hashFunc, k).update(v).digest();
     }
   }

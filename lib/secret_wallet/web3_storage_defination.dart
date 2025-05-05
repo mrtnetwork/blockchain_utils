@@ -1,6 +1,7 @@
 import 'package:blockchain_utils/cbor/cbor.dart';
 import 'package:blockchain_utils/crypto/crypto/crypto.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
+import 'package:blockchain_utils/helper/helper.dart';
 import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/uuid/uuid.dart';
 
@@ -69,7 +70,7 @@ abstract class KDFParam {
 /// A class implementing key derivation using the PBKDF2 algorithm.
 class KDF2 extends KDFParam {
   KDF2._(this.iterations, List<int> salt, this.dklen)
-      : salt = BytesUtils.toBytes(salt, unmodifiable: true);
+      : salt = salt.asImmutableBytes;
   factory KDF2(
       {required int iterations, required List<int> salt, required int dklen}) {
     if (salt.length != _SecretStorageConst.saltLength) {
@@ -147,7 +148,7 @@ class KDF2 extends KDFParam {
 /// A class implementing key derivation using the Scrypt algorithm.
 class KDFScrypt extends KDFParam {
   KDFScrypt._(this.dklen, this.n, this.r, this.p, List<int> salt)
-      : salt = BytesUtils.toBytes(salt, unmodifiable: true);
+      : salt = salt.asImmutableBytes;
   factory KDFScrypt(
       {required int dklen,
       required int n,
@@ -295,8 +296,8 @@ class Web3SecretStorageDefinationV3 {
   final CryptoParam _crypto;
   Web3SecretStorageDefinationV3._(
       this._crypto, List<int> _password, this.uuid, List<int> data)
-      : _password = BytesUtils.toBytes(_password, unmodifiable: true),
-        data = BytesUtils.toBytes(data, unmodifiable: true);
+      : _password = _password.asImmutableBytes,
+        data = data.asImmutableBytes;
   factory Web3SecretStorageDefinationV3(
       {required CryptoParam param,
       required List<int> password,

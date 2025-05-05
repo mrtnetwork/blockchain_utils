@@ -1,14 +1,14 @@
 import 'dart:typed_data';
-import 'package:blockchain_utils/utils/utils.dart';
-
-import 'package:blockchain_utils/crypto/crypto/cdsa/utils/ed25519_utils.dart';
-import 'package:blockchain_utils/crypto/crypto/cdsa/curve/curves.dart';
+import 'package:blockchain_utils/bip/ecc/keys/ed25519_keys.dart';
+import 'package:blockchain_utils/crypto/crypto/cdsa/cdsa.dart';
+import 'package:blockchain_utils/crypto/crypto/exception/exception.dart';
+import 'package:blockchain_utils/helper/extensions/extensions.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/point/ristretto_point.dart';
 import 'package:blockchain_utils/crypto/crypto/hash/hash.dart';
 import 'package:blockchain_utils/crypto/crypto/prng/fortuna.dart';
 import 'package:blockchain_utils/crypto/crypto/schnorrkel/merlin/transcript.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
-import 'package:blockchain_utils/exception/exceptions.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 
 /// The `SchnorrkelKeyCost` class defines various constants related to the sizes and lengths of Schnorrkel keys and components.
 ///
@@ -48,7 +48,7 @@ class _KeyUtils {
   /// - `name`: A descriptive name for the byte data, used in error messages.
   static void _checkKeysBytes(List<int> bytes, int expected, String name) {
     if (bytes.length != expected) {
-      throw ArgumentException(
+      throw CryptoException(
           "invalid $name bytes length expected $expected but ${bytes.length}");
     }
   }
@@ -104,7 +104,7 @@ class _KeyUtils {
     cloneBytes[31] &= 127;
     final bool highBitUnset = (bytes[31] >> 7 & 0) == 0;
     final bool isCanonical = BytesUtils.bytesEqual(
-        cloneBytes, Ed25519Utils.scalarReduce(cloneBytes));
+        cloneBytes, Ed25519Utils.scalarReduceVar(cloneBytes));
     if (highBitUnset && isCanonical) {
       return cloneBytes;
     }
@@ -124,11 +124,10 @@ enum ExpansionMode {
 }
 
 class VRFPreOut {
-  VRFPreOut._({required List<int> output})
-      : _output = BytesUtils.toBytes(output, unmodifiable: true);
+  VRFPreOut._({required List<int> output}) : _output = output.asImmutableBytes;
   factory VRFPreOut(List<int> bytes) {
     if (bytes.length != SchnorrkelKeyCost.vrfPreOutLength) {
-      throw ArgumentException(
+      throw CryptoException(
           "Invalid VRFPreOut bytes length. expected: ${SchnorrkelKeyCost.vrfPreOutLength} got: ${bytes.length}");
     }
     return VRFPreOut._(output: bytes);
@@ -150,7 +149,9 @@ class VRFPreOut {
 /// This class provides methods and properties to access and manipulate the input and output data.
 class VRFInOut {
   /// Private constructor to create a `VRFInOut` instance with input and output data.
-  VRFInOut._(this._input, this._output);
+  VRFInOut._(List<int> input, List<int> output)
+      : _input = input.asImmutableBytes,
+        _output = output.asImmutableBytes;
   final List<int> _input;
   final List<int> _output;
 
@@ -168,7 +169,7 @@ class VRFInOut {
 
   /// Converts the `VRFInOut` instance into a `List<int>` by concatenating the input and output data.
   List<int> toBytes() {
-    return List<int>.from([..._input, ..._output]);
+    return [..._input, ..._output];
   }
 
   VRFPreOut toVRFPreOut() => VRFPreOut(output);
@@ -185,7 +186,9 @@ class VRFInOut {
 /// This class provides methods and properties to access and manipulate the components of the VRF proof.
 class VRFProof {
   /// Private constructor to create a `VRFProof` instance with 'c' and 's' components.
-  VRFProof._(this._c, this._s);
+  VRFProof._(List<int> c, List<int> s)
+      : _c = c.asImmutableBytes,
+        _s = s.asImmutableBytes;
 
   /// Creates a `VRFProof` instance from a byte representation.
   /// The input bytes are expected to be properly formatted for a VRF proof.
@@ -195,7 +198,7 @@ class VRFProof {
     final c = _KeyUtils.toCanonical(bytes.sublist(0, 32));
     final s = _KeyUtils.toCanonical(bytes.sublist(32));
     if (c == null || s == null) {
-      throw const ArgumentException("invalid VRF proof bytes");
+      throw const CryptoException("invalid VRF proof bytes");
     }
     return VRFProof._(c, s);
   }
@@ -232,7 +235,7 @@ class VRFProof {
 /// the generation of Schnorr key pairs.
 class SchnorrkelMiniSecretKey {
   /// Private constructor to create a `SchnorrkelMiniSecretKey` instance with bytes.
-  SchnorrkelMiniSecretKey._(this._bytes);
+  SchnorrkelMiniSecretKey._(List<int> bytes) : _bytes = bytes.asImmutableBytes;
   final List<int> _bytes;
 
   /// Converts the mini-secret key to a `List<int>`.
@@ -247,10 +250,9 @@ class SchnorrkelMiniSecretKey {
   /// Returns:
   /// A `SchnorrkelMiniSecretKey` instance.
   factory SchnorrkelMiniSecretKey.fromBytes(List<int> keyBytes) {
-    final bytes = BytesUtils.toBytes(keyBytes, unmodifiable: true);
     _KeyUtils._checkKeysBytes(
         keyBytes, SchnorrkelKeyCost.miniSecretLength, "mini secret key");
-    return SchnorrkelMiniSecretKey._(bytes);
+    return SchnorrkelMiniSecretKey._(keyBytes);
   }
 
   /// The `_expandEd25519` method expands the mini-secret key into a Schnorrkel secret key
@@ -263,12 +265,13 @@ class SchnorrkelMiniSecretKey {
   /// A `SchnorrkelSecretKey` instance derived from the mini-secret key expansion.
   SchnorrkelSecretKey _expandEd25519() {
     final toHash = SHA512.hash(toBytes());
-    final key = toHash.sublist(0, 32);
+    final key = toHash.sublist(0, Ed25519KeysConst.privKeyByteLen);
     key[0] &= 248;
     key[31] &= 63;
     key[31] |= 64;
     final r = _KeyUtils.divideScalarByCofactor(key);
-    return SchnorrkelSecretKey(r, toHash.sublist(32));
+    return SchnorrkelSecretKey(
+        r, toHash.sublist(Ed25519KeysConst.privKeyByteLen));
   }
 
   /// The `_expandUniform` method expands the mini-secret key into a Schnorrkel secret key
@@ -329,7 +332,9 @@ class SchnorrkelMiniSecretKey {
 /// and ensuring the canonical form of the key.
 class SchnorrkelSecretKey {
   /// Private constructor to create a `SchnorrkelSecretKey` instance with secret key and nonce components.
-  SchnorrkelSecretKey._(this._key, this._nonce);
+  SchnorrkelSecretKey._(List<int> key, List<int> nonce)
+      : _key = key.asImmutableBytes,
+        _nonce = nonce.asImmutableBytes;
 
   /// Creates a `SchnorrkelSecretKey` instance from provided secret key and nonce components.
   ///
@@ -341,18 +346,16 @@ class SchnorrkelSecretKey {
   /// A `SchnorrkelSecretKey` instance if the input components are valid and in canonical form.
   ///
   /// Throws:
-  /// - An `ArgumentException` if the input components are invalid or not in canonical form.
+  /// - An `CryptoException` if the input components are invalid or not in canonical form.
   factory SchnorrkelSecretKey(List<int> key, List<int> nonce) {
     _KeyUtils._checkKeysBytes(
         key, SchnorrkelKeyCost.miniSecretLength, "mini secret key");
     _KeyUtils._checkKeysBytes(nonce, SchnorrkelKeyCost.nonceLength, "nonce");
     final canonicalKey = _KeyUtils.toCanonical(key);
     if (canonicalKey != null) {
-      return SchnorrkelSecretKey._(
-          BytesUtils.toBytes(canonicalKey, unmodifiable: true),
-          BytesUtils.toBytes(nonce, unmodifiable: true));
+      return SchnorrkelSecretKey._(canonicalKey, nonce);
     }
-    throw const ArgumentException("invalid key");
+    throw const CryptoException("invalid sr25519 private key.");
   }
 
   /// Creates a `SchnorrkelSecretKey` instance from a byte representation of a secret key.
@@ -364,7 +367,7 @@ class SchnorrkelSecretKey {
   /// A `SchnorrkelSecretKey` instance derived from the provided byte representation.
   ///
   /// Throws:
-  /// - An `ArgumentException` if the byte array does not have the correct length for a secret key.
+  /// - An `CryptoException` if the byte array does not have the correct length for a secret key.
   factory SchnorrkelSecretKey.fromBytes(List<int> secretKeyBytes) {
     _KeyUtils._checkKeysBytes(
         secretKeyBytes, SchnorrkelKeyCost.secretKeyLength, "secret key");
@@ -372,8 +375,7 @@ class SchnorrkelSecretKey {
         secretKeyBytes.sublist(0, SchnorrkelKeyCost.miniSecretLength);
     final nonceBytes = secretKeyBytes.sublist(
         SchnorrkelKeyCost.miniSecretLength, SchnorrkelKeyCost.secretKeyLength);
-    return SchnorrkelSecretKey(BytesUtils.toBytes(keyBytes, unmodifiable: true),
-        BytesUtils.toBytes(nonceBytes, unmodifiable: true));
+    return SchnorrkelSecretKey(keyBytes, nonceBytes);
   }
 
   /// Creates a `SchnorrkelSecretKey` instance from a byte representation of an Ed25519 secret key.
@@ -385,7 +387,7 @@ class SchnorrkelSecretKey {
   /// A `SchnorrkelSecretKey` instance derived from the provided Ed25519 secret key representation.
   ///
   /// Throws:
-  /// - An `ArgumentException` if the byte array does not have the correct length for a secret key.
+  /// - An `CryptoException` if the byte array does not have the correct length for a secret key.
   factory SchnorrkelSecretKey.fromEd25519(List<int> secretKeyBytes) {
     _KeyUtils._checkKeysBytes(
         secretKeyBytes, SchnorrkelKeyCost.secretKeyLength, "secret key");
@@ -393,11 +395,9 @@ class SchnorrkelSecretKey {
         secretKeyBytes.sublist(0, SchnorrkelKeyCost.miniSecretLength));
     _KeyUtils.divideScalarByCofactor(newKey);
     return SchnorrkelSecretKey(
-        BytesUtils.toBytes(newKey, unmodifiable: true),
-        BytesUtils.toBytes(
-            secretKeyBytes.sublist(SchnorrkelKeyCost.miniSecretLength,
-                SchnorrkelKeyCost.secretKeyLength),
-            unmodifiable: true));
+        newKey,
+        secretKeyBytes.sublist(SchnorrkelKeyCost.miniSecretLength,
+            SchnorrkelKeyCost.secretKeyLength));
   }
   final List<int> _key;
   final List<int> _nonce;
@@ -432,14 +432,16 @@ class SchnorrkelSecretKey {
   /// Returns:
   /// A `SchnorrkelPublicKey` representing the derived public key associated with this Schnorrkel secret key.
   SchnorrkelPublicKey publicKey() {
-    /// Convert the secret key to a big integer in little-endian byte order.
-    final tobig = BigintUtils.fromBytes(key(), byteOrder: Endian.little);
+    // /// Convert the secret key to a big integer in little-endian byte order.
+    // final tobig = BigintUtils.fromBytes(key(), byteOrder: Endian.little);
 
-    /// Perform scalar multiplication with the Ed25519 generator point.
-    final gn = Curves.generatorED25519 * tobig;
+    // /// Perform scalar multiplication with the Ed25519 generator point.
+    // final gn = Curves.generatorED25519 * tobig;
+
+    final pubkey = Ed25519Utils.scalarMultBase(key());
 
     /// Convert the result to a RistrettoPoint format.
-    final pubPoint = RistrettoPoint.fromEdwardsPoint(gn);
+    final pubPoint = RistrettoPoint.fromEdwardBytes(pubkey);
 
     /// Convert the RistrettoPoint point to bytes and create a Schnorrkel public key.
     final pubBytes = pubPoint.toBytes();
@@ -526,9 +528,10 @@ class SchnorrkelSecretKey {
   Tuple<SchnorrkelSecretKey, List<int>> softDerive(List<int> chainCode,
       {List<int>? message, GenerateRandom? nonceGenerator}) {
     final derivePub = publicKey()._deriveScalarAndChainCode(chainCode, message);
-    final nonce = nonceGenerator?.call(32) ?? QuickCrypto.generateRandom(32);
-    if (nonce.length != 32) {
-      throw const ArgumentException("invalid random bytes length");
+    final nonce = nonceGenerator?.call(SchnorrkelKeyCost.nonceLength) ??
+        QuickCrypto.generateRandom(SchnorrkelKeyCost.nonceLength);
+    if (nonce.length != SchnorrkelKeyCost.nonceLength) {
+      throw const CryptoException("invalid none length.");
     }
     final newKey = Ed25519Utils.add(key(), derivePub.item1);
     final combine = List<int>.from([...newKey, ...nonce]);
@@ -559,26 +562,24 @@ class SchnorrkelSecretKey {
   /// from the signing context script, a nonce, and the secret key. It returns a `SchnorrkelSignature` instance.
   SchnorrkelSignature sign(MerlinTranscript signingContextScript,
       {GenerateRandom? nonceGenerator}) {
+    const int nonceLength = SchnorrkelKeyCost.nonceLength * 2;
     signingContextScript.additionalData(
         "proto-name".codeUnits, "Schnorr-sig".codeUnits);
     signingContextScript.additionalData(
         "sign:pk".codeUnits, publicKey().toBytes());
-    final nonceRand =
-        nonceGenerator?.call(64) ?? QuickCrypto.generateRandom(64);
-    if (nonceRand.length != 64) {
-      throw const ArgumentException("invalid random bytes length");
+    final nonceRand = nonceGenerator?.call(nonceLength) ??
+        QuickCrypto.generateRandom(nonceLength);
+    if (nonceRand.length != nonceLength) {
+      throw const CryptoException("invalid nonce bytes length.");
     }
-    final nonceBytes = Ed25519Utils.scalarReduce(nonceRand);
-    final nonceBigint =
-        BigintUtils.fromBytes(nonceBytes, byteOrder: Endian.little);
-    final r =
-        RistrettoPoint.fromEdwardsPoint(Curves.generatorED25519 * nonceBigint);
+    final scNonce = Ed25519Utils.scalarReduceConst(nonceRand);
+    final mult = Ed25519Utils.scalarMultBase(scNonce);
+    final r = RistrettoPoint.fromEdwardBytes(mult);
     signingContextScript.additionalData("sign:R".codeUnits, r.toBytes());
     final k =
         signingContextScript.toBytesWithReduceScalar("sign:c".codeUnits, 64);
-    final km = Ed25519Utils.mul(key(), k);
-    final s = Ed25519Utils.add(km, nonceBytes);
-    final sig = SchnorrkelSignature._(s, r.toBytes());
+    final sigS = Ed25519Utils.mulAdd(key(), k, scNonce);
+    final sig = SchnorrkelSignature._(sigS, r.toBytes());
     return sig;
   }
 
@@ -623,9 +624,18 @@ class SchnorrkelSecretKey {
   /// the corresponding VRF input and output.
   VRFInOut vrfInOut(MerlinTranscript script) {
     final publicHashPoint = publicKey().vrfHash(script);
-    final keyBig = BigintUtils.fromBytes(key(), byteOrder: Endian.little);
-    final mul = publicHashPoint * keyBig;
-    return VRFInOut._(publicHashPoint.toBytes(), mul.toBytes());
+    final pM =
+        Ed25519Utils.pointScalarMult(publicHashPoint.toEdwardBytes(), key());
+    final p = RistrettoPoint.fromEdwardBytes(pM);
+    return VRFInOut._(publicHashPoint.toBytes(), p.toBytes());
+  }
+
+  VRFInOut vrfInOut_(MerlinTranscript script) {
+    final publicHashPoint = publicKey().vrfHash(script);
+    final mul = Ed25519Utils.mul(
+        Ed25519Utils.scalarReduceConst(key()), publicHashPoint.toBytes());
+    final p = RistrettoPoint.fromEdwardBytes(mul);
+    return VRFInOut._(publicHashPoint.toBytes(), p.toBytes());
   }
 
   /// Generates a Discrete Logarithm Equality Proof (DLEQ) for a Verifiable Random Function (VRF) output.
@@ -655,33 +665,34 @@ class SchnorrkelSecretKey {
       {bool kusamaVRF = true,
       GenerateRandom? nonceGenerator,
       MerlinTranscript? verifyScript}) {
+    const int nonceLength = SchnorrkelKeyCost.nonceLength * 2;
     final script = verifyScript ?? MerlinTranscript("VRF");
     script.additionalData("proto-name".codeUnits, "DLEQProof".codeUnits);
     script.additionalData("vrf:h".codeUnits, out.input);
     if (!kusamaVRF) {
       script.additionalData("vrf:pk".codeUnits, publicKey().toBytes());
     }
-    final nonce = nonceGenerator?.call(64) ?? QuickCrypto.generateRandom(64);
-    if (nonce.length != 64) {
-      throw const ArgumentException("invalid random bytes length");
+    final nonce = nonceGenerator?.call(nonceLength) ??
+        QuickCrypto.generateRandom(nonceLength);
+    if (nonce.length != nonceLength) {
+      throw const CryptoException("invalid nonce length.");
     }
-    final n = Ed25519Utils.scalarReduce(nonce);
-    final scalar = BigintUtils.fromBytes(n, byteOrder: Endian.little);
+    final nScalar = Ed25519Utils.scalarReduceConst(nonce);
     final mult =
-        RistrettoPoint.fromEdwardsPoint(Curves.generatorED25519 * scalar);
+        RistrettoPoint.fromEdwardBytes(Ed25519Utils.scalarMultBase(nScalar));
     script.additionalData("vrf:R=g^r".codeUnits, mult.toBytes());
-    final inputPoint = RistrettoPoint.fromBytes(out.input);
-    final hr = inputPoint * scalar;
-    script.additionalData("vrf:h^r".codeUnits, hr.toBytes());
+    RistrettoPoint inputPoint = RistrettoPoint.fromBytes(out.input);
+    inputPoint = RistrettoPoint.fromEdwardBytes(
+        Ed25519Utils.pointScalarMult(inputPoint.toEdwardBytes(), nScalar));
+    script.additionalData("vrf:h^r".codeUnits, inputPoint.toBytes());
     if (kusamaVRF) {
       script.additionalData("vrf:pk".codeUnits, publicKey().toBytes());
     }
     script.additionalData("vrf:h^sk".codeUnits, out.output);
-    final c = script.toBytesWithReduceScalar("prove".codeUnits, 64);
-    final multiply = Ed25519Utils.mul(c, key());
-    final s = Ed25519Utils.sub(n, multiply);
-
-    return VRFProof._(c, s);
+    final c = script.toBytesWithReduceScalar(
+        "prove".codeUnits, SchnorrkelKeyCost.vrfProofLength);
+    final multiply = Ed25519Utils.mulSub(c, key(), nScalar);
+    return VRFProof._(c, multiply);
   }
 
   @override
@@ -691,7 +702,7 @@ class SchnorrkelSecretKey {
   }
 
   @override
-  int get hashCode => _key.fold<int>(0, (c, p) => p ^ c).hashCode;
+  int get hashCode => HashCodeGenerator.generateBytesHashCode(_key);
 }
 
 /// Represents a Schnorrkel public key used for verifying signatures.
@@ -710,7 +721,8 @@ class SchnorrkelSecretKey {
 /// key validation.
 class SchnorrkelPublicKey {
   /// Private constructor for creating a `SchnorrkelPublicKey` instance.
-  SchnorrkelPublicKey._(this._publicKey);
+  SchnorrkelPublicKey._(List<int> publicKey)
+      : _publicKey = publicKey.asImmutableBytes;
 
   /// Creates a `SchnorrkelPublicKey` from the given byte representation.
   ///
@@ -723,8 +735,7 @@ class SchnorrkelPublicKey {
     _KeyUtils._checkKeysBytes(
         keyBytes, SchnorrkelKeyCost.publickeyLength, "public key");
     RistrettoPoint.fromBytes(keyBytes);
-    return SchnorrkelPublicKey._(
-        BytesUtils.toBytes(keyBytes, unmodifiable: true));
+    return SchnorrkelPublicKey._(keyBytes);
   }
   final List<int> _publicKey;
 
@@ -800,10 +811,10 @@ class SchnorrkelPublicKey {
   Tuple<SchnorrkelPublicKey, List<int>> derive(List<int> chainCode,
       [List<int>? message]) {
     final derive = _deriveScalarAndChainCode(chainCode, message);
-    final newKeyBigint =
-        BigintUtils.fromBytes(derive.item1, byteOrder: Endian.little);
-    final p = toPoint() + (Curves.generatorED25519 * newKeyBigint);
-    return Tuple(SchnorrkelPublicKey(p.toBytes()), derive.item2);
+    final mult = Ed25519Utils.scalarMultBase(derive.item1);
+    final pAdd = Ed25519Utils.pointAdd(toPoint().toEdwardBytes(), mult);
+    final newPoint = RistrettoPoint.fromEdwardBytes(pAdd);
+    return Tuple(SchnorrkelPublicKey(newPoint.toBytes()), derive.item2);
   }
 
   /// Converts the Schnorrkel public key to a RistrettoPoint point.
@@ -953,17 +964,10 @@ class SchnorrkelPublicKey {
   ///
   /// The `vrfHash` method is used to compute a VRF hash by appending the public key to a transcript
   /// and extracting the resulting hash as a RistrettoPoint point.
-  RistrettoPoint vrfHash(MerlinTranscript script) {
-    script.additionalData("vrf-nm-pk".codeUnits, toBytes());
-    final hashPoint =
-        RistrettoPoint.fromUniform(script.toBytes("VRFHash".codeUnits, 64));
-    return hashPoint;
-  }
-
-  static RistrettoPoint vrfHash2(MerlinTranscript script, List<int> keyBytes) {
-    script.additionalData("vrf-nm-pk".codeUnits, keyBytes);
-    final hashPoint =
-        RistrettoPoint.fromUniform(script.toBytes("VRFHash".codeUnits, 64));
+  RistrettoPoint vrfHash(MerlinTranscript script, {List<int>? keyBytes}) {
+    script.additionalData("vrf-nm-pk".codeUnits, keyBytes ?? toBytes());
+    final scBytes = script.toBytes("VRFHash".codeUnits, 64);
+    final hashPoint = RistrettoPoint.fromUniform(scBytes);
     return hashPoint;
   }
 
@@ -974,7 +978,7 @@ class SchnorrkelPublicKey {
   }
 
   @override
-  int get hashCode => _publicKey.fold<int>(0, (c, p) => p ^ c).hashCode;
+  int get hashCode => HashCodeGenerator.generateBytesHashCode(_publicKey);
 }
 
 /// Represents a Schnorrkel key pair, consisting of a secret key and a public key.
@@ -1057,26 +1061,26 @@ class SchnorrkelSignature {
     final r = signatureBytes.sublist(0, 32);
     final s = signatureBytes.sublist(32, SchnorrkelKeyCost.signatureLength);
     if (s[31] & 128 == 0) {
-      throw const ArgumentException(
+      throw const CryptoException(
           "Signature not marked as schnorrkel, maybe try ed25519 instead.");
     }
     final canonicalS = _KeyUtils.toCanonical(s);
     if (canonicalS != null) {
-      return SchnorrkelSignature._(
-          BytesUtils.toBytes(canonicalS, unmodifiable: true),
-          BytesUtils.toBytes(r, unmodifiable: true));
+      return SchnorrkelSignature._(canonicalS, r);
     }
-    throw const ArgumentException("invalid schnorrkel signature");
+    throw const CryptoException("invalid schnorrkel signature");
   }
 
   /// private constructor
-  SchnorrkelSignature._(this._s, this._r);
+  SchnorrkelSignature._(List<int> s, List<int> r)
+      : _s = s.asImmutableBytes,
+        _r = r.asImmutableBytes;
   final List<int> _s;
   final List<int> _r;
 
   /// Converts the signature to raw bytes with a schnorrkel marker.
   List<int> toBytes() {
-    final inBytes = List<int>.from([..._r, ..._s]);
+    final inBytes = [..._r, ..._s];
     inBytes[63] |= 128;
     return inBytes;
   }

@@ -21,10 +21,13 @@ void main() {
       for (final c in (i["child"] as List)) {
         final pathIndex = Bip32KeyIndex(c["index"]);
         CardanoIcarusBip32 child = w.childKey(pathIndex);
+
         final String public = child.publicKey.toExtended;
         expect(public, c["public"]);
+
         final String private = child.privateKey.toExtended;
         expect(private, c["private"]);
+        // return;
         final int index = child.index.toInt();
         expect(index, c["index"]);
         final String chainCode = child.chainCode.toHex();

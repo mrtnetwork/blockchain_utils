@@ -14,6 +14,10 @@ void main() {
 
     expect(BytesUtils.toHexString(signer.sign(BytesUtils.fromHexString(blob))),
         sig);
+    expect(
+        BytesUtils.toHexString(
+            signer.signConst(BytesUtils.fromHexString(blob))),
+        sig);
   });
   test("TEST2", () {
     const String blob =
@@ -25,6 +29,10 @@ void main() {
             "C63383DAC6B5B043A66B8E1BBBC3CF48E6B170862B7AE36217F516237211E39B"),
         EllipticCurveTypes.secp256k1);
     expect(BytesUtils.toHexString(signer.sign(BytesUtils.fromHexString(blob))),
+        sig);
+    expect(
+        BytesUtils.toHexString(
+            signer.signConst(BytesUtils.fromHexString(blob))),
         sig);
   });
 }

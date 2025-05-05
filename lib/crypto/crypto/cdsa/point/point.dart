@@ -22,10 +22,10 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
+import 'package:blockchain_utils/crypto/crypto/exception/exception.dart';
 import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/curve/curve.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/point/ec_projective_point.dart';
-import 'package:blockchain_utils/exception/exceptions.dart';
 
 import 'base.dart';
 
@@ -88,7 +88,7 @@ class AffinePointt extends AbstractPoint {
   @override
   AbstractPoint operator +(AbstractPoint other) {
     if (other is! AffinePointt && other is! ProjectiveECCPoint) {
-      throw ArgumentException("cannot add with ${other.runtimeType} point");
+      throw CryptoException("cannot add with ${other.runtimeType} point");
     }
     if (other is ProjectiveECCPoint) {
       return other + this;

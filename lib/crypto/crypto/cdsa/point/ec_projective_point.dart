@@ -24,10 +24,10 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 
 import 'package:blockchain_utils/crypto/crypto/cdsa/curve/curve.dart';
+import 'package:blockchain_utils/crypto/crypto/exception/exception.dart';
 import 'package:blockchain_utils/utils/numbers/numbers.dart';
 import 'base.dart';
 import 'point.dart';
-import 'package:blockchain_utils/exception/exceptions.dart';
 
 /// Represents a point in projective coordinates on an elliptic curve.
 class ProjectiveECCPoint extends AbstractPoint {
@@ -73,14 +73,14 @@ class ProjectiveECCPoint extends AbstractPoint {
 
   ///  The elliptic curve associated with this point.
   @override
-  CurveFp curve;
+  final CurveFp curve;
 
   /// The order of the point (can be null if unknown).
   @override
   final BigInt? order;
 
   /// Indicates whether the point is a generator.
-  bool generator;
+  final bool generator;
 
   /// List of precomputed values for point operations.
   List<List<BigInt>> _precompute;
@@ -102,9 +102,10 @@ class ProjectiveECCPoint extends AbstractPoint {
   /// [precompute] is a list of precomputed values for point operations.
   ProjectiveECCPoint._(this.curve, this._coords,
       {this.order,
-      this.generator = false,
+      bool generator = false,
       List<List<BigInt>> precompute = const []})
-      : _precompute = precompute;
+      : _precompute = precompute,
+        generator = generator && order != null;
 
   /// Precompute values for faster point operations if necessary.
   void _precomputeIfNeeded() {
@@ -353,7 +354,7 @@ class ProjectiveECCPoint extends AbstractPoint {
   factory ProjectiveECCPoint.fromAffine(AbstractPoint point,
       {bool generator = false}) {
     if (point is! ProjectiveECCPoint && point is! AffinePointt) {
-      throw const ArgumentException("invalid Affine point");
+      throw const CryptoException("invalid Affine point");
     }
     return ProjectiveECCPoint._(
         point.curve as CurveFp, [point.x, point.y, BigInt.one],
@@ -635,7 +636,7 @@ class ProjectiveECCPoint extends AbstractPoint {
       other = ProjectiveECCPoint.fromAffine(other);
     }
     if (curve != other.curve) {
-      throw const ArgumentException("The other point is on a different curve");
+      throw const CryptoException("The other point is on a different curve");
     }
     other as ProjectiveECCPoint;
 
@@ -691,7 +692,8 @@ class ProjectiveECCPoint extends AbstractPoint {
       final BigInt y2 = precompute[i][1];
 
       if (scalar.isOdd) {
-        if (scalar.isOdd && scalar.isEven) {
+        final flag = scalar % BigInt.from(4);
+        if (flag >= BigInt.two) {
           scalar = (scalar + BigInt.one) ~/ BigInt.two;
           final List<BigInt> addResult = _addPoints(
               resultX, resultY, resultZ, x2, -y2, BigInt.one, primeField);

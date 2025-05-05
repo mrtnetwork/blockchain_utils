@@ -20,8 +20,6 @@ import 'package:blockchain_utils/bip/mnemonic/mnemonic.dart';
 /// final entropy = List<int>.from([/* your entropy bytes here */]);
 /// final mnemonicFromEntropy = generator.fromEntropy(entropy);
 ///
-/// print("Generated BIP39 mnemonic (12 words): $mnemonic12Words");
-/// print("Generated BIP39 mnemonic from entropy: $mnemonicFromEntropy");
 /// ```
 class Bip39MnemonicGenerator {
   final Bip39MnemonicEncoder _mnemonicEncoder;

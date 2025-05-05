@@ -9,7 +9,7 @@ class AESLib {
   }
   static final _aes = AESLib._();
 
-  final _powx = List<int>.from([
+  static const _powx = [
     0x01,
     0x02,
     0x04,
@@ -26,10 +26,10 @@ class AESLib {
     0x4d,
     0x9a,
     0x2f
-  ]);
+  ];
 
   /// FIPS-197 Figure 7. S-box substitution values in hexadecimal format.
-  final _sbox0 = List<int>.from([
+  static const _sbox0 = [
     0x63,
     0x7c,
     0x77,
@@ -286,10 +286,10 @@ class AESLib {
     0x54,
     0xbb,
     0x16
-  ]);
+  ];
 
   /// FIPS-197 Figure 14.  Inverse S-box substitution values in hexadecimal format.
-  final _sbox1 = List<int>.from([
+  static const _sbox1 = [
     0x52,
     0x09,
     0x6a,
@@ -546,7 +546,7 @@ class AESLib {
     0x21,
     0x0c,
     0x7d
-  ]);
+  ];
 
   final List<int> _te0 = List<int>.filled(256, 0),
       _te1 = List<int>.filled(256, 0),
@@ -577,21 +577,18 @@ class AESLib {
       return s;
     }
 
-    // ignore: no_leading_underscores_for_local_identifiers
-    _rot24(int x) => rotl32(x, 24);
-    // (x << 24) | (x >> 8);
-
+    r24(int x) => rotl32(x, 24);
     for (int i = 0; i < 256; i++) {
       final s = _sbox0[i];
       int w = ((mul(s, 2) << 24) | (s << 16) | (s << 8) | mul(s, 3)) & mask32;
       _te0[i] = w;
-      w = _rot24(w);
+      w = r24(w);
       _te1[i] = w;
-      w = _rot24(w);
+      w = r24(w);
       _te2[i] = w;
-      w = _rot24(w);
+      w = r24(w);
       _te3[i] = w;
-      w = _rot24(w);
+      w = r24(w);
     }
 
     for (int i = 0; i < 256; i++) {
@@ -601,13 +598,13 @@ class AESLib {
           (mul(s, 0xd) << 8) |
           mul(s, 0xb);
       _td0[i] = w;
-      w = _rot24(w);
+      w = r24(w);
       _td1[i] = w;
-      w = _rot24(w);
+      w = r24(w);
       _td2[i] = w;
-      w = _rot24(w);
+      w = r24(w);
       _td3[i] = w;
-      w = _rot24(w);
+      w = r24(w);
     }
   }
 

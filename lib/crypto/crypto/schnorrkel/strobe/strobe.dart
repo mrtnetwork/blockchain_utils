@@ -1,6 +1,6 @@
+import 'package:blockchain_utils/crypto/crypto/exception/exception.dart';
 import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/crypto/crypto/hash/hash.dart';
-import 'package:blockchain_utils/exception/exceptions.dart';
 
 class StrobeSecParam {
   /// 128-bit security level
@@ -143,7 +143,7 @@ class Strobe {
   /// A new Strobe instance configured with the provided `customizationString` and `security` level.
   ///
   /// Throws:
-  /// - `ArgumentException` if the `security` level is not 128 or 256 bits, indicating an invalid security level.
+  /// - `CryptoException` if the `security` level is not 128 or 256 bits, indicating an invalid security level.
   ///
   /// Example Usage:
   /// ```dart
@@ -178,7 +178,7 @@ class Strobe {
   void _run() {
     if (_initialized) {
       if (_buffer.length > strober) {
-        throw const MessageException(
+        throw const CryptoException(
             "strobe: buffer is never supposed to reach strobeR");
       }
       _buffer.add(_posBegin);
@@ -203,7 +203,6 @@ class Strobe {
     }
     Keccack.keccackF1600(_state);
 
-    // _temp.setAll(0, _state.sublist(0, _temp.length));
     _buffer.clear();
 
     _posBegin = 0;
@@ -283,20 +282,20 @@ class Strobe {
             (StrobeFlags.I | StrobeFlags.T)) &&
         ((flags & (StrobeFlags.I | StrobeFlags.A)) != StrobeFlags.A)) {
       if (length == 0) {
-        throw const MessageException(
+        throw const CryptoException(
             "A length should be set for this operation.");
       }
       data = List<int>.filled(length, 0);
     } else {
       if (length != 0) {
-        throw const MessageException(
+        throw const CryptoException(
             "Output length must be zero except for PRF, send_MAC, and RATCHET operations.");
       }
       data = List<int>.from(dataConst);
     }
     if (more) {
       if (flags != _curFlags) {
-        throw const MessageException(
+        throw const CryptoException(
             "Flag should be the same when streaming operations.");
       }
     } else {
@@ -320,7 +319,7 @@ class Strobe {
     } else if ((flags & (StrobeFlags.I | StrobeFlags.A | StrobeFlags.T)) ==
         (StrobeFlags.I | StrobeFlags.T)) {
       if (more) {
-        throw const MessageException(
+        throw const CryptoException(
             "Not supposed to check a MAC with the 'more' streaming option");
       }
       int failures = 0;

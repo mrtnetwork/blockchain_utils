@@ -53,9 +53,9 @@ class SubstratePubKey {
     return pubKey.compressed;
   }
 
-  List<int> get uncompressed {
-    return pubKey.uncompressed;
-  }
+  // List<int> get uncompressed {
+  //   return pubKey.uncompressed;
+  // }
 
   String toSS58Address({int? ss58Format}) {
     final Map<String, dynamic> addrParams = {

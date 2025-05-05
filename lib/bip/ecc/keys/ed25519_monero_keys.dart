@@ -59,7 +59,7 @@ import 'package:blockchain_utils/crypto/crypto/cdsa/curve/curves.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/eddsa/keys/privatekey.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/eddsa/keys/publickey.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/point/edwards.dart';
-import 'package:blockchain_utils/crypto/crypto/cdsa/utils/ed25519_utils.dart';
+import 'package:blockchain_utils/crypto/crypto/cdsa/utils/ed25519.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
 import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/utils/utils.dart';
@@ -172,7 +172,10 @@ class MoneroPrivateKey implements IPrivateKey {
       throw const ArgumentException("Invalid monero private key.");
     }
     final gn = Curves.generatorED25519;
-    final prv = EDDSAPrivateKey.fromKhalow(gn, keyBytes);
+    final prv = EDDSAPrivateKey(
+        generator: gn,
+        privateKey: keyBytes,
+        type: EllipticCurveTypes.ed25519Kholaw);
     return MoneroPrivateKey._(prv);
   }
 
@@ -185,8 +188,8 @@ class MoneroPrivateKey implements IPrivateKey {
   factory MoneroPrivateKey.fromBip44(List<int> keyBytes) {
     final privateKey =
         IPrivateKey.fromBytes(keyBytes, EllipticCurveTypes.ed25519);
-    return MoneroPrivateKey.fromBytes(
-        Ed25519Utils.scalarReduce(QuickCrypto.keccack256Hash(privateKey.raw)));
+    return MoneroPrivateKey.fromBytes(Ed25519Utils.scalarReduceConst(
+        QuickCrypto.keccack256Hash(privateKey.raw)));
   }
 
   /// Factory method for creating an MoneroPrivateKey from a BIP-44 hex string.

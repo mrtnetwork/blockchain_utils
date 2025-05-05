@@ -129,6 +129,18 @@ extension BigIntHelper on BigInt {
     }
     return this;
   }
+
+  int get toSignedInt32 => toSigned(32).toInt();
+  int get toUnSignedInt32 => toUnsigned(32).toInt();
+  int get toUnsignedInt8 => toUnsigned(8).toInt();
+  BigInt get toUnsigned64 => toUnsigned(64);
+  BigInt get toUnsigned128 => toUnsigned(128);
+  BigInt get toSigned128 => toSigned(128);
+  BigInt get toSigned64 => toSigned(64);
+  bool get toBool {
+    // assert(this == BigInt.one || this == BigInt.zero);
+    return this == BigInt.zero ? false : true;
+  }
 }
 
 extension IntHelper on int {
@@ -175,4 +187,18 @@ extension IntHelper on int {
     }
     return this;
   }
+
+  BigInt get toBigInt => BigInt.from(this);
+  BigInt get toUnsignedBigInt64 => BigInt.from(this).toUnsigned64;
+  int get toSigned32 => toSigned(32);
+  int get toUnSigned32 => toUnsigned(32);
+  bool get toBool {
+    // assert(this == 0 || this == 1);
+    return this == 0 ? false : true;
+  }
+}
+
+extension BoolHelper on bool {
+  BigInt get toBigInt => this ? BigInt.one : BigInt.zero;
+  int get toInt => this ? 1 : 0;
 }

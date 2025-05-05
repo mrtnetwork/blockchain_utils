@@ -27,3 +27,7 @@ export 'rfc6979/rfc6979.dart';
 export 'crypto_ops/crypto_ops.dart';
 
 export 'musig2/musig2.dart';
+
+export 'utils/ed25519.dart';
+export 'utils/ristretto.dart';
+export 'utils/secp256k1.dart';

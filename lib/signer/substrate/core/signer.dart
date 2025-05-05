@@ -7,7 +7,10 @@ import 'package:blockchain_utils/signer/substrate/signers/substrate_sr25519.dart
 
 abstract class BaseSubstrateSigner {
   List<int> sign(List<int> digest);
+  List<int> signConst(List<int> digest);
   List<int> vrfSign(List<int> message, {List<int>? context, List<int>? extra});
+  List<int> vrfSignConst(List<int> message,
+      {List<int>? context, List<int>? extra});
 
   factory BaseSubstrateSigner.fromBytes(
       List<int> keyBytes, EllipticCurveTypes algorithm) {

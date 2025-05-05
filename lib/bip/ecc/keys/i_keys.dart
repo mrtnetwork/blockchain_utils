@@ -30,7 +30,7 @@ abstract class IPublicKey {
       case EllipticCurveTypes.ed25519Blake2b:
         return Ed25519Blake2bPublicKey.fromBytes(keybytes);
       default:
-        return Secp256k1PublicKeyEcdsa.fromBytes(keybytes);
+        return Secp256k1PublicKey.fromBytes(keybytes);
     }
   }
   factory IPublicKey.fromHex(String keyHex, EllipticCurveTypes type) {
@@ -55,7 +55,7 @@ abstract class IPublicKey {
       case EllipticCurveTypes.ed25519Blake2b:
         return Ed25519Blake2bPublicKey.isValidBytes(keyBytes);
       default:
-        return Secp256k1PublicKeyEcdsa.isValidBytes(keyBytes);
+        return Secp256k1PublicKey.isValidBytes(keyBytes);
     }
   }
 
@@ -106,7 +106,7 @@ abstract class IPrivateKey {
 
       default:
     }
-    return Secp256k1PrivateKeyEcdsa.fromBytes(keyBytes);
+    return Secp256k1PrivateKey.fromBytes(keyBytes);
   }
 
   factory IPrivateKey.fromHex(String keyHex, EllipticCurveTypes type) {
@@ -140,7 +140,7 @@ abstract class IPrivateKey {
       case EllipticCurveTypes.sr25519:
         return Sr25519PrivateKey.isValidBytes(keyBytes);
       default:
-        return Secp256k1PrivateKeyEcdsa.isValidBytes(keyBytes);
+        return Secp256k1PrivateKey.isValidBytes(keyBytes);
     }
   }
 

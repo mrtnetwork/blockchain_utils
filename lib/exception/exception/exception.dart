@@ -12,10 +12,10 @@ abstract class BlockchainUtilsException implements Exception {
   String toString() {
     final infos = Map<String, dynamic>.fromEntries(
         details?.entries.where((element) => element.value != null) ?? []);
-    if (infos.isEmpty) return "$runtimeType($message)";
+    if (infos.isEmpty) return message;
     final String msg =
         "$message ${infos.entries.map((e) => "${e.key}: ${e.value}").join(", ")}";
-    return "$runtimeType($msg)";
+    return msg;
   }
 }
 

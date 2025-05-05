@@ -1,14 +1,21 @@
+import 'package:blockchain_utils/crypto/crypto/exception/exception.dart';
 import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/ecdsa/signature.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/point/base.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/point/ec_projective_point.dart';
-import 'package:blockchain_utils/exception/exceptions.dart';
 
 /// Represents an ECDSA (Elliptic Curve Digital Signature Algorithm) public key.
 class ECDSAPublicKey {
   final ProjectiveECCPoint generator;
   final ProjectiveECCPoint point;
   ECDSAPublicKey._(this.generator, this.point);
+
+  factory ECDSAPublicKey.fromBytes(
+      List<int> pubkeyBytes, ProjectiveECCPoint generator) {
+    final point =
+        ProjectiveECCPoint.fromBytes(curve: generator.curve, data: pubkeyBytes);
+    return ECDSAPublicKey._(generator, point);
+  }
 
   /// Creates an ECDSA public key with a generator and a point.
   ///
@@ -26,20 +33,19 @@ class ECDSAPublicKey {
 
     if (!(BigInt.zero <= point.x && point.x < p) ||
         !(BigInt.zero <= point.y && point.y < p)) {
-      throw const ArgumentException(
-          "The public point has x or y out of range.");
+      throw const CryptoException("The public point has x or y out of range.");
     }
 
     if (verify && !curve.containsPoint(point.x, point.y)) {
-      throw const ArgumentException("AffinePointt does not lay on the curve");
+      throw const CryptoException("AffinePointt does not lay on the curve");
     }
 
     if (n == null) {
-      throw const ArgumentException("Generator point must have order.");
+      throw const CryptoException("Generator point must have order.");
     }
 
     if (verify && curve.cofactor() != BigInt.one && !(point * n).isInfinity) {
-      throw const ArgumentException("Generator point order is bad.");
+      throw const CryptoException("Generator point order is bad.");
     }
     return ECDSAPublicKey._(generator, point);
   }

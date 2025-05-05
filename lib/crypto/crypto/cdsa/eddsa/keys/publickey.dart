@@ -1,9 +1,10 @@
 import 'dart:typed_data';
+import 'package:blockchain_utils/crypto/crypto/cdsa/utils/ed25519.dart';
+import 'package:blockchain_utils/crypto/crypto/exception/exception.dart';
 import 'package:blockchain_utils/helper/helper.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/curve/curves.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/point/edwards.dart';
 import 'package:blockchain_utils/crypto/crypto/hash/hash.dart';
-import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/utils/utils.dart';
 
 /// Represents an EdDSA public key in the Edwards curve format.
@@ -41,7 +42,7 @@ class EDDSAPublicKey {
   ///   - publicPoint: An optional Edwards curve point (if already available).
   ///
   /// Throws:
-  ///   - ArgumentException: If the size of the encoded public key does not match the
+  ///   - CryptoException: If the size of the encoded public key does not match the
   ///     expected size based on the generator's curve.
   ///
   /// Details:
@@ -55,8 +56,7 @@ class EDDSAPublicKey {
   ///       and encoded public key bytes, making them ready for cryptographic operations.
   ///       The public point can be optionally provided if it is already available.
   factory EDDSAPublicKey(EDPoint generator, List<int> publicKey) {
-    return EDDSAPublicKey.fromPoint(
-        generator, EDPoint.fromBytes(curve: generator.curve, data: publicKey));
+    return EDDSAPublicKey.fromPoint(generator, Ed25519Utils.asPoint(publicKey));
   }
 
   /// Creates an EdDSA public key from a generator and an existing public point.
@@ -71,7 +71,7 @@ class EDDSAPublicKey {
   ///   - publicPoint: An existing Edwards curve public point.
   ///
   /// Throws:
-  ///   - ArgumentException: If the size of the encoded public key extracted from the public
+  ///   - CryptoException: If the size of the encoded public key extracted from the public
   ///     point does not match the expected size based on the generator's curve.
   ///
   /// Details:
@@ -89,7 +89,7 @@ class EDDSAPublicKey {
     final int baselen = (generator.curve.p.bitLength + 1 + 7) ~/ 8;
     final pubkeyBytes = publicPoint.toBytes();
     if (pubkeyBytes.length != baselen) {
-      throw ArgumentException(
+      throw CryptoException(
           'Incorrect size of the public key, expected: $baselen bytes');
     }
     return EDDSAPublicKey._(generator, pubkeyBytes, baselen, publicPoint);
@@ -132,7 +132,7 @@ class EDDSAPublicKey {
   ///   - bool: True if the signature is valid; otherwise, false.
   ///
   /// Throws:
-  ///   - ArgumentException: If the signature length is invalid or if the signature is
+  ///   - CryptoException: If the signature length is invalid or if the signature is
   ///     found to be invalid during the verification process.
   ///
   /// Details:
@@ -150,7 +150,7 @@ class EDDSAPublicKey {
     HashFunc hashMethod,
   ) {
     if (signature.length != 2 * baselen) {
-      throw ArgumentException(
+      throw CryptoException(
           'Invalid signature length, expected: ${2 * baselen} bytes');
     }
 
@@ -160,7 +160,7 @@ class EDDSAPublicKey {
         byteOrder: Endian.little);
 
     if (S >= generator.order!) {
-      throw const ArgumentException('Invalid signature');
+      throw const CryptoException('Invalid signature');
     }
 
     List<int> dom = List.empty();

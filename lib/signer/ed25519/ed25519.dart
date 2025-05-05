@@ -1,7 +1,7 @@
+import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
 import 'package:blockchain_utils/bip/ecc/keys/ed25519_keys.dart';
 import 'package:blockchain_utils/crypto/crypto/crypto.dart';
 import 'package:blockchain_utils/signer/const/constants.dart';
-import 'package:blockchain_utils/signer/exception/signing_exception.dart';
 
 /// Class for signing Ed25519.
 class Ed25519Signer {
@@ -17,27 +17,10 @@ class Ed25519Signer {
   factory Ed25519Signer.fromKeyBytes(List<int> keyBytes) {
     // Create an EDDSA private key from the key bytes using the ED25519 curve.
     final signingKey = EDDSAPrivateKey(
-        CryptoSignerConst.generatorED25519, keyBytes, () => SHA512());
+        generator: CryptoSignerConst.generatorED25519,
+        privateKey: keyBytes,
+        type: EllipticCurveTypes.ed25519);
     return Ed25519Signer._(signingKey);
-  }
-
-  /// Signs the provided digest using the ED25519 algorithm.
-  ///
-  /// This method takes a digest as input and uses the private signing key to generate
-  /// a signature based on the ED25519 algorithm. It then verifies the signature using
-  /// the corresponding verification key and throws an exception if the verification fails.
-  ///
-  /// [digest] The digest to be signed.
-  /// returns A list of bytes representing the generated signature.
-  List<int> _signEdward(List<int> digest) {
-    final sig = _signingKey.sign(digest, () => SHA512());
-    final verifyKey = toVerifyKey();
-    final verify = verifyKey._verifyEddsa(digest, sig);
-    if (!verify) {
-      throw const CryptoSignException(
-          'The created signature does not pass verification.');
-    }
-    return sig;
   }
 
   /// Signs the provided digest using the appropriate algorithm based on the available signing key.
@@ -48,7 +31,11 @@ class Ed25519Signer {
   /// [digest] The digest to be signed.
   /// returns A list of bytes representing the generated signature using the appropriate algorithm.
   List<int> sign(List<int> digest) {
-    return _signEdward(digest);
+    return _signingKey.sign(digest, () => SHA512());
+  }
+
+  List<int> signConst(List<int> digest) {
+    return _signingKey.signConst(digest, () => SHA512());
   }
 
   /// Returns an Ed25519Verifier instance based on the available signing key type.

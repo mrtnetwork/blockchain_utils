@@ -292,7 +292,7 @@ class Bip38EcKeysGenerator {
     final magic = intPassphraseBytes.sublist(0, 8);
     final ownerEntropy = intPassphraseBytes.sublist(8, 16);
     final passpoint =
-        Secp256k1PublicKeyEcdsa.fromBytes(intPassphraseBytes.sublist(16));
+        Secp256k1PublicKey.fromBytes(intPassphraseBytes.sublist(16));
 
     /// Check if the magic number is valid.
     if (!BytesUtils.bytesEqual(magic, Bip38EcConst.intPassMagicNoLotSeq) &&
@@ -442,7 +442,7 @@ class Bip38EcDecrypter {
     final privateKeyBytes = _computePrivateKey(passfactor, factorb);
 
     /// Create a public key from the private key and calculate address hash.
-    final toPub = Secp256k1PrivateKeyEcdsa.fromBytes(privateKeyBytes);
+    final toPub = Secp256k1PrivateKey.fromBytes(privateKeyBytes);
     final addressHashGot = Bip38Addr.addressHash(
         toPub.publicKey.point.toBytes(), flagOptions.item1);
 

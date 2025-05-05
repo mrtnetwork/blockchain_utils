@@ -18,7 +18,6 @@ void main() {
       script.additionalData("".codeUnits, signingContext);
       script.additionalData("sign-bytes".codeUnits, message);
       final vrfout = secret.vrfSign(script);
-
       final VRFProof vrproof = vrfout.item2;
       final verifyScript = MerlinTranscript("SigningContext");
       verifyScript.additionalData("".codeUnits, signingContext);
@@ -30,6 +29,7 @@ void main() {
           true);
     }
   });
+  // return;
 
   test("schnorrkel vrf sign", () {
     /// test vrf sign
@@ -41,12 +41,12 @@ void main() {
       script.additionalData("".codeUnits, "yo!".codeUnits);
       script.additionalData("sign-bytes".codeUnits, "meow".codeUnits);
       final vrfout = keyPair.secretKey().vrfSign(script).item1;
-
+      // return;
       expect(vrfout.input.toHex().toUpperCase(), i["input"]);
       expect(vrfout.output.toHex().toUpperCase(), i["output"]);
     }
   });
-
+  // return;
   test("schnorrkel vrf verify", () {
     /// test vrf verify
     /// https://github.com/noot/schnorrkel/blob/master/src/vrf.rs#L922

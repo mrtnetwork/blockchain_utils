@@ -6,8 +6,9 @@ import 'package:blockchain_utils/exception/exceptions.dart';
 
 /// A class that represents a Cardano Shelley wallet, including both public and private keys.
 class CardanoShelley {
-  late final Bip44Base bip44;
-  late final Bip44Base bip44Sk;
+  final Bip44Base bip44;
+  final Bip44Base bip44Sk;
+  CardanoShelley._(this.bip44, this.bip44Sk);
 
   /// Factory constructor to create a Cardano Shelley wallet from a Cip1852 Bip44 object.
   ///
@@ -30,17 +31,15 @@ class CardanoShelley {
   /// - `bipSk`: The Bip44 Bip object for the wallet's staking keys.
   ///
   /// Throws an `ArgumentException` if the provided Bip object is below the account level or if `bipSk` is not at the address index level.
-  CardanoShelley(Bip44Base bip, Bip44Base bipSk) {
+  factory CardanoShelley(Bip44Base bip, Bip44Base bipSk) {
     if (bip.level.value < Bip44Levels.account.value) {
-      throw const ArgumentException(
-          "The bipObj shall not be below account level");
+      throw const ArgumentException("The bip shall not be below account level");
     }
     if (bipSk.level != Bip44Levels.addressIndex) {
       throw const ArgumentException(
-          "The bipSkObj shall be of address index level");
+          "The bipSK shall be of address index level");
     }
-    bip44 = bip;
-    bip44Sk = bipSk;
+    return CardanoShelley._(bip, bipSk);
   }
 
   /// Retrieves and returns the public keys associated with the wallet.

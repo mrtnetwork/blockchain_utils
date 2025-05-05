@@ -109,10 +109,7 @@ class _Bip32Slip10MstKeyGenerator {
         hmacData = hmac;
       }
     }
-    return Tuple(
-      hmac.sublist(0, hmacHalfLen),
-      hmac.sublist(hmacHalfLen),
-    );
+    return Tuple(hmac.sublist(0, hmacHalfLen), hmac.sublist(hmacHalfLen));
   }
 }
 
@@ -128,10 +125,9 @@ class Bip32Slip10Ed25519MstKeyGenerator implements IBip32MstKeyGenerator {
   @override
   Tuple<List<int>, List<int>> generateFromSeed(List<int> seedBytes) {
     return _Bip32Slip10MstKeyGenerator.generateFromSeed(
-      seedBytes,
-      List<int>.from(Bip32Slip10MstKeyGeneratorConst.hmacKeyEd25519Bytes),
-      EllipticCurveTypes.ed25519,
-    );
+        seedBytes,
+        List<int>.from(Bip32Slip10MstKeyGeneratorConst.hmacKeyEd25519Bytes),
+        EllipticCurveTypes.ed25519);
   }
 }
 
@@ -147,10 +143,9 @@ class Bip32Slip10Nist256p1MstKeyGenerator implements IBip32MstKeyGenerator {
   @override
   Tuple<List<int>, List<int>> generateFromSeed(List<int> seedBytes) {
     return _Bip32Slip10MstKeyGenerator.generateFromSeed(
-      seedBytes,
-      List<int>.from(Bip32Slip10MstKeyGeneratorConst.hmacKeyNist256p1Bytes),
-      EllipticCurveTypes.nist256p1,
-    );
+        seedBytes,
+        List<int>.from(Bip32Slip10MstKeyGeneratorConst.hmacKeyNist256p1Bytes),
+        EllipticCurveTypes.nist256p1);
   }
 }
 

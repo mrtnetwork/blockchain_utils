@@ -245,6 +245,28 @@ class BytesUtils {
     return true;
   }
 
+  /// Left-pads a byte array with zeros to ensure it is exactly [length] bytes long.
+  ///
+  /// - If [bytes] is already [length] bytes or longer, it will be returned.
+  /// - If [bytes] is shorter than [length], zeros will be added to the beginning (left-side).
+  static List<int> padBytesLeft(List<int> bytes, int length) {
+    // If the input is already the desired length or longer, keep the last [length] bytes.
+    if (bytes.length >= length) {
+      return bytes;
+    }
+
+    // Otherwise, create a new list filled with zeros.
+    final result = List<int>.filled(length, 0);
+
+    // Calculate where to start placing the original bytes.
+    final start = length - bytes.length;
+
+    // Copy the original bytes into the end of the result.
+    result.setRange(start, length, bytes);
+
+    return result;
+  }
+
   static bool isLessThanBytes(List<int> thashedA, List<int> thashedB) {
     for (int i = 0; i < thashedA.length && i < thashedB.length; i++) {
       if (thashedA[i] < thashedB[i]) {
@@ -254,5 +276,39 @@ class BytesUtils {
       }
     }
     return thashedA.length < thashedB.length;
+  }
+
+  static List<int> mulAddTruncated32(List<int> a, List<int> b, List<int> c) {
+    if (a.length < 32 || b.length < 32 || c.length < 32) {
+      throw ArgumentException(
+          "All input lists must have at least 32 elements.");
+    }
+
+    assert(a.length == 32 && b.length == 32 && c.length == 32);
+
+    final r = List<int>.filled(32, 0);
+    final tmp = List<int>.filled(64, 0);
+
+    for (int i = 0; i < 32; i++) {
+      int carry = 0;
+      for (int j = 0; j < 32; j++) {
+        int rIndex = i + j;
+        int ai = a[i];
+        int bj = b[j];
+        int mul = ai * bj + tmp[rIndex] + carry;
+        tmp[rIndex] = mul & 0xFF;
+        carry = mul >> 8;
+      }
+      tmp[i + 32] += carry;
+    }
+
+    int carry = 0;
+    for (int i = 0; i < 32; i++) {
+      int sum = tmp[i] + c[i] + carry;
+      r[i] = sum & 0xFF;
+      carry = sum >> 8;
+    }
+
+    return r;
   }
 }

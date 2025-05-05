@@ -278,14 +278,14 @@ class BigintUtils {
   static BigInt fromBytes(List<int> bytes,
       {Endian byteOrder = Endian.big, bool sign = false}) {
     if (byteOrder == Endian.little) {
-      bytes = List<int>.from(bytes.reversed.toList());
+      bytes = bytes.reversed.toList();
     }
     BigInt result = BigInt.zero;
     for (int i = 0; i < bytes.length; i++) {
       /// Add each byte to the result, considering its position and byte order.
       result += BigInt.from(bytes[bytes.length - i - 1]) << (8 * i);
     }
-    if (result == BigInt.zero) return BigInt.zero;
+    if (result == BigInt.zero) return result;
     if (sign && (bytes[0] & 0x80) != 0) {
       final bitLength = bitlengthInBytes(result) * 8;
       return result.toSigned(bitLength);

@@ -101,7 +101,7 @@ class SHA512 implements SerializableHash<SHA512State> {
   @override
   SerializableHash update(List<int> data, {int? length}) {
     if (_finished) {
-      throw const MessageException(
+      throw const CryptoException(
           "SHA512: can't update because hash was finished.");
     }
     int dataPos = 0;
@@ -199,7 +199,7 @@ class SHA512 implements SerializableHash<SHA512State> {
   @override
   SHA512State saveState() {
     if (_finished) {
-      throw const MessageException("SHA256: cannot save finished state");
+      throw const CryptoException("SHA256: cannot save finished state");
     }
     return SHA512State(
       stateHi: List<int>.from(_stateHi, growable: false),

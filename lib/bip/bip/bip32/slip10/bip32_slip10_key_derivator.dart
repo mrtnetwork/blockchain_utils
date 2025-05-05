@@ -1,5 +1,5 @@
 import 'dart:typed_data';
-
+import 'package:blockchain_utils/crypto/crypto/cdsa/secp256k1/secp256k1.dart';
 import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/bip/bip/bip32/base/ibip32_key_derivator.dart';
 import 'package:blockchain_utils/bip/bip/bip32/bip32_key_data.dart';
@@ -57,14 +57,43 @@ class Bip32Slip10EcdsaDerivator implements IBip32KeyDerivator {
 
     final ilBytes = hmacHalves.item1;
     final irBytes = hmacHalves.item2;
-    final ilInt = BigintUtils.fromBytes(ilBytes);
-    final privKeyInt = BigintUtils.fromBytes(privKeyBytes);
-    final generator = EllipticCurveGetter.generatorFromType(type);
-    final scalar = (ilInt + privKeyInt) % generator.order!;
+    final scalar =
+        _addScalar(privKeyBytes: privKeyBytes, newScalar: ilBytes, type: type);
     final newPrivKeyBytes = BigintUtils.toBytes(scalar,
         order: Endian.big, length: privKey.privKey.length);
 
     return Tuple(newPrivKeyBytes, irBytes);
+  }
+
+  BigInt _addScalar(
+      {required List<int> privKeyBytes,
+      required List<int> newScalar,
+      required EllipticCurveTypes type}) {
+    switch (type) {
+      case EllipticCurveTypes.secp256k1:
+        Secp256k1Scalar privKeyScalar = Secp256k1Scalar();
+        Secp256k1.secp256k1ScalarSetB32(privKeyScalar, privKeyBytes);
+        Secp256k1Scalar newSc = Secp256k1Scalar();
+        Secp256k1.secp256k1ScalarSetB32(newSc, newScalar);
+        Secp256k1Scalar result = Secp256k1Scalar();
+        Secp256k1.secp256k1ScalarAdd(result, privKeyScalar, newSc);
+        final scBytes = List<int>.filled(32, 0);
+        Secp256k1.secp256k1ScalarGetB32(scBytes, result);
+        final nd = BigintUtils.fromBytes(scBytes);
+
+        final ilInt = BigintUtils.fromBytes(newScalar);
+        final privKeyInt = BigintUtils.fromBytes(privKeyBytes);
+        final generator = EllipticCurveGetter.generatorFromType(type);
+        final newScalarBig = (ilInt + privKeyInt) % generator.order!;
+        assert(newScalarBig == nd);
+        return nd;
+
+      default:
+        final ilInt = BigintUtils.fromBytes(newScalar);
+        final privKeyInt = BigintUtils.fromBytes(privKeyBytes);
+        final generator = EllipticCurveGetter.generatorFromType(type);
+        return (ilInt + privKeyInt) % generator.order!;
+    }
   }
 
   /// Derive a child public key from the given parent public key using the provided

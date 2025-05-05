@@ -125,6 +125,7 @@ class CryptoSignatureUtils {
 
     final len = BigintUtils.orderLen(r);
     final List<int> s = BigintUtils.toBytes(r, length: len);
+
     final int num = s[0];
     if (num <= 0x7F) {
       return [0x02, ..._encodeLength(s.length), ...s];
@@ -134,5 +135,12 @@ class CryptoSignatureUtils {
       /// looking negative.
       return [0x02, ..._encodeLength(s.length + 1), 0x00, ...s];
     }
+  }
+
+  static List<int> derStripLeadingZeroIfNeeded(List<int> bytes) {
+    if (bytes.length > 1 && bytes[0] == 0x00 && bytes[1] >= 0x80) {
+      return bytes.sublist(1);
+    }
+    return bytes;
   }
 }

@@ -14,8 +14,8 @@ import 'package:blockchain_utils/crypto/crypto/cdsa/curve/curves.dart';
 
 /// Electrum V1 is a class that represents a pair of public and private keys for the Secp256k1 elliptic curve.
 class ElectrumV1 {
-  final IPrivateKey? privateKey;
-  final IPublicKey publicKey;
+  final Secp256k1PrivateKey? privateKey;
+  final Secp256k1PublicKey publicKey;
 
   /// Private constructor to create an Electrum V1 instance with a private key and its corresponding public key.
   ElectrumV1._(this.privateKey, this.publicKey);
@@ -27,13 +27,13 @@ class ElectrumV1 {
 
   /// Create an Electrum V1 instance from a private key represented as [List<int>].
   factory ElectrumV1.fromPrivateKey(List<int> privKey) {
-    final privateKey = Secp256k1PrivateKeyEcdsa.fromBytes(privKey);
+    final privateKey = Secp256k1PrivateKey.fromBytes(privKey);
     return ElectrumV1._(privateKey, privateKey.publicKey);
   }
 
   /// Create an Electrum V1 instance from a public key represented as [List<int>].
   static ElectrumV1 fromPublicKey(List<int> pubKey) {
-    final publicKey = Secp256k1PublicKeyEcdsa.fromBytes(pubKey);
+    final publicKey = Secp256k1PublicKey.fromBytes(pubKey);
     return ElectrumV1._(null, publicKey);
   }
 
@@ -52,12 +52,12 @@ class ElectrumV1 {
   }
 
   /// Get the master public key.
-  IPublicKey get masterPublicKey {
+  Secp256k1PublicKey get masterPublicKey {
     return publicKey;
   }
 
   /// Get a private key for a specific change and address index, throwing an exception if it's a public-only key.
-  IPrivateKey getPrivateKey(int changeIndex, int addrIndex) {
+  Secp256k1PrivateKey getPrivateKey(int changeIndex, int addrIndex) {
     if (isPublicOnly) {
       throw const MessageException(
           'Public-only deterministic keys have no private half');
@@ -66,7 +66,7 @@ class ElectrumV1 {
   }
 
   /// Get a public key for a specific change and address index.
-  IPublicKey getPublicKey(int changeIndex, int addressIndex) {
+  Secp256k1PublicKey getPublicKey(int changeIndex, int addressIndex) {
     return isPublicOnly
         ? _derivePublicKey(changeIndex, addressIndex)
         : getPrivateKey(changeIndex, addressIndex).publicKey;
@@ -82,7 +82,7 @@ class ElectrumV1 {
   }
 
   /// Derive a private key for a specific change and address index.
-  IPrivateKey _derivePrivateKey(int changeIndex, int addressIndex) {
+  Secp256k1PrivateKey _derivePrivateKey(int changeIndex, int addressIndex) {
     _validateIndexes(changeIndex, addressIndex);
     final seqBytes = _getSequence(changeIndex, addressIndex);
     final privBig =
@@ -91,11 +91,11 @@ class ElectrumV1 {
     final p = (privBig + newPriveBig) % Curves.generatorSecp256k1.order!;
     final toBytes =
         BigintUtils.toBytes(p, length: EcdsaKeysConst.privKeyByteLen);
-    return Secp256k1PrivateKeyEcdsa.fromBytes(toBytes);
+    return Secp256k1PrivateKey.fromBytes(toBytes);
   }
 
   /// Derive a public key for a specific change and address index.
-  IPublicKey _derivePublicKey(int changeIndex, int addressIndex) {
+  Secp256k1PublicKey _derivePublicKey(int changeIndex, int addressIndex) {
     _validateIndexes(changeIndex, addressIndex);
     final seqBytes = _getSequence(changeIndex, addressIndex);
 
@@ -103,8 +103,7 @@ class ElectrumV1 {
 
     final newPubPoint = Curves.generatorSecp256k1 *
         BigintUtils.fromBytes(seqBytes, byteOrder: Endian.big);
-    return Secp256k1PublicKeyEcdsa.fromBytes(
-        (pubPoint + newPubPoint).toBytes());
+    return Secp256k1PublicKey.fromBytes((pubPoint + newPubPoint).toBytes());
   }
 
   /// Generate a sequence of bytes based on change and address index.

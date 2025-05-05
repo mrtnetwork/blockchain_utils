@@ -1,7 +1,6 @@
 import 'package:blockchain_utils/bip/address/p2tr_addr.dart';
-import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
 import 'package:blockchain_utils/bip/ecc/keys/ecdsa_keys.dart';
-import 'package:blockchain_utils/bip/ecc/keys/i_keys.dart';
+import 'package:blockchain_utils/crypto/crypto/cdsa/secp256k1/secp256k1.dart';
 import 'package:blockchain_utils/crypto/crypto/cdsa/utils/utils.dart';
 import 'package:blockchain_utils/crypto/crypto/crypto.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
@@ -10,21 +9,18 @@ import 'package:blockchain_utils/signer/types/types.dart';
 import 'package:blockchain_utils/utils/utils.dart';
 
 class BitcoinKeySigner {
-  final ECDSASigningKey _signingKey;
+  final Secp256k1SigningKey _signingKey;
+  Secp256k1SigningKey get signingKey => _signingKey;
   final BitcoinSignatureVerifier verifierKey;
   const BitcoinKeySigner._(this._signingKey, this.verifierKey);
 
   /// Factory constructor for creating a [BitcoinKeySigner] from private key bytes.
   factory BitcoinKeySigner.fromKeyBytes(List<int> privateKeyBytes) {
-    if (!IPrivateKey.isValidBytes(
-        privateKeyBytes, EllipticCurveTypes.secp256k1)) {
-      throw CryptoSignException("Invalid secp256k1 private key.");
-    }
-    final privateKey = ECDSAPrivateKey.fromBytes(
-        privateKeyBytes, BitcoinSignerUtils.generator);
-    final verifyKey =
-        BitcoinSignatureVerifier._(ECDSAVerifyKey(privateKey.publicKey));
-    return BitcoinKeySigner._(ECDSASigningKey(privateKey), verifyKey);
+    final privateKey = Secp256k1SigningKey.fromBytes(keyBytes: privateKeyBytes);
+    final verifyKey = BitcoinSignatureVerifier._(
+        ECDSAVerifyKey(privateKey.privateKey.publicKey));
+    return BitcoinKeySigner._(
+        Secp256k1SigningKey.fromBytes(keyBytes: privateKeyBytes), verifyKey);
   }
 
   /// Signs a given digest using the BIP-340 (Schnorr) signature scheme.
@@ -41,70 +37,20 @@ class BitcoinKeySigner {
   ///   signature for security against side-channel attacks.
   List<int> signBip340(
       {required List<int> digest, List<int>? tapTweakHash, List<int>? aux}) {
-    if (digest.length != BitcoinSignerUtils.baselen) {
-      throw CryptoSignException(
-          "The digest must be a ${BitcoinSignerUtils.baselen}-byte array.");
+    final signature = _signingKey.signBip340(
+        digest: digest, aux: aux, tapTweakHash: tapTweakHash);
+    if (verifierKey.verifyBip340Signature(
+        digest: digest, signature: signature, tapTweakHash: tapTweakHash)) {
+      return signature;
     }
-    if (aux != null && aux.length != 32) {
-      throw CryptoSignException("The aux must be a 32-byte array.");
-    }
+    throw const CryptoSignException(
+        'The created signature does not pass verification.');
+  }
 
-    List<int> byteKey = <int>[];
-    if (tapTweakHash != null) {
-      byteKey = BitcoinSignerUtils.calculatePrivateTweek(
-          _signingKey.privateKey.toBytes(), tapTweakHash);
-    } else {
-      byteKey = _signingKey.privateKey.toBytes();
-    }
-    aux ??= QuickCrypto.sha256Hash(<int>[...digest, ...byteKey]);
-    final d0 = BigintUtils.fromBytes(byteKey);
-
-    if (!(BigInt.one <= d0 && d0 <= BitcoinSignerUtils.order - BigInt.one)) {
-      throw const CryptoSignException(
-          "The secret key must be an integer in the range 1..n-1.");
-    }
-    final P = BitcoinSignerUtils.generator * d0;
-    BigInt d = d0;
-    if (P.y.isOdd) {
-      d = BitcoinSignerUtils.order - d;
-    }
-
-    final t = BytesUtils.xor(
-        BigintUtils.toBytes(d, length: BitcoinSignerUtils.baselen),
-        P2TRUtils.taggedHash("BIP0340/aux", aux));
-
-    final kHash = P2TRUtils.taggedHash(
-      "BIP0340/nonce",
-      <int>[
-        ...t,
-        ...BigintUtils.toBytes(P.x, length: BitcoinSignerUtils.baselen),
-        ...digest
-      ],
-    );
-    final k0 = BigintUtils.fromBytes(kHash) % BitcoinSignerUtils.order;
-
-    if (k0 == BigInt.zero) {
-      throw const CryptoSignException(
-          'Failure. This happens only with negligible probability.');
-    }
-    final R = (BitcoinSignerUtils.generator * k0);
-    BigInt k = k0;
-    if (R.y.isOdd) {
-      k = BitcoinSignerUtils.order - k;
-    }
-
-    final eHash = P2TRUtils.taggedHash(
-      "BIP0340/challenge",
-      List<int>.from([...R.toXonly(), ...P.toXonly(), ...digest]),
-    );
-
-    final e = BigintUtils.fromBytes(eHash) % BitcoinSignerUtils.order;
-
-    final eKey = (k + e * d) % BitcoinSignerUtils.order;
-    final signature = [
-      ...R.toXonly(),
-      ...BigintUtils.toBytes(eKey, length: BitcoinSignerUtils.baselen)
-    ];
+  List<int> signBip340Const(
+      {required List<int> digest, List<int>? tapTweakHash, List<int>? aux}) {
+    final signature = _signingKey.signBip340Const(
+        digest: digest, aux: aux, tapTweakHash: tapTweakHash);
     if (verifierKey.verifyBip340Signature(
         digest: digest, signature: signature, tapTweakHash: tapTweakHash)) {
       return signature;
@@ -120,40 +66,8 @@ class BitcoinKeySigner {
   ///
   /// - [digest]: The transaction digest (message) to sign.
   List<int> signSchnorr(List<int> digest, {List<int>? extraEntropy}) {
-    if (digest.length != BitcoinSignerUtils.baselen) {
-      throw CryptoSignException(
-          "The digest must be a ${BitcoinSignerUtils.baselen}-byte array.");
-    }
-    BigInt d = _signingKey.privateKey.secretMultiplier;
-    final BigInt order = CryptoSignerConst.generatorSecp256k1.order!;
-
-    if (!(BigInt.one <= d && d <= order - BigInt.one)) {
-      throw const CryptoSignException(
-          "The secret key must be an integer in the range 1..n-1.");
-    }
-    extraEntropy ??= CryptoSignerConst.bchSchnorrRfc6979ExtraData;
-    BigInt k = RFC6979.generateK(
-        order: order,
-        secexp: _signingKey.privateKey.secretMultiplier,
-        hashFunc: () => SHA256(),
-        data: digest,
-        extraEntropy: extraEntropy);
-    final R = (CryptoSignerConst.generatorSecp256k1 * k);
-    if (ECDSAUtils.jacobi(R.y, CryptoSignerConst.curveSecp256k1.p).isNegative) {
-      k = order - k;
-    }
-
-    // Step 4: Compute e = SHA256(R || pubkey || digest)
-    final eHash = QuickCrypto.sha256Hash([
-      ...R.toXonly(),
-      ...verifierKey._verifyKey.publicKey.toBytes(),
-      ...digest
-    ]);
-    final BigInt e = BigintUtils.fromBytes(eHash) % order;
-
-    // Step 5: Compute Schnorr Signature: s = k + e * d (mod n)
-    final BigInt s = (k + e * d) % order;
-    final signature = BitcoinSchnorrSignature(r: R.x, s: s).toBytes();
+    final signature =
+        _signingKey.signSchnorr(digest, extraEntropy: extraEntropy);
 
     final verify = verifierKey.verifySchnorrSignature(
         digest: digest, signature: signature);
@@ -161,7 +75,21 @@ class BitcoinKeySigner {
       throw const CryptoSignException(
           'The created signature does not pass verification.');
     }
-    // Step 6: Return Signature (64 bytes: R.x || s)
+    return signature;
+  }
+
+  List<int> signSchnorrConst(List<int> digest,
+      {List<int>? extraEntropy, Secp256k1ECmultGenContext? context}) {
+    final signature = _signingKey.signSchnorrConst(
+        digest: digest,
+        extraEntropy:
+            extraEntropy ?? CryptoSignerConst.bchSchnorrRfc6979ExtraData);
+    final verify = verifierKey.verifySchnorrSignature(
+        digest: digest, signature: signature);
+    if (!verify) {
+      throw const CryptoSignException(
+          'The created signature does not pass verification.');
+    }
     return signature;
   }
 
@@ -173,91 +101,76 @@ class BitcoinKeySigner {
   /// - [message]: The raw message to be signed.
   /// - [messagePrefix]: The prefix used for Bitcoin's message signing.
   /// - [extraEntropy]: Optional extra entropy to modify the signature.
-  List<int> signMessage({
-    required List<int> message,
-    bool hashMessage = true,
-    String messagePrefix = BitcoinSignerUtils.signMessagePrefix,
-    List<int> extraEntropy = const [],
-  }) {
+  List<int> signMessage(
+      {required List<int> message,
+      bool hashMessage = true,
+      String messagePrefix = BitcoinSignerUtils.signMessagePrefix,
+      List<int> extraEntropy = const []}) {
     List<int> messgaeHash = message;
     if (hashMessage) {
       messgaeHash = QuickCrypto.sha256Hash(
           BitcoinSignerUtils.magicMessage(message, messagePrefix));
     }
-    if (messgaeHash.length != BitcoinSignerUtils.baselen) {
-      throw CryptoSignException(
-          "The message must be a ${BitcoinSignerUtils.baselen}-byte array.");
-    }
+    final signature =
+        _signingKey.sign(digest: messgaeHash, extraEntropy: extraEntropy);
+    return [
+      signature.item2 + 27,
+      ...signature.item1.toBytes(BitcoinSignerUtils.baselen)
+    ];
+  }
 
-    final ECDSASignature ecdsaSign = _signingKey.signDigestDeterminstic(
-        digest: messgaeHash,
-        hashFunc: () => SHA256(),
-        extraEntropy: extraEntropy);
-    BigInt newS;
-    if (ecdsaSign.s.compareTo(CryptoSignerConst.secp256k1OrderHalf) > 0) {
-      newS = BitcoinSignerUtils.order - ecdsaSign.s;
-    } else {
-      newS = ecdsaSign.s;
+  List<int> signMessageConst(
+      {required List<int> message,
+      bool hashMessage = true,
+      String messagePrefix = BitcoinSignerUtils.signMessagePrefix,
+      List<int> extraEntropy = const [],
+      Secp256k1ECmultGenContext? context}) {
+    List<int> messgaeHash = message;
+    if (hashMessage) {
+      messgaeHash = QuickCrypto.sha256Hash(
+          BitcoinSignerUtils.magicMessage(message, messagePrefix));
     }
-    final newSignature = ECDSASignature(ecdsaSign.r, newS);
-    final recId = newSignature.recoverId(
-        hash: messgaeHash, publicKey: verifierKey._verifyKey.publicKey);
-    if (recId == null) {
-      throw const CryptoSignException(
-          'The created signature does not pass verification.');
-    }
-    return [27 + recId, ...newSignature.toBytes(BitcoinSignerUtils.baselen)];
+    final signature =
+        _signingKey.signConst(digest: messgaeHash, extraEntropy: extraEntropy);
+    return [
+      signature.item2 + 27,
+      ...signature.item1.toBytes(BitcoinSignerUtils.baselen)
+    ];
   }
 
   /// Signs the given transaction digest using ECDSA (DER-encoded).
   ///
   /// - [digest]: The transaction digest (message) to sign.
-  List<int> signECDSADer(List<int> digest,
-      {List<int> extraEntropy = const []}) {
-    ECDSASignature ecdsaSign = _signingKey.signDigestDeterminstic(
-        digest: digest, hashFunc: () => SHA256(), extraEntropy: extraEntropy);
+  List<int> signECDSADer(List<int> digest, {List<int>? extraEntropy}) {
     List<int> signature =
-        CryptoSignatureUtils.toDer([ecdsaSign.r, ecdsaSign.s]);
+        _signingKey.signDer(digest: digest, extraEntropy: extraEntropy);
     BigInt attempt = BigInt.one;
     int lengthR = signature[3];
     while (lengthR == 33) {
-      ecdsaSign = _signingKey.signDigestDeterminstic(
-          digest: digest,
-          hashFunc: () => SHA256(),
-          extraEntropy: [
-            ...extraEntropy,
-            ...BigintUtils.toBytes(attempt, length: 32)
-          ]);
-      signature = CryptoSignatureUtils.toDer([ecdsaSign.r, ecdsaSign.s]);
+      signature = _signingKey.signDer(digest: digest, extraEntropy: [
+        ...extraEntropy ?? [],
+        ...BigintUtils.toBytes(attempt, length: 32)
+      ]);
       attempt += BigInt.one;
       lengthR = signature[3];
     }
-    final int derPrefix = signature[0];
-    int lengthTotal = signature[1];
-    final int derTypeInt = signature[2];
-    final List<int> R = signature.sublist(4, 4 + lengthR);
-    int lengthS = signature[5 + lengthR];
-    final List<int> S = signature.sublist(5 + lengthR + 1);
-    BigInt sAsBigint = BigintUtils.fromBytes(S);
-    List<int> newS;
-    if (lengthS == 33) {
-      sAsBigint = BitcoinSignerUtils.order - sAsBigint;
-      newS = BigintUtils.toBytes(sAsBigint, length: BitcoinSignerUtils.baselen);
-      lengthS -= 1;
-      lengthTotal -= 1;
-    } else {
-      newS = S;
+    return signature;
+  }
+
+  List<int> signECDSADerConst(List<int> digest, {List<int>? extraEntropy}) {
+    List<int> signature =
+        _signingKey.signConstDer(digest: digest, extraEntropy: extraEntropy);
+    BigInt attempt = BigInt.one;
+    int lengthR = signature[3];
+    while (lengthR == 33) {
+      signature = _signingKey.signConstDer(digest: digest, extraEntropy: [
+        ...extraEntropy ?? [],
+        ...BigintUtils.toBytes(attempt, length: 32)
+      ]);
+      attempt += BigInt.one;
+      lengthR = signature[3];
     }
-    return [
-      derPrefix,
-      lengthTotal,
-      derTypeInt,
-      lengthR,
-      ...R,
-      derTypeInt,
-      lengthS,
-      ...newS
-    ];
+    return signature;
   }
 }
 

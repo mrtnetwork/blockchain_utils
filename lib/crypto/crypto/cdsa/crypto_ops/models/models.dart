@@ -53,17 +53,6 @@ class GroupElementP2 {
       "z": z.toJson(),
     };
   }
-
-  @override
-  String toString() {
-    String m = "";
-    for (final i in toJson().entries) {
-      final ln = List<int>.from(i.value["h"]);
-      final sm = ln.fold<int>(0, (c, p) => c + p);
-      m += "${i.key}:${i.value["h"]} sum: $sm \n";
-    }
-    return m;
-  }
 }
 
 class GroupElementP1P1 {
@@ -82,15 +71,9 @@ class GroupElementP1P1 {
     return {"x": x.toJson(), "y": y.toJson(), "z": z.toJson(), "t": t.toJson()};
   }
 
-  @override
-  String toString() {
-    String m = "";
-    for (final i in toJson().entries) {
-      final ln = List<int>.from(i.value["h"]);
-      final sm = ln.fold<int>(0, (c, p) => c + p);
-      m += "${i.key}:${i.value["h"]} sum: $sm \n";
-    }
-    return m;
+  GroupElementP1P1 clone() {
+    return GroupElementP1P1.uncheck(
+        x: x.clone(), y: y.clone(), z: z.clone(), t: t.clone());
   }
 }
 
@@ -126,16 +109,6 @@ class GroupElementP3 {
         z: FieldElement.fromJson(json["z"]),
         t: FieldElement.fromJson(json["t"]));
   }
-  @override
-  String toString() {
-    String m = "";
-    for (final i in toJson().entries) {
-      final ln = List<int>.from(i.value["h"]);
-      final sm = ln.fold<int>(0, (c, p) => c + p);
-      m += "${i.key}:${i.value["h"]} sum: $sm \n";
-    }
-    return m;
-  }
 }
 
 class GroupElementCached {
@@ -167,17 +140,6 @@ class GroupElementCached {
       "t2d": t2d.toJson(),
     };
   }
-
-  @override
-  String toString() {
-    String m = "";
-    for (final i in toJson().entries) {
-      final ln = List<int>.from(i.value["h"]);
-      final sm = ln.fold<int>(0, (c, p) => c + p);
-      m += "${i.key}:${i.value["h"]} sum: $sm \n";
-    }
-    return m;
-  }
 }
 
 class GroupElementPrecomp {
@@ -194,15 +156,6 @@ class GroupElementPrecomp {
       "yminusx": yminusx.toJson(),
       "xy2d": xy2d.toJson()
     };
-  }
-
-  @override
-  String toString() {
-    String m = "";
-    for (final i in toJson().entries) {
-      m += "${i.key}:${i.value}\n";
-    }
-    return m;
   }
 }
 

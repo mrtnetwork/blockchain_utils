@@ -1,4 +1,5 @@
 import 'package:blockchain_utils/base58/base58.dart';
+import 'package:blockchain_utils/helper/helper.dart';
 import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/bip/address/addr_dec_utils.dart';
 import 'package:blockchain_utils/bip/address/addr_key_validator.dart';
@@ -31,7 +32,7 @@ class XRPXAddressDecodeResult {
   final bool isTestnet;
   XRPXAddressDecodeResult(
       {required List<int> bytes, required this.tag, required this.isTestnet})
-      : bytes = BytesUtils.toBytes(bytes, unmodifiable: true);
+      : bytes = bytes.asImmutableBytes;
 }
 
 class XRPAddressUtils {

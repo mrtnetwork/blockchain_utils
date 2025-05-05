@@ -8,9 +8,13 @@ void main() {
     final message =
         BytesUtils.fromHexString("0x84df2267aa318f451199223385516162");
     final sign = signer.signProsonalMessage(message);
+    final signConst = signer.signProsonalMessageConst(message);
     final verify = signer.toVerifyKey().verifyPersonalMessage(message, sign);
     expect(BytesUtils.toHexString(sign),
         "4b57a6ca5e2f5da5ae9667d69bb61285808b54ed08dacc76d77b02a8e6f6be905bf4f6fce63ff4142af25458c3bb8ecbda4990b76783a35561382096e30082321b");
+    expect(BytesUtils.toHexString(signConst),
+        "4b57a6ca5e2f5da5ae9667d69bb61285808b54ed08dacc76d77b02a8e6f6be905bf4f6fce63ff4142af25458c3bb8ecbda4990b76783a35561382096e30082321b");
+
     expect(verify, true);
     final publicKey = ETHVerifier.getPublicKey(message, sign);
     expect(

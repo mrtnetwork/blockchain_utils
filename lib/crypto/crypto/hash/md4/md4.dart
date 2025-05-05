@@ -249,11 +249,11 @@ class MD4 implements SerializableHash<SH1State> {
   @override
   Hash update(List<int> data) {
     if (_finished) {
-      throw const MessageException(
+      throw const CryptoException(
           "SHA512: can't update because hash was finished.");
     }
     _lengthInBytes += data.length;
-    _buffer.addAll(BytesUtils.toBytes(data));
+    _buffer.addAll(data.asBytes);
     _iterate();
     return this;
   }

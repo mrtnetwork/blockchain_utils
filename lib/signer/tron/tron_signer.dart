@@ -4,7 +4,7 @@ import 'package:blockchain_utils/signer/const/constants.dart';
 import 'package:blockchain_utils/signer/exception/signing_exception.dart';
 import 'package:blockchain_utils/signer/signing_key/ecdsa_signing_key.dart';
 import 'package:blockchain_utils/signer/types/eth_signature.dart';
-import 'package:blockchain_utils/utils/utils.dart';
+import 'package:blockchain_utils/utils/string/string.dart';
 
 /// Tron Signer class for cryptographic operations, including signing and verification.
 ///
@@ -15,43 +15,81 @@ import 'package:blockchain_utils/utils/utils.dart';
 class TronSigner {
   const TronSigner._(this._ecdsaSigningKey);
 
-  final ECDSASigningKey _ecdsaSigningKey;
+  final Secp256k1SigningKey _ecdsaSigningKey;
 
   /// Factory method to create a TronSigner from a byte representation of a private key.
   factory TronSigner.fromKeyBytes(List<int> keyBytes) {
-    final signingKey = ECDSAPrivateKey.fromBytes(
-        keyBytes, CryptoSignerConst.generatorSecp256k1);
-    return TronSigner._(ECDSASigningKey(signingKey));
+    return TronSigner._(Secp256k1SigningKey.fromBytes(keyBytes: keyBytes));
   }
 
-  List<int> _signEcdsa(List<int> digest, {bool hashMessage = true}) {
-    final hash = hashMessage ? QuickCrypto.sha256Hash(digest) : digest;
-    if (hash.length != CryptoSignerConst.digestLength) {
-      throw CryptoSignException(
-          "invalid digest. digest length must be ${CryptoSignerConst.digestLength} got ${digest.length}");
-    }
-    ECDSASignature ecdsaSign = _ecdsaSigningKey.signDigestDeterminstic(
-        digest: hash, hashFunc: () => SHA256());
-    if (ecdsaSign.s > CryptoSignerConst.orderHalf) {
-      ecdsaSign = ECDSASignature(
-          ecdsaSign.r, CryptoSignerConst.secp256k1Order - ecdsaSign.s);
-    }
-    final sigBytes =
-        ecdsaSign.toBytes(CryptoSignerConst.generatorSecp256k1.curve.baselen);
-    final verifyKey = toVerifyKey();
-    if (verifyKey.verify(hash, sigBytes)) {
-      final recover = ecdsaSign.recoverPublicKeys(
-          hash, CryptoSignerConst.generatorSecp256k1);
-      for (int i = 0; i < recover.length; i++) {
-        if (recover[i].point == verifyKey.edsaVerifyKey.publicKey.point) {
-          return [...ecdsaSign.toBytes(CryptoSignerConst.digestLength), i + 27];
-        }
-      }
-    }
+  // List<int> _signEcdsaConst(List<int> digest,
+  //     {Secp256k1ECmultGenContext? context,
+  //     bool hashMessage = true,
+  //     List<int>? extraEntropy}) {
+  //   final hash = hashMessage ? QuickCrypto.sha256Hash(digest) : digest;
+  //   if (hash.length != CryptoSignerConst.digestLength) {
+  //     throw CryptoSignException(
+  //         "invalid digest. digest length must be ${CryptoSignerConst.digestLength} got ${digest.length}");
+  //   }
+  //   if (context == null) {
+  //     context = Secp256k1ECmultGenContext();
+  //     Secp256k1.secp256k1ECmultGenBlind(context, null);
+  //     Secp256k1.secp256k1ECmultGenBlind(
+  //         context, QuickCrypto.generateRandom());
+  //   }
+  //   final keyBytes = _ecdsaSigningKey.privateKey.toBytes();
+  //   List<int> k = RFC6979.generateSecp256k1KBytes(
+  //       secexp: keyBytes,
+  //       hashFunc: () => SHA256(),
+  //       data: hash,
+  //       extraEntropy: extraEntropy);
+  //   final ecdsaSign = Secp256k1.signInternal(
+  //       kBytes: k, privateKey: keyBytes, messageB: hash, context: context);
+  //   final sigBytes =
+  //       ecdsaSign.toBytes(CryptoSignerConst.generatorSecp256k1.curve.baselen);
+  //   final verifyKey = toVerifyKey();
+  //   if (verifyKey.verify(hash, sigBytes)) {
+  //     final recover = ecdsaSign.recoverPublicKeys(
+  //         hash, CryptoSignerConst.generatorSecp256k1);
+  //     for (int i = 0; i < recover.length; i++) {
+  //       if (recover[i].point == verifyKey.edsaVerifyKey.publicKey.point) {
+  //         return [...ecdsaSign.toBytes(CryptoSignerConst.digestLength), i + 27];
+  //       }
+  //     }
+  //   }
 
-    throw const CryptoSignException(
-        'The created signature does not pass verification.');
-  }
+  //   throw const CryptoSignException(
+  //       'The created signature does not pass verification.');
+  // }
+
+  // List<int> _signEcdsa(List<int> digest, {bool hashMessage = true}) {
+  //   final hash = hashMessage ? QuickCrypto.sha256Hash(digest) : digest;
+  //   if (hash.length != CryptoSignerConst.digestLength) {
+  //     throw CryptoSignException(
+  //         "invalid digest. digest length must be ${CryptoSignerConst.digestLength} got ${digest.length}");
+  //   }
+  //   ECDSASignature ecdsaSign = _ecdsaSigningKey.signDigestDeterminstic(
+  //       digest: hash, hashFunc: () => SHA256());
+  //   if (ecdsaSign.s > CryptoSignerConst.orderHalf) {
+  //     ecdsaSign = ECDSASignature(
+  //         ecdsaSign.r, CryptoSignerConst.secp256k1Order - ecdsaSign.s);
+  //   }
+  //   final sigBytes =
+  //       ecdsaSign.toBytes(CryptoSignerConst.generatorSecp256k1.curve.baselen);
+  //   final verifyKey = toVerifyKey();
+  //   if (verifyKey.verify(hash, sigBytes)) {
+  //     final recover = ecdsaSign.recoverPublicKeys(
+  //         hash, CryptoSignerConst.generatorSecp256k1);
+  //     for (int i = 0; i < recover.length; i++) {
+  //       if (recover[i].point == verifyKey.edsaVerifyKey.publicKey.point) {
+  //         return [...ecdsaSign.toBytes(CryptoSignerConst.digestLength), i + 27];
+  //       }
+  //     }
+  //   }
+
+  //   throw const CryptoSignException(
+  //       'The created signature does not pass verification.');
+  // }
 
   /// Signs a message digest using the ECDSA algorithm on the secp256k1 curve.
   ///
@@ -66,8 +104,27 @@ class TronSigner {
   ///
   /// Throws:
   /// - [CryptoSignException] if the digest length is invalid.
-  List<int> sign(List<int> digest, {bool hashMessage = true}) {
-    return _signEcdsa(digest, hashMessage: hashMessage);
+  List<int> sign(List<int> digest,
+      {bool hashMessage = true, List<int>? extraEntropy}) {
+    final hash = hashMessage ? QuickCrypto.sha256Hash(digest) : digest;
+    final signature =
+        _ecdsaSigningKey.sign(digest: hash, extraEntropy: extraEntropy);
+    return [
+      ...signature.item1.toBytes(CryptoSignerConst.digestLength),
+      signature.item2 + 27
+    ];
+  }
+
+  List<int> signConst(List<int> digest,
+      {bool hashMessage = true, List<int>? extraEntropy}) {
+    final hash = hashMessage ? QuickCrypto.sha256Hash(digest) : digest;
+    final signature =
+        _ecdsaSigningKey.signConst(digest: hash, extraEntropy: extraEntropy);
+
+    return [
+      ...signature.item1.toBytes(CryptoSignerConst.digestLength),
+      signature.item2 + 27
+    ];
   }
 
   /// Signs a personal message digest with an optional payload length.
@@ -83,15 +140,31 @@ class TronSigner {
   /// Returns:
   /// - A byte list representing the signature of the personal message.
   List<int> signProsonalMessage(List<int> digest,
-      {int? payloadLength, bool useEthPrefix = false}) {
+      {int? payloadLength,
+      bool useEthPrefix = false,
+      List<int>? extraEntropy}) {
     String prefix = useEthPrefix
         ? CryptoSignerConst.ethPersonalSignPrefix
         : CryptoSignerConst.tronSignMessagePrefix;
     prefix = prefix + (payloadLength?.toString() ?? digest.length.toString());
     final prefixBytes = StringUtils.encode(prefix, type: StringEncoding.ascii);
-    return _signEcdsa(
+    return sign(QuickCrypto.keccack256Hash(<int>[...prefixBytes, ...digest]),
+        hashMessage: false, extraEntropy: extraEntropy);
+  }
+
+  List<int> signProsonalMessageConst(List<int> digest,
+      {int? payloadLength,
+      bool useEthPrefix = false,
+      List<int>? extraEntropy}) {
+    String prefix = useEthPrefix
+        ? CryptoSignerConst.ethPersonalSignPrefix
+        : CryptoSignerConst.tronSignMessagePrefix;
+    prefix = prefix + (payloadLength?.toString() ?? digest.length.toString());
+    final prefixBytes = StringUtils.encode(prefix, type: StringEncoding.ascii);
+    return signConst(
         QuickCrypto.keccack256Hash(<int>[...prefixBytes, ...digest]),
-        hashMessage: false);
+        hashMessage: false,
+        extraEntropy: extraEntropy);
   }
 
   /// Converts the TronSigner to a TronVerifier for verification purposes.
