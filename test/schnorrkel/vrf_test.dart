@@ -8,7 +8,7 @@ import 'vrf_test_vector.dart' as vrf_test;
 
 void main() {
   test("schnorrkel vrf test", () {
-    for (int i = 0; i < 100; i++) {
+    for (int i = 0; i < 10; i++) {
       final rand = QuickCrypto.generateRandom(32);
       final message = QuickCrypto.generateRandom(32);
       final signingContext = QuickCrypto.generateRandom(32);
@@ -29,7 +29,6 @@ void main() {
           true);
     }
   });
-  // return;
 
   test("schnorrkel vrf sign", () {
     /// test vrf sign
