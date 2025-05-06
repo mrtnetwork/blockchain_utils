@@ -3,7 +3,7 @@
 - Ported the Bitcoin secp256k1 cryptographic library to Dart.
 - Enhanced security: all private key implementations (except secp256r1) now use constant-time techniques for public key generation.
 - Improved signing safety: all signer classes (except secp256r1) now use constant-time signing methods.
-<sub>Note: I'm not an expert in constant-time or side-channel attack mitigation. Feedback is welcome to help improve the safety of this package.</sub>
+Note: I'm not an expert in constant-time or side-channel attack mitigation. Feedback is welcome to help improve the safety of this package.
 
 
 ## 4.4.0
