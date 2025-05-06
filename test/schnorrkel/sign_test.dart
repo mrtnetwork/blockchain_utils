@@ -3,7 +3,7 @@ import 'package:blockchain_utils/crypto/crypto/schnorrkel/merlin/transcript.dart
 import 'package:blockchain_utils/utils/utils.dart';
 import 'package:test/test.dart';
 
-import '../quick_hex.dart';
+// import '../quick_hex.dart';
 import 'sign_test_vector.dart';
 
 void main() {
@@ -32,7 +32,7 @@ void main() {
           return BytesUtils.fromHexString(i["random_nonce"]!);
         },
       );
-      expect(sign.toBytes().toHex(), i["signature"]);
+      expect(BytesUtils.toHexString(sign.toBytes()), i["signature"]);
       expect(pubkey.verify(sign, clone), true);
     }
   });
