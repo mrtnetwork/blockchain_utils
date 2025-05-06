@@ -168,7 +168,7 @@ class MoneroPrivateKey implements IPrivateKey {
     if (keyBytes.length != Ed25519KeysConst.privKeyByteLen) {
       throw const ArgumentException("invalid private key length");
     }
-    if (!Ed25519Utils.isValidScalar(keyBytes)) {
+    if (!Ed25519Utils.scCheck(keyBytes)) {
       throw const ArgumentException("Invalid monero private key.");
     }
     final gn = Curves.generatorED25519;

@@ -113,190 +113,10 @@ class CryptoOps {
   static void scReduce32Copy(List<int> scopy, List<int> s) {
     s.asMin32("scReduce32Copy");
     scopy.asMin32("scReduce32Copy");
-    BigInt s0 = _b2097151 & _load3(s, 0);
-    BigInt s1 = _b2097151 & (_load4(s, 2) >> 5);
-    BigInt s2 = _b2097151 & (_load3(s, 5) >> 2);
-    BigInt s3 = _b2097151 & (_load4(s, 7) >> 7);
-    BigInt s4 = _b2097151 & (_load4(s, 10) >> 4);
-    BigInt s5 = _b2097151 & (_load3(s, 13) >> 1);
-    BigInt s6 = _b2097151 & (_load4(s, 15) >> 6);
-    BigInt s7 = _b2097151 & (_load3(s, 18) >> 3);
-    BigInt s8 = _b2097151 & _load3(s, 21);
-    BigInt s9 = _b2097151 & (_load4(s, 23) >> 5);
-    BigInt s10 = _b2097151 & (_load3(s, 26) >> 2);
-    BigInt s11 = (_load4(s, 28) >> 7);
-    BigInt s12 = BigInt.zero;
-    BigInt carry0;
-    BigInt carry1;
-    BigInt carry2;
-    BigInt carry3;
-    BigInt carry4;
-    BigInt carry5;
-    BigInt carry6;
-    BigInt carry7;
-    BigInt carry8;
-    BigInt carry9;
-    BigInt carry10;
-    BigInt carry11;
-
-    carry0 = (s0 + _bitMaskFor20) >> 21;
-    s1 += carry0;
-    s0 -= carry0 << 21;
-    carry2 = (s2 + _bitMaskFor20) >> 21;
-    s3 += carry2;
-    s2 -= carry2 << 21;
-    carry4 = (s4 + _bitMaskFor20) >> 21;
-    s5 += carry4;
-    s4 -= carry4 << 21;
-    carry6 = (s6 + _bitMaskFor20) >> 21;
-    s7 += carry6;
-    s6 -= carry6 << 21;
-    carry8 = (s8 + _bitMaskFor20) >> 21;
-    s9 += carry8;
-    s8 -= carry8 << 21;
-    carry10 = (s10 + _bitMaskFor20) >> 21;
-    s11 += carry10;
-    s10 -= carry10 << 21;
-
-    carry1 = (s1 + _bitMaskFor20) >> 21;
-    s2 += carry1;
-    s1 -= carry1 << 21;
-    carry3 = (s3 + _bitMaskFor20) >> 21;
-    s4 += carry3;
-    s3 -= carry3 << 21;
-    carry5 = (s5 + _bitMaskFor20) >> 21;
-    s6 += carry5;
-    s5 -= carry5 << 21;
-    carry7 = (s7 + _bitMaskFor20) >> 21;
-    s8 += carry7;
-    s7 -= carry7 << 21;
-    carry9 = (s9 + _bitMaskFor20) >> 21;
-    s10 += carry9;
-    s9 -= carry9 << 21;
-    carry11 = (s11 + _bitMaskFor20) >> 21;
-    s12 += carry11;
-    s11 -= carry11 << 21;
-
-    s0 += s12 * 666643.toBigInt;
-    s1 += s12 * 470296.toBigInt;
-    s2 += s12 * 654183.toBigInt;
-    s3 -= s12 * 997805.toBigInt;
-    s4 += s12 * 136657.toBigInt;
-    s5 -= s12 * 683901.toBigInt;
-    s12 = 0.toBigInt;
-
-    carry0 = s0 >> 21;
-    s1 += carry0;
-    s0 -= carry0 << 21;
-    carry1 = s1 >> 21;
-    s2 += carry1;
-    s1 -= carry1 << 21;
-    carry2 = s2 >> 21;
-    s3 += carry2;
-    s2 -= carry2 << 21;
-    carry3 = s3 >> 21;
-    s4 += carry3;
-    s3 -= carry3 << 21;
-    carry4 = s4 >> 21;
-    s5 += carry4;
-    s4 -= carry4 << 21;
-    carry5 = s5 >> 21;
-    s6 += carry5;
-    s5 -= carry5 << 21;
-    carry6 = s6 >> 21;
-    s7 += carry6;
-    s6 -= carry6 << 21;
-    carry7 = s7 >> 21;
-    s8 += carry7;
-    s7 -= carry7 << 21;
-    carry8 = s8 >> 21;
-    s9 += carry8;
-    s8 -= carry8 << 21;
-    carry9 = s9 >> 21;
-    s10 += carry9;
-    s9 -= carry9 << 21;
-    carry10 = s10 >> 21;
-    s11 += carry10;
-    s10 -= carry10 << 21;
-    carry11 = s11 >> 21;
-    s12 += carry11;
-    s11 -= carry11 << 21;
-
-    s0 += s12 * 666643.toBigInt;
-    s1 += s12 * 470296.toBigInt;
-    s2 += s12 * 654183.toBigInt;
-    s3 -= s12 * 997805.toBigInt;
-    s4 += s12 * 136657.toBigInt;
-    s5 -= s12 * 683901.toBigInt;
-
-    carry0 = s0 >> 21;
-    s1 += carry0;
-    s0 -= carry0 << 21;
-    carry1 = s1 >> 21;
-    s2 += carry1;
-    s1 -= carry1 << 21;
-    carry2 = s2 >> 21;
-    s3 += carry2;
-    s2 -= carry2 << 21;
-    carry3 = s3 >> 21;
-    s4 += carry3;
-    s3 -= carry3 << 21;
-    carry4 = s4 >> 21;
-    s5 += carry4;
-    s4 -= carry4 << 21;
-    carry5 = s5 >> 21;
-    s6 += carry5;
-    s5 -= carry5 << 21;
-    carry6 = s6 >> 21;
-    s7 += carry6;
-    s6 -= carry6 << 21;
-    carry7 = s7 >> 21;
-    s8 += carry7;
-    s7 -= carry7 << 21;
-    carry8 = s8 >> 21;
-    s9 += carry8;
-    s8 -= carry8 << 21;
-    carry9 = s9 >> 21;
-    s10 += carry9;
-    s9 -= carry9 << 21;
-    carry10 = s10 >> 21;
-    s11 += carry10;
-    s10 -= carry10 << 21;
-    final List<BigInt> sBig = List<BigInt>.filled(32, BigInt.zero);
-    sBig[0] = s0 >> 0;
-    sBig[1] = s0 >> 8;
-    sBig[2] = (s0 >> 16) | (s1 << 5);
-    sBig[3] = s1 >> 3;
-    sBig[4] = s1 >> 11;
-    sBig[5] = (s1 >> 19) | (s2 << 2);
-    sBig[6] = s2 >> 6;
-    sBig[7] = (s2 >> 14) | (s3 << 7);
-    sBig[8] = s3 >> 1;
-    sBig[9] = s3 >> 9;
-    sBig[10] = (s3 >> 17) | (s4 << 4);
-    sBig[11] = s4 >> 4;
-    sBig[12] = s4 >> 12;
-    sBig[13] = (s4 >> 20) | (s5 << 1);
-    sBig[14] = s5 >> 7;
-    sBig[15] = (s5 >> 15) | (s6 << 6);
-    sBig[16] = s6 >> 2;
-    sBig[17] = s6 >> 10;
-    sBig[18] = (s6 >> 18) | (s7 << 3);
-    sBig[19] = s7 >> 5;
-    sBig[20] = s7 >> 13;
-    sBig[21] = s8 >> 0;
-    sBig[22] = s8 >> 8;
-    sBig[23] = (s8 >> 16) | (s9 << 5);
-    sBig[24] = s9 >> 3;
-    sBig[25] = s9 >> 11;
-    sBig[26] = (s9 >> 19) | (s10 << 2);
-    sBig[27] = s10 >> 6;
-    sBig[28] = (s10 >> 14) | (s11 << 7);
-    sBig[29] = s11 >> 1;
-    sBig[30] = s11 >> 9;
-    sBig[31] = s11 >> 17;
-    for (int i = 0; i < sBig.length; i++) {
-      scopy[i] = sBig[i].toUnsignedInt8;
+    final r = s.clone();
+    scReduce32(r);
+    for (int i = 0; i < 32; i++) {
+      scopy[i] = r[i];
     }
   }
 
@@ -5052,7 +4872,7 @@ class CryptoOps {
   }
 
   /// these method is not related to cryptoOps
-  static List<EDPoint> geDsmPrecompVartimeFast(EDPoint point) {
+  static List<EDPoint> geDsmPrecompVar(EDPoint point) {
     final List<EDPoint> oddMultiples = [];
     final twoP = point.doublePoint();
     var current = point;
@@ -5065,7 +4885,7 @@ class CryptoOps {
     return oddMultiples;
   }
 
-  static EDPoint geDoubleScalarMultPrecompVartimeFast(
+  static EDPoint geDoubleScalarMultPrecompPointVar(
       List<int> a, List<EDPoint> aI, List<int> b, List<EDPoint> bI) {
     final aslide = List<int>.filled(256, 0);
     final bslide = List<int>.filled(256, 0);
@@ -5117,7 +4937,7 @@ class CryptoOps {
     return r;
   }
 
-  static EDPoint geTripleScalarMultBaseVartimeFast(
+  static EDPoint geTripleScalarMultBasePointVar(
       {required List<int> a,
       required List<int> b,
       required List<EDPoint> bI,
@@ -5190,13 +5010,13 @@ class CryptoOps {
     return r;
   }
 
-  static EDPoint geDoubleScalarMultBaseVartimeFast(
+  static EDPoint geDoubleScalarMultBasePointVar(
       {required List<int> a, required EDPoint gA, required List<int> b}) {
     final aslide = List<int>.filled(256, 0);
     final bslide = List<int>.filled(256, 0);
     CryptoOps.slide(aslide, a);
     CryptoOps.slide(bslide, b);
-    final aI = geDsmPrecompVartimeFast(gA);
+    final aI = geDsmPrecompVar(gA);
     final Map<int, String> res = {};
     EDPoint? r;
     // Logg.error("calll ?!");
@@ -5244,7 +5064,7 @@ class CryptoOps {
     return r;
   }
 
-  static EDPoint geTripleScalarMultPrecompVartimeFast(
+  static EDPoint geTripleScalarMultPrecompPointVar(
       List<int> a,
       List<EDPoint> aI,
       List<int> b,

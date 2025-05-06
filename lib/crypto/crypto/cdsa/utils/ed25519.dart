@@ -129,8 +129,16 @@ class Ed25519Utils {
     }
   }
 
+  static EDPoint? mybeAsPoint(List<int> point) {
+    try {
+      return EDPoint.fromBytes(curve: Curves.curveEd25519, data: point);
+    } catch (e) {
+      return null;
+    }
+  }
+
   /// check scalar is valid
-  static bool isValidScalar(List<int> bytes) {
+  static bool scCheck(List<int> bytes) {
     return CryptoOps.scCheck(bytes) == 0;
   }
 
@@ -175,40 +183,40 @@ class Ed25519Utils {
     return res;
   }
 
-  static List<int> scMulFast(List<int> scalar, List<int> scalar2) {
+  static List<int> scMulVar(List<int> scalar, List<int> scalar2) {
     final a = BigintUtils.fromBytes(scalar, byteOrder: Endian.little);
     final b = BigintUtils.fromBytes(scalar2, byteOrder: Endian.little);
     final r = (b * a) % Curves.generatorED25519.order!;
     return BigintUtils.toBytes(r, length: 32, order: Endian.little);
   }
 
-  static List<int> scMulFastBigInt(List<int> scalar, BigInt scalar2) {
+  static List<int> scMulVarBigInt(List<int> scalar, BigInt scalar2) {
     final a = BigintUtils.fromBytes(scalar, byteOrder: Endian.little);
     final r = (scalar2 * a) % Curves.generatorED25519.order!;
     return BigintUtils.toBytes(r, length: 32, order: Endian.little);
   }
 
-  static List<int> scSubFast(List<int> scalar, List<int> scalar2) {
+  static List<int> scSubVar(List<int> scalar, List<int> scalar2) {
     final a = BigintUtils.fromBytes(scalar, byteOrder: Endian.little);
     final b = BigintUtils.fromBytes(scalar2, byteOrder: Endian.little);
     final r = (a - b) % Curves.generatorED25519.order!;
     return BigintUtils.toBytes(r, length: 32, order: Endian.little);
   }
 
-  static List<int> scSubFastBig(List<int> scalar, BigInt scalar2) {
+  static List<int> scSubVarBigInt(List<int> scalar, BigInt scalar2) {
     final a = BigintUtils.fromBytes(scalar, byteOrder: Endian.little);
     final r = (a - scalar2) % Curves.generatorED25519.order!;
     return BigintUtils.toBytes(r, length: 32, order: Endian.little);
   }
 
-  static List<int> scAddFast(List<int> scalar, List<int> scalar2) {
+  static List<int> scAddVar(List<int> scalar, List<int> scalar2) {
     final a = BigintUtils.fromBytes(scalar, byteOrder: Endian.little);
     final b = BigintUtils.fromBytes(scalar2, byteOrder: Endian.little);
     final r = (a + b) % Curves.generatorED25519.order!;
     return BigintUtils.toBytes(r, length: 32, order: Endian.little);
   }
 
-  static List<int> scAddFastBig(List<int> scalar, BigInt scalar2) {
+  static List<int> scAddVarBig(List<int> scalar, BigInt scalar2) {
     final a = BigintUtils.fromBytes(scalar, byteOrder: Endian.little);
     final r = (a + scalar2) % Curves.generatorED25519.order!;
     return BigintUtils.toBytes(r, length: 32, order: Endian.little);
@@ -218,7 +226,7 @@ class Ed25519Utils {
     return BigintUtils.fromBytes(scalar, byteOrder: Endian.little);
   }
 
-  static List<int> scMulAddFast(
+  static List<int> scMulAddVar(
       List<int> scalar, List<int> scalar2, List<int> scalar3) {
     final a = BigintUtils.fromBytes(scalar, byteOrder: Endian.little);
     final b = BigintUtils.fromBytes(scalar2, byteOrder: Endian.little);
@@ -227,7 +235,7 @@ class Ed25519Utils {
     return BigintUtils.toBytes(r, length: 32, order: Endian.little);
   }
 
-  static bool scCheckFast(List<int> scalar) {
+  static bool scCheckVar(List<int> scalar) {
     assert(scalar.length == 32, 'invalid scalar size');
     final order = Curves.generatorED25519.order!;
     final scalarInt = BigintUtils.fromBytes(scalar, byteOrder: Endian.little);

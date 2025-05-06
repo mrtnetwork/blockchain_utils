@@ -21,7 +21,7 @@ class Secp256k1Utils {
   }
 
   /// check scalar is valid and not zero
-  static bool isValidScalar(Secp256k1Scalar scalar) {
+  static bool scCheck(Secp256k1Scalar scalar) {
     return Secp256k1.secp256k1ScalarCheckOverflow(scalar) == 0 &&
         Secp256k1.secp256k1ScalarIsZero(scalar) == 0;
   }

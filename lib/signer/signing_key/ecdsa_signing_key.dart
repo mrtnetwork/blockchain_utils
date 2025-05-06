@@ -219,7 +219,7 @@ class Secp256k1SigningKey extends ECDSASigningKey {
     Secp256k1Scalar msg = Secp256k1Utils.scalarFromBytes(message);
     Secp256k1Scalar sk = Secp256k1Utils.scalarFromBytes(privateKey);
 
-    if (!Secp256k1Utils.isValidScalar(k) || !Secp256k1Utils.isValidScalar(sk)) {
+    if (!Secp256k1Utils.scCheck(k) || !Secp256k1Utils.scCheck(sk)) {
       throw const CryptoSignException(
           'Signing failed due to an unexpected error.');
     }
@@ -243,8 +243,7 @@ class Secp256k1SigningKey extends ECDSASigningKey {
     Secp256k1.secp256k1ScalarCondNegate(sigs, high);
     List<int> rBytes = List<int>.filled(32, 0);
     List<int> sBytes = List<int>.filled(32, 0);
-    if (!Secp256k1Utils.isValidScalar(sigr) ||
-        !Secp256k1Utils.isValidScalar(sigs)) {
+    if (!Secp256k1Utils.scCheck(sigr) || !Secp256k1Utils.scCheck(sigs)) {
       throw const CryptoSignException(
           'Signing failed due to an unexpected error.');
     }
@@ -268,7 +267,7 @@ class Secp256k1SigningKey extends ECDSASigningKey {
         data: digest,
         extraEntropy: extraEntropy);
     final kScalar = Secp256k1Utils.scalarFromBytes(k);
-    if (!Secp256k1Utils.isValidScalar(kScalar)) {
+    if (!Secp256k1Utils.scCheck(kScalar)) {
       throw const CryptoSignException(
           'Schnorr signing failed due to an unexpected error.');
     }
@@ -285,8 +284,7 @@ class Secp256k1SigningKey extends ECDSASigningKey {
 
     final sk = Secp256k1Utils.scalarFromBytes(sec);
     final eSclar = Secp256k1Utils.scalarFromBytes(eHash);
-    if (!Secp256k1Utils.isValidScalar(sk) ||
-        !Secp256k1Utils.isValidScalar(eSclar)) {
+    if (!Secp256k1Utils.scCheck(sk) || !Secp256k1Utils.scCheck(eSclar)) {
       throw const CryptoSignException(
           'Schnorr signing failed due to an unexpected error.');
     }
@@ -298,7 +296,7 @@ class Secp256k1SigningKey extends ECDSASigningKey {
       Secp256k1.secp256k1ScalarNegate(kScalar, kScalar);
     }
     Secp256k1.secp256k1ScalarAdd(sigs, kScalar, n);
-    if (!Secp256k1Utils.isValidScalar(sigs)) {
+    if (!Secp256k1Utils.scCheck(sigs)) {
       throw const CryptoSignException(
           'Schnorr signing failed due to an unexpected error.');
     }
@@ -338,7 +336,7 @@ class Secp256k1SigningKey extends ECDSASigningKey {
         P2TRUtils.taggedHash("BIP0340/nonce", [...t, ...xBytes, ...digest]);
     final k0 = Secp256k1Utils.scalarFromBytes(kHash);
 
-    if (!Secp256k1Utils.isValidScalar(k0)) {
+    if (!Secp256k1Utils.scCheck(k0)) {
       throw const CryptoSignException(
           'Schnorr signing failed due to an unexpected error.');
     }
@@ -355,7 +353,7 @@ class Secp256k1SigningKey extends ECDSASigningKey {
     final eHash = P2TRUtils.taggedHash(
         "BIP0340/challenge", [...rBytes, ...xBytes, ...digest]);
     final eSclar = Secp256k1Utils.scalarFromBytes(eHash);
-    if (!Secp256k1Utils.isValidScalar(eSclar)) {
+    if (!Secp256k1Utils.scCheck(eSclar)) {
       throw const CryptoSignException(
           'Schnorr signing failed due to an unexpected error.');
     }
@@ -363,7 +361,7 @@ class Secp256k1SigningKey extends ECDSASigningKey {
     Secp256k1Scalar sigs = Secp256k1Scalar();
     Secp256k1.secp256k1ScalarMul(n, eSclar, tKey);
     Secp256k1.secp256k1ScalarAdd(sigs, k0, n);
-    if (!Secp256k1Utils.isValidScalar(sigs)) {
+    if (!Secp256k1Utils.scCheck(sigs)) {
       throw const CryptoSignException(
           'Schnorr signing failed due to an unexpected error.');
     }
@@ -493,11 +491,11 @@ class Secp256k1SigningKey extends ECDSASigningKey {
       Secp256k1.secp256k1ScalarNegate(a, a);
     }
     Secp256k1Scalar tweakScalar = Secp256k1Utils.scalarFromBytes(tapTweakHash);
-    if (!Secp256k1Utils.isValidScalar(tweakScalar)) {
+    if (!Secp256k1Utils.scCheck(tweakScalar)) {
       throw CryptoSignException("Invalid tweak bytes.");
     }
     Secp256k1.secp256k1ScalarAdd(a, a, tweakScalar);
-    if (!Secp256k1Utils.isValidScalar(a)) {
+    if (!Secp256k1Utils.scCheck(a)) {
       throw CryptoSignException("Invalid tweak bytes.");
     }
     return a;
