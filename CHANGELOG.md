@@ -1,3 +1,8 @@
+## 5.1.0
+
+- Added support for HKDF (HMAC-based Key Derivation Function)
+- Added support for X25519 operations, including ScalarMultBase and ScalarMult
+
 ## 5.0.0
 
 - Ported the Bitcoin secp256k1 cryptographic library to Dart.

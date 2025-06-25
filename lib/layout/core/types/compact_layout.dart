@@ -10,8 +10,9 @@ class CompactLayout<T> extends Layout<T> {
   @override
   LayoutDecodeResult<T> decode(LayoutByteReader bytes, {int offset = 0}) {
     final decode = bytes.getCompactTotalLenght(offset);
-    final result = layout
-        .decode(bytes.getReader(offset + decode.item1, offset + decode.item2));
+    final result = layout.decode(bytes, offset: offset + decode.item1);
+    // final result = layout
+    //     .decode(bytes.getReader(offset + decode.item1, offset + decode.item2));
     return LayoutDecodeResult(consumed: decode.item2, value: result.value);
   }
 

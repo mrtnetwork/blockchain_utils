@@ -65,3 +65,7 @@ export 'x_modem_crc/x_modem_crc.dart';
 
 export 'crc16/crc16.dart';
 export 'exception/exception.dart';
+
+export 'x25519/x25519.dart';
+export 'hkdf/hkdf.dart';
+export 'jwt/jwt.dart';

@@ -89,15 +89,15 @@ class ServiceProviderUtils {
   /// - [bytes]: The response body as a list of bytes.
   ///
   /// Returns: The parsed response as an object of type `T`.
-  static T toResult<T>(List<int> bytes) {
+  static T toResult<T extends Object?>(List<int> bytes) {
     if (bytes.isEmpty && null is T) {
       return null as T;
     }
     if (dynamic is T) {
-      return StringUtils.toJson(StringUtils.decode(bytes));
+      return StringUtils.toJson<T>(StringUtils.decode(bytes));
     }
     if (<dynamic>[] is T) {
-      return StringUtils.toJson(StringUtils.decode(bytes));
+      return StringUtils.toJson<T>(StringUtils.decode(bytes));
     }
     if (<int>[] is T) {
       return bytes as T;

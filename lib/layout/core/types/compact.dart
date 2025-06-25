@@ -19,6 +19,7 @@ class CompactOffsetLayout extends ExternalLayout {
   @override
   int encode(int source, LayoutByteWriter writer, {int offset = 0}) {
     final encodeLength = LayoutSerializationUtils.compactIntToBytes(source);
+
     writer.setAll(offset, encodeLength);
     return encodeLength.length;
   }

@@ -315,4 +315,33 @@ class QuickCrypto {
     ctr.clean();
     return xor;
   }
+
+  static X25519Keypair generateX25519XKeyPair({List<int>? seed}) {
+    return X25519Keypair.generate(seed: seed);
+  }
+
+  static List<int> hdfkDerive(
+      {required List<int> ikm,
+      required HashFunc hash,
+      int length = 32,
+      List<int>? salt,
+      List<int>? info,
+      bool hkdfExtract = true}) {
+    final hdkf = HKDF(
+        ikm: ikm,
+        hash: hash,
+        hkdfExtract: hkdfExtract,
+        info: info,
+        length: length,
+        salt: salt);
+    return hdkf.derive();
+  }
+
+  static String generateRandomString(int length,
+      {String charset =
+          'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'}) {
+    final characters =
+        List.generate(length, (_) => charset[prng.nextInt(charset.length)]);
+    return characters.join();
+  }
 }

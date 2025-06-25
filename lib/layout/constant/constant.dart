@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 import 'package:blockchain_utils/layout/core/core.dart';
+import 'package:blockchain_utils/layout/core/types/compact_string.dart';
 import 'package:blockchain_utils/layout/exception/exception.dart';
 import 'package:blockchain_utils/utils/utils.dart';
 
@@ -443,11 +444,7 @@ class LayoutConst {
   }
 
   static Layout<String> compactString({String? property}) {
-    return CustomLayout<List<int>, String>(
-        layout: bytes(),
-        decoder: (bytes) => StringUtils.decode(bytes),
-        encoder: (src) => StringUtils.encode(src),
-        property: property);
+    return CompactString(property: property);
   }
 
   static CustomLayout xdrVec(Layout elementLayout, {String? property}) {

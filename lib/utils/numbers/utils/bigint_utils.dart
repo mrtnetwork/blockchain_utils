@@ -32,7 +32,13 @@ class BigintUtils {
   }
 
   static int bitlengthInBytes(BigInt value) {
-    return (value.abs().bitLength + 7) ~/ 8;
+    int bitlength = value.bitLength;
+    if (value.isNegative) {
+      bitlength++;
+    }
+    return (bitlength + 7) ~/ 8;
+
+    // return (value.abs().bitLength + 7) ~/ 8;
   }
 
   /// Converts a sequence of bits represented as a byte array to a BigInt integer.
@@ -287,12 +293,30 @@ class BigintUtils {
     }
     if (result == BigInt.zero) return result;
     if (sign && (bytes[0] & 0x80) != 0) {
-      final bitLength = bitlengthInBytes(result) * 8;
-      return result.toSigned(bitLength);
+      return result.toSigned(bitlengthInBytes(result) * 8);
     }
 
     return result;
   }
+
+  // static BigInt fromBytes(List<int> bytes,
+  //     {Endian byteOrder = Endian.big, bool sign = false}) {
+  //   if (byteOrder == Endian.little) {
+  //     bytes = bytes.reversed.toList();
+  //   }
+  //   BigInt result = BigInt.zero;
+  //   for (int i = 0; i < bytes.length; i++) {
+  //     /// Add each byte to the result, considering its position and byte order.
+  //     result += BigInt.from(bytes[bytes.length - i - 1]) << (8 * i);
+  //   }
+  //   if (result == BigInt.zero) return result;
+  //   if (sign && (bytes[0] & 0x80) != 0) {
+  //     final bitLength = bitlengthInBytes(result) * 8;
+  //     return result.toSigned(bitLength);
+  //   }
+
+  //   return result;
+  // }
 
   /// Parses a dynamic value [v] into a BigInt.
   ///

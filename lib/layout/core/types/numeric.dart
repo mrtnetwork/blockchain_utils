@@ -276,8 +276,7 @@ class CompactIntLayout extends Layout<int> {
 
   @override
   LayoutDecodeResult<int> decode(LayoutByteReader bytes, {int offset = 0}) {
-    // final decode = bytes.getCompactIntAtOffset(offset, sign: layout.sign);
-    final decode = bytes.getCompactLengthInfos(offset, sign: layout.sign);
+    final decode = bytes.getCompactLengthInfos(offset);
     layout.validate(decode.item2);
     return LayoutDecodeResult(consumed: decode.item1, value: decode.item2);
   }
@@ -306,7 +305,7 @@ class CompactBigIntLayout extends Layout<BigInt> {
 
   @override
   LayoutDecodeResult<BigInt> decode(LayoutByteReader bytes, {int offset = 0}) {
-    final decode = bytes.getCompactBigintInfos(offset, sign: layout.sign);
+    final decode = bytes.getCompactBigintInfos(offset);
     layout.validate(decode.item2);
     return LayoutDecodeResult(consumed: decode.item1, value: decode.item2);
   }
