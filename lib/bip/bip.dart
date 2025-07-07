@@ -40,5 +40,3 @@ export 'mnemonic/mnemonic.dart';
 export 'coin_conf/config.dart';
 
 export 'slip/slip.dart';
-
-export 'address/address_conversion.dart';
