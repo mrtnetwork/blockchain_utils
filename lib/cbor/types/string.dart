@@ -5,10 +5,8 @@ import 'package:blockchain_utils/cbor/core/tags.dart';
 import 'package:blockchain_utils/cbor/core/cbor.dart';
 
 /// A class representing a CBOR (Concise Binary Object Representation) String value.
-abstract class CborString implements CborObject {
-  @override
-  abstract final dynamic value;
-
+abstract class CborString<T> extends CborObject<T> {
+  const CborString(super.value);
   List<int> _encode();
 
   /// Encode the value into CBOR bytes
@@ -16,6 +14,8 @@ abstract class CborString implements CborObject {
   List<int> encode() {
     return _encode();
   }
+
+  String getValue();
 
   /// Encode the value into CBOR bytes an then to hex
   @override
@@ -25,20 +25,20 @@ abstract class CborString implements CborObject {
 }
 
 /// A class representing a CBOR (Concise Binary Object Representation) string value.
-class CborStringValue extends CborString {
+class CborStringValue extends CborString<String> {
+  final CborLengthEncoding lengthEncoding;
+
   /// Constructor for creating a CborStringValue instance with the provided parameters.
   /// It accepts a string value and optional list of CBOR tags.
-  CborStringValue(this.value);
-
-  /// value as string
-  @override
-  final String value;
+  CborStringValue(super.value,
+      {this.lengthEncoding = CborLengthEncoding.canonical});
 
   @override
   List<int> _encode() {
     final bytes = CborBytesTracker();
     final toBytes = StringUtils.encode(value);
-    bytes.pushInt(MajorTags.utf8String, toBytes.length);
+    bytes.pushInt(MajorTags.utf8String, toBytes.length,
+        lengthEncdoing: lengthEncoding);
     bytes.pushBytes(toBytes);
     return bytes.buffer();
   }
@@ -58,16 +58,18 @@ class CborStringValue extends CborString {
   String toString() {
     return value;
   }
+
+  @override
+  String getValue() {
+    return value;
+  }
 }
 
 /// A class representing a CBOR (Concise Binary Object Representation) string value with indefinite tag length.
-class CborIndefiniteStringValue extends CborString {
+class CborIndefiniteStringValue extends CborString<List<String>> {
   /// Constructor for creating a CborStringValue instance with the provided parameters.
   /// It accepts a `List<String>` value.
-  CborIndefiniteStringValue(List<String> value) : value = value.immutable;
-
-  @override
-  final List<String> value;
+  CborIndefiniteStringValue(List<String> value) : super(value.immutable);
 
   @override
   List<int> _encode() {
@@ -98,4 +100,9 @@ class CborIndefiniteStringValue extends CborString {
   /// override hashcode
   @override
   int get hashCode => value.hashCode;
+
+  @override
+  String getValue() {
+    return value.join();
+  }
 }

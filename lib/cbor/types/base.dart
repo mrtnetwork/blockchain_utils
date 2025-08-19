@@ -40,14 +40,10 @@ class CborBase64Types {
 }
 
 /// A class representing a CBOR (Concise Binary Object Representation) Base-URL value.
-class CborBaseUrlValue implements CborString {
+class CborBaseUrlValue extends CborString<String> {
   /// Constructor for creating a CborBaseUrlValue instance with the provided parameters.
   /// It accepts the URL value, type, and an optional list of CBOR tags.
-  const CborBaseUrlValue(this.value, this.type);
-
-  /// The base-URL value as a string.
-  @override
-  final String value;
+  const CborBaseUrlValue(super.value, this.type);
 
   /// The type of base64 encoding used in the URL value.
   final CborBase64Types type;
@@ -85,4 +81,9 @@ class CborBaseUrlValue implements CborString {
   /// ovveride hash code
   @override
   int get hashCode => value.hashCode ^ type.tag.first.hashCode;
+
+  @override
+  String getValue() {
+    return value;
+  }
 }

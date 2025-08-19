@@ -9,9 +9,16 @@ import 'package:blockchain_utils/utils/utils.dart';
 class _DecodeCborResult<T> {
   final T value;
   final int consumed;
-  const _DecodeCborResult({required this.value, required this.consumed});
+  final CborLengthEncoding lengthEncoding;
+  const _DecodeCborResult(
+      {required this.value,
+      required this.consumed,
+      required this.lengthEncoding});
   _DecodeCborResult<T> addConsumed(int consumed) {
-    return _DecodeCborResult(value: value, consumed: consumed + this.consumed);
+    return _DecodeCborResult(
+        value: value,
+        consumed: consumed + this.consumed,
+        lengthEncoding: lengthEncoding);
   }
 }
 
@@ -73,7 +80,7 @@ class CborUtils {
                   tags: tags)
               .addConsumed(consumed);
         case MajorTags.tag:
-          final data = _decodeLength(info, cborBytes, i);
+          final data = _decodeLength<int>(info, cborBytes, i);
           tags.add(data.value);
           i += data.consumed;
           consumed += data.consumed;
@@ -112,13 +119,15 @@ class CborUtils {
     final len = _decodeLength<int>(info, cborBytes, offset);
     final int end = len.consumed + len.value;
     final bytes = cborBytes.sublist(offset + len.consumed, offset + end);
-    return _DecodeCborResult(value: bytes, consumed: end);
+    return _DecodeCborResult(
+        value: bytes, consumed: end, lengthEncoding: len.lengthEncoding);
   }
 
   static _DecodeCborResult<T> _decodeLength<T>(
       int info, List<int> cborBytes, int offset) {
     Object value;
     int consumed = 1;
+    CborLengthEncoding lengthEncoding = CborLengthEncoding.canonical;
     if (info < 24) {
       value = info;
     } else {
@@ -128,6 +137,9 @@ class CborUtils {
       consumed = len + 1;
       if (len <= 4) {
         value = IntUtils.fromBytes(bytes);
+        if (value as int <= 23) {
+          lengthEncoding = CborLengthEncoding.nonCanonical;
+        }
       } else if (len <= 8) {
         final decode = BigintUtils.fromBytes(bytes);
         if (decode.isValidInt) {
@@ -142,11 +154,15 @@ class CborUtils {
         throw CborException('Invalid additional info for int: $info');
       }
     }
+    if (value is int && BigInt.zero is T) {
+      value = BigInt.from(value);
+    }
     if (value is! T) {
       throw CborException("decode length casting faild.",
           details: {"expected": "$T", "value": value.runtimeType});
     }
-    return _DecodeCborResult(value: value as T, consumed: consumed);
+    return _DecodeCborResult(
+        value: value as T, consumed: consumed, lengthEncoding: lengthEncoding);
   }
 
   static _DecodeCborResult<CborObject> _decodeUtf8String(
@@ -165,24 +181,29 @@ class CborUtils {
       if (tags.isNotEmpty) {
         return _DecodeCborResult(
             value: CborTagValue(CborIndefiniteStringValue(stringList), tags),
-            consumed: toList.consumed);
+            consumed: toList.consumed,
+            lengthEncoding: toList.lengthEncoding);
       }
       return _DecodeCborResult(
           value: CborIndefiniteStringValue(stringList),
-          consumed: toList.consumed);
+          consumed: toList.consumed,
+          lengthEncoding: toList.lengthEncoding);
     }
 
     final bytes = _parsBytes(info: info, cborBytes: cborBytes, offset: offset);
 
     return _DecodeCborResult(
-        value: _toStringObject(bytes.value, tags), consumed: bytes.consumed);
+        value: _toStringObject(bytes.value, tags, bytes.lengthEncoding),
+        consumed: bytes.consumed,
+        lengthEncoding: bytes.lengthEncoding);
   }
 
-  static CborObject _toStringObject(List<int> utf8Bytes, List<int> tags) {
+  static CborObject _toStringObject(
+      List<int> utf8Bytes, List<int> tags, CborLengthEncoding encoding) {
     final toString = StringUtils.decode(utf8Bytes);
     CborObject? toObj;
     if (tags.isEmpty) {
-      toObj = CborStringValue(toString);
+      toObj = CborStringValue(toString, lengthEncoding: encoding);
     } else if (CborBase64Types.values
         .any((element) => BytesUtils.bytesEqual(tags, element.tag))) {
       final baseType = CborBase64Types.values
@@ -203,7 +224,7 @@ class CborUtils {
       final time = parseRFC3339DateTime(toString);
       toObj = CborStringDateValue(time);
     }
-    toObj ??= CborStringValue(toString);
+    toObj ??= CborStringValue(toString, lengthEncoding: encoding);
     return tags.isEmpty ? toObj : CborTagValue(toObj, tags);
   }
 
@@ -223,10 +244,13 @@ class CborUtils {
       if (tags.isNotEmpty) {
         return _DecodeCborResult(
             value: CborTagValue(CborDynamicBytesValue(bytesList), tags),
-            consumed: toList.consumed);
+            consumed: toList.consumed,
+            lengthEncoding: toList.lengthEncoding);
       }
       return _DecodeCborResult(
-          value: CborDynamicBytesValue(bytesList), consumed: toList.consumed);
+          value: CborDynamicBytesValue(bytesList),
+          consumed: toList.consumed,
+          lengthEncoding: toList.lengthEncoding);
     }
     final bytes = _parsBytes(info: info, cborBytes: cborBytes, offset: offset);
     CborObject? val;
@@ -237,12 +261,17 @@ class CborUtils {
         big = ~big;
       }
       tags.clear();
-      val = CborBigIntValue(big);
+      if (big == BigInt.zero && bytes.value.isNotEmpty) {
+        val = CborBigIntValue(big, encoding: CborLengthEncoding.nonCanonical);
+      } else {
+        val = CborBigIntValue(big);
+      }
     }
     val ??= CborBytesValue(bytes.value);
     return _DecodeCborResult(
         value: tags.isEmpty ? val : CborTagValue(val, tags),
-        consumed: bytes.consumed);
+        consumed: bytes.consumed,
+        lengthEncoding: bytes.lengthEncoding);
   }
 
   static _DecodeCborResult<CborObject> _decodeMap(
@@ -256,15 +285,32 @@ class CborUtils {
     final Map<CborObject, CborObject> objects = {};
     for (int lI = 0; lI < length; lI++) {
       final decodeKey = _decode(cborBytes, offset: consumed + offset);
+
+      assert(BytesUtils.bytesEqual(
+          decodeKey.value.encode(),
+          cborBytes.sublist(
+              consumed + offset, consumed + offset + decodeKey.consumed)));
       consumed += decodeKey.consumed;
       final decodeValue = _decode(cborBytes, offset: consumed + offset);
+      assert(BytesUtils.bytesEqual(
+          decodeValue.value.encode(),
+          cborBytes.sublist(
+              consumed + offset, consumed + offset + decodeValue.consumed)));
+      assert(!objects.containsKey(decodeKey.value), "duplicate key found.");
       objects[decodeKey.value] = decodeValue.value;
       consumed += decodeValue.consumed;
     }
-    final toMap = CborMapValue.fixedLength(objects);
+    final toMap = CborMapValue.definite(objects);
+    if (tags.isEmpty) {
+      return _DecodeCborResult(
+          value: toMap,
+          consumed: consumed,
+          lengthEncoding: decodeLen.lengthEncoding);
+    }
     return _DecodeCborResult(
-        value: tags.isEmpty ? toMap : CborTagValue(toMap, tags),
-        consumed: consumed);
+        value: CborTagValue(toMap, tags),
+        consumed: consumed,
+        lengthEncoding: decodeLen.lengthEncoding);
   }
 
   static _DecodeCborResult<CborObject> _decodeDynamicMap(
@@ -276,16 +322,31 @@ class CborUtils {
     final Map<CborObject, CborObject> objects = {};
     while (cborBytes[offset + consumed] != 0xff) {
       final decodeKey = _decode(cborBytes, offset: offset + consumed);
+      assert(BytesUtils.bytesEqual(
+          decodeKey.value.encode(),
+          cborBytes.sublist(
+              consumed + offset, consumed + offset + decodeKey.consumed)));
       consumed += decodeKey.consumed;
       final decodeValue = _decode(cborBytes, offset: offset + consumed);
+      assert(BytesUtils.bytesEqual(
+          decodeValue.value.encode(),
+          cborBytes.sublist(
+              consumed + offset, consumed + offset + decodeValue.consumed)));
       objects[decodeKey.value] = decodeValue.value;
       consumed += decodeValue.consumed;
     }
     consumed++;
-    final toMap = CborMapValue.dynamicLength(objects);
+    final toMap = CborMapValue.inDefinite(objects);
+    if (tags.isEmpty) {
+      return _DecodeCborResult(
+          value: toMap,
+          consumed: consumed,
+          lengthEncoding: CborLengthEncoding.canonical);
+    }
     return _DecodeCborResult(
-        value: tags.isEmpty ? toMap : CborTagValue(toMap, tags),
-        consumed: consumed);
+        value: CborTagValue(toMap, tags),
+        consumed: consumed,
+        lengthEncoding: CborLengthEncoding.canonical);
   }
 
   static _DecodeCborResult<CborObject> _decodeArray(
@@ -299,6 +360,12 @@ class CborUtils {
     final List<CborObject> objects = [];
     for (int lI = 0; lI < length; lI++) {
       final decodeData = _decode(cborBytes, offset: consumed + offset);
+      assert(
+          BytesUtils.bytesEqual(
+              decodeData.value.encode(),
+              cborBytes.sublist(
+                  consumed + offset, consumed + offset + decodeData.consumed)),
+          "data: ${BytesUtils.toHexString(cborBytes.sublist(consumed + offset, consumed + offset + decodeData.consumed))}");
       objects.add(decodeData.value);
       consumed += decodeData.consumed;
       if ((consumed + offset) == cborBytes.length) break;
@@ -307,19 +374,34 @@ class CborUtils {
         BytesUtils.bytesEqual(tags, CborTags.decimalFrac)) {
       return _DecodeCborResult(
           value: _decodeCborBigfloatOrDecimal(objects, tags),
-          consumed: consumed);
+          consumed: consumed,
+          lengthEncoding: decodeLen.lengthEncoding);
     }
     if (BytesUtils.bytesEqual(tags, CborTags.set)) {
       tags.clear();
       final toObj = CborSetValue(objects.toSet());
+      if (tags.isEmpty) {
+        return _DecodeCborResult(
+            value: toObj,
+            consumed: consumed,
+            lengthEncoding: decodeLen.lengthEncoding);
+      }
       return _DecodeCborResult(
-          value: tags.isEmpty ? toObj : CborTagValue(toObj, tags),
-          consumed: consumed);
+          value: CborTagValue(toObj, tags),
+          consumed: consumed,
+          lengthEncoding: decodeLen.lengthEncoding);
     }
-    final toObj = CborListValue<CborObject>.fixedLength(objects);
+    final toObj = CborListValue<CborObject>.definite(objects);
+    if (tags.isEmpty) {
+      return _DecodeCborResult(
+          value: toObj,
+          consumed: consumed,
+          lengthEncoding: decodeLen.lengthEncoding);
+    }
     return _DecodeCborResult(
-        value: tags.isEmpty ? toObj : CborTagValue(toObj, tags),
-        consumed: consumed);
+        value: CborTagValue(toObj, tags),
+        consumed: consumed,
+        lengthEncoding: decodeLen.lengthEncoding);
   }
 
   static _DecodeCborResult<CborObject> _decodeDynamicArray(
@@ -335,10 +417,17 @@ class CborUtils {
       consomed += decodeData.consumed;
     }
     consomed++;
-    final toObj = CborListValue<CborObject>.dynamicLength(objects);
+    final toObj = CborListValue<CborObject>.inDefinite(objects);
+    if (tags.isEmpty) {
+      return _DecodeCborResult(
+          value: toObj,
+          consumed: consomed,
+          lengthEncoding: CborLengthEncoding.canonical);
+    }
     return _DecodeCborResult(
-        value: tags.isEmpty ? toObj : CborTagValue(toObj, tags),
-        consumed: consomed);
+        value: CborTagValue(toObj, tags),
+        consumed: consomed,
+        lengthEncoding: CborLengthEncoding.canonical);
   }
 
   static CborObject _decodeCborBigfloatOrDecimal(
@@ -351,12 +440,18 @@ class CborUtils {
       tags.clear();
       final toObj = CborDecimalFracValue.fromCborNumeric(
           objects[0] as CborNumeric, objects[1] as CborNumeric);
-      return tags.isEmpty ? toObj : CborTagValue(toObj, tags);
+      if (tags.isEmpty) {
+        return toObj;
+      }
+      return CborTagValue(toObj, tags);
     }
     tags.clear();
     final toObj = CborBigFloatValue.fromCborNumeric(
         objects[0] as CborNumeric, objects[1] as CborNumeric);
-    return tags.isEmpty ? toObj : CborTagValue(toObj, tags);
+    if (tags.isEmpty) {
+      return toObj;
+    }
+    return CborTagValue(toObj, tags);
   }
 
   static _DecodeCborResult<CborObject> _parseSimpleValue(
@@ -382,9 +477,15 @@ class CborUtils {
     }
     if (obj != null) {
       if (tags.isEmpty) {
-        return _DecodeCborResult(value: obj, consumed: 1);
+        return _DecodeCborResult(
+            value: obj,
+            consumed: 1,
+            lengthEncoding: CborLengthEncoding.canonical);
       }
-      return _DecodeCborResult(value: CborTagValue(obj, tags), consumed: 1);
+      return _DecodeCborResult(
+          value: CborTagValue(obj, tags),
+          consumed: 1,
+          lengthEncoding: CborLengthEncoding.canonical);
     }
     int consumed = 1;
     offset += 1;
@@ -420,7 +521,8 @@ class CborUtils {
     obj ??= CborFloatValue(val);
     return _DecodeCborResult(
         value: tags.isEmpty ? obj : CborTagValue(obj, tags),
-        consumed: consumed);
+        consumed: consumed,
+        lengthEncoding: CborLengthEncoding.canonical);
   }
 
   static _DecodeCborResult<CborObject> _parseInt(
@@ -429,32 +531,47 @@ class CborUtils {
       required int offset,
       required List<int> cborBytes,
       required List<int> tags}) {
-    final data = _decodeLength(info, cborBytes, offset);
+    final data = _decodeLength<BigInt>(info, cborBytes, offset);
     final numb = data.value;
     CborNumeric? numericValue;
-    if (numb is BigInt || mt == MajorTags.negInt) {
-      BigInt val = BigintUtils.parse(numb);
-      if (mt == MajorTags.negInt) {
-        val = ~val;
-      }
-      if (val.isValidInt) {
-        numericValue = CborIntValue(val.toInt());
-      }
-      numericValue ??= CborSafeIntValue(val);
-    } else {
-      numericValue = CborIntValue(numb);
+    BigInt val = numb;
+    if (mt == MajorTags.negInt) {
+      val = ~val;
     }
+    if (val.isValidInt) {
+      numericValue = CborIntValue(val.toInt());
+    }
+    numericValue ??= CborSafeIntValue(val);
+
     if (BytesUtils.bytesEqual(tags, CborTags.dateEpoch)) {
       final dt =
           DateTime.fromMillisecondsSinceEpoch(numericValue.toInt() * 1000);
       tags.clear();
       final toObj = CborEpochIntValue(dt);
+      if (tags.isEmpty) {
+        return _DecodeCborResult(
+          value: toObj,
+          consumed: data.consumed,
+          lengthEncoding: data.lengthEncoding,
+        );
+      }
       return _DecodeCborResult(
-          value: tags.isEmpty ? toObj : CborTagValue(toObj, tags),
-          consumed: data.consumed);
+        value: CborTagValue(toObj, tags),
+        consumed: data.consumed,
+        lengthEncoding: data.lengthEncoding,
+      );
+    }
+    if (tags.isEmpty) {
+      return _DecodeCborResult(
+        value: numericValue,
+        consumed: data.consumed,
+        lengthEncoding: data.lengthEncoding,
+      );
     }
     return _DecodeCborResult(
-        value: tags.isEmpty ? numericValue : CborTagValue(numericValue, tags),
-        consumed: data.consumed);
+      value: CborTagValue(numericValue, tags),
+      consumed: data.consumed,
+      lengthEncoding: data.lengthEncoding,
+    );
   }
 }

@@ -4,43 +4,38 @@ import 'package:blockchain_utils/cbor/core/tags.dart';
 import 'package:blockchain_utils/cbor/core/cbor.dart';
 
 /// A class representing a CBOR (Concise Binary Object Representation) Map value.
-class CborMapValue<K, V> implements CborObject {
+class CborMapValue<K extends CborObject, V extends CborObject>
+    extends CborObject<Map<K, V>> {
   /// Constructor for creating a CborMapValue instance with the provided parameters.
   /// It accepts the Map with all cbor encodable key and value.
-  CborMapValue.fixedLength(this.value) : _isFixedLength = true;
+  CborMapValue.definite(super.value) : definite = true;
 
   /// Constructor for creating a CborMapValue instance with the provided parameters.
   /// It accepts the Map with all cbor encodable key and value.
   /// this method encode values with indefinite tag.
-  CborMapValue.dynamicLength(this.value) : _isFixedLength = false;
+  CborMapValue.inDefinite(super.value) : definite = false;
 
-  /// value as Map
-  @override
-  final Map<K, V> value;
+  final bool definite;
 
-  final bool _isFixedLength;
-
-  /// check is fixedLength or inifinitie
-  bool get isFixedLength => _isFixedLength;
+  /// check if is definite
+  bool get isDefinite => definite;
 
   /// Encode the value into CBOR bytes
   @override
   List<int> encode() {
     final bytes = CborBytesTracker();
-    if (isFixedLength) {
+    if (definite) {
       bytes.pushInt(MajorTags.map, value.length);
     } else {
       bytes.pushIndefinite(MajorTags.map);
     }
     for (final v in value.entries) {
-      final keyObj = CborObject.fromDynamic(v.key);
-      final encodeKeyObj = keyObj.encode();
+      final encodeKeyObj = v.key.encode();
       bytes.pushBytes(encodeKeyObj);
-      final valueObj = CborObject.fromDynamic(v.value);
-      final encodeValueObj = valueObj.encode();
+      final encodeValueObj = v.value.encode();
       bytes.pushBytes(encodeValueObj);
     }
-    if (!isFixedLength) {
+    if (!definite) {
       bytes.breakDynamic();
     }
     return bytes.toBytes();

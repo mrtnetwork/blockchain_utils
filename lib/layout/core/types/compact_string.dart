@@ -22,14 +22,19 @@ class CompactString extends Layout<String> {
     final decode = bytes.getCompactTotalLenght(offset);
     final result = bytes.sublist(offset + decode.item1, offset + decode.item2);
     return LayoutDecodeResult(
-        consumed: decode.item2, value: StringUtils.decode(result));
+      consumed: decode.item2,
+      value: StringUtils.decode(result),
+    );
   }
 
   @override
   int encode(String source, LayoutByteWriter writer, {int offset = 0}) {
     final sourceBytes = StringUtils.encode(source);
-    final int length =
-        _lengthCodec.encode(sourceBytes.length, writer, offset: offset);
+    final int length = _lengthCodec.encode(
+      sourceBytes.length,
+      writer,
+      offset: offset,
+    );
     writer.setAll(offset + length, sourceBytes);
     return sourceBytes.length + length;
   }

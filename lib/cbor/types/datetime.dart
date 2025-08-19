@@ -8,10 +8,8 @@ import 'package:blockchain_utils/cbor/types/int.dart';
 import 'package:blockchain_utils/cbor/types/string.dart';
 
 /// A class representing a CBOR (Concise Binary Object Representation) DateTime value.
-abstract class _CborDate implements CborObject {
-  /// The value as a DateTime.
-  @override
-  abstract final DateTime value;
+abstract class _CborDate extends CborObject<DateTime> {
+  const _CborDate(super.value);
 
   List<int> _getTags() {
     if (this is CborStringDateValue) {
@@ -60,11 +58,7 @@ abstract class _CborDate implements CborObject {
 class CborStringDateValue extends _CborDate {
   /// Constructor for creating a CborStringDateValue instance with the provided parameters.
   /// It accepts DateTime value.
-  CborStringDateValue(this.value);
-
-  /// The value as a DateTime.
-  @override
-  final DateTime value;
+  CborStringDateValue(super.value);
 
   @override
   List<int> _encode() {
@@ -78,11 +72,7 @@ class CborStringDateValue extends _CborDate {
 class CborEpochFloatValue extends _CborDate {
   /// Constructor for creating a CborEpochFloatValue instance with the provided parameters.
   /// It accepts DateTime value.
-  CborEpochFloatValue(this.value);
-
-  /// The value as a DateTime.
-  @override
-  final DateTime value;
+  CborEpochFloatValue(super.value);
 
   @override
   List<int> _encode() {
@@ -96,11 +86,7 @@ class CborEpochFloatValue extends _CborDate {
 class CborEpochIntValue extends _CborDate {
   /// Constructor for creating a CborEpochIntValue instance with the provided parameters.
   /// It accepts DateTime value.
-  CborEpochIntValue(this.value);
-
-  /// The value as a DateTime.
-  @override
-  final DateTime value;
+  CborEpochIntValue(super.value);
 
   @override
   List<int> _encode() {

@@ -7,14 +7,10 @@ import 'package:blockchain_utils/utils/utils.dart';
 import 'bigint.dart';
 
 /// A class representing a CBOR (Concise Binary Object Representation) int value.
-class CborIntValue implements CborNumeric {
+class CborIntValue extends CborNumeric<int> {
   /// Constructor for creating a CborDecimalFracValue instance with the provided parameters.
   /// It accepts the int value.
-  const CborIntValue(this.value);
-
-  /// value as int
-  @override
-  final int value;
+  const CborIntValue(super.value);
 
   /// Encode the value into CBOR bytes
   @override

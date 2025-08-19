@@ -4,13 +4,9 @@ import 'package:blockchain_utils/cbor/core/tags.dart';
 import 'package:blockchain_utils/cbor/core/cbor.dart';
 
 /// A class representing a CBOR (Concise Binary Object Representation) null value.
-class CborNullValue implements CborObject {
+class CborNullValue extends CborObject<Null> {
   /// Constructor for creating a CborNullValue instance with the provided parameters.
-  const CborNullValue();
-
-  /// value always is null
-  @override
-  dynamic get value => null;
+  const CborNullValue() : super(null);
 
   /// Encode the value into CBOR bytes
   @override
@@ -45,13 +41,9 @@ class CborNullValue implements CborObject {
 }
 
 /// A class representing a CBOR (Concise Binary Object Representation) undefined value.
-class CborUndefinedValue implements CborObject {
+class CborUndefinedValue extends CborObject<Null> {
   /// Constructor for creating a CborUndefinedValue instance with the provided parameters.
-  const CborUndefinedValue();
-
-  /// value always is null
-  @override
-  dynamic get value => null;
+  const CborUndefinedValue() : super(null);
 
   /// Encode the value into CBOR bytes
   @override

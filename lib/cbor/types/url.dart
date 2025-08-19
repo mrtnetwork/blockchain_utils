@@ -4,14 +4,10 @@ import 'package:blockchain_utils/cbor/core/tags.dart';
 import 'package:blockchain_utils/cbor/types/string.dart';
 
 /// A class representing a CBOR (Concise Binary Object Representation) uri value.
-class CborUriValue implements CborString {
+class CborUriValue extends CborString<String> {
   /// Constructor for creating a CborUriValue instance with the provided parameters.
   /// It accepts string value of uri.
-  const CborUriValue(this.value);
-
-  /// value as string
-  @override
-  final String value;
+  const CborUriValue(super.value);
 
   /// Encode the value into CBOR bytes
   @override
@@ -45,4 +41,9 @@ class CborUriValue implements CborString {
   /// override hashcode
   @override
   int get hashCode => value.hashCode;
+
+  @override
+  String getValue() {
+    return value;
+  }
 }

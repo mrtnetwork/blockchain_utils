@@ -3,6 +3,7 @@ import 'package:blockchain_utils/bip/bip/conf/bip/bip_coins.dart';
 import 'package:blockchain_utils/bip/bip/conf/config/bip_coin_conf.dart';
 import 'package:blockchain_utils/bip/cardano/cip1852/cip1852.dart';
 import 'package:blockchain_utils/bip/cardano/cip1852/conf/cip1852_conf.dart';
+import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
 
 /// An enumeration of supported cryptocurrencies for CIP1852. It includes both main
 /// networks and test networks of various cryptocurrencies.
@@ -35,6 +36,13 @@ class Cip1852Coins extends BipCoins {
     } on StateError {
       return null;
     }
+  }
+
+  static List<Cip1852Coins> fromCurve(EllipticCurveTypes type) {
+    return _coinToConf.entries
+        .where((element) => element.value.type == type)
+        .map((e) => e.key)
+        .toList();
   }
 
   @override

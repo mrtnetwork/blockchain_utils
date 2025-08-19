@@ -1,4 +1,5 @@
 import 'package:blockchain_utils/cbor/cbor.dart';
+import 'package:blockchain_utils/cbor/extention/extenton.dart';
 import 'package:blockchain_utils/crypto/crypto/crypto.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
 import 'package:blockchain_utils/helper/helper.dart';
@@ -39,11 +40,11 @@ abstract class KDFParam {
           "invalid secret wallet cbor bytes");
     }
     if (BytesUtils.bytesEqual(cbor.tags, _SecretStorageConst.pbdkdf2Tag)) {
-      final toObj = KDF2.fromCbor(cbor.value);
+      final toObj = KDF2.fromCbor(cbor.value.cast());
       return toObj;
     } else if (BytesUtils.bytesEqual(
         cbor.tags, _SecretStorageConst.scryptTag)) {
-      return KDFScrypt.fromCbor(cbor.value);
+      return KDFScrypt.fromCbor(cbor.value.cast());
     } else {
       throw const Web3SecretStorageDefinationV3Exception(
           "invalid secret wallet cbor bytes");
@@ -132,7 +133,7 @@ class KDF2 extends KDFParam {
   @override
   CborTagValue cborEncode() {
     return CborTagValue(
-        CborListValue.fixedLength([
+        CborListValue<CborObject>.definite([
           CborIntValue(iterations),
           CborIntValue(dklen),
           CborStringValue("hmac-sha256"),
@@ -208,7 +209,7 @@ class KDFScrypt extends KDFParam {
   @override
   CborTagValue cborEncode() {
     return CborTagValue(
-        CborListValue.fixedLength([
+        CborListValue<CborObject>.definite([
           CborIntValue(dklen),
           CborIntValue(n),
           CborIntValue(r),
@@ -270,8 +271,8 @@ class CryptoParam {
     final aesKey = List<int>.from(derived.sublist(0, 16));
     final encryptOut = QuickCrypto.processCtr(key: aesKey, iv: iv, data: data);
     return CborTagValue(
-            CborListValue.dynamicLength([
-              CborListValue.fixedLength([
+            CborListValue<CborObject>.inDefinite([
+              CborListValue<CborObject>.definite([
                 CborStringValue("aes-128-ctr"),
                 CborBytesValue(iv),
                 CborBytesValue(encryptOut),

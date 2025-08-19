@@ -5,14 +5,10 @@ import 'package:blockchain_utils/cbor/core/cbor.dart';
 import 'package:blockchain_utils/cbor/types/string.dart';
 
 /// A class representing a CBOR (Concise Binary Object Representation) mime value.
-class CborMimeValue implements CborObject {
+class CborMimeValue extends CborObject<String> {
   /// Constructor for creating a CborMimeValue instance with the provided parameters.
   /// It accepts the string value.
-  const CborMimeValue(this.value);
-
-  /// value as string
-  @override
-  final String value;
+  const CborMimeValue(super.value);
 
   /// Encode the value into CBOR bytes
   @override

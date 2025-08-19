@@ -4,14 +4,22 @@ import 'package:blockchain_utils/cbor/utils/dynamic_bytes.dart';
 import 'package:blockchain_utils/cbor/core/tags.dart';
 import 'package:blockchain_utils/cbor/core/cbor.dart';
 
+abstract class CborBytes<T> extends CborObject<T> {
+  const CborBytes(super.value);
+  List<int> getValue();
+
+  /// Returns the string representation of the value.
+  @override
+  String toString() {
+    return BytesUtils.toHexString(getValue());
+  }
+}
+
 /// A class representing a CBOR (Concise Binary Object Representation) bytes value.
-class CborBytesValue implements CborObject {
+class CborBytesValue extends CborBytes<List<int>> {
   /// Constructor for creating a CborBytesValue instance with the provided parameters.
   /// It accepts the bytes value.
-  CborBytesValue(List<int> value) : value = value.asImmutableBytes;
-
-  @override
-  final List<int> value;
+  CborBytesValue(List<int> value) : super(value.asImmutableBytes);
 
   /// Encode the value into CBOR bytes
   @override
@@ -38,25 +46,20 @@ class CborBytesValue implements CborObject {
 
   /// ovveride hash code
   @override
-  int get hashCode => value.hashCode;
+  int get hashCode => HashCodeGenerator.generateBytesHashCode(value);
 
   @override
-  String toString() {
-    return BytesUtils.toHexString(value);
+  List<int> getValue() {
+    return value;
   }
 }
 
 /// A class representing a CBOR (Concise Binary Object Representation) bytes value with indefinite tag.
-class CborDynamicBytesValue implements CborObject {
+class CborDynamicBytesValue extends CborBytes<List<List<int>>> {
   /// Constructor for creating a CborDynamicBytesValue instance with the provided parameters.
   /// It accepts the bytes value.
   CborDynamicBytesValue(List<List<int>> value)
-      : value = value.map((e) => e.asImmutableBytes).toList().immutable;
-
-  @override
-  final List<List<int>> value;
-  // @override
-  // List<List<int>> get value => _value;
+      : super(value.map((e) => e.asImmutableBytes).toList().immutable);
 
   /// Encode the value into CBOR bytes
   @override
@@ -69,12 +72,6 @@ class CborDynamicBytesValue implements CborObject {
     }
     bytes.breakDynamic();
     return bytes.buffer();
-  }
-
-  /// Returns the string representation of the value.
-  @override
-  String toString() {
-    return value.toString();
   }
 
   /// Encode the value into CBOR bytes an then to hex
@@ -93,5 +90,10 @@ class CborDynamicBytesValue implements CborObject {
 
   /// ovveride hash code
   @override
-  int get hashCode => value.hashCode;
+  int get hashCode => HashCodeGenerator.generateHashCode(value);
+
+  @override
+  List<int> getValue() {
+    return value.expand((e) => e).toList();
+  }
 }

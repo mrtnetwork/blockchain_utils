@@ -25,19 +25,19 @@ class CustomLayout<T, D> extends Layout<D> {
 
   @override
   LayoutDecodeResult<D> decode(LayoutByteReader bytes, {int offset = 0}) {
-    final decodeBytes = this.layout.decode(bytes, offset: offset);
+    final decodeBytes = layout.decode(bytes, offset: offset);
     final decode = decoder(decodeBytes.value);
     return LayoutDecodeResult(consumed: decodeBytes.consumed, value: decode);
   }
 
   @override
   int encode(D source, LayoutByteWriter writer, {int offset = 0}) {
-    return this.layout.encode(encoder(source), writer, offset: offset);
+    return layout.encode(encoder(source), writer, offset: offset);
   }
 
   @override
   int getSpan(LayoutByteReader? bytes, {int offset = 0, D? source}) {
-    final span = this.layout.getSpan(bytes,
+    final span = layout.getSpan(bytes,
         offset: offset, source: source == null ? null : encoder(source));
     assert(span >= 0, "span cannot be negative");
     return span;

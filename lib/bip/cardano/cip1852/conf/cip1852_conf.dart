@@ -20,10 +20,7 @@ class Cip1852Conf {
     wifNetVer: null,
     addressEncoder: ([dynamic kwargs]) => AdaShelleyAddrEncoder(),
     type: EllipticCurveTypes.ed25519Kholaw,
-    addrParams: {
-      "net_tag": ADANetwork.mainnet,
-      "is_icarus": true,
-    },
+    addrParams: {"net_tag": ADANetwork.mainnet, "is_icarus": true},
   );
 
   // Configuration for Cardano test net (Icarus)

@@ -4,40 +4,39 @@ import 'package:blockchain_utils/cbor/core/tags.dart';
 import 'package:blockchain_utils/cbor/core/cbor.dart';
 
 /// A class representing a CBOR (Concise Binary Object Representation) List value.
-class CborListValue<T> implements CborObject {
+class CborListValue<T extends CborObject> extends CborIterableObject<List<T>> {
   /// Constructor for creating a CborListValue instance with the provided parameters.
   /// It accepts the List of all cbor encodable value.
   ///
-  CborListValue.fixedLength(this.value) : _isFixedLength = true;
+  CborListValue.definite(super.value)
+      : encoding = CborIterableEncodingType.definite;
 
   /// Constructor for creating a CborListValue instance with the provided parameters.
   /// It accepts the List of all cbor encodable value.
   /// this method encode values with indefinite tag.
-  CborListValue.dynamicLength(this.value) : _isFixedLength = false;
+  CborListValue.inDefinite(super.value)
+      : encoding = CborIterableEncodingType.inDefinite;
 
   @override
-  final List<T> value;
-
-  final bool _isFixedLength;
+  final CborIterableEncodingType encoding;
 
   /// check is fixedLength or inifinitie
-  bool get isFixedLength => _isFixedLength;
+  bool get isDefinite => encoding == CborIterableEncodingType.definite;
 
   /// Encode the value into CBOR bytes
   @override
   List<int> encode() {
     final bytes = CborBytesTracker();
-    if (isFixedLength) {
+    if (isDefinite) {
       bytes.pushInt(MajorTags.array, value.length);
     } else {
       bytes.pushIndefinite(MajorTags.array);
     }
     for (final v in value) {
-      final obj = CborObject.fromDynamic(v);
-      final encodeObj = obj.encode();
+      final encodeObj = v.encode();
       bytes.pushBytes(encodeObj);
     }
-    if (!isFixedLength) {
+    if (!isDefinite) {
       bytes.breakDynamic();
     }
     return bytes.toBytes();

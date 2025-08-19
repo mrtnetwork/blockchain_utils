@@ -1,3 +1,4 @@
+import 'package:blockchain_utils/helper/extensions/extensions.dart';
 import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/cbor/utils/dynamic_bytes.dart';
 import 'package:blockchain_utils/cbor/core/tags.dart';
@@ -6,16 +7,15 @@ import 'package:blockchain_utils/cbor/core/cbor.dart';
 import 'int64.dart';
 
 /// A class representing a CBOR (Concise Binary Object Representation) BigFloat value.
-class CborBigFloatValue implements CborObject {
+class CborBigFloatValue extends CborObject<List<BigInt>> {
   /// Constructor for creating a CborBigFloatValue instance with the provided parameters.
   /// It accepts the Bigint exponent and mantissa.
-  const CborBigFloatValue(this.exponent, this.mantissa);
+  CborBigFloatValue(this.exponent, this.mantissa)
+      : super([exponent, mantissa].immutable);
 
   /// Create a CborBigFloatValue from two CborNumeric values representing the exponent and mantissa.
   factory CborBigFloatValue.fromCborNumeric(
-    CborNumeric exponent,
-    CborNumeric mantissa,
-  ) {
+      CborNumeric exponent, CborNumeric mantissa) {
     return CborBigFloatValue(CborNumeric.getCborNumericValue(exponent),
         CborNumeric.getCborNumericValue(mantissa));
   }

@@ -1,4 +1,5 @@
 import 'package:blockchain_utils/bip/bip/conf/core/coins.dart';
+import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
 import 'package:blockchain_utils/bip/substrate/conf/substrate_coin_conf.dart';
 
 import 'substrate_conf.dart';
@@ -122,6 +123,13 @@ class SubstrateCoins implements CryptoCoins<SubstrateCoinConf> {
     } on StateError {
       return null;
     }
+  }
+
+  static List<SubstrateCoins> fromCurve(EllipticCurveTypes type) {
+    return _coinToConf.entries
+        .where((element) => element.value.type == type)
+        .map((e) => e.key)
+        .toList();
   }
 
   static const List<SubstrateCoins> values = [

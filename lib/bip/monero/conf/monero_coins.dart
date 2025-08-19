@@ -1,4 +1,5 @@
 import 'package:blockchain_utils/bip/bip/conf/core/coins.dart';
+import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
 import 'monero_coin_conf.dart';
 import 'monero_conf.dart';
 
@@ -23,6 +24,13 @@ class MoneroCoins implements CryptoCoins<MoneroCoinConf> {
     } on StateError {
       return null;
     }
+  }
+
+  static List<MoneroCoins> fromCurve(EllipticCurveTypes type) {
+    return _coinToConf.entries
+        .where((element) => element.value.type == type)
+        .map((e) => e.key)
+        .toList();
   }
 
   final String name;

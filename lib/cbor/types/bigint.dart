@@ -4,14 +4,17 @@ import 'package:blockchain_utils/cbor/core/tags.dart';
 import 'package:blockchain_utils/cbor/core/cbor.dart';
 
 /// A class representing a CBOR (Concise Binary Object Representation) Bigint value.
-class CborBigIntValue implements CborNumeric {
+class CborBigIntValue extends CborNumeric<BigInt> {
+  /// Specifies whether the CBOR length encoding should be canonical or non-canonical.
+  /// For bignum values, this only affects the value `0`:
+  /// - In canonical form, zero is encoded with a 0-byte length.
+  /// - In non-canonical form, zero is encoded with a 1-byte length (`0x00`).
+  final CborLengthEncoding encoding;
+
   /// Constructor for creating a CborBigIntValue instance with the provided parameters.
   /// It accepts the bigint value.
-  const CborBigIntValue(this.value);
-
-  /// The value as a bigint.
-  @override
-  final BigInt value;
+  const CborBigIntValue(super.value,
+      {this.encoding = CborLengthEncoding.canonical});
 
   /// Encode the value into CBOR bytes
   @override
@@ -24,8 +27,10 @@ class CborBigIntValue implements CborNumeric {
     } else {
       bytes.pushTags(CborTags.posBigInt);
     }
-    final toBytes =
-        BigintUtils.toBytes(v, length: BigintUtils.bitlengthInBytes(v));
+    final toBytes = BigintUtils.toBytes(v,
+        length: v == BigInt.zero && encoding == CborLengthEncoding.nonCanonical
+            ? 1
+            : BigintUtils.bitlengthInBytes(v));
     bytes.pushInt(MajorTags.byteString, toBytes.length);
     bytes.pushBytes(toBytes);
     return bytes.toBytes();

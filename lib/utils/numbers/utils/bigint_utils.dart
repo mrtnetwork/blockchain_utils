@@ -131,9 +131,8 @@ class BigintUtils {
       return a.modInverse(m);
     }
 
-    BigInt lm = BigInt.one,
-        hm = BigInt.zero; // Initialize low and high quotients.
-    BigInt low = a % m, high = m; // Initialize low and high remainders.
+    BigInt lm = BigInt.one, hm = BigInt.zero;
+    BigInt low = a % m, high = m;
 
     while (low > BigInt.one) {
       // Continue the Euclidean algorithm until 'low' becomes 1.

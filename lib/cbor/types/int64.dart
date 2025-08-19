@@ -5,14 +5,10 @@ import 'package:blockchain_utils/cbor/core/tags.dart';
 import 'package:blockchain_utils/cbor/core/cbor.dart';
 
 /// A class representing a CBOR (Concise Binary Object Representation) int (64-byte) value.
-class CborSafeIntValue implements CborNumeric {
+class CborSafeIntValue extends CborNumeric<BigInt> {
   /// Constructor for creating a CborInt64Value instance with the provided parameters.
   /// It accepts the Bigint value.
-  const CborSafeIntValue(this.value);
-
-  /// value as bigint
-  @override
-  final BigInt value;
+  const CborSafeIntValue(super.value);
 
   /// Encode the value into CBOR bytes
   @override

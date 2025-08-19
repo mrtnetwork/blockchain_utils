@@ -4,14 +4,11 @@ import 'package:blockchain_utils/cbor/core/tags.dart';
 import 'package:blockchain_utils/cbor/core/cbor.dart';
 
 /// A class representing a CBOR (Concise Binary Object Representation) Set value.
-class CborSetValue<T> implements CborObject {
+class CborSetValue<T extends CborObject>
+    extends CborIterableObject<Iterable<T>> {
   /// Constructor for creating a CborSetValue instance with the provided parameters.
   /// It accepts a set of all encodable cbor object.
-  CborSetValue(this.value);
-
-  /// value as set
-  @override
-  final Set<T> value;
+  CborSetValue(super.value);
 
   /// Encode the value into CBOR bytes
   @override
@@ -20,8 +17,7 @@ class CborSetValue<T> implements CborObject {
     bytes.pushTags(CborTags.set);
     bytes.pushInt(MajorTags.array, value.length);
     for (final v in value) {
-      final obj = CborObject.fromDynamic(v);
-      final encodeObj = obj.encode();
+      final encodeObj = v.encode();
       bytes.pushBytes(encodeObj);
     }
     return bytes.toBytes();
@@ -49,4 +45,7 @@ class CborSetValue<T> implements CborObject {
   /// override hashcode
   @override
   int get hashCode => value.hashCode;
+
+  @override
+  CborIterableEncodingType get encoding => CborIterableEncodingType.set;
 }

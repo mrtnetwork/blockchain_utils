@@ -62,6 +62,7 @@ import 'package:blockchain_utils/bip/address/encoder.dart';
 import 'package:blockchain_utils/bip/address/exception/exception.dart';
 import 'package:blockchain_utils/bip/bip/bip32/bip32_key_data.dart';
 import 'package:blockchain_utils/bip/bip/bip32/bip32_path.dart';
+import 'package:blockchain_utils/cbor/extention/extenton.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
 import 'package:blockchain_utils/cbor/core/cbor.dart';
 import 'package:blockchain_utils/cbor/types/bytes.dart';
@@ -144,17 +145,17 @@ class ADAByronAddrConst {
 class _AdaByronAddrHdPath {
   static Bip32Path decrypt(List<int> hdPathEncBytes, List<int> hdPathKeyBytes) {
     final plainTextBytes = QuickCrypto.chaCha20Poly1305Decrypt(
-      key: hdPathKeyBytes,
-      nonce: ADAByronAddrConst.chacha20Poly1305Nonce,
-      assocData: ADAByronAddrConst.chacha20Poly1305AssocData,
-      cipherText: hdPathEncBytes,
-    );
+        key: hdPathKeyBytes,
+        nonce: ADAByronAddrConst.chacha20Poly1305Nonce,
+        assocData: ADAByronAddrConst.chacha20Poly1305AssocData,
+        cipherText: hdPathEncBytes);
     final decode = CborObject.fromCbor(plainTextBytes);
     if (decode is! CborListValue) {
       throw const AddressConverterException("invalid bip32 path");
     }
+
     final paths = decode.value
-        .map((e) => Bip32KeyIndex(e is String ? int.parse(e) : e as int))
+        .map((e) => Bip32KeyIndex(IntUtils.parse(e.value)))
         .toList();
     return Bip32Path(elems: paths, isAbsolute: true);
   }
@@ -164,7 +165,9 @@ class _AdaByronAddrHdPath {
       key: hdPathKeyBytes,
       nonce: ADAByronAddrConst.chacha20Poly1305Nonce,
       assocData: ADAByronAddrConst.chacha20Poly1305AssocData,
-      plainText: CborListValue.dynamicLength(hdPath.toList()).encode(),
+      plainText: CborListValue.inDefinite(
+              hdPath.toList().map((e) => CborIntValue(e)).toList())
+          .encode(),
     );
     return result;
   }
@@ -199,16 +202,18 @@ class ADAByronAddrAttrs {
         hdPathEncBytes: hdPath, networkMagic: networkMagic);
   }
 
-  Map<int, List<int>> toJson() {
-    final attrs = <int, List<int>>{};
+  CborMapValue<CborIntValue, CborBytesValue> toJson() {
+    final attrs = <CborIntValue, CborBytesValue>{};
     if (hdPathEncBytes != null) {
-      attrs[1] = CborBytesValue(hdPathEncBytes!).encode();
+      attrs[CborIntValue(1)] =
+          CborBytesValue(CborBytesValue(hdPathEncBytes!).encode());
     }
     if (networkMagic != null &&
         networkMagic != ADANetwork.mainnet.protocolMagic) {
-      attrs[2] = CborIntValue(networkMagic!).encode();
+      attrs[CborIntValue(2)] =
+          CborBytesValue(CborIntValue(networkMagic!).encode());
     }
-    return attrs;
+    return CborMapValue.definite(attrs);
   }
 }
 
@@ -231,10 +236,12 @@ class _AdaByronAddrRoot {
   }
 
   List<int> serialize() {
-    return CborListValue.fixedLength([
+    return CborListValue<CborObject>.definite([
       CborIntValue(type.value),
-      CborListValue.fixedLength(
-          [spendingData.type.value, spendingData.keyBytes]),
+      CborListValue<CborObject>.definite([
+        CborIntValue(spendingData.type.value),
+        CborBytesValue(spendingData.keyBytes)
+      ]),
       attrs.toJson(),
     ]).encode();
   }
@@ -265,13 +272,13 @@ class ADAByronAddrPayload {
 
     return ADAByronAddrPayload(
       rootHashBytes: cborBytes.value,
-      attrs: ADAByronAddrAttrs.fromCbor(addrPayload.value[1]),
-      type: ADAByronAddrTypes.fromCbor(addrPayload.value[2]),
+      attrs: ADAByronAddrAttrs.fromCbor(addrPayload.value[1].cast()),
+      type: ADAByronAddrTypes.fromCbor(addrPayload.value[2].cast()),
     );
   }
 
   List<int> serialize() {
-    return CborListValue.fixedLength([
+    return CborListValue<CborObject>.definite([
       CborBytesValue(rootHashBytes),
       attrs.toJson(),
       CborIntValue(type.value)
@@ -327,8 +334,9 @@ class ADAByronAddr {
 
   CborObject toCbor() {
     final payloadBytes = payload.serialize();
-    return CborListValue.fixedLength([
-      CborTagValue(payloadBytes, [ADAByronAddrConst.payloadTag]),
+    return CborListValue<CborObject>.definite([
+      CborTagValue(
+          CborBytesValue(payloadBytes), [ADAByronAddrConst.payloadTag]),
       CborIntValue(Crc32.quickIntDigest(payloadBytes)),
     ]);
   }

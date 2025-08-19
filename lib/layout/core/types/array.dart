@@ -75,14 +75,13 @@ class SequenceLayout<T> extends Layout<List<T>> {
       counter = count.decode(bytes!, offset: offset).value;
     }
 
-    if (this.elementLayout.span > 0) {
-      span += (counter * this.elementLayout.span);
+    if (elementLayout.span > 0) {
+      span += (counter * elementLayout.span);
     } else {
       int idx = 0;
       while (idx < counter) {
-        final lSpan = this
-            .elementLayout
-            .getSpan(bytes, offset: offset + span, source: source?[idx]);
+        final lSpan = elementLayout.getSpan(bytes,
+            offset: offset + span, source: source?[idx]);
         assert(lSpan >= 0, "span cannot be negative.");
         span += lSpan;
         ++idx;
@@ -111,12 +110,10 @@ class SequenceLayout<T> extends Layout<List<T>> {
       count = this.count.decode(bytes, offset: offset).value;
     }
     while (i < count) {
-      final decodeElement =
-          this.elementLayout.decode(bytes, offset: startOffset);
+      final decodeElement = elementLayout.decode(bytes, offset: startOffset);
       decoded.add(decodeElement.value);
-      final lSpan = this
-          .elementLayout
-          .getSpan(bytes, offset: startOffset, source: decodeElement.value);
+      final lSpan = elementLayout.getSpan(bytes,
+          offset: startOffset, source: decodeElement.value);
       assert(lSpan >= 0, "span cannot be negative.");
       startOffset += lSpan;
       i += 1;
@@ -130,11 +127,11 @@ class SequenceLayout<T> extends Layout<List<T>> {
     if (count is CompactOffsetLayout) {
       span = (count as CompactOffsetLayout)
           .encode(source.length, writer, offset: offset);
-    } else if (this.count is ExternalOffsetLayout) {
-      final testLayput = this.count as ExternalOffsetLayout;
+    } else if (count is ExternalOffsetLayout) {
+      final testLayput = count as ExternalOffsetLayout;
       span = testLayput.encode(source.length, writer, offset: offset);
-    } else if (this.count is ExternalLayout) {
-      this.count.encode(source.length, writer, offset: offset);
+    } else if (count is ExternalLayout) {
+      count.encode(source.length, writer, offset: offset);
     }
     span = source.fold(span, (span, v) {
       final encodeLength =

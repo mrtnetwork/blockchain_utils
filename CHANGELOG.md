@@ -1,3 +1,11 @@
+## 5.2.0
+
+- Renamed constructors in CborListValue and CborMapValue:
+  - fixedLength → definite
+  - dynamicLength → indefinite
+- `CborListValue`, `CborMapValue`, `CborSetValue`, and `CborTagValue` no longer accept dynamic values.
+They now only accept `CborValue` instances.
+
 ## 5.1.0
 
 - Added support for HKDF (HMAC-based Key Derivation Function)

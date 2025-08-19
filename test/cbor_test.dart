@@ -3,15 +3,16 @@ import 'package:test/test.dart';
 
 import 'quick_hex.dart';
 
-List<dynamic> _testList1 = [
-  0,
-  0,
-  "mrtnetwork",
-  BigInt.parse("10000000000000000000000"),
+List<CborObject> _testList1 = [
+  CborIntValue(0),
+  CborIntValue(0),
+  CborStringValue("mrtnetwork"),
+  CborBigIntValue(BigInt.parse("10000000000000000000000")),
 ];
-Map<dynamic, dynamic> _mapTest1 = {
-  0: 0,
-  "mrtnetwork": BigInt.parse("10000000000000000000000"),
+Map<CborObject, CborObject> _mapTest1 = {
+  CborIntValue(0): CborIntValue(0),
+  CborStringValue("mrtnetwork"):
+      CborBigIntValue(BigInt.parse("10000000000000000000000")),
 };
 void _decodeInt() {
   const cb = CborIntValue(0);
@@ -44,26 +45,29 @@ void _decodeStringIndefinite() {
 }
 
 void _decodeMap() {
-  final cb = CborMapValue.fixedLength(
-      {0: "mrtnetwork", BigInt.one: BigInt.two, "mrtnetwork": "mrtnetwork"});
+  final cb = CborMapValue<CborObject, CborObject>.definite({
+    CborIntValue(0): CborStringValue("mrtnetwork"),
+    CborBigIntValue(BigInt.one): CborBigIntValue(BigInt.two),
+    CborStringValue("mrtnetwork"): CborStringValue("mrtnetwork")
+  });
   final dec = CborObject.fromCbor(cb.encode());
   expect(dec is CborMapValue, true);
   expect(dec.encode(), cb.encode());
-
   dec as CborMapValue<CborObject, CborObject>;
   final keys = cb.value.keys.map((e) => e).toList();
   final keysDec = dec.value.keys.map((e) => e.value).toList();
-  expect(CompareUtils.iterableIsEqual(keys, keysDec), true);
+  expect(CompareUtils.iterableIsEqual(keys.map((e) => e.value), keysDec), true);
   final values = cb.value.values.map((e) => e).toList();
   final valuesDec = dec.value.values.map((e) => e.value).toList();
-  expect(CompareUtils.iterableIsEqual(values, valuesDec), true);
+  expect(CompareUtils.iterableIsEqual(values.map((e) => e.value), valuesDec),
+      true);
 }
 
 void _decodeMapDynamic() {
-  final cb = CborMapValue.dynamicLength({
-    0: "mrtnetwork",
-    BigInt.one: BigInt.two,
-    "metnetwork": "mrtnetwork",
+  final cb = CborMapValue<CborObject, CborObject>.inDefinite({
+    CborIntValue(0): CborStringValue("mrtnetwork"),
+    CborBigIntValue(BigInt.one): CborBigIntValue(BigInt.two),
+    CborStringValue("mrtnetwork"): CborStringValue("mrtnetwork"),
   });
   final dec = CborObject.fromCbor(cb.encode());
   expect(dec.encode(), cb.encode());
@@ -72,20 +76,21 @@ void _decodeMapDynamic() {
   dec as CborMapValue<CborObject, CborObject>;
   final keys = cb.value.keys.map((e) => e).toList();
   final keysDec = dec.value.keys.map((e) => e.value).toList();
-  expect(CompareUtils.iterableIsEqual(keys, keysDec), true);
+  expect(CompareUtils.iterableIsEqual(keys.map((e) => e.value), keysDec), true);
   final values = cb.value.values.map((e) => e).toList();
   final valuesDec = dec.value.values.map((e) => e.value).toList();
-  expect(CompareUtils.iterableIsEqual(values, valuesDec), true);
+  expect(CompareUtils.iterableIsEqual(values.map((e) => e.value), valuesDec),
+      true);
 }
 
 void _decodeList() {
-  final cb = CborListValue.dynamicLength([
-    0,
-    "mrtnetwork",
-    BigInt.one,
-    BigInt.two,
-    "metnetwork",
-    "mrtnetwork",
+  final cb = CborListValue<CborObject>.inDefinite([
+    CborIntValue(0),
+    CborStringValue("mrtnetwork"),
+    CborBigIntValue(BigInt.one),
+    CborBigIntValue(BigInt.two),
+    CborStringValue("metnetwork"),
+    CborStringValue("mrtnetwork"),
   ]);
   final dec = CborObject.fromCbor(cb.encode());
   expect(dec is CborListValue, true);
@@ -93,7 +98,8 @@ void _decodeList() {
 
   dec as CborListValue;
   final valuesDec = dec.value.map((e) => e.value).toList();
-  expect(CompareUtils.iterableIsEqual(cb.value, valuesDec), true);
+  expect(CompareUtils.iterableIsEqual(cb.value.map((e) => e.value), valuesDec),
+      true);
 }
 
 void _decodeDateTime() {
@@ -116,47 +122,47 @@ void _decodeDateTime() {
 }
 
 void _nestedList() {
-  final list = CborListValue.fixedLength([
-    0,
-    CborListValue.fixedLength([
-      1,
-      2,
-      BigInt.parse("111111111111111111111111110"),
+  final list = CborListValue<CborObject>.definite([
+    CborIntValue(0),
+    CborListValue<CborObject>.definite([
+      CborIntValue(1),
+      CborIntValue(2),
+      CborBigIntValue(BigInt.parse("111111111111111111111111110")),
     ]),
-    CborListValue.fixedLength([
-      1,
-      2,
-      BigInt.parse("111111111111111111111111110"),
-      CborListValue.fixedLength([
-        -1,
-        2,
-        BigInt.parse("111111111111111111111111110"),
+    CborListValue<CborObject>.definite([
+      CborIntValue(1),
+      CborIntValue(2),
+      CborBigIntValue(BigInt.parse("111111111111111111111111110")),
+      CborListValue<CborObject>.definite([
+        CborIntValue(-1),
+        CborIntValue(2),
+        CborBigIntValue(BigInt.parse("111111111111111111111111110")),
       ]),
-      false,
-      false,
-      false,
-      true
+      CborBoleanValue(false),
+      CborBoleanValue(false),
+      CborBoleanValue(false),
+      CborBoleanValue(true)
     ]),
     CborBytesValue(List<int>.filled(100, 12)),
-    CborMapValue.fixedLength({
-      1: 1,
-      "one": "one",
-      BigInt.two: CborBytesValue(List<int>.filled(19, 31)),
-      CborListValue.fixedLength([
-        -1,
-        2,
-        BigInt.parse("111111111111111111111111110"),
-      ]): CborListValue.fixedLength([
-        -1,
-        2,
-        BigInt.parse("111111111111111111111111110"),
+    CborMapValue<CborObject, CborObject>.definite({
+      CborIntValue(1): CborIntValue(1),
+      CborStringValue("one"): CborStringValue("one"),
+      CborBigIntValue(BigInt.two): CborBytesValue(List<int>.filled(19, 31)),
+      CborListValue<CborObject>.definite([
+        CborIntValue(-1),
+        CborIntValue(2),
+        CborBigIntValue(BigInt.parse("111111111111111111111111110")),
+      ]): CborListValue<CborObject>.definite([
+        CborIntValue(-1),
+        CborIntValue(2),
+        CborBigIntValue(BigInt.parse("111111111111111111111111110")),
       ])
     }),
-    null,
-    BigInt.one,
-    BigInt.two,
-    "metnetwork",
-    "mrtnetwork",
+    CborNullValue(),
+    CborBigIntValue(BigInt.one),
+    CborBigIntValue(BigInt.two),
+    CborStringValue("metnetwork"),
+    CborStringValue("mrtnetwork"),
     CborFloatValue.from16BytesFloat(2.0),
     CborFloatValue(-2.0),
     CborFloatValue.from64BytesFloat(233333333333.100000)
@@ -171,13 +177,13 @@ void _tag() {
   CborObject cborTag = CborTagValue(const CborNullValue(), [1, 2, 3]);
   expect(cborTag.encode(), CborObject.fromCbor(cborTag.encode()).encode());
   cborTag = CborTagValue(
-      CborListValue.fixedLength([
-        1,
-        2,
-        3,
-        BigInt.from(-1),
-        BigInt.from(-2),
-        BigInt.from(-3),
+      CborListValue<CborObject>.definite([
+        CborIntValue(1),
+        CborIntValue(2),
+        CborIntValue(3),
+        CborBigIntValue(BigInt.from(-1)),
+        CborBigIntValue(BigInt.from(-2)),
+        CborBigIntValue(BigInt.from(-3)),
         const CborUriValue("https://github.com/mrtnetwork"),
         const CborRegxpValue(r'[A-Za-z0-9+/_-]+'),
         const CborMimeValue("image/svg+xml"),
@@ -185,17 +191,17 @@ void _tag() {
             CborBase64Types.base64),
         const CborBaseUrlValue("cXdlbHF3amVsa3Fqd2VranFrd2pla2xxd2pla2xxdw",
             CborBase64Types.base64Url),
-        "mystrig",
+        CborStringValue("mystrig"),
 
         ///
-        CborListValue.dynamicLength([
+        CborListValue<CborObject>.inDefinite([
           CborEpochFloatValue(DateTime.now()),
           CborDecimalFracValue(
               BigInt.from(123123), BigInt.parse("123123123123123")),
           CborEpochIntValue(DateTime.now()),
           CborTagValue(
-              CborListValue.fixedLength([
-                1,
+              CborListValue<CborObject>.definite([
+                CborIntValue(1),
                 CborBytesValue(List<int>.filled(32, 32)),
               ]),
               [
@@ -204,15 +210,26 @@ void _tag() {
                 3,
               ])
         ]),
-        CborMapValue.fixedLength({
-          "key1": 1,
-          "key2": "2",
-          "key3": CborBytesValue([3]),
-          4: CborStringValue("value 4"),
-          BigInt.parse("11111111111111111111111111"): 5,
-          "key6": CborListValue.dynamicLength([1, 2, 3, 4, 5]),
-          "key7": CborTagValue(
-              CborMapValue.dynamicLength({"1": "1", "2": "2", 1: 1}),
+        CborMapValue<CborObject, CborObject>.definite({
+          CborStringValue("key1"): CborIntValue(1),
+          CborStringValue("key2"): CborStringValue("2"),
+          CborStringValue("key3"): CborBytesValue([3]),
+          CborIntValue(4): CborStringValue("value 4"),
+          CborBigIntValue(BigInt.parse("11111111111111111111111111")):
+              CborIntValue(5),
+          CborStringValue("key6"): CborListValue<CborIntValue>.inDefinite([
+            CborIntValue(1),
+            CborIntValue(2),
+            CborIntValue(3),
+            CborIntValue(4),
+            CborIntValue(5)
+          ]),
+          CborStringValue("key7"): CborTagValue(
+              CborMapValue<CborObject, CborObject>.inDefinite({
+                CborStringValue("1"): CborStringValue("1"),
+                CborStringValue("2"): CborStringValue("2"),
+                CborIntValue(1): CborIntValue(1)
+              }),
               [100, 1001, 100002])
         }),
       ]),
@@ -235,13 +252,13 @@ void main() {
   });
 
   test("cbor encode", () {
-    expect(CborListValue.fixedLength(_testList1).encode().toHex(),
+    expect(CborListValue<CborObject>.definite(_testList1).encode().toHex(),
         "8400006a6d72746e6574776f726bc24a021e19e0c9bab2400000");
-    expect(CborListValue.dynamicLength(_testList1).encode().toHex(),
+    expect(CborListValue<CborObject>.inDefinite(_testList1).encode().toHex(),
         "9f00006a6d72746e6574776f726bc24a021e19e0c9bab2400000ff");
-    expect(CborMapValue.dynamicLength(_mapTest1).encode().toHex(),
+    expect(CborMapValue.inDefinite(_mapTest1).encode().toHex(),
         "bf00006a6d72746e6574776f726bc24a021e19e0c9bab2400000ff");
-    expect(CborMapValue.fixedLength(_mapTest1).encode().toHex(),
+    expect(CborMapValue.definite(_mapTest1).encode().toHex(),
         "a200006a6d72746e6574776f726bc24a021e19e0c9bab2400000");
     expect(const CborIntValue(1).encode().toHex(), "01");
     expect(const CborIntValue(-1).encode().toHex(), "20");
@@ -263,12 +280,20 @@ void main() {
         CborFloatValue(123123123123.2).encode().toHex(), "fb423caab5c3b33333");
     expect(CborDecimalFracValue(BigInt.one, BigInt.one).encode().toHex(),
         "c4820101");
-    expect(CborListValue.fixedLength([BigInt.one, BigInt.one]).encode().toHex(),
+    expect(
+        CborListValue<CborObject>.definite(
+                [CborBigIntValue(BigInt.one), CborBigIntValue(BigInt.one)])
+            .encode()
+            .toHex(),
         "82c24101c24101");
 
-    expect(CborMapValue.fixedLength({0: 0}).encode().toHex(), "a10000");
     expect(
-        CborMapValue.fixedLength({const CborIntValue(0): const CborIntValue(0)})
+        CborMapValue.definite({CborIntValue(0): CborIntValue(0)})
+            .encode()
+            .toHex(),
+        "a10000");
+    expect(
+        CborMapValue.definite({const CborIntValue(0): const CborIntValue(0)})
             .encode()
             .toHex(),
         "a10000");

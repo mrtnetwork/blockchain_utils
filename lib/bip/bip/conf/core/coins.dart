@@ -1,5 +1,6 @@
 import 'package:blockchain_utils/bip/bip/conf/bip/bip_coins.dart';
 import 'package:blockchain_utils/bip/cardano/cip1852/conf/cip1852_coins.dart';
+import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
 import 'package:blockchain_utils/bip/monero/conf/monero_coins.dart';
 import 'package:blockchain_utils/bip/substrate/conf/substrate_coins.dart';
 import 'package:blockchain_utils/exception/exceptions.dart';
@@ -34,6 +35,32 @@ abstract class CryptoCoins<T extends CoinConfig> {
         return MoneroCoins.fromName(name);
       default:
         return null;
+    }
+  }
+
+  static List<CryptoCoins> fromCurve(EllipticCurveTypes curve,
+      {CoinProposal? proposal}) {
+    switch (proposal) {
+      case BipProposal.bip44:
+      case BipProposal.bip49:
+      case BipProposal.bip84:
+      case BipProposal.bip86:
+        return BipCoins.fromCurve(curve, proposal: proposal);
+      case CipProposal.cip1852:
+        return Cip1852Coins.fromCurve(curve);
+      case SubstratePropoosal.substrate:
+        return SubstrateCoins.fromCurve(curve);
+      case MoneroProposal.monero:
+        return MoneroCoins.fromCurve(curve);
+      case null:
+        return [
+          ...BipCoins.fromCurve(curve),
+          ...Cip1852Coins.fromCurve(curve),
+          ...SubstrateCoins.fromCurve(curve),
+          ...MoneroCoins.fromCurve(curve)
+        ];
+      default:
+        return [];
     }
   }
 

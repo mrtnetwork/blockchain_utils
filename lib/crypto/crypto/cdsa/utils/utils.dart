@@ -10,7 +10,6 @@ class ECDSAUtils {
     if (exponent == BigInt.zero) {
       return [BigInt.one];
     }
-
     List<BigInt> G = List.from(base);
     BigInt k = exponent;
     List<BigInt> s =

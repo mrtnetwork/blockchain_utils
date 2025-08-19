@@ -4,14 +4,10 @@ import 'package:blockchain_utils/cbor/core/tags.dart';
 import 'package:blockchain_utils/cbor/types/string.dart';
 
 /// A class representing a CBOR (Concise Binary Object Representation) Regex value.
-class CborRegxpValue implements CborString {
+class CborRegxpValue extends CborString<String> {
   /// Constructor for creating a CborRegxpValue instance with the provided parameters.
   /// It accepts string value of regex.
-  const CborRegxpValue(this.value);
-
-  /// value as string
-  @override
-  final String value;
+  const CborRegxpValue(super.value);
 
   /// Encode the value into CBOR bytes
   @override
@@ -45,4 +41,9 @@ class CborRegxpValue implements CborString {
   /// override hashcode
   @override
   int get hashCode => value.hashCode;
+
+  @override
+  String getValue() {
+    return value;
+  }
 }

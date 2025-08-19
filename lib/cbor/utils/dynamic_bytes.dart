@@ -1,3 +1,4 @@
+import 'package:blockchain_utils/cbor/core/cbor.dart';
 import 'package:blockchain_utils/cbor/core/tags.dart';
 import 'package:blockchain_utils/helper/helper.dart';
 import 'package:blockchain_utils/utils/utils.dart';
@@ -54,12 +55,10 @@ class CborBytesTracker {
   }
 
   /// Append an integer value with a specified major tag to the byte sequence in the buffer.
-  void pushInt(
-    int majorTag,
-    int value,
-  ) {
+  void pushInt(int majorTag, int value,
+      {CborLengthEncoding lengthEncdoing = CborLengthEncoding.canonical}) {
     majorTag <<= 5;
-    final int? length = bytesLength(value);
+    final int? length = bytesLength(value, lengthEncdoing: lengthEncdoing);
     pushUInt8(majorTag | (length ?? value));
     if (length == null) return;
     final int len = 1 << (length - 24);
@@ -70,8 +69,9 @@ class CborBytesTracker {
     }
   }
 
-  int? bytesLength(int value) {
-    if (value < 24) {
+  int? bytesLength(int value,
+      {CborLengthEncoding lengthEncdoing = CborLengthEncoding.canonical}) {
+    if (value < 24 && lengthEncdoing == CborLengthEncoding.canonical) {
       return null;
     } else if (value <= mask8) {
       return NumBytes.one;

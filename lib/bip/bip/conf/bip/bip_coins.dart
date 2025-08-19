@@ -9,6 +9,7 @@ import 'package:blockchain_utils/bip/bip/conf/bip44/bip44_coins.dart';
 import 'package:blockchain_utils/bip/bip/conf/bip49/bip49_coins.dart';
 import 'package:blockchain_utils/bip/bip/conf/bip84/bip84_coins.dart';
 import 'package:blockchain_utils/bip/bip/conf/bip86/bip86_coins.dart';
+import 'package:blockchain_utils/bip/ecc/bip_ecc.dart';
 
 abstract class BipCoins implements CryptoCoins<BipCoinConfig> {
   const BipCoins();
@@ -38,6 +39,29 @@ abstract class BipCoins implements CryptoCoins<BipCoinConfig> {
         return Bip86Coins.fromName(name);
       default:
         return null;
+    }
+  }
+
+  static List<CryptoCoins> fromCurve(EllipticCurveTypes type,
+      {CoinProposal? proposal}) {
+    switch (proposal) {
+      case BipProposal.bip44:
+        return Bip44Coins.fromCurve(type);
+      case BipProposal.bip49:
+        return Bip49Coins.fromCurve(type);
+      case BipProposal.bip84:
+        return Bip84Coins.fromCurve(type);
+      case BipProposal.bip86:
+        return Bip86Coins.fromCurve(type);
+      case null:
+        return [
+          ...Bip44Coins.fromCurve(type),
+          ...Bip49Coins.fromCurve(type),
+          ...Bip84Coins.fromCurve(type),
+          ...Bip86Coins.fromCurve(type)
+        ];
+      default:
+        return [];
     }
   }
 

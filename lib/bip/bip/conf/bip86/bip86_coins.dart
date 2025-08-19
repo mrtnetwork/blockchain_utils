@@ -1,6 +1,7 @@
 import 'package:blockchain_utils/bip/bip/conf/bip/bip_coins.dart';
 import 'package:blockchain_utils/bip/bip/conf/bip86/bip86_conf.dart';
 import 'package:blockchain_utils/bip/bip/conf/config/bip_coin_conf.dart';
+import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
 
 /// An enumeration of supported cryptocurrencies for BIP86. It includes both main
 /// networks and test networks of various cryptocurrencies.
@@ -36,6 +37,13 @@ class Bip86Coins extends BipCoins {
     } on StateError {
       return null;
     }
+  }
+
+  static List<Bip86Coins> fromCurve(EllipticCurveTypes type) {
+    return _coinToConf.entries
+        .where((element) => element.value.type == type)
+        .map((e) => e.key)
+        .toList();
   }
 
   /// A mapping that associates each BIP86Coin (enum) with its corresponding

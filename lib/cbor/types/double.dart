@@ -5,31 +5,27 @@ import 'package:blockchain_utils/cbor/core/tags.dart';
 import 'package:blockchain_utils/cbor/core/cbor.dart';
 
 /// A class representing a CBOR (Concise Binary Object Representation) float value.
-class CborFloatValue implements CborObject {
+class CborFloatValue extends CborObject<double> {
   /// Constructor for creating a CborFloatValue instance with the provided parameters.
   /// It accepts the double value.
-  CborFloatValue(this.value) : _decodFloatType = null;
+  CborFloatValue(super.value) : _decodFloatType = null;
 
   /// Create a CborFloatValue from a 16-byte double value.
-  CborFloatValue.from16BytesFloat(this.value)
+  CborFloatValue.from16BytesFloat(super.value)
       : assert(FloatUtils.isLessThan(value, FloatLength.bytes16),
             "overflow bytes"),
         _decodFloatType = FloatLength.bytes16;
 
   /// Create a CborFloatValue from a 32-byte double value.
-  CborFloatValue.from32BytesFloat(this.value)
+  CborFloatValue.from32BytesFloat(super.value)
       : assert(FloatUtils.isLessThan(value, FloatLength.bytes32),
             "overflow bytes"),
         _decodFloatType = FloatLength.bytes32;
 
   /// Constructor for creating a CborFloatValue instance with the provided parameters.
   /// It accepts the double value and an optional list of CBOR tags.
-  CborFloatValue.from64BytesFloat(this.value)
+  CborFloatValue.from64BytesFloat(super.value)
       : _decodFloatType = FloatLength.bytes64;
-
-  /// value as double
-  @override
-  final double value;
 
   /// instance of FloatUtils for encode and decoding float
   late final FloatUtils _decodFloat = FloatUtils(value);

@@ -1,3 +1,4 @@
+import 'package:blockchain_utils/helper/extensions/extensions.dart';
 import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/cbor/types/int64.dart';
 import 'package:blockchain_utils/cbor/utils/dynamic_bytes.dart';
@@ -6,10 +7,11 @@ import 'package:blockchain_utils/cbor/types/bigint.dart';
 import 'package:blockchain_utils/cbor/core/cbor.dart';
 
 /// A class representing a CBOR (Concise Binary Object Representation) Dcecimal value.
-class CborDecimalFracValue implements CborObject {
+class CborDecimalFracValue extends CborObject<List<BigInt>> {
   /// Constructor for creating a CborDecimalFracValue instance with the provided parameters.
   /// It accepts the Bigint exponent and mantissa value.
-  const CborDecimalFracValue(this.exponent, this.mantissa);
+  CborDecimalFracValue(this.exponent, this.mantissa)
+      : super([exponent, mantissa].immutable);
 
   /// Create a CborBigFloatValue from two CborNumeric values representing the exponent and mantissa.
   factory CborDecimalFracValue.fromCborNumeric(
@@ -23,10 +25,6 @@ class CborDecimalFracValue implements CborObject {
 
   /// mantissa value
   final BigInt mantissa;
-
-  /// The decimal value as a list [exponent, mantissa].
-  @override
-  List<BigInt> get value => [exponent, mantissa];
 
   /// Encode the value into CBOR bytes
   @override
