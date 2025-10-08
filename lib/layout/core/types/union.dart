@@ -101,8 +101,13 @@ class Union extends Layout<Map<String, dynamic>> {
 
     final vlo = getVariant(bytes!, offset: offset);
     if (vlo == null) {
+      final int variant = discriminator.decode(bytes, offset: offset).value;
       throw LayoutException("unable to determine span for unrecognized variant",
-          details: {"property": property});
+          details: {
+            "property": property,
+            "variants": _registry.values.map((e) => e.property).join(","),
+            "vaiant": variant
+          });
     }
 
     return vlo.getSpan(bytes, offset: offset, source: source);

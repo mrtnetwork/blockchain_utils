@@ -279,11 +279,17 @@ class QuickCrypto {
   static const int chacha20Polu1305Keysize = 32;
 
   /// field to hold the FortunaRandom instance for generating random numbers.
-  static final FortunaPRNG prng = FortunaPRNG();
+  static FortunaPRNG _prng = FortunaPRNG();
+
+  static FortunaPRNG get prng => _prng;
 
   static GenerateRandom _generateRandom = (length) {
     return prng.nextBytes(length);
   };
+
+  static void setupPRNG(FortunaPRNG prng) {
+    _prng = prng;
+  }
 
   static void setupRandom(GenerateRandom? random) {
     if (random == null) {
@@ -303,6 +309,20 @@ class QuickCrypto {
 
     /// Return the generated random bytes.
     return r;
+  }
+
+  static int generateRandomInt(int max) {
+    return prng.nextInt(max);
+  }
+
+  static bool generateRandoolBool() {
+    final n = prng.nextInt(2);
+    if (n == 0) return false;
+    return true;
+  }
+
+  static String generateRandomHex([int size = 32]) {
+    return BytesUtils.toHexString(generateRandom(size));
   }
 
   static List<int> processCtr(

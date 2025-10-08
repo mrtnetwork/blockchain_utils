@@ -1,4 +1,5 @@
 import 'dart:math';
+
 import 'package:blockchain_utils/crypto/crypto/aes/aes.dart';
 import 'package:blockchain_utils/crypto/crypto/ctr/ctr.dart';
 import 'package:blockchain_utils/crypto/crypto/exception/exception.dart';
@@ -51,6 +52,14 @@ class FortunaPRNG {
   /// If no seed is provided, the PRNG is initialized with a secure random seed.
   FortunaPRNG([List<int>? seed]) {
     _initKey(seed);
+  }
+
+  FortunaPRNG.fromEntropy(List<int> entropy) {
+    final k = SHAKE256();
+    k.update(entropy);
+    _key.setAll(0, k.digest());
+    k.clean();
+    _generateBlocks(_out, 1);
   }
 
   void _initKey([List<int>? seed]) {

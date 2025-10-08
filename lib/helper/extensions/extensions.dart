@@ -33,8 +33,16 @@ extension ListHelper<T> on List<T> {
   List<T>? get emptyAsNull => isEmpty ? null : this;
   List<T> exceptedLen(int len, {String? message}) {
     if (length != len) {
-      throw ArgumentException(message ?? 'Invalid length. ',
-          details: {"expected": len, "length": length});
+      throw ArgumentException(message ?? 'List length mismatch. ',
+          details: {"expected": len, "actual": length});
+    }
+    return this;
+  }
+
+  List<T> max(int len, {String? message}) {
+    if (length > len) {
+      throw ArgumentException(message ?? 'List too long.',
+          details: {"max": len, "actual": length});
     }
     return this;
   }

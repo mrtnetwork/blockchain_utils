@@ -30,3 +30,6 @@ migrate_working_dir/
 build/
 lib.zip
 *.zip
+/example/android
+/example/ios
+/example

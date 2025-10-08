@@ -1,7 +1,71 @@
+import 'dart:math';
+
 import 'package:blockchain_utils/blockchain_utils.dart';
 import 'package:test/test.dart';
 
+List<int> bip39MnemonicToBytes(Mnemonic mnemonic) {
+  final decoder = Bip39MnemonicDecoder();
+  final language = decoder.findLanguage(mnemonic);
+
+  final mnemonicBinStr = decoder.mnemonicToBinaryStr(mnemonic, language.item1);
+  final mnemonicBitLen = mnemonicBinStr.length;
+  final padBitLen = mnemonicBitLen % 8 == 0
+      ? mnemonicBitLen
+      : mnemonicBitLen + (8 - mnemonicBitLen % 8);
+  final result =
+      BytesUtils.fromBinary(mnemonicBinStr, zeroPadByteLen: padBitLen);
+  return [mnemonic.wordsCount(), ...result];
+}
+
+// Bytes → Mnemonic
+List<String> bytesToBip39Mnemonic(List<int> bytes) {
+  int length = bytes[0];
+  bytes = bytes.sublist(1);
+  final toBinary = BytesUtils.toBinary(bytes,
+      zeroPadBitLen: length * Bip39MnemonicConst.wordBitLen);
+  bytes = bytes.sublist(1);
+  final words = <String>[];
+  for (var i = 0;
+      i + Bip39MnemonicConst.wordBitLen <= toBinary.length;
+      i += Bip39MnemonicConst.wordBitLen) {
+    final wordBinStr = toBinary.substring(i, i + Bip39MnemonicConst.wordBitLen);
+    final wordIdx = int.parse(wordBinStr, radix: 2);
+    words.add(Bip39Languages.english.wordList[wordIdx]);
+  }
+  return words;
+}
+
 void main() {
+  print([
+    "woman",
+    "harvest",
+    "crawl",
+    "blind",
+    "piece",
+    "portion",
+    "draft",
+    "write",
+    "win",
+    "coil",
+    "lawsuit",
+    "illegal"
+  ].join(" "));
+  // return;
+  // for (int c = 8; c < 41; c++) {
+  //   for (int i = 0; i < 1000; i++) {
+  //     final mnemoci = List.generate(
+  //         c,
+  //         (i) => Bip39Languages.english.wordList
+  //             .elementAt(Random.secure().nextInt(2048)));
+  //     // print(mnemoci.toStr());
+  //     assert(CompareUtils.iterableIsEqual(
+  //         bytesToBip39Mnemonic(
+  //             bip39MnemonicToBytes(Mnemonic.fromList(mnemoci))),
+  //         mnemoci.toList()));
+  //     print('done!');
+  //   }
+  // }
+  // return;
   group("Ton Mnemonic", _test);
 }
 
@@ -97,6 +161,7 @@ void _test() {
         seed.sublist(0, Ed25519KeysConst.privKeyByteLen));
     expect(privateKey.toHex(),
         "b91ad008bdf851289acaa77401612674ea3906eba0ca044374ff38f2a170ba85");
+    print(privateKey.publicKey.toHex());
   });
   test("validate mnemonic", () {
     final mnemonic = [

@@ -2,6 +2,7 @@ import 'package:blockchain_utils/layout/byte/byte_handler.dart';
 import 'package:blockchain_utils/layout/core/core/core.dart';
 import 'package:blockchain_utils/layout/core/types/padding_layout.dart';
 import 'package:blockchain_utils/layout/exception/exception.dart';
+
 import 'numeric.dart';
 
 class LazyVariantModel<T> {
@@ -77,8 +78,11 @@ class LazyUnion extends Layout<Map<String, dynamic>> {
     final discr = discriminator.decode(bytes, offset: offset);
     final clo = _registry[discr.value];
     if (clo == null) {
-      throw LayoutException("unable to determine layout.",
-          details: {"property": property, "layout": discr.value});
+      throw LayoutException("unable to determine layout.", details: {
+        "property": property,
+        "layout": discr.value,
+        "layouts": _registry.keys.toList()
+      });
     }
     Map<String, dynamic> result = {};
     int consumed = discr.consumed;
