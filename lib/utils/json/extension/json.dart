@@ -178,7 +178,6 @@ class JsonParser {
 
   static T valueAsBytes<T extends List<int>?>(Object? value,
       {bool allowHex = true, StringEncoding? encoding}) {
-    if (value is T) return value;
     if (value == null && _isNull<T>()) return null as T;
     if (value is List) {
       try {
