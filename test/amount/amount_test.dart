@@ -3,6 +3,32 @@ import 'package:test/test.dart';
 
 void main() {
   group('AmountConverter Tests', () {
+    test('Convert 6 decimals → 10 decimals', () {
+      final result = AmountConverterUtils.convertDecimals(
+        amount: BigInt.from(6000000),
+        from: 6,
+        to: 10,
+      );
+      expect(result, BigInt.from(60000000000)); // ×10^(10−6)
+    });
+
+    test('Convert 10 decimals → 6 decimals', () {
+      final result = AmountConverterUtils.convertDecimals(
+        amount: BigInt.from(60000000000),
+        from: 10,
+        to: 6,
+      );
+      expect(result, BigInt.from(6000000)); // ÷10^(10−6)
+    });
+
+    test('Same decimals = no change', () {
+      final result = AmountConverterUtils.convertDecimals(
+        amount: BigInt.from(123456),
+        from: 10,
+        to: 10,
+      );
+      expect(result, BigInt.from(123456));
+    });
     test('Bitcoin conversions', () {
       // toAmount
       expect(AmountConverter.btc.toAmount(BigInt.parse("100000000")), '1');

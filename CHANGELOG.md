@@ -1,3 +1,6 @@
+## 5.3.0
+- AmountConverter: Added support for converting between human-readable token amounts and base units.
+
 ## 5.2.0
 
 - Renamed constructors in CborListValue and CborMapValue:

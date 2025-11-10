@@ -81,6 +81,26 @@ class AmountConverterUtils {
         _AmountConverterConstants.fromDecimalNumber(decimals);
     return dec.toDecimal(digits: showDecimals);
   }
+
+  /// Converts a native asset amount to the chain’s decimal format.
+  static BigInt convertDecimals({
+    required BigInt amount,
+    required int from,
+    required int to,
+  }) {
+    final diff = to - from;
+    if (diff == 0) return amount;
+    final bigR = BigRational(amount);
+    final diffR = BigRational(BigInt.from(10).pow((to - from).abs()));
+
+    if (diff > 0) {
+      // Scale up (e.g., 6 → 10)
+      return (bigR * diffR).toBigInt();
+    } else {
+      // Scale down (e.g., 10 → 6)
+      return (bigR / diffR).toBigInt();
+    }
+  }
 }
 
 /// Handles conversions between human-readable amounts and base units.

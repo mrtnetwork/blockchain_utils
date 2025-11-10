@@ -48,6 +48,7 @@ The 3-Clause BSD License
 
 import 'package:blockchain_utils/layout/byte/byte_handler.dart';
 import 'package:blockchain_utils/layout/exception/exception.dart';
+import 'package:blockchain_utils/utils/binary/utils.dart';
 
 typedef LayoutFunc<T> = Layout<T> Function({String? property});
 
@@ -139,9 +140,13 @@ abstract class Layout<T> {
     return encodeBytes;
   }
 
-  LayoutDecodeResult<T> deserialize(List<int> bytes) {
+  String serializeHex(T source, {String? prefix}) {
+    return BytesUtils.toHexString(serialize(source), prefix: prefix);
+  }
+
+  LayoutDecodeResult<T> deserialize(List<int> bytes, {int offset = 0}) {
     final reader = LayoutByteReader(bytes);
-    final decodeBytes = decode(reader);
+    final decodeBytes = decode(reader, offset: offset);
     return decodeBytes;
   }
 }

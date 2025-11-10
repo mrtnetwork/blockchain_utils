@@ -15,6 +15,9 @@ class EthAddrConst {
 
   /// The total length of an Ethereum address in hexadecimal characters.
   static const int addrLen = 40;
+
+  /// The total length of an Ethereum address in bytes.
+  static const int addrLenBytes = 20;
 }
 
 /// Utility class for Ethereum address-related operations.

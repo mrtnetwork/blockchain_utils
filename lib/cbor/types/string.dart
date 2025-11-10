@@ -1,8 +1,8 @@
+import 'package:blockchain_utils/cbor/core/cbor.dart';
+import 'package:blockchain_utils/cbor/core/tags.dart';
+import 'package:blockchain_utils/cbor/utils/dynamic_bytes.dart';
 import 'package:blockchain_utils/helper/helper.dart';
 import 'package:blockchain_utils/utils/utils.dart';
-import 'package:blockchain_utils/cbor/utils/dynamic_bytes.dart';
-import 'package:blockchain_utils/cbor/core/tags.dart';
-import 'package:blockchain_utils/cbor/core/cbor.dart';
 
 /// A class representing a CBOR (Concise Binary Object Representation) String value.
 abstract class CborString<T> extends CborObject<T> {
@@ -15,6 +15,7 @@ abstract class CborString<T> extends CborObject<T> {
     return _encode();
   }
 
+  @override
   String getValue();
 
   /// Encode the value into CBOR bytes an then to hex

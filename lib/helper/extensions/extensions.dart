@@ -31,21 +31,47 @@ extension ListHelper<T> on List<T> {
   }
 
   List<T>? get emptyAsNull => isEmpty ? null : this;
-  List<T> exceptedLen(int len, {String? message}) {
-    if (length != len) {
-      throw ArgumentException(message ?? 'List length mismatch. ',
-          details: {"expected": len, "actual": length});
+  List<T> max(int length, {String? name}) {
+    if (this.length > length) {
+      throw ArgumentException(
+          "Incorrect ${name == null ? '' : '$name '}array length.",
+          details: {'maximum': length, 'length': this.length});
     }
     return this;
   }
 
-  List<T> max(int len, {String? message}) {
-    if (length > len) {
-      throw ArgumentException(message ?? 'List too long.',
-          details: {"max": len, "actual": length});
+  List<T> min(int length, {String? name}) {
+    if (this.length < length) {
+      throw ArgumentException(
+          "Incorrect ${name == null ? '' : '$name '}array length.",
+          details: {'minimum': length, 'length': this.length});
     }
     return this;
   }
+
+  List<T> exc(int length, {String? name}) {
+    if (this.length != length) {
+      throw ArgumentException(
+          "Incorrect ${name == null ? '' : '$name '}array length.",
+          details: {'expected': length, 'length': this.length});
+    }
+    return this;
+  }
+  // List<T> exceptedLen(int len, {String? message}) {
+  //   if (length != len) {
+  //     throw ArgumentException(message ?? 'List length mismatch. ',
+  //         details: {"expected": len, "actual": length});
+  //   }
+  //   return this;
+  // }
+
+  // List<T> max(int len, {String? message}) {
+  //   if (length > len) {
+  //     throw ArgumentException(message ?? 'List too long.',
+  //         details: {"max": len, "actual": length});
+  //   }
+  //   return this;
+  // }
 }
 
 extension IterableIntHelper on Iterable<int> {
@@ -91,6 +117,8 @@ extension MapHelper<K, V> on Map<K, V> {
     if (immutable) return this.immutable;
     return Map<K, V>.from(this);
   }
+
+  Map<K, V> get notNullValue => clone()..removeWhere((k, v) => v == null);
 }
 
 extension BigIntHelper on BigInt {

@@ -5,6 +5,7 @@ import 'package:blockchain_utils/bip/address/encoder.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
 import 'package:blockchain_utils/helper/extensions/extensions.dart';
 import 'package:blockchain_utils/utils/string/string.dart';
+
 import 'decoder.dart';
 import 'exception/exception.dart';
 

@@ -1,8 +1,8 @@
 import 'package:blockchain_utils/cbor/exception/exception.dart';
 import 'package:blockchain_utils/cbor/extention/extenton.dart';
-import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/cbor/types/types.dart';
 import 'package:blockchain_utils/cbor/utils/cbor_utils.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 
 /// An abstract class representing a CBOR (Concise Binary Object Representation) object.
 /// CBOR objects can hold various data types and optional tags, providing a flexible way
@@ -72,6 +72,8 @@ abstract class CborObject<T> {
   static T deserialize<T extends CborObject>(List<int> bytes) {
     return CborObject.fromCbor(bytes).cast();
   }
+
+  Object? getValue() => value;
 }
 
 // An abstract class representing a numeric CBOR (Concise Binary Object Representation) object.

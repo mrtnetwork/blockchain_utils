@@ -157,3 +157,11 @@ mixin BaseServiceProvider<PARAMS extends BaseServiceRequestParams> {
   Future<BaseServiceResponse<T>> doRequest<T>(PARAMS params,
       {Duration? timeout});
 }
+
+/// A mixin for providing JSON-RPC service functionality.
+abstract mixin class MultichainServiceProvider
+    implements BaseServiceProvider<BaseServiceRequestParams> {
+  @override
+  Future<BaseServiceResponse<T>> doRequest<T>(BaseServiceRequestParams params,
+      {Duration? timeout});
+}

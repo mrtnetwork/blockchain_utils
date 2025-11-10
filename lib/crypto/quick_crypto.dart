@@ -142,6 +142,17 @@ class QuickCrypto {
   }) =>
       _blake2bHash(data, blake2b32DigestSize, key: key, salt: salt);
 
+  /// Define the size of BLAKE2b-32 digests, which is 4 bytes (32 bits)
+  static const int blake2b64DigestSize = 8;
+
+  /// Calculate the BLAKE2b-64 hash of the input data
+  static List<int> blake2b64Hash(
+    List<int> data, {
+    List<int>? key,
+    List<int>? salt,
+  }) =>
+      _blake2bHash(data, blake2b64DigestSize, key: key, salt: salt);
+
   static List<int> _xxHash(List<int> data, int digestSize) {
     return XXHash64.hash(data, bitlength: digestSize * 8);
   }

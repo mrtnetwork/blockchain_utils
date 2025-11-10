@@ -52,6 +52,7 @@ class CompareUtils {
 
       final valueA = a[key];
       final valueB = b[key];
+      if (valueA == null && valueB == null) continue;
 
       if (valueA is Map && valueB is Map) {
         // Recursively compare maps

@@ -1,6 +1,7 @@
 import 'package:blockchain_utils/bip/mnemonic/mnemonic.dart';
 import 'package:blockchain_utils/bip/mnemonic/mnemonic_utils.dart';
-import 'package:blockchain_utils/exception/const/const.dart';
+import 'package:blockchain_utils/exception/exception/exception.dart';
+
 import 'words_list/languages.dart' as languages;
 
 /// An enumeration representing the number of words in a Monero mnemonic.
@@ -37,8 +38,7 @@ class MoneroWordsNum {
 
   static MoneroWordsNum fromValue(int? value) {
     return values.firstWhere((e) => e.value == value,
-        orElse: () =>
-            throw ExceptionConst.itemNotFound(item: "Monero words number"));
+        orElse: () => throw ItemNotFoundException(value: value));
   }
 }
 
@@ -110,8 +110,7 @@ class MoneroLanguages implements MnemonicLanguages {
 
   static MoneroLanguages fromValue(String? value) {
     return values.firstWhere((e) => e.name == value,
-        orElse: () => throw ExceptionConst.itemNotFound(
-            item: "Monero ${value ?? ''} language"));
+        orElse: () => throw ItemNotFoundException(value: value));
   }
 }
 

@@ -1,4 +1,4 @@
-import '../binary/binary_operation.dart';
+import 'package:blockchain_utils/utils/binary/binary_operation.dart';
 
 /// A utility class for generating consistent and efficient hash codes
 /// for collections and objects.
@@ -33,6 +33,43 @@ class HashCodeGenerator {
         hash = (hash ^ element.hashCode) & mask32;
       }
     }
+    return hash;
+  }
+
+  static int generateHashCodeNew(Object? object, {bool sorting = false}) {
+    int hash = 12;
+
+    if (object == null) {
+      return hash ^ 0;
+    } else if (object is Map) {
+      var entries = object.entries;
+      if (sorting) {
+        // Sort by key hash to ensure consistent order
+        entries = entries.toList()
+          ..sort((a, b) => a.key.hashCode.compareTo(b.key.hashCode));
+      }
+      for (final entry in entries) {
+        hash =
+            (hash ^ generateHashCodeNew(entry.key, sorting: sorting)) & mask32;
+        hash = (hash ^ generateHashCodeNew(entry.value, sorting: sorting)) &
+            mask32;
+      }
+    } else if (object is Iterable) {
+      var elements = object;
+      if (sorting) {
+        // Sort elements by hash to ensure consistent order
+        elements = elements.toList()
+          ..sort((a, b) => a.hashCode.compareTo(b.hashCode));
+      }
+      for (final element in elements) {
+        hash = (hash ^ generateHashCodeNew(element, sorting: sorting)) & mask32;
+      }
+    } else {
+      hash = (hash ^ object.hashCode) & mask32;
+    }
+
+    // Final mix step to reduce collisions
+    hash = ((hash << 3) | (hash >> 29)) & mask32;
     return hash;
   }
 }

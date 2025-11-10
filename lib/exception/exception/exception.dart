@@ -1,3 +1,5 @@
+import 'package:blockchain_utils/helper/helper.dart';
+
 /// An abstract class 'BlockchainUtilsException' that implements the Exception interface.
 /// This class serves as a base for custom exceptions related to blockchain utility operations.
 abstract class BlockchainUtilsException implements Exception {
@@ -36,4 +38,24 @@ class MessageException extends BlockchainUtilsException {
 class GenericException extends BlockchainUtilsException {
   /// Constructor to initialize the exception with a specific message.
   const GenericException(super.message, {super.details});
+}
+
+class ItemNotFoundException extends BlockchainUtilsException {
+  final Object? value;
+
+  /// Constructor to initialize the exception with a specific message.
+  ItemNotFoundException(
+      {this.value, String? message, Map<String, dynamic>? details})
+      : super(message ?? "No matching item found for the given value.",
+            details: {"value": value});
+}
+
+class CastFailedException<T> extends BlockchainUtilsException {
+  final Object? value;
+  CastFailedException(
+      {this.value, String? message, Map<String, dynamic>? details})
+      : super(message ?? "Failed to cast value",
+            details: details ??
+                {"expected": T.toString(), "value": value?.runtimeType}
+                    .notNullValue);
 }

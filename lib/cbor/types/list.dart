@@ -1,7 +1,7 @@
-import 'package:blockchain_utils/utils/utils.dart';
-import 'package:blockchain_utils/cbor/utils/dynamic_bytes.dart';
-import 'package:blockchain_utils/cbor/core/tags.dart';
 import 'package:blockchain_utils/cbor/core/cbor.dart';
+import 'package:blockchain_utils/cbor/core/tags.dart';
+import 'package:blockchain_utils/cbor/utils/dynamic_bytes.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 
 /// A class representing a CBOR (Concise Binary Object Representation) List value.
 class CborListValue<T extends CborObject> extends CborIterableObject<List<T>> {
@@ -52,5 +52,10 @@ class CborListValue<T extends CborObject> extends CborIterableObject<List<T>> {
   @override
   String toString() {
     return value.join(",");
+  }
+
+  @override
+  Object getValue() {
+    return value.map((e) => e.getValue()).toList();
   }
 }

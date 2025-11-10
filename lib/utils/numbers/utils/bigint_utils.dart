@@ -1,9 +1,10 @@
 import 'dart:typed_data';
+
+import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/utils/binary/binary_operation.dart';
 import 'package:blockchain_utils/utils/binary/utils.dart';
 import 'package:blockchain_utils/utils/string/string.dart';
 import 'package:blockchain_utils/utils/tuple/tuple.dart';
-import 'package:blockchain_utils/exception/exceptions.dart';
 
 class BigintUtils {
   static BigInt max(BigInt a, BigInt b) {
@@ -397,5 +398,57 @@ class BigintUtils {
       }
     }
     throw const MessageException("Nat Decode failed.");
+  }
+
+  static List<BigInt> splitU256ToU64Parts(BigInt number,
+      {Endian order = Endian.big}) {
+    if (number.isNegative || number.bitLength > 256) {
+      if (number.isNegative) {
+        throw ArgumentException(
+          'Invalid unsigned integer.',
+          details: {'number': number.toString()},
+        );
+      }
+      throw ArgumentException(
+        'Number is too large for UInt256.',
+        details: {'number': number.toString()},
+      );
+    }
+
+    final BigInt hiHi = (number >> 192).toUnsigned(64);
+    final BigInt hiLo = (number >> 128).toUnsigned(64);
+    final BigInt loHi = (number >> 64).toUnsigned(64);
+    final BigInt loLo = number.toUnsigned(64);
+
+    // Return order depends on Endian type
+    if (order == Endian.little) {
+      // Matches Rust/Substrate `[u64;4]` layout (little-endian)
+      return [loLo, loHi, hiLo, hiHi];
+    } else {
+      // Big-endian (most significant first)
+      return [hiHi, hiLo, loHi, loLo];
+    }
+  }
+
+  static BigInt combineU256FromU64Parts(List<BigInt> parts,
+      {Endian order = Endian.big}) {
+    if (parts.length != 4) {
+      throw ArgumentException('Expected exactly 4 parts for UInt256.',
+          details: {'parts': parts.toString()});
+    }
+
+    BigInt result = BigInt.zero;
+
+    if (order == Endian.little) {
+      // Little-endian: [loLo, loHi, hiLo, hiHi]
+      result =
+          (parts[3] << 192) | (parts[2] << 128) | (parts[1] << 64) | parts[0];
+    } else {
+      // Big-endian: [hiHi, hiLo, loHi, loLo]
+      result =
+          (parts[0] << 192) | (parts[1] << 128) | (parts[2] << 64) | parts[3];
+    }
+
+    return result;
   }
 }

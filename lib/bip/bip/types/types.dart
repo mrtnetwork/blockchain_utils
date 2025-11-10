@@ -1,4 +1,4 @@
-import 'package:blockchain_utils/exception/const/const.dart';
+import 'package:blockchain_utils/exception/exception/exception.dart';
 
 /// Enumeration representing different modes for public keys used in P2PKH addresses.
 ///
@@ -16,7 +16,7 @@ enum PubKeyModes {
   static PubKeyModes fromValue(int? value, {PubKeyModes? defaultValue}) {
     return values.firstWhere((e) => e.value == value, orElse: () {
       if (defaultValue != null && value == null) return defaultValue;
-      throw ExceptionConst.itemNotFound(item: 'public format');
+      throw ItemNotFoundException(value: value);
     });
   }
 }

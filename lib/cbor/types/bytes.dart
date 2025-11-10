@@ -1,11 +1,12 @@
+import 'package:blockchain_utils/cbor/core/cbor.dart';
+import 'package:blockchain_utils/cbor/core/tags.dart';
+import 'package:blockchain_utils/cbor/utils/dynamic_bytes.dart';
 import 'package:blockchain_utils/helper/helper.dart';
 import 'package:blockchain_utils/utils/utils.dart';
-import 'package:blockchain_utils/cbor/utils/dynamic_bytes.dart';
-import 'package:blockchain_utils/cbor/core/tags.dart';
-import 'package:blockchain_utils/cbor/core/cbor.dart';
 
 abstract class CborBytes<T> extends CborObject<T> {
   const CborBytes(super.value);
+  @override
   List<int> getValue();
 
   /// Returns the string representation of the value.

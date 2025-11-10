@@ -1,4 +1,5 @@
 import 'dart:typed_data';
+
 import 'package:blockchain_utils/layout/core/core.dart';
 import 'package:blockchain_utils/layout/core/types/compact_string.dart';
 import 'package:blockchain_utils/layout/exception/exception.dart';
@@ -558,6 +559,28 @@ class LayoutConst {
     );
   }
 
+  static CustomLayout byteArray(int length,
+      {bool resultAsHex = false, String? property}) {
+    final layout = struct([
+      seq(u8(), ConstantLayout(length), property: 'values'),
+    ]);
+    return CustomLayout<Map<String, dynamic>, dynamic>(
+      layout: layout,
+      decoder: (data) {
+        final bytes = (data['values'] as List).cast<int>();
+        if (resultAsHex) return BytesUtils.toHexString(bytes);
+        return bytes;
+      },
+      encoder: (values) {
+        if (values is String) {
+          return {'values': BytesUtils.fromHexString(values)};
+        }
+        return {'values': values};
+      },
+      property: property,
+    );
+  }
+
   static CustomLayout greedyArray(Layout elementLayout, {String? property}) {
     final layout = struct([
       seq(elementLayout, greedy(elementSpan: elementLayout.span),
@@ -631,6 +654,23 @@ class LayoutConst {
       layout: layout,
       encoder: (data) => {"values": data},
       decoder: (data) => (data["values"] as List).cast<T>(),
+      property: property,
+    );
+  }
+
+  static Layout compactBytes({bool resultAsHex = false, String? property}) {
+    final layout = struct([seq(u8(), compactOffset(), property: 'values')]);
+    return CustomLayout<Map<String, dynamic>, dynamic>(
+      layout: layout,
+      encoder: (data) {
+        if (data is String) return {"values": BytesUtils.fromHexString(data)};
+        return {"values": data};
+      },
+      decoder: (data) {
+        final bytes = (data["values"] as List).cast<int>();
+        if (resultAsHex) return BytesUtils.toHexString(bytes);
+        return bytes;
+      },
       property: property,
     );
   }

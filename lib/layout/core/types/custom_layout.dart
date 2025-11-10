@@ -52,3 +52,8 @@ class CustomLayout<T, D> extends Layout<D> {
         property: newProperty);
   }
 }
+
+/// Represents a custom layout with customized encoding and decoding functions.
+typedef WrappedLayoutDecoder2<T, D, F> = F Function(T value);
+
+typedef WrappedLayoutEncoder2<T, D, F> = T Function(F source);

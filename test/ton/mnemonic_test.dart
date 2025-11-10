@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:blockchain_utils/blockchain_utils.dart';
 import 'package:test/test.dart';
 
@@ -36,36 +34,6 @@ List<String> bytesToBip39Mnemonic(List<int> bytes) {
 }
 
 void main() {
-  print([
-    "woman",
-    "harvest",
-    "crawl",
-    "blind",
-    "piece",
-    "portion",
-    "draft",
-    "write",
-    "win",
-    "coil",
-    "lawsuit",
-    "illegal"
-  ].join(" "));
-  // return;
-  // for (int c = 8; c < 41; c++) {
-  //   for (int i = 0; i < 1000; i++) {
-  //     final mnemoci = List.generate(
-  //         c,
-  //         (i) => Bip39Languages.english.wordList
-  //             .elementAt(Random.secure().nextInt(2048)));
-  //     // print(mnemoci.toStr());
-  //     assert(CompareUtils.iterableIsEqual(
-  //         bytesToBip39Mnemonic(
-  //             bip39MnemonicToBytes(Mnemonic.fromList(mnemoci))),
-  //         mnemoci.toList()));
-  //     print('done!');
-  //   }
-  // }
-  // return;
   group("Ton Mnemonic", _test);
 }
 
@@ -161,7 +129,6 @@ void _test() {
         seed.sublist(0, Ed25519KeysConst.privKeyByteLen));
     expect(privateKey.toHex(),
         "b91ad008bdf851289acaa77401612674ea3906eba0ca044374ff38f2a170ba85");
-    print(privateKey.publicKey.toHex());
   });
   test("validate mnemonic", () {
     final mnemonic = [

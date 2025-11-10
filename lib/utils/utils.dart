@@ -1,4 +1,5 @@
 export 'amount/amount.dart';
+export 'atomic/atomic.dart';
 export 'binary/binary_operation.dart';
 export 'binary/bit_utils.dart';
 export 'binary/bytes_tracker.dart';

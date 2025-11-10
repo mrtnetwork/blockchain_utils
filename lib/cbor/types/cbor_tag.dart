@@ -1,7 +1,7 @@
+import 'package:blockchain_utils/cbor/core/cbor.dart';
+import 'package:blockchain_utils/cbor/utils/dynamic_bytes.dart';
 import 'package:blockchain_utils/helper/helper.dart';
 import 'package:blockchain_utils/utils/utils.dart';
-import 'package:blockchain_utils/cbor/utils/dynamic_bytes.dart';
-import 'package:blockchain_utils/cbor/core/cbor.dart';
 
 /// A class representing a CBOR (Concise Binary Object Representation) tag value.
 class CborTagValue<T extends CborObject> extends CborObject<T> {
@@ -30,5 +30,10 @@ class CborTagValue<T extends CborObject> extends CborObject<T> {
   @override
   String toString() {
     return value.toString();
+  }
+
+  @override
+  Object? getValue() {
+    return value.getValue();
   }
 }
