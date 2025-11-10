@@ -427,7 +427,7 @@ class LayoutConst {
   }
 
   /// Rust String values.
-  static rustString({String? property}) {
+  static CustomLayout rustString({String? property}) {
     return CustomLayout(
         layout: rustVecU8(),
         decoder: (bytes) => StringUtils.decode(bytes as List<int>),

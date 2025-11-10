@@ -1,6 +1,6 @@
 name: blockchain_utils
 description: Comprehensive Crypto & Blockchain Toolkit, Pure Dart, Cross-Platform, Encoding, Cryptography, Addresses, Mnemonics, & More.
-version: 5.3.0
+version: 5.4.0
 homepage: "https://github.com/mrtnetwork/blockchain_utils"
 repository: "https://github.com/mrtnetwork/blockchain_utils"
 Author: mrhaydari.t@gmail.com
@@ -19,9 +19,9 @@ dependencies:
 
 
 dev_dependencies:
-  lints: ^5.0.0
-  test: ^1.25.9
-  flutter_lints: ^5.0.0
+  lints: ^6.0.0
+  test: ^1.26.3
+  flutter_lints: ^6.0.0
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 

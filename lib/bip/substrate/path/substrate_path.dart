@@ -1,7 +1,7 @@
+import 'package:blockchain_utils/bip/substrate/exception/substrate_ex.dart';
 import 'package:blockchain_utils/bip/substrate/scale/substrate_scale_enc_base.dart';
 import 'package:blockchain_utils/bip/substrate/scale/substrate_scale_enc_bytes.dart';
 import 'package:blockchain_utils/bip/substrate/scale/substrate_scale_enc_uint.dart';
-import 'package:blockchain_utils/bip/substrate/exception/substrate_ex.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
 
 /// A constants class that provides predefined values and regular expressions related to Substrate paths
@@ -113,7 +113,7 @@ class SubstratePathElem {
 
 /// Represents a Substrate path, which is an ordered sequence of [SubstratePathElem] elements.
 /// This class provides methods for creating, manipulating, and serializing paths.
-class SubstratePath extends Iterable {
+class SubstratePath extends Iterable<SubstratePathElem> {
   /// A list of path elements that make up the Substrate path.
   final List<SubstratePathElem> elems;
 
@@ -142,7 +142,7 @@ class SubstratePath extends Iterable {
 
   /// Returns an iterator for iterating over the path elements.
   @override
-  Iterator get iterator => elems.iterator;
+  Iterator<SubstratePathElem> get iterator => elems.iterator;
 }
 
 /// Parses a string representation of a Substrate path and returns a [SubstratePath] object.

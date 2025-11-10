@@ -71,7 +71,7 @@ class _Keccack {
   }
 
   /// Clean up the internal state and reset hash object to its initial state.
-  clean() => reset();
+  void clean() => reset();
 
   void _padAndPermute(int? paddingByte) {
     if (paddingByte != null) {

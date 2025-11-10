@@ -1,10 +1,10 @@
-import 'package:blockchain_utils/crypto/crypto/exception/exception.dart';
-import 'package:blockchain_utils/utils/utils.dart';
+import 'dart:math' as math;
+
 import 'package:blockchain_utils/crypto/crypto/aead/aead.dart';
 import 'package:blockchain_utils/crypto/crypto/blockcipher/blockcipher.dart';
 import 'package:blockchain_utils/crypto/crypto/ctr/ctr.dart';
-
-import 'dart:math' as math;
+import 'package:blockchain_utils/crypto/crypto/exception/exception.dart';
+import 'package:blockchain_utils/utils/utils.dart';
 
 /// Galois/Counter Mode (GCM) implementation for authenticated encryption with associated data (AEAD).
 ///
@@ -170,7 +170,7 @@ class GCM implements AEAD {
     return this;
   }
 
-  _authenticate(List<int> tagOut, List<int> tagMask, List<int> ciphertext,
+  void _authenticate(List<int> tagOut, List<int> tagMask, List<int> ciphertext,
       [List<int>? associatedData]) {
     final blockSize = _cipher.blockSize;
     if (associatedData != null) {
