@@ -13,7 +13,7 @@ void main() {
       final w = CardanoByronLegacy.fromSeed(seed);
       final masterPrivate = w.masterPrivateKey.raw.toHex();
       final masterPub = w.masterPublicKey.compressed.toHex();
-      final chainCode = w.masterPrivateKey.chainCode.toHex();
+      final chainCode = w.masterPrivateKey.keyData.chainCode.toHex();
       final hdKey = w.hdPathKey.toHex();
       expect(masterPrivate, i["private"]);
       expect(masterPub, i["public"]);
@@ -22,13 +22,15 @@ void main() {
       for (final c in (i["child"] as List)) {
         final firstIndex = Bip32KeyIndex(c["first_index"]);
         final secondIndex = Bip32KeyIndex(c["second_index"]);
-        final cPrivate = w
-            .getPrivateKey(firstIndex: firstIndex, secondIndex: secondIndex)
-            .toExtended;
+        final cPrivate =
+            w
+                .getPrivateKey(firstIndex: firstIndex, secondIndex: secondIndex)
+                .toExtended;
         expect(cPrivate, c["private"]);
-        final cPublic = w
-            .getPublicKey(firstIndex: firstIndex, secondIndex: secondIndex)
-            .toExtended;
+        final cPublic =
+            w
+                .getPublicKey(firstIndex: firstIndex, secondIndex: secondIndex)
+                .toExtended;
         expect(cPublic, c["public"]);
         final addr = w.getAddress(firstIndex, secondIndex);
         expect(addr, c["address"]);

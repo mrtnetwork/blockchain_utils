@@ -1,22 +1,21 @@
 import 'package:blockchain_utils/bip/bip/conf/bip/bip_coins.dart';
 import 'package:blockchain_utils/bip/bip/conf/bip86/bip86_conf.dart';
 import 'package:blockchain_utils/bip/bip/conf/config/bip_coin_conf.dart';
-import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
+import 'package:blockchain_utils/bip/bip/conf/core/coins.dart';
+import 'package:blockchain_utils/helper/extensions/extensions.dart';
 
 /// An enumeration of supported cryptocurrencies for BIP86. It includes both main
 /// networks and test networks of various cryptocurrencies.
-class Bip86Coins extends BipCoins {
-  /// mainnets
-  static const Bip86Coins bitcoin = Bip86Coins._('bitcoin');
+enum Bip86Coins implements BipCoins {
+  // Mainnets
+  bitcoin('bitcoin'),
 
-  /// testnets
-  static const Bip86Coins bitcoinTestnet = Bip86Coins._('bitcoinTestnet');
-
-  static const List<Bip86Coins> values = [bitcoin, bitcoinTestnet];
+  // Testnets
+  bitcoinTestnet('bitcoinTestnet');
 
   final String name;
 
-  const Bip86Coins._(this.name);
+  const Bip86Coins(this.name);
 
   @override
   Bip86Coins get value {
@@ -29,30 +28,18 @@ class Bip86Coins extends BipCoins {
   }
 
   @override
-  BipCoinConfig get conf => _coinToConf[this]!;
+  BipCoinConfig get conf {
+    final config = Bip86Conf();
+    return switch (this) {
+      bitcoin => config.bitcoinMainNet,
+      bitcoinTestnet => config.bitcoinTestNet,
+    };
+  }
 
   static Bip86Coins? fromName(String name) {
-    try {
-      return _coinToConf.keys.firstWhere((element) => element.name == name);
-    } on StateError {
-      return null;
-    }
+    return values.firstWhereNullable((element) => element.name == name);
   }
-
-  static List<Bip86Coins> fromCurve(EllipticCurveTypes type) {
-    return _coinToConf.entries
-        .where((element) => element.value.type == type)
-        .map((e) => e.key)
-        .toList();
-  }
-
-  /// A mapping that associates each BIP86Coin (enum) with its corresponding
-  /// BipCoinConfig configuration.
-  static final Map<Bip86Coins, BipCoinConfig> _coinToConf = {
-    Bip86Coins.bitcoin: Bip86Conf.bitcoinMainNet,
-    Bip86Coins.bitcoinTestnet: Bip86Conf.bitcoinTestNet,
-  };
 
   @override
-  BipProposal get proposal => BipProposal.bip86;
+  CoinProposal get proposal => CoinProposal.bip86;
 }

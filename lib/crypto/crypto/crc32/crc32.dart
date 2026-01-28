@@ -1,18 +1,10 @@
-import 'package:blockchain_utils/utils/utils.dart';
+import 'package:blockchain_utils/utils/binary/binary_operation.dart';
 
 /// A class for calculating cyclic redundancy check (CRC32) values.
 ///
-/// The `Crc32` class provides methods for calculating CRC32 checksums for data, which are often
-/// used for error-checking and data integrity verification. It supports various CRC32 algorithms
-/// and can be used to generate checksums for different data sources.
-///
-/// Usage:
-/// To use this class, create an instance of `Crc32`, select the CRC32 algorithm you need, and then
-/// use the provided methods to calculate CRC32 checksums for your data.
-///
 /// Note: The `Crc32` class can be customized with different algorithms and options for specific use cases.
 class Crc32 {
-  static const List<int> _crcTable = [
+  final List<int> _crcTable = [
     0x00000000,
     0x77073096,
     0xee0e612c,
@@ -268,27 +260,18 @@ class Crc32 {
     0xb40bbe37,
     0xc30c8ea1,
     0x5a05df1b,
-    0x2d02ef8d
+    0x2d02ef8d,
   ];
 
   /// Computes a quick integer digest (CRC32) for the provided data.
   ///
-  /// This method calculates a 32-bit cyclic redundancy check (CRC) integer digest for the input
-  /// `List<int>` data. It iterates through the data, updating the CRC value accordingly.
-  ///
   /// Parameters:
-  /// - `data`: The input data for which the CRC32 digest will be calculated.
-  ///
-  /// Returns:
-  /// - A 32-bit integer representing the computed CRC32 digest of the input data.
-  ///
-  /// Note: CRC32 is a checksum algorithm used to detect errors in data transmission or storage.
-  /// The returned integer is a digest of the input data, providing a compact representation of its content.
-  static int quickIntDigest(List<int> data) {
-    int crc = mask32;
+  /// - [data]: The input data for which the CRC32 digest will be calculated.
+  int quickIntDigest(List<int> data) {
+    int crc = BinaryOps.mask32;
     for (final byte in data) {
-      crc = (crc >> 8) ^ _crcTable[(crc ^ byte) & mask8];
+      crc = (crc >> 8) ^ _crcTable[(crc ^ byte) & BinaryOps.mask8];
     }
-    return crc ^ mask32;
+    return crc ^ BinaryOps.mask32;
   }
 }

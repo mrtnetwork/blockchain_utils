@@ -18,7 +18,6 @@ import 'dart:typed_data';
 
 import 'package:blockchain_utils/cbor/core/tags.dart';
 import 'package:blockchain_utils/cbor/exception/exception.dart';
-import 'package:blockchain_utils/utils/utils.dart';
 
 // Enum representing different floating-point formats and their characteristics.
 class FloatLength {
@@ -49,29 +48,32 @@ class FloatLength {
   }
 
   // Enum values as a list for iteration
-  static const List<FloatLength> values = [
-    bytes16,
-    bytes32,
-    bytes64,
-  ];
+  static const List<FloatLength> values = [bytes16, bytes32, bytes64];
 
   // Enum value accessor by index
   static FloatLength getByIndex(int index) {
-    if (index >= 0 && index < values.length) {
-      return values[index];
+    final v = values.elementAtOrNull(index);
+    if (v == null) {
+      throw CborException("Invalid float length index.");
     }
-    throw CborException('Index out of bounds', details: {"input": index});
+    return v;
   }
 }
 
 class FloatUtils {
-  FloatUtils(this.value);
+  FloatUtils(this.value, [Endian? endian])
+    : _isLess = _isLessThan(value, endian);
   final double value;
-  late final _isLess = _isLessThan(value);
-  bool get isLessThan32 => _isLess.item2;
-  bool get isLessThan16 => _isLess.item1;
+  final (bool, bool) _isLess;
+  bool get isLessThan32 => _isLess.$2;
+  bool get isLessThan16 => _isLess.$1;
+  FloatLength get type {
+    if (isLessThan16) return FloatLength.bytes16;
+    if (isLessThan32) return FloatLength.bytes32;
+    return FloatLength.bytes64;
+  }
 
-  static Tuple<int, int> _decodeBits(int bits) {
+  static (int, int) _decodeBits(int bits) {
     const int mantissaBitLength = 52;
     const int exponentBitLength = 11;
     const exponentBias = (1 << (exponentBitLength - 1)) - 1;
@@ -97,13 +99,13 @@ class FloatUtils {
       mantissa >>= 1;
       exponent += 1;
     }
-    return Tuple(mantissa, exponent);
+    return (mantissa, exponent);
   }
 
   static int _toBits(double value, [Endian? endian]) {
     List<int> toBytes = Float64List.fromList([value]).buffer.asUint8List();
     if ((endian ?? Endian.big) == Endian.big) {
-      toBytes = List<int>.from(toBytes.reversed, growable: false);
+      toBytes = toBytes.reversed.toList();
     }
     int bits = 0;
     for (final b in toBytes) {
@@ -122,20 +124,20 @@ class FloatUtils {
     return _dobuleLessThan(bits, type);
   }
 
-  static Tuple<bool, bool> _isLessThan(double value, [Endian? endian]) {
+  static (bool, bool) _isLessThan(double value, [Endian? endian]) {
     if (value.isNaN || value.isInfinite) {
-      return const Tuple(true, true);
+      return const (true, true);
     }
     final int bits = _toBits(value, endian);
     final isLesThan16 = _dobuleLessThan(bits, FloatLength.bytes16);
     if (isLesThan16) {
-      return const Tuple(true, true);
+      return const (true, true);
     }
     final isLessThan32 = _dobuleLessThan(bits, FloatLength.bytes32);
     if (isLessThan32) {
-      return const Tuple(false, true);
+      return const (false, true);
     }
-    return const Tuple(false, false);
+    return const (false, false);
   }
 
   static bool _dobuleLessThan(int bits, FloatLength type) {
@@ -143,17 +145,18 @@ class FloatUtils {
     final int exponentBitLength = type.exponentBitLength;
     final exponentBias = type.exponentBias;
     final de = _decodeBits(bits);
-    if (de.item1 == 0) {
+    if (de.$1 == 0) {
       return true;
     }
-    if (mantissaBitLength + 1 < de.item1.bitLength) {
+    if (mantissaBitLength + 1 < de.$1.bitLength) {
       return false;
     }
 
-    final exponent = de.item2 +
+    final exponent =
+        de.$2 +
         mantissaBitLength +
         exponentBias +
-        (de.item1.bitLength - (mantissaBitLength + 1));
+        (de.$1.bitLength - (mantissaBitLength + 1));
 
     if (exponent >= ((1 << exponentBitLength) - 1)) {
       return false;
@@ -164,8 +167,7 @@ class FloatUtils {
     }
 
     final subnormalExp = -(exponentBias - 1 + mantissaBitLength);
-    final subnormalMantissaLength =
-        de.item1.bitLength + de.item2 - subnormalExp;
+    final subnormalMantissaLength = de.$1.bitLength + de.$2 - subnormalExp;
 
     return subnormalMantissaLength > 0 &&
         subnormalMantissaLength <= mantissaBitLength;
@@ -208,7 +210,7 @@ class FloatUtils {
     // Specify the endianness when converting to List<int>
     final List<int> uint8List = float16View.buffer.asUint8List();
     if ((endianness ?? Endian.big) == Endian.big) {
-      return List<int>.from([uint8List[1], uint8List[0]]);
+      return [uint8List[1], uint8List[0]];
     } else {
       return uint8List;
     }
@@ -228,27 +230,30 @@ class FloatUtils {
 
   /// Encode the floating-point value into a byte representation using the specified floating-point format.
   /// Returns a tuple containing the encoded bytes and the format used.
-  Tuple<List<int>, FloatLength> toBytes(FloatLength? decodFloatType,
-      [Endian? endianness]) {
+  (List<int>, FloatLength) toBytes(
+    FloatLength? decodFloatType, {
+    Endian? endianness,
+    bool allowFloat16 = true,
+  }) {
     if (decodFloatType == null) {
-      if (isLessThan16) {
-        return Tuple(_encodeFloat16(endianness), FloatLength.bytes16);
+      if (allowFloat16 && isLessThan16) {
+        return (_encodeFloat16(endianness), FloatLength.bytes16);
       } else if (isLessThan32) {
-        return Tuple(_encodeFloat32(endianness), FloatLength.bytes32);
+        return (_encodeFloat32(endianness), FloatLength.bytes32);
       }
-      return Tuple(_encodeFloat64(endianness), FloatLength.bytes64);
+      return (_encodeFloat64(endianness), FloatLength.bytes64);
     }
     final List<int> bytes;
     switch (decodFloatType) {
       case FloatLength.bytes16:
         if (!isLessThan16) {
-          throw const CborException("overflow bytes");
+          throw CborException("Float value is larger that float 16.");
         }
         bytes = _encodeFloat16(endianness);
         break;
       case FloatLength.bytes32:
         if (!isLessThan32) {
-          throw const CborException("overflow bytes");
+          throw CborException("Float value is larger that float 32.");
         }
         bytes = _encodeFloat32(endianness);
         break;
@@ -256,14 +261,13 @@ class FloatUtils {
         bytes = _encodeFloat64(endianness);
         break;
     }
-    return Tuple(bytes, decodFloatType);
+    return (bytes, decodFloatType);
   }
 
   /// Decode a 16-bit floating-point value from a byte array and return it as a double.
   static double floatFromBytes16(List<int> bytes) {
     if (bytes.length != 2) {
-      throw const CborException(
-          'Input byte array must be exactly 2 bytes long for Float16');
+      throw CborException("Invalid bytes for float 16.");
     }
 
     final ByteData byteData = ByteData.sublistView(Uint8List.fromList(bytes));

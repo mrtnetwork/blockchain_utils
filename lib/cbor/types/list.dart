@@ -1,7 +1,8 @@
 import 'package:blockchain_utils/cbor/core/cbor.dart';
 import 'package:blockchain_utils/cbor/core/tags.dart';
+import 'package:blockchain_utils/cbor/utils/cbor_utils.dart';
 import 'package:blockchain_utils/cbor/utils/dynamic_bytes.dart';
-import 'package:blockchain_utils/utils/utils.dart';
+import 'package:blockchain_utils/utils/binary/utils.dart';
 
 /// A class representing a CBOR (Concise Binary Object Representation) List value.
 class CborListValue<T extends CborObject> extends CborIterableObject<List<T>> {
@@ -9,13 +10,17 @@ class CborListValue<T extends CborObject> extends CborIterableObject<List<T>> {
   /// It accepts the List of all cbor encodable value.
   ///
   CborListValue.definite(super.value)
-      : encoding = CborIterableEncodingType.definite;
+    : encoding = CborIterableEncodingType.definite;
 
   /// Constructor for creating a CborListValue instance with the provided parameters.
   /// It accepts the List of all cbor encodable value.
   /// this method encode values with indefinite tag.
   CborListValue.inDefinite(super.value)
-      : encoding = CborIterableEncodingType.inDefinite;
+    : encoding = CborIterableEncodingType.inDefinite;
+
+  factory CborListValue.decode(List<int> bytes) {
+    return CborUtils.decodeCbor(bytes);
+  }
 
   @override
   final CborIterableEncodingType encoding;

@@ -14,66 +14,35 @@ class P2WPKHAddrConst {
 }
 
 /// Implementation of the [BlockchainAddressDecoder] for Segwit (P2WPKH) addresses.
-class P2WPKHAddrDecoder implements BlockchainAddressDecoder {
+class P2WPKHAddrDecoder implements BlockchainAddressDecoder<List<int>> {
   /// Overrides the base class method to decode a P2WPKH address.
-  ///
-  /// This method decodes a P2WPKH address from the given input string using the Bech32
-  /// encoding. It expects an optional map of keyword arguments, with the 'hrp' key
-  /// specifying the Human-Readable Part (HRP) of the address. It validates the arguments,
-  /// decodes the address, checks the witness version, and returns the decoded address as a `List<int>`.
-  ///
-  /// Parameters:
-  ///   - addr: The Bech32-encoded P2WPKH address to be decoded.
-  ///   - kwargs: Optional keyword arguments, with 'hrp' for the Human-Readable Part.
-  ///
-  /// Returns:
-  ///   A `List<int>` containing the decoded P2WPKH address bytes.
-  ///
-  /// Throws:
-  ///   - FormatException if the provided address has an incorrect witness version.
-  ///   - ArgumentException if the Bech32 checksum is invalid.
   @override
-  List<int> decodeAddr(String addr, [Map<String, dynamic> kwargs = const {}]) {
-    /// Validate address arguments and retrieve the Human-Readable Part (HRP)
-    AddrKeyValidator.validateAddressArgs<String>(kwargs, "hrp");
-    final String hrp = kwargs['hrp'];
+  List<int> decodeAddr(String addr, {String? hrp}) {
+    hrp = AddrKeyValidator.getAddrArg<String>(hrp, "hrp");
 
     /// Decode the Bech32-encoded P2WPKH address, and validate its length.
     final decoded = SegwitBech32Decoder.decode(hrp, addr);
-    final witVerGot = decoded.item1;
-    final addrDecBytes = decoded.item2;
+    final witVerGot = decoded.$1;
+    final addrDecBytes = decoded.$2;
 
     /// Check the witness version.
     if (witVerGot != P2WPKHAddrConst.witnessVer) {
-      throw AddressConverterException(
-          'Invalid witness version (expected ${P2WPKHAddrConst.witnessVer}, got $witVerGot)');
+      throw AddressConverterException.addressValidationFailed(
+        reason: "Invalid address checksum",
+      );
     }
 
     /// Return the decoded P2WPKH address as a `List<int>`.
-    return List<int>.from(addrDecBytes);
+    return addrDecBytes;
   }
 }
 
 /// Implementation of the [BlockchainAddressEncoder] for Segwit (P2WPKH) addresses.
 class P2WPKHAddrEncoder implements BlockchainAddressEncoder {
   /// Overrides the base class method to encode a public key as a P2WPKH address.
-  ///
-  /// This method encodes a public key as a Pay-to-Witness-Public-Key-Hash (P2WPKH) address
-  /// using Bech32 encoding. It expects an optional map of keyword arguments, with the 'hrp'
-  /// key specifying the Human-Readable Part (HRP) for the address. It validates the arguments,
-  /// processes the public key as a Secp256k1 key, and encodes it as a P2WPKH address.
-  ///
-  /// Parameters:
-  ///   - pubKey: The public key to be encoded as a P2WPKH address.
-  ///   - kwargs: Optional keyword arguments, with 'hrp' for the Human-Readable Part.
-  ///
-  /// Returns:
-  ///   A String representing the P2WPKH address encoded from the provided public key.
   @override
-  String encodeKey(List<int> pubKey, [Map<String, dynamic> kwargs = const {}]) {
-    /// Validate address arguments and retrieve the Human-Readable Part (HRP).
-    AddrKeyValidator.validateAddressArgs<String>(kwargs, "hrp");
-    final hrp = kwargs['hrp'] as String;
+  String encodeKey(List<int> pubKey, {String? hrp}) {
+    hrp = AddrKeyValidator.getAddrArg<String>(hrp, "hrp");
 
     /// Validate and process the public key as a Secp256k1 key.
     final pubKeyObj = AddrKeyValidator.validateAndGetSecp256k1Key(pubKey);
@@ -84,6 +53,9 @@ class P2WPKHAddrEncoder implements BlockchainAddressEncoder {
 
     /// Encode the processed public key as a P2WPKH address using Bech32.
     return SegwitBech32Encoder.encode(
-        hrp, witnessVer, QuickCrypto.hash160(pubKeyBytes));
+      hrp,
+      witnessVer,
+      QuickCrypto.hash160(pubKeyBytes),
+    );
   }
 }

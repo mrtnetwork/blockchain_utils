@@ -5,6 +5,7 @@ import 'package:blockchain_utils/bip/bip/bip32/bip32_key_data.dart';
 import 'package:blockchain_utils/bip/bip/bip32/bip32_path.dart';
 import 'package:blockchain_utils/bip/ecc/keys/i_keys.dart';
 import 'package:blockchain_utils/exception/exceptions.dart';
+import 'package:blockchain_utils/helper/extensions/extensions.dart';
 
 import 'slip32_key_net_ver.dart';
 
@@ -13,18 +14,15 @@ class Slip32KeySerConst {
   /// Standard SLIP-32 key network versions.
   ///
   /// These network versions are used for standard extended public (xpub) and private (xprv) keys.
-  static const Slip32KeyNetVersions stdKeyNetVersions =
-      Slip32KeyNetVersions(pubNetVar: "xpub", privNetVar: "xprv");
+  static const Slip32KeyNetVersions stdKeyNetVersions = Slip32KeyNetVersions(
+    pubNetVar: "xpub",
+    privNetVar: "xprv",
+  );
 }
 
 /// A class for serializing SLIP-32 extended keys and associated data.
 class Slip32KeySerializer {
   /// Serialize an extended key along with path, chain code, and network version.
-  ///
-  /// This method takes the extended key's byte representation [keyBytes], the key's
-  /// derivation path or Bip32 path [pathOrBip32Path], the chain code or Bip32 chain code,
-  /// and the network version string [keyNetVerStr]. It serializes these components and
-  /// returns the serialized key as a Bech32-encoded string.
   static String serialize(
     List<int> keyBytes,
     String pathOrBip32Path,
@@ -35,12 +33,12 @@ class Slip32KeySerializer {
     final Bip32ChainCode chainCode = chainCodeOrBip32ChainCode;
 
     // Serialize key
-    final serKey = List<int>.from([
+    final serKey = [
       ...Bip32Depth(path.length()).toBytes(Endian.little),
       ..._serializePath(path),
       ...chainCode.toBytes(),
       ...keyBytes,
-    ]);
+    ];
 
     return Bech32Encoder.encode(keyNetVerStr, serKey);
   }
@@ -51,8 +49,7 @@ class Slip32KeySerializer {
   static List<int> _serializePath(Bip32Path path) {
     List<int> pathBytes = List.empty();
     for (final pathElem in path.elems) {
-      pathBytes =
-          List<int>.from([...pathBytes, ...pathElem.toBytes(Endian.little)]);
+      pathBytes = [...pathBytes, ...pathElem.toBytes(Endian.little)];
     }
     return pathBytes;
   }
@@ -61,10 +58,6 @@ class Slip32KeySerializer {
 /// A class for serializing SLIP-32 private keys.
 class Slip32PrivateKeySerializer {
   /// Serialize a private key with a given path, chain code, and network version.
-  ///
-  /// This method serializes a private key [privKey] into a SLIP-32 format along with
-  /// the specified path or Bip32 path [pathOrBip32Path], chain code, and private key
-  /// network version [keyNetVer]. It returns the serialized private key as a Bech32-encoded string.
   static String serialize(
     IPrivateKey privKey,
     String pathOrBip32Path,
@@ -72,7 +65,7 @@ class Slip32PrivateKeySerializer {
     Slip32KeyNetVersions keyNetVer,
   ) {
     return Slip32KeySerializer.serialize(
-      List<int>.from([0x00, ...privKey.raw]),
+      [0x00, ...privKey.raw],
       pathOrBip32Path,
       chainCodeOrBip32ChainCode,
       keyNetVer.private,
@@ -83,10 +76,6 @@ class Slip32PrivateKeySerializer {
 /// A class for serializing SLIP-32 public keys.
 class Slip32PublicKeySerializer {
   /// Serialize a public key with a given path, chain code, and network version.
-  ///
-  /// This method serializes a public key [pubKey] into a SLIP-32 format along with
-  /// the specified path or Bip32 path [pathOrBip32Path], chain code, and public key
-  /// network version [keyNetVer]. It returns the serialized public key as a Bech32-encoded string.
   static String serialize(
     IPublicKey pubKey,
     String pathOrBip32Path,
@@ -117,9 +106,6 @@ class Slip32DeserializedKey {
   final bool isPublic;
 
   /// Constructor for creating a deserialized SLIP-32 key.
-  ///
-  /// The constructor takes the raw key bytes [_keyBytes], the derivation path [path],
-  /// the chain code [chainCode], and a flag [isPublic] to indicate if the key is public.
   const Slip32DeserializedKey(
     this._keyBytes,
     this.path,
@@ -129,25 +115,22 @@ class Slip32DeserializedKey {
 
   /// Get a copy of the key bytes.
   List<int> get keyBytes {
-    return List<int>.from(_keyBytes);
+    return _keyBytes.clone();
   }
 }
 
 /// A class for deserializing SLIP-32 extended keys and associated data.
 class Slip32KeyDeserializer {
   /// Deserialize a serialized SLIP-32 key.
-  ///
-  /// This method takes a Bech32-encoded string [serKeyStr] representing a serialized SLIP-32 key
-  /// and the network versions [keyNetVer]. It deserializes the key, extracts its components, and
-  /// returns a `Slip32DeserializedKey` object containing the key bytes, derivation path, chain code,
-  /// and an indicator if the key is public.
   static Slip32DeserializedKey deserializeKey(
     String serKeyStr,
     Slip32KeyNetVersions keyNetVer,
   ) {
     final bool isPublic = _getIfPublic(serKeyStr, keyNetVer);
     final List<int> serKeyBytes = Bech32Decoder.decode(
-        isPublic ? keyNetVer.public : keyNetVer.private, serKeyStr);
+      isPublic ? keyNetVer.public : keyNetVer.private,
+      serKeyStr,
+    );
 
     // Get parts back
     final List<dynamic> keyParts = _getPartsFromBytes(serKeyBytes, isPublic);
@@ -166,13 +149,18 @@ class Slip32KeyDeserializer {
         keyNetVer.private) {
       return false;
     } else {
-      throw const ArgumentException("Invalid extended key (wrong net version)");
+      throw ArgumentException.invalidOperationArguments(
+        "deserializeKey",
+        reason: "Incorrect extended key net version.",
+      );
     }
   }
 
   /// Extract key parts from serialized key bytes.
   static List<dynamic> _getPartsFromBytes(
-      List<int> serKeyBytes, bool isPublic) {
+    List<int> serKeyBytes,
+    bool isPublic,
+  ) {
     const int depthIdx = 0;
     final int pathIdx = depthIdx + Bip32Depth.fixedLength();
 
@@ -181,8 +169,9 @@ class Slip32KeyDeserializer {
     Bip32Path path = Bip32Path();
     for (int i = 0; i < depth; i++) {
       final List<int> keyIndexBytes = serKeyBytes.sublist(
-          pathIdx + (i * Bip32KeyIndex.fixedLength()),
-          pathIdx + ((i + 1) * Bip32KeyIndex.fixedLength()));
+        pathIdx + (i * Bip32KeyIndex.fixedLength()),
+        pathIdx + ((i + 1) * Bip32KeyIndex.fixedLength()),
+      );
       path = path.addElem(Bip32KeyIndex.fromBytes(keyIndexBytes));
     }
 
@@ -196,8 +185,10 @@ class Slip32KeyDeserializer {
     // If private key, the first byte shall be zero and shall be removed
     if (!isPublic) {
       if (keyBytes[0] != 0) {
-        throw ArgumentException(
-            "Invalid extended private key (wrong secret: ${keyBytes[0]})");
+        throw ArgumentException.invalidOperationArguments(
+          "deserializeKey",
+          reason: "Invalid extended key.",
+        );
       }
       keyBytes = keyBytes.sublist(1);
     }

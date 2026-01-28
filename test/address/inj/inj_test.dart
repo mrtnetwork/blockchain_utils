@@ -8,11 +8,11 @@ import 'test_vector.dart' show testVector;
 void main() {
   test("inj address test", () {
     for (final i in testVector) {
-      final params = Map<String, dynamic>.from(i["params"]);
-      final z = InjAddrEncoder()
-          .encodeKey(BytesUtils.fromHexString(i["public"]), params);
+      final z = InjAddrEncoder().encodeKey(
+        BytesUtils.fromHexString(i["public"]),
+      );
       expect(z, i["address"]);
-      final decode = InjAddrDecoder().decodeAddr(z, params);
+      final decode = InjAddrDecoder().decodeAddr(z);
       expect(decode.toHex(), i["decode"]);
     }
   });

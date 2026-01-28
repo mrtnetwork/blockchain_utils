@@ -8,11 +8,11 @@ import 'test_vector.dart' show testVector;
 void main() {
   test("zil address", () {
     for (final i in testVector) {
-      final params = Map<String, dynamic>.from(i["params"]);
-      final z = ZilAddrEncoder()
-          .encodeKey(BytesUtils.fromHexString(i["public"]), params);
+      final z = ZilAddrEncoder().encodeKey(
+        BytesUtils.fromHexString(i["public"]),
+      );
       expect(z, i["address"]);
-      final decode = ZilAddrDecoder().decodeAddr(z, params);
+      final decode = ZilAddrDecoder().decodeAddr(z);
       expect(decode.toHex(), i["decode"]);
     }
   });

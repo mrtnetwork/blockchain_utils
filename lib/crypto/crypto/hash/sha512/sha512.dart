@@ -2,46 +2,26 @@ part of 'package:blockchain_utils/crypto/crypto/hash/hash.dart';
 
 /// The `SHA512` class implements the SHA-512 hash algorithm.
 ///
-/// SHA-512 is a cryptographic hash function that takes an input message and
-/// produces a 512-bit (64-byte) hash value known as the message digest.
-///
-/// To use the `SHA512` class for hashing, create an instance, update it with
-/// data, and then retrieve the hash value using the `digest` method.
-///
-/// Example usage:
-/// ```dart
-/// final sha512 = SHA512();
-/// sha512.update(data);
-/// final hash = sha512.digest();
-/// ```
 class SHA512 implements SerializableHash<SHA512State> {
   /// Initializes a new instance of the SHA-512 hash algorithm.
   SHA512() {
     reset();
   }
 
-  /// digest length
-  static const int digestLength = 64;
-
-  /// block size
-  static const int blockSize = 128;
+  @override
+  int get getBlockSize => 128;
 
   @override
-  int get getBlockSize => SHA512.blockSize;
+  int get getDigestLength => 64;
 
-  @override
-  int get getDigestLength => SHA512.digestLength;
-
-  final List<int> _stateHi = List<int>.filled(8, 0); // hash state, high bytes
-  final List<int> _stateLo = List<int>.filled(8, 0); // hash state, low bytes
-  final List<int> _tempHi =
-      List<int>.filled(16, 0); // temporary state, high bytes
-  final List<int> _tempLo =
-      List<int>.filled(16, 0); // temporary state, low bytes
-  final List<int> _buffer = List<int>.filled(256, 0); // buffer for data to hash
-  int _bufferLength = 0; // number of bytes in buffer
-  int _bytesHashed = 0; // number of total bytes hashed
-  bool _finished = false; // indicates whether the hash was finalized
+  final List<int> _stateHi = List<int>.filled(8, 0);
+  final List<int> _stateLo = List<int>.filled(8, 0);
+  final List<int> _tempHi = List<int>.filled(16, 0);
+  final List<int> _tempLo = List<int>.filled(16, 0);
+  final List<int> _buffer = List<int>.filled(256, 0);
+  int _bufferLength = 0;
+  int _bytesHashed = 0;
+  bool _finished = false;
 
   void _initState() {
     _stateHi[0] = 0x6a09e667;
@@ -64,11 +44,6 @@ class SHA512 implements SerializableHash<SHA512State> {
   }
 
   /// Resets the hash computation to its initial state.
-  ///
-  /// This method initializes the hash computation to its initial state, clearing any previously
-  /// processed data. After calling this method, you can start a new hash computation.
-  ///
-  /// Returns the current instance of the hash algorithm with the initial stat
   @override
   SerializableHash reset() {
     _initState();
@@ -81,28 +56,23 @@ class SHA512 implements SerializableHash<SHA512State> {
   /// Clean up the internal state and reset hash object to its initial state.
   @override
   void clean() {
-    zero(_buffer);
-    zero(_tempHi);
-    zero(_tempLo);
+    BinaryOps.zero(_buffer);
+    BinaryOps.zero(_tempHi);
+    BinaryOps.zero(_tempLo);
     reset();
   }
 
   /// Updates the hash computation with the given data.
   ///
-  /// This method updates the hash computation with the provided [data] bytes. It appends the data to
-  /// the internal buffer and processes it to update the hash state.
-  ///
-  /// If the hash has already been finished using the `finish` method, calling this method will result in an error.
-  ///
   /// Parameters:
-  /// - [data]: The `List<int>` containing the data to be hashed.
-  ///
-  /// Returns this [Hash] object for method chaining.
+  /// - [data]: Containing the data to be hashed.
   @override
   SerializableHash update(List<int> data, {int? length}) {
     if (_finished) {
-      throw const CryptoException(
-          "SHA512: can't update because hash was finished.");
+      throw CryptoException.failed(
+        "SHA512.update",
+        reason: "State was finished.",
+      );
     }
     int dataPos = 0;
     int dataLength = length ?? data.length;
@@ -110,41 +80,49 @@ class SHA512 implements SerializableHash<SHA512State> {
 
     if (_bufferLength > 0) {
       while (_bufferLength < getBlockSize && dataLength > 0) {
-        _buffer[_bufferLength++] = data[dataPos++] & mask8;
+        _buffer[_bufferLength++] = data[dataPos++] & BinaryOps.mask8;
         dataLength--;
       }
 
       if (_bufferLength == getBlockSize) {
         _hashBlocks(
-            _tempHi, _tempLo, _stateHi, _stateLo, _buffer, 0, getBlockSize);
+          _tempHi,
+          _tempLo,
+          _stateHi,
+          _stateLo,
+          _buffer,
+          0,
+          getBlockSize,
+        );
         _bufferLength = 0;
       }
     }
 
     if (dataLength >= getBlockSize) {
       dataPos = _hashBlocks(
-          _tempHi, _tempLo, _stateHi, _stateLo, data, dataPos, dataLength);
+        _tempHi,
+        _tempLo,
+        _stateHi,
+        _stateLo,
+        data,
+        dataPos,
+        dataLength,
+      );
       dataLength %= getBlockSize;
     }
 
     while (dataLength > 0) {
-      _buffer[_bufferLength++] = data[dataPos++] & mask8;
+      _buffer[_bufferLength++] = data[dataPos++] & BinaryOps.mask8;
       dataLength--;
     }
 
     return this;
   }
 
-  /// Finalizes the hash computation and stores the hash state in the provided `List<int>` [out].
-  ///
-  /// This function completes the hash computation, finalizes the state, and stores the resulting
-  /// hash in the provided [out] `List<int>`. If the hash has already been finished, this method
-  /// will return the existing state without re-computing.
+  /// Finalizes the hash computation and stores the hash state in the provided [out].
   ///
   /// Parameters:
-  ///   - [out]: The `List<int>` in which the hash digest is stored.
-  ///
-  /// Returns the current instance of the hash algorithm.
+  ///   - [out]: In which the hash digest is stored.
   @override
   SerializableHash finish(List<int> out) {
     if (!_finished) {
@@ -159,8 +137,8 @@ class SHA512 implements SerializableHash<SHA512State> {
         _buffer[i] = 0;
       }
 
-      writeUint32BE(bitLenHi, _buffer, padLength - 8);
-      writeUint32BE(bitLenLo, _buffer, padLength - 4);
+      BinaryOps.writeUint32BE(bitLenHi, _buffer, padLength - 8);
+      BinaryOps.writeUint32BE(bitLenLo, _buffer, padLength - 4);
 
       _hashBlocks(_tempHi, _tempLo, _stateHi, _stateLo, _buffer, 0, padLength);
 
@@ -168,20 +146,16 @@ class SHA512 implements SerializableHash<SHA512State> {
     }
 
     for (var i = 0; i < getDigestLength ~/ 8; i++) {
-      writeUint32BE(_stateHi[i], out, i * 8);
-      writeUint32BE(_stateLo[i], out, i * 8 + 4);
+      BinaryOps.writeUint32BE(_stateHi[i], out, i * 8);
+      BinaryOps.writeUint32BE(_stateLo[i], out, i * 8 + 4);
     }
 
     return this;
   }
 
-  /// Generates the final hash digest by assembling and returning the hash state in a `List<int>`.
+  /// Generates the final hash digest by assembling and returning the hash state.
   ///
-  /// This function produces the hash digest by combining the current hash state into a single
-  /// `List<int>` output. It finalizes the hash if it hasn't been finished, effectively completing
-  /// the hash computation and returning the result.
-  ///
-  /// Returns the `List<int>` containing the computed hash digest.
+  /// Returns the Containing the computed hash digest.
   @override
   List<int> digest() {
     final out = List<int>.filled(getDigestLength, 0);
@@ -190,21 +164,19 @@ class SHA512 implements SerializableHash<SHA512State> {
   }
 
   /// Saves the current hash computation state into a serializable state object.
-  ///
-  /// This method saves the current state of the hash computation, including the data buffer,
-  /// hash state, and etc, into a serializable state object.
-  /// The saved state can be later restored using the `restoreState` method.
-  ///
-  /// Returns a [HashState] object containing the saved state information.
+
   @override
   SHA512State saveState() {
     if (_finished) {
-      throw const CryptoException("SHA256: cannot save finished state");
+      throw CryptoException.failed(
+        "SHA512.saveState",
+        reason: "State was finished.",
+      );
     }
     return SHA512State(
-      stateHi: List<int>.from(_stateHi, growable: false),
-      stateLo: List<int>.from(_stateLo, growable: false),
-      buffer: (_bufferLength > 0) ? List<int>.from(_buffer) : null,
+      stateHi: _stateHi.clone(),
+      stateLo: _stateLo.clone(),
+      buffer: (_bufferLength > 0) ? _buffer.clone() : null,
       bufferLength: _bufferLength,
       bytesHashed: _bytesHashed,
     );
@@ -212,14 +184,9 @@ class SHA512 implements SerializableHash<SHA512State> {
 
   /// Restores the hash computation state from a previously saved state.
   ///
-  /// This method allows you to restore the hash computation state to a previously saved state.
-  /// It is useful when you want to continue hashing data from a certain point, or if you want
-  /// to combine multiple hash computations.
-  ///
   /// Parameters:
-  /// - `savedState`: The saved state to restore.
+  /// - [savedState]: The saved state to restore.
   ///
-  /// Returns the current instance of the hash algorithm with the restored state.
   @override
   SerializableHash restoreState(SHA512State savedState) {
     _stateHi.setAll(0, savedState.stateHi);
@@ -234,22 +201,20 @@ class SHA512 implements SerializableHash<SHA512State> {
   }
 
   /// Clean up and reset the saved state of the hash object to its initial state.
-  /// This function erases the buffer and sets the state and length to the default values.
-  /// It is used to ensure that a previously saved hash state is cleared and ready for reuse.
   ///
-  /// [savedState]: The hash state to be cleaned and reset.
+  /// -[savedState]: The hash state to be cleaned and reset.
   @override
   void cleanSavedState(SHA512State savedState) {
-    zero(savedState.stateHi);
-    zero(savedState.stateLo);
+    BinaryOps.zero(savedState.stateHi);
+    BinaryOps.zero(savedState.stateLo);
     if (savedState.buffer != null) {
-      zero(savedState.buffer!);
+      BinaryOps.zero(savedState.buffer!);
     }
     savedState.bufferLength = 0;
     savedState.bytesHashed = 0;
   }
 
-  final _k = List<int>.unmodifiable(const [
+  final _k = const [
     0x428a2f98,
     0xd728ae22,
     0x71374491,
@@ -409,12 +374,12 @@ class SHA512 implements SerializableHash<SHA512State> {
     0x5fcb6fab,
     0x3ad6faec,
     0x6c44198c,
-    0x4a475817
-  ]);
+    0x4a475817,
+  ];
 
   int _sigma1A(int ah4, int al4) {
-    ah4 &= mask32;
-    al4 &= mask32;
+    ah4 &= BinaryOps.mask32;
+    al4 &= BinaryOps.mask32;
     final int one1 = (ah4 >> 14);
     final int one2 = al4 << (32 - 14);
     final int one = (one1 | one2);
@@ -430,63 +395,72 @@ class SHA512 implements SerializableHash<SHA512State> {
   }
 
   int _sigma1B(int ah0, int al0) {
-    al0 &= mask32;
-    ah0 &= mask32;
-    final int one1 = (ah0 >> 28) & mask32;
-    final int one2 = al0 << (32 - 28) & mask32;
+    al0 &= BinaryOps.mask32;
+    ah0 &= BinaryOps.mask32;
+    final int one1 = (ah0 >> 28) & BinaryOps.mask32;
+    final int one2 = al0 << (32 - 28) & BinaryOps.mask32;
     final int one = (one1 | one2);
     final int two1 = (al0 >> 2);
-    final int two2 = (ah0 << (32 - (34 - 32))) & mask32;
+    final int two2 = (ah0 << (32 - (34 - 32))) & BinaryOps.mask32;
     final int two = (two1 | two2);
     final int three1 = (al0 >> 7);
-    final int three2 = (ah0 << (32 - (39 - 32))) & mask32;
+    final int three2 = (ah0 << (32 - (39 - 32))) & BinaryOps.mask32;
     final int three = (three1 | three2);
     final int h = one ^ two ^ three;
     return h;
   }
 
   int _sigma0A(int th, int tl) {
-    th &= mask32;
-    tl &= mask32;
-    final int one = ((th >> 1) | (tl << (32 - 1))) & mask32;
-    final int two = ((th >> 8) | (tl << (32 - 8))) & mask32;
+    th &= BinaryOps.mask32;
+    tl &= BinaryOps.mask32;
+    final int one = ((th >> 1) | (tl << (32 - 1))) & BinaryOps.mask32;
+    final int two = ((th >> 8) | (tl << (32 - 8))) & BinaryOps.mask32;
     final int three = (th >> 7);
     final int h = one ^ two ^ three;
     return h;
   }
 
   int _sigma0B(int th, int tl) {
-    th &= mask32;
-    tl &= mask32;
-    final int one = ((tl >> 1) | (th << (32 - 1))) & mask32;
-    final int two = ((tl >> 8) | (th << (32 - 8))) & mask32;
-    final int three = ((tl >> 7) | (th << (32 - 7))) & mask32;
+    th &= BinaryOps.mask32;
+    tl &= BinaryOps.mask32;
+    final int one = ((tl >> 1) | (th << (32 - 1))) & BinaryOps.mask32;
+    final int two = ((tl >> 8) | (th << (32 - 8))) & BinaryOps.mask32;
+    final int three = ((tl >> 7) | (th << (32 - 7))) & BinaryOps.mask32;
     final int h = one ^ two ^ three;
     return h;
   }
 
   int _sigma0C(int th, int tl) {
-    th &= mask32;
-    tl &= mask32;
-    final int one = ((th >> 19) | (tl << (32 - 19))) & mask32;
-    final int two = ((tl >> (61 - 32)) | (th << (32 - (61 - 32)))) & mask32;
-    final int three = (th >> 6) & mask32;
+    th &= BinaryOps.mask32;
+    tl &= BinaryOps.mask32;
+    final int one = ((th >> 19) | (tl << (32 - 19))) & BinaryOps.mask32;
+    final int two =
+        ((tl >> (61 - 32)) | (th << (32 - (61 - 32)))) & BinaryOps.mask32;
+    final int three = (th >> 6) & BinaryOps.mask32;
     final int h = one ^ two ^ three;
     return h;
   }
 
   int _sigma0D(int th, int tl) {
-    th &= mask32;
-    tl &= mask32;
-    final int one = ((tl >> 19) | (th << (32 - 19))) & mask32;
-    final int two = ((th >> (61 - 32)) | (tl << (32 - (61 - 32)))) & mask32;
-    final int three = ((tl >> 6) | (th << (32 - 6))) & mask32;
+    th &= BinaryOps.mask32;
+    tl &= BinaryOps.mask32;
+    final int one = ((tl >> 19) | (th << (32 - 19))) & BinaryOps.mask32;
+    final int two =
+        ((th >> (61 - 32)) | (tl << (32 - (61 - 32)))) & BinaryOps.mask32;
+    final int three = ((tl >> 6) | (th << (32 - 6))) & BinaryOps.mask32;
     final int h = one ^ two ^ three;
     return h;
   }
 
-  int _hashBlocks(List<int> wh, List<int> wl, List<int> hh, List<int> hl,
-      List<int> m, int pos, int len) {
+  int _hashBlocks(
+    List<int> wh,
+    List<int> wl,
+    List<int> hh,
+    List<int> hl,
+    List<int> m,
+    int pos,
+    int len,
+  ) {
     int ah0 = hh[0];
     int ah1 = hh[1];
     int ah2 = hh[2];
@@ -512,8 +486,8 @@ class SHA512 implements SerializableHash<SHA512State> {
     while (len >= 128) {
       for (int i = 0; i < 16; i++) {
         final int j = 8 * i + pos;
-        wh[i] = readUint32BE(m, j);
-        wl[i] = readUint32BE(m, j + 4);
+        wh[i] = BinaryOps.readUint32BE(m, j);
+        wl[i] = BinaryOps.readUint32BE(m, j + 4);
       }
 
       for (int i = 0; i < 80; i++) {
@@ -539,110 +513,110 @@ class SHA512 implements SerializableHash<SHA512State> {
         h = ah7;
         l = al7;
 
-        a = l & mask16;
-        b = shr16(l);
-        c = h & mask16;
-        d = shr16(h);
+        a = l & BinaryOps.mask16;
+        b = BinaryOps.shr16(l);
+        c = h & BinaryOps.mask16;
+        d = BinaryOps.shr16(h);
 
         h = _sigma1A(ah4, al4);
         l = _sigma1A(al4, ah4);
 
-        a += l & mask16;
-        b += shr16(l);
-        c += h & mask16;
-        d += shr16(h);
+        a += l & BinaryOps.mask16;
+        b += BinaryOps.shr16(l);
+        c += h & BinaryOps.mask16;
+        d += BinaryOps.shr16(h);
 
-        h = ((ah4 & ah5) ^ (~ah4 & ah6)) & mask32;
-        l = ((al4 & al5) ^ (~al4 & al6)) & mask32;
+        h = ((ah4 & ah5) ^ (~ah4 & ah6)) & BinaryOps.mask32;
+        l = ((al4 & al5) ^ (~al4 & al6)) & BinaryOps.mask32;
 
-        a += l & mask16;
-        b += shr16(l);
-        c += h & mask16;
-        d += shr16(h);
+        a += l & BinaryOps.mask16;
+        b += BinaryOps.shr16(l);
+        c += h & BinaryOps.mask16;
+        d += BinaryOps.shr16(h);
 
         // K
         h = _k[i * 2];
         l = _k[i * 2 + 1];
 
-        a += l & mask16;
-        b += shr16(l);
+        a += l & BinaryOps.mask16;
+        b += BinaryOps.shr16(l);
 
-        c += h & mask16;
-        d += shr16(h);
+        c += h & BinaryOps.mask16;
+        d += BinaryOps.shr16(h);
 
         // w
         h = wh[i % 16];
         l = wl[i % 16];
 
-        a += l & mask16;
-        b += shr16(l);
-        c += h & mask16;
-        d += shr16(h);
+        a += l & BinaryOps.mask16;
+        b += BinaryOps.shr16(l);
+        c += h & BinaryOps.mask16;
+        d += BinaryOps.shr16(h);
 
-        b += shr16(a);
-        c += shr16(b);
-        d += shr16(c);
+        b += BinaryOps.shr16(a);
+        c += BinaryOps.shr16(b);
+        d += BinaryOps.shr16(c);
 
-        th = ((c & mask16) | (d << 16)) & mask32;
-        tl = ((a & mask16) | (b << 16)) & mask32;
+        th = ((c & BinaryOps.mask16) | (d << 16)) & BinaryOps.mask32;
+        tl = ((a & BinaryOps.mask16) | (b << 16)) & BinaryOps.mask32;
 
         // add
         h = th;
         l = tl;
 
-        a = l & mask16;
-        b = shr16(l);
-        c = h & mask16;
-        d = shr16(h);
+        a = l & BinaryOps.mask16;
+        b = BinaryOps.shr16(l);
+        c = h & BinaryOps.mask16;
+        d = BinaryOps.shr16(h);
 
         // Sigma0
         h = _sigma1B(ah0, al0);
         l = _sigma1B(al0, ah0);
 
-        a += l & mask16;
-        b += shr16(l);
-        c += h & mask16;
-        d += shr16(h);
+        a += l & BinaryOps.mask16;
+        b += BinaryOps.shr16(l);
+        c += h & BinaryOps.mask16;
+        d += BinaryOps.shr16(h);
         // Maj
-        h = ((ah0 & ah1) ^ (ah0 & ah2) ^ (ah1 & ah2)) & mask32;
-        l = ((al0 & al1) ^ (al0 & al2) ^ (al1 & al2)) & mask32;
+        h = ((ah0 & ah1) ^ (ah0 & ah2) ^ (ah1 & ah2)) & BinaryOps.mask32;
+        l = ((al0 & al1) ^ (al0 & al2) ^ (al1 & al2)) & BinaryOps.mask32;
 
-        a += l & mask16;
-        b += shr16(l);
-        c += h & mask16;
-        d += shr16(h);
+        a += l & BinaryOps.mask16;
+        b += BinaryOps.shr16(l);
+        c += h & BinaryOps.mask16;
+        d += BinaryOps.shr16(h);
 
-        b += shr16(a);
-        c += shr16(b);
-        d += shr16(c);
+        b += BinaryOps.shr16(a);
+        c += BinaryOps.shr16(b);
+        d += BinaryOps.shr16(c);
 
-        bh7 = ((c & mask16) | (d << 16)) & mask32;
+        bh7 = ((c & BinaryOps.mask16) | (d << 16)) & BinaryOps.mask32;
 
-        bl7 = ((a & mask16) | (b << 16)) & mask32;
+        bl7 = ((a & BinaryOps.mask16) | (b << 16)) & BinaryOps.mask32;
 
         // add
         h = bh3;
         l = bl3;
 
-        a = l & mask16;
-        b = shr16(l);
-        c = h & mask16;
-        d = shr16(h);
+        a = l & BinaryOps.mask16;
+        b = BinaryOps.shr16(l);
+        c = h & BinaryOps.mask16;
+        d = BinaryOps.shr16(h);
 
         h = th;
         l = tl;
 
-        a += l & mask16;
-        b += shr16(l);
-        c += h & mask16;
-        d += shr16(h);
+        a += l & BinaryOps.mask16;
+        b += BinaryOps.shr16(l);
+        c += h & BinaryOps.mask16;
+        d += BinaryOps.shr16(h);
 
-        b += shr16(a);
-        c += shr16(b);
-        d += shr16(c);
+        b += BinaryOps.shr16(a);
+        c += BinaryOps.shr16(b);
+        d += BinaryOps.shr16(c);
 
-        bh3 = ((c & mask16) | (d << 16)) & mask32;
-        bl3 = ((a & mask16) | (b << 16)) & mask32;
+        bh3 = ((c & BinaryOps.mask16) | (d << 16)) & BinaryOps.mask32;
+        bl3 = ((a & BinaryOps.mask16) | (b << 16)) & BinaryOps.mask32;
         ah1 = bh0;
         ah2 = bh1;
         ah3 = bh2;
@@ -667,18 +641,18 @@ class SHA512 implements SerializableHash<SHA512State> {
             h = wh[j];
             l = wl[j];
 
-            a = l & mask16;
-            b = shr16(l);
-            c = h & mask16;
-            d = shr16(h);
+            a = l & BinaryOps.mask16;
+            b = BinaryOps.shr16(l);
+            c = h & BinaryOps.mask16;
+            d = BinaryOps.shr16(h);
 
             h = wh[(j + 9) % 16];
             l = wl[(j + 9) % 16];
 
-            a += l & mask16;
-            b += shr16(l);
-            c += h & mask16;
-            d += shr16(h);
+            a += l & BinaryOps.mask16;
+            b += BinaryOps.shr16(l);
+            c += h & BinaryOps.mask16;
+            d += BinaryOps.shr16(h);
 
             // sigma0
             th = wh[(j + 1) % 16];
@@ -686,27 +660,27 @@ class SHA512 implements SerializableHash<SHA512State> {
             h = _sigma0A(th, tl);
             l = _sigma0B(th, tl);
 
-            a += l & mask16;
-            b += shr16(l);
-            c += h & mask16;
-            d += shr16(h);
+            a += l & BinaryOps.mask16;
+            b += BinaryOps.shr16(l);
+            c += h & BinaryOps.mask16;
+            d += BinaryOps.shr16(h);
 
             // sigma1
             th = wh[(j + 14) % 16];
             tl = wl[(j + 14) % 16];
             h = _sigma0C(th, tl);
             l = _sigma0D(th, tl);
-            a += l & mask16;
-            b += shr16(l);
-            c += h & mask16;
-            d += shr16(h);
+            a += l & BinaryOps.mask16;
+            b += BinaryOps.shr16(l);
+            c += h & BinaryOps.mask16;
+            d += BinaryOps.shr16(h);
 
-            b += shr16(a);
-            c += shr16(b);
-            d += shr16(c);
+            b += BinaryOps.shr16(a);
+            c += BinaryOps.shr16(b);
+            d += BinaryOps.shr16(c);
 
-            wh[j] = ((c & mask16) | (d << 16)) & mask32;
-            wl[j] = ((a & mask16) | (b << 16)) & mask32;
+            wh[j] = ((c & BinaryOps.mask16) | (d << 16)) & BinaryOps.mask32;
+            wl[j] = ((a & BinaryOps.mask16) | (b << 16)) & BinaryOps.mask32;
           }
         }
       }
@@ -715,184 +689,184 @@ class SHA512 implements SerializableHash<SHA512State> {
       h = ah0;
       l = al0;
 
-      a = l & mask16;
-      b = shr16(l);
-      c = h & mask16;
-      d = shr16(h);
+      a = l & BinaryOps.mask16;
+      b = BinaryOps.shr16(l);
+      c = h & BinaryOps.mask16;
+      d = BinaryOps.shr16(h);
 
       h = hh[0];
       l = hl[0];
-      a += l & mask16;
-      b += shr16(l);
-      c += h & mask16;
-      d += shr16(h);
+      a += l & BinaryOps.mask16;
+      b += BinaryOps.shr16(l);
+      c += h & BinaryOps.mask16;
+      d += BinaryOps.shr16(h);
 
-      b += shr16(a);
-      c += shr16(b);
-      d += shr16(c);
+      b += BinaryOps.shr16(a);
+      c += BinaryOps.shr16(b);
+      d += BinaryOps.shr16(c);
 
-      hh[0] = ah0 = ((c & mask16) | (d << 16)) & mask32;
-      hl[0] = al0 = ((a & mask16) | (b << 16)) & mask32;
+      hh[0] = ah0 = ((c & BinaryOps.mask16) | (d << 16)) & BinaryOps.mask32;
+      hl[0] = al0 = ((a & BinaryOps.mask16) | (b << 16)) & BinaryOps.mask32;
 
       h = ah1;
       l = al1;
 
-      a = l & mask16;
-      b = shr16(l);
-      c = h & mask16;
-      d = shr16(h);
+      a = l & BinaryOps.mask16;
+      b = BinaryOps.shr16(l);
+      c = h & BinaryOps.mask16;
+      d = BinaryOps.shr16(h);
 
       h = hh[1];
       l = hl[1];
 
-      a += l & mask16;
-      b += shr16(l);
+      a += l & BinaryOps.mask16;
+      b += BinaryOps.shr16(l);
 
-      c += h & mask16;
-      d += shr16(h);
+      c += h & BinaryOps.mask16;
+      d += BinaryOps.shr16(h);
 
-      b += shr16(a);
-      c += shr16(b);
-      d += shr16(c);
+      b += BinaryOps.shr16(a);
+      c += BinaryOps.shr16(b);
+      d += BinaryOps.shr16(c);
 
-      hh[1] = ah1 = ((c & mask16) | (d << 16)) & mask32;
-      hl[1] = al1 = ((a & mask16) | (b << 16)) & mask32;
+      hh[1] = ah1 = ((c & BinaryOps.mask16) | (d << 16)) & BinaryOps.mask32;
+      hl[1] = al1 = ((a & BinaryOps.mask16) | (b << 16)) & BinaryOps.mask32;
       h = ah2;
       l = al2;
 
-      a = l & mask16;
-      b = shr16(l);
-      c = h & mask16;
-      d = shr16(h);
+      a = l & BinaryOps.mask16;
+      b = BinaryOps.shr16(l);
+      c = h & BinaryOps.mask16;
+      d = BinaryOps.shr16(h);
 
       h = hh[2];
       l = hl[2];
 
-      a += l & mask16;
-      b += shr16(l);
-      c += h & mask16;
-      d += shr16(h);
+      a += l & BinaryOps.mask16;
+      b += BinaryOps.shr16(l);
+      c += h & BinaryOps.mask16;
+      d += BinaryOps.shr16(h);
 
-      b += shr16(a);
-      c += shr16(b);
-      d += shr16(c);
+      b += BinaryOps.shr16(a);
+      c += BinaryOps.shr16(b);
+      d += BinaryOps.shr16(c);
 
-      hh[2] = ah2 = ((c & mask16) | (d << 16)) & mask32;
-      hl[2] = al2 = ((a & mask16) | (b << 16)) & mask32;
+      hh[2] = ah2 = ((c & BinaryOps.mask16) | (d << 16)) & BinaryOps.mask32;
+      hl[2] = al2 = ((a & BinaryOps.mask16) | (b << 16)) & BinaryOps.mask32;
 
       h = ah3;
       l = al3;
 
-      a = l & mask16;
-      b = shr16(l);
+      a = l & BinaryOps.mask16;
+      b = BinaryOps.shr16(l);
 
-      c = h & mask16;
-      d = shr16(h);
+      c = h & BinaryOps.mask16;
+      d = BinaryOps.shr16(h);
 
       h = hh[3];
       l = hl[3];
 
-      a += l & mask16;
-      b += shr16(l);
-      c += h & mask16;
-      d += shr16(h);
+      a += l & BinaryOps.mask16;
+      b += BinaryOps.shr16(l);
+      c += h & BinaryOps.mask16;
+      d += BinaryOps.shr16(h);
 
-      b += shr16(a);
-      c += shr16(b);
-      d += shr16(c);
+      b += BinaryOps.shr16(a);
+      c += BinaryOps.shr16(b);
+      d += BinaryOps.shr16(c);
 
-      hh[3] = ah3 = ((c & mask16) | (d << 16)) & mask32;
-      hl[3] = al3 = ((a & mask16) | (b << 16)) & mask32;
+      hh[3] = ah3 = ((c & BinaryOps.mask16) | (d << 16)) & BinaryOps.mask32;
+      hl[3] = al3 = ((a & BinaryOps.mask16) | (b << 16)) & BinaryOps.mask32;
 
       h = ah4;
       l = al4;
 
-      a = l & mask16;
-      b = shr16(l);
-      c = h & mask16;
-      d = shr16(h);
+      a = l & BinaryOps.mask16;
+      b = BinaryOps.shr16(l);
+      c = h & BinaryOps.mask16;
+      d = BinaryOps.shr16(h);
 
       h = hh[4];
       l = hl[4];
 
-      a += l & mask16;
-      b += shr16(l);
-      c += h & mask16;
-      d += shr16(h);
+      a += l & BinaryOps.mask16;
+      b += BinaryOps.shr16(l);
+      c += h & BinaryOps.mask16;
+      d += BinaryOps.shr16(h);
 
-      b += shr16(a);
-      c += shr16(b);
-      d += shr16(c);
+      b += BinaryOps.shr16(a);
+      c += BinaryOps.shr16(b);
+      d += BinaryOps.shr16(c);
 
-      hh[4] = ah4 = ((c & mask16) | (d << 16)) & mask32;
-      hl[4] = al4 = ((a & mask16) | (b << 16)) & mask32;
+      hh[4] = ah4 = ((c & BinaryOps.mask16) | (d << 16)) & BinaryOps.mask32;
+      hl[4] = al4 = ((a & BinaryOps.mask16) | (b << 16)) & BinaryOps.mask32;
 
       h = ah5;
       l = al5;
 
-      a = l & mask16;
-      b = shr16(l);
-      c = h & mask16;
-      d = shr16(h);
+      a = l & BinaryOps.mask16;
+      b = BinaryOps.shr16(l);
+      c = h & BinaryOps.mask16;
+      d = BinaryOps.shr16(h);
 
       h = hh[5];
       l = hl[5];
 
-      a += l & mask16;
-      b += shr16(l);
-      c += h & mask16;
-      d += shr16(h);
+      a += l & BinaryOps.mask16;
+      b += BinaryOps.shr16(l);
+      c += h & BinaryOps.mask16;
+      d += BinaryOps.shr16(h);
 
-      b += shr16(a);
-      c += shr16(b);
-      d += shr16(c);
+      b += BinaryOps.shr16(a);
+      c += BinaryOps.shr16(b);
+      d += BinaryOps.shr16(c);
 
-      hh[5] = ah5 = ((c & mask16) | (d << 16)) & mask32;
-      hl[5] = al5 = ((a & mask16) | (b << 16)) & mask32;
+      hh[5] = ah5 = ((c & BinaryOps.mask16) | (d << 16)) & BinaryOps.mask32;
+      hl[5] = al5 = ((a & BinaryOps.mask16) | (b << 16)) & BinaryOps.mask32;
       h = ah6;
       l = al6;
 
-      a = l & mask16;
-      b = shr16(l);
-      c = h & mask16;
-      d = shr16(h);
+      a = l & BinaryOps.mask16;
+      b = BinaryOps.shr16(l);
+      c = h & BinaryOps.mask16;
+      d = BinaryOps.shr16(h);
 
       h = hh[6];
       l = hl[6];
 
-      a += l & mask16;
-      b += shr16(l);
-      c += h & mask16;
-      d += shr16(h);
+      a += l & BinaryOps.mask16;
+      b += BinaryOps.shr16(l);
+      c += h & BinaryOps.mask16;
+      d += BinaryOps.shr16(h);
 
-      b += shr16(a);
-      c += shr16(b);
-      d += shr16(c);
+      b += BinaryOps.shr16(a);
+      c += BinaryOps.shr16(b);
+      d += BinaryOps.shr16(c);
 
-      hh[6] = ah6 = ((c & mask16) | (d << 16)) & mask32;
-      hl[6] = al6 = ((a & mask16) | (b << 16)) & mask32;
+      hh[6] = ah6 = ((c & BinaryOps.mask16) | (d << 16)) & BinaryOps.mask32;
+      hl[6] = al6 = ((a & BinaryOps.mask16) | (b << 16)) & BinaryOps.mask32;
       h = ah7;
       l = al7;
 
-      a = l & mask16;
-      b = shr16(l);
-      c = h & mask16;
-      d = shr16(h);
+      a = l & BinaryOps.mask16;
+      b = BinaryOps.shr16(l);
+      c = h & BinaryOps.mask16;
+      d = BinaryOps.shr16(h);
 
       h = hh[7];
       l = hl[7];
 
-      a += l & mask16;
-      b += shr16(l);
-      c += h & mask16;
-      d += shr16(h);
+      a += l & BinaryOps.mask16;
+      b += BinaryOps.shr16(l);
+      c += h & BinaryOps.mask16;
+      d += BinaryOps.shr16(h);
 
-      b += shr16(a);
-      c += shr16(b);
-      d += shr16(c);
+      b += BinaryOps.shr16(a);
+      c += BinaryOps.shr16(b);
+      d += BinaryOps.shr16(c);
 
-      hh[7] = ah7 = ((c & mask16) | (d << 16)) & mask32;
-      hl[7] = al7 = ((a & mask16) | (b << 16)) & mask32;
+      hh[7] = ah7 = ((c & BinaryOps.mask16) | (d << 16)) & BinaryOps.mask32;
+      hl[7] = al7 = ((a & BinaryOps.mask16) | (b << 16)) & BinaryOps.mask32;
       pos += 128;
       len -= 128;
     }
@@ -911,26 +885,6 @@ class SHA512 implements SerializableHash<SHA512State> {
 }
 
 /// The `SHA512State` class represents the state of a SHA-512 hash calculation.
-///
-/// This class is used to store the state of a SHA-512 hash, including the
-/// high and low parts of the hash state, the current buffer, the buffer's
-/// length, and the total number of bytes hashed.
-///
-/// Example usage:
-/// ```dart
-/// final state = SHA512State(
-///   stateHi: Int32List(8),
-///   stateLo: Int32List(8),
-///   buffer:`List<int>`.filled(SHA512.blockSize),
-///   bufferLength: 0,
-///   bytesHashed: 0,
-/// );
-/// ```
-///
-/// It's typically used to save the state of a hash calculation to allow for
-/// incremental hashing. This can be especially useful when hashing large
-/// data in smaller chunks or when saving the intermediate state for further
-/// updates.
 class SHA512State implements HashState {
   final List<int> stateHi;
   final List<int> stateLo;

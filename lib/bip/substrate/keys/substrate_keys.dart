@@ -1,3 +1,4 @@
+import 'package:blockchain_utils/bip/bip/conf/core/coin_conf.dart';
 import 'package:blockchain_utils/bip/ecc/bip_ecc.dart';
 import 'package:blockchain_utils/bip/substrate/conf/substrate_coin_conf.dart';
 import 'package:blockchain_utils/bip/substrate/exception/substrate_ex.dart';
@@ -10,7 +11,9 @@ class SubstratePrvKey {
 
   /// Creates a [Sr25519PrivateKey] from the provided [keyBytes] and [coinConf].
   factory SubstratePrvKey.fromBytes(
-      List<int> keyBytes, SubstrateCoinConf coinConf) {
+    List<int> keyBytes,
+    SubstrateCoinConf coinConf,
+  ) {
     return SubstratePrvKey._(_keyFromBytes(keyBytes, coinConf.type), coinConf);
   }
 
@@ -26,7 +29,9 @@ class SubstratePrvKey {
 
   /// Internal method to create an Sr25519 private key from raw bytes.
   static IPrivateKey _keyFromBytes(
-      List<int> keyBytes, EllipticCurveTypes curve) {
+    List<int> keyBytes,
+    EllipticCurveTypes curve,
+  ) {
     try {
       return IPrivateKey.fromBytes(keyBytes, curve);
     } catch (e) {
@@ -42,8 +47,10 @@ class SubstratePubKey {
 
   const SubstratePubKey._(this.pubKey, this.coinConf);
 
-  factory SubstratePubKey.fromBytes(
-      {required List<int> keyBytes, required SubstrateCoinConf coinConf}) {
+  factory SubstratePubKey.fromBytes({
+    required List<int> keyBytes,
+    required SubstrateCoinConf coinConf,
+  }) {
     return SubstratePubKey._(_keyFromBytes(keyBytes, coinConf.type), coinConf);
   }
 
@@ -53,15 +60,14 @@ class SubstratePubKey {
     return pubKey.compressed;
   }
 
-  // List<int> get uncompressed {
-  //   return pubKey.uncompressed;
-  // }
-
   String toSS58Address({int? ss58Format}) {
-    final Map<String, dynamic> addrParams = {
-      "ss58_format": ss58Format ?? coinConf.ss58Format
-    };
-    return coinConf.addressEncoder().encodeKey(pubKey.compressed, addrParams);
+    return coinConf.addressEncoder(
+      EncodeAddressDefaultParams(
+        pubKey: pubKey.compressed,
+        ss58Format: ss58Format,
+      ),
+      coinConf,
+    );
   }
 
   String get toAddress {
@@ -69,7 +75,9 @@ class SubstratePubKey {
   }
 
   static IPublicKey _keyFromBytes(
-      List<int> keyBytes, EllipticCurveTypes curve) {
+    List<int> keyBytes,
+    EllipticCurveTypes curve,
+  ) {
     try {
       return IPublicKey.fromBytes(keyBytes, curve);
     } catch (e) {

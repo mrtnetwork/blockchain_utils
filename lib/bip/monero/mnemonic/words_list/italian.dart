@@ -1626,5 +1626,5 @@ const List<String> _italian = [
   "zoccolo",
   "zolfo",
   "zombie",
-  "zucchero"
+  "zucchero",
 ];

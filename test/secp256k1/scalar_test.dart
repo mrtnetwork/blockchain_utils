@@ -1,8 +1,8 @@
-import 'package:blockchain_utils/crypto/crypto/cdsa/curve/curves.dart';
+import 'package:blockchain_utils/crypto/crypto/ec/curve/curves.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
 import 'package:blockchain_utils/utils/numbers/utils/bigint_utils.dart';
 import 'package:test/test.dart';
-import 'package:blockchain_utils/crypto/crypto/cdsa/secp256k1/secp256k1.dart';
+import 'package:blockchain_utils/crypto/crypto/ec/projective/secp256k1/secp256k1.dart';
 
 final _generator = Curves.generatorSecp256k1;
 final _curve = Curves.curveSecp256k1;
@@ -150,14 +150,15 @@ void _scalarNegate() {
 void _overFlow() {
   test('overflowed', () {
     final Secp256k1Scalar overflowed = Secp256k1Scalar.constants(
-        BigInt.from(0xFFFFFFFF),
-        BigInt.from(0xFFFFFFFF),
-        BigInt.from(0xFFFFFFFF),
-        BigInt.from(0xFFFFFFFF),
-        BigInt.from(0xFFFFFFFF),
-        BigInt.from(0xFFFFFFFF),
-        BigInt.from(0xFFFFFFFF),
-        BigInt.from(0xFFFFFFFF));
+      BigInt.from(0xFFFFFFFF),
+      BigInt.from(0xFFFFFFFF),
+      BigInt.from(0xFFFFFFFF),
+      BigInt.from(0xFFFFFFFF),
+      BigInt.from(0xFFFFFFFF),
+      BigInt.from(0xFFFFFFFF),
+      BigInt.from(0xFFFFFFFF),
+      BigInt.from(0xFFFFFFFF),
+    );
     expect(_isScalar(overflowed), false);
   });
 }

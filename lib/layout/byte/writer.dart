@@ -2,12 +2,12 @@ part of "package:blockchain_utils/layout/byte/byte_handler.dart";
 
 /// A utility class for writing layout bytes dynamically.
 class LayoutByteWriter {
-  // static const int _minimuBufferLength = 1024;
   final bool growable;
   LayoutByteWriter(int span)
-      : _buffer = LayoutByteReader.write(
-            span >= 0 ? List.filled(span, 0) : List.empty(growable: true)),
-        growable = span < 0;
+    : _buffer = LayoutByteReader.write(
+        span >= 0 ? List.filled(span, 0) : List.empty(growable: true),
+      ),
+      growable = span < 0;
   final LayoutByteReader _buffer;
 
   /// Get the last byte in the tracked bytes.
@@ -42,7 +42,7 @@ class LayoutByteWriter {
 
   void set(int offset, int value) {
     _filled(offset);
-    _buffer._bytes[offset] = value & mask8;
+    _buffer._bytes[offset] = value & BinaryOps.mask8;
   }
 
   int at(int pos) => _buffer._bytes[pos];

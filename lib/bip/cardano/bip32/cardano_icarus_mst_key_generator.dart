@@ -1,11 +1,15 @@
-import 'package:blockchain_utils/bip/bip/bip32/base/ibip32_mst_key_generator.dart';
+import 'package:blockchain_utils/bip/bip/bip32/base/derivator.dart';
+import 'package:blockchain_utils/bip/bip/bip32/bip32_key_data.dart';
 import 'package:blockchain_utils/bip/bip/bip32/slip10/bip32_slip10_mst_key_generator.dart';
 import 'package:blockchain_utils/bip/ecc/keys/ed25519_kholaw_keys.dart';
 import 'package:blockchain_utils/crypto/crypto/hash/hash.dart';
 import 'package:blockchain_utils/crypto/crypto/hmac/hmac.dart';
 import 'package:blockchain_utils/crypto/crypto/pbkdf2/pbkdf2.dart';
-import 'package:blockchain_utils/utils/utils.dart';
+import 'package:blockchain_utils/helper/helper.dart';
+
 import 'package:blockchain_utils/exception/exceptions.dart';
+import 'package:blockchain_utils/utils/binary/bit_utils.dart';
+import 'package:blockchain_utils/utils/string/string.dart';
 
 /// A class that holds constants related to the Cardano Icarus master key generation process.
 class CardanoIcarusMasterKeyGeneratorConst {
@@ -23,28 +27,40 @@ class CardanoIcarusMasterKeyGeneratorConst {
 class CardanoIcarusMstKeyGenerator implements IBip32MstKeyGenerator {
   /// Generates master keys from the provided seed bytes.
   @override
-  Tuple<List<int>, List<int>> generateFromSeed(List<int> seedBytes) {
+  Bip32MasterKey generateFromSeed(List<int> seedBytes) {
     if (seedBytes.length < Bip32Slip10MstKeyGeneratorConst.seedMinByteLen) {
-      throw ArgumentException('Invalid seed length (${seedBytes.length})');
+      throw ArgumentException.invalidOperationArguments(
+        "generateFromSeed",
+        name: "seedBytes",
+        reason: "Invalid seed bytes length.",
+      );
     }
     List<int> keyBytes = PBKDF2.deriveKey(
-        salt: seedBytes,
-        mac: () => HMAC(
+      salt: seedBytes,
+      mac:
+          () => HMAC(
             () => SHA512(),
             StringUtils.encode(
-                CardanoIcarusMasterKeyGeneratorConst.pbkdf2Password)),
-        iterations: CardanoIcarusMasterKeyGeneratorConst.pbkdf2Rounds,
-        length: CardanoIcarusMasterKeyGeneratorConst.pbkdf2OutByteLen);
+              CardanoIcarusMasterKeyGeneratorConst.pbkdf2Password,
+            ),
+          ),
+      iterations: CardanoIcarusMasterKeyGeneratorConst.pbkdf2Rounds,
+      length: CardanoIcarusMasterKeyGeneratorConst.pbkdf2OutByteLen,
+    );
 
     keyBytes = _tweakMasterKeyBits(keyBytes);
 
-    return Tuple(keyBytes.sublist(0, Ed25519KholawKeysConst.privKeyByteLen),
-        keyBytes.sublist(Ed25519KholawKeysConst.privKeyByteLen));
+    return Bip32MasterKey(
+      key: keyBytes.sublist(0, Ed25519KholawKeysConst.privKeyByteLen),
+      chainCode: Bip32ChainCode(
+        keyBytes.sublist(Ed25519KholawKeysConst.privKeyByteLen),
+      ),
+    );
   }
 
   /// Tweak the master key bits as part of the derivation process.
   static List<int> _tweakMasterKeyBits(List<int> keyBytes) {
-    keyBytes = List<int>.from(keyBytes);
+    keyBytes = keyBytes.clone();
     // Clear the lowest 3 bits of the first byte of kL
     keyBytes[0] = BitUtils.resetBits(keyBytes[0], 0x07);
     // Clear the highest 3 bits of the last byte of kL (standard kholaw only clears the highest one)

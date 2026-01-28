@@ -14,12 +14,17 @@ void main() {
       final miniSecret = SchnorrkelMiniSecretKey.fromBytes(seed);
       final edSecret = miniSecret.toSecretKey(ExpansionMode.ed25519);
       expect(edSecret.toBytes().toHex().toUpperCase(), i["ed_secret"]);
+      print("dd");
       expect(
-          edSecret.publicKey().toBytes().toHex().toUpperCase(), i["ed_public"]);
+        edSecret.publicKey().toBytes().toHex().toUpperCase(),
+        i["ed_public"],
+      );
       final uniSecret = miniSecret.toSecretKey(ExpansionMode.uniform);
       expect(uniSecret.toBytes().toHex().toUpperCase(), i["uniform_secret"]);
-      expect(uniSecret.publicKey().toBytes().toHex().toUpperCase(),
-          i["uniform_public"]);
+      expect(
+        uniSecret.publicKey().toBytes().toHex().toUpperCase(),
+        i["uniform_public"],
+      );
     }
   });
 }

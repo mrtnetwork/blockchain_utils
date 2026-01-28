@@ -1,8 +1,10 @@
 import 'package:blockchain_utils/cbor/core/cbor.dart';
 import 'package:blockchain_utils/cbor/core/tags.dart';
+import 'package:blockchain_utils/cbor/utils/cbor_utils.dart';
 import 'package:blockchain_utils/cbor/utils/dynamic_bytes.dart';
 import 'package:blockchain_utils/helper/helper.dart';
-import 'package:blockchain_utils/utils/utils.dart';
+import 'package:blockchain_utils/utils/binary/utils.dart';
+import 'package:blockchain_utils/utils/string/string.dart';
 
 /// A class representing a CBOR (Concise Binary Object Representation) String value.
 abstract class CborString<T> extends CborObject<T> {
@@ -29,17 +31,26 @@ abstract class CborString<T> extends CborObject<T> {
 class CborStringValue extends CborString<String> {
   final CborLengthEncoding lengthEncoding;
 
+  factory CborStringValue.decode(List<int> bytes) {
+    return CborUtils.decodeCbor(bytes);
+  }
+
   /// Constructor for creating a CborStringValue instance with the provided parameters.
   /// It accepts a string value and optional list of CBOR tags.
-  CborStringValue(super.value,
-      {this.lengthEncoding = CborLengthEncoding.canonical});
+  CborStringValue(
+    super.value, {
+    this.lengthEncoding = CborLengthEncoding.canonical,
+  });
 
   @override
   List<int> _encode() {
     final bytes = CborBytesTracker();
     final toBytes = StringUtils.encode(value);
-    bytes.pushInt(MajorTags.utf8String, toBytes.length,
-        lengthEncdoing: lengthEncoding);
+    bytes.pushInt(
+      MajorTags.utf8String,
+      toBytes.length,
+      lengthEncdoing: lengthEncoding,
+    );
     bytes.pushBytes(toBytes);
     return bytes.buffer();
   }
@@ -72,6 +83,10 @@ class CborIndefiniteStringValue extends CborString<List<String>> {
   /// It accepts a `List<String>` value.
   CborIndefiniteStringValue(List<String> value) : super(value.immutable);
 
+  factory CborIndefiniteStringValue.decode(List<int> bytes) {
+    return CborUtils.decodeCbor(bytes);
+  }
+
   @override
   List<int> _encode() {
     final bytes = CborBytesTracker();
@@ -90,17 +105,6 @@ class CborIndefiniteStringValue extends CborString<List<String>> {
   String toString() {
     return value.join(", ");
   }
-
-  /// override equal operation
-  @override
-  operator ==(other) {
-    if (other is! CborIndefiniteStringValue) return false;
-    return CompareUtils.iterableIsEqual<String>(value, other.value);
-  }
-
-  /// override hashcode
-  @override
-  int get hashCode => value.hashCode;
 
   @override
   String getValue() {

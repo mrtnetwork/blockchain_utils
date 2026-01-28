@@ -53,13 +53,14 @@
 */
 
 import 'package:blockchain_utils/bip/address/ada/ada_byron_addr.dart';
+import 'package:blockchain_utils/bip/address/ada/network.dart';
 import 'package:blockchain_utils/bip/bip/bip32/base/bip32_base.dart';
 import 'package:blockchain_utils/bip/bip/bip32/bip32_key_data.dart';
 import 'package:blockchain_utils/bip/bip/bip32/bip32_keys.dart';
 import 'package:blockchain_utils/bip/bip/bip32/bip32_path.dart';
 import 'package:blockchain_utils/bip/cardano/bip32/cardano_byron_legacy_bip32.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
-import 'package:blockchain_utils/utils/utils.dart';
+import 'package:blockchain_utils/utils/string/string.dart';
 
 /// A class that holds constants related to the Cardano Byron legacy key derivation process.
 class CardanoByronLegacyConst {
@@ -87,7 +88,7 @@ class CardanoByronLegacy {
   /// Parameters:
   /// - `seedBytes`: The seed bytes used for wallet initialization.
   CardanoByronLegacy.fromSeed(List<int> seedBytes)
-      : bip32 = CardanoByronLegacyBip32.fromSeed(seedBytes);
+    : bip32 = CardanoByronLegacyBip32.fromSeed(seedBytes);
 
   CardanoByronLegacy.fromBip32(this.bip32);
 
@@ -100,13 +101,14 @@ class CardanoByronLegacy {
   /// - A `List<int>` containing the derived HD path key.
   List<int> get hdPathKey {
     final hdPath = QuickCrypto.pbkdf2DeriveKey(
-        password: List<int>.from([
-          ...bip32.publicKey.compressed.sublist(1),
-          ...bip32.chainCode.toBytes()
-        ]),
-        salt: StringUtils.encode(CardanoByronLegacyConst.hdPathKeyPbkdf2Salt),
-        dklen: CardanoByronLegacyConst.hdPathKeyPbkdf2OutByteLen,
-        iterations: CardanoByronLegacyConst.hdPathKeyPbkdf2Rounds);
+      password: [
+        ...bip32.publicKey.compressed.sublist(1),
+        ...bip32.chainCode.toBytes(),
+      ],
+      salt: StringUtils.encode(CardanoByronLegacyConst.hdPathKeyPbkdf2Salt),
+      dklen: CardanoByronLegacyConst.hdPathKeyPbkdf2OutByteLen,
+      iterations: CardanoByronLegacyConst.hdPathKeyPbkdf2Rounds,
+    );
     return hdPath;
   }
 
@@ -123,7 +125,7 @@ class CardanoByronLegacy {
   Bip32Path hdPathFromAddress(String address) {
     final addrDecBytes = AdaByronAddrDecoder().decodeAddr(address);
     final hdPathDecBytes = AdaByronAddrDecoder.decryptHdPath(
-      AdaByronAddrDecoder.splitDecodedBytes(addrDecBytes).item2,
+      AdaByronAddrDecoder.splitDecodedBytes(addrDecBytes).$2,
       hdPathKey,
     );
     return hdPathDecBytes;
@@ -140,7 +142,10 @@ class CardanoByronLegacy {
   }
 
   /// Derives and returns a BIP32 base key based on two key indices, 'firstIndex' and 'secondIndex'.
-  Bip32Base deriveKey(Bip32KeyIndex firstIndex, Bip32KeyIndex secondIndex) {
+  Bip32Base<dynamic> deriveKey(
+    Bip32KeyIndex firstIndex,
+    Bip32KeyIndex secondIndex,
+  ) {
     return _deriveKey(firstIndex, secondIndex);
   }
 
@@ -149,8 +154,10 @@ class CardanoByronLegacy {
   /// Parameters:
   /// - 'firstIndex': The first key index for key derivation.
   /// - 'secondIndex': The second key index for key derivation.
-  Bip32PublicKey getPublicKey(
-      {required Bip32KeyIndex firstIndex, required Bip32KeyIndex secondIndex}) {
+  Bip32PublicKey getPublicKey({
+    required Bip32KeyIndex firstIndex,
+    required Bip32KeyIndex secondIndex,
+  }) {
     final derive = deriveKey(firstIndex, secondIndex);
     return derive.publicKey;
   }
@@ -160,8 +167,10 @@ class CardanoByronLegacy {
   /// Parameters:
   /// - 'firstIndex': The first key index for key derivation.
   /// - 'secondIndex': The second key index for key derivation.
-  Bip32PrivateKey getPrivateKey(
-      {required Bip32KeyIndex firstIndex, required Bip32KeyIndex secondIndex}) {
+  Bip32PrivateKey getPrivateKey({
+    required Bip32KeyIndex firstIndex,
+    required Bip32KeyIndex secondIndex,
+  }) {
     final derive = deriveKey(firstIndex, secondIndex);
     return derive.privateKey;
   }
@@ -171,15 +180,23 @@ class CardanoByronLegacy {
   /// Parameters:
   /// - 'firstIndex': The first key index for address derivation.
   /// - 'secondIndex': The second key index for address derivation.
-  String getAddress(Bip32KeyIndex firstIndex, Bip32KeyIndex secondIndex) {
-    final pubKey =
-        getPublicKey(firstIndex: firstIndex, secondIndex: secondIndex);
+  String getAddress(
+    Bip32KeyIndex firstIndex,
+    Bip32KeyIndex secondIndex, {
+    ADANetwork network = ADANetwork.mainnet,
+  }) {
+    final pubKey = getPublicKey(
+      firstIndex: firstIndex,
+      secondIndex: secondIndex,
+    );
     final hdPath = _getDerivationPath(firstIndex, secondIndex);
-    return AdaByronLegacyAddrEncoder().encodeKey(pubKey.key.compressed, {
-      "chain_code": pubKey.chainCode.toBytes(),
-      "hd_path": hdPath,
-      "hd_path_key": hdPathKey,
-    });
+    return AdaByronLegacyAddrEncoder().encodeKey(
+      pubKey.key.compressed,
+      chainCode: pubKey.keyData.chainCode.toBytes(),
+      path: hdPath,
+      hdPathKey: hdPathKey,
+      network: network,
+    );
   }
 
   /// Derives and returns a BIP32 base key based on two key indices, 'firstIndex' and 'secondIndex'.
@@ -187,7 +204,10 @@ class CardanoByronLegacy {
   /// Parameters:
   /// - 'firstIndex': The first key index for key derivation.
   /// - 'secondIndex': The second key index for key derivation.
-  Bip32Base _deriveKey(Bip32KeyIndex firstIndex, Bip32KeyIndex secondIndex) {
+  Bip32Base<dynamic> _deriveKey(
+    Bip32KeyIndex firstIndex,
+    Bip32KeyIndex secondIndex,
+  ) {
     return bip32.derivePath(_getDerivationPath(firstIndex, secondIndex));
   }
 
@@ -197,7 +217,9 @@ class CardanoByronLegacy {
   /// - 'firstIndex': The first key index.
   /// - 'secondIndex': The second key index.
   String _getDerivationPath(
-      Bip32KeyIndex firstIndex, Bip32KeyIndex secondIndex) {
+    Bip32KeyIndex firstIndex,
+    Bip32KeyIndex secondIndex,
+  ) {
     return 'm/${firstIndex.toInt()}\'/${secondIndex.toInt()}\'';
   }
 }

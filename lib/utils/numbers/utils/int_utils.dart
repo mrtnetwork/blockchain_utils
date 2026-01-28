@@ -2,29 +2,18 @@ import 'dart:typed_data';
 import 'package:blockchain_utils/utils/binary/binary_operation.dart';
 import 'package:blockchain_utils/utils/numbers/utils/bigint_utils.dart';
 import 'package:blockchain_utils/utils/string/string.dart';
-import 'package:blockchain_utils/utils/tuple/tuple.dart';
 import 'package:blockchain_utils/exception/exceptions.dart';
 import 'dart:math' as math;
 
 /// Utility class for integer-related operations and conversions.
 class IntUtils {
   /// Decodes a variable-length byte array into an integer value according to Bitcoin's variable-length integer encoding scheme.
-  ///
-  /// [byteint] The list of bytes representing the encoded variable-length integer.
-  /// Returns a tuple containing the decoded integer value and the number of bytes consumed from the input.
-  ///
-  /// If the first byte is less than 253, a single byte is used, returning the value and consuming 1 byte.
-  /// If the first byte is 253, a 2-byte encoding is used, returning the value and consuming 2 bytes.
-  /// If the first byte is 254, a 4-byte encoding is used, returning the value and consuming 4 bytes.
-  /// If the first byte is 255, an 8-byte encoding is used, returning the value and consuming 8 bytes.
-  ///
-  /// Throws a MessageException if the decoded value cannot fit into an integer in the current environment.
-  static Tuple<int, int> decodeVarint(List<int> byteint) {
+  static (int, int) decodeVarint(List<int> byteint) {
     final int ni = byteint[0];
     int size = 0;
 
     if (ni < 253) {
-      return Tuple(ni, 1);
+      return (ni, 1);
     }
 
     if (ni == 253) {
@@ -35,55 +24,50 @@ class IntUtils {
       size = 8;
     }
 
-    final BigInt value = BigintUtils.fromBytes(byteint.sublist(1, 1 + size),
-        byteOrder: Endian.little);
+    final BigInt value = BigintUtils.fromBytes(
+      byteint.sublist(1, 1 + size),
+      byteOrder: Endian.little,
+    );
     if (!value.isValidInt) {
-      throw const ArgumentException(
-          "cannot read variable-length in this environment");
+      throw ArgumentException.invalidOperationArguments(
+        "decodeVarint",
+        name: "byteint",
+        reason: "Unable to read variable-length in this environment.",
+      );
     }
-    return Tuple(value.toInt(), size + 1);
+    return (value.toInt(), size + 1);
   }
 
   /// Encodes an integer into a variable-length byte array according to Bitcoin's variable-length integer encoding scheme.
-  ///
-  /// [i] The integer to be encoded.
-  /// Returns a list of bytes representing the encoded variable-length integer.
-  ///
-  /// If the integer is less than 253, a single byte is used.
-  /// If the integer is less than 0x10000, a 3-byte encoding is used with the first byte set to 0xfd.
-  /// If the integer is less than 0x100000000, a 5-byte encoding is used with the first byte set to 0xfe.
-  /// For integers larger than or equal to 0x100000000, an ArgumentException is thrown since they are not supported in Bitcoin's encoding.
-  static List<int> encodeVarint(int i) {
-    if (i < 253) {
-      return [i];
-    } else if (i < 0x10000) {
+  static List<int> encodeVarint(int value) {
+    if (value < 253) {
+      return [value];
+    } else if (value < 0x10000) {
       final bytes = List<int>.filled(3, 0);
       bytes[0] = 0xfd;
-      writeUint16LE(i, bytes, 1);
+      BinaryOps.writeUint16LE(value, bytes, 1);
       return bytes;
-    } else if (i < 0x100000000) {
+    } else if (value < 0x100000000) {
       final bytes = List<int>.filled(5, 0);
       bytes[0] = 0xfe;
-      writeUint32LE(i, bytes, 1);
+      BinaryOps.writeUint32LE(value, bytes, 1);
       return bytes;
     } else {
-      throw ArgumentException("Integer is too large: $i");
+      throw ArgumentException.invalidOperationArguments(
+        "encodeVarint",
+        name: "byteint",
+        reason: "Value is to large.",
+      );
     }
   }
 
   /// Prepends a variable-length integer encoding of the given data length to the provided data.
-  ///
-  /// [data] The list of bytes representing the data.
-  /// Returns a new list of bytes with the variable-length integer encoding prepended to the data.
   static List<int> prependVarint(List<int> data) {
     final varintBytes = encodeVarint(data.length);
     return [...varintBytes, ...data];
   }
 
   /// Calculates the number of bytes required to represent the bit length of an integer value.
-  ///
-  /// [val] The integer value for which to calculate the bit length in bytes.
-  /// Returns the number of bytes required to represent the bit length of the integer value.
   static int bitlengthInBytes(int val) {
     int bitlength = val.bitLength;
     if (bitlength == 0) return 1;
@@ -94,17 +78,16 @@ class IntUtils {
   }
 
   /// Converts an integer to a byte list with the specified length and endianness.
-  ///
-  /// If the [length] is not provided, it is calculated based on the bit length
-  /// of the integer, ensuring minimal byte usage. The [byteOrder] determines
-  /// whether the most significant bytes are at the beginning (big-endian) or end
-  /// (little-endian) of the resulting byte list.
-  static List<int> toBytes(int val,
-      {required int length, Endian byteOrder = Endian.big}) {
+  static List<int> toBytes(
+    int val, {
+    int? length,
+    Endian byteOrder = Endian.big,
+  }) {
+    length ??= bitlengthInBytes(val);
     assert(length <= 8);
     if (length > 4) {
-      final int lowerPart = val & mask32;
-      final int upperPart = (val >> 32) & mask32;
+      final int lowerPart = val & BinaryOps.mask32;
+      final int upperPart = (val >> 32) & BinaryOps.mask32;
 
       final bytes = [
         ...toBytes(upperPart, length: length - 4),
@@ -118,7 +101,7 @@ class IntUtils {
     final List<int> byteList = List<int>.filled(length, 0);
 
     for (var i = 0; i < length; i++) {
-      byteList[length - i - 1] = val & mask8;
+      byteList[length - i - 1] = val & BinaryOps.mask8;
       val = val >> 8;
     }
 
@@ -129,28 +112,47 @@ class IntUtils {
     return byteList;
   }
 
+  static List<bool> toBinaryBool(int value, {int? bitLength}) {
+    bitLength ??= bitlengthInBytes(value) * 8;
+    // Make sure we have exactly 64 bits
+    final bits = List<bool>.filled(bitLength, false);
+
+    for (int i = 0; i < bitLength; i++) {
+      // Check if the i-th bit is set
+      bits[i] = value & (1 << i) != 0;
+    }
+    return bits;
+  }
+
   /// Converts a list of bytes to an integer, following the specified byte order.
-  ///
-  /// [bytes] The list of bytes representing the integer value.
-  /// [byteOrder] The byte order, defaults to Endian.big.
-  /// Returns the corresponding integer value.
-  static int fromBytes(List<int> bytes,
-      {Endian byteOrder = Endian.big, bool sign = false}) {
+  static int fromBytes(
+    List<int> bytes, {
+    Endian byteOrder = Endian.big,
+    bool sign = false,
+  }) {
     if (bytes.length > 6) {
-      final big =
-          BigintUtils.fromBytes(bytes, byteOrder: byteOrder, sign: sign);
+      final big = BigintUtils.fromBytes(
+        bytes,
+        byteOrder: byteOrder,
+        sign: sign,
+      );
       if (big.isValidInt) {
         return big.toInt();
       }
-      throw ArgumentException('Value too large to fit in a Dart int');
+      throw ArgumentException.invalidOperationArguments(
+        "fromBytes",
+        name: "byteint",
+        reason: "Value too large to fit in a Dart int.",
+      );
     }
     if (byteOrder == Endian.little) {
-      bytes = List<int>.from(bytes.reversed.toList());
+      bytes = bytes.reversed.toList();
     }
     int result = 0;
     if (bytes.length > 4) {
-      final int lowerPart =
-          fromBytes(bytes.sublist(bytes.length - 4, bytes.length));
+      final int lowerPart = fromBytes(
+        bytes.sublist(bytes.length - 4, bytes.length),
+      );
       final int upperPart = fromBytes(bytes.sublist(0, bytes.length - 4));
       result = (upperPart << 32) | lowerPart;
     } else {
@@ -166,57 +168,32 @@ class IntUtils {
     return result;
   }
 
-  /// Parses a dynamic value [v] into an integer.
-  ///
-  /// Tries to convert the dynamic value [v] into an integer. It supports parsing
-  /// from int, BigInt, `List<int>`, and String types. If [v] is a String and
-  /// represents a hexadecimal number (prefixed with '0x' or not), it is parsed
-  /// accordingly.
-  /// allowHex: convert hexadecimal to integer
-  /// Parameters:
-  /// - [v]: The dynamic value to be parsed into an integer.
-  ///
-  /// Returns:
-  /// - An integer representation of the parsed value.
-  ///
-  static int parse(dynamic v, {bool allowHex = true}) {
-    try {
-      if (v is int) return v;
-      if (v is BigInt) {
-        if (!v.isValidInt) {
-          throw ArgumentException("value is to large for integer.",
-              details: {"value": "$v"});
-        }
-        return v.toInt();
+  /// Parses a dynamic value [number] into an integer.
+  static int parse(dynamic number, {bool allowHex = true}) {
+    if (number is int) return number;
+    if (number is BigInt) {
+      if (number.isValidInt) {
+        return number.toInt();
       }
-      if (v is String) {
-        int? parse = int.tryParse(v);
-        if (parse == null && allowHex && StringUtils.ixHexaDecimalNumber(v)) {
-          parse = int.parse(StringUtils.strip0x(v), radix: 16);
-        }
-        return parse!;
+    } else if (number is String) {
+      int? parse = int.tryParse(number);
+      if (parse == null && allowHex) {
+        parse = int.tryParse(StringUtils.strip0x(number), radix: 16);
       }
-    } catch (_) {}
-    throw ArgumentException("invalid input for parse int",
-        details: {"value": "$v"});
+      if (parse != null) return parse;
+    }
+    throw ArgumentException.invalidOperationArguments(
+      "parse",
+      name: "number",
+      reason: "Failed to parse value as int.",
+    );
   }
 
-  /// Tries to parse a dynamic value [v] into an integer, returning null if parsing fails.
-  ///
-  /// If the input value [v] is null, directly returns null. Otherwise, attempts to
-  /// parse the dynamic value [v] into an integer using the [parse] method.
-  /// If successful, returns the resulting integer; otherwise, returns null.
-  /// allowHex: convert hexadecimal to integer
-  /// Parameters:
-  /// - [v]: The dynamic value to be parsed into an integer.
-  ///
-  /// Returns:
-  /// - An integer if parsing is successful; otherwise, returns null.
-  ///
-  static int? tryParse(dynamic v, {bool allowHex = true}) {
-    if (v == null) return null;
+  /// Tries to parse a dynamic value [number] into an integer, returning null if parsing fails.
+  static int? tryParse(dynamic number, {bool allowHex = true}) {
+    if (number == null) return null;
     try {
-      return parse(v, allowHex: allowHex);
+      return parse(number, allowHex: allowHex);
     } on ArgumentException {
       return null;
     }
@@ -236,5 +213,20 @@ class IntUtils {
   static int min(int a, int b) {
     if (a > b) return b;
     return a;
+  }
+
+  static int ctSelectInt(int a, int b, bool choice) {
+    final mask = choice ? -1 : 0; // 0 or -1
+    final s = a ^ (mask & (a ^ b));
+    assert(s == a || s == b);
+    return s;
+  }
+
+  static bool ctSelectBool(bool a, bool b, bool choice) {
+    final ai = a ? 1 : 0;
+    final bi = b ? 1 : 0;
+    final mask = choice ? -1 : 0; // 0 or -1
+    final si = ai ^ (mask & (ai ^ bi));
+    return si != 0;
   }
 }

@@ -10,9 +10,11 @@ void main() {
   test("bip44", () {
     for (final i in testVector) {
       final seed = BytesUtils.fromHexString(i["seed"]);
-      final coin = Bip44Coins.values.firstWhere((element) =>
-          element.name.toLowerCase() ==
-          (i["coin"] as String).replaceAll("_", "").toLowerCase());
+      final coin = Bip44Coins.values.firstWhere(
+        (element) =>
+            element.name.toLowerCase() ==
+            (i["coin"] as String).replaceAll("_", "").toLowerCase(),
+      );
       final b44 = Bip44.fromSeed(seed, coin);
       final coinInex = b44.purpose.coin;
       expect(b44.privateKey.toExtended, i["master"]);
@@ -27,8 +29,9 @@ void main() {
         expect(account.publicKey.toExtended, accountInfo["account_public"]);
         if (coin == Bip44Coins.moneroEd25519Slip ||
             coin == Bip44Coins.moneroSecp256k1) {
-          final addrClass =
-              MoneroAccount.fromBip44PrivateKey(account.privateKey.raw);
+          final addrClass = MoneroAccount.fromBip44PrivateKey(
+            account.privateKey.raw,
+          );
           expect(addrClass.primaryAddress, accountInfo["address"]);
           continue;
         }

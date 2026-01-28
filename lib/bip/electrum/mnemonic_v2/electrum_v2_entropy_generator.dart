@@ -24,19 +24,22 @@ class ElectrumV2EntropyGeneratorConst {
 class ElectrumV2EntropyGenerator extends EntropyGenerator {
   /// Constructs an Electrum V2 entropy generator with the given bit length.
   ///
-  /// The generator ensures that the provided bit length is valid for Electrum V2 entropy.
+  /// - [bitLen]: The desired bit length for generating Electrum V2 entropy.
   ///
-  /// [bitLen]: The desired bit length for generating Electrum V2 entropy.
   ElectrumV2EntropyGenerator(int bitLen) : super(bitLen) {
     if (!isValidEntropyBitLen(bitLen)) {
-      throw const ArgumentException('Entropy bit length is not valid');
+      throw ArgumentException.invalidOperationArguments(
+        "ElectrumV2EntropyGenerator",
+        name: "bitLen",
+        reason: 'Invalid entropy bit length.',
+      );
     }
   }
 
   /// Checks if a given bit length is valid for Electrum V2 entropy generation.
   ///
-  /// [bitLen]: The bit length to be checked.
-  /// Returns true if the bit length is valid, otherwise false.
+  /// - [bitLen]: The bit length to be checked.
+  ///
   static bool isValidEntropyBitLen(int bitLen) {
     for (final entropyBitLen in ElectrumV2EntropyGeneratorConst.entropyBitLen) {
       if (entropyBitLen - ElectrumV2MnemonicConst.wordBitLen <= bitLen &&
@@ -49,16 +52,16 @@ class ElectrumV2EntropyGenerator extends EntropyGenerator {
 
   /// Checks if a given byte length is valid for Electrum V2 entropy generation.
   ///
-  /// [byteLen]: The byte length to be checked.
-  /// Returns true if the byte length is valid, otherwise false.
+  /// - [byteLen]: The byte length to be checked.
+  ///
   static bool isValidEntropyByteLen(int byteLen) {
     return isValidEntropyBitLen(byteLen * 8);
   }
 
   /// Checks if the provided entropy bits are sufficient for Electrum V2 entropy generation.
   ///
-  /// [entropy]: The entropy to be checked (as a BigInt).
-  /// Returns true if the entropy bit length is valid, otherwise false.
+  /// - [entropy]: The entropy to be checked (as a BigInt).
+  ///
   static bool areEntropyBitsEnough(BigInt entropy) {
     return isValidEntropyBitLen(entropy.bitLength);
   }

@@ -7,7 +7,7 @@ final List<Map<String, dynamic>> testVectorV2 = [
         "da250bf61d5891c3e5622aa9dc6b8979ed4f73126e6ea68e7df1568f3272934e396841bd27b9134515b88af2ecd083f8aa655bccc348fd8fe4e235ca8db706e7",
     "address": "129FW8NTbQwvQVwqSJrLA3nQgE79XirJX6",
     "type": "STANDARD",
-    "lang": "CHINESE_SIMPLIFIED"
+    "lang": "CHINESE_SIMPLIFIED",
   },
   {
     "mnemonic":
@@ -18,7 +18,7 @@ final List<Map<String, dynamic>> testVectorV2 = [
         "6ddddb8710c4a02c4563db121f7a43936206e69bae81c413c49a5b3afb1baee682d5ca709b68188620d5d51bb143046a8eb97eab017bb51eb1886a802b2c97ea",
     "address": "13hAHk4wUFvRto8sNcRSfPNbngHQYRefbE",
     "type": "STANDARD",
-    "lang": "CHINESE_SIMPLIFIED"
+    "lang": "CHINESE_SIMPLIFIED",
   },
   {
     "mnemonic":
@@ -28,7 +28,7 @@ final List<Map<String, dynamic>> testVectorV2 = [
         "efa42abd19242e707324067aa3db9f6d0c9050d822bbe04c7db1f6fbb08dc854f6af63adacd40bf019944ceeb255c5d5c4c58fa30b9fd49c22ac393ab724288c",
     "address": "bc1qs3g5wl2e8e2frampqj9f2wld4z86z0p4hp9t7t",
     "type": "SEGWIT",
-    "lang": "CHINESE_SIMPLIFIED"
+    "lang": "CHINESE_SIMPLIFIED",
   },
   {
     "mnemonic":
@@ -39,7 +39,7 @@ final List<Map<String, dynamic>> testVectorV2 = [
         "0f3db825c2664bf99bd13b7a2570fb88fa47e36c2e45b2d4f98bb5b0b5f993730d1b14cd8ea05b59ea9fdab764909d2fbad7d7e028b54a3679d73358b12cfd0f",
     "address": "bc1qhu54vywgujlnkt88c05ncqg0ms3svc050udvcw",
     "type": "SEGWIT",
-    "lang": "CHINESE_SIMPLIFIED"
+    "lang": "CHINESE_SIMPLIFIED",
   },
   {
     "mnemonic":
@@ -48,7 +48,7 @@ final List<Map<String, dynamic>> testVectorV2 = [
     "seed":
         "23bfeb0dd61ee70ed1d446a82730ae7ac6fb9db32d453803643659acc61040fd14fac4a8e64bfbc322b7b5d2a9968c2d5ee6617341ba0b77a2935e1ec80499ec",
     "type": "STANDARD_2FA",
-    "lang": "CHINESE_SIMPLIFIED"
+    "lang": "CHINESE_SIMPLIFIED",
   },
   {
     "mnemonic":
@@ -58,7 +58,7 @@ final List<Map<String, dynamic>> testVectorV2 = [
     "seed":
         "ddf0997605d52772b23a7bb10832e1297b4c25edbe78c6a155b788c56ed4c22b147db40831f4d8a354550707592b448352889c9fcabb0103de412f02170c781b",
     "type": "STANDARD_2FA",
-    "lang": "CHINESE_SIMPLIFIED"
+    "lang": "CHINESE_SIMPLIFIED",
   },
   {
     "mnemonic":
@@ -67,7 +67,7 @@ final List<Map<String, dynamic>> testVectorV2 = [
     "seed":
         "082e81240a6aeea0348abb2d3e592f1b0c2731f554d5eab0f5764a3207c8c8e1ddd119bbb3a8c0fa0349a4411e8fd4778fd9d0b5e68f42da1a72a7ea54c2596f",
     "type": "SEGWIT_2FA",
-    "lang": "CHINESE_SIMPLIFIED"
+    "lang": "CHINESE_SIMPLIFIED",
   },
   {
     "mnemonic":
@@ -77,7 +77,7 @@ final List<Map<String, dynamic>> testVectorV2 = [
     "seed":
         "b1828c4fdaa039a0572e21ee40ebd1ab55b1634b9731f37d0ab584048b02b7503bb005022d2d0642a1f9c27324ef34c3e21b800040149ae92251a76361664ec0",
     "type": "SEGWIT_2FA",
-    "lang": "CHINESE_SIMPLIFIED"
+    "lang": "CHINESE_SIMPLIFIED",
   },
   {
     "mnemonic":
@@ -87,7 +87,7 @@ final List<Map<String, dynamic>> testVectorV2 = [
         "f8bc179eb54a48b4c18e377fdf1d3e60eff7b233cfc8be1e681a230a13a548e34fb1e194a3c41ab6b3d63fe4251fe05e93629b0739cbdb19d2ace31038dfe57e",
     "address": "1Au964QBqc1wggH7uYRBLx1dFbjdz4zrJu",
     "type": "STANDARD",
-    "lang": "ENGLISH"
+    "lang": "ENGLISH",
   },
   {
     "mnemonic":
@@ -98,7 +98,7 @@ final List<Map<String, dynamic>> testVectorV2 = [
         "f1d80cae51ef47d873796e917e81741c6db5e0686a96f1f08a49600a0e96d30456d2717907f52c3b10fa223800e478d210d712d5135689987bc62fd9c7bb1def",
     "address": "1Lic9driLDBxNr65pRYXtUxAmazCqnuUcF",
     "type": "STANDARD",
-    "lang": "ENGLISH"
+    "lang": "ENGLISH",
   },
   {
     "mnemonic":
@@ -108,7 +108,7 @@ final List<Map<String, dynamic>> testVectorV2 = [
         "f04c2b52df15d96f014046992eb903a2c229b9440e06cf15675c4054ba827f5f31aaab6777f725196fac9583eac90219e5eb15c65ba314320115953a5c8ff552",
     "address": "bc1qwv0l6zpll80r0zh73qv2hkqcmjf0s006nxth4x",
     "type": "SEGWIT",
-    "lang": "ENGLISH"
+    "lang": "ENGLISH",
   },
   {
     "mnemonic":
@@ -119,7 +119,7 @@ final List<Map<String, dynamic>> testVectorV2 = [
         "5adc299c1bae25960d3174b65934b5d5b2ba9e9de8e1fb94ea4455060662c1560c9764b7556c624b71ca2fd3e04a171c1f05baf6bc69a550dfe3d821d26877b2",
     "address": "bc1q964kmpmk645ham4ne8c7htaakcy0txchyz07pc",
     "type": "SEGWIT",
-    "lang": "ENGLISH"
+    "lang": "ENGLISH",
   },
   {
     "mnemonic":
@@ -128,7 +128,7 @@ final List<Map<String, dynamic>> testVectorV2 = [
     "seed":
         "7a0709088b39fb3d2253d88743b433644618674a8c56c2d892c1605546dddfc378fe53363b3c8ceb6a8236a30b4f4e1e0d916c3b670af7d7019d1f5fa3f1557a",
     "type": "STANDARD_2FA",
-    "lang": "ENGLISH"
+    "lang": "ENGLISH",
   },
   {
     "mnemonic":
@@ -138,7 +138,7 @@ final List<Map<String, dynamic>> testVectorV2 = [
     "seed":
         "d1f6c2331f8d8a3ed7cd22470a95e77365ca35bd5e7519fd6933181eca4342ed5188629b4bc2d9796fa66edd4e6de2a0329fadf499dccc5a809dc055a122f7c2",
     "type": "STANDARD_2FA",
-    "lang": "ENGLISH"
+    "lang": "ENGLISH",
   },
   {
     "mnemonic":
@@ -147,7 +147,7 @@ final List<Map<String, dynamic>> testVectorV2 = [
     "seed":
         "4b0354570b73ae8ba3acfaf8697c94a8bbbf1113354a5013ae4dcf73e5463e9f3084451139e6a68b2e42a05258ebc5a867fd3155f54d2b21a39924f935a5a036",
     "type": "SEGWIT_2FA",
-    "lang": "ENGLISH"
+    "lang": "ENGLISH",
   },
   {
     "mnemonic":
@@ -157,7 +157,7 @@ final List<Map<String, dynamic>> testVectorV2 = [
     "seed":
         "6d345fd0b2e61d561617badb646137288565176342a7d86c161e4230fb978f7a52f84bac8cafc0b74e753098a4cc46532cbd9954e8f8acf5add4893f5dfdb97a",
     "type": "SEGWIT_2FA",
-    "lang": "ENGLISH"
+    "lang": "ENGLISH",
   },
   {
     "mnemonic":
@@ -167,7 +167,7 @@ final List<Map<String, dynamic>> testVectorV2 = [
         "7a80ea394292d978354d00fb59c0dfc42d6a4c21beb9ff2bf67aff11dbef09633138f7116357ea309e7b964ebf4a1405381443ea8e3b4f8d0bc637fa019578a3",
     "address": "1MKHPBXDh6Vio6uiWBfuX3dccJVZvBDx4H",
     "type": "STANDARD",
-    "lang": "PORTUGUESE"
+    "lang": "PORTUGUESE",
   },
   {
     "mnemonic":
@@ -178,7 +178,7 @@ final List<Map<String, dynamic>> testVectorV2 = [
         "98bc9f295646bd0189f6e6e24811d6fdf7bd67d1c04637afac0ec228d28f534148b7b35c2b74ac136c40f163b33270ec671eb115c8f5b665f22daa9a696bc4f6",
     "address": "1KZJbCWUBKunFPx5FAb2uvEjKZx6LejZWr",
     "type": "STANDARD",
-    "lang": "PORTUGUESE"
+    "lang": "PORTUGUESE",
   },
   {
     "mnemonic":
@@ -188,7 +188,7 @@ final List<Map<String, dynamic>> testVectorV2 = [
         "778aa8b34602865f687be4982eb3eed70e730517680d60ca7fce2c121583cceb4288d8f76c243e6485a60e0bca4f050c5bed543f584839a049dfdd31369be16a",
     "address": "bc1qe755xuzjh4tah77vuq3fc43jwxjp93a9460nxy",
     "type": "SEGWIT",
-    "lang": "PORTUGUESE"
+    "lang": "PORTUGUESE",
   },
   {
     "mnemonic":
@@ -199,7 +199,7 @@ final List<Map<String, dynamic>> testVectorV2 = [
         "983ac620c3312f7b3c1c299bb1724ea54fba039c8ebde255c6df56178443058987d00f640d59942de12a5b8edb056ca9ede4311cb70c6b72084ff104a06bbec2",
     "address": "bc1qdwdh5tf4guudlzqqajtq95wguwkmmzde0mv0e3",
     "type": "SEGWIT",
-    "lang": "PORTUGUESE"
+    "lang": "PORTUGUESE",
   },
   {
     "mnemonic":
@@ -208,7 +208,7 @@ final List<Map<String, dynamic>> testVectorV2 = [
     "seed":
         "f318ede69d65fc50bc74ccd0832c86655afaebfe758d51bc64f9e8643566fe3f0308c5859c86fa5e1d20750da155ff65d6934cad95c8cbab071ae8a1ad802315",
     "type": "STANDARD_2FA",
-    "lang": "PORTUGUESE"
+    "lang": "PORTUGUESE",
   },
   {
     "mnemonic":
@@ -218,7 +218,7 @@ final List<Map<String, dynamic>> testVectorV2 = [
     "seed":
         "4fef1c3f374decb5eb185c724383cb8bdaa3495aa531af6035dc645d63ba7bcb2487d31d2aa55dc3634a8d050f2d1cd86049acb953f913c3bdade52c84e573e8",
     "type": "STANDARD_2FA",
-    "lang": "PORTUGUESE"
+    "lang": "PORTUGUESE",
   },
   {
     "mnemonic":
@@ -227,7 +227,7 @@ final List<Map<String, dynamic>> testVectorV2 = [
     "seed":
         "b03cbc282eb9fa9c1b4590e8c7e9cc3a53cfc2f825e1da8b8560a7138effa800660fc76cc1ebed14437d147dcedf8db3df7d3b0986d8593c109c122ca40259d4",
     "type": "SEGWIT_2FA",
-    "lang": "PORTUGUESE"
+    "lang": "PORTUGUESE",
   },
   {
     "mnemonic":
@@ -237,7 +237,7 @@ final List<Map<String, dynamic>> testVectorV2 = [
     "seed":
         "51bf12513ed6d96af61a38a4f406b950481db3aea1ae76ea01d6a89ca571a9dcbc148e0a9f1e5d8240b43ac52543f83005f62c5eec1b8180ee3731c38ae2ff88",
     "type": "SEGWIT_2FA",
-    "lang": "PORTUGUESE"
+    "lang": "PORTUGUESE",
   },
   {
     "mnemonic":
@@ -247,7 +247,7 @@ final List<Map<String, dynamic>> testVectorV2 = [
         "2fbafb9843584c4a1a1af144959210c6c8801e2674dcbf996fcc51359b594a458e552910495f31a056cbcbd1185739a571c5303d12ab29a4d1079d764127c315",
     "address": "1CcjrQ8WBQLjATq9twGMbFU2fFqKNBo7Nd",
     "type": "STANDARD",
-    "lang": "SPANISH"
+    "lang": "SPANISH",
   },
   {
     "mnemonic":
@@ -258,7 +258,7 @@ final List<Map<String, dynamic>> testVectorV2 = [
         "492ab9b19ada51f67c43eb8b2772f530c5387b368e90ed783f08ba9cf63233b6b9bf0036ffdc83d5cf188c1f77b84adbd2775a27db5edd96f42d9c78acfe3c83",
     "address": "1AMCSxJzJty61st94y7fFtfPhDeWxMA1G8",
     "type": "STANDARD",
-    "lang": "SPANISH"
+    "lang": "SPANISH",
   },
   {
     "mnemonic":
@@ -268,7 +268,7 @@ final List<Map<String, dynamic>> testVectorV2 = [
         "a0f065e662824de253c47aca49443fb7464ec9690eaf178eb8946f8582140f230c241d125bafe1aa651406f7c94d461faf789b6d2056f9d7f9f5f940122c4a5b",
     "address": "bc1qj2agkdr6t5zn8jw8mxwf8cdehpehxf97rnrskr",
     "type": "SEGWIT",
-    "lang": "SPANISH"
+    "lang": "SPANISH",
   },
   {
     "mnemonic":
@@ -279,7 +279,7 @@ final List<Map<String, dynamic>> testVectorV2 = [
         "1e34e9bc28b0d48208bd5a464fd8a3398c6da5687dcdbd483dee6916cd744e0c1c68a2bf04f3e14a0662ba150adb317fb8c95c916d3e9c7627d8c49c929df2a5",
     "address": "bc1ql8pqrvlnjhe7lje2ehhpnfldgyaehckvrd4y5e",
     "type": "SEGWIT",
-    "lang": "SPANISH"
+    "lang": "SPANISH",
   },
   {
     "mnemonic":
@@ -288,7 +288,7 @@ final List<Map<String, dynamic>> testVectorV2 = [
     "seed":
         "3574484c157fd80f0951b8e33b924b74eeef73d956605e7e7715bf218fd7f5dc624761083ec2a51cb425977268d5cbdae8341b377712b22947424219c1a4af1d",
     "type": "STANDARD_2FA",
-    "lang": "SPANISH"
+    "lang": "SPANISH",
   },
   {
     "mnemonic":
@@ -298,7 +298,7 @@ final List<Map<String, dynamic>> testVectorV2 = [
     "seed":
         "cf1b025b56cdc441fa347a4a7d928ac93b89f2030c96ef3a6269c62d768579a3953b11b2a170f501f0b3ce3c6d467d87293a67142522c34283bb500439021fa9",
     "type": "STANDARD_2FA",
-    "lang": "SPANISH"
+    "lang": "SPANISH",
   },
   {
     "mnemonic":
@@ -307,7 +307,7 @@ final List<Map<String, dynamic>> testVectorV2 = [
     "seed":
         "9c03417437cd047f1b2dba1ed4100a8f2ec060e5861d80504f3b0fd1570329c3cee43156df066042eae34a5afa836f81848c375a7cdf317449cbccfab628d3ce",
     "type": "SEGWIT_2FA",
-    "lang": "SPANISH"
+    "lang": "SPANISH",
   },
   {
     "mnemonic":
@@ -317,6 +317,6 @@ final List<Map<String, dynamic>> testVectorV2 = [
     "seed":
         "46b60f057727ace59389aea7447134a169ae841b556d1f1f6aa664d24d1a4d8da3d7e61632e290d3f340a20f256de93d7132a459611fc1aad70a93eda8802a18",
     "type": "SEGWIT_2FA",
-    "lang": "SPANISH"
-  }
+    "lang": "SPANISH",
+  },
 ];

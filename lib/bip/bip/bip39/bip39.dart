@@ -3,9 +3,6 @@
 /// for cryptographic keys.
 library;
 
-/// Export statement for word list languages used in BIP-39 mnemonics.
-export 'word_list/languages.dart';
-
 /// Export statement for the functionality related to generating entropy for BIP-39 mnemonics.
 export 'bip39_entropy_generator.dart';
 

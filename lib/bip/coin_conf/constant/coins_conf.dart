@@ -24,89 +24,83 @@ const btcWifNetVerTn = [0xef];
 class CoinsConf {
   /// Configuration for Acala
   static const CoinConf acala = CoinConf(
-      coinName: CoinNames("Acala", "ACA"),
-      params: CoinParams(addrSs58Format: 10));
+    coinName: CoinNames("Acala", "ACA"),
+    params: CoinParams(addrSs58Format: 10),
+  );
 
   /// Configuration for Akash Network
   static const CoinConf akashNetwork = CoinConf(
     coinName: CoinNames("Akash Network", "AKT"),
-    params: CoinParams(
-      addrHrp: Slip173.akashNetwork,
-    ),
+    params: CoinParams(addrHrp: Slip173.akashNetwork),
   );
 
   /// Configuration for Algorand
-  static const CoinConf algorand =
-      CoinConf(coinName: CoinNames("Algorand", "ALGO"), params: CoinParams());
+  static const CoinConf algorand = CoinConf(
+    coinName: CoinNames("Algorand", "ALGO"),
+    params: CoinParams(),
+  );
 
   /// Class container for coins configuration.
 
   /// Configuration for Aptos
   static const CoinConf aptos = CoinConf(
-      coinName: CoinNames("Aptos", "APTOS"),
-      params: CoinParams(addrPrefix: "0x"));
+    coinName: CoinNames("Aptos", "APTOS"),
+    params: CoinParams(addrPrefix: "0x"),
+  );
 
   /// Configuration for SUI
   static const CoinConf sui = CoinConf(
-      coinName: CoinNames("Sui", "SUI"), params: CoinParams(addrPrefix: "0x"));
+    coinName: CoinNames("Sui", "SUI"),
+    params: CoinParams(addrPrefix: "0x"),
+  );
 
   /// Configuration for Avax C-Chain
   static const CoinConf avaxCChain = CoinConf(
-      coinName: CoinNames("Avax C-Chain", "AVAX"), params: CoinParams());
+    coinName: CoinNames("Avax C-Chain", "AVAX"),
+    params: CoinParams(),
+  );
 
   /// Configuration for Avax P-Chain
   static const CoinConf avaxPChain = CoinConf(
     coinName: CoinNames("Avax P-Chain", "AVAX"),
-    params: CoinParams(
-      addrHrp: "avax",
-      addrPrefix: "P-",
-    ),
+    params: CoinParams(addrHrp: "avax", addrPrefix: "P-"),
   );
 
   /// Configuration for Avax X-Chain
   static const CoinConf avaxXChain = CoinConf(
     coinName: CoinNames("Avax X-Chain", "AVAX"),
-    params: CoinParams(
-      addrHrp: "avax",
-      addrPrefix: "X-",
-    ),
+    params: CoinParams(addrHrp: "avax", addrPrefix: "X-"),
   );
 
   /// Configuration for Axelar
   static const CoinConf axelar = CoinConf(
     coinName: CoinNames("Axelar", "AXL"),
-    params: CoinParams(
-      addrHrp: Slip173.axelar,
-    ),
+    params: CoinParams(addrHrp: Slip173.axelar),
   );
 
   /// Configuration for Band Protocol
   static const CoinConf bandProtocol = CoinConf(
     coinName: CoinNames("Band Protocol", "BAND"),
-    params: CoinParams(
-      addrHrp: Slip173.bandProtocol,
-    ),
+    params: CoinParams(addrHrp: Slip173.bandProtocol),
   );
 
   /// Configuration for Bifrost
   static const CoinConf bifrost = CoinConf(
     coinName: CoinNames("Bifrost", "BNC"),
-    params: CoinParams(
-      addrSs58Format: 6,
-    ),
+    params: CoinParams(addrSs58Format: 6),
   );
 
   /// Configuration for Binance Chain
   static const CoinConf binanceChain = CoinConf(
     coinName: CoinNames("Binance Chain", "BNB"),
-    params: CoinParams(
-      addrHrp: Slip173.binanceChain,
-    ),
+    params: CoinParams(addrHrp: Slip173.binanceChain),
   );
 
   /// Configuration for Binance Smart Chain
   static const CoinConf binanceSmartChain = CoinConf(
-      coinName: CoinNames("Binance Smart Chain", "BNB"), params: CoinParams());
+    coinName: CoinNames("Binance Smart Chain", "BNB"),
+    params: CoinParams(),
+  );
 
   /// Configuration for Bitcoin main net
   static const CoinConf bitcoinMainNet = CoinConf(
@@ -215,55 +209,43 @@ class CoinsConf {
   /// Configuration for Cardano main net
   static const CoinConf cardanoMainNet = CoinConf(
     coinName: CoinNames("Cardano", "ADA"),
-    params: CoinParams(
-      addrHrp: "addr",
-      stakingAddrHrp: "stake",
-    ),
+    params: CoinParams(addrHrp: "addr", stakingAddrHrp: "stake"),
   );
 
   /// Configuration for Cardano test
   static const CoinConf cardanoTestNet = CoinConf(
     coinName: CoinNames("Cardano TestNet", "ADA"),
-    params: CoinParams(
-      addrHrp: "addr_test",
-      stakingAddrHrp: "stake_test",
-    ),
+    params: CoinParams(addrHrp: "addr_test", stakingAddrHrp: "stake_test"),
   );
 
   /// Configuration for Celo
-  static const CoinConf celo =
-      CoinConf(coinName: CoinNames("Celo", "CELO"), params: CoinParams());
+  static const CoinConf celo = CoinConf(
+    coinName: CoinNames("Celo", "CELO"),
+    params: CoinParams(),
+  );
 
   /// Configuration for Certik
   static const CoinConf certik = CoinConf(
     coinName: CoinNames("Certik", "CTK"),
-    params: CoinParams(
-      addrHrp: Slip173.certik,
-    ),
+    params: CoinParams(addrHrp: Slip173.certik),
   );
 
   /// Configuration for ChainX
   static const CoinConf chainX = CoinConf(
     coinName: CoinNames("ChainX", "PCX"),
-    params: CoinParams(
-      addrSs58Format: 44,
-    ),
+    params: CoinParams(addrSs58Format: 44),
   );
 
   /// Configuration for Chihuahua
   static const CoinConf chihuahua = CoinConf(
     coinName: CoinNames("Chihuahua", "HUAHUA"),
-    params: CoinParams(
-      addrHrp: Slip173.chihuahua,
-    ),
+    params: CoinParams(addrHrp: Slip173.chihuahua),
   );
 
   /// Configuration for Cosmos
   static const CoinConf cosmos = CoinConf(
     coinName: CoinNames("Cosmos", "ATOM"),
-    params: CoinParams(
-      addrHrp: Slip173.cosmos,
-    ),
+    params: CoinParams(addrHrp: Slip173.cosmos),
   );
 
   /// Configuration for Dash main net
@@ -337,117 +319,110 @@ class CoinsConf {
   /// Configuration for Edgeware
   static const CoinConf edgeware = CoinConf(
     coinName: CoinNames("Edgeware", "EDG"),
-    params: CoinParams(
-      addrSs58Format: 7,
-    ),
+    params: CoinParams(addrSs58Format: 7),
   );
 
   /// Configuration for Elrond
   static const CoinConf elrond = CoinConf(
     coinName: CoinNames("Elrond eGold", "eGLD"),
-    params: CoinParams(
-      addrHrp: Slip173.elrond,
-    ),
+    params: CoinParams(addrHrp: Slip173.elrond),
   );
 
   /// Configuration for Eos
   static const CoinConf eos = CoinConf(
     coinName: CoinNames("EOS", "EOS"),
-    params: CoinParams(
-      addrPrefix: "EOS",
-    ),
+    params: CoinParams(addrPrefix: "EOS"),
   );
 
   /// Configuration for Ergo main net
-  static const CoinConf ergoMainNet =
-      CoinConf(coinName: CoinNames("Ergo", "ERGO"), params: CoinParams());
+  static const CoinConf ergoMainNet = CoinConf(
+    coinName: CoinNames("Ergo", "ERGO"),
+    params: CoinParams(),
+  );
 
   /// Configuration for Ergo test net
   static const CoinConf ergoTestNet = CoinConf(
-      coinName: CoinNames("Ergo TestNet", "ERGO"), params: CoinParams());
+    coinName: CoinNames("Ergo TestNet", "ERGO"),
+    params: CoinParams(),
+  );
 
   /// Configuration for Ethereum
   static const CoinConf ethereum = CoinConf(
     coinName: CoinNames("Ethereum", "ETH"),
-    params: CoinParams(
-      addrPrefix: "0x",
-    ),
+    params: CoinParams(addrPrefix: "0x"),
   );
 
   /// Configuration for Ethereum Classic
   static const CoinConf ethereumClassic = CoinConf(
-      coinName: CoinNames("Ethereum Classic", "ETC"), params: CoinParams());
+    coinName: CoinNames("Ethereum Classic", "ETC"),
+    params: CoinParams(),
+  );
 
   /// Configuration for Fantom Opera
   static const CoinConf fantomOpera = CoinConf(
-      coinName: CoinNames("Fantom Opera", "FTM"), params: CoinParams());
+    coinName: CoinNames("Fantom Opera", "FTM"),
+    params: CoinParams(),
+  );
 
   /// Configuration for Filecoin
   static const CoinConf filecoin = CoinConf(
     coinName: CoinNames("Filecoin", "FIL"),
-    params: CoinParams(
-      addrPrefix: "f",
-    ),
+    params: CoinParams(addrPrefix: "f"),
   );
 
   /// Configuration for generic Substrate coin
   static const CoinConf genericSubstrate = CoinConf(
-      coinName: CoinNames("Generic Substrate", ""),
-      params: CoinParams(addrSs58Format: 42));
+    coinName: CoinNames("Generic Substrate", ""),
+    params: CoinParams(addrSs58Format: 42),
+  );
 
   /// Configuration for Harmony One
   static const CoinConf harmonyOne = CoinConf(
     coinName: CoinNames("Harmony One", "ONE"),
-    params: CoinParams(
-      addrHrp: Slip173.harmonyOne,
-    ),
+    params: CoinParams(addrHrp: Slip173.harmonyOne),
   );
 
   /// Configuration for Huobi Chain
-  static const CoinConf huobiChain =
-      CoinConf(coinName: CoinNames("Huobi Token", "HT"), params: CoinParams());
+  static const CoinConf huobiChain = CoinConf(
+    coinName: CoinNames("Huobi Token", "HT"),
+    params: CoinParams(),
+  );
 
   /// Configuration for Icon
   static const CoinConf icon = CoinConf(
     coinName: CoinNames("Icon", "ICX"),
-    params: CoinParams(
-      addrPrefix: "hx",
-    ),
+    params: CoinParams(addrPrefix: "hx"),
   );
 
   /// Configuration for Injective
   static const CoinConf injective = CoinConf(
     coinName: CoinNames("Injective", "INJ"),
-    params: CoinParams(
-      addrHrp: Slip173.injective,
-    ),
+    params: CoinParams(addrHrp: Slip173.injective),
   );
 
   /// Configuration for IRISnet
   static const CoinConf irisNet = CoinConf(
     coinName: CoinNames("IRIS Network", "IRIS"),
-    params: CoinParams(
-      addrHrp: Slip173.irisNetwork,
-    ),
+    params: CoinParams(addrHrp: Slip173.irisNetwork),
   );
 
   /// Configuration for Karura
   static const CoinConf karura = CoinConf(
-      coinName: CoinNames("Karura", "KAR"),
-      params: CoinParams(addrSs58Format: 8));
+    coinName: CoinNames("Karura", "KAR"),
+    params: CoinParams(addrSs58Format: 8),
+  );
 
   /// Configuration for Kava
   static const CoinConf kava = CoinConf(
     coinName: CoinNames("Kava", "KAVA"),
-    params: CoinParams(
-      addrHrp: Slip173.kava,
-    ),
+    params: CoinParams(addrHrp: Slip173.kava),
   );
 
   /// Configuration for Kusama
   static const CoinConf kusama = CoinConf(
-      coinName: CoinNames("Kusama", "KSM"),
-      params: CoinParams(addrSs58Format: 2));
+    coinName: CoinNames("Kusama", "KSM"),
+    params: CoinParams(addrSs58Format: 2),
+  );
 
   /// Configuration for Litecoin main net
   static const CoinConf litecoinMainNet = CoinConf(
@@ -509,152 +484,168 @@ class CoinsConf {
 
   /// Configuration for Moonbeam
   static const CoinConf moonbeam = CoinConf(
-      coinName: CoinNames("Moonbeam", "GLMR"),
-      params: CoinParams(addrSs58Format: 1284));
+    coinName: CoinNames("Moonbeam", "GLMR"),
+    params: CoinParams(addrSs58Format: 1284),
+  );
 
   /// Configuration for Moonriver
   static const CoinConf moonriver = CoinConf(
-      coinName: CoinNames("Moonriver", "MOVR"),
-      params: CoinParams(addrSs58Format: 1285));
+    coinName: CoinNames("Moonriver", "MOVR"),
+    params: CoinParams(addrSs58Format: 1285),
+  );
 
   /// Configuration for Nano
   static const CoinConf nano = CoinConf(
-      coinName: CoinNames("Nano", "NANO"),
-      params: CoinParams(addrPrefix: "nano_"));
+    coinName: CoinNames("Nano", "NANO"),
+    params: CoinParams(addrPrefix: "nano_"),
+  );
 
   /// Configuration for Near Protocol
   static const CoinConf nearProtocol = CoinConf(
-      coinName: CoinNames("Near Protocol", "NEAR"), params: CoinParams());
+    coinName: CoinNames("Near Protocol", "NEAR"),
+    params: CoinParams(),
+  );
 
   /// Configuration for Neo
   static const CoinConf neo = CoinConf(
-      coinName: CoinNames("NEO", "NEO"), params: CoinParams(addrVer: [0x17]));
+    coinName: CoinNames("NEO", "NEO"),
+    params: CoinParams(addrVer: [0x17]),
+  );
 
   /// Configuration for Nine Chronicles Gold
   static const CoinConf nineChroniclesGold = CoinConf(
-      coinName: CoinNames("NineChroniclesGold", "NCG"), params: CoinParams());
+    coinName: CoinNames("NineChroniclesGold", "NCG"),
+    params: CoinParams(),
+  );
 
   /// Configuration for OKEx Chain
   static const CoinConf okexChain = CoinConf(
     coinName: CoinNames("OKExChain", "OKT"),
-    params: CoinParams(
-      addrHrp: Slip173.okexChain,
-    ),
+    params: CoinParams(addrHrp: Slip173.okexChain),
   );
 
   /// Configuration for Ontology
   static const CoinConf ontology = CoinConf(
-      coinName: CoinNames("Ontology", "ONT"),
-      params: CoinParams(addrVer: [0x17]));
+    coinName: CoinNames("Ontology", "ONT"),
+    params: CoinParams(addrVer: [0x17]),
+  );
 
   /// Configuration for Osmosis
   static const CoinConf osmosis = CoinConf(
     coinName: CoinNames("Osmosis", "OSMO"),
-    params: CoinParams(
-      addrHrp: Slip173.osmosis,
-    ),
+    params: CoinParams(addrHrp: Slip173.osmosis),
   );
 
   /// Configuration for Phala
   static const CoinConf phala = CoinConf(
-      coinName: CoinNames("Phala Network", "PHA"),
-      params: CoinParams(addrSs58Format: 30));
+    coinName: CoinNames("Phala Network", "PHA"),
+    params: CoinParams(addrSs58Format: 30),
+  );
 
   /// Configuration for Pi Network
-  static const CoinConf piNetwork =
-      CoinConf(coinName: CoinNames("Pi Network", "PI"), params: CoinParams());
+  static const CoinConf piNetwork = CoinConf(
+    coinName: CoinNames("Pi Network", "PI"),
+    params: CoinParams(),
+  );
 
   /// Configuration for Plasm
   static const CoinConf plasm = CoinConf(
-      coinName: CoinNames("Plasm Network", "PLM"),
-      params: CoinParams(addrSs58Format: 5));
+    coinName: CoinNames("Plasm Network", "PLM"),
+    params: CoinParams(addrSs58Format: 5),
+  );
 
   /// Configuration for Polkadot
   static const CoinConf polkadot = CoinConf(
-      coinName: CoinNames("Polkadot", "DOT"),
-      params: CoinParams(addrSs58Format: 0));
+    coinName: CoinNames("Polkadot", "DOT"),
+    params: CoinParams(addrSs58Format: 0),
+  );
 
   /// Configuration for Polygon
-  static const CoinConf polygon =
-      CoinConf(coinName: CoinNames("Polygon", "MATIC"), params: CoinParams());
+  static const CoinConf polygon = CoinConf(
+    coinName: CoinNames("Polygon", "MATIC"),
+    params: CoinParams(),
+  );
 
   /// Configuration for Ripple
   static const CoinConf ripple = CoinConf(
-      coinName: CoinNames("Ripple", "XRP"),
-      params:
-          CoinParams(p2pkhNetVer: btcP2PKHNetVerMn, addrNetVer: [0x05, 0x44]));
+    coinName: CoinNames("Ripple", "XRP"),
+    params: CoinParams(p2pkhNetVer: btcP2PKHNetVerMn, addrNetVer: [0x05, 0x44]),
+  );
 
   /// Configuration for RippleTestNet
   static const CoinConf rippleTestNet = CoinConf(
-      coinName: CoinNames("Ripple", "XRP"),
-      params:
-          CoinParams(p2pkhNetVer: btcP2PKHNetVerMn, addrNetVer: [0x04, 0x93]));
+    coinName: CoinNames("Ripple", "XRP"),
+    params: CoinParams(p2pkhNetVer: btcP2PKHNetVerMn, addrNetVer: [0x04, 0x93]),
+  );
 
   /// Configuration for Secret Network
   static const CoinConf secretNetwork = CoinConf(
     coinName: CoinNames("Secret Network", "SCRT"),
-    params: CoinParams(
-      addrHrp: Slip173.secretNetwork,
-    ),
+    params: CoinParams(addrHrp: Slip173.secretNetwork),
   );
 
   /// Configuration for Solana
-  static const CoinConf solana =
-      CoinConf(coinName: CoinNames("Solana", "SOL"), params: CoinParams());
+  static const CoinConf solana = CoinConf(
+    coinName: CoinNames("Solana", "SOL"),
+    params: CoinParams(),
+  );
 
   /// Configuration for Sora
   static const CoinConf sora = CoinConf(
-      coinName: CoinNames("Sora", "XOR"),
-      params: CoinParams(addrSs58Format: 69));
+    coinName: CoinNames("Sora", "XOR"),
+    params: CoinParams(addrSs58Format: 69),
+  );
 
   /// Configuration for Stafi
   static const CoinConf stafi = CoinConf(
-      coinName: CoinNames("Stafi", "FIS"),
-      params: CoinParams(addrSs58Format: 20));
+    coinName: CoinNames("Stafi", "FIS"),
+    params: CoinParams(addrSs58Format: 20),
+  );
 
   /// Configuration for Stellar
-  static const CoinConf stellar =
-      CoinConf(coinName: CoinNames("Stellar", "XLM"), params: CoinParams());
+  static const CoinConf stellar = CoinConf(
+    coinName: CoinNames("Stellar", "XLM"),
+    params: CoinParams(),
+  );
 
   /// Configuration for Terra
   static const CoinConf terra = CoinConf(
     coinName: CoinNames("Terra", "LUNA"),
-    params: CoinParams(
-      addrHrp: Slip173.terra,
-    ),
+    params: CoinParams(addrHrp: Slip173.terra),
   );
 
   /// Configuration for Tezos
-  static const CoinConf tezos =
-      CoinConf(coinName: CoinNames("Tezos", "XTZ"), params: CoinParams());
+  static const CoinConf tezos = CoinConf(
+    coinName: CoinNames("Tezos", "XTZ"),
+    params: CoinParams(),
+  );
 
   /// Configuration for Theta
   static const CoinConf theta = CoinConf(
-      coinName: CoinNames("Theta Network", "THETA"), params: CoinParams());
+    coinName: CoinNames("Theta Network", "THETA"),
+    params: CoinParams(),
+  );
 
   /// Configuration for Tron
   static const CoinConf tron = CoinConf(
     coinName: CoinNames("Tron", "TRX"),
-    params: CoinParams(
-      addrPrefix: "0x41",
-    ),
+    params: CoinParams(addrPrefix: "0x41"),
   );
 
   /// Configuration for VeChain
-  static const CoinConf veChain =
-      CoinConf(coinName: CoinNames("VeChain", "VET"), params: CoinParams());
+  static const CoinConf veChain = CoinConf(
+    coinName: CoinNames("VeChain", "VET"),
+    params: CoinParams(),
+  );
 
   /// Configuration for Verge
   static const CoinConf verge = CoinConf(
     coinName: CoinNames("Verge", "XVG"),
-    params: CoinParams(
-      p2pkhNetVer: [0x1e],
-      wifNetVer: [0x9e],
-    ),
+    params: CoinParams(p2pkhNetVer: [0x1e], wifNetVer: [0x9e]),
   );
 
   /// Configuration for Zcash main net
-  static const CoinConf zcashMainNet = CoinConf(
+  static const CoinConf zcashTransparentMainNet = CoinConf(
     coinName: CoinNames("Zcash", "ZEC"),
     params: CoinParams(
       p2pkhNetVer: [0x1c, 0xb8],
@@ -664,29 +655,40 @@ class CoinsConf {
   );
 
   /// Configuration for Zcash test net
-  static const CoinConf zcashTestNet = CoinConf(
-      coinName: CoinNames("Zcash TestNet", "ZEC"),
-      params: CoinParams(
-        p2pkhNetVer: [0x1d, 0x25],
-        p2shNetVer: [0x1c, 0xba],
-        wifNetVer: btcWifNetVerTn,
-      ));
+  static const CoinConf zcashTransparentTestNet = CoinConf(
+    coinName: CoinNames("Zcash TestNet", "ZEC"),
+    params: CoinParams(
+      p2pkhNetVer: [0x1d, 0x25],
+      p2shNetVer: [0x1c, 0xba],
+      wifNetVer: btcWifNetVerTn,
+    ),
+  );
+
+  /// Configuration for Zcash test net
+  static const CoinConf zcashTransparentRegtest = CoinConf(
+    coinName: CoinNames("Zcash Regtest", "ZEC"),
+    params: CoinParams(
+      p2pkhNetVer: [0x1d, 0x25],
+      p2shNetVer: [0x1c, 0xba],
+      wifNetVer: btcWifNetVerTn,
+    ),
+  );
 
   /// Configuration for Zilliqa
   static const CoinConf zilliqa = CoinConf(
     coinName: CoinNames("Zilliqa", "ZIL"),
-    params: CoinParams(
-      addrHrp: Slip173.zilliqa,
-    ),
+    params: CoinParams(addrHrp: Slip173.zilliqa),
   );
 
   static const CoinConf tonTestnet = CoinConf(
-      coinName: CoinNames("The Open Network", "tTON"),
-      params: CoinParams(workchain: -1));
+    coinName: CoinNames("The Open Network", "tTON"),
+    params: CoinParams(workchain: -1),
+  );
 
   static const CoinConf tonMainnet = CoinConf(
-      coinName: CoinNames("The Open Network", "TON"),
-      params: CoinParams(workchain: 0));
+    coinName: CoinNames("The Open Network", "TON"),
+    params: CoinParams(workchain: 0),
+  );
 
   /// Configuration for pepecoin main net
   static const CoinConf pepeMainnet = CoinConf(

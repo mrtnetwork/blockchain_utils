@@ -19,7 +19,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "2d99eeca",
         "index": 2147483648,
         "depth": 1,
-        "parent_finger_print": "162caf98"
+        "parent_finger_print": "162caf98",
       },
       {
         "private":
@@ -31,7 +31,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "10a0689d",
         "index": 1,
         "depth": 2,
-        "parent_finger_print": "2d99eeca"
+        "parent_finger_print": "2d99eeca",
       },
       {
         "private":
@@ -43,7 +43,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "ad2521e1",
         "index": 2147483650,
         "depth": 3,
-        "parent_finger_print": "10a0689d"
+        "parent_finger_print": "10a0689d",
       },
       {
         "private":
@@ -55,7 +55,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "8f3033ca",
         "index": 3,
         "depth": 4,
-        "parent_finger_print": "ad2521e1"
+        "parent_finger_print": "ad2521e1",
       },
       {
         "private":
@@ -67,7 +67,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "1b4fa32d",
         "index": 2147483652,
         "depth": 5,
-        "parent_finger_print": "8f3033ca"
+        "parent_finger_print": "8f3033ca",
       },
       {
         "private":
@@ -79,7 +79,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "233c5d68",
         "index": 5,
         "depth": 6,
-        "parent_finger_print": "1b4fa32d"
+        "parent_finger_print": "1b4fa32d",
       },
       {
         "private":
@@ -91,7 +91,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "813b6646",
         "index": 2147483654,
         "depth": 7,
-        "parent_finger_print": "233c5d68"
+        "parent_finger_print": "233c5d68",
       },
       {
         "private":
@@ -103,7 +103,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "5c34db96",
         "index": 7,
         "depth": 8,
-        "parent_finger_print": "813b6646"
+        "parent_finger_print": "813b6646",
       },
       {
         "private":
@@ -115,7 +115,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "d45518ea",
         "index": 2147483656,
         "depth": 9,
-        "parent_finger_print": "5c34db96"
+        "parent_finger_print": "5c34db96",
       },
       {
         "private":
@@ -127,9 +127,9 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "823fd437",
         "index": 9,
         "depth": 10,
-        "parent_finger_print": "d45518ea"
-      }
-    ]
+        "parent_finger_print": "d45518ea",
+      },
+    ],
   },
   {
     "seed": "1c63d3f563faee1c81f06dcbcb831cb0539d9720d3b3e46e5da57dbdbeeffe25",
@@ -151,7 +151,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "c2ca8879",
         "index": 2147483648,
         "depth": 1,
-        "parent_finger_print": "3004d8b9"
+        "parent_finger_print": "3004d8b9",
       },
       {
         "private":
@@ -163,7 +163,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "8b0f03d7",
         "index": 1,
         "depth": 2,
-        "parent_finger_print": "c2ca8879"
+        "parent_finger_print": "c2ca8879",
       },
       {
         "private":
@@ -175,7 +175,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "2b4e0ced",
         "index": 2147483650,
         "depth": 3,
-        "parent_finger_print": "8b0f03d7"
+        "parent_finger_print": "8b0f03d7",
       },
       {
         "private":
@@ -187,7 +187,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "6b1874ce",
         "index": 3,
         "depth": 4,
-        "parent_finger_print": "2b4e0ced"
+        "parent_finger_print": "2b4e0ced",
       },
       {
         "private":
@@ -199,7 +199,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "11bd725f",
         "index": 2147483652,
         "depth": 5,
-        "parent_finger_print": "6b1874ce"
+        "parent_finger_print": "6b1874ce",
       },
       {
         "private":
@@ -211,7 +211,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "a9b3a20d",
         "index": 5,
         "depth": 6,
-        "parent_finger_print": "11bd725f"
+        "parent_finger_print": "11bd725f",
       },
       {
         "private":
@@ -223,7 +223,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "44cc73f5",
         "index": 2147483654,
         "depth": 7,
-        "parent_finger_print": "a9b3a20d"
+        "parent_finger_print": "a9b3a20d",
       },
       {
         "private":
@@ -235,7 +235,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "b234d7be",
         "index": 7,
         "depth": 8,
-        "parent_finger_print": "44cc73f5"
+        "parent_finger_print": "44cc73f5",
       },
       {
         "private":
@@ -247,7 +247,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "285f0a82",
         "index": 2147483656,
         "depth": 9,
-        "parent_finger_print": "b234d7be"
+        "parent_finger_print": "b234d7be",
       },
       {
         "private":
@@ -259,9 +259,9 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "9870ba3a",
         "index": 9,
         "depth": 10,
-        "parent_finger_print": "285f0a82"
-      }
-    ]
+        "parent_finger_print": "285f0a82",
+      },
+    ],
   },
   {
     "seed": "62e4d5f182a52a39f3aefbb429e3e2ff9c14acba70710fab3c4648a622a51569",
@@ -283,7 +283,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "744c901d",
         "index": 2147483648,
         "depth": 1,
-        "parent_finger_print": "560f0e65"
+        "parent_finger_print": "560f0e65",
       },
       {
         "private":
@@ -295,7 +295,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "f775c830",
         "index": 1,
         "depth": 2,
-        "parent_finger_print": "744c901d"
+        "parent_finger_print": "744c901d",
       },
       {
         "private":
@@ -307,7 +307,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "9fe85b40",
         "index": 2147483650,
         "depth": 3,
-        "parent_finger_print": "f775c830"
+        "parent_finger_print": "f775c830",
       },
       {
         "private":
@@ -319,7 +319,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "f3aab04c",
         "index": 3,
         "depth": 4,
-        "parent_finger_print": "9fe85b40"
+        "parent_finger_print": "9fe85b40",
       },
       {
         "private":
@@ -331,7 +331,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "562eba3c",
         "index": 2147483652,
         "depth": 5,
-        "parent_finger_print": "f3aab04c"
+        "parent_finger_print": "f3aab04c",
       },
       {
         "private":
@@ -343,7 +343,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "de8f30d5",
         "index": 5,
         "depth": 6,
-        "parent_finger_print": "562eba3c"
+        "parent_finger_print": "562eba3c",
       },
       {
         "private":
@@ -355,7 +355,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "1715d1f8",
         "index": 2147483654,
         "depth": 7,
-        "parent_finger_print": "de8f30d5"
+        "parent_finger_print": "de8f30d5",
       },
       {
         "private":
@@ -367,7 +367,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "b8f341e6",
         "index": 7,
         "depth": 8,
-        "parent_finger_print": "1715d1f8"
+        "parent_finger_print": "1715d1f8",
       },
       {
         "private":
@@ -379,7 +379,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "f3e8d906",
         "index": 2147483656,
         "depth": 9,
-        "parent_finger_print": "b8f341e6"
+        "parent_finger_print": "b8f341e6",
       },
       {
         "private":
@@ -391,9 +391,9 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "2c3cf235",
         "index": 9,
         "depth": 10,
-        "parent_finger_print": "f3e8d906"
-      }
-    ]
+        "parent_finger_print": "f3e8d906",
+      },
+    ],
   },
   {
     "seed": "1ae7cf2e45e7ac4fd7fd3989d9235b9b77b00daad761e40ba8bbb4a9ea10468e",
@@ -415,7 +415,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "9dc54bfd",
         "index": 2147483648,
         "depth": 1,
-        "parent_finger_print": "47fbfe10"
+        "parent_finger_print": "47fbfe10",
       },
       {
         "private":
@@ -427,7 +427,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "7d156432",
         "index": 1,
         "depth": 2,
-        "parent_finger_print": "9dc54bfd"
+        "parent_finger_print": "9dc54bfd",
       },
       {
         "private":
@@ -439,7 +439,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "7be09f49",
         "index": 2147483650,
         "depth": 3,
-        "parent_finger_print": "7d156432"
+        "parent_finger_print": "7d156432",
       },
       {
         "private":
@@ -451,7 +451,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "a0132a1b",
         "index": 3,
         "depth": 4,
-        "parent_finger_print": "7be09f49"
+        "parent_finger_print": "7be09f49",
       },
       {
         "private":
@@ -463,7 +463,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "da474895",
         "index": 2147483652,
         "depth": 5,
-        "parent_finger_print": "a0132a1b"
+        "parent_finger_print": "a0132a1b",
       },
       {
         "private":
@@ -475,7 +475,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "ed2a5921",
         "index": 5,
         "depth": 6,
-        "parent_finger_print": "da474895"
+        "parent_finger_print": "da474895",
       },
       {
         "private":
@@ -487,7 +487,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "69ad509b",
         "index": 2147483654,
         "depth": 7,
-        "parent_finger_print": "ed2a5921"
+        "parent_finger_print": "ed2a5921",
       },
       {
         "private":
@@ -499,7 +499,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "823350fd",
         "index": 7,
         "depth": 8,
-        "parent_finger_print": "69ad509b"
+        "parent_finger_print": "69ad509b",
       },
       {
         "private":
@@ -511,7 +511,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "c6c14180",
         "index": 2147483656,
         "depth": 9,
-        "parent_finger_print": "823350fd"
+        "parent_finger_print": "823350fd",
       },
       {
         "private":
@@ -523,9 +523,9 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "b6565fd9",
         "index": 9,
         "depth": 10,
-        "parent_finger_print": "c6c14180"
-      }
-    ]
+        "parent_finger_print": "c6c14180",
+      },
+    ],
   },
   {
     "seed": "934636092f17709b8fdcb28c0e649de04c5627b579c41695770dd93a4f1b8963",
@@ -547,7 +547,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "bff0fb81",
         "index": 2147483648,
         "depth": 1,
-        "parent_finger_print": "d9446f15"
+        "parent_finger_print": "d9446f15",
       },
       {
         "private":
@@ -559,7 +559,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "191041da",
         "index": 1,
         "depth": 2,
-        "parent_finger_print": "bff0fb81"
+        "parent_finger_print": "bff0fb81",
       },
       {
         "private":
@@ -571,7 +571,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "aff4d4df",
         "index": 2147483650,
         "depth": 3,
-        "parent_finger_print": "191041da"
+        "parent_finger_print": "191041da",
       },
       {
         "private":
@@ -583,7 +583,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "e2dbd128",
         "index": 3,
         "depth": 4,
-        "parent_finger_print": "aff4d4df"
+        "parent_finger_print": "aff4d4df",
       },
       {
         "private":
@@ -595,7 +595,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "6d6a3bfd",
         "index": 2147483652,
         "depth": 5,
-        "parent_finger_print": "e2dbd128"
+        "parent_finger_print": "e2dbd128",
       },
       {
         "private":
@@ -607,7 +607,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "31125a51",
         "index": 5,
         "depth": 6,
-        "parent_finger_print": "6d6a3bfd"
+        "parent_finger_print": "6d6a3bfd",
       },
       {
         "private":
@@ -619,7 +619,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "c0909b67",
         "index": 2147483654,
         "depth": 7,
-        "parent_finger_print": "31125a51"
+        "parent_finger_print": "31125a51",
       },
       {
         "private":
@@ -631,7 +631,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "1c068785",
         "index": 7,
         "depth": 8,
-        "parent_finger_print": "c0909b67"
+        "parent_finger_print": "c0909b67",
       },
       {
         "private":
@@ -643,7 +643,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "354ce9a7",
         "index": 2147483656,
         "depth": 9,
-        "parent_finger_print": "1c068785"
+        "parent_finger_print": "1c068785",
       },
       {
         "private":
@@ -655,9 +655,9 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "4bbdfc4c",
         "index": 9,
         "depth": 10,
-        "parent_finger_print": "354ce9a7"
-      }
-    ]
+        "parent_finger_print": "354ce9a7",
+      },
+    ],
   },
   {
     "seed": "df8e3972622c94678d802c4e5324967fa2e1c1e7f148498076996e2ea60772a8",
@@ -679,7 +679,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "57ea8462",
         "index": 2147483648,
         "depth": 1,
-        "parent_finger_print": "3574d67a"
+        "parent_finger_print": "3574d67a",
       },
       {
         "private":
@@ -691,7 +691,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "5068c311",
         "index": 1,
         "depth": 2,
-        "parent_finger_print": "57ea8462"
+        "parent_finger_print": "57ea8462",
       },
       {
         "private":
@@ -703,7 +703,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "2402c39a",
         "index": 2147483650,
         "depth": 3,
-        "parent_finger_print": "5068c311"
+        "parent_finger_print": "5068c311",
       },
       {
         "private":
@@ -715,7 +715,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "dab0801f",
         "index": 3,
         "depth": 4,
-        "parent_finger_print": "2402c39a"
+        "parent_finger_print": "2402c39a",
       },
       {
         "private":
@@ -727,7 +727,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "de692d1e",
         "index": 2147483652,
         "depth": 5,
-        "parent_finger_print": "dab0801f"
+        "parent_finger_print": "dab0801f",
       },
       {
         "private":
@@ -739,7 +739,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "fd1e572b",
         "index": 5,
         "depth": 6,
-        "parent_finger_print": "de692d1e"
+        "parent_finger_print": "de692d1e",
       },
       {
         "private":
@@ -751,7 +751,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "9f65bce0",
         "index": 2147483654,
         "depth": 7,
-        "parent_finger_print": "fd1e572b"
+        "parent_finger_print": "fd1e572b",
       },
       {
         "private":
@@ -763,7 +763,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "c3b20b21",
         "index": 7,
         "depth": 8,
-        "parent_finger_print": "9f65bce0"
+        "parent_finger_print": "9f65bce0",
       },
       {
         "private":
@@ -775,7 +775,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "2fab4f4e",
         "index": 2147483656,
         "depth": 9,
-        "parent_finger_print": "c3b20b21"
+        "parent_finger_print": "c3b20b21",
       },
       {
         "private":
@@ -787,9 +787,9 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "280fa82d",
         "index": 9,
         "depth": 10,
-        "parent_finger_print": "2fab4f4e"
-      }
-    ]
+        "parent_finger_print": "2fab4f4e",
+      },
+    ],
   },
   {
     "seed": "8f3ee372eb13884d25c41791b1360db4fc76b74cfe1bef6ffada79eb1ed5048c",
@@ -811,7 +811,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "d6d8ea89",
         "index": 2147483648,
         "depth": 1,
-        "parent_finger_print": "dab5e650"
+        "parent_finger_print": "dab5e650",
       },
       {
         "private":
@@ -823,7 +823,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "37e45990",
         "index": 1,
         "depth": 2,
-        "parent_finger_print": "d6d8ea89"
+        "parent_finger_print": "d6d8ea89",
       },
       {
         "private":
@@ -835,7 +835,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "e757effc",
         "index": 2147483650,
         "depth": 3,
-        "parent_finger_print": "37e45990"
+        "parent_finger_print": "37e45990",
       },
       {
         "private":
@@ -847,7 +847,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "e8da88a4",
         "index": 3,
         "depth": 4,
-        "parent_finger_print": "e757effc"
+        "parent_finger_print": "e757effc",
       },
       {
         "private":
@@ -859,7 +859,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "fb909c84",
         "index": 2147483652,
         "depth": 5,
-        "parent_finger_print": "e8da88a4"
+        "parent_finger_print": "e8da88a4",
       },
       {
         "private":
@@ -871,7 +871,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "9cd037a5",
         "index": 5,
         "depth": 6,
-        "parent_finger_print": "fb909c84"
+        "parent_finger_print": "fb909c84",
       },
       {
         "private":
@@ -883,7 +883,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "af44cb81",
         "index": 2147483654,
         "depth": 7,
-        "parent_finger_print": "9cd037a5"
+        "parent_finger_print": "9cd037a5",
       },
       {
         "private":
@@ -895,7 +895,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "cfc70bf8",
         "index": 7,
         "depth": 8,
-        "parent_finger_print": "af44cb81"
+        "parent_finger_print": "af44cb81",
       },
       {
         "private":
@@ -907,7 +907,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "5ad383d3",
         "index": 2147483656,
         "depth": 9,
-        "parent_finger_print": "cfc70bf8"
+        "parent_finger_print": "cfc70bf8",
       },
       {
         "private":
@@ -919,9 +919,9 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "b9c2fffc",
         "index": 9,
         "depth": 10,
-        "parent_finger_print": "5ad383d3"
-      }
-    ]
+        "parent_finger_print": "5ad383d3",
+      },
+    ],
   },
   {
     "seed": "ecd065f7ffd274ded6e68e6929c0239309d53c8bb52872e446b0243c58d29315",
@@ -943,7 +943,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "cfcdaa9e",
         "index": 2147483648,
         "depth": 1,
-        "parent_finger_print": "34e09d2d"
+        "parent_finger_print": "34e09d2d",
       },
       {
         "private":
@@ -955,7 +955,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "9c4ecec2",
         "index": 1,
         "depth": 2,
-        "parent_finger_print": "cfcdaa9e"
+        "parent_finger_print": "cfcdaa9e",
       },
       {
         "private":
@@ -967,7 +967,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "d8224916",
         "index": 2147483650,
         "depth": 3,
-        "parent_finger_print": "9c4ecec2"
+        "parent_finger_print": "9c4ecec2",
       },
       {
         "private":
@@ -979,7 +979,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "c8429215",
         "index": 3,
         "depth": 4,
-        "parent_finger_print": "d8224916"
+        "parent_finger_print": "d8224916",
       },
       {
         "private":
@@ -991,7 +991,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "e384c576",
         "index": 2147483652,
         "depth": 5,
-        "parent_finger_print": "c8429215"
+        "parent_finger_print": "c8429215",
       },
       {
         "private":
@@ -1003,7 +1003,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "625f86b0",
         "index": 5,
         "depth": 6,
-        "parent_finger_print": "e384c576"
+        "parent_finger_print": "e384c576",
       },
       {
         "private":
@@ -1015,7 +1015,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "531794c0",
         "index": 2147483654,
         "depth": 7,
-        "parent_finger_print": "625f86b0"
+        "parent_finger_print": "625f86b0",
       },
       {
         "private":
@@ -1027,7 +1027,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "81a27d95",
         "index": 7,
         "depth": 8,
-        "parent_finger_print": "531794c0"
+        "parent_finger_print": "531794c0",
       },
       {
         "private":
@@ -1039,7 +1039,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "c20f3cba",
         "index": 2147483656,
         "depth": 9,
-        "parent_finger_print": "81a27d95"
+        "parent_finger_print": "81a27d95",
       },
       {
         "private":
@@ -1051,9 +1051,9 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "80e11593",
         "index": 9,
         "depth": 10,
-        "parent_finger_print": "c20f3cba"
-      }
-    ]
+        "parent_finger_print": "c20f3cba",
+      },
+    ],
   },
   {
     "seed": "baa698d929db3fbd7aeb192d1a0c81ef0e1e9e72da7de0345f8f1bf8a12dbef1",
@@ -1075,7 +1075,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "aec365c3",
         "index": 2147483648,
         "depth": 1,
-        "parent_finger_print": "b0ee8565"
+        "parent_finger_print": "b0ee8565",
       },
       {
         "private":
@@ -1087,7 +1087,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "6170c25f",
         "index": 1,
         "depth": 2,
-        "parent_finger_print": "aec365c3"
+        "parent_finger_print": "aec365c3",
       },
       {
         "private":
@@ -1099,7 +1099,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "ff3dfec5",
         "index": 2147483650,
         "depth": 3,
-        "parent_finger_print": "6170c25f"
+        "parent_finger_print": "6170c25f",
       },
       {
         "private":
@@ -1111,7 +1111,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "60264269",
         "index": 3,
         "depth": 4,
-        "parent_finger_print": "ff3dfec5"
+        "parent_finger_print": "ff3dfec5",
       },
       {
         "private":
@@ -1123,7 +1123,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "10a1f98d",
         "index": 2147483652,
         "depth": 5,
-        "parent_finger_print": "60264269"
+        "parent_finger_print": "60264269",
       },
       {
         "private":
@@ -1135,7 +1135,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "c522285a",
         "index": 5,
         "depth": 6,
-        "parent_finger_print": "10a1f98d"
+        "parent_finger_print": "10a1f98d",
       },
       {
         "private":
@@ -1147,7 +1147,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "4fe40fec",
         "index": 2147483654,
         "depth": 7,
-        "parent_finger_print": "c522285a"
+        "parent_finger_print": "c522285a",
       },
       {
         "private":
@@ -1159,7 +1159,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "106d9ac2",
         "index": 7,
         "depth": 8,
-        "parent_finger_print": "4fe40fec"
+        "parent_finger_print": "4fe40fec",
       },
       {
         "private":
@@ -1171,7 +1171,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "1eb519a1",
         "index": 2147483656,
         "depth": 9,
-        "parent_finger_print": "106d9ac2"
+        "parent_finger_print": "106d9ac2",
       },
       {
         "private":
@@ -1183,9 +1183,9 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "2d51d0b5",
         "index": 9,
         "depth": 10,
-        "parent_finger_print": "1eb519a1"
-      }
-    ]
+        "parent_finger_print": "1eb519a1",
+      },
+    ],
   },
   {
     "seed": "f48e678e669e162a08e695232246f2609e8082eb9f94f8667b2aed720acc4974",
@@ -1207,7 +1207,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "70b0f3d4",
         "index": 2147483648,
         "depth": 1,
-        "parent_finger_print": "d0b424c2"
+        "parent_finger_print": "d0b424c2",
       },
       {
         "private":
@@ -1219,7 +1219,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "50d1e8d0",
         "index": 1,
         "depth": 2,
-        "parent_finger_print": "70b0f3d4"
+        "parent_finger_print": "70b0f3d4",
       },
       {
         "private":
@@ -1231,7 +1231,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "cc0629bb",
         "index": 2147483650,
         "depth": 3,
-        "parent_finger_print": "50d1e8d0"
+        "parent_finger_print": "50d1e8d0",
       },
       {
         "private":
@@ -1243,7 +1243,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "74e4edad",
         "index": 3,
         "depth": 4,
-        "parent_finger_print": "cc0629bb"
+        "parent_finger_print": "cc0629bb",
       },
       {
         "private":
@@ -1255,7 +1255,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "53bd3a67",
         "index": 2147483652,
         "depth": 5,
-        "parent_finger_print": "74e4edad"
+        "parent_finger_print": "74e4edad",
       },
       {
         "private":
@@ -1267,7 +1267,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "87644ffc",
         "index": 5,
         "depth": 6,
-        "parent_finger_print": "53bd3a67"
+        "parent_finger_print": "53bd3a67",
       },
       {
         "private":
@@ -1279,7 +1279,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "68e21706",
         "index": 2147483654,
         "depth": 7,
-        "parent_finger_print": "87644ffc"
+        "parent_finger_print": "87644ffc",
       },
       {
         "private":
@@ -1291,7 +1291,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "2ba7235e",
         "index": 7,
         "depth": 8,
-        "parent_finger_print": "68e21706"
+        "parent_finger_print": "68e21706",
       },
       {
         "private":
@@ -1303,7 +1303,7 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "d497026f",
         "index": 2147483656,
         "depth": 9,
-        "parent_finger_print": "2ba7235e"
+        "parent_finger_print": "2ba7235e",
       },
       {
         "private":
@@ -1315,8 +1315,8 @@ final List<Map<String, dynamic>> testVector = [
         "finger_print": "247c222a",
         "index": 9,
         "depth": 10,
-        "parent_finger_print": "d497026f"
-      }
-    ]
-  }
+        "parent_finger_print": "d497026f",
+      },
+    ],
+  },
 ];

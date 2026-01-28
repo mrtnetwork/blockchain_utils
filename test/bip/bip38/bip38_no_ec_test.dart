@@ -36,12 +36,14 @@ void main() {
   test("encrypt decrypt without EC multiplication", () {
     for (final i in _testVector) {
       final enc = Bip38Encrypter.encryptNoEc(
-          BytesUtils.fromHexString(i["priv_key_bytes"]), i["passphrase"],
-          pubKeyMode: i["pub_key_mode"]);
+        BytesUtils.fromHexString(i["priv_key_bytes"]),
+        i["passphrase"],
+        pubKeyMode: i["pub_key_mode"],
+      );
       expect(enc, i["encrypted"]);
       final dec = Bip38Decrypter.decryptNoEc(i["encrypted"], i["passphrase"]);
-      expect(i["priv_key_bytes"], BytesUtils.toHexString(dec.item1));
-      expect(i["pub_key_mode"], dec.item2);
+      expect(i["priv_key_bytes"], BytesUtils.toHexString(dec.$1));
+      expect(i["pub_key_mode"], dec.$2);
     }
   });
 }

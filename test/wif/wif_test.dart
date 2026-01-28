@@ -9,7 +9,7 @@ final List<Map<String, dynamic>> _testVector = [
         "5e9441950b3918772cc3da1fc6735b7c33f1bbe08a8f1e704be46cb664f7e457",
     "encode": "5JXwUhNu98kXkyhR8EpvpaTGRjj8JZEP7hWboB5xscgjbgK2zNk",
     "pub_key_mode": PubKeyModes.uncompressed,
-    "net_ver": CoinsConf.bitcoinMainNet.params.wifNetVer
+    "net_ver": CoinsConf.bitcoinMainNet.params.wifNetVer,
   },
   {
     "key_bytes":
@@ -123,28 +123,36 @@ void main() {
     for (final i in _testVector) {
       final dec = WifDecoder.decode(i["encode"], netVer: i["net_ver"]);
       expect(
-          BytesUtils.toHexString(dec.item1) == i["key_bytes"] &&
-              dec.item2 == i["pub_key_mode"],
-          true);
+        BytesUtils.toHexString(dec.$1) == i["key_bytes"] &&
+            dec.$2 == i["pub_key_mode"],
+        true,
+      );
     }
   });
   test("encode", () {
     for (final i in _testVector) {
-      final encode = WifEncoder.encode(BytesUtils.fromHexString(i["key_bytes"]),
-          netVer: i["net_ver"], pubKeyMode: i["pub_key_mode"]);
+      final encode = WifEncoder.encode(
+        BytesUtils.fromHexString(i["key_bytes"]),
+        netVer: i["net_ver"],
+        pubKeyMode: i["pub_key_mode"],
+      );
       expect(i["encode"], encode);
     }
   });
   test("invalid", () {
     expect(() {
-      WifDecoder.decode("5JnLHbJUuOcQNc9UC64SizlLYRw9Y2ecbiJW4f8U8htgYLDJVED",
-          netVer: CoinsConf.bitcoinMainNet.params.wifNetVer!);
-    }, throwsA(isA<MessageException>()));
+      WifDecoder.decode(
+        "5JnLHbJUuOcQNc9UC64SizlLYRw9Y2ecbiJW4f8U8htgYLDJVED",
+        netVer: CoinsConf.bitcoinMainNet.params.wifNetVer!,
+      );
+    }, throwsA(isA<ArgumentException>()));
   });
   test("invalid private", () {
     expect(() {
-      WifDecoder.decode("54fKtD9rQfDYgbQ4XpQQPC5r3j6sTpFqEXxBfdveRtM7kJ4s4nK",
-          netVer: [0x80]);
+      WifDecoder.decode(
+        "54fKtD9rQfDYgbQ4XpQQPC5r3j6sTpFqEXxBfdveRtM7kJ4s4nK",
+        netVer: [0x80],
+      );
     }, throwsA(isA<ArgumentException>()));
   });
 }

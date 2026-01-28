@@ -26,14 +26,13 @@ class ADANetwork {
     mainnet,
     testnet,
     testnetPreview,
-    testnetPreprod
+    testnetPreprod,
   ];
 
   static ADANetwork fromTag(int tag) {
     return values.firstWhere(
       (element) => element.value == tag,
-      orElse: () =>
-          throw AddressConverterException("Invalid network tag. $tag"),
+      orElse: () => throw AddressConverterException.addressValidationFailed(),
     );
   }
 
@@ -41,8 +40,7 @@ class ADANetwork {
     if (protocolMagic == null) return ADANetwork.mainnet;
     return values.firstWhere(
       (element) => element.protocolMagic == protocolMagic,
-      orElse: () => throw const AddressConverterException(
-          "Invalid protocol magic or network does not supported."),
+      orElse: () => throw AddressConverterException.addressValidationFailed(),
     );
   }
 

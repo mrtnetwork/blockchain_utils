@@ -1,14 +1,16 @@
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
+import 'package:blockchain_utils/exception/exception/exception.dart';
 import 'package:blockchain_utils/helper/helper.dart';
 import 'package:blockchain_utils/signer/const/constants.dart';
 import 'package:blockchain_utils/signer/ed25519/ed25519.dart';
 import 'package:blockchain_utils/signer/exception/signing_exception.dart';
 import 'package:blockchain_utils/signer/substrate/core/signer.dart';
 import 'package:blockchain_utils/signer/substrate/core/verifier.dart';
-import 'package:blockchain_utils/utils/utils.dart';
+import 'package:blockchain_utils/utils/binary/utils.dart';
 
 class _SubstrateED25519SignerConstant {
-  static final int vrfLength = CryptoSignerConst.ed25519SignatureLength +
+  static const int vrfLength =
+      CryptoSignerConst.ed25519SignatureLength +
       QuickCrypto.blake2b256DigestSize;
 }
 
@@ -26,10 +28,6 @@ class SubstrateED25519Signer implements BaseSubstrateSigner {
   }
 
   /// Returns an SubstrateED25519Signer instance based on the available signing key type.
-  ///
-  /// This method constructs and returns an SubstrateED25519Verifier instance for signature verification.
-  ///
-  /// returns An SubstrateED25519Verifier instance based on the available signing key type.
   SubstrateED25519Verifier toVerifyKey() {
     final keyBytes = _signer.toVerifyKey();
     return SubstrateED25519Verifier._(keyBytes);
@@ -40,19 +38,26 @@ class SubstrateED25519Signer implements BaseSubstrateSigner {
     return _signer.sign(digest);
   }
 
-  List<int> _vrfSign(List<int> message, List<int> signature,
-      {List<int>? context, List<int>? extra}) {
+  List<int> _vrfSign(
+    List<int> message,
+    List<int> signature, {
+    List<int>? context,
+    List<int>? extra,
+  }) {
     final vrf = QuickCrypto.blake2b256Hash([
       ...context?.asBytes ?? [],
       ...extra?.asBytes ?? [],
       ...signature,
     ]);
     final List<int> vrfResult = [...vrf, ...signature];
-    final verify = toVerifyKey().vrfVerify(List.from(vrfResult), message,
-        context: context, extra: extra);
+    final verify = toVerifyKey().vrfVerify(
+      List.from(vrfResult),
+      message,
+      context: context,
+      extra: extra,
+    );
     if (!verify) {
-      throw const CryptoSignException(
-          'The created signature does not pass verification.');
+      throw CryptoSignException.signatureVerificationFailed;
     }
     return vrfResult;
   }
@@ -70,8 +75,11 @@ class SubstrateED25519Signer implements BaseSubstrateSigner {
   }
 
   @override
-  List<int> vrfSignConst(List<int> message,
-      {List<int>? context, List<int>? extra}) {
+  List<int> vrfSignConst(
+    List<int> message, {
+    List<int>? context,
+    List<int>? extra,
+  }) {
     final msg = message.asImmutableBytes;
     final signature = _signer.signConst(msg);
     return _vrfSign(msg, signature, extra: extra, context: context);
@@ -103,14 +111,22 @@ class SubstrateED25519Verifier implements BaseSubstrateVerifier {
   }
 
   @override
-  bool vrfVerify(List<int> message, List<int> vrfSign,
-      {List<int>? context, List<int>? extra}) {
+  bool vrfVerify(
+    List<int> message,
+    List<int> vrfSign, {
+    List<int>? context,
+    List<int>? extra,
+  }) {
     if (vrfSign.length != _SubstrateED25519SignerConstant.vrfLength) {
-      throw CryptoSignException(
-          "Invalid vrf length. expected: ${_SubstrateED25519SignerConstant.vrfLength} got: ${vrfSign.length}");
+      throw ArgumentException.invalidOperationArguments(
+        "vrfVerify",
+        name: "vrfSign",
+        reason: "Invalid vrf signature bytes length.",
+      );
     }
-    final List<int> signature =
-        vrfSign.sublist(QuickCrypto.blake2b256DigestSize);
+    final List<int> signature = vrfSign.sublist(
+      QuickCrypto.blake2b256DigestSize,
+    );
     final verifySignature = _verifier.verify(message, signature);
 
     if (verifySignature) {

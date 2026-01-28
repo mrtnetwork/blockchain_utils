@@ -13,10 +13,11 @@ void main() {
       final password = BytesUtils.fromHexString(i["password"]);
       final salt = BytesUtils.fromHexString(i["salt"]);
       final h = PBKDF2.deriveKey(
-          mac: () => HMAC(() => SHA512(), password),
-          salt: salt,
-          iterations: i["n"],
-          length: 32);
+        mac: () => HMAC(() => SHA512(), password),
+        salt: salt,
+        iterations: i["n"],
+        length: 32,
+      );
       expect(h.toHex(), i["hash"]);
     }
   });

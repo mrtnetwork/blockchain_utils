@@ -1,5 +1,4 @@
 export 'xrp/xrp_signer.dart';
-export 'bitcoin/bitcoin_signer.dart';
 export 'types/eth_signature.dart';
 export 'eth/eth_signer.dart';
 export 'tron/tron_signer.dart';

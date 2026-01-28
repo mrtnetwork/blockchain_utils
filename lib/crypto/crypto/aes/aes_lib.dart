@@ -1,4 +1,4 @@
-import 'package:blockchain_utils/utils/utils.dart';
+import 'package:blockchain_utils/utils/binary/binary_operation.dart';
 
 class AESLib {
   AESLib._() {
@@ -25,7 +25,7 @@ class AESLib {
     0xab,
     0x4d,
     0x9a,
-    0x2f
+    0x2f,
   ];
 
   /// FIPS-197 Figure 7. S-box substitution values in hexadecimal format.
@@ -155,7 +155,7 @@ class AESLib {
     0xda,
     0x21,
     0x10,
-    mask8,
+    BinaryOps.mask8,
     0xf3,
     0xd2,
     0xcd,
@@ -285,7 +285,7 @@ class AESLib {
     0xb0,
     0x54,
     0xbb,
-    0x16
+    0x16,
   ];
 
   /// FIPS-197 Figure 14.  Inverse S-box substitution values in hexadecimal format.
@@ -312,7 +312,7 @@ class AESLib {
     0x82,
     0x9b,
     0x2f,
-    mask8,
+    BinaryOps.mask8,
     0x87,
     0x34,
     0x8e,
@@ -545,7 +545,7 @@ class AESLib {
     0x55,
     0x21,
     0x0c,
-    0x7d
+    0x7d,
   ];
 
   final List<int> _te0 = List<int>.filled(256, 0),
@@ -577,10 +577,12 @@ class AESLib {
       return s;
     }
 
-    r24(int x) => rotl32(x, 24);
+    r24(int x) => BinaryOps.rotl32(x, 24);
     for (int i = 0; i < 256; i++) {
       final s = _sbox0[i];
-      int w = ((mul(s, 2) << 24) | (s << 16) | (s << 8) | mul(s, 3)) & mask32;
+      int w =
+          ((mul(s, 2) << 24) | (s << 16) | (s << 8) | mul(s, 3)) &
+          BinaryOps.mask32;
       _te0[i] = w;
       w = r24(w);
       _te1[i] = w;
@@ -593,7 +595,8 @@ class AESLib {
 
     for (int i = 0; i < 256; i++) {
       final s = _sbox1[i];
-      int w = (mul(s, 0xe) << 24) |
+      int w =
+          (mul(s, 0xe) << 24) |
           (mul(s, 0x9) << 16) |
           (mul(s, 0xd) << 8) |
           mul(s, 0xb);
@@ -609,10 +612,10 @@ class AESLib {
   }
 
   int _subw(int w) {
-    return ((_sbox0[(w >> 24) & mask8]) << 24) |
-        ((_sbox0[(w >> 16) & mask8]) << 16) |
-        ((_sbox0[(w >> 8) & mask8]) << 8) |
-        (_sbox0[w & mask8]);
+    return ((_sbox0[(w >> 24) & BinaryOps.mask8]) << 24) |
+        ((_sbox0[(w >> 16) & BinaryOps.mask8]) << 16) |
+        ((_sbox0[(w >> 8) & BinaryOps.mask8]) << 8) |
+        (_sbox0[w & BinaryOps.mask8]);
   }
 
   int _rotw(int w) {
@@ -624,7 +627,7 @@ class AESLib {
     final n = encKey.length;
 
     for (int i = 0; i < nk; i++) {
-      encKey[i] = readUint32BE(key, i * 4);
+      encKey[i] = BinaryOps.readUint32BE(key, i * 4);
     }
 
     for (int i = nk; i < n; i++) {
@@ -646,10 +649,11 @@ class AESLib {
         for (int j = 0; j < 4; j++) {
           int x = encKey[ei + j];
           if (i > 0 && i + 4 < n) {
-            x = _td0[_sbox0[(x >> 24) & mask8]] ^
-                _td1[_sbox0[(x >> 16) & mask8]] ^
-                _td2[_sbox0[(x >> 8) & mask8]] ^
-                _td3[_sbox0[x & mask8]];
+            x =
+                _td0[_sbox0[(x >> 24) & BinaryOps.mask8]] ^
+                _td1[_sbox0[(x >> 16) & BinaryOps.mask8]] ^
+                _td2[_sbox0[(x >> 8) & BinaryOps.mask8]] ^
+                _td3[_sbox0[x & BinaryOps.mask8]];
           }
           decKey[i + j] = x;
         }
@@ -658,10 +662,10 @@ class AESLib {
   }
 
   void encryptBlock(List<int> xk, List<int> src, List<int> dst) {
-    int s0 = readUint32BE(src, 0);
-    int s1 = readUint32BE(src, 4);
-    int s2 = readUint32BE(src, 8);
-    int s3 = readUint32BE(src, 12);
+    int s0 = BinaryOps.readUint32BE(src, 0);
+    int s1 = BinaryOps.readUint32BE(src, 4);
+    int s2 = BinaryOps.readUint32BE(src, 8);
+    int s3 = BinaryOps.readUint32BE(src, 12);
 
     // First round just XORs input with key.
     s0 ^= xk[0];
@@ -677,29 +681,33 @@ class AESLib {
     int k = 4;
 
     for (int r = 0; r < nr; r++) {
-      t0 = xk[k + 0] ^
-          _te0[(s0 >> 24) & mask8] ^
-          _te1[(s1 >> 16) & mask8] ^
-          _te2[(s2 >> 8) & mask8] ^
-          _te3[s3 & mask8];
+      t0 =
+          xk[k + 0] ^
+          _te0[(s0 >> 24) & BinaryOps.mask8] ^
+          _te1[(s1 >> 16) & BinaryOps.mask8] ^
+          _te2[(s2 >> 8) & BinaryOps.mask8] ^
+          _te3[s3 & BinaryOps.mask8];
 
-      t1 = xk[k + 1] ^
-          _te0[(s1 >> 24) & mask8] ^
-          _te1[(s2 >> 16) & mask8] ^
-          _te2[(s3 >> 8) & mask8] ^
-          _te3[s0 & mask8];
+      t1 =
+          xk[k + 1] ^
+          _te0[(s1 >> 24) & BinaryOps.mask8] ^
+          _te1[(s2 >> 16) & BinaryOps.mask8] ^
+          _te2[(s3 >> 8) & BinaryOps.mask8] ^
+          _te3[s0 & BinaryOps.mask8];
 
-      t2 = xk[k + 2] ^
-          _te0[(s2 >> 24) & mask8] ^
-          _te1[(s3 >> 16) & mask8] ^
-          _te2[(s0 >> 8) & mask8] ^
-          _te3[s1 & mask8];
+      t2 =
+          xk[k + 2] ^
+          _te0[(s2 >> 24) & BinaryOps.mask8] ^
+          _te1[(s3 >> 16) & BinaryOps.mask8] ^
+          _te2[(s0 >> 8) & BinaryOps.mask8] ^
+          _te3[s1 & BinaryOps.mask8];
 
-      t3 = xk[k + 3] ^
-          _te0[(s3 >> 24) & mask8] ^
-          _te1[(s0 >> 16) & mask8] ^
-          _te2[(s1 >> 8) & mask8] ^
-          _te3[s2 & mask8];
+      t3 =
+          xk[k + 3] ^
+          _te0[(s3 >> 24) & BinaryOps.mask8] ^
+          _te1[(s0 >> 16) & BinaryOps.mask8] ^
+          _te2[(s1 >> 8) & BinaryOps.mask8] ^
+          _te3[s2 & BinaryOps.mask8];
 
       k += 4;
       s0 = t0;
@@ -709,42 +717,46 @@ class AESLib {
     }
 
     /// Last round uses s-box directly and XORs to produce output.
-    s0 = (_sbox0[t0 >> 24] << 24) |
-        (_sbox0[(t1 >> 16) & mask8]) << 16 |
-        (_sbox0[(t2 >> 8) & mask8]) << 8 |
-        (_sbox0[t3 & mask8]);
+    s0 =
+        (_sbox0[t0 >> 24] << 24) |
+        (_sbox0[(t1 >> 16) & BinaryOps.mask8]) << 16 |
+        (_sbox0[(t2 >> 8) & BinaryOps.mask8]) << 8 |
+        (_sbox0[t3 & BinaryOps.mask8]);
 
-    s1 = (_sbox0[t1 >> 24] << 24) |
-        (_sbox0[(t2 >> 16) & mask8]) << 16 |
-        (_sbox0[(t3 >> 8) & mask8]) << 8 |
-        (_sbox0[t0 & mask8]);
+    s1 =
+        (_sbox0[t1 >> 24] << 24) |
+        (_sbox0[(t2 >> 16) & BinaryOps.mask8]) << 16 |
+        (_sbox0[(t3 >> 8) & BinaryOps.mask8]) << 8 |
+        (_sbox0[t0 & BinaryOps.mask8]);
 
-    s2 = (_sbox0[t2 >> 24] << 24) |
-        (_sbox0[(t3 >> 16) & mask8]) << 16 |
-        (_sbox0[(t0 >> 8) & mask8]) << 8 |
-        (_sbox0[t1 & mask8]);
+    s2 =
+        (_sbox0[t2 >> 24] << 24) |
+        (_sbox0[(t3 >> 16) & BinaryOps.mask8]) << 16 |
+        (_sbox0[(t0 >> 8) & BinaryOps.mask8]) << 8 |
+        (_sbox0[t1 & BinaryOps.mask8]);
 
-    s3 = (_sbox0[t3 >> 24] << 24) |
-        (_sbox0[(t0 >> 16) & mask8]) << 16 |
-        (_sbox0[(t1 >> 8) & mask8]) << 8 |
-        (_sbox0[t2 & mask8]);
+    s3 =
+        (_sbox0[t3 >> 24] << 24) |
+        (_sbox0[(t0 >> 16) & BinaryOps.mask8]) << 16 |
+        (_sbox0[(t1 >> 8) & BinaryOps.mask8]) << 8 |
+        (_sbox0[t2 & BinaryOps.mask8]);
 
     s0 ^= xk[k + 0];
     s1 ^= xk[k + 1];
     s2 ^= xk[k + 2];
     s3 ^= xk[k + 3];
 
-    writeUint32BE(s0, dst, 0);
-    writeUint32BE(s1, dst, 4);
-    writeUint32BE(s2, dst, 8);
-    writeUint32BE(s3, dst, 12);
+    BinaryOps.writeUint32BE(s0, dst, 0);
+    BinaryOps.writeUint32BE(s1, dst, 4);
+    BinaryOps.writeUint32BE(s2, dst, 8);
+    BinaryOps.writeUint32BE(s3, dst, 12);
   }
 
   void decryptBlock(List<int> xk, List<int> src, List<int> dst) {
-    int s0 = readUint32BE(src, 0);
-    int s1 = readUint32BE(src, 4);
-    int s2 = readUint32BE(src, 8);
-    int s3 = readUint32BE(src, 12);
+    int s0 = BinaryOps.readUint32BE(src, 0);
+    int s1 = BinaryOps.readUint32BE(src, 4);
+    int s2 = BinaryOps.readUint32BE(src, 8);
+    int s3 = BinaryOps.readUint32BE(src, 12);
 
     /// First round just XORs input with key.
     s0 ^= xk[0];
@@ -760,29 +772,33 @@ class AESLib {
     int k = 4;
 
     for (int r = 0; r < nr; r++) {
-      t0 = xk[k + 0] ^
-          _td0[(s0 >> 24) & mask8] ^
-          _td1[(s3 >> 16) & mask8] ^
-          _td2[(s2 >> 8) & mask8] ^
-          _td3[s1 & mask8];
+      t0 =
+          xk[k + 0] ^
+          _td0[(s0 >> 24) & BinaryOps.mask8] ^
+          _td1[(s3 >> 16) & BinaryOps.mask8] ^
+          _td2[(s2 >> 8) & BinaryOps.mask8] ^
+          _td3[s1 & BinaryOps.mask8];
 
-      t1 = xk[k + 1] ^
-          _td0[(s1 >> 24) & mask8] ^
-          _td1[(s0 >> 16) & mask8] ^
-          _td2[(s3 >> 8) & mask8] ^
-          _td3[s2 & mask8];
+      t1 =
+          xk[k + 1] ^
+          _td0[(s1 >> 24) & BinaryOps.mask8] ^
+          _td1[(s0 >> 16) & BinaryOps.mask8] ^
+          _td2[(s3 >> 8) & BinaryOps.mask8] ^
+          _td3[s2 & BinaryOps.mask8];
 
-      t2 = xk[k + 2] ^
-          _td0[(s2 >> 24) & mask8] ^
-          _td1[(s1 >> 16) & mask8] ^
-          _td2[(s0 >> 8) & mask8] ^
-          _td3[s3 & mask8];
+      t2 =
+          xk[k + 2] ^
+          _td0[(s2 >> 24) & BinaryOps.mask8] ^
+          _td1[(s1 >> 16) & BinaryOps.mask8] ^
+          _td2[(s0 >> 8) & BinaryOps.mask8] ^
+          _td3[s3 & BinaryOps.mask8];
 
-      t3 = xk[k + 3] ^
-          _td0[(s3 >> 24) & mask8] ^
-          _td1[(s2 >> 16) & mask8] ^
-          _td2[(s1 >> 8) & mask8] ^
-          _td3[s0 & mask8];
+      t3 =
+          xk[k + 3] ^
+          _td0[(s3 >> 24) & BinaryOps.mask8] ^
+          _td1[(s2 >> 16) & BinaryOps.mask8] ^
+          _td2[(s1 >> 8) & BinaryOps.mask8] ^
+          _td3[s0 & BinaryOps.mask8];
 
       k += 4;
       s0 = t0;
@@ -792,34 +808,38 @@ class AESLib {
     }
 
     /// Last round uses s-box directly and XORs to produce output.
-    s0 = (_sbox1[t0 >> 24] << 24) |
-        (_sbox1[(t3 >> 16) & mask8]) << 16 |
-        (_sbox1[(t2 >> 8) & mask8]) << 8 |
-        (_sbox1[t1 & mask8]);
+    s0 =
+        (_sbox1[t0 >> 24] << 24) |
+        (_sbox1[(t3 >> 16) & BinaryOps.mask8]) << 16 |
+        (_sbox1[(t2 >> 8) & BinaryOps.mask8]) << 8 |
+        (_sbox1[t1 & BinaryOps.mask8]);
 
-    s1 = (_sbox1[t1 >> 24] << 24) |
-        (_sbox1[(t0 >> 16) & mask8]) << 16 |
-        (_sbox1[(t3 >> 8) & mask8]) << 8 |
-        (_sbox1[t2 & mask8]);
+    s1 =
+        (_sbox1[t1 >> 24] << 24) |
+        (_sbox1[(t0 >> 16) & BinaryOps.mask8]) << 16 |
+        (_sbox1[(t3 >> 8) & BinaryOps.mask8]) << 8 |
+        (_sbox1[t2 & BinaryOps.mask8]);
 
-    s2 = (_sbox1[t2 >> 24] << 24) |
-        (_sbox1[(t1 >> 16) & mask8]) << 16 |
-        (_sbox1[(t0 >> 8) & mask8]) << 8 |
-        (_sbox1[t3 & mask8]);
+    s2 =
+        (_sbox1[t2 >> 24] << 24) |
+        (_sbox1[(t1 >> 16) & BinaryOps.mask8]) << 16 |
+        (_sbox1[(t0 >> 8) & BinaryOps.mask8]) << 8 |
+        (_sbox1[t3 & BinaryOps.mask8]);
 
-    s3 = (_sbox1[t3 >> 24] << 24) |
-        (_sbox1[(t2 >> 16) & mask8]) << 16 |
-        (_sbox1[(t1 >> 8) & mask8]) << 8 |
-        (_sbox1[t0 & mask8]);
+    s3 =
+        (_sbox1[t3 >> 24] << 24) |
+        (_sbox1[(t2 >> 16) & BinaryOps.mask8]) << 16 |
+        (_sbox1[(t1 >> 8) & BinaryOps.mask8]) << 8 |
+        (_sbox1[t0 & BinaryOps.mask8]);
 
     s0 ^= xk[k + 0];
     s1 ^= xk[k + 1];
     s2 ^= xk[k + 2];
     s3 ^= xk[k + 3];
 
-    writeUint32BE(s0, dst, 0);
-    writeUint32BE(s1, dst, 4);
-    writeUint32BE(s2, dst, 8);
-    writeUint32BE(s3, dst, 12);
+    BinaryOps.writeUint32BE(s0, dst, 0);
+    BinaryOps.writeUint32BE(s1, dst, 4);
+    BinaryOps.writeUint32BE(s2, dst, 8);
+    BinaryOps.writeUint32BE(s3, dst, 12);
   }
 }

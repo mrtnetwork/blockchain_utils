@@ -1,8 +1,9 @@
-import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/bip/ecc/keys/i_keys.dart';
 import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
-import 'package:blockchain_utils/crypto/crypto/cdsa/point/ristretto_point.dart';
+import 'package:blockchain_utils/crypto/crypto/ec/extended/native/ristretto_native.dart';
 import 'package:blockchain_utils/crypto/crypto/schnorrkel/keys/keys.dart';
+import 'package:blockchain_utils/utils/binary/utils.dart';
+import 'package:blockchain_utils/utils/equatable/equatable.dart';
 
 /// Constants related to Sr25519 keys, including public and private key lengths.
 class Sr25519KeysConst {
@@ -14,7 +15,7 @@ class Sr25519KeysConst {
 }
 
 /// A class representing an Sr25519 public key that implements the IPublicKey interface.
-class Sr25519PublicKey implements IPublicKey {
+class Sr25519PublicKey with Equality implements IPublicKey {
   final SchnorrkelPublicKey publicKey;
 
   /// Private constructor for creating an Sr25519PublicKey instance from a SchnorrkelPublicKey.
@@ -72,24 +73,24 @@ class Sr25519PublicKey implements IPublicKey {
   }
 
   @override
-  String toHex(
-      {bool withPrefix = true, bool lowerCase = true, String? prefix = ""}) {
-    return BytesUtils.toHexString(compressed,
-        prefix: prefix, lowerCase: lowerCase);
+  String toHex({
+    bool withPrefix = true,
+    bool lowerCase = true,
+    String? prefix = "",
+  }) {
+    return BytesUtils.toHexString(
+      compressed,
+      prefix: prefix,
+      lowerCase: lowerCase,
+    );
   }
 
   @override
-  operator ==(other) {
-    if (other is! Sr25519PublicKey) return false;
-    return publicKey == other.publicKey && curve == other.curve;
-  }
-
-  @override
-  int get hashCode => publicKey.hashCode ^ curve.hashCode;
+  List<dynamic> get variables => [publicKey];
 }
 
 /// A class representing an Sr25519 private key that implements the IPrivateKey interface.
-class Sr25519PrivateKey implements IPrivateKey {
+class Sr25519PrivateKey with Equality implements IPrivateKey {
   final SchnorrkelSecretKey secretKey;
 
   /// Private constructor for creating an Sr25519PrivateKey instance from a SchnorrkelSecretKey.
@@ -140,11 +141,5 @@ class Sr25519PrivateKey implements IPrivateKey {
   }
 
   @override
-  operator ==(other) {
-    if (other is! Sr25519PrivateKey) return false;
-    return secretKey == other.secretKey && curve == other.curve;
-  }
-
-  @override
-  int get hashCode => secretKey.hashCode ^ curve.hashCode;
+  List<dynamic> get variables => [secretKey];
 }

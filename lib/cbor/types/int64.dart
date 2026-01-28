@@ -1,14 +1,20 @@
-import 'package:blockchain_utils/utils/utils.dart';
+import 'package:blockchain_utils/cbor/utils/cbor_utils.dart';
+
 import 'package:blockchain_utils/cbor/types/types.dart';
 import 'package:blockchain_utils/cbor/utils/dynamic_bytes.dart';
 import 'package:blockchain_utils/cbor/core/tags.dart';
 import 'package:blockchain_utils/cbor/core/cbor.dart';
+import 'package:blockchain_utils/utils/binary/utils.dart';
 
 /// A class representing a CBOR (Concise Binary Object Representation) int (64-byte) value.
 class CborSafeIntValue extends CborNumeric<BigInt> {
   /// Constructor for creating a CborInt64Value instance with the provided parameters.
   /// It accepts the Bigint value.
   const CborSafeIntValue(super.value);
+
+  factory CborSafeIntValue.decode(List<int> bytes) {
+    return CborUtils.decodeCbor(bytes);
+  }
 
   /// Encode the value into CBOR bytes
   @override
@@ -18,7 +24,9 @@ class CborSafeIntValue extends CborNumeric<BigInt> {
     }
     final bytes = CborBytesTracker();
     bytes.pushMajorTag(
-        value.isNegative ? MajorTags.negInt : MajorTags.posInt, NumBytes.eight);
+      value.isNegative ? MajorTags.negInt : MajorTags.posInt,
+      NumBytes.eight,
+    );
     bytes.pushBigint(value.isNegative ? ~value : value);
     return bytes.toBytes();
   }
@@ -46,16 +54,4 @@ class CborSafeIntValue extends CborNumeric<BigInt> {
   String toString() {
     return value.toString();
   }
-
-  /// override equal operation
-  @override
-  operator ==(other) {
-    if (other is! CborNumeric) return false;
-    if (other is CborBigIntValue) return false;
-    return toBigInt() == other.toBigInt();
-  }
-
-  /// override hashcode
-  @override
-  int get hashCode => value.hashCode;
 }

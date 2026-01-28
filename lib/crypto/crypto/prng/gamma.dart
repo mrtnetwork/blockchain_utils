@@ -8,7 +8,7 @@ class GammaDistribution {
     return QuickCrypto.prng.nextInt(upperLimit);
   }
 
-  GammaDistribution(this.shape, this.scale);
+  const GammaDistribution(this.shape, this.scale);
 
   double nextDouble() {
     if (shape < 1) {
@@ -26,7 +26,7 @@ class GammaDistribution {
     while (true) {
       final x = _nextGaussian();
       final v = IntUtils.pow((1 + c * x), 3);
-      final u = QuickCrypto.prng.nextDouble;
+      final u = QuickCrypto.prng.nextDouble();
       if (u < 1 - 0.0331 * IntUtils.pow(x, 4)) return scale * d * v;
       if (IntUtils.log(u) <
           0.5 * IntUtils.pow(x, 2) + d * (1 - v + IntUtils.log(v))) {
@@ -52,8 +52,8 @@ class GammaDistribution {
 
   /// Box-Muller transform for generating a Gaussian (normal) random value
   double _nextGaussian() {
-    final u1 = QuickCrypto.prng.nextDouble;
-    final u2 = QuickCrypto.prng.nextDouble;
+    final u1 = QuickCrypto.prng.nextDouble();
+    final u2 = QuickCrypto.prng.nextDouble();
     return IntUtils.sqrt(-2 * IntUtils.log(u1)) *
         IntUtils.cos(2 * IntUtils.pi * u2);
   }

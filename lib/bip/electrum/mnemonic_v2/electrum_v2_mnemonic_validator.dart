@@ -8,8 +8,14 @@ class ElectrumV2MnemonicValidator extends MnemonicValidator {
   ///
   /// [v2mnemonicTypes] (Optional) The specific type of Electrum V2 mnemonic to validate.
   /// [language] (Optional) The language to use for validation.
-  ElectrumV2MnemonicValidator(
-      {ElectrumV2MnemonicTypes? v2mnemonicTypes, ElectrumV2Languages? language})
-      : super(ElectrumV2MnemonicDecoder(
-            mnemonicType: v2mnemonicTypes, language: language));
+  ///
+  ElectrumV2MnemonicValidator({
+    ElectrumV2MnemonicTypes? v2mnemonicTypes,
+    ElectrumV2Languages? language,
+  }) : super(
+         ElectrumV2MnemonicDecoder(
+           mnemonicType: v2mnemonicTypes,
+           language: language,
+         ),
+       );
 }

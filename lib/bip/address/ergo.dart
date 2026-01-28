@@ -7,8 +7,7 @@ import 'package:blockchain_utils/bip/address/decoder.dart';
 import 'package:blockchain_utils/bip/address/encoder.dart';
 import 'package:blockchain_utils/bip/ecc/keys/ecdsa_keys.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
-import 'package:blockchain_utils/utils/utils.dart';
-import 'exception/exception.dart';
+import 'package:blockchain_utils/utils/numbers/utils/int_utils.dart';
 
 /// An enumeration representing different Ergo address types.
 class ErgoAddressTypes {
@@ -50,69 +49,59 @@ class ErgoAddrConst {
 /// A utility class for Ergo address-related operations.
 class _ErgoAddrUtils {
   /// Computes the checksum for an Ergo address.
-  ///
-  /// [pubKeyBytes]: The public key bytes to generate the checksum from.
-  /// Returns a `List` representing the computed checksum.
   static List<int> computeChecksum(List<int> pubKeyBytes) {
     final checksum = QuickCrypto.blake2b256Hash(pubKeyBytes);
     return checksum.sublist(0, ErgoAddrConst.checksumByteLen);
   }
 
   /// Encodes the address prefix for an Ergo address.
-  ///
-  /// [addrType]: The address type (e.g., p2pkh or p2sh).
-  /// [netType]: The network type (e.g., mainnet or testnet).
-  /// Returns a `List` representing the encoded prefix.
   static List<int> encodePrefix(
-      ErgoAddressTypes addrType, ErgoNetworkTypes netType) {
+    ErgoAddressTypes addrType,
+    ErgoNetworkTypes netType,
+  ) {
     final prefixInt = addrType.value + netType.value;
-    final prefix = IntUtils.toBytes(prefixInt,
-        length: IntUtils.bitlengthInBytes(prefixInt), byteOrder: Endian.little);
+    final prefix = IntUtils.toBytes(prefixInt, byteOrder: Endian.little);
     return prefix;
   }
 }
 
 /// Implementation of the [BlockchainAddressDecoder] for Ergo address.
-class ErgoP2PKHAddrDecoder implements BlockchainAddressDecoder {
+class ErgoP2PKHAddrDecoder implements BlockchainAddressDecoder<List<int>> {
   /// Decodes an Ergo address into its respective public key bytes.
-  ///
-  /// [addr]: The Ergo address to decode.
-  /// [kwargs]: Optional parameters.
-  ///   - [net_type]: The network type for the Ergo address (mainnet or testnet).
-  ///
-  /// Returns a `List` representing the public key bytes decoded from the address.
-  /// Throws an ArgumentException if the address type is not of ErgoNetworkTypes.
   @override
-  List<int> decodeAddr(String addr, [Map<String, dynamic> kwargs = const {}]) {
-    final netType = kwargs['net_type'] ?? ErgoNetworkTypes.mainnet;
-
-    /// Validate network type
-    if (netType is! ErgoNetworkTypes) {
-      throw const AddressConverterException(
-          'Address type is not an enumerative of ErgoNetworkTypes');
-    }
+  List<int> decodeAddr(
+    String addr, {
+    ErgoNetworkTypes netType = ErgoNetworkTypes.mainnet,
+  }) {
     final addrDecBytes = Base58Decoder.decode(addr);
     AddrDecUtils.validateBytesLength(
-        addrDecBytes,
-        EcdsaKeysConst.pubKeyCompressedByteLen +
-            ErgoAddrConst.checksumByteLen +
-            1);
+      addrDecBytes,
+      EcdsaKeysConst.pubKeyCompressedByteLen +
+          ErgoAddrConst.checksumByteLen +
+          1,
+    );
 
     final decode = AddrDecUtils.splitPartsByChecksum(
-        addrDecBytes, ErgoAddrConst.checksumByteLen);
+      addrDecBytes,
+      ErgoAddrConst.checksumByteLen,
+    );
 
     /// Extract checksum and public key bytes
-    final addrWithPrefix = decode.item1;
-    final checksumBytes = decode.item2;
+    final addrWithPrefix = decode.$1;
+    final checksumBytes = decode.$2;
 
     /// Validate checksum
-    AddrDecUtils.validateChecksum(addrWithPrefix, checksumBytes,
-        (pubKeyBytes) => _ErgoAddrUtils.computeChecksum(pubKeyBytes));
+    AddrDecUtils.validateChecksum(
+      addrWithPrefix,
+      checksumBytes,
+      (pubKeyBytes) => _ErgoAddrUtils.computeChecksum(pubKeyBytes),
+    );
 
     /// Extract public key bytes and remove the prefix
     final pubKeyBytes = AddrDecUtils.validateAndRemovePrefixBytes(
-        addrWithPrefix,
-        _ErgoAddrUtils.encodePrefix(ErgoAddressTypes.p2pkh, netType));
+      addrWithPrefix,
+      _ErgoAddrUtils.encodePrefix(ErgoAddressTypes.p2pkh, netType),
+    );
 
     return pubKeyBytes;
   }
@@ -121,33 +110,22 @@ class ErgoP2PKHAddrDecoder implements BlockchainAddressDecoder {
 /// Implementation of the [BlockchainAddressEncoder] for Ergo address.
 class ErgoP2PKHAddrEncoder implements BlockchainAddressEncoder {
   /// Encodes a public key into an Ergo address.
-  ///
-  /// [pubKey]: The public key to encode into an address.
-  /// [kwargs]: Optional parameters.
-  ///   - [net_type]: The network type for the Ergo address (mainnet or testnet).
-  ///
-  /// Returns an Ergo address as a string.
-  /// Throws an ArgumentException if the address type is not of ErgoNetworkTypes.
   @override
-  String encodeKey(List<int> pubKey, [Map<String, dynamic> kwargs = const {}]) {
-    final netType = kwargs['net_type'] ?? ErgoNetworkTypes.mainnet;
-
-    /// Validate network type
-    if (netType is! ErgoNetworkTypes) {
-      throw const AddressConverterException(
-          'Address type is not an enumerative of ErgoNetworkTypes');
-    }
-
+  String encodeKey(
+    List<int> pubKey, {
+    ErgoNetworkTypes netType = ErgoNetworkTypes.mainnet,
+  }) {
     final pubKeyObj = AddrKeyValidator.validateAndGetSecp256k1Key(pubKey);
     final pubKeyBytes = pubKeyObj.compressed;
 
-    final prefixByte =
-        _ErgoAddrUtils.encodePrefix(ErgoAddressTypes.p2pkh, netType);
+    final prefixByte = _ErgoAddrUtils.encodePrefix(
+      ErgoAddressTypes.p2pkh,
+      netType,
+    );
 
-    final addrPayloadBytes = List<int>.from([...prefixByte, ...pubKeyBytes]);
+    final addrPayloadBytes = [...prefixByte, ...pubKeyBytes];
     final checksum = _ErgoAddrUtils.computeChecksum(addrPayloadBytes);
 
-    return Base58Encoder.encode(
-        List<int>.from([...addrPayloadBytes, ...checksum]));
+    return Base58Encoder.encode([...addrPayloadBytes, ...checksum]);
   }
 }

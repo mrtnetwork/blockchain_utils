@@ -26,7 +26,7 @@ void main() {
       final addresses = List<String>.from(i["addresses"]);
       final change = toCardanoShelly.change(Bip44Changes.chainExt);
       for (int i = 0; i < addresses.length; i++) {
-        final addr = change.addressIndex(i).publicKeys.toAddress;
+        final addr = change.addressIndex(i).publicKeys.toAddress();
         expect(addr, addresses[i]);
       }
     }

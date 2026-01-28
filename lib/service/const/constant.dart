@@ -15,7 +15,7 @@ class ServiceConst {
 
   /// Default headers for HTTP POST requests, indicating JSON content.
   static const Map<String, String> defaultPostHeaders = {
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
   };
 
   /// A map of common HTTP status codes to their corresponding error messages.
@@ -41,6 +41,6 @@ class ServiceConst {
     503:
         "Service Unavailable: The server is temporarily unable to handle the request.",
     504:
-        "Gateway Timeout: The server did not receive a timely response from the upstream server."
+        "Gateway Timeout: The server did not receive a timely response from the upstream server.",
   };
 }

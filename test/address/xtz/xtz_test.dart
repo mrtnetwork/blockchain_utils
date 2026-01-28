@@ -8,12 +8,16 @@ import 'test_vector.dart' show testVector;
 void main() {
   test("xtz address", () {
     for (final i in testVector) {
-      final params = Map<String, dynamic>.from({"prefix": XtzAddrPrefixes.tz1});
-      final z = XtzAddrEncoder()
-          .encodeKey(BytesUtils.fromHexString(i["public"]), params);
+      final z = XtzAddrEncoder().encodeKey(
+        BytesUtils.fromHexString(i["public"]),
+        addressPrefix: XtzAddrPrefixes.tz1,
+      );
 
       expect(z, i["address"]);
-      final decode = XtzAddrDecoder().decodeAddr(z, params);
+      final decode = XtzAddrDecoder().decodeAddr(
+        z,
+        addressPrefix: XtzAddrPrefixes.tz1,
+      );
       expect(decode.toHex(), i["decode"]);
     }
   });

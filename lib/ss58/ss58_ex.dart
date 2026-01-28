@@ -5,4 +5,7 @@ import 'package:blockchain_utils/exception/exceptions.dart';
 /// The [message] field can contain additional information about the error.
 class SS58ChecksumError extends BlockchainUtilsException {
   const SS58ChecksumError(super.message, {super.details});
+  static const SS58ChecksumError invalidChecksum = SS58ChecksumError(
+    "Invalid SS58 checksum.",
+  );
 }

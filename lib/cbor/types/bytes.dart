@@ -1,13 +1,18 @@
 import 'package:blockchain_utils/cbor/core/cbor.dart';
 import 'package:blockchain_utils/cbor/core/tags.dart';
+import 'package:blockchain_utils/cbor/utils/cbor_utils.dart';
 import 'package:blockchain_utils/cbor/utils/dynamic_bytes.dart';
 import 'package:blockchain_utils/helper/helper.dart';
-import 'package:blockchain_utils/utils/utils.dart';
+import 'package:blockchain_utils/utils/binary/utils.dart';
 
 abstract class CborBytes<T> extends CborObject<T> {
   const CborBytes(super.value);
   @override
   List<int> getValue();
+
+  factory CborBytes.decode(List<int> bytes) {
+    return CborUtils.decodeCbor(bytes);
+  }
 
   /// Returns the string representation of the value.
   @override
@@ -20,7 +25,11 @@ abstract class CborBytes<T> extends CborObject<T> {
 class CborBytesValue extends CborBytes<List<int>> {
   /// Constructor for creating a CborBytesValue instance with the provided parameters.
   /// It accepts the bytes value.
-  CborBytesValue(List<int> value) : super(value.asImmutableBytes);
+  CborBytesValue(List<int> bytes) : super(bytes.asImmutableBytes);
+  CborBytesValue.unsafe(super.value);
+  factory CborBytesValue.decode(List<int> bytes) {
+    return CborUtils.decodeCbor(bytes);
+  }
 
   /// Encode the value into CBOR bytes
   @override
@@ -37,18 +46,6 @@ class CborBytesValue extends CborBytes<List<int>> {
     return BytesUtils.toHexString(encode());
   }
 
-  /// overide equal operation
-  @override
-  operator ==(other) {
-    if (other is! CborBytesValue) return false;
-
-    return BytesUtils.bytesEqual(other.value, value);
-  }
-
-  /// ovveride hash code
-  @override
-  int get hashCode => HashCodeGenerator.generateBytesHashCode(value);
-
   @override
   List<int> getValue() {
     return value;
@@ -60,7 +57,11 @@ class CborDynamicBytesValue extends CborBytes<List<List<int>>> {
   /// Constructor for creating a CborDynamicBytesValue instance with the provided parameters.
   /// It accepts the bytes value.
   CborDynamicBytesValue(List<List<int>> value)
-      : super(value.map((e) => e.asImmutableBytes).toList().immutable);
+    : super(value.map((e) => e.asImmutableBytes).toList().immutable);
+
+  factory CborDynamicBytesValue.decode(List<int> bytes) {
+    return CborUtils.decodeCbor(bytes);
+  }
 
   /// Encode the value into CBOR bytes
   @override
@@ -80,18 +81,6 @@ class CborDynamicBytesValue extends CborBytes<List<List<int>>> {
   String toCborHex() {
     return BytesUtils.toHexString(encode());
   }
-
-  /// overide equal operation
-  @override
-  operator ==(other) {
-    if (other is! CborDynamicBytesValue) return false;
-
-    return CompareUtils.iterableIsEqual(value, other.value);
-  }
-
-  /// ovveride hash code
-  @override
-  int get hashCode => HashCodeGenerator.generateHashCode(value);
 
   @override
   List<int> getValue() {

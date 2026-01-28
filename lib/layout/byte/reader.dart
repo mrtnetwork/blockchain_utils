@@ -11,40 +11,47 @@ class LayoutByteReader {
     return _bytes.sublist(start, end);
   }
 
-  // LayoutByteReader getReader(int start, int end) {
-  //   return LayoutByteReader(_bytes.sublist(start, end));
-  // }
-
-  Tuple<int, int> getCompactLengthInfos(int offset) {
-    final length =
-        LayoutSerializationUtils.decodeLength(_bytes, offset: offset);
-    if (!length.item2.isValidInt) {
-      throw const LayoutException("compact value is too large for length.");
+  LayoutDecodeResult<int> decodeScaleAsInteger(int offset) {
+    final decode = LayoutSerializationUtils.decodeScale(_bytes, offset: offset);
+    if (!decode.value.isValidInt) {
+      throw const LayoutException("scale number is too large for int.");
     }
-    return Tuple(length.item1, length.item2.toInt());
+    return LayoutDecodeResult(
+      consumed: decode.consumed,
+      value: decode.value.toInt(),
+    );
   }
 
-  Tuple<int, BigInt> getCompactBigintInfos(int offset) {
-    final length =
-        LayoutSerializationUtils.decodeLength(_bytes, offset: offset);
-    return Tuple(length.item1, length.item2);
+  LayoutDecodeResult<BigInt> decodeScale(int offset) {
+    return LayoutSerializationUtils.decodeScale(_bytes, offset: offset);
   }
 
-  int getCompactDataOffset(int offset) {
-    return LayoutSerializationUtils.getDataCompactOffset(_bytes[offset]);
+  int getScaleLength(int offset) {
+    return LayoutSerializationUtils.getScaleRequiredLength(_bytes[offset]);
   }
 
-  Tuple<int, int> getCompactTotalLenght(int offset) {
-    try {
-      final decode = LayoutSerializationUtils.decodeLengthWithDetails(_bytes,
-          offset: offset);
-      return decode;
-    } catch (e) {
-      rethrow;
+  int getVarintLength(int offset) {
+    return LayoutSerializationUtils.getVarintLength(_bytes[offset]);
+  }
+
+  LayoutDecodeResult<int> decodeVarintAsInteger(int offset) {
+    final decode = LayoutSerializationUtils.decodeVarint(
+      _bytes,
+      offset: offset,
+    );
+    if (!decode.value.isValidInt) {
+      throw const LayoutException("varint number is too large for int.");
     }
+    return LayoutDecodeResult(
+      consumed: decode.consumed,
+      value: decode.value.toInt(),
+    );
   }
 
   int at(int index) => _bytes[index];
 
   int get last => _bytes.last;
+  bool isEnd(int offset) {
+    return offset >= _bytes.length;
+  }
 }

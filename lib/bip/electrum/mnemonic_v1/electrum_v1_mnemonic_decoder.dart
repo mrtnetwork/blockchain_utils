@@ -6,28 +6,21 @@ import 'package:blockchain_utils/bip/mnemonic/mnemonic_utils.dart';
 import 'package:blockchain_utils/exception/exceptions.dart';
 
 /// A class for decoding Electrum V1 mnemonics, extending the MnemonicDecoderBase class.
-class ElectrumV1MnemonicDecoder extends MnemonicDecoderBase {
+class ElectrumV1MnemonicDecoder
+    extends MnemonicDecoderBase<ElectrumV1Languages> {
   /// Constructs an ElectrumV1MnemonicDecoder with an optional language specification.
-  ElectrumV1MnemonicDecoder(
-      [ElectrumV1Languages? language = ElectrumV1Languages.english])
-      : super(
-          language: language,
-          wordsListFinder: ElectrumV1WordsListFinder(),
-          wordsListGetter: ElectrumV1WordsListGetter(),
-        );
+  ElectrumV1MnemonicDecoder([
+    ElectrumV1Languages? language = ElectrumV1Languages.english,
+  ]) : super(
+         language: language,
+         wordsListFinder: ElectrumV1WordsListFinder(),
+         wordsListGetter: ElectrumV1WordsListGetter(),
+       );
 
   /// Decodes an Electrum V1 mnemonic string into a `List<int>` representing entropy.
   ///
-  /// This method takes an Electrum V1 mnemonic string as input and processes it to obtain
-  /// the corresponding entropy bytes. It validates the mnemonic's word count and detects
-  /// the language if it was not specified during construction. Then, it converts the mnemonic
-  /// words into entropy bytes by considering 3 words at a time, where 3 words represent 4 bytes.
+  /// -[mnemonic]: The Electrum V1 mnemonic string to decode.
   ///
-  /// Throws an ArgumentException if the mnemonic words count is not valid.
-  ///
-  /// Returns a `List<int>` containing the decoded entropy bytes.
-  ///
-  /// [mnemonic]: The Electrum V1 mnemonic string to decode.
   @override
   List<int> decode(String mnemonic) {
     /// Parse the mnemonic into an Electrum V1 mnemonic object
@@ -36,16 +29,15 @@ class ElectrumV1MnemonicDecoder extends MnemonicDecoderBase {
     /// Get the number of words in the mnemonic
     final wCount = mnemonicObj.wordsCount();
 
-    /// Validate the words count against a predefined list
-    try {
-      ElectrumV1MnemonicConst.mnemonicWordNum
-          .firstWhere((element) => element.value == wCount);
-    } on StateError {
-      throw ArgumentException('Mnemonic words count is not valid ($wCount)');
+    if (wCount != ElectrumV1WordsNum.wordsNum12.value) {
+      throw ArgumentException.invalidOperationArguments(
+        "decode",
+        name: "mnemonic",
+        reason: "Invalid mnemonic length.",
+      );
     }
-
     // Detect language if it was not specified at construction
-    final wordsList = findLanguage(mnemonicObj).item1;
+    final wordsList = findLanguage(mnemonicObj).$1;
 
     // Get words from the mnemonic
     final words = mnemonicObj.toList();
@@ -56,15 +48,10 @@ class ElectrumV1MnemonicDecoder extends MnemonicDecoderBase {
       final word1 = words[i * 3];
       final word2 = words[i * 3 + 1];
       final word3 = words[i * 3 + 2];
-      entropyBytes = List<int>.from([
+      entropyBytes = [
         ...entropyBytes,
-        ...MnemonicUtils.wordsToBytesChunk(
-          word1,
-          word2,
-          word3,
-          wordsList,
-        )
-      ]);
+        ...MnemonicUtils.wordsToBytesChunk(word1, word2, word3, wordsList),
+      ];
     }
 
     return entropyBytes;

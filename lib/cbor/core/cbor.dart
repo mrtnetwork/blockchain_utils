@@ -1,13 +1,14 @@
 import 'package:blockchain_utils/cbor/exception/exception.dart';
-import 'package:blockchain_utils/cbor/extention/extenton.dart';
 import 'package:blockchain_utils/cbor/types/types.dart';
 import 'package:blockchain_utils/cbor/utils/cbor_utils.dart';
-import 'package:blockchain_utils/utils/utils.dart';
+import 'package:blockchain_utils/exception/exception/exception.dart';
+import 'package:blockchain_utils/utils/binary/utils.dart';
+import 'package:blockchain_utils/utils/equatable/equatable.dart';
 
 /// An abstract class representing a CBOR (Concise Binary Object Representation) object.
 /// CBOR objects can hold various data types and optional tags, providing a flexible way
 /// to represent structured data in a compact binary format.
-abstract class CborObject<T> {
+abstract class CborObject<T extends Object?> with Equality {
   const CborObject(this.value);
 
   /// Encode the object's value to its CBOR representation and return it as a `List<int>`.
@@ -21,7 +22,7 @@ abstract class CborObject<T> {
 
   /// Create a new CborObject by decoding the given CBOR-encoded bytes
   factory CborObject.fromCbor(List<int> cborBytes) {
-    return CborUtils.decodeCbor(cborBytes).cast();
+    return CborUtils.decodeCbor(cborBytes);
   }
 
   /// Create a new CborObject by decoding the given CBOR-encoded hex
@@ -30,7 +31,7 @@ abstract class CborObject<T> {
   }
 
   /// Create a new CborObject from a dynamic value and an optional list of CBOR tags.
-  factory CborObject.fromDynamic(dynamic value, [List<int> tags = const []]) {
+  factory CborObject.fromDynamic(dynamic value) {
     final cborObject = () {
       if (value is CborObject) {
         return value;
@@ -50,21 +51,23 @@ abstract class CborObject<T> {
         return CborStringValue(value);
       } else if (value is List<String>) {
         return CborIndefiniteStringValue(value);
-      } else if (value is List<int> && BytesUtils.isValidBytes(value)) {
+      } else if (value is List<int> && BytesUtils.areBytesValid(value)) {
         return CborBytesValue(value);
       } else if (value is List<List<int>>) {
         return CborDynamicBytesValue(value);
       } else if (value is Map) {
         return CborMapValue.definite({
           for (final i in value.entries)
-            CborObject.fromDynamic(i.key): CborObject.fromDynamic(i.value)
+            CborObject.fromDynamic(i.key): CborObject.fromDynamic(i.value),
         });
       } else if (value is List) {
         return CborListValue.definite(
-            value.map((e) => CborObject.fromDynamic(e)).toList());
+          value.map((e) => CborObject.fromDynamic(e)).toList(),
+        );
       }
       throw CborException(
-          "cbor encoder not found for type ${value.runtimeType}");
+        "cbor encoder not found for type ${value.runtimeType}",
+      );
     }();
     return cborObject.cast();
   }
@@ -74,6 +77,14 @@ abstract class CborObject<T> {
   }
 
   Object? getValue() => value;
+
+  @override
+  List<dynamic> get variables => [value];
+
+  E cast<E extends CborObject>() {
+    if (this is E) return this as E;
+    throw CastFailedException<E>(value: this);
+  }
 }
 
 // An abstract class representing a numeric CBOR (Concise Binary Object Representation) object.
@@ -93,7 +104,10 @@ abstract class CborNumeric<T> extends CborObject<T> {
     } else if (val is CborSafeIntValue) {
       return val.value;
     }
-    throw const CborException("invalid cbornumeric");
+    throw ArgumentException.invalidOperationArguments(
+      "getCborNumericValue",
+      reason: "invalid cobr integer value.",
+    );
   }
 
   /// Convert the CborNumeric object to an integer.
@@ -109,9 +123,10 @@ enum CborIterableEncodingType {
   set;
 
   static CborIterableEncodingType fromName(String? name) {
-    return values.firstWhere((e) => e.name == name,
-        orElse: () =>
-            throw const CborException("Invalid itrable encoding type."));
+    return values.firstWhere(
+      (e) => e.name == name,
+      orElse: () => throw const CborException("Invalid itrable encoding type."),
+    );
   }
 }
 
@@ -127,8 +142,10 @@ enum CborLengthEncoding {
   nonCanonical;
 
   static CborLengthEncoding fromName(String? name) {
-    return values.firstWhere((e) => e.name == name,
-        orElse: () =>
-            throw const CborException("Invalid CBOR length encoding type."));
+    return values.firstWhere(
+      (e) => e.name == name,
+      orElse:
+          () => throw const CborException("Invalid CBOR length encoding type."),
+    );
   }
 }

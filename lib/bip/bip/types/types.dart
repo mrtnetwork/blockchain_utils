@@ -14,9 +14,12 @@ enum PubKeyModes {
   bool get isCompressed => this == compressed;
 
   static PubKeyModes fromValue(int? value, {PubKeyModes? defaultValue}) {
-    return values.firstWhere((e) => e.value == value, orElse: () {
-      if (defaultValue != null && value == null) return defaultValue;
-      throw ItemNotFoundException(value: value);
-    });
+    return values.firstWhere(
+      (e) => e.value == value,
+      orElse: () {
+        if (defaultValue != null && value == null) return defaultValue;
+        throw ItemNotFoundException(value: value);
+      },
+    );
   }
 }

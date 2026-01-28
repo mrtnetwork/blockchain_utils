@@ -1,33 +1,26 @@
 part of 'package:blockchain_utils/crypto/crypto/hash/hash.dart';
 
-/// The `SHA256` class represents the SHA-256 hash algorithm.
+/// The [SHA256] class represents the SHA-256 hash algorithm.
 ///
-/// SHA-256 is a cryptographic hash function that produces a 256-bit (32-byte) hash
-/// value from an input message. It's commonly used in various security applications.
-/// This class implements the SHA-256 algorithm and provides a standard interface
-/// for hashing data and producing digests.
 class SHA256 implements SerializableHash<SHA256State> {
-  static const int digestLength = 32;
-  static const int blockSize = 64;
   SHA256() {
     reset();
   }
 
   /// digest length
   @override
-  int get getDigestLength => digestLength;
+  int get getDigestLength => 32;
 
   /// block size
   @override
-  int get getBlockSize => blockSize;
+  int get getBlockSize => 64;
 
-  // Note: `List<int>` is used instead of Uint32List for performance reasons.
-  final List<int> _state = List<int>.filled(8, 0); // hash state
-  final List<int> _temp = List<int>.filled(64, 0); // temporary state
-  final List<int> _buffer = List<int>.filled(128, 0); // buffer for data to hash
-  int _bufferLength = 0; // number of bytes in buffer
-  int _bytesHashed = 0; // number of total bytes hashed
-  bool _finished = false; // indicates whether the hash was finalized
+  final List<int> _state = List<int>.filled(8, 0);
+  final List<int> _temp = List<int>.filled(64, 0);
+  final List<int> _buffer = List<int>.filled(128, 0);
+  int _bufferLength = 0;
+  int _bytesHashed = 0;
+  bool _finished = false;
 
   // Rest of your class implementation goes here...
   void _initState() {
@@ -43,20 +36,12 @@ class SHA256 implements SerializableHash<SHA256State> {
 
   /// Updates the hash computation with the given data.
   ///
-  /// This method updates the hash computation with the provided [data] bytes. It appends the data to
-  /// the internal buffer and processes it to update the hash state.
-  ///
-  /// If the hash has already been finished using the `finish` method, calling this method will result in an error.
-  ///
   /// Parameters:
-  /// - [data]: The `List<int>` containing the data to be hashed.
-  ///
-  /// Returns this [Hash] object for method chaining.
+  /// - [data]: The Containing the data to be hashed.
   @override
   SerializableHash update(List<int> data, {int? length}) {
     if (_finished) {
-      throw const CryptoException(
-          "SHA256: can't update because hash was finished.");
+      throw CryptoException.failed("SHA.update", reason: "State was finished.");
     }
     int dataLength = length ?? data.length;
     int dataPos = 0;
@@ -64,7 +49,7 @@ class SHA256 implements SerializableHash<SHA256State> {
 
     if (_bufferLength > 0) {
       while (_bufferLength < getBlockSize && dataLength > 0) {
-        _buffer[_bufferLength++] = data[dataPos++] & mask8;
+        _buffer[_bufferLength++] = data[dataPos++] & BinaryOps.mask8;
         dataLength--;
       }
 
@@ -82,22 +67,17 @@ class SHA256 implements SerializableHash<SHA256State> {
     }
 
     while (dataLength > 0) {
-      _buffer[_bufferLength++] = data[dataPos++] & mask8;
+      _buffer[_bufferLength++] = data[dataPos++] & BinaryOps.mask8;
       dataLength--;
     }
     return this;
   }
 
-  /// Finalizes the hash computation and stores the hash state in the provided `List<int>` [out].
-  ///
-  /// This function completes the hash computation, finalizes the state, and stores the resulting
-  /// hash in the provided [out] `List<int>`. If the hash has already been finished, this method
-  /// will return the existing state without re-computing.
+  /// Finalizes the hash computation and stores the hash state in the provided [out].
   ///
   /// Parameters:
-  ///   - [out]: The `List<int>` in which the hash digest is stored.
+  ///   - [out]: In which the hash digest is stored.
   ///
-  /// Returns the current instance of the hash algorithm.
   @override
   SerializableHash finish(List<int> out) {
     if (!_finished) {
@@ -112,26 +92,20 @@ class SHA256 implements SerializableHash<SHA256State> {
         _buffer[i] = 0;
       }
 
-      writeUint32BE(bitLenHi, _buffer, padLength - 8);
-      writeUint32BE(bitLenLo, _buffer, padLength - 4);
+      BinaryOps.writeUint32BE(bitLenHi, _buffer, padLength - 8);
+      BinaryOps.writeUint32BE(bitLenLo, _buffer, padLength - 4);
 
       _hashBlocks(_temp, _state, _buffer, 0, padLength);
       _finished = true;
     }
     for (var i = 0; i < getDigestLength ~/ 4; i++) {
-      writeUint32BE(_state[i], out, i * 4);
+      BinaryOps.writeUint32BE(_state[i], out, i * 4);
     }
 
     return this;
   }
 
-  /// Generates the final hash digest by assembling and returning the hash state in a `List<int>`.
-  ///
-  /// This function produces the hash digest by combining the current hash state into a single
-  /// `List<int>` output. It finalizes the hash if it hasn't been finished, effectively completing
-  /// the hash computation and returning the result.
-  ///
-  /// Returns the `List<int>` containing the computed hash digest.
+  /// Generates the final hash digest by assembling and returning the hash state.
   @override
   List<int> digest() {
     final out = List<int>.filled(getDigestLength, 0);
@@ -140,9 +114,6 @@ class SHA256 implements SerializableHash<SHA256State> {
   }
 
   /// Resets the hash computation to its initial state.
-  ///
-  /// This method initializes the hash computation to its initial state, clearing any previously
-  /// processed data. After calling this method, you can start a new hash computation.
   ///
   /// Returns the current instance of the hash algorithm with the initial stat
   @override
@@ -158,21 +129,16 @@ class SHA256 implements SerializableHash<SHA256State> {
   /// Clean up the internal state and reset hash object to its initial state.
   @override
   void clean() {
-    zero(_buffer);
-    zero(_temp);
+    BinaryOps.zero(_buffer);
+    BinaryOps.zero(_temp);
     reset();
   }
 
   /// Restores the hash computation state from a previously saved state.
   ///
-  /// This method allows you to restore the hash computation state to a previously saved state.
-  /// It is useful when you want to continue hashing data from a certain point, or if you want
-  /// to combine multiple hash computations.
-  ///
   /// Parameters:
-  /// - `savedState`: The saved state to restore.
+  /// - [savedState]: The saved state to restore.
   ///
-  /// Returns the current instance of the hash algorithm with the restored state.
   @override
   SerializableHash restoreState(SHA256State savedState) {
     _state.setAll(0, savedState.state);
@@ -186,42 +152,36 @@ class SHA256 implements SerializableHash<SHA256State> {
   }
 
   /// Saves the current hash computation state into a serializable state object.
-  ///
-  /// This method saves the current state of the hash computation, including the data buffer,
-  /// hash state, and etc, into a serializable state object.
-  /// The saved state can be later restored using the `restoreState` method.
-  ///
-  /// Returns a [HashState] object containing the saved state information.
   @override
   SHA256State saveState() {
     if (_finished) {
-      throw const CryptoException("SHA256: cannot save finished state");
+      throw CryptoException.failed(
+        "SHA.saveState",
+        reason: "State was finished.",
+      );
     }
     return SHA256State(
-      state: List<int>.from(_state, growable: false),
-      buffer:
-          _bufferLength > 0 ? List<int>.from(_buffer, growable: false) : null,
+      state: _state.clone(),
+      buffer: _bufferLength > 0 ? _buffer.clone() : null,
       bufferLength: _bufferLength,
       bytesHashed: _bytesHashed,
     );
   }
 
   /// Clean up and reset the saved state of the hash object to its initial state.
-  /// This function erases the buffer and sets the state and length to the default values.
-  /// It is used to ensure that a previously saved hash state is cleared and ready for reuse.
   ///
-  /// [savedState]: The hash state to be cleaned and reset.
+  /// - [savedState]: The hash state to be cleaned and reset.
   @override
   void cleanSavedState(SHA256State savedState) {
-    zero(savedState.state);
+    BinaryOps.zero(savedState.state);
     if (savedState.buffer != null) {
-      zero(savedState.buffer!);
+      BinaryOps.zero(savedState.buffer!);
     }
     savedState.bufferLength = 0;
     savedState.bytesHashed = 0;
   }
 
-  final _k = List<int>.unmodifiable(const [
+  final _k = const [
     0x428a2f98,
     0x71374491,
     0xb5c0fbcf,
@@ -285,8 +245,8 @@ class SHA256 implements SerializableHash<SHA256State> {
     0x90befffa,
     0xa4506ceb,
     0xbef9a3f7,
-    0xc67178f2
-  ]);
+    0xc67178f2,
+  ];
 
   int _hashBlocks(List<int> w, List<int> v, List<int> p, int pos, int len) {
     while (len >= 64) {
@@ -300,39 +260,53 @@ class SHA256 implements SerializableHash<SHA256State> {
       int h = v[7];
       for (int i = 0; i < 16; i++) {
         final int j = pos + i * 4;
-        w[i] = readUint32BE(p, j);
+        w[i] = BinaryOps.readUint32BE(p, j);
       }
       for (int i = 16; i < 64; i++) {
         int u = w[i - 2];
-        final int t1 = rotr32(u, 17) ^ rotr32(u, 19) ^ (u >> 10);
+        final int t1 =
+            BinaryOps.rotr32(u, 17) ^ BinaryOps.rotr32(u, 19) ^ (u >> 10);
         u = w[i - 15];
-        final int t2 = rotr32(u, 7) ^ rotr32(u, 18) ^ (u >> 3);
-        w[i] = add32(add32(add32(t1, w[i - 7]), t2), w[i - 16]);
+        final int t2 =
+            BinaryOps.rotr32(u, 7) ^ BinaryOps.rotr32(u, 18) ^ (u >> 3);
+        w[i] = BinaryOps.add32(
+          BinaryOps.add32(BinaryOps.add32(t1, w[i - 7]), t2),
+          w[i - 16],
+        );
       }
       for (int i = 0; i < 64; i++) {
-        final int t1 = add32(
-            add32(rotr32(e, 6) ^ rotr32(e, 11) ^ rotr32(e, 25),
-                (e & f) ^ (~e & g)),
-            add32(add32(h, _k[i]), w[i]));
-        final int t2 = add32((rotr32(a, 2) ^ rotr32(a, 13) ^ rotr32(a, 22)),
-            (a & b) ^ (a & c) ^ (b & c));
+        final int t1 = BinaryOps.add32(
+          BinaryOps.add32(
+            BinaryOps.rotr32(e, 6) ^
+                BinaryOps.rotr32(e, 11) ^
+                BinaryOps.rotr32(e, 25),
+            (e & f) ^ (~e & g),
+          ),
+          BinaryOps.add32(BinaryOps.add32(h, _k[i]), w[i]),
+        );
+        final int t2 = BinaryOps.add32(
+          (BinaryOps.rotr32(a, 2) ^
+              BinaryOps.rotr32(a, 13) ^
+              BinaryOps.rotr32(a, 22)),
+          (a & b) ^ (a & c) ^ (b & c),
+        );
         h = g;
         g = f;
         f = e;
-        e = add32(d, t1);
+        e = BinaryOps.add32(d, t1);
         d = c;
         c = b;
         b = a;
-        a = add32(t1, t2);
+        a = BinaryOps.add32(t1, t2);
       }
-      v[0] = add32(v[0], a);
-      v[1] = add32(v[1], b);
-      v[2] = add32(v[2], c);
-      v[3] = add32(v[3], d);
-      v[4] = add32(v[4], e);
-      v[5] = add32(v[5], f);
-      v[6] = add32(v[6], g);
-      v[7] = add32(v[7], h);
+      v[0] = BinaryOps.add32(v[0], a);
+      v[1] = BinaryOps.add32(v[1], b);
+      v[2] = BinaryOps.add32(v[2], c);
+      v[3] = BinaryOps.add32(v[3], d);
+      v[4] = BinaryOps.add32(v[4], e);
+      v[5] = BinaryOps.add32(v[5], f);
+      v[6] = BinaryOps.add32(v[6], g);
+      v[7] = BinaryOps.add32(v[7], h);
       pos += 64;
       len -= 64;
     }

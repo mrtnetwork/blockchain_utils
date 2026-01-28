@@ -9,13 +9,17 @@ void main() {
   test("ergo address test", () {
     for (final i in testVector) {
       final params = Map<String, dynamic>.from(i["params"]);
-      params["net_type"] = ErgoNetworkTypes.values.firstWhere((element) =>
-          element.name.toLowerCase() ==
-          (params["net_type"] as String).toLowerCase());
-      final z = ErgoP2PKHAddrEncoder()
-          .encodeKey(BytesUtils.fromHexString(i["public"]), params);
+      final netType = ErgoNetworkTypes.values.firstWhere(
+        (element) =>
+            element.name.toLowerCase() ==
+            (params["net_type"] as String).toLowerCase(),
+      );
+      final z = ErgoP2PKHAddrEncoder().encodeKey(
+        BytesUtils.fromHexString(i["public"]),
+        netType: netType,
+      );
       expect(z, i["address"]);
-      final decode = ErgoP2PKHAddrDecoder().decodeAddr(z, params);
+      final decode = ErgoP2PKHAddrDecoder().decodeAddr(z, netType: netType);
       expect(decode.toHex(), i["decode"]);
     }
   });

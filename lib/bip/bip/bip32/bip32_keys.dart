@@ -1,44 +1,28 @@
 import 'package:blockchain_utils/bip/bip/bip32/bip32_key_ser.dart';
+import 'package:blockchain_utils/bip/bip/hd_key/types.dart';
 import 'package:blockchain_utils/bip/ecc/keys/i_keys.dart';
 import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
+import 'package:blockchain_utils/crypto/crypto/ec/core/point.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
-import 'package:blockchain_utils/crypto/crypto/cdsa/point/base.dart';
 import 'bip32_key_data.dart';
 import 'bip32_key_net_ver.dart';
 
-/// An abstract base class for BIP32 keys. It provides common properties and methods
-/// for BIP32 keys, including the elliptic curve type, key data, and key network versions.
-abstract class Bip32KeyBase {
+abstract class Bip32KeyBase extends CryptoKeyBase<Bip32KeyData> {
+  const Bip32KeyBase(super.keyData, this.curveType);
   final EllipticCurveTypes curveType;
-  final Bip32KeyData keyData;
-  final Bip32KeyNetVersions keyNetVer;
-
-  /// Creates a Bip32KeyBase instance with the specified key data, key network versions,
-  /// and elliptic curve type.
-  const Bip32KeyBase(this.keyData, this.keyNetVer, this.curveType);
-
-  /// Gets the chain code associated with the BIP32 key.
-  Bip32ChainCode get chainCode {
-    return keyData.chainCode;
-  }
-
-  /// Gets the extended representation of the BIP32 key.
   String get toExtended;
-
-  String toHex({bool lowerCase = true, String? prefix = ""});
+  List<int> get toExtendedBytes;
 }
 
 /// Represents a BIP32 public key with associated data such as the elliptic curve type,
 /// key data, and key network versions.
 class Bip32PublicKey extends Bip32KeyBase {
   final IPublicKey pubKey;
+  final Bip32KeyNetVersions keyNetVer;
 
   /// Creates a Bip32PublicKey instance with the provided public key, key data, and key network versions.
-  Bip32PublicKey(
-    this.pubKey,
-    Bip32KeyData keyData,
-    Bip32KeyNetVersions keyNetVer,
-  ) : super(keyData, keyNetVer, pubKey.curve);
+  Bip32PublicKey(this.pubKey, Bip32KeyData keyData, this.keyNetVer)
+    : super(keyData, pubKey.curve);
 
   /// Gets the underlying public key.
   IPublicKey get key {
@@ -56,7 +40,7 @@ class Bip32PublicKey extends Bip32KeyBase {
   }
 
   /// Gets the abstract point representation of the public key.
-  AbstractPoint get point {
+  ECPoint get point {
     return pubKey.point;
   }
 
@@ -76,18 +60,37 @@ class Bip32PublicKey extends Bip32KeyBase {
     return Bip32PublicKeySerializer.serialize(pubKey, keyData, keyNetVer);
   }
 
+  ChainCode get chainCode => keyData.chainCode;
+
+  @override
+  List<int> get toExtendedBytes =>
+      Bip32PublicKeySerializer.serializeBytes(pubKey, keyData, keyNetVer);
+
   /// Creates a [Bip32PublicKey] from a byte representation, key data, key network versions, and curve type.
-  static Bip32PublicKey fromBytes(List<int> keyBytes, Bip32KeyData keyData,
-      Bip32KeyNetVersions keyNetVer, EllipticCurveTypes curveType) {
+  static Bip32PublicKey fromBytes(
+    List<int> keyBytes,
+    Bip32KeyData keyData,
+    Bip32KeyNetVersions keyNetVer,
+    EllipticCurveTypes curveType,
+  ) {
     return Bip32PublicKey(
-        IPublicKey.fromBytes(keyBytes, curveType), keyData, keyNetVer);
+      IPublicKey.fromBytes(keyBytes, curveType),
+      keyData,
+      keyNetVer,
+    );
   }
 
   @override
-  String toHex(
-      {bool withPrefix = true, bool lowerCase = true, String? prefix = ""}) {
+  String toHex({
+    bool withPrefix = true,
+    bool lowerCase = true,
+    String? prefix = "",
+  }) {
     return pubKey.toHex(
-        lowerCase: lowerCase, prefix: prefix, withPrefix: withPrefix);
+      lowerCase: lowerCase,
+      prefix: prefix,
+      withPrefix: withPrefix,
+    );
   }
 }
 
@@ -95,13 +98,11 @@ class Bip32PublicKey extends Bip32KeyBase {
 /// key data, and key network versions.
 class Bip32PrivateKey extends Bip32KeyBase {
   final IPrivateKey privKey;
+  final Bip32KeyNetVersions keyNetVer;
 
   /// Creates a Bip32PrivateKey instance with the provided private key, key data, and key network versions.
-  Bip32PrivateKey(
-    this.privKey,
-    Bip32KeyData keyData,
-    Bip32KeyNetVersions keyNetVer,
-  ) : super(keyData, keyNetVer, privKey.curve);
+  Bip32PrivateKey(this.privKey, Bip32KeyData keyData, this.keyNetVer)
+    : super(keyData, privKey.curve);
 
   /// Gets the underlying private key object.
   IPrivateKey keyObject() {
@@ -124,11 +125,22 @@ class Bip32PrivateKey extends Bip32KeyBase {
     return Bip32PrivateKeySerializer.serialize(privKey, keyData, keyNetVer);
   }
 
+  @override
+  List<int> get toExtendedBytes =>
+      Bip32PrivateKeySerializer.serializeBytes(privKey, keyData, keyNetVer);
+
   /// Creates a Bip32PrivateKey from a byte representation, key data, key network versions, and curve type.
-  static Bip32PrivateKey fromBytes(List<int> keyBytes, Bip32KeyData keyData,
-      Bip32KeyNetVersions keyNetVer, EllipticCurveTypes curveType) {
+  static Bip32PrivateKey fromBytes(
+    List<int> keyBytes,
+    Bip32KeyData keyData,
+    Bip32KeyNetVersions keyNetVer,
+    EllipticCurveTypes curveType,
+  ) {
     return Bip32PrivateKey(
-        IPrivateKey.fromBytes(keyBytes, curveType), keyData, keyNetVer);
+      IPrivateKey.fromBytes(keyBytes, curveType),
+      keyData,
+      keyNetVer,
+    );
   }
 
   @override

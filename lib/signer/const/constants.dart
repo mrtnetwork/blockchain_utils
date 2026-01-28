@@ -1,6 +1,6 @@
-import 'package:blockchain_utils/crypto/crypto/cdsa/curve/curves.dart';
-import 'package:blockchain_utils/crypto/crypto/cdsa/point/ec_projective_point.dart';
-import 'package:blockchain_utils/crypto/crypto/cdsa/point/edwards.dart';
+import 'package:blockchain_utils/crypto/crypto/ec/curve/curves.dart';
+import 'package:blockchain_utils/crypto/crypto/ec/projective/native/native.dart';
+import 'package:blockchain_utils/crypto/crypto/ec/extended/native/edwards.dart';
 
 class CryptoSignerConst {
   static const int ed25519SignatureLength = 64;
@@ -50,6 +50,6 @@ class CryptoSignerConst {
     53,
     54,
     32,
-    32
+    32,
   ];
 }

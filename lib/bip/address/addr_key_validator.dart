@@ -4,19 +4,20 @@ import 'exception/exception.dart';
 
 /// Class for address utility functions.
 class AddrKeyValidator {
-  /// validate argrument by key
-  static T validateAddressArgs<T>(Map<String, dynamic> kwargs, String key) {
-    if (!kwargs.containsKey(key) || kwargs[key] is! T) {
-      throw AddressConverterException(
-          'Invalid or Missing required parameters: $key as type $T');
-    }
-    return kwargs[key] as T;
+  static T getAddrArg<T extends Object?>(T? obj, String argName) {
+    if (obj != null) return obj;
+    if (obj == null && null is T) return obj as T;
+    throw AddressConverterException.missingOrInvalidAddressArguments(
+      reason: "$argName must not be null.",
+    );
   }
 
-  static T? nullOrValidateAddressArgs<T>(
-      Map<String, dynamic> kwargs, String key) {
-    if (kwargs[key] == null) return null;
-    return validateAddressArgs<T>(kwargs, key);
+  static T getConfigArg<T extends Object?>(T? obj, String argName) {
+    if (obj != null) return obj;
+    if (obj == null && null is T) return null as T;
+    throw AddressConverterException.missingOrInvalidAddressArguments(
+      reason: "Missing coin $argName argument.",
+    );
   }
 
   /// Validate and get an ed25519 public key.
@@ -50,8 +51,16 @@ class AddrKeyValidator {
   }
 
   static IPublicKey _validateAndGetGenericKey(
-      List<int> pubKey, EllipticCurveTypes type) {
-    return IPublicKey.fromBytes(pubKey, type);
+    List<int> pubKey,
+    EllipticCurveTypes type,
+  ) {
+    try {
+      return IPublicKey.fromBytes(pubKey, type);
+    } catch (_) {
+      throw AddressConverterException.addressKeyValidationFailed(
+        reason: "Invalid ${type.name} public key.",
+      );
+    }
   }
 
   static bool hasValidPubkeyBytes(List<int> pubKey, EllipticCurveTypes type) {

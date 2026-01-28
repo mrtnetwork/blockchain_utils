@@ -9,7 +9,8 @@ import 'package:test/test.dart';
 import 'test_vector.dart';
 
 String generateRandomString(int length) {
-  const String charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' // uppercase
+  const String charset =
+      'ABCDEFGHIJKLMNOPQRSTUVWXYZ' // uppercase
       'abcdefghijklmnopqrstuvwxyz' // lowercase
       '0123456789' // digits
       ' !"#%&\'()*+,-./:;<=>?@[\\]^_`{|}~' // symbols, note escaped $
@@ -85,8 +86,10 @@ void _special() {
       expect(decode, i.key);
     }
     for (final i in specialBase64Map.entries) {
-      final toB64 = B64Decoder.decode(i.value.replaceAll("=", ''),
-          validatePadding: false);
+      final toB64 = B64Decoder.decode(
+        i.value.replaceAll("=", ''),
+        validatePadding: false,
+      );
 
       expect(toB64, i.key);
     }

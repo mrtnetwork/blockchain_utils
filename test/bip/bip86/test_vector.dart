@@ -17,7 +17,7 @@ final List<Map<String, dynamic>> testVector = [
         "account_public":
             "xpub6DSpJYkpDd38YmoZi7fAP3GZWsE6gPmSqgbaWS5E65ESCsNniUyQaJm73fEEofyg4yADjXfeoHLHhMf7VQHYBie6hMjxg75h8jXGkP1E1UT",
         "address":
-            "bc1pjmud00nke2yq8mp8xum5scwyfhcalgc5x0auswcs5gerakw3c55sk4yj0t"
+            "bc1pjmud00nke2yq8mp8xum5scwyfhcalgc5x0auswcs5gerakw3c55sk4yj0t",
       },
       {
         "account":
@@ -25,7 +25,7 @@ final List<Map<String, dynamic>> testVector = [
         "account_public":
             "xpub6DSpJYkpDd38cebSk66eicNgkBhSunTkAg11yDZW1bVpQGd1WEUe3V45GhQqEEBiDoM1cQMscKUZAnrjVibUMcNx1MoEqTXrXxCppsyq2w8",
         "address":
-            "bc1p6p6kvpvna62ptuhdt5aflvptr5km3kgswgrq9r306zhsqtzrzdrqgw4g9k"
+            "bc1p6p6kvpvna62ptuhdt5aflvptr5km3kgswgrq9r306zhsqtzrzdrqgw4g9k",
       },
       {
         "account":
@@ -33,7 +33,7 @@ final List<Map<String, dynamic>> testVector = [
         "account_public":
             "xpub6DSpJYkpDd38cjcB1ynVW9SU9birYqNo44M4W1mB5U8g3sVyTE2dDQEwKheJPRjbRSL7oNCco5esFRDL2BmXWNoAScqhwjKfYQdNg476sgb",
         "address":
-            "bc1p0w05wxxc6r02kywuf9uzd4pcq9mevqmv7uwpm5knztxzph2qzxwslnwwz6"
+            "bc1p0w05wxxc6r02kywuf9uzd4pcq9mevqmv7uwpm5knztxzph2qzxwslnwwz6",
       },
       {
         "account":
@@ -41,7 +41,7 @@ final List<Map<String, dynamic>> testVector = [
         "account_public":
             "xpub6DSpJYkpDd38fPpXZSAvbdGkXX6zDF1uhfVqpTPFsYbGKtuvrytrFbmRntrvvu8x9LXgmcvWHzBUjocot4fJLDngqx7QGRUL27U4975gURb",
         "address":
-            "bc1pmeq4fqx8wxl69c9pfg70vyqvk8s8w6je3g83chsyvqxrx6zshseq6jmh3n"
+            "bc1pmeq4fqx8wxl69c9pfg70vyqvk8s8w6je3g83chsyvqxrx6zshseq6jmh3n",
       },
       {
         "account":
@@ -49,9 +49,9 @@ final List<Map<String, dynamic>> testVector = [
         "account_public":
             "xpub6DSpJYkpDd38kJE9dnW6wr7LyYxmsieQe1rRg36Argg7V3CCi9zFyDixhgqxsKRT8vhkasf58b5UV8taviNe8ij5vhP6ebwUXQ3XdhfG9Rs",
         "address":
-            "bc1pfnlpdrasrwpz8wj4g2h27krayq5wz24rvrg6fsl7mp67f8hm7vws2fwyyv"
-      }
-    ]
+            "bc1pfnlpdrasrwpz8wj4g2h27krayq5wz24rvrg6fsl7mp67f8hm7vws2fwyyv",
+      },
+    ],
   },
   {
     "coin": "BITCOIN_TESTNET",
@@ -71,7 +71,7 @@ final List<Map<String, dynamic>> testVector = [
         "account_public":
             "tpubDCSu4H7Fis2sWrX19LTZ2rvDvmrN1DTvW42nLrZPkLJnL1aASZrz6sEj4i3dEqhmzK18aaq7bgE6dFdDp4vcKjGjJFLnJMLuUbwBS3NPMgC",
         "address":
-            "tb1pptkx7numcax3amffd4l32v7vev7v4try44qkt0yyfq3ptmrppp0spk2y9g"
+            "tb1pptkx7numcax3amffd4l32v7vev7v4try44qkt0yyfq3ptmrppp0spk2y9g",
       },
       {
         "account":
@@ -79,7 +79,7 @@ final List<Map<String, dynamic>> testVector = [
         "account_public":
             "tpubDCSu4H7Fis2sYFrPjmGWNjfAYJ49qVqHeAnqu3KJjeHTV3fyWBq7gxpFboKbBQCvJ7aMGZdrPYVEqYxycKUGmhUTZcqUzrMu1nXMfShH3qP",
         "address":
-            "tb1pctzukpnr673l0uphjvv2gw6ervunyhxjlnng9hscrpdmx9xeldvsxmyl7r"
+            "tb1pctzukpnr673l0uphjvv2gw6ervunyhxjlnng9hscrpdmx9xeldvsxmyl7r",
       },
       {
         "account":
@@ -87,7 +87,7 @@ final List<Map<String, dynamic>> testVector = [
         "account_public":
             "tpubDCSu4H7Fis2sazi97vUwNs5NQLAqaXMM7x93ZrnGqUx4hRHCLGK3oWzYuMVQVnGVa7Z9dr9Wp6pmF6juNpDgLXGJfS99XbfmjVpkQCZJx8P",
         "address":
-            "tb1p8ald9w9rwpxz0f67390j8s807trvc2xz86nkj8gd93m28rmqu0ss9cp5xl"
+            "tb1p8ald9w9rwpxz0f67390j8s807trvc2xz86nkj8gd93m28rmqu0ss9cp5xl",
       },
       {
         "account":
@@ -95,7 +95,7 @@ final List<Map<String, dynamic>> testVector = [
         "account_public":
             "tpubDCSu4H7Fis2sdQDtCXWwd1kFPW3QHo1maKN7PWHME3SkFmH9Cu3w8CkNoBwv3asfVQCoDaATHtfdAgcKnUZi6Yf1XWGGH4TChk4XBHBSBKL",
         "address":
-            "tb1pctetrezv5aq5szjgce54t7ldzz0t5kv8q496xk09q5n4a04dk28s9mwlva"
+            "tb1pctetrezv5aq5szjgce54t7ldzz0t5kv8q496xk09q5n4a04dk28s9mwlva",
       },
       {
         "account":
@@ -103,8 +103,8 @@ final List<Map<String, dynamic>> testVector = [
         "account_public":
             "tpubDCSu4H7Fis2sgVHNAvm7hkBkqq9LLa3Gzworg7id6jdhRoUBMyrnXaPweHstYnM3jGckaWQTxR4ap2R8Ehmtnz4sz8GNJS7Ama9jHbMsuTL",
         "address":
-            "tb1p4pp8n4580su05t0392gcy5hmufed8urwq8sk6556sz0m7t33j4astdympf"
-      }
-    ]
-  }
+            "tb1p4pp8n4580su05t0392gcy5hmufed8urwq8sk6556sz0m7t33j4astdympf",
+      },
+    ],
+  },
 ];

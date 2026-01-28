@@ -9,7 +9,7 @@ class DynamicByteTracker {
 
   /// buffer bytes.
   List<int> toBytes() {
-    return List<int>.from(_buffer);
+    return _buffer.clone();
   }
 
   void add(List<int> chunk) {

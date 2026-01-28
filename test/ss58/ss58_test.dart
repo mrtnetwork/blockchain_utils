@@ -38,14 +38,16 @@ void main() {
   test("decode", () {
     for (final i in _testVector) {
       final dec = SS58Decoder.decode(i["encode"]);
-      expect(dec.item1, i["ss58_format"]);
-      expect(BytesUtils.toHexString(dec.item2), i["raw"]);
+      expect(dec.$1, i["ss58_format"]);
+      expect(BytesUtils.toHexString(dec.$2), i["raw"]);
     }
   });
   test("encode", () {
     for (final i in _testVector) {
       final dec = SS58Encoder.encode(
-          BytesUtils.fromHexString(i["raw"]), i["ss58_format"]);
+        BytesUtils.fromHexString(i["raw"]),
+        i["ss58_format"],
+      );
       expect(dec, i["encode"]);
     }
   });

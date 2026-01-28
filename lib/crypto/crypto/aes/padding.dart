@@ -7,18 +7,15 @@ enum PaddingAlgorithm { pkcs7, iso7816, x923 }
 class BlockCipherPadding {
   /// Adds padding to the provided data to match the specified block size.
   ///
-  /// This method adds padding to the input data to make its length a multiple of the specified block size.
-  /// The padding style can be selected from the available padding algorithms.
-  ///
   /// Parameters:
-  /// - `dataToPad`: The input data to be padded.
-  /// - `blockSize`: The desired block size for the data.
-  /// - `style`: The padding style, which can be one of the PaddingAlgorithm values (default is pkcs7).
-  ///
-  /// Returns:
-  /// - A new `List<int>` containing the input data with the added padding.
-  static List<int> pad(List<int> dataToPad, int blockSize,
-      {PaddingAlgorithm style = PaddingAlgorithm.pkcs7}) {
+  /// - [dataToPad]: The input data to be padded.
+  /// - [blockSize]: The desired block size for the data.
+  /// - [style]: The padding style, which can be one of the PaddingAlgorithm values (default is pkcs7).
+  static List<int> pad(
+    List<int> dataToPad,
+    int blockSize, {
+    PaddingAlgorithm style = PaddingAlgorithm.pkcs7,
+  }) {
     final int paddingLen = blockSize - dataToPad.length % blockSize;
     List<int> padding;
 
@@ -50,28 +47,32 @@ class BlockCipherPadding {
 
   /// Removes padding from the provided data.
   ///
-  /// This method removes padding from the input data, assuming it follows a specific padding style.
-  ///
   /// Parameters:
-  /// - `paddedData`: The padded data from which padding will be removed.
-  /// - `blockSize`: The block size used for padding.
-  /// - `style`: The padding style, which can be one of the PaddingAlgorithm values (default is pkcs7).
-  ///
-  /// Returns:
-  /// - A new `List<int>` containing the input data with padding removed.
+  /// - [paddedData]: The padded data from which padding will be removed.
+  /// - [blockSize]: The block size used for padding.
+  /// - [style]: The padding style, which can be one of the PaddingAlgorithm values (default is pkcs7).
   ///
   /// Throws:
-  /// - `Exception` for various scenarios, such as incorrect padding or zero-length input.
-  static List<int> unpad(List<int> paddedData, int blockSize,
-      {PaddingAlgorithm style = PaddingAlgorithm.pkcs7}) {
+  /// - [CryptoException] for various scenarios, such as incorrect padding or zero-length input.
+  static List<int> unpad(
+    List<int> paddedData,
+    int blockSize, {
+    PaddingAlgorithm style = PaddingAlgorithm.pkcs7,
+  }) {
     final int paddedDataLen = paddedData.length;
 
     if (paddedDataLen == 0) {
-      throw const CryptoException('Zero-length input cannot be unpadded');
+      throw CryptoException.failed(
+        'unpad',
+        reason: "Zero-length input cannot be unpadded.",
+      );
     }
 
     if (paddedDataLen % blockSize != 0) {
-      throw const CryptoException('Input data is not padded');
+      throw CryptoException.failed(
+        "unpad",
+        reason: "Input data is not padded.",
+      );
     }
 
     int paddingLen;
@@ -79,34 +80,34 @@ class BlockCipherPadding {
     if (style == PaddingAlgorithm.pkcs7 || style == PaddingAlgorithm.x923) {
       paddingLen = paddedData[paddedDataLen - 1];
       if (paddingLen < 1 || paddingLen > blockSize) {
-        throw const CryptoException('incorrect padding');
+        throw CryptoException.failed("unpad", reason: "Incorrect padding.");
       }
 
       if (style == PaddingAlgorithm.pkcs7) {
         for (int i = 1; i <= paddingLen; i++) {
           if (paddedData[paddedDataLen - i] != paddingLen) {
-            throw const CryptoException('incorrect padding');
+            throw CryptoException.failed("unpad", reason: "Incorrect padding.");
           }
         }
       } else {
         for (int i = 1; i < paddingLen; i++) {
           if (paddedData[paddedDataLen - i - 1] != 0) {
-            throw const CryptoException('incorrect padding');
+            throw CryptoException.failed("unpad", reason: "Incorrect padding.");
           }
         }
       }
     } else {
       final int index = paddedData.lastIndexOf(128);
       if (index < 0) {
-        throw const CryptoException('incorrect padding');
+        throw CryptoException.failed("unpad", reason: "Incorrect padding.");
       }
       paddingLen = paddedDataLen - index;
       if (paddingLen < 1 || paddingLen > blockSize) {
-        throw const CryptoException('incorrect padding');
+        throw CryptoException.failed("unpad", reason: "Incorrect padding.");
       }
       for (int i = 1; i < paddingLen; i++) {
         if (paddedData[index + i] != 0) {
-          throw const CryptoException('incorrect padding');
+          throw CryptoException.failed("unpad", reason: "Incorrect padding.");
         }
       }
     }

@@ -1626,5 +1626,5 @@ const List<String> _portuguese = [
   "zefiro",
   "zeloso",
   "zenite",
-  "zumbi"
+  "zumbi",
 ];

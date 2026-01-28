@@ -31,3 +31,5 @@ export 'mnemonic/cardano_icarus_seed_generator.dart';
 /// of the Cardano blockchain.
 export 'shelley/cardano_shelley.dart';
 export 'shelley/cardano_shelley_keys.dart';
+
+export 'cip0019/cip0019.dart';

@@ -9,8 +9,11 @@ void main() {
   test("scrypt", () {
     for (final i in testVector) {
       final s = Scrypt(i["n"], i["r"], i["p"]);
-      final derive = s.derive(BytesUtils.fromHexString(i["password"]),
-          BytesUtils.fromHexString(i["salt"]), 32);
+      final derive = s.derive(
+        BytesUtils.fromHexString(i["password"]),
+        BytesUtils.fromHexString(i["salt"]),
+        32,
+      );
       expect(derive.toHex(), i["hash"]);
     }
   });

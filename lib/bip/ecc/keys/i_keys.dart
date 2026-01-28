@@ -7,11 +7,12 @@ import 'package:blockchain_utils/bip/ecc/keys/nist256p1_keys_hybrid.dart';
 import 'package:blockchain_utils/bip/ecc/keys/secp256k1_keys_ecdsa.dart';
 import 'package:blockchain_utils/bip/ecc/keys/sr25519_keys.dart';
 import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
-import 'package:blockchain_utils/crypto/crypto/cdsa/point/base.dart';
+import 'package:blockchain_utils/crypto/crypto/ec/core/point.dart';
 import 'package:blockchain_utils/utils/binary/utils.dart';
+import 'package:blockchain_utils/utils/equatable/equatable.dart';
 
 /// An abstract class representing a generic public key interface for different elliptic curve types.
-abstract class IPublicKey {
+abstract class IPublicKey with Equality {
   /// Factory method for creating an IPublicKey instance from a byte array and an elliptic curve type.
   factory IPublicKey.fromBytes(List<int> keybytes, EllipticCurveTypes type) {
     switch (type) {
@@ -29,8 +30,10 @@ abstract class IPublicKey {
         return MoneroPublicKey.fromBytes(keybytes);
       case EllipticCurveTypes.ed25519Blake2b:
         return Ed25519Blake2bPublicKey.fromBytes(keybytes);
-      default:
+      case EllipticCurveTypes.secp256k1:
         return Secp256k1PublicKey.fromBytes(keybytes);
+      default:
+        throw UnimplementedError();
     }
   }
   factory IPublicKey.fromHex(String keyHex, EllipticCurveTypes type) {
@@ -54,8 +57,10 @@ abstract class IPublicKey {
         return MoneroPublicKey.isValidBytes(keyBytes);
       case EllipticCurveTypes.ed25519Blake2b:
         return Ed25519Blake2bPublicKey.isValidBytes(keyBytes);
-      default:
+      case EllipticCurveTypes.secp256k1:
         return Secp256k1PublicKey.isValidBytes(keyBytes);
+      default:
+        throw UnimplementedError();
     }
   }
 
@@ -75,14 +80,17 @@ abstract class IPublicKey {
   List<int> get uncompressed;
 
   /// Get the abstract point representation of the public key.
-  AbstractPoint get point;
+  ECPoint get point;
 
-  String toHex(
-      {bool withPrefix = true, bool lowerCase = true, String? prefix = ""});
+  String toHex({
+    bool withPrefix = true,
+    bool lowerCase = true,
+    String? prefix = "",
+  });
 }
 
 /// An abstract class representing a generic private key interface for different elliptic curve types.
-abstract class IPrivateKey {
+abstract class IPrivateKey with Equality {
   /// Get the elliptic curve type associated with the private key.
   EllipticCurveTypes get curve;
 
@@ -103,10 +111,12 @@ abstract class IPrivateKey {
         return MoneroPrivateKey.fromBytes(keyBytes);
       case EllipticCurveTypes.sr25519:
         return Sr25519PrivateKey.fromBytes(keyBytes);
+      case EllipticCurveTypes.secp256k1:
+        return Secp256k1PrivateKey.fromBytes(keyBytes);
 
       default:
+        throw UnimplementedError();
     }
-    return Secp256k1PrivateKey.fromBytes(keyBytes);
   }
 
   factory IPrivateKey.fromHex(String keyHex, EllipticCurveTypes type) {
@@ -139,8 +149,10 @@ abstract class IPrivateKey {
         return MoneroPrivateKey.isValidBytes(keyBytes);
       case EllipticCurveTypes.sr25519:
         return Sr25519PrivateKey.isValidBytes(keyBytes);
-      default:
+      case EllipticCurveTypes.secp256k1:
         return Secp256k1PrivateKey.isValidBytes(keyBytes);
+      default:
+        throw UnimplementedError();
     }
   }
 

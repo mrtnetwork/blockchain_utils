@@ -2,19 +2,10 @@ import 'package:blockchain_utils/crypto/crypto/exception/exception.dart';
 import 'package:blockchain_utils/crypto/crypto/hash/hash.dart';
 import 'package:blockchain_utils/crypto/crypto/hmac/hmac.dart';
 import 'package:blockchain_utils/crypto/crypto/pbkdf2/pbkdf2.dart';
-import 'package:blockchain_utils/utils/utils.dart';
+import 'package:blockchain_utils/exception/exception/exception.dart';
+import 'package:blockchain_utils/utils/binary/binary_operation.dart';
 
 /// A class for performing scrypt key derivation.
-///
-/// Scrypt is a key derivation function designed to be secure against both hardware and software attacks.
-/// It is commonly used for securely deriving encryption keys from user-provided passwords.
-///
-/// Fields:
-/// - `_xy`: A list of 32-bit unsigned integers representing intermediate data during scrypt key derivation.
-/// - `_v`: A list of 32-bit unsigned integers representing additional intermediate data during scrypt key derivation.
-/// - `n`: An integer representing the CPU/memory cost parameter. It defines the general work factor for scrypt.
-/// - `r`: An integer representing the block size parameter, which specifies the number of iterations and memory size used.
-/// - `p`: An integer representing the parallelization parameter, which controls the amount of parallel processing.
 class Scrypt {
   late final List<int> _xy;
   late final List<int> _v;
@@ -23,40 +14,60 @@ class Scrypt {
   late final int r;
   late final int p;
 
-  /// Creates a new `Scrypt` instance for key derivation.
+  /// Creates a new [Scrypt] instance for key derivation.
   ///
-  /// The `Scrypt` constructor initializes the parameters for scrypt key derivation, which includes the CPU/memory cost parameter (`n`), block size parameter (`r`), and parallelization parameter (`p`).
+  /// The [Scrypt] constructor initializes the parameters for scrypt key derivation, which includes the CPU/memory cost parameter ([n]), block size parameter ([r]), and parallelization parameter ([p]).
   ///
   /// Parameters:
-  /// - `n`: The CPU/memory cost parameter. It defines the general work factor for scrypt.
-  /// - `r`: The block size parameter. It specifies the number of iterations and memory size used.
-  /// - `p`: The parallelization parameter. It controls the amount of parallel processing.
+  /// - [n]: The CPU/memory cost parameter. It defines the general work factor for scrypt.
+  /// - [r]: The block size parameter. It specifies the number of iterations and memory size used.
+  /// - [p]: The parallelization parameter. It controls the amount of parallel processing.
   ///
   /// Throws an [CryptoException] if the parameters are out of the valid range or not a power of 2.
   Scrypt(this.n, this.r, this.p) {
     if (p <= 0) {
-      throw const CryptoException("scrypt: incorrect p");
+      throw ArgumentException.invalidOperationArguments(
+        "Scrypt",
+        name: "p",
+        reason: "Incorrect p",
+      );
     }
 
     if (r <= 0) {
-      throw const CryptoException("scrypt: incorrect r");
+      throw ArgumentException.invalidOperationArguments(
+        "Scrypt",
+        name: "r",
+        reason: "Incorrect r",
+      );
     }
 
     if (n < 1 || n > 1 << 31) {
-      throw const CryptoException('scrypt: N must be between 2 and 2^31');
+      throw ArgumentException.invalidOperationArguments(
+        "Scrypt",
+        name: "n",
+        reason: "N must be between 2 and 2^31",
+      );
     }
 
     if (!_isPowerOfTwo(n)) {
-      throw const CryptoException("scrypt: N must be a power of 2");
+      throw ArgumentException.invalidOperationArguments(
+        "Scrypt",
+        name: "n",
+        reason: "N must be a power of 2",
+      );
     }
 
-    const maxInt = (1 << 31) & mask32;
+    const maxInt = (1 << 31) & BinaryOps.mask32;
 
     if (r * p >= 1 << 30 ||
         r > maxInt ~/ 128 ~/ p ||
         r > maxInt ~/ 256 ||
         n > maxInt ~/ 128 ~/ r) {
-      throw const CryptoException("scrypt: parameters are too large");
+      throw ArgumentException.invalidOperationArguments(
+        "Scrypt",
+        name: "n",
+        reason: "Parameters are too large",
+      );
     }
 
     _v = List<int>.filled(32 * (n + 2) * r, 0);
@@ -74,25 +85,20 @@ class Scrypt {
     return s.derive(password, salt, dkLen);
   }
 
-  /// Derives a key from the given `password` and `salt` using scrypt key derivation.
-  ///
-  /// This method takes a `password`, a `salt`,
-  /// and the desired derived key length (`dkLen`) as input and computes the derived key using the
-  /// scrypt key derivation function. The derived key is returned as a [List<int>].
+  /// Derives a key from the given [password] and [salt] using scrypt key derivation.
   ///
   /// Parameters:
-  /// - `password`: The password to use as input for key derivation.
-  /// - `salt`: A random salt value used to enhance security.
-  /// - `dkLen`: The desired length (in bytes) of the derived key.
+  /// - [password]: The password to use as input for key derivation.
+  /// - [salt]: A random salt value used to enhance security.
+  /// - [dkLen]: The desired length (in bytes) of the derived key.
   ///
-  /// Returns:
-  /// A derived key as a [List<int>].
   List<int> derive(List<int> password, List<int> salt, int dkLen) {
     final B = PBKDF2.deriveKey(
-        mac: () => HMAC(() => SHA256(), password),
-        salt: salt,
-        iterations: 1,
-        length: p * 128 * r);
+      mac: () => HMAC(() => SHA256(), password),
+      salt: salt,
+      iterations: 1,
+      length: p * 128 * r,
+    );
 
     for (int i = 0; i < p; i++) {
       final index = i * 128 * r;
@@ -102,11 +108,12 @@ class Scrypt {
     }
 
     final result = PBKDF2.deriveKey(
-        mac: () => HMAC(() => SHA256(), password),
-        salt: B,
-        iterations: 1,
-        length: dkLen);
-    zero(B);
+      mac: () => HMAC(() => SHA256(), password),
+      salt: B,
+      iterations: 1,
+      length: dkLen,
+    );
+    BinaryOps.zero(B);
 
     return result;
   }
@@ -116,15 +123,20 @@ class Scrypt {
   }
 
   static void _blockCopy(
-      List<int> dst, int di, List<int> src, int si, int len) {
+    List<int> dst,
+    int di,
+    List<int> src,
+    int si,
+    int len,
+  ) {
     while (len-- > 0) {
-      dst[di++] = src[si++] & mask32;
+      dst[di++] = src[si++] & BinaryOps.mask32;
     }
   }
 
   static void _blockXOR(List<int> dst, int di, List<int> src, int si, int len) {
     while (len-- > 0) {
-      dst[di++] ^= src[si++] & mask32;
+      dst[di++] ^= src[si++] & BinaryOps.mask32;
     }
   }
 
@@ -141,7 +153,7 @@ class Scrypt {
   }
 
   static int _or(int sum, int n) =>
-      ((sum << n) & mask32) | (sum & mask32) >> (32 - n);
+      ((sum << n) & BinaryOps.mask32) | (sum & BinaryOps.mask32) >> (32 - n);
 
   static void _salsaXOR(List<int> tmp, List<int> B, int bin, int bout) {
     final int j0 = tmp[0] ^ B[bin++],
@@ -243,22 +255,22 @@ class Scrypt {
       u = x14 + x13;
       x15 ^= _or(u, 18);
     }
-    B[bout++] = tmp[0] = (x0 + j0) & mask32;
-    B[bout++] = tmp[1] = (x1 + j1) & mask32;
-    B[bout++] = tmp[2] = (x2 + j2) & mask32;
-    B[bout++] = tmp[3] = (x3 + j3) & mask32;
-    B[bout++] = tmp[4] = (x4 + j4) & mask32;
-    B[bout++] = tmp[5] = (x5 + j5) & mask32;
-    B[bout++] = tmp[6] = (x6 + j6) & mask32;
-    B[bout++] = tmp[7] = (x7 + j7) & mask32;
-    B[bout++] = tmp[8] = (x8 + j8) & mask32;
-    B[bout++] = tmp[9] = (x9 + j9) & mask32;
-    B[bout++] = tmp[10] = (x10 + j10) & mask32;
-    B[bout++] = tmp[11] = (x11 + j11) & mask32;
-    B[bout++] = tmp[12] = (x12 + j12) & mask32;
-    B[bout++] = tmp[13] = (x13 + j13) & mask32;
-    B[bout++] = tmp[14] = (x14 + j14) & mask32;
-    B[bout++] = tmp[15] = (x15 + j15) & mask32;
+    B[bout++] = tmp[0] = (x0 + j0) & BinaryOps.mask32;
+    B[bout++] = tmp[1] = (x1 + j1) & BinaryOps.mask32;
+    B[bout++] = tmp[2] = (x2 + j2) & BinaryOps.mask32;
+    B[bout++] = tmp[3] = (x3 + j3) & BinaryOps.mask32;
+    B[bout++] = tmp[4] = (x4 + j4) & BinaryOps.mask32;
+    B[bout++] = tmp[5] = (x5 + j5) & BinaryOps.mask32;
+    B[bout++] = tmp[6] = (x6 + j6) & BinaryOps.mask32;
+    B[bout++] = tmp[7] = (x7 + j7) & BinaryOps.mask32;
+    B[bout++] = tmp[8] = (x8 + j8) & BinaryOps.mask32;
+    B[bout++] = tmp[9] = (x9 + j9) & BinaryOps.mask32;
+    B[bout++] = tmp[10] = (x10 + j10) & BinaryOps.mask32;
+    B[bout++] = tmp[11] = (x11 + j11) & BinaryOps.mask32;
+    B[bout++] = tmp[12] = (x12 + j12) & BinaryOps.mask32;
+    B[bout++] = tmp[13] = (x13 + j13) & BinaryOps.mask32;
+    B[bout++] = tmp[14] = (x14 + j14) & BinaryOps.mask32;
+    B[bout++] = tmp[15] = (x15 + j15) & BinaryOps.mask32;
   }
 
   static void _smix(List<int> B, int r, int N, List<int> V, List<int> xy) {
@@ -267,7 +279,7 @@ class Scrypt {
     final tmp = List<int>.filled(16, 0);
 
     for (var i = 0; i < 32 * r; i++) {
-      V[i] = readUint32LE(B, i * 4);
+      V[i] = BinaryOps.readUint32LE(B, i * 4);
     }
 
     for (var i = 0; i < N; i++) {
@@ -284,9 +296,9 @@ class Scrypt {
       _blockMix(tmp, xy, yi, xi, r);
     }
     for (int i = 0; i < 32 * r; i++) {
-      writeUint32LE(xy[xi + i], B, i * 4);
+      BinaryOps.writeUint32LE(xy[xi + i], B, i * 4);
     }
 
-    zero(tmp);
+    BinaryOps.zero(tmp);
   }
 }

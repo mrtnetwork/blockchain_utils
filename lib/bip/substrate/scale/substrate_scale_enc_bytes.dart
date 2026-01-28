@@ -1,6 +1,6 @@
 import 'package:blockchain_utils/bip/substrate/scale/substrate_scale_enc_base.dart';
 import 'package:blockchain_utils/bip/substrate/scale/substrate_scale_enc_cuint.dart';
-import 'package:blockchain_utils/utils/utils.dart';
+import 'package:blockchain_utils/utils/string/string.dart';
 
 /// A Substrate SCALE encoder for string values represented as bytes.
 class SubstrateScaleBytesEncoder extends SubstrateScaleEncoderBase {
@@ -10,8 +10,9 @@ class SubstrateScaleBytesEncoder extends SubstrateScaleEncoderBase {
   @override
   List<int> encode(String value) {
     final toBytes = StringUtils.encode(value);
-    final List<int> lengthBytes =
-        const SubstrateScaleCUintEncoder().encode(toBytes.length.toString());
-    return List<int>.from([...lengthBytes, ...toBytes]);
+    final List<int> lengthBytes = const SubstrateScaleCUintEncoder().encode(
+      toBytes.length.toString(),
+    );
+    return [...lengthBytes, ...toBytes];
   }
 }

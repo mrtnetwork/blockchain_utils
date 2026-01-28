@@ -1,9 +1,9 @@
 import 'dart:typed_data';
 import 'package:blockchain_utils/utils/utils.dart';
-import 'package:blockchain_utils/crypto/crypto/cdsa/curve/curves.dart';
-import 'package:blockchain_utils/crypto/crypto/cdsa/ecdsa/private_key.dart';
-import 'package:blockchain_utils/crypto/crypto/cdsa/point/ec_projective_point.dart';
-import 'package:blockchain_utils/crypto/crypto/cdsa/rfc6979/rfc6979.dart';
+import 'package:blockchain_utils/crypto/crypto/ec/curve/curves.dart';
+import 'package:blockchain_utils/crypto/crypto/ec/ecdsa/private_key.dart';
+import 'package:blockchain_utils/crypto/crypto/ec/projective/native/native.dart';
+import 'package:blockchain_utils/crypto/crypto/ec/rfc6979/rfc6979.dart';
 import 'package:blockchain_utils/crypto/crypto/hash/hash.dart';
 import 'package:test/test.dart';
 
@@ -15,21 +15,23 @@ void _testEqualWithAffinePoint() {
 
 void _testInfinityPoint() {
   final point1 = ProjectiveECCPoint(
-      curve: Curves.curveSecp256k1,
-      x: BigInt.zero,
-      y: Curves.curveSecp256k1.p,
-      z: BigInt.one);
-  expect(point1.doublePoint().isInfinity, true);
+    curve: Curves.curveSecp256k1,
+    x: BigInt.zero,
+    y: Curves.curveSecp256k1.p,
+    z: BigInt.one,
+  );
+  expect(point1.double().isZero(), true);
 }
 
 void _testAffineWithZero() {
   final point1 = ProjectiveECCPoint(
-      curve: Curves.curveSecp256k1,
-      x: BigInt.zero,
-      y: BigInt.zero,
-      z: BigInt.one);
+    curve: Curves.curveSecp256k1,
+    x: BigInt.zero,
+    y: BigInt.zero,
+    z: BigInt.one,
+  );
   final point2 = point1.toAffine();
-  expect(point2.isInfinity, true);
+  expect(point2.isZero(), true);
 }
 
 void _testWithAffinePoint() {
@@ -37,7 +39,7 @@ void _testWithAffinePoint() {
   final aff = point1.toAffine();
   final sum = point1 + ProjectiveECCPoint.fromAffine(aff);
 
-  final doublePoint = point1.doublePoint();
+  final doublePoint = point1.double();
   expect(sum, doublePoint);
 }
 
@@ -45,14 +47,18 @@ void _testWithAffinePointAndRightAdd() {
   final point1 = ProjectiveECCPoint.fromAffine(Curves.generator256);
   final aff = point1.toAffine();
   final sum = aff + point1.toAffine();
-  final doublePoint = point1.doublePoint();
+  final doublePoint = point1.double();
   expect(sum, doublePoint);
 }
 
 void _testAddWithInfinity() {
   final point1 = ProjectiveECCPoint.fromAffine(Curves.generator256);
   final p2 = ProjectiveECCPoint(
-      curve: Curves.curve256, x: BigInt.zero, y: BigInt.zero, z: BigInt.one);
+    curve: Curves.curve256,
+    x: BigInt.zero,
+    y: BigInt.zero,
+    z: BigInt.one,
+  );
   final sum = p2 + point1;
   expect(sum, point1);
 }
@@ -60,20 +66,28 @@ void _testAddWithInfinity() {
 void _testMultiplyByZero() {
   final point1 = ProjectiveECCPoint.fromAffine(Curves.generator256);
   final m = point1 * BigInt.zero;
-  expect(m.isInfinity, true);
+  expect(m.isZero(), true);
 }
 
 void _zeroMultyply() {
   final point1 = ProjectiveECCPoint(
-      curve: Curves.curve256, x: BigInt.zero, y: BigInt.zero, z: BigInt.one);
+    curve: Curves.curve256,
+    x: BigInt.zero,
+    y: BigInt.zero,
+    z: BigInt.one,
+  );
   final m = point1 * BigInt.one;
-  expect(m.isInfinity, true);
+  expect(m.isZero(), true);
 }
 
 void _isInfinity() {
   final point1 = ProjectiveECCPoint(
-      curve: Curves.curve256, x: BigInt.zero, y: BigInt.zero, z: BigInt.one);
-  expect(point1.isInfinity, true);
+    curve: Curves.curve256,
+    x: BigInt.zero,
+    y: BigInt.zero,
+    z: BigInt.one,
+  );
+  expect(point1.isZero(), true);
 }
 
 void _multyByTwo() {
@@ -87,7 +101,7 @@ void _multyByTwo() {
 
 void _doubleWithMul() {
   final point1 = ProjectiveECCPoint.fromAffine(Curves.generator256);
-  final doublePoint = point1.doublePoint();
+  final doublePoint = point1.double();
   final doubleWithMul = point1 * BigInt.two;
   expect(doublePoint, doubleWithMul);
 }
@@ -136,19 +150,24 @@ void _mullLarge() {
 
 void _testKeys() {
   final seed = BytesUtils.fromHexString(
-      "416ec857ec2501598cdb8b146f764a6be33a23d77ed6d1a01a2b5bae7adc9d2c");
+    "416ec857ec2501598cdb8b146f764a6be33a23d77ed6d1a01a2b5bae7adc9d2c",
+  );
   final secexp = BigintUtils.fromBytes(seed, byteOrder: Endian.big);
-  final ECDSAPrivateKey privateKey =
-      ECDSAPrivateKey.fromBytes(seed, Curves.generatorSecp256k1);
+  final ECDSAPrivateKey privateKey = ECDSAPrivateKey.fromBytes(
+    seed,
+    Curves.generatorSecp256k1,
+  );
   expect(privateKey.publicKey.point, Curves.generatorSecp256k1 * secexp);
   final msgDigest = BigInt.zero;
   final sig = privateKey.sign(
-      msgDigest,
-      RFC6979.generateK(
-          order: Curves.generatorSecp256k1.order!,
-          secexp: secexp,
-          hashFunc: () => SHA256(),
-          data: Uint8List(32)));
+    msgDigest,
+    RFC6979.generateK(
+      order: Curves.generatorSecp256k1.order!,
+      secexp: secexp,
+      hashFunc: () => SHA256(),
+      data: Uint8List(32),
+    ),
+  );
 
   final verify = privateKey.publicKey.verifies(msgDigest, sig);
   expect(verify, true);

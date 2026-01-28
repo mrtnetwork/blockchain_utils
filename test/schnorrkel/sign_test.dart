@@ -10,7 +10,8 @@ void main() {
   test("schnorrkel sign ", () {
     for (final i in signTestVector) {
       final mini = SchnorrkelMiniSecretKey.fromBytes(
-          BytesUtils.fromHexString(i["seed"]!));
+        BytesUtils.fromHexString(i["seed"]!),
+      );
       final secretKey = mini.toSecretKey();
       final pubkey = secretKey.publicKey();
 

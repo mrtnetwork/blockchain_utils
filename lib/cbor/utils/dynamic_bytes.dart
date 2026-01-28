@@ -1,7 +1,9 @@
 import 'package:blockchain_utils/cbor/core/cbor.dart';
 import 'package:blockchain_utils/cbor/core/tags.dart';
 import 'package:blockchain_utils/helper/helper.dart';
-import 'package:blockchain_utils/utils/utils.dart';
+import 'package:blockchain_utils/utils/binary/binary_operation.dart';
+import 'package:blockchain_utils/utils/numbers/utils/bigint_utils.dart';
+import 'package:blockchain_utils/utils/numbers/utils/int_utils.dart';
 
 /// A class for tracking and building a sequence of bytes (`List<int>`) for CBOR encoding.
 class CborBytesTracker {
@@ -55,8 +57,11 @@ class CborBytesTracker {
   }
 
   /// Append an integer value with a specified major tag to the byte sequence in the buffer.
-  void pushInt(int majorTag, int value,
-      {CborLengthEncoding lengthEncdoing = CborLengthEncoding.canonical}) {
+  void pushInt(
+    int majorTag,
+    int value, {
+    CborLengthEncoding lengthEncdoing = CborLengthEncoding.canonical,
+  }) {
     majorTag <<= 5;
     final int? length = bytesLength(value, lengthEncdoing: lengthEncdoing);
     pushUInt8(majorTag | (length ?? value));
@@ -69,15 +74,17 @@ class CborBytesTracker {
     }
   }
 
-  int? bytesLength(int value,
-      {CborLengthEncoding lengthEncdoing = CborLengthEncoding.canonical}) {
+  int? bytesLength(
+    int value, {
+    CborLengthEncoding lengthEncdoing = CborLengthEncoding.canonical,
+  }) {
     if (value < 24 && lengthEncdoing == CborLengthEncoding.canonical) {
       return null;
-    } else if (value <= mask8) {
+    } else if (value <= BinaryOps.mask8) {
       return NumBytes.one;
-    } else if (value <= mask16) {
+    } else if (value <= BinaryOps.mask16) {
       return NumBytes.two;
-    } else if (value <= mask32) {
+    } else if (value <= BinaryOps.mask32) {
       return NumBytes.four;
     } else {
       return NumBytes.eight;

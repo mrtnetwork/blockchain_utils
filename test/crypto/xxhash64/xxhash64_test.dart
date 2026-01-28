@@ -16,7 +16,9 @@ void main() {
         hasher.update(first);
         hasher.update(secound);
         expect(
-            BytesUtils.toHexString(hasher.digest(), prefix: "0x"), i["hash"]);
+          BytesUtils.toHexString(hasher.digest(), prefix: "0x"),
+          i["hash"],
+        );
         continue;
       }
       final hash = XXHash64.hash(data, bitlength: bitLength);

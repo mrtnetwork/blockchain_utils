@@ -8,9 +8,11 @@ void main() {
   test("bip84", () {
     for (final i in testVector) {
       final seed = BytesUtils.fromHexString(i["seed"]);
-      final coin = Bip84Coins.values.firstWhere((element) =>
-          element.name.toLowerCase() ==
-          (i["coin"] as String).replaceAll("_", "").toLowerCase());
+      final coin = Bip84Coins.values.firstWhere(
+        (element) =>
+            element.name.toLowerCase() ==
+            (i["coin"] as String).replaceAll("_", "").toLowerCase(),
+      );
       final b44 = Bip84.fromSeed(seed, coin);
       final coinInex = b44.purpose.coin;
       expect(b44.privateKey.toExtended, i["master"]);

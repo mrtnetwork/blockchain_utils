@@ -9,23 +9,21 @@ import 'test_x_vector.dart' as x;
 void main() {
   test("avax P-address test", () {
     for (final i in p.testVector) {
-      final params = Map<String, dynamic>.from(i["params"]);
-
-      final z = AvaxPChainAddrEncoder()
-          .encodeKey(BytesUtils.fromHexString(i["public"]), params);
+      final z = AvaxPChainAddrEncoder().encodeKey(
+        BytesUtils.fromHexString(i["public"]),
+      );
       expect(z, i["address"]);
-      final decode = AvaxPChainAddrDecoder().decodeAddr(z, params);
+      final decode = AvaxPChainAddrDecoder().decodeAddr(z);
       expect(decode.toHex(), i["decode"]);
     }
   });
   test("avax x-address test", () {
     for (final i in x.testVector) {
-      final params = Map<String, dynamic>.from(i["params"]);
-
-      final z = AvaxXChainAddrEncoder()
-          .encodeKey(BytesUtils.fromHexString(i["public"]), params);
+      final z = AvaxXChainAddrEncoder().encodeKey(
+        BytesUtils.fromHexString(i["public"]),
+      );
       expect(z, i["address"]);
-      final decode = AvaxXChainAddrDecoder().decodeAddr(z, params);
+      final decode = AvaxXChainAddrDecoder().decodeAddr(z);
       expect(decode.toHex(), i["decode"]);
     }
   });

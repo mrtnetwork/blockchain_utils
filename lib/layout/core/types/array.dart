@@ -1,48 +1,44 @@
+import 'package:blockchain_utils/exception/exception/exception.dart';
 import 'package:blockchain_utils/layout/byte/byte_handler.dart';
 import 'package:blockchain_utils/layout/core/core/core.dart';
-import 'package:blockchain_utils/layout/exception/exception.dart';
-
-import 'compact.dart';
 import 'constant.dart';
 import 'numeric.dart';
 import 'padding_layout.dart';
 
 /// Represent a contiguous sequence of a specific layout as an Array.
-///
-/// Factory: [SequenceLayout]
-///
-/// - [elementLayout] : Initializer for [elementLayout].
-/// - [count] : Initializer for [count]. The parameter must be either a positive [ConstantLayout] integer layout or an instance of
-///  [ExternalLayout].
-/// - [property] (optional): Initializer for [property].
-///
 class SequenceLayout<T> extends Layout<List<T>> {
   final Layout elementLayout;
-  final Layout count; // Type can be ExternalLayout or int
-  factory SequenceLayout(
-      {required Layout elementLayout,
-      required Layout count,
-      String? property}) {
-    if (!((count is ExternalLayout && count.isCount()) ||
-        (count is ConstantLayout && count.value is int && count.value >= 0) ||
-        count is PaddingLayout)) {
-      throw LayoutException(
-          'count must be non-negative integer or an unsigned integer ExternalLayout',
-          details: {"property": property, "count": count});
+  final Layout<int>? count;
+  factory SequenceLayout({
+    required Layout elementLayout,
+    Layout<int>? count,
+    String? property,
+  }) {
+    if (count != null) {
+      if (!(count is ExternalLayout ||
+          (count is ConstantLayout<int> && count.value >= 0) ||
+          count is PaddingLayout)) {
+        throw ArgumentException.invalidOperationArguments(
+          "SequenceLayout",
+          name: "count",
+          reason: 'Invalid sequence count layout.',
+        );
+      }
     }
     int span = -1;
-    if ((count is ExternalLayout && count.isCount()) ||
-        (count is ConstantLayout && count.value >= 0)) {
+    if ((count is ExternalLayout) ||
+        (count is ConstantLayout<int> && count.value >= 0)) {
       if (count is! ExternalLayout && (elementLayout.span >= 0)) {
         span = (count as ConstantLayout).value * elementLayout.span;
       }
     }
 
     return SequenceLayout._(
-        elementLayout: elementLayout,
-        count: count,
-        property: property,
-        span: span);
+      elementLayout: elementLayout,
+      count: count,
+      property: property,
+      span: span,
+    );
   }
 
   const SequenceLayout._({
@@ -51,71 +47,51 @@ class SequenceLayout<T> extends Layout<List<T>> {
     required int span,
     String? property,
   }) : super(span, property: property);
-
+  // @override
   @override
-  int getSpan(LayoutByteReader? bytes, {int offset = 0, List<T>? source}) {
-    if (this.span >= 0) {
-      return this.span;
+  int getSpan() {
+    if (span >= 0) {
+      return span;
     }
 
-    int span = 0;
-    int counter = 0;
+    int counter = -1;
     if (count is ConstantLayout) {
       counter = (count as ConstantLayout).value;
-    } else if (count is CompactOffsetLayout) {
-      final decodeLength = bytes!.getCompactLengthInfos(offset);
-      span = decodeLength.item1;
-      counter = decodeLength.item2;
-    } else if (count is ExternalOffsetLayout) {
-      final testLayput = count as ExternalOffsetLayout;
-      final decode = testLayput.decode(bytes!, offset: offset);
-      span = decode.consumed;
-      counter = decode.value;
-    } else if (count is ExternalLayout) {
-      counter = count.decode(bytes!, offset: offset).value;
     }
-
-    if (elementLayout.span > 0) {
-      span += (counter * elementLayout.span);
-    } else {
-      int idx = 0;
-      while (idx < counter) {
-        final lSpan = elementLayout.getSpan(bytes,
-            offset: offset + span, source: source?[idx]);
-        assert(lSpan >= 0, "span cannot be negative.");
-        span += lSpan;
-        ++idx;
-      }
+    if (counter >= 0 && elementLayout.span >= 0) {
+      return counter * elementLayout.span;
     }
-
     return span;
   }
 
   @override
   LayoutDecodeResult<List<T>> decode(LayoutByteReader bytes, {int offset = 0}) {
     final List<T> decoded = [];
-    int i = 0;
+    final countLayout = this.count;
     int startOffset = offset;
+    if (countLayout == null) {
+      while (true) {
+        final decodeElement = elementLayout.decode(bytes, offset: startOffset);
+        decoded.add(decodeElement.value);
+        startOffset += decodeElement.consumed;
+        if (bytes.isEnd(startOffset)) break;
+      }
+      return LayoutDecodeResult(consumed: startOffset - offset, value: decoded);
+    }
+    int i = 0;
+
     int count;
-    if (this.count is CompactOffsetLayout) {
-      final decodeLength = bytes.getCompactLengthInfos(offset);
-      startOffset += decodeLength.item1;
-      count = decodeLength.item2;
-    } else if (this.count is ExternalOffsetLayout) {
-      final testLayput = this.count as ExternalOffsetLayout;
-      final decode = testLayput.decode(bytes, offset: offset);
+    if (countLayout is ExternalOffsetLayout) {
+      final decode = countLayout.decode(bytes, offset: offset);
       startOffset += decode.consumed;
       count = decode.value;
     } else {
-      count = this.count.decode(bytes, offset: offset).value;
+      count = countLayout.decode(bytes, offset: offset).value;
     }
     while (i < count) {
       final decodeElement = elementLayout.decode(bytes, offset: startOffset);
       decoded.add(decodeElement.value);
-      final lSpan = elementLayout.getSpan(bytes,
-          offset: startOffset, source: decodeElement.value);
-      assert(lSpan >= 0, "span cannot be negative.");
-      startOffset += lSpan;
+      startOffset += decodeElement.consumed;
       i += 1;
     }
     return LayoutDecodeResult(consumed: startOffset - offset, value: decoded);
@@ -124,19 +100,18 @@ class SequenceLayout<T> extends Layout<List<T>> {
   @override
   int encode(List<T> source, LayoutByteWriter writer, {int offset = 0}) {
     int span = 0;
-    if (count is CompactOffsetLayout) {
-      span = (count as CompactOffsetLayout)
-          .encode(source.length, writer, offset: offset);
-    } else if (count is ExternalOffsetLayout) {
-      final testLayput = count as ExternalOffsetLayout;
-      span = testLayput.encode(source.length, writer, offset: offset);
-    } else if (count is ExternalLayout) {
-      count.encode(source.length, writer, offset: offset);
+    final countLayout = count;
+    if (countLayout is ExternalOffsetLayout) {
+      span = countLayout.encode(source.length, writer, offset: offset);
+    } else if (countLayout is ExternalLayout) {
+      countLayout.encode(source.length, writer, offset: offset);
     }
     span = source.fold(span, (span, v) {
-      final encodeLength =
-          elementLayout.encode(v, writer, offset: offset + span);
-      assert(encodeLength >= 0, "invalid encoded length");
+      final encodeLength = elementLayout.encode(
+        v,
+        writer,
+        offset: offset + span,
+      );
       return span + encodeLength;
     });
     return span;
@@ -145,6 +120,9 @@ class SequenceLayout<T> extends Layout<List<T>> {
   @override
   SequenceLayout clone({String? newProperty}) {
     return SequenceLayout<T>(
-        elementLayout: elementLayout, count: count, property: newProperty);
+      elementLayout: elementLayout,
+      count: count,
+      property: newProperty,
+    );
   }
 }

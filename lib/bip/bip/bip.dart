@@ -37,3 +37,5 @@ export 'bip86/bip86.dart';
 export 'conf/bip_config.dart';
 
 export 'types/types.dart';
+
+export 'zip32/zip32.dart';

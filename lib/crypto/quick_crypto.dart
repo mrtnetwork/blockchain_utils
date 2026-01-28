@@ -1,7 +1,6 @@
 import 'package:blockchain_utils/crypto/crypto/aes/padding.dart';
 import 'package:blockchain_utils/crypto/crypto/crypto.dart';
-import 'package:blockchain_utils/exception/exceptions.dart';
-import 'package:blockchain_utils/utils/utils.dart';
+import 'package:blockchain_utils/utils/binary/utils.dart';
 
 /// QuickCrypto provides a set of utility methods for cryptographic operations.
 ///
@@ -24,19 +23,21 @@ class QuickCrypto {
   static const int sha256DigestSize = 32;
 
   /// Derive a key from a password using PBKDF2 algorithm
-  static List<int> pbkdf2DeriveKey(
-      {required List<int> password,
-      required List<int> salt,
-      required int iterations,
-      HashFunc? hash,
-      int? dklen}) {
+  static List<int> pbkdf2DeriveKey({
+    required List<int> password,
+    required List<int> salt,
+    required int iterations,
+    HashFunc? hash,
+    int? dklen,
+  }) {
     final hashing = (hash ?? () => SHA512());
 
     return PBKDF2.deriveKey(
-        mac: () => HMAC(hashing, password),
-        salt: salt,
-        iterations: iterations,
-        length: dklen ?? hashing().getDigestLength);
+      mac: () => HMAC(hashing, password),
+      salt: salt,
+      iterations: iterations,
+      length: dklen ?? hashing().getDigestLength,
+    );
   }
 
   /// Calculate the RIPEMD-160 hash of the SHA-256 hash of the input data
@@ -58,11 +59,49 @@ class QuickCrypto {
     int digestSize, {
     List<int>? key,
     List<int>? salt,
+    List<int>? personalization,
+    List<List<int>> batch = const [],
   }) {
-    final hash =
-        BLAKE2b.hash(data, digestSize, Blake2bConfig(key: key, salt: salt));
+    final config = Blake2bConfig(
+      key: key,
+      salt: salt,
+      personalization: personalization,
+    );
+    final b = BLAKE2b(digestLength: digestSize, config: config);
+    try {
+      b.update(data);
+      for (final i in batch) {
+        b.update(i);
+      }
+      return b.digest();
+    } finally {
+      b.clean();
+    }
+  }
 
-    return hash;
+  static List<int> _blake2sHash(
+    List<int> data,
+    int digestSize, {
+    List<int>? key,
+    List<int>? salt,
+    List<int>? personalization,
+    List<List<int>> batch = const [],
+  }) {
+    final config = Blake2sConfig(
+      key: key,
+      salt: salt,
+      personalization: personalization,
+    );
+    final b = BLAKE2s(digestLength: digestSize, config: config);
+    try {
+      b.update(data);
+      for (final i in batch) {
+        b.update(i);
+      }
+      return b.digest();
+    } finally {
+      b.clean();
+    }
   }
 
   /// Define the size of BLAKE2b-512 digests, which is 64 bytes (512 bits)
@@ -73,8 +112,16 @@ class QuickCrypto {
     List<int> data, {
     List<int>? key,
     List<int>? salt,
-  }) =>
-      _blake2bHash(data, blake2b512DigestSize, key: key, salt: salt);
+    List<int>? personalization,
+    List<List<int>> extraBlocks = const [],
+  }) => _blake2bHash(
+    data,
+    blake2b512DigestSize,
+    key: key,
+    salt: salt,
+    personalization: personalization,
+    batch: extraBlocks,
+  );
 
   /// Define the size of BLAKE2b-256 digests, which is 32 bytes (256 bits)
   static const int blake2b256DigestSize = 32;
@@ -84,8 +131,32 @@ class QuickCrypto {
     List<int> data, {
     List<int>? key,
     List<int>? salt,
-  }) =>
-      _blake2bHash(data, blake2b256DigestSize, key: key, salt: salt);
+    List<int>? personalization,
+    List<List<int>> extraBlocks = const [],
+  }) => _blake2bHash(
+    data,
+    blake2b256DigestSize,
+    key: key,
+    salt: salt,
+    personalization: personalization,
+    batch: extraBlocks,
+  );
+
+  /// Calculate the BLAKE2s-256 hash of the input data
+  static List<int> blake2s256Hash(
+    List<int> data, {
+    List<int>? key,
+    List<int>? salt,
+    List<int>? personalization,
+    List<List<int>> extraBlocks = const [],
+  }) => _blake2sHash(
+    data,
+    blake2b256DigestSize,
+    key: key,
+    salt: salt,
+    personalization: personalization,
+    batch: extraBlocks,
+  );
 
   /// Define the size of BLAKE2b-224 digests, which is 28 bytes (224 bits)
   static const int blake2b224DigestSize = 28;
@@ -95,8 +166,16 @@ class QuickCrypto {
     List<int> data, {
     List<int>? key,
     List<int>? salt,
-  }) =>
-      _blake2bHash(data, blake2b224DigestSize, key: key, salt: salt);
+    List<int>? personalization,
+    List<List<int>> extraBlocks = const [],
+  }) => _blake2bHash(
+    data,
+    blake2b224DigestSize,
+    key: key,
+    salt: salt,
+    personalization: personalization,
+    batch: extraBlocks,
+  );
 
   /// Define the size of BLAKE2b-160 digests, which is 20 bytes (160 bits)
   static const int blake2b160DigestSize = 20;
@@ -106,8 +185,16 @@ class QuickCrypto {
     List<int> data, {
     List<int>? key,
     List<int>? salt,
-  }) =>
-      _blake2bHash(data, blake2b160DigestSize, key: key, salt: salt);
+    List<int>? personalization,
+    List<List<int>> extraBlocks = const [],
+  }) => _blake2bHash(
+    data,
+    blake2b160DigestSize,
+    key: key,
+    salt: salt,
+    batch: extraBlocks,
+    personalization: personalization,
+  );
 
   /// Define the size of BLAKE2b-160 digests, which is 20 bytes (128 bits)
   static const int blake2b128DigestSize = 16;
@@ -117,8 +204,16 @@ class QuickCrypto {
     List<int> data, {
     List<int>? key,
     List<int>? salt,
-  }) =>
-      _blake2bHash(data, blake2b128DigestSize, key: key, salt: salt);
+    List<int>? personalization,
+    List<List<int>> extraBlocks = const [],
+  }) => _blake2bHash(
+    data,
+    blake2b128DigestSize,
+    key: key,
+    salt: salt,
+    batch: extraBlocks,
+    personalization: personalization,
+  );
 
   /// Define the size of BLAKE2b-40 digests, which is 5 bytes (40 bits)
   static const int blake2b40DigestSize = 5;
@@ -128,8 +223,16 @@ class QuickCrypto {
     List<int> data, {
     List<int>? key,
     List<int>? salt,
-  }) =>
-      _blake2bHash(data, blake2b40DigestSize, key: key, salt: salt);
+    List<int>? personalization,
+    List<List<int>> extraBlocks = const [],
+  }) => _blake2bHash(
+    data,
+    blake2b40DigestSize,
+    key: key,
+    salt: salt,
+    personalization: personalization,
+    batch: extraBlocks,
+  );
 
   /// Define the size of BLAKE2b-32 digests, which is 4 bytes (32 bits)
   static const int blake2b32DigestSize = 4;
@@ -139,8 +242,16 @@ class QuickCrypto {
     List<int> data, {
     List<int>? key,
     List<int>? salt,
-  }) =>
-      _blake2bHash(data, blake2b32DigestSize, key: key, salt: salt);
+    List<int>? personalization,
+    List<List<int>> extraBlocks = const [],
+  }) => _blake2bHash(
+    data,
+    blake2b32DigestSize,
+    key: key,
+    salt: salt,
+    personalization: personalization,
+    batch: extraBlocks,
+  );
 
   /// Define the size of BLAKE2b-32 digests, which is 4 bytes (32 bits)
   static const int blake2b64DigestSize = 8;
@@ -150,8 +261,16 @@ class QuickCrypto {
     List<int> data, {
     List<int>? key,
     List<int>? salt,
-  }) =>
-      _blake2bHash(data, blake2b64DigestSize, key: key, salt: salt);
+    List<int>? personalization,
+    List<List<int>> extraBlocks = const [],
+  }) => _blake2bHash(
+    data,
+    blake2b64DigestSize,
+    key: key,
+    salt: salt,
+    personalization: personalization,
+    batch: extraBlocks,
+  );
 
   static List<int> _xxHash(List<int> data, int digestSize) {
     return XXHash64.hash(data, bitlength: digestSize * 8);
@@ -183,7 +302,7 @@ class QuickCrypto {
   }
 
   /// Gets the length of the SHA512 digest.
-  static const int sha512DeigestLength = SHA512.digestLength;
+  static const int sha512DeigestLength = 64;
 
   /// Computes the SHA512 hash of the input data and returns its halves.
   ///
@@ -192,10 +311,10 @@ class QuickCrypto {
   ///
   /// [data] The input data for which the hash is to be computed.
   /// returns A tuple containing the first and second halves of the SHA512 hash.
-  static Tuple<List<int>, List<int>> sha512HashHalves(List<int> data) {
+  static (List<int>, List<int>) sha512HashHalves(List<int> data) {
     final hash = SHA512.hash(data);
     const halvesLength = sha512DeigestLength ~/ 2;
-    return Tuple(hash.sublist(0, halvesLength), hash.sublist(halvesLength));
+    return (hash.sublist(0, halvesLength), hash.sublist(halvesLength));
   }
 
   /// Calculate the Keccak-256 hash of the input data
@@ -214,15 +333,23 @@ class QuickCrypto {
   /// Calculate the HMAC-SHA-256 hash of the input data using the provided key
   static List<int> hmacsha256Hash(List<int> key, List<int> data) {
     final hm = HMAC(() => SHA256(), key);
-    hm.update(data);
-    return hm.digest();
+    try {
+      hm.update(data);
+      return hm.digest();
+    } finally {
+      hm.clean();
+    }
   }
 
   /// Calculate the HMAC-SHA-512 hash of the input data using the provided key
   static List<int> hmacSha512Hash(List<int> key, List<int> data) {
     final hm = HMAC(() => SHA512(), key);
-    hm.update(data);
-    return hm.digest();
+    try {
+      hm.update(data);
+      return hm.digest();
+    } finally {
+      hm.clean();
+    }
   }
 
   /// Define the size of HMAC-SHA-512 digests, which is 64 bytes (512 bits)
@@ -230,27 +357,45 @@ class QuickCrypto {
 
   /// Calculate the HMAC-SHA-512 hash of the input data using the provided key and
   /// split the result into two halves. Return a tuple containing both halves
-  static Tuple<List<int>, List<int>> hmacSha512HashHalves(
-      List<int> key, List<int> data) {
+  static (List<int>, List<int>) hmacSha512HashHalves(
+    List<int> key,
+    List<int> data,
+  ) {
     final bytes = hmacSha512Hash(key, data);
-    return Tuple(bytes.sublist(0, hmacSha512DigestSize ~/ 2),
-        bytes.sublist(hmacSha512DigestSize ~/ 2));
+    return (
+      bytes.sublist(0, hmacSha512DigestSize ~/ 2),
+      bytes.sublist(hmacSha512DigestSize ~/ 2),
+    );
   }
 
   /// Encrypt the input data using AES in Cipher Block Chaining (CBC) mode with the provided key.
   /// Optionally, specify the padding algorithm to be used.
-  static List<int> aesCbcEncrypt(List<int> key, List<int> data,
-      {PaddingAlgorithm? paddingAlgorithm}) {
+  static List<int> aesCbcEncrypt(
+    List<int> key,
+    List<int> data, {
+    PaddingAlgorithm? paddingAlgorithm,
+  }) {
     final ecb = ECB(key);
-    return ecb.encryptBlock(data, null, paddingAlgorithm);
+    try {
+      return ecb.encryptBlock(data, null, paddingAlgorithm);
+    } finally {
+      ecb.clean();
+    }
   }
 
   /// Decrypt the input data using AES in Cipher Block Chaining (CBC) mode with the provided key.
   /// Optionally, specify the padding algorithm to be used.
-  static List<int> aesCbcDecrypt(List<int> key, List<int> data,
-      {PaddingAlgorithm? paddingAlgorithm}) {
+  static List<int> aesCbcDecrypt(
+    List<int> key,
+    List<int> data, {
+    PaddingAlgorithm? paddingAlgorithm,
+  }) {
     final ecb = ECB(key);
-    return ecb.decryptBlock(data, null, paddingAlgorithm);
+    try {
+      return ecb.decryptBlock(data, null, paddingAlgorithm);
+    } finally {
+      ecb.clean();
+    }
   }
 
   /// Decrypt data using the ChaCha20-Poly1305 authenticated encryption algorithm.
@@ -262,13 +407,23 @@ class QuickCrypto {
     List<int>? assocData,
   }) {
     final chacha = ChaCha20Poly1305(key);
-    final decrypt =
-        chacha.decrypt(nonce, cipherText, associatedData: assocData);
+    try {
+      final decrypt = chacha.decrypt(
+        nonce,
+        cipherText,
+        associatedData: assocData,
+      );
 
-    if (decrypt != null) {
-      return decrypt;
+      if (decrypt != null) {
+        return decrypt;
+      }
+      throw CryptoException.failed(
+        "chaCha20Poly1305Decrypt",
+        reason: "Decryption failed.",
+      );
+    } finally {
+      chacha.clean();
     }
-    throw const MessageException("ChaCha20-Poly1305 decryption fail");
   }
 
   /// Encrypt data using the ChaCha20-Poly1305 authenticated encryption algorithm.
@@ -280,7 +435,11 @@ class QuickCrypto {
     List<int>? assocData,
   }) {
     final chacha = ChaCha20Poly1305(key);
-    return chacha.encrypt(nonce, plainText, associatedData: assocData);
+    try {
+      return chacha.encrypt(nonce, plainText, associatedData: assocData);
+    } finally {
+      chacha.clean();
+    }
   }
 
   /// Define the tag length for ChaCha20-Poly1305, which is 16 bytes
@@ -290,15 +449,15 @@ class QuickCrypto {
   static const int chacha20Polu1305Keysize = 32;
 
   /// field to hold the FortunaRandom instance for generating random numbers.
-  static FortunaPRNG _prng = FortunaPRNG();
+  static Rng _prng = FortunaPRNG();
 
-  static FortunaPRNG get prng => _prng;
+  static Rng get prng => _prng;
 
   static GenerateRandom _generateRandom = (length) {
     return prng.nextBytes(length);
   };
 
-  static void setupPRNG(FortunaPRNG prng) {
+  static void setupPRNG(Rng prng) {
     _prng = prng;
   }
 
@@ -326,20 +485,27 @@ class QuickCrypto {
     return prng.nextInt(max);
   }
 
-  static bool generateRandoolBool() {
-    final n = prng.nextInt(2);
-    if (n == 0) return false;
-    return true;
+  static int nextU32() {
+    return prng.nextU32();
+  }
+
+  static BigInt nextU64() {
+    return prng.nextU64();
+  }
+
+  static bool generateRandoomBool() {
+    return prng.nextBool();
   }
 
   static String generateRandomHex([int size = 32]) {
     return BytesUtils.toHexString(generateRandom(size));
   }
 
-  static List<int> processCtr(
-      {required List<int> key,
-      required List<int> iv,
-      required List<int> data}) {
+  static List<int> processCtr({
+    required List<int> key,
+    required List<int> iv,
+    required List<int> data,
+  }) {
     final CTR ctr = CTR(AES(key), iv);
     final xor = List<int>.filled(data.length, 0);
     ctr.streamXOR(data, xor);
@@ -351,28 +517,38 @@ class QuickCrypto {
     return X25519Keypair.generate(seed: seed);
   }
 
-  static List<int> hdfkDerive(
-      {required List<int> ikm,
-      required HashFunc hash,
-      int length = 32,
-      List<int>? salt,
-      List<int>? info,
-      bool hkdfExtract = true}) {
+  static List<int> hdfkDerive({
+    required List<int> ikm,
+    required HashFunc hash,
+    int length = 32,
+    List<int>? salt,
+    List<int>? info,
+    bool hkdfExtract = true,
+  }) {
     final hdkf = HKDF(
-        ikm: ikm,
-        hash: hash,
-        hkdfExtract: hkdfExtract,
-        info: info,
-        length: length,
-        salt: salt);
-    return hdkf.derive();
+      ikm: ikm,
+      hash: hash,
+      hkdfExtract: hkdfExtract,
+      info: info,
+      length: length,
+      salt: salt,
+    );
+    try {
+      return hdkf.derive();
+    } finally {
+      hdkf.clean();
+    }
   }
 
-  static String generateRandomString(int length,
-      {String charset =
-          'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'}) {
-    final characters =
-        List.generate(length, (_) => charset[prng.nextInt(charset.length)]);
+  static String generateRandomString(
+    int length, {
+    String charset =
+        'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789',
+  }) {
+    final characters = List.generate(
+      length,
+      (_) => charset[prng.nextInt(charset.length)],
+    );
     return characters.join();
   }
 }

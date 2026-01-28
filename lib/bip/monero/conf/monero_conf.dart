@@ -6,14 +6,20 @@ import 'package:blockchain_utils/bip/monero/conf/monero_coin_conf.dart';
 /// maps each supported MoneroCoins to its corresponding BipCoinConfig.
 class MoneroConf {
   // Configuration for Monero main net
-  static final MoneroCoinConf mainNet = MoneroCoinConf.fromCoinConf(
-      coinConf: CoinsConf.moneroMainNet, chainType: ChainType.mainnet);
+  final MoneroCoinConf mainnet = MoneroCoinConf.fromCoinConf(
+    coinConf: CoinsConf.moneroMainNet,
+    chainType: ChainType.mainnet,
+  );
 
   // Configuration for Monero stage net
-  static final MoneroCoinConf stageNet = MoneroCoinConf.fromCoinConf(
-      coinConf: CoinsConf.moneroStageNet, chainType: ChainType.testnet);
+  final MoneroCoinConf stagenet = MoneroCoinConf.fromCoinConf(
+    coinConf: CoinsConf.moneroStageNet,
+    chainType: ChainType.testnet,
+  );
 
   // Configuration for Monero test net
-  static final MoneroCoinConf testNet = MoneroCoinConf.fromCoinConf(
-      coinConf: CoinsConf.moneroTestNet, chainType: ChainType.testnet);
+  final MoneroCoinConf testnet = MoneroCoinConf.fromCoinConf(
+    coinConf: CoinsConf.moneroTestNet,
+    chainType: ChainType.testnet,
+  );
 }

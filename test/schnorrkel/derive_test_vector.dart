@@ -13,7 +13,7 @@ final List<Map<String, dynamic>> testVector = [
             "e8ae2dfc0685f91e482807533b7d7e3e0795f2cd886d775836d75c08e9ffe650",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -22,7 +22,7 @@ final List<Map<String, dynamic>> testVector = [
             "4a9b2ea3310960da3e28a02456812e837f27326cb8cc9999589e8cea29c02638",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -31,7 +31,7 @@ final List<Map<String, dynamic>> testVector = [
             "26ccd4f04a8b10e8054284a6164300056017ff5197a791c3d290610be0a7d52e",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -40,7 +40,7 @@ final List<Map<String, dynamic>> testVector = [
             "5ef3dcda9c825318037c99e128ab451b5a0008bc2af7aa8909be80c8c2983c03",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -49,7 +49,7 @@ final List<Map<String, dynamic>> testVector = [
             "8246954689d50bc6cfca2a8d884121b38012f90d3935ce353696e9a4e840e677",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -58,7 +58,7 @@ final List<Map<String, dynamic>> testVector = [
             "4013206176c7bd10c932bbf996dd69c1951b4b9fd6fc1bf1afc027346b0c9211",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -67,9 +67,9 @@ final List<Map<String, dynamic>> testVector = [
             "fc0a6f5e0523822257079abd0106e21224fb756252df183d36728f45e859f80f",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "859dded752a8e63f7a93cf9e5b09dea3a1e714d71b574037721c29c153e653e7",
@@ -85,7 +85,7 @@ final List<Map<String, dynamic>> testVector = [
             "541ef49c8083ff65e3c9d7928612a6a8ac10039e392b54263106813a91e0097f",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -94,7 +94,7 @@ final List<Map<String, dynamic>> testVector = [
             "fcc586001ae359fde030a7e5b6f8098a13c7a6ebd99822c3ae786a63a65f041b",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -103,7 +103,7 @@ final List<Map<String, dynamic>> testVector = [
             "90aa12db4221ebc2e7cc2f3192962b39376602bb792769f1de15cb6973fb0357",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -112,7 +112,7 @@ final List<Map<String, dynamic>> testVector = [
             "68844f0211db514ab20e1012d9ed6ff74a0318b0f26a8ffc51a5340596be0f05",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -121,7 +121,7 @@ final List<Map<String, dynamic>> testVector = [
             "ac4c5252fbbe76230c323874efd8dfcf35435ae7bd4971f3d2b93c4b7de63f48",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -130,7 +130,7 @@ final List<Map<String, dynamic>> testVector = [
             "24b45e425cf580bf80afe537ee6a1477041cc2f74a8c5c717f3fa7c31a266313",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -139,9 +139,9 @@ final List<Map<String, dynamic>> testVector = [
             "8a5abbd1e9c8fda90624f1a58fbe8964fcaf45c5a7b811dbc50b1708c1495966",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "62b7e634a1283c7b75346efafb42ea93b6c7977151729f614f071fdf1a12cc00",
@@ -157,7 +157,7 @@ final List<Map<String, dynamic>> testVector = [
             "16e293f02bdd3a5f5a472512be7bcc76e64ad7aa421d4882b914527389aadc53",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -166,7 +166,7 @@ final List<Map<String, dynamic>> testVector = [
             "78d19d94c82d8af223d0a269575fb961db486d9447a7fb995a343af62c60ef12",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -175,7 +175,7 @@ final List<Map<String, dynamic>> testVector = [
             "de793bdafaa9afb287b43ea27e0ccbf8b192d97f663ea8f80af74bde2c1e7a19",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -184,7 +184,7 @@ final List<Map<String, dynamic>> testVector = [
             "04b515260105576464d25c811df425709a66975865c1f8f2e73ca8584b74cb14",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -193,7 +193,7 @@ final List<Map<String, dynamic>> testVector = [
             "3699c56d84fe09f5e0eede440856531c800dfda4121d31948e0efc39d3229b26",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -202,7 +202,7 @@ final List<Map<String, dynamic>> testVector = [
             "70eba0d200427ea129da0e389c1a9c41732cdb79adf9c02d03b2fa445e21c770",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -211,9 +211,9 @@ final List<Map<String, dynamic>> testVector = [
             "72a8936073439bf4130b8150534a093f1d831915b018a0eb90cc8a80cd669f1c",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "6b030163f8d57a4a40c695ba4c81818f03e8dfe09ca74eed9f6cf664da752776",
@@ -229,7 +229,7 @@ final List<Map<String, dynamic>> testVector = [
             "da81291eb23b73cb6aee0897aaa9891e08be976941b4b9de01762a06a18baf46",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -238,7 +238,7 @@ final List<Map<String, dynamic>> testVector = [
             "8e9d4e0d20fb5236c120fcd79f879321d77d5690eaaf6ac0845541423cfeea72",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -247,7 +247,7 @@ final List<Map<String, dynamic>> testVector = [
             "a010f9fd85931becfdf615b1c16b7737333a16e05a8526f4adc781ee9979bb27",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -256,7 +256,7 @@ final List<Map<String, dynamic>> testVector = [
             "540ebd2e23b8bc7fd8c2a4e8d985a0c6f3ecff775e35e6a51825b1ffd541154c",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -265,7 +265,7 @@ final List<Map<String, dynamic>> testVector = [
             "7651538e10518107b06a1ec201e14b7e7261920c4d0ec7990cc0bc893354094e",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -274,7 +274,7 @@ final List<Map<String, dynamic>> testVector = [
             "3a634a085f38ca956b1b632177be5f76e3c45dcdf01e5a02d7275622ead9da79",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -283,9 +283,9 @@ final List<Map<String, dynamic>> testVector = [
             "6c3623270ba7812f97d46565057523baa9c2cf0584bee377a6f5686812d9f806",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "c9eef04b65239638c09bcd08a6154b644ac8dc328166866590bb84b7afcc968d",
@@ -301,7 +301,7 @@ final List<Map<String, dynamic>> testVector = [
             "922969db9b0dec6f9559f63f98f7e0e842477427b5fe4b6132007718db4ef45f",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -310,7 +310,7 @@ final List<Map<String, dynamic>> testVector = [
             "fca458a8b87af03f08a8ed62067497216d6b5588f010ad925877cea863e2ef76",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -319,7 +319,7 @@ final List<Map<String, dynamic>> testVector = [
             "3acc49f5f37f3b6649d95f12c58359ef0aed43a304030579db85e8489fd0f87d",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -328,7 +328,7 @@ final List<Map<String, dynamic>> testVector = [
             "9469bded719a749e31cd1cc440067d819c4459185e455f39c5ff4536db3bb42b",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -337,7 +337,7 @@ final List<Map<String, dynamic>> testVector = [
             "08e10a73e53d12f52c0ccb35cdcbd8c6246e719aca3b7f217404f79d661d9649",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -346,7 +346,7 @@ final List<Map<String, dynamic>> testVector = [
             "e0ba48c8a1f9a870ebf5ed6e1d205a5d341041e1799dba7432c00d7008e87237",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -355,9 +355,9 @@ final List<Map<String, dynamic>> testVector = [
             "729be36734a0d26f4301f281c154a88606b3e7183bffc98a6cde1fb8fc34e636",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "19ab5232a896e05576806606d6a3e24fcca7978d18021b38c4ffa564db527acd",
@@ -373,7 +373,7 @@ final List<Map<String, dynamic>> testVector = [
             "5c0f676d97a7983b2425bb1f66d3d0661fce476875804b26ce7908f007391873",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -382,7 +382,7 @@ final List<Map<String, dynamic>> testVector = [
             "9032b46e896a3891666bb60e38c8d215d658b169227903bc7c1a3c0c71017506",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -391,7 +391,7 @@ final List<Map<String, dynamic>> testVector = [
             "b4be77d3bedec67427f8f28186376ea121d2e93a2b258c24f37f1b48755fcb51",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -400,7 +400,7 @@ final List<Map<String, dynamic>> testVector = [
             "3851bdc0fec56408a9f98eada235428dcfe305997fe7e7ae14016e198545fa68",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -409,7 +409,7 @@ final List<Map<String, dynamic>> testVector = [
             "7e9ce873e1fa89bf4ef06eb0a0ac290f4ee694ff6f54500c4d88e42a3d38c30e",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -418,7 +418,7 @@ final List<Map<String, dynamic>> testVector = [
             "1a4734e6d706d40528ebd47ea0dac84228b81ec2197d3da62618de229e08b32d",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -427,9 +427,9 @@ final List<Map<String, dynamic>> testVector = [
             "0c94c7de8ebf4af706b3237cb12ee0763c69475d3a10cbec9806d05c954f2f4f",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "16f61bcb8fcce15cab4d32697f279f5f48cfe86f9bef8c82ed056326e184a5e0",
@@ -445,7 +445,7 @@ final List<Map<String, dynamic>> testVector = [
             "4e5a33818ae9262c3282f2e973eee2ba6d376b3a1743a9ccdc7d19fc0da6d555",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -454,7 +454,7 @@ final List<Map<String, dynamic>> testVector = [
             "9ea100a9c412b7977e7544f34d153bf6e5a48c8fdaee0c645cf655625fe48b68",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -463,7 +463,7 @@ final List<Map<String, dynamic>> testVector = [
             "6c67a73c8259b9df3a92756b5a5653436227da15ee933963b920e08fd38b5039",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -472,7 +472,7 @@ final List<Map<String, dynamic>> testVector = [
             "76ed7aa26c4f005931f00383689ccc581173ed21b39cf2c985deabee0cd1d859",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -481,7 +481,7 @@ final List<Map<String, dynamic>> testVector = [
             "8c1594267f8675c2e8a574d68412201fdb8a7049393d97b371d84a1c7c01b01a",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -490,7 +490,7 @@ final List<Map<String, dynamic>> testVector = [
             "4ea3035a6432199f41948078ba9fba546053e115305609a63fb486d5f8cd577d",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -499,9 +499,9 @@ final List<Map<String, dynamic>> testVector = [
             "2e79321a9665d6d7a5fa82de511b993140c93ba9ccfb9a0bd4bb9d8e46e5781b",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "3a5616a9e322a774fd87f8bd4d1b5baacf2982f388742e69e08e889074cb993f",
@@ -517,7 +517,7 @@ final List<Map<String, dynamic>> testVector = [
             "90fdf999490cd19ab6926d360d3b1824d8f5b754cc9f05d44789f8bbfe5fab7e",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -526,7 +526,7 @@ final List<Map<String, dynamic>> testVector = [
             "2679001e6b5ee0eaa0eec9316fe46fc54e032e70a441bb85a159daa953e6df31",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -535,7 +535,7 @@ final List<Map<String, dynamic>> testVector = [
             "5476a383908a27dd1429cc8bf9e689745413aeedab4fcb3fde19452627a56e2b",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -544,7 +544,7 @@ final List<Map<String, dynamic>> testVector = [
             "6c75754722fb4bccfda62ca51265af07a83e45649bc5a0195c1e66e07f113d25",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -553,7 +553,7 @@ final List<Map<String, dynamic>> testVector = [
             "08a8d5e71c9fb299578f15b5c01d2c91df28f821606ec26c818cedcae600ee6b",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -562,7 +562,7 @@ final List<Map<String, dynamic>> testVector = [
             "369d80c11261ab5f5127701412cbc6e0cefe703e9ad7657a244a94ef9d4b116f",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -571,9 +571,9 @@ final List<Map<String, dynamic>> testVector = [
             "24a580e26b669b8109ab34a67451f4b30a087c435920afd16484d5f14c608d71",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "8a293cfa127e9bb606a5ef70edfd0875702e9ed33808e77102bc04cc52d0ca57",
@@ -589,7 +589,7 @@ final List<Map<String, dynamic>> testVector = [
             "687aba9e141c2059b80b1274eee1bb99c0ee73f55ec00febbc80ffaeaa1c2246",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -598,7 +598,7 @@ final List<Map<String, dynamic>> testVector = [
             "5ad75fbf1f66c80ed0ce0d56f182ea406683bf123f32e659c8a8aa5bb211d528",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -607,7 +607,7 @@ final List<Map<String, dynamic>> testVector = [
             "bcebb961f0dba1ccf7184419fdb597e3ed0fc7d21cabbecdb3c254924936a816",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -616,7 +616,7 @@ final List<Map<String, dynamic>> testVector = [
             "4cda84ae961e15360a69e6116e7534964c503377ccc97703cfff2e52a7dc1120",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -625,7 +625,7 @@ final List<Map<String, dynamic>> testVector = [
             "8ed4aebe5bad1d88d718d32e35a24d48809a59573633a171e01bce27d69d2078",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -634,7 +634,7 @@ final List<Map<String, dynamic>> testVector = [
             "02ae94bdaeab5955ff98426366b6fb23e35db9066a01f487cc47a5c78afec734",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -643,9 +643,9 @@ final List<Map<String, dynamic>> testVector = [
             "e08889e96f1b42750d5aa7ff06479c347d78c2a0f71bc7779c1cb292e835a376",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "935f23f14234c26087d28c948ab08658f39b9c01af756cc43a3fec9dd0a3c84e",
@@ -661,7 +661,7 @@ final List<Map<String, dynamic>> testVector = [
             "e2122ecdba0367ac39b4ebcb0f4fdb792629b6fc31fc9115abbc568dd998b95d",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -670,7 +670,7 @@ final List<Map<String, dynamic>> testVector = [
             "68098486024dce9efc4242ae1f97637667be9db162f8ff75251dad7db3954946",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -679,7 +679,7 @@ final List<Map<String, dynamic>> testVector = [
             "b6c60575a464caf9307678ec65839589a77b6ed38d74ae9274185925d3675c20",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -688,7 +688,7 @@ final List<Map<String, dynamic>> testVector = [
             "e20a03c1c28ba0e1adc9d4b85179416042b6ace3bd3cc5eaf808249e04cc2c79",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -697,7 +697,7 @@ final List<Map<String, dynamic>> testVector = [
             "7a94ae972da493f8eb9a78510e5af8bde2cf63cdd9b50257343e62797fb0fe3c",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -706,7 +706,7 @@ final List<Map<String, dynamic>> testVector = [
             "ea2dc7c4a5258d552644a86f6d64cf21c8079b771561a6b99f64b86aafd8d755",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -715,9 +715,9 @@ final List<Map<String, dynamic>> testVector = [
             "46f696b99ca1ca5228264c129e33c8fe2597a69a5387811103311959f923af41",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "f591aa029bac851f345f533d002121c1bd9797b0d8afb186682b2bd97aae2596",
@@ -733,7 +733,7 @@ final List<Map<String, dynamic>> testVector = [
             "5ec22228ced850d9b370240384336d9c5fa6138f66d83a1607765cf4c9db1b76",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -742,7 +742,7 @@ final List<Map<String, dynamic>> testVector = [
             "520b0322b92879b6bc615aa82847a3f4acf4da0892cad2b4e8a82fda2075f361",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -751,7 +751,7 @@ final List<Map<String, dynamic>> testVector = [
             "7437d81590657d39a1a7166de62080f7b2feb118dc95b4b9a5bc43a4f2a1be7a",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -760,7 +760,7 @@ final List<Map<String, dynamic>> testVector = [
             "584db0fd913e1e03c4d77d7970ce9832ac551845857f84fe38be213ce8304822",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -769,7 +769,7 @@ final List<Map<String, dynamic>> testVector = [
             "74ac2ff85dbb379d73b8435a0bf78cfcf1e978a47968e24403b6c756b3cf7e79",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -778,7 +778,7 @@ final List<Map<String, dynamic>> testVector = [
             "fac446d2b5df47edc9a56f5e685ac615583f43036ff4a3e9083cd6bf7458d21c",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -787,9 +787,9 @@ final List<Map<String, dynamic>> testVector = [
             "749019d2d7c6ecd0f66908c047c613bafeb6af339f8d83af6674014d2b382577",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "7fac7f2fdf6be12e3503be95b941e5553328a0c6e14ded88a5b722d7fe746f0f",
@@ -805,7 +805,7 @@ final List<Map<String, dynamic>> testVector = [
             "b663ec45e76610005ab73b7e2877f43aaab7bb0603689831b61020005055667a",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -814,7 +814,7 @@ final List<Map<String, dynamic>> testVector = [
             "9e040c51fff4c5d286bf943339e4e8ff3a63da49c5655cef67eb60209fbdb858",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -823,7 +823,7 @@ final List<Map<String, dynamic>> testVector = [
             "e26e2231c78d4659814ef34b48bc9160b80b215a5298bc8dc891a0bbcc5d6a74",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -832,7 +832,7 @@ final List<Map<String, dynamic>> testVector = [
             "b620920257adc39323724a0a3e5c54d49781312d06db88da59d53804d7489225",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -841,7 +841,7 @@ final List<Map<String, dynamic>> testVector = [
             "d4aa7a09e25fa65937826ae3a0c8861647fa21bfe71adcc3efa7664d7c01380b",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -850,7 +850,7 @@ final List<Map<String, dynamic>> testVector = [
             "f27d1a3ea7bab880778cae3815dda6d6aa84c48fb0778c6e26a52ac1b9f36a63",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -859,9 +859,9 @@ final List<Map<String, dynamic>> testVector = [
             "3a38bed813559f05d1899ed07dc766a12719cbce46ebad96b516633173620018",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "112bbf684938490a9db0696f29369793b42b31b05df4cf1fd414ea1f518ee6b9",
@@ -877,7 +877,7 @@ final List<Map<String, dynamic>> testVector = [
             "c424b9132272f942f5abdd07ac0b01547f83d7ee70f0e66945d79924f5b2271e",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -886,7 +886,7 @@ final List<Map<String, dynamic>> testVector = [
             "40b8c356763e3cc4f32779626638d23a23c318bf752a311eb43ccfabdf60f269",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -895,7 +895,7 @@ final List<Map<String, dynamic>> testVector = [
             "760fd90ae456177b305f8f137558886908894b8ef4fa95b3345907435ce7e154",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -904,7 +904,7 @@ final List<Map<String, dynamic>> testVector = [
             "ecdfca7ce433c0c40989314987c672d4b612e257f0a999690221c7a16ea8a622",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -913,7 +913,7 @@ final List<Map<String, dynamic>> testVector = [
             "a4cedc1f47a6daf73c69c75940a27a15fcfc73c5bccc7fdc4df7794a6c5e5c06",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -922,7 +922,7 @@ final List<Map<String, dynamic>> testVector = [
             "da62032cfadf3db520e740b06e5dfae7856f91fa9466a825ce7bd3555a3bf602",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -931,9 +931,9 @@ final List<Map<String, dynamic>> testVector = [
             "40e07a39ac715c1c5fe042f4f9405305abc1ac84a0e5ca1c24aee2cd8e8b6f4d",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "90bc2f90b734e9d33aa0244a75805faed89d3d1c134a3455e2aeeec7dbb5bcbe",
@@ -949,7 +949,7 @@ final List<Map<String, dynamic>> testVector = [
             "b2d0e4d08dc892c456fa8057d8222f38f243fa4bf9bc13cbd20f18205eee9d1f",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -958,7 +958,7 @@ final List<Map<String, dynamic>> testVector = [
             "18a57e4bbd7b7cebcc956fc6cda9e36c49c9f30c6af9e7e3ab1dd53f2ee03a0c",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -967,7 +967,7 @@ final List<Map<String, dynamic>> testVector = [
             "26ee80d6737c4697c4abee2f4f37229f9cc5c49b2a97cbfb6285cab28a02306c",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -976,7 +976,7 @@ final List<Map<String, dynamic>> testVector = [
             "2a73e89b7e8446210d5e006bce131fbad3da202177dd928ec55366502d972f5c",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -985,7 +985,7 @@ final List<Map<String, dynamic>> testVector = [
             "648486b597d215fb986fd6e96261a20440472d0d301261f925c25f98ba8e6b30",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -994,7 +994,7 @@ final List<Map<String, dynamic>> testVector = [
             "50ede24bf5c196d4126322824c166b99c078b5b93b36bbb45b24c9afb7ff3803",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -1003,9 +1003,9 @@ final List<Map<String, dynamic>> testVector = [
             "8e51736edf4e886e7e2e21b5a6af17f8f1ff6ce361f46a073b6ebd96bd89f259",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "ae576c7e67ff520d54e488bb88d87754b650ec0344568aa8d7f053fcb87255fb",
@@ -1021,7 +1021,7 @@ final List<Map<String, dynamic>> testVector = [
             "fe80ebcc9b1e23d7b8a650ed2f25183188115acaec48163201e208621678643e",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -1030,7 +1030,7 @@ final List<Map<String, dynamic>> testVector = [
             "289e442f909dc98462f2bfb985b6cf35d1d549fdb5df9d1267f3442407697d19",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -1039,7 +1039,7 @@ final List<Map<String, dynamic>> testVector = [
             "3c5cd0fb0ab3ee7b14eb69cd2713514a75fbdc8446bee546e2d657eb1ccd2679",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -1048,7 +1048,7 @@ final List<Map<String, dynamic>> testVector = [
             "8ea9ffefe8483f47a74f1724dda3840763c93f8bed59c2b87da593e62f852c49",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -1057,7 +1057,7 @@ final List<Map<String, dynamic>> testVector = [
             "9ad0248bf1d8b3e1c8595a6797a7e30bde40f845f8f53ed82ebc3c96e68dc26e",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -1066,7 +1066,7 @@ final List<Map<String, dynamic>> testVector = [
             "dcd67188fd6943d42a62e09da7810dc6008f593862520dc6224db4e8083ae872",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -1075,9 +1075,9 @@ final List<Map<String, dynamic>> testVector = [
             "baedc9d97269b3060114cc41c79120409e12c5dd6c14d6c95762a6364ce3640d",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "f79de1255e5161ed5e04d2f960b1e005b120ba5619aad04fd99af42cfffbce51",
@@ -1093,7 +1093,7 @@ final List<Map<String, dynamic>> testVector = [
             "587f61eae365ce2d050873962bcfdcf3f9214c4fceb572145ca109217beaa535",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -1102,7 +1102,7 @@ final List<Map<String, dynamic>> testVector = [
             "b0eb5b9dc57f4da74c418745106302479f5f50546bbb0ccc7574cfabaadea04c",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -1111,7 +1111,7 @@ final List<Map<String, dynamic>> testVector = [
             "b8cf381cda17f9cc20a1af30f49dfa4e9dda1d4c1e6144a106c413e80c704168",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -1120,7 +1120,7 @@ final List<Map<String, dynamic>> testVector = [
             "9a8258c1ff90f71dac7b65bb91fa7d56ced0146e10f8f9167466950f9e5ec760",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -1129,7 +1129,7 @@ final List<Map<String, dynamic>> testVector = [
             "58ed839593edb3496ebad02e729ccb918cc7cf2abed8b9aaa3b79edce25dce60",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -1138,7 +1138,7 @@ final List<Map<String, dynamic>> testVector = [
             "cc86438c13af84ede6b12d3465c748ca8b4a3a49f73f70f2225cad647d6c591a",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -1147,9 +1147,9 @@ final List<Map<String, dynamic>> testVector = [
             "02f196fecdda7031fe74c5d1885667c2a8c035609b7cf8bd1ed497493d710c19",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "13082d2d3fe46d02a08102c397dffce8b151d60d078e68008887e02d49f8160d",
@@ -1165,7 +1165,7 @@ final List<Map<String, dynamic>> testVector = [
             "0e7df1b517efb8a5d0bb7038cfab8f863fa28389bbf1bb40d4fa69aae193c711",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -1174,7 +1174,7 @@ final List<Map<String, dynamic>> testVector = [
             "2844d34eac4e3ecbc8327f0610b0bc66cccd6f989333e1057c82d95bcf1c2b7e",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -1183,7 +1183,7 @@ final List<Map<String, dynamic>> testVector = [
             "f044b5b91d9ab6f48d3451e4f23b24e524458cb331e79db5072a3aed98b55e14",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -1192,7 +1192,7 @@ final List<Map<String, dynamic>> testVector = [
             "c25f7c93fbebf40065b9db0499df92b5ffcdc465094befb41be2ac453b270a4b",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -1201,7 +1201,7 @@ final List<Map<String, dynamic>> testVector = [
             "aece1f61033cf03dc30609c38d3276be8105b3e9e1a335a154f0338c1b8e9271",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -1210,7 +1210,7 @@ final List<Map<String, dynamic>> testVector = [
             "a8701e46c2cb7e0fc66327ee20e523ff3d92b320b524da5bd4c91da8116df92f",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -1219,9 +1219,9 @@ final List<Map<String, dynamic>> testVector = [
             "30a806380783dd746edeee1bf253e8fe6629e0ee1dfedbf3bdd0b8aafa80d147",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "b965d2f82bdb105dc364977470fdf96f6c3b99673172b2ec96a438e629057a64",
@@ -1237,7 +1237,7 @@ final List<Map<String, dynamic>> testVector = [
             "8c90cb3ae5a05d091e82408adcafdd390cb4274129e58a8f26fbd8771d89a965",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -1246,7 +1246,7 @@ final List<Map<String, dynamic>> testVector = [
             "b4a9bfe420e8a9590afc8f29e104eb490bc7c979183fd8dc064ad10d67b7ba07",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -1255,7 +1255,7 @@ final List<Map<String, dynamic>> testVector = [
             "b6a79060dd737d0833400ecdf42a3325ba183679b38d526f6b60530f5c01e719",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -1264,7 +1264,7 @@ final List<Map<String, dynamic>> testVector = [
             "e0f691c9c5d09d9921b59b10e051cf2e4ce419b504f8ae9ad1303e82f6b7c660",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -1273,7 +1273,7 @@ final List<Map<String, dynamic>> testVector = [
             "20a158f1123da540f6fe208cfc1ca056fc8b93ba1a8b92203279712cf1e6ad57",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -1282,7 +1282,7 @@ final List<Map<String, dynamic>> testVector = [
             "4057e55acc8388d51f187aaf3f85719b33c774690e6c6adedbc755c0f4de1560",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -1291,9 +1291,9 @@ final List<Map<String, dynamic>> testVector = [
             "7c1e0f6499aebfc82f83ac4abfa5fed8e50b2b6b6b080955aff55b13e269387c",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "825db8dc44f15af946a194aeac306804e3d940df264ebb6c4f73af7814f7230f",
@@ -1309,7 +1309,7 @@ final List<Map<String, dynamic>> testVector = [
             "06cd27068fc0dca067ddd0b71f92abb2e2e7d0afa31c0f12dae7221a226fcf2d",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -1318,7 +1318,7 @@ final List<Map<String, dynamic>> testVector = [
             "1e546290b2359082943381dfb96a26bcfc93a1e24b5b2ba9d9bbd5ab60049c10",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -1327,7 +1327,7 @@ final List<Map<String, dynamic>> testVector = [
             "3cc79485d9496b07f6f0e5d1a1a731f0de88c5b917cece6dd14353961ffa6713",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -1336,7 +1336,7 @@ final List<Map<String, dynamic>> testVector = [
             "c64eebe4a88d67c606e1d97e2ad6cac3b1cf399c914bb97c8710fc7de0763720",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -1345,7 +1345,7 @@ final List<Map<String, dynamic>> testVector = [
             "84e89f145aa33b767b45916dea0c1230c72943a3a24f564e3871a5559c97816f",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -1354,7 +1354,7 @@ final List<Map<String, dynamic>> testVector = [
             "16243d4299e7f6b48e6043b8240deed5b6bdbda27306414e06ee3dada39b714e",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -1363,9 +1363,9 @@ final List<Map<String, dynamic>> testVector = [
             "38d676b5d9710a1b4c482110eb895097a0415a586a868acdc913df7662e0181f",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "8fc1f288490157a8c4b8f58932a5bc8f91287e84f192992f79f5cb6f177fe983",
@@ -1381,7 +1381,7 @@ final List<Map<String, dynamic>> testVector = [
             "10563287419f61b579e6be4a3b0f8611a1c03a86351c6af8f7343444375d5447",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -1390,7 +1390,7 @@ final List<Map<String, dynamic>> testVector = [
             "688f7a2b87564543c5d146f5855c717c421cbdb6b7dedb87d3b44ba2a78e2d09",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -1399,7 +1399,7 @@ final List<Map<String, dynamic>> testVector = [
             "6ccbfc3990d016d9698e355069721ea9ddaa618fe0c22aed6f1969ab655ac504",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -1408,7 +1408,7 @@ final List<Map<String, dynamic>> testVector = [
             "d2498ba05a9cf90931b2d0c5a5ada17c6c94b92d8acc984c18151988eaf48d1a",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -1417,7 +1417,7 @@ final List<Map<String, dynamic>> testVector = [
             "a05f42c7d1895ab3e8538557be9832e7bef582797431a1557a2560b5962e9877",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -1426,7 +1426,7 @@ final List<Map<String, dynamic>> testVector = [
             "a00bec797c3baa27e6474b6cefbc78309a3a23fd84a183b34edde1da3e41bf26",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -1435,9 +1435,9 @@ final List<Map<String, dynamic>> testVector = [
             "60c5866103e93acdc033a47418d86254ca400bf8bfbfa720458834fdbec4735c",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "822815e8b5108068fb4511ec44f3ae07154a13806816bbd5a3bc7067420e07ba",
@@ -1453,7 +1453,7 @@ final List<Map<String, dynamic>> testVector = [
             "34fad31dfb14c1a542170e209916bbd7cea85afc65f46ec15bd4b70b44b12077",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -1462,7 +1462,7 @@ final List<Map<String, dynamic>> testVector = [
             "e49e34b623c16c68d71a637351fbc4b829798a76cc10bf16982c2a286ef4935b",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -1471,7 +1471,7 @@ final List<Map<String, dynamic>> testVector = [
             "2660931b5aaa031f586754c0bebae446e109f448926b834d4717f86b8d08117e",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -1480,7 +1480,7 @@ final List<Map<String, dynamic>> testVector = [
             "d8bc23266a96bf6eabd37c4855fc0826ccdace22db339ffe4a9fdd5909062d5d",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -1489,7 +1489,7 @@ final List<Map<String, dynamic>> testVector = [
             "d0cf95bc4a01323d8806a58a026b2d0f3e76bfcce6d75b65e0f0522fe145455c",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -1498,7 +1498,7 @@ final List<Map<String, dynamic>> testVector = [
             "a883f36852a1b52a3fec2b9403e0c794cc5f4d03d4dce69b52c9d1d9b7867179",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -1507,9 +1507,9 @@ final List<Map<String, dynamic>> testVector = [
             "04d13fc8dce824d679e7c6b64a11e485ffca8da375ba05ef06f18f152efc2f39",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "6fe92f3e1b03912eb490142277735f24bbe46babfae6e78be7557a3e43b00c9c",
@@ -1525,7 +1525,7 @@ final List<Map<String, dynamic>> testVector = [
             "30cf75a523324ec373b0d114ca3c7310f00ed061f0c9701e304e0307e1faf516",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -1534,7 +1534,7 @@ final List<Map<String, dynamic>> testVector = [
             "d08646451330a6890ba3ddf9aec8a726a3be839734d4734a813a6351ef64944d",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -1543,7 +1543,7 @@ final List<Map<String, dynamic>> testVector = [
             "6ca83aa3eb339934f348c4ae9b18420e5dcdecdcdcbdf0c230078ebcf0c9db6c",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -1552,7 +1552,7 @@ final List<Map<String, dynamic>> testVector = [
             "369f7688fa57ab34368e4e5b59ed5c3bbc30a45ea6b5bc57b7c0e51ec0db9a52",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -1561,7 +1561,7 @@ final List<Map<String, dynamic>> testVector = [
             "0e26329a215c5a4e16124d00318184de610ce620a40e9186ee88276dd7788250",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -1570,7 +1570,7 @@ final List<Map<String, dynamic>> testVector = [
             "4e92b2681ee34cd427e0705bcec51c49a0373a83fe22faf2f84eeb55a6eaf848",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -1579,9 +1579,9 @@ final List<Map<String, dynamic>> testVector = [
             "44e1f6a6346a2146d6e9ec025269184e8d755fa6b5ccf153c42e92f7e2d4f342",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "889a0fe44bbb2a9ae0f086f309ab78e38b0250e9d2ea008e8fb078d34006a456",
@@ -1597,7 +1597,7 @@ final List<Map<String, dynamic>> testVector = [
             "4c5b64b4a2dd7c56a5161f4538c0521a6647ee21e091c351bb8d56637e105f5a",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -1606,7 +1606,7 @@ final List<Map<String, dynamic>> testVector = [
             "328d932fbad15bff2038738f495bdff70307f1e6ab40cab88ec23fe22165dc5c",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -1615,7 +1615,7 @@ final List<Map<String, dynamic>> testVector = [
             "4298f24d39cccf59caacc387c53b1b75ffbb8943688315772529f7d1b261f955",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -1624,7 +1624,7 @@ final List<Map<String, dynamic>> testVector = [
             "aebad38b06d472e0ad10eb98f599598b11d73cf154dfdd43fd43b5d2caf7c145",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -1633,7 +1633,7 @@ final List<Map<String, dynamic>> testVector = [
             "163e54e86889b9e1779b1d86093bef1f15245cf14d20f7233cdce72f5b31d828",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -1642,7 +1642,7 @@ final List<Map<String, dynamic>> testVector = [
             "9897398b5b2e031519474155d4ef64bdff46dbf7db5d2ac7257afd68b1c4d504",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -1651,9 +1651,9 @@ final List<Map<String, dynamic>> testVector = [
             "14fc6e9af9017d149416d917e2b69a16b5739221963f445e67e7d6f74eb5a652",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "57d76540b5002a2e21660abd09c7e7d5967d18c613f63dfce4fbb8efdbfbc79c",
@@ -1669,7 +1669,7 @@ final List<Map<String, dynamic>> testVector = [
             "863bf2976ddbd95347264fbdcb5dac0fb82874c93a44afe88b1f059d4ea0274f",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -1678,7 +1678,7 @@ final List<Map<String, dynamic>> testVector = [
             "1a21413844f03869bb7c24df14fdac7184cc55c4850cffa867bf673a86718a59",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -1687,7 +1687,7 @@ final List<Map<String, dynamic>> testVector = [
             "26cbf935fbe94c54a088b152518bb36840adca9f0d74434d6cb95347c82b1732",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -1696,7 +1696,7 @@ final List<Map<String, dynamic>> testVector = [
             "82316b1d127e5bd749529abf86d3c2841448d07b594ae3cf5a54ac6266202373",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -1705,7 +1705,7 @@ final List<Map<String, dynamic>> testVector = [
             "8af72c8f1352e1e0f2942bb0c86f699e675a0373ef07c5ff46d847a8fa9d9a76",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -1714,7 +1714,7 @@ final List<Map<String, dynamic>> testVector = [
             "42f25f197f234a8aff2de402b65c5d62b90941166d8fa568e26ffe63e51b3e01",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -1723,9 +1723,9 @@ final List<Map<String, dynamic>> testVector = [
             "921ca2e3cfceab4e53fb3ec3d0bbc7d319ce3eee2e144102a4d0e5d186d31422",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "fda053c7a65ba8c15056efa11b794790330fded031b6c15495dfad6ae58436fb",
@@ -1741,7 +1741,7 @@ final List<Map<String, dynamic>> testVector = [
             "ea7d214f0eaf0dee7f40cc314fb84da479058dcd49328a6acd2b03807e8a201b",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -1750,7 +1750,7 @@ final List<Map<String, dynamic>> testVector = [
             "b44fa7dd6cb7b26d99b35932cb27e641fee831f24a16565429811b3470ce280b",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -1759,7 +1759,7 @@ final List<Map<String, dynamic>> testVector = [
             "d6379e62e65eab4aa6ad644ff82a1912280bdc6af9dc7d6fd2f5cbca90c7485c",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -1768,7 +1768,7 @@ final List<Map<String, dynamic>> testVector = [
             "3c56f1af4ace2a0439bb4bbb5063f265d04fddc8ceb06e793e2c8ba9247b744c",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -1777,7 +1777,7 @@ final List<Map<String, dynamic>> testVector = [
             "246ea44ddf8c1d92fbce1ef0bafec0e34872c5db0c4ed6cb08fb798af24d0a60",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -1786,7 +1786,7 @@ final List<Map<String, dynamic>> testVector = [
             "985db4e6a18ef605ea48cf9c0277cb02b8403758440929f3275b71e068efac76",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -1795,9 +1795,9 @@ final List<Map<String, dynamic>> testVector = [
             "c2435ecb7dfeae94857df93f2778cc87de5823c26edcc24926e227cf8811084c",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "1243f8ecaf5bdfae8c967ad0c983c7c11341ea3b89e2fb5df64b12fdde221ca3",
@@ -1813,7 +1813,7 @@ final List<Map<String, dynamic>> testVector = [
             "aa153737d7f0db41880a48d68cf22b43c44bfc0734d77581a42b80152df2360f",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -1822,7 +1822,7 @@ final List<Map<String, dynamic>> testVector = [
             "bc89a8c1b2d2e0ca96f6771009f14e3593f3e12a0c74a0c45dc0dea414fd6979",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -1831,7 +1831,7 @@ final List<Map<String, dynamic>> testVector = [
             "cccb4f18a7c7b018047264690073d1c54b1b91870f579560943d7d7e534a0b3e",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -1840,7 +1840,7 @@ final List<Map<String, dynamic>> testVector = [
             "6c8e715db43624bd3c4ad2a784c37a7c50536ce449804f4d907389c7a5559251",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -1849,7 +1849,7 @@ final List<Map<String, dynamic>> testVector = [
             "c6d25b0fbe6893a3d10711558c0543502eb3d115144296ef8cd58a834d026356",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -1858,7 +1858,7 @@ final List<Map<String, dynamic>> testVector = [
             "32165ddcf4297d5793d75bf07bd0ce5672cfa6eb6b5e5c9d5015b1fc1677a370",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -1867,9 +1867,9 @@ final List<Map<String, dynamic>> testVector = [
             "1c9e164a345d4c6414695b05c7946963bf50e50848b83f5bbad0864c2e1ba14a",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "45383995ff44e859aedadd4541e9da73508f2a9ebf3190cf8ca1673fd790e5f0",
@@ -1885,7 +1885,7 @@ final List<Map<String, dynamic>> testVector = [
             "3cbff097442fa68b98b2d51396735b018c6281cd6340983eec4c611a1bda857f",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -1894,7 +1894,7 @@ final List<Map<String, dynamic>> testVector = [
             "ca37f33dbc5657eb6b62021e226e6943f36e08be8bc7dfac08f4463f4cad390b",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -1903,7 +1903,7 @@ final List<Map<String, dynamic>> testVector = [
             "2021b2f29d4b087e7e4356af47a77e246141c38da79a06373015ec4815279f69",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -1912,7 +1912,7 @@ final List<Map<String, dynamic>> testVector = [
             "ec23200996833c06654e0d59e0f8ae5dc5a8e0bb601f26177b19e3d1ffaa4643",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -1921,7 +1921,7 @@ final List<Map<String, dynamic>> testVector = [
             "4cd6bf5ead0aa9334c6970a33d19b63725e387635fe3f8de0af957f55ff19811",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -1930,7 +1930,7 @@ final List<Map<String, dynamic>> testVector = [
             "32510a7a39c18e0e5eecd207fc14dda78e4db8325819aaa8b95ca954ed83fc41",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -1939,9 +1939,9 @@ final List<Map<String, dynamic>> testVector = [
             "a2094a2b077284d28a1fb23d3be97b36ce2e532c35e0d232f123d768c39f616d",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "3010c7cfe635a0d8ea72ba5d5937e86b6ba411c53b2d2d6bcec56b7e2e17c6d7",
@@ -1957,7 +1957,7 @@ final List<Map<String, dynamic>> testVector = [
             "a6727364e75b1244cb22f327943763258480f212aa1a0bd329f28783321c2836",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -1966,7 +1966,7 @@ final List<Map<String, dynamic>> testVector = [
             "b4ba17e809ca62d53e461e4ab7a5eeae394992ef95e4dbeb5d8ba0657c836a50",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -1975,7 +1975,7 @@ final List<Map<String, dynamic>> testVector = [
             "e0767f28781204a77a9337e79296f57f0aa6bfdb1a0f07b7fad564c6e2cc6138",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -1984,7 +1984,7 @@ final List<Map<String, dynamic>> testVector = [
             "e610020b281203563623f605cea7276a00958067f6cf21fa2f2648fbac7b5801",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -1993,7 +1993,7 @@ final List<Map<String, dynamic>> testVector = [
             "50ddd4a145a47e7b004a1f6c261b6c7327555b50cbd9466268d54bf859f8c44d",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -2002,7 +2002,7 @@ final List<Map<String, dynamic>> testVector = [
             "9229d14a9c4e22464212afd4f58cfa967381ac8885e5974f7b361eab80b6f831",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -2011,9 +2011,9 @@ final List<Map<String, dynamic>> testVector = [
             "4eb7bdb529d89aa2fd87c7a82ea0b99d0abc6d0a389c9a11b5d76af548f93f0d",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "8425338e5188f12ca581db7cbc6f27b70dc14502fce940920eb1f4e3568799b4",
@@ -2029,7 +2029,7 @@ final List<Map<String, dynamic>> testVector = [
             "8655cb1d4dbdd835458abd48b6a90bff4d96e845a84df225f8ff68dd8db7c57f",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -2038,7 +2038,7 @@ final List<Map<String, dynamic>> testVector = [
             "aa720abfcf65c765f073946fd2b582859a511f88e1ba30459a2d357c8442fe43",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -2047,7 +2047,7 @@ final List<Map<String, dynamic>> testVector = [
             "0691075d8f721baef969039f938760cf6b87ae3684970ed0489a927d9a5fa729",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -2056,7 +2056,7 @@ final List<Map<String, dynamic>> testVector = [
             "0a14c7b836bc0999cf445467bba154ee710530c2b0ed0a23ff3393d9a193c947",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -2065,7 +2065,7 @@ final List<Map<String, dynamic>> testVector = [
             "86d63fad62bcb8bff644ef697eb3f055ba2f7e3843310ab888f93b9b503c1006",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -2074,7 +2074,7 @@ final List<Map<String, dynamic>> testVector = [
             "468aa77e08e78b19c424e76ebc4254b131457b942ab773e080a6529d1843e233",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -2083,9 +2083,9 @@ final List<Map<String, dynamic>> testVector = [
             "a68c5dd5556af2dfbf4c32e4803024fc167bdee1297f0453d3d212e0c471a55d",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "2d6f25640034405de848f5b53c10e38b2ad10592f2f4394ba0198c3fa43fbe8f",
@@ -2101,7 +2101,7 @@ final List<Map<String, dynamic>> testVector = [
             "fe420fa74650cbfd90ac8d88caef0d0eae64837c352ff42fdaac8c7205f57c01",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -2110,7 +2110,7 @@ final List<Map<String, dynamic>> testVector = [
             "1ca0e5cd06e23642ff48993fa5756d7112d96a917065d8573e49c56adc622f34",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -2119,7 +2119,7 @@ final List<Map<String, dynamic>> testVector = [
             "9e77eafbb553a362b6a77912fe0001ac5245f1f3e21a46c61993d73bef302209",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -2128,7 +2128,7 @@ final List<Map<String, dynamic>> testVector = [
             "c4e697abd9c37c76ed430b46fda3ea05c648b5ade062d8b429930424b6b10965",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -2137,7 +2137,7 @@ final List<Map<String, dynamic>> testVector = [
             "b64e08a992b225cd4b78e540a4518c0960719df871adf302582f880019b8530a",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -2146,7 +2146,7 @@ final List<Map<String, dynamic>> testVector = [
             "3a35b63f3f5a434c1602332bc2d1138bf98a8d91ba8892dd636dfe39c91b9c60",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -2155,9 +2155,9 @@ final List<Map<String, dynamic>> testVector = [
             "b206a8d067ac8cf184e0be1f1ce6a3b445fa590f10397e56744eb4637cb6ff5c",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "a45e75059cf320850ef0ca866fad415f70f3b8647eceb372c8dd254b38e519de",
@@ -2173,7 +2173,7 @@ final List<Map<String, dynamic>> testVector = [
             "7a7af984ba19fe613e14983d5f07cd4400ff62f952d675b5b24b65e992ccb579",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -2182,7 +2182,7 @@ final List<Map<String, dynamic>> testVector = [
             "a2e15d68245d1ff97a8f044bf0797fecc3582316d9349e7437b8e93be7532477",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -2191,7 +2191,7 @@ final List<Map<String, dynamic>> testVector = [
             "8074fb9c912fdd7a7d19889b5bcb1ab90e0d7ad57adc91c2d32951fa500a6a11",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -2200,7 +2200,7 @@ final List<Map<String, dynamic>> testVector = [
             "cadbc0140f2de32d5004b47b7b7a15fccf6f6d4ee91bdd9eb7c28e1b6e313a70",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -2209,7 +2209,7 @@ final List<Map<String, dynamic>> testVector = [
             "6ab0fe7f153696b1c15af04d9cc6d04a97448e1c81406209abd81c0c309e8a48",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -2218,7 +2218,7 @@ final List<Map<String, dynamic>> testVector = [
             "3243c314ded1076e92b8f36f54d0fd7c22bcb2cbfa32b5b9442df2a3d0849d37",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -2227,9 +2227,9 @@ final List<Map<String, dynamic>> testVector = [
             "04f570948bfb815f57fe45563139005f75fd8ec0043a43c815824527d5793c36",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "f9bde1df4b301a7c2ee7b763dc2d3d70933be3cdab758da181367a7a7d0b1e74",
@@ -2245,7 +2245,7 @@ final List<Map<String, dynamic>> testVector = [
             "b25ae228155cb4652e1e47c1ceb3739e26b749044a993977e3eb110a8bdee825",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -2254,7 +2254,7 @@ final List<Map<String, dynamic>> testVector = [
             "ae21c3838d2d3b3098f6cae55f887a985214f2a0819111607dcb6fb895974507",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -2263,7 +2263,7 @@ final List<Map<String, dynamic>> testVector = [
             "7e7189c565b4bc1fb74f51d2a17993ad494aed565f0b593f2b1363ed9e63981c",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -2272,7 +2272,7 @@ final List<Map<String, dynamic>> testVector = [
             "5239c4e0b6f6bd39ee27ad7716a87520c28fc3b50943252315099da9e0d2f103",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -2281,7 +2281,7 @@ final List<Map<String, dynamic>> testVector = [
             "02c0398fd46cb1562b8c37663444df59204838c4dd68883c0820fbbbc9b84f1b",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -2290,7 +2290,7 @@ final List<Map<String, dynamic>> testVector = [
             "0c0ae9650ddefd9bff6d2551609efa0b317908fca04c4bb786442e06f55e6b31",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -2299,9 +2299,9 @@ final List<Map<String, dynamic>> testVector = [
             "1eae0ea4a15922d98b2af0c9d80c002a2d8301285684a32f48926737ae31753a",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "89d6ea9784ccb57d09e158ae1117f5db86d305729328a0311444f83c239081f9",
@@ -2317,7 +2317,7 @@ final List<Map<String, dynamic>> testVector = [
             "725911825a2260f229721c315a7abfce4755a43a6a68b3fa69bf8737686c072a",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -2326,7 +2326,7 @@ final List<Map<String, dynamic>> testVector = [
             "10fa5698ece282836721ca46359e18b628fa46dad469307c8629a5ed6983982c",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -2335,7 +2335,7 @@ final List<Map<String, dynamic>> testVector = [
             "1c91c4d85bf1459147c3f84ff405af163da9fac05009b5c07b63d37bb1079218",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -2344,7 +2344,7 @@ final List<Map<String, dynamic>> testVector = [
             "c44a1b5d5dcca5408f1b6ae1f2171ba8c4e2e126f1e3b5688bd53563002d027f",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -2353,7 +2353,7 @@ final List<Map<String, dynamic>> testVector = [
             "4a091cd118d9720a4355383c4d3adefe131f7ecd28d6d71184db9f0d1c8ddd66",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -2362,7 +2362,7 @@ final List<Map<String, dynamic>> testVector = [
             "24db40edf6f5cbdd6c8ced12e1494660c2b788ed95e8a06d064f41a285816a13",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -2371,9 +2371,9 @@ final List<Map<String, dynamic>> testVector = [
             "56bb9212a37ece11b616322d8e5b88899839e22f8f3923a9546abb466e529a5f",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "e3150e65d9755fdda337990ddee81327d27dcb8a749412254f42d209d7134cb0",
@@ -2389,7 +2389,7 @@ final List<Map<String, dynamic>> testVector = [
             "3451bd363dc485a4b878d4014ea2ecc329788e9b675dec9e82b4163005a05a20",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -2398,7 +2398,7 @@ final List<Map<String, dynamic>> testVector = [
             "5a3a1eac8ddb1a476094544501b1c33330695f18b0da185dbe1862a8a913f445",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -2407,7 +2407,7 @@ final List<Map<String, dynamic>> testVector = [
             "d2ac60e019a898a30c6ccf3a61760037bb99f90a4435048e342acbe685751454",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -2416,7 +2416,7 @@ final List<Map<String, dynamic>> testVector = [
             "38f343d52d7f49c721d62cbb52ba4012275ca0b67a335270a9e0736dab0ec952",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -2425,7 +2425,7 @@ final List<Map<String, dynamic>> testVector = [
             "1217bffae85550622dbf7058880b91b5e8f81fdd6a240c35384557ee68385223",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -2434,7 +2434,7 @@ final List<Map<String, dynamic>> testVector = [
             "30347b2759858434450f794ba5cda56b638a118a3b1365c4ff580ea8118c373c",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -2443,9 +2443,9 @@ final List<Map<String, dynamic>> testVector = [
             "941f86bae21b24655543c8d3d361e44600f58bba9d11e7f3c105784f4b45e936",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "6ca486dbc6c3316ebd2a6e7d4d36d0e7753b843db22e51889f30a538782b38bb",
@@ -2461,7 +2461,7 @@ final List<Map<String, dynamic>> testVector = [
             "f2096a79182e566d8d949d2682c9539df4a3cad7811ed2090155b01df3ada76d",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -2470,7 +2470,7 @@ final List<Map<String, dynamic>> testVector = [
             "7252377906df98175ac22b0d0e40eb467e7a22f7ef0421723e46a3e21b74ee15",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -2479,7 +2479,7 @@ final List<Map<String, dynamic>> testVector = [
             "e846c7caa0fe42741be783ba2f8719d575c1417a09e6f488a9b5d7e627dfa74b",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -2488,7 +2488,7 @@ final List<Map<String, dynamic>> testVector = [
             "d248cf41fe857933b5e9b97f868fb3e0ffe7a3342c6c0bfcff536f60c46f945b",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -2497,7 +2497,7 @@ final List<Map<String, dynamic>> testVector = [
             "4880e90559f5889e9e7547ed5830fcc65b3e3621c9275a13208838bdde506802",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -2506,7 +2506,7 @@ final List<Map<String, dynamic>> testVector = [
             "1252908b2224b61f473e30dc87c64c6d41504d047efd95eca65398e608447343",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -2515,9 +2515,9 @@ final List<Map<String, dynamic>> testVector = [
             "46d59e6939533c94d5962cb280afe153fdb6d8e91be501a1c9206197d576214a",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "2d51f3cecb24a6120ceee4b2361b726fa510354fd82ff66596e403469f27126a",
@@ -2533,7 +2533,7 @@ final List<Map<String, dynamic>> testVector = [
             "4068075531f862c4374d48454779fba83a1a9d6aabd0c173247147e9f7cb2f0e",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -2542,7 +2542,7 @@ final List<Map<String, dynamic>> testVector = [
             "d60c1f641661ced52099b111bc59dcc1bc27bcf605ade82de092fd0722425127",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -2551,7 +2551,7 @@ final List<Map<String, dynamic>> testVector = [
             "4a2e0ddbc6561e589d61ee01acb8b336e72a50ec600d1bf7b41ea52ee813aa61",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -2560,7 +2560,7 @@ final List<Map<String, dynamic>> testVector = [
             "201835110c00f5f50a5397e6cf88adda398d4108c12297979f43c09decddca34",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -2569,7 +2569,7 @@ final List<Map<String, dynamic>> testVector = [
             "00a1b3a6e99a7df15798e7bbad0bd34f3ec391b4c7ca59bed59fe71191d2962f",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -2578,7 +2578,7 @@ final List<Map<String, dynamic>> testVector = [
             "46c380f3f50733143b6c6153a0695a94c2482f7d2f8827e1e72b0a980adcb060",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -2587,9 +2587,9 @@ final List<Map<String, dynamic>> testVector = [
             "5a9a3d679321caa375b4eb690f1344b8c075d94a7282ea49e931dad61fd02d6a",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "be79290a965b96708266c1913ebbb8f55f3ec4988104fc4bc51ab0ab874107d8",
@@ -2605,7 +2605,7 @@ final List<Map<String, dynamic>> testVector = [
             "6862c4b5a865c2d40ad201d45382d5fffbbe0537b12f97533edf092415a7e67f",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -2614,7 +2614,7 @@ final List<Map<String, dynamic>> testVector = [
             "2cef6e75ab0e9cbdd9f978031999cd6646f36bf3bd21dcdc3c981f2c07a8d351",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -2623,7 +2623,7 @@ final List<Map<String, dynamic>> testVector = [
             "d2dc4b0f86a56d00af88398b92972404b0ff8ccf526eb400a3ab00ed492d6274",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -2632,7 +2632,7 @@ final List<Map<String, dynamic>> testVector = [
             "341080953219d83da09745da70fa15ed28bfa57e89ce11523c23366ce0249011",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -2641,7 +2641,7 @@ final List<Map<String, dynamic>> testVector = [
             "46cc1e08e5dab3922fdbec818c2a626c6e751d0326b86305b8a65df47377c168",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -2650,7 +2650,7 @@ final List<Map<String, dynamic>> testVector = [
             "983ff79350658b01b81d78cee64f1e6bc6bf71b99373478808c5f23276eb0e09",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -2659,9 +2659,9 @@ final List<Map<String, dynamic>> testVector = [
             "36bc9935c6a06778e05992e3614ff4ba31464180c91c78951b1040ec820c4421",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "fe6eb5786da549302e694acc25525331984cb4fcdd0f337c595180104926841d",
@@ -2677,7 +2677,7 @@ final List<Map<String, dynamic>> testVector = [
             "18faea438362f370750c1a596c08d7a17e267afb5b3a26cf8f896f307ca1f40e",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -2686,7 +2686,7 @@ final List<Map<String, dynamic>> testVector = [
             "ce5cd706a86c5a42738789a5515580168ad64574ccb9eb5d4b064d53f5095407",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -2695,7 +2695,7 @@ final List<Map<String, dynamic>> testVector = [
             "2e55b07d986e062cf011c4d8fd14d68031911f87b33347ecd72f12e4cc5f8549",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -2704,7 +2704,7 @@ final List<Map<String, dynamic>> testVector = [
             "1e8c5fc9ca007358ecfa6adeeb368cff7f27c5090bac4be00ded62c99c90af46",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -2713,7 +2713,7 @@ final List<Map<String, dynamic>> testVector = [
             "7e96c6ab5d0b8f80f453bf2fef7dcb94a4ce63db0c32b0eba32f315ec1b9ae7b",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -2722,7 +2722,7 @@ final List<Map<String, dynamic>> testVector = [
             "9aaf482a3b069ca79679da1e5ca19eaa2c746afb618191f9a26bddfb7decb603",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -2731,9 +2731,9 @@ final List<Map<String, dynamic>> testVector = [
             "668b618a509c198e79e61a38bf533aacb815bee30e5fc311a25b72bcb0e5a005",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "f25faa81d4813605b767d815c89d43fbc8b30f7ddbcad71f2e501b69983e7479",
@@ -2749,7 +2749,7 @@ final List<Map<String, dynamic>> testVector = [
             "387439c43d5338e59511e82785a2f11babf415438bc5b52aa266e28c84f2441c",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -2758,7 +2758,7 @@ final List<Map<String, dynamic>> testVector = [
             "accf993bbf5a9c1bf639dc5f3d816ddb3067538e8538388f667aee56aced8616",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -2767,7 +2767,7 @@ final List<Map<String, dynamic>> testVector = [
             "4e5952d9ed410ca04788d0240145d593e343cc915551765198c38f8c4f5b781b",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -2776,7 +2776,7 @@ final List<Map<String, dynamic>> testVector = [
             "982e95ff83e4824efad22232aecb8d8d5901199322a56a40c756da1b2952cf13",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -2785,7 +2785,7 @@ final List<Map<String, dynamic>> testVector = [
             "36af8ec9d741d29cc2e770ce22cb946501551ded957fa6a919d689ea01938a6a",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -2794,7 +2794,7 @@ final List<Map<String, dynamic>> testVector = [
             "7e33dc2b8e94fd335290549edc2b3277044bf881e19f64306b7eaa0c88660b40",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -2803,9 +2803,9 @@ final List<Map<String, dynamic>> testVector = [
             "9c5b99392cf4bea7f2171cd922f956a97a2b191ceaf90c791d28ead65d8a802c",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "c33ed0d79785470475bac024919b41681845416b7e9de1c2c9778db3627a2ede",
@@ -2821,7 +2821,7 @@ final List<Map<String, dynamic>> testVector = [
             "0c76dbb082581f6a54dcf28f79f82e0bde1e10dba31884aa745c0fbf2c573604",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -2830,7 +2830,7 @@ final List<Map<String, dynamic>> testVector = [
             "8aab4126712cacaaf5bbf05a939e2ce977f954e8b52349f370870af6fb41fb6b",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -2839,7 +2839,7 @@ final List<Map<String, dynamic>> testVector = [
             "00fa46413f20acf66bfd523f39983731c9b38d7b90b071315393c8b5d5510a6f",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -2848,7 +2848,7 @@ final List<Map<String, dynamic>> testVector = [
             "8ed78f19cbfde09f2d2466e1eaf07839e745fd07f555a84d8ac892ef9be8664e",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -2857,7 +2857,7 @@ final List<Map<String, dynamic>> testVector = [
             "76de8ac850d9568a660519f24a00ef80b6d475541bcf267dc9e4d514a12da224",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -2866,7 +2866,7 @@ final List<Map<String, dynamic>> testVector = [
             "e41710047e69997ceba1cd21ba3a968ce518d149471fd2a701602b03ae1c376d",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -2875,9 +2875,9 @@ final List<Map<String, dynamic>> testVector = [
             "1acb4c1fa7234bc5f3dc70a080776a5b3afb071a8965a969469fec437775bb00",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "fb78e1d28f26887acf3c5f6a1366307637e1833c3c12f14ebaef927187d5e94b",
@@ -2893,7 +2893,7 @@ final List<Map<String, dynamic>> testVector = [
             "2eb5c7de1eeaad0f3c941242d4278181558ea961160b7fda33b1342d1db84746",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -2902,7 +2902,7 @@ final List<Map<String, dynamic>> testVector = [
             "3e0e09db4b212001731f1913b2a5021cd9e5838fb2de68895c0f14daf75cee6a",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -2911,7 +2911,7 @@ final List<Map<String, dynamic>> testVector = [
             "e278a44baa4c947dbd93e5714132570837b3dc4b5e905e35b96158d2ec1b125e",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -2920,7 +2920,7 @@ final List<Map<String, dynamic>> testVector = [
             "b265caae4a970e85c537ba074690c1e547d76657c0392dedcd2b62a763500d3e",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -2929,7 +2929,7 @@ final List<Map<String, dynamic>> testVector = [
             "ca79cc20296138f60c0992a00ffa55208eaedada760d072fe3de77e83491cf4b",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -2938,7 +2938,7 @@ final List<Map<String, dynamic>> testVector = [
             "1c5664a4effd84e7d58f482aed658b997316271b6e729e5843edc51cc1e9b306",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -2947,9 +2947,9 @@ final List<Map<String, dynamic>> testVector = [
             "b43b175f471ac5fff396ed34825c9ca306d5cf2378ce8a34c27549bf6ff8f102",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "e533a3399039253927edbce2b910b5306f121de92bd59c60487a99e3beb3d764",
@@ -2965,7 +2965,7 @@ final List<Map<String, dynamic>> testVector = [
             "a4e68b3525c13948d48fb317054909c6d808d31747fce1052aa4db34604a3921",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -2974,7 +2974,7 @@ final List<Map<String, dynamic>> testVector = [
             "1498edb2723d7d72e10d721b6f555dc479fdf0b6bd4353d79601808f75c69408",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -2983,7 +2983,7 @@ final List<Map<String, dynamic>> testVector = [
             "36a7619a2ef34f307195bff452644d3a9693d19348703b1cf5303d845f44ca23",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -2992,7 +2992,7 @@ final List<Map<String, dynamic>> testVector = [
             "74da7a8bbf654396f3be18112a8109f589be0158ac7048f7d7dd51c0682f7846",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -3001,7 +3001,7 @@ final List<Map<String, dynamic>> testVector = [
             "c0b60772e5782ab5e2c82362c39592ea380089cd9ccc358a5984e796515b100a",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -3010,7 +3010,7 @@ final List<Map<String, dynamic>> testVector = [
             "be6b9be13bb9e55cb20433e77a91128aed2d5fa617aac8711dab1eb7923f9257",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -3019,9 +3019,9 @@ final List<Map<String, dynamic>> testVector = [
             "98d015948727bcc1d02d1cddd81afa3a88e489df53d3e3af9a54a473e414582f",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "dc86654ba64a0c51a0bcf024c5d2b0b1cf3db4f09ad146951b1ee9e24fc8c0fa",
@@ -3037,7 +3037,7 @@ final List<Map<String, dynamic>> testVector = [
             "d438927fdbc1a6a960c03528b243a5a34c284afffa8bea39065a95de014f9e1d",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -3046,7 +3046,7 @@ final List<Map<String, dynamic>> testVector = [
             "16ec81632ecaaca3d9403c75906e6c7c42cc2b0ea6447e93d26cc19e3ac1413c",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -3055,7 +3055,7 @@ final List<Map<String, dynamic>> testVector = [
             "16afc7af2299d3e39cc34325533b250fafba490bf0ebc46b80d5c760ffe53f72",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -3064,7 +3064,7 @@ final List<Map<String, dynamic>> testVector = [
             "6c728f7f37f60a02166a8401c12ae8a675623d88f2ffc22d4c250e11337eeb0d",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -3073,7 +3073,7 @@ final List<Map<String, dynamic>> testVector = [
             "287bb7370bf45dc4141237b7e526e2ccdf9ea5f06d3043fe5e705a68e38dc67c",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -3082,7 +3082,7 @@ final List<Map<String, dynamic>> testVector = [
             "ce7a735bb6df7ed09884cac479f68e476f9cdc19548817d8659bffdbcb718b75",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -3091,9 +3091,9 @@ final List<Map<String, dynamic>> testVector = [
             "da6e08e8acd275d9a6847f7105c787ed035a05b0cefba6d41a113c20ad68252e",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "d4893d0f74f28bdabe92647c4327d4787446174b2c694a5ef2141d74c441eb9f",
@@ -3109,7 +3109,7 @@ final List<Map<String, dynamic>> testVector = [
             "d6d2e8b375e0cb8879e5ea0e5f63c4234f98e05b1fefe43095b80ed53a76b057",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -3118,7 +3118,7 @@ final List<Map<String, dynamic>> testVector = [
             "d06f873a3da2adde22b4143865aa7a698c3f9dfd6eedd8d2230d5ec86e5f6501",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -3127,7 +3127,7 @@ final List<Map<String, dynamic>> testVector = [
             "082a28755128124931a0a9c9f5d63ffdbb3453fb4e0f179904d55377a109937f",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -3136,7 +3136,7 @@ final List<Map<String, dynamic>> testVector = [
             "7840d6989e9642e3458c727cc8f9155d94e3cd0600f35f147989d93d81b89268",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -3145,7 +3145,7 @@ final List<Map<String, dynamic>> testVector = [
             "b01b8b191f7e1ef3b09cdf9642d7b6cba2f007db23187040e293d8d6399f547b",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -3154,7 +3154,7 @@ final List<Map<String, dynamic>> testVector = [
             "7c57a7fc3ee9e35380c7744d4a51e9460ba998336ed2be7474d5a71b08cd066d",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -3163,9 +3163,9 @@ final List<Map<String, dynamic>> testVector = [
             "5c10ac1f60e6766ef866d836d5aea7336ecfbafee08a4462c2b9ae0fb01a7f62",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "77e2cbe225fc270c4e9491f4c10332eeeba9ae299d1527d59d54fd691ad77133",
@@ -3181,7 +3181,7 @@ final List<Map<String, dynamic>> testVector = [
             "8603e7ba1695971a1daf72e600798dafee14862de35899c766c056a4fee7640e",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -3190,7 +3190,7 @@ final List<Map<String, dynamic>> testVector = [
             "845b70c5467fb9b530198dc0b4522d25737889fd3f680d2798dc76c3b58d6a72",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -3199,7 +3199,7 @@ final List<Map<String, dynamic>> testVector = [
             "2e48c31a7ad2fc93affc2a28ff8a1afff23eba0354ba48ce7920e06e83b1ef63",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -3208,7 +3208,7 @@ final List<Map<String, dynamic>> testVector = [
             "56dde901946a436217704e9423f8a94ea870d6b5a0e6243e40e2b99306887c31",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -3217,7 +3217,7 @@ final List<Map<String, dynamic>> testVector = [
             "2861ef9e63eb9ff3eef4017799444fd2bf01088d2c09a4deced4e8986be4a01b",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -3226,7 +3226,7 @@ final List<Map<String, dynamic>> testVector = [
             "98a5689d28e9b929b68d0d8940db20c4fa7f0d6ae4fff02695016c54f872ce4a",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -3235,9 +3235,9 @@ final List<Map<String, dynamic>> testVector = [
             "9ec7787525d642c7a2feafb5311780076476ddb01b30c29aef0f6556219eea12",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "638387b479938b215ad14e65ce4a1c863c17a3e001c8d49eed07f06c8e305506",
@@ -3253,7 +3253,7 @@ final List<Map<String, dynamic>> testVector = [
             "3200a1a217c9619b271b0e06998fdfec135b55eb292949825dd33117f4d9705f",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -3262,7 +3262,7 @@ final List<Map<String, dynamic>> testVector = [
             "5a26bfbc4eb03aef98de9deb20d7ccfc18a9848796ad5d0f62345d1a18c9f46d",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -3271,7 +3271,7 @@ final List<Map<String, dynamic>> testVector = [
             "bc7d388d0307b6287b81f3047164d1476db609925301615b5cf929b584c93748",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -3280,7 +3280,7 @@ final List<Map<String, dynamic>> testVector = [
             "d0421f9c841f724ae85254889bbe89874256eaed19d6b32e77df9fc0bc68ff49",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -3289,7 +3289,7 @@ final List<Map<String, dynamic>> testVector = [
             "7c41738aa2e5e1e91510bc294a33376d573190c7bd76c4213b543baf02991510",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -3298,7 +3298,7 @@ final List<Map<String, dynamic>> testVector = [
             "0087112ead4123f6364c6f340b285b768dde3970f8da261b306da8bb68b96d23",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -3307,9 +3307,9 @@ final List<Map<String, dynamic>> testVector = [
             "46da6e390ce4916b9b9ad1e32e520437a702f2c7c169c9c7924fd729cb28650d",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "5a18fe980fca6d3cbcff76a8f21af675ce39fe01f1cb6e1842aac2515c128f2f",
@@ -3325,7 +3325,7 @@ final List<Map<String, dynamic>> testVector = [
             "0405016a636bf8d60d4a8275221286b3bb62597cd79478b99266599953d3e653",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -3334,7 +3334,7 @@ final List<Map<String, dynamic>> testVector = [
             "4c31d24bf7f18511f7427cbc674728757ce2d206f7e8a95bdfde7ef292ba4d51",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -3343,7 +3343,7 @@ final List<Map<String, dynamic>> testVector = [
             "e472999a5f676ceedf927270918287c520e9ff131fecd64c5eae430482f8d46f",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -3352,7 +3352,7 @@ final List<Map<String, dynamic>> testVector = [
             "fe77ed91d7eafef693dbcd283a9ddb11bed7273271481be765306c6df69a0952",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -3361,7 +3361,7 @@ final List<Map<String, dynamic>> testVector = [
             "4ec2192daaeed61a6bec4b756f533b5a4c9fa34336f76cd9289d793568f8fe0c",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -3370,7 +3370,7 @@ final List<Map<String, dynamic>> testVector = [
             "58bdb1b5d7f0f39ee0b36912fcb11f297e46900320fd51e2de384cc970940451",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -3379,9 +3379,9 @@ final List<Map<String, dynamic>> testVector = [
             "767e05f65b1c9cbe4c1c680b09a3744dbad6261b572b64e0a0fbad4eda077c40",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "a6d82f1bdf78080bceee75249e94cfeb5c6edfd41f616c9bd15564edd67bbe9b",
@@ -3397,7 +3397,7 @@ final List<Map<String, dynamic>> testVector = [
             "10a0ce671ea32040b120916daeb426e3ac03223bd5be5d9f1c4374155c44650b",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -3406,7 +3406,7 @@ final List<Map<String, dynamic>> testVector = [
             "d6df80216640222bf5b338f65e8331ae5f2be671fa92cea53d6b301778cc9a04",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -3415,7 +3415,7 @@ final List<Map<String, dynamic>> testVector = [
             "2408446efba4962e43ce6c8d494c3285d63078cdc89fee53a2490c36706be912",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -3424,7 +3424,7 @@ final List<Map<String, dynamic>> testVector = [
             "06be8108dc2689c8e54e360974c3991a36ecb225171573dab9a737e4179e4045",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -3433,7 +3433,7 @@ final List<Map<String, dynamic>> testVector = [
             "123149a73ba13473bfedaccb639fc4cad6ab2e2b6e46bbdb2fff7e4851096c7a",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -3442,7 +3442,7 @@ final List<Map<String, dynamic>> testVector = [
             "4a75ba4b94ca18629cb3309aa078e7293b3bc09e52273af59be7c8f5819dac03",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -3451,9 +3451,9 @@ final List<Map<String, dynamic>> testVector = [
             "1a1610adf289c90e6fb992452cf9aef24a7bacc356c27f173be11829b6e2b31e",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "2c9015a1d44dc69e7f53f2c7b86aee229499bc87130a4eb52c6a01757c8aa6b4",
@@ -3469,7 +3469,7 @@ final List<Map<String, dynamic>> testVector = [
             "a4015d349025527c523b1a1e3f67e9a993260e47fc69817dfbd4a0dcb7f69566",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -3478,7 +3478,7 @@ final List<Map<String, dynamic>> testVector = [
             "be780007cee271bfe3d13a3ec5ef46a56043f2bab5c53f964c74263a33e6460f",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -3487,7 +3487,7 @@ final List<Map<String, dynamic>> testVector = [
             "a6969e8686c05138a40e7bfbacb3fc7a80f85ef39fc87fa27ba8722dfc0a1938",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -3496,7 +3496,7 @@ final List<Map<String, dynamic>> testVector = [
             "dca75df7aee3cdef489ee6b5165b28fed0558cd200f1c6513ce57d7093af3340",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -3505,7 +3505,7 @@ final List<Map<String, dynamic>> testVector = [
             "be0f8cbb89969f3a4ddd94d62a535d3b035a0de1b4b61fd5f20ee6fab70a7502",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -3514,7 +3514,7 @@ final List<Map<String, dynamic>> testVector = [
             "221c34f105f65108d4941fa5ca1ba6d3abc72b240d85b17e4707ef1a94a64f22",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -3523,9 +3523,9 @@ final List<Map<String, dynamic>> testVector = [
             "de89782f8284027f83c5165274bba30e27eb50420b8a033346557dc997bda579",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "c0964483b8888efe303a821bea2c5cf3859a6a1352cf87534a0caeaa1ab9e5c8",
@@ -3541,7 +3541,7 @@ final List<Map<String, dynamic>> testVector = [
             "84db5555dcfcaac184918a774a28fb86dc09a6d7009140f42618edebfb04250a",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -3550,7 +3550,7 @@ final List<Map<String, dynamic>> testVector = [
             "56ec6e06e248b4ebf9a2ebf51bd7ac90127dcfab1a35a48c5d04ce91d7c2ed04",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -3559,7 +3559,7 @@ final List<Map<String, dynamic>> testVector = [
             "fec7573d83d02f7f5a93222d7b16d92ddc71a883925a0d6caacfc9b098928300",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -3568,7 +3568,7 @@ final List<Map<String, dynamic>> testVector = [
             "e2908687f4938560feccab4c44a3b4214bf0048048267c316b208ef932843a1f",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -3577,7 +3577,7 @@ final List<Map<String, dynamic>> testVector = [
             "c6ccee5ce38871d6077b9576da48c3ffdb4a151eefb86a848e345631d4f9a036",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -3586,7 +3586,7 @@ final List<Map<String, dynamic>> testVector = [
             "2aa49726678e4f31647dea9ec1f863ac6df07480d6e6c23c6ccb0c8464984378",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -3595,9 +3595,9 @@ final List<Map<String, dynamic>> testVector = [
             "64b559f8f8aaef561c8ff50ed879a0d194b871a344187abb6dea0982a19b6d15",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "6631c888a5372cadb534070a326fb1076555017c5942e7a197d1a163583d2d54",
@@ -3613,7 +3613,7 @@ final List<Map<String, dynamic>> testVector = [
             "90c1c1a53439c1ab43a3889f7ef095caaec5b6b09220d18ac831d4d085a96615",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -3622,7 +3622,7 @@ final List<Map<String, dynamic>> testVector = [
             "683e1b8454cbb2f9a33ee5f70ab56af98fccf8b74fe7322cc09402cb066cc152",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -3631,7 +3631,7 @@ final List<Map<String, dynamic>> testVector = [
             "28d34cd5ea1ac5544eeb4c8e27f6beafcb8e5443575003f9bbfce8a559c84f46",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -3640,7 +3640,7 @@ final List<Map<String, dynamic>> testVector = [
             "a00e89b5567fa3f15587407d562d0147b8af8c3d95dc9fe118f0838420652906",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -3649,7 +3649,7 @@ final List<Map<String, dynamic>> testVector = [
             "d6a1fac0c7f4eea003ef00be49a685ad644780d45b84da47e9f8e65cece4e034",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -3658,7 +3658,7 @@ final List<Map<String, dynamic>> testVector = [
             "32bce16c5c3d2dcb88e130a7712f64192c010ed615582b99097845542c20725b",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -3667,9 +3667,9 @@ final List<Map<String, dynamic>> testVector = [
             "1a3ebe68a9a00fccbc7353e919037d9850e732384d2c1414a873981a02ee554e",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "f9f432de947af34af95493f254910d69808180c57ce5fafba3fb893d7f3df90f",
@@ -3685,7 +3685,7 @@ final List<Map<String, dynamic>> testVector = [
             "ee53463099b97b58b0f95c050509d856dedcde27599c7a63baee2e819b435d71",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -3694,7 +3694,7 @@ final List<Map<String, dynamic>> testVector = [
             "820790b9c9389312089819953bfb23928d01b74f58a603b12125113baa89d23d",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -3703,7 +3703,7 @@ final List<Map<String, dynamic>> testVector = [
             "0ee91ffb983bf60406de3f25f8f3742b660d33ea33293851b579ed28d6741c15",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -3712,7 +3712,7 @@ final List<Map<String, dynamic>> testVector = [
             "00fc4ae47a36f9086951e5cadd3747ed6bc3281b820c6db92edcecd255c9e417",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -3721,7 +3721,7 @@ final List<Map<String, dynamic>> testVector = [
             "f29a266ef278a5b8bb535032ee2479b86f2a466caf02c29d52c207385cdbfc30",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -3730,7 +3730,7 @@ final List<Map<String, dynamic>> testVector = [
             "0edd9d6fc3ee290ae73972afa5af55ee837cd27cc1a592fc53164154e2f12352",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -3739,9 +3739,9 @@ final List<Map<String, dynamic>> testVector = [
             "ee1f4151354a35f12d9ff67693f3a5689f34710fc13fe7e21b923834c38c4b1f",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "518714494c6ff2227c52e4eb9a81ff60477fc77aa6371dc9f5ee07aeb820fb3f",
@@ -3757,7 +3757,7 @@ final List<Map<String, dynamic>> testVector = [
             "ec96e72453928f7f37291e2514dd33ee5169d726980b3b9950265b45bda3ba48",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -3766,7 +3766,7 @@ final List<Map<String, dynamic>> testVector = [
             "a4a78ea903fc0f35313168c4ee6a115dc35ae5b578026e38a8eb778d48688242",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -3775,7 +3775,7 @@ final List<Map<String, dynamic>> testVector = [
             "c8c222724e3d8391108957738cf9d6b4a22f8f3465a59634a6693602c358fe48",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -3784,7 +3784,7 @@ final List<Map<String, dynamic>> testVector = [
             "60d2fc8fcffb70e357136ae242d5f7afbfd063c80867918a216f69a3a930f36d",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -3793,7 +3793,7 @@ final List<Map<String, dynamic>> testVector = [
             "f40412179fd4520277f147635fde6d5ff6e51230cf2adabaf3135a8987965b17",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -3802,7 +3802,7 @@ final List<Map<String, dynamic>> testVector = [
             "34948a0713875d740486813f00ad8f5fbe77262aa3a7f8df40b3439673603f35",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -3811,9 +3811,9 @@ final List<Map<String, dynamic>> testVector = [
             "fc324899b75e332695a8e70c7154a8e0efa6c3465b431e871652aeb25448827e",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "e48fa7e8aa4315f354298b9dda43d8ad891e537ba3f10b779aa13fa05fdbb9ee",
@@ -3829,7 +3829,7 @@ final List<Map<String, dynamic>> testVector = [
             "082357dcef6893b0309655c8bde4f55170f885ad1f6e2b2b52938eacdc27022f",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -3838,7 +3838,7 @@ final List<Map<String, dynamic>> testVector = [
             "62d7d015c67c9aa82d59ccfd65a558607215f1e8eaa978dd6d2da260f2a79103",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -3847,7 +3847,7 @@ final List<Map<String, dynamic>> testVector = [
             "421b8bbbebb4ccae5d2a661764a4c12007e0a78318c5c18e8b4a0c87af4b2631",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -3856,7 +3856,7 @@ final List<Map<String, dynamic>> testVector = [
             "607c3cc5dcb2292b840c863237c2b02a806138f5b6bfadf209c8242a50cd5566",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -3865,7 +3865,7 @@ final List<Map<String, dynamic>> testVector = [
             "28949be236f7b3ae18d7645c9cd7a6b2aabe13d89c765f8056ab73311883ea1d",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -3874,7 +3874,7 @@ final List<Map<String, dynamic>> testVector = [
             "7829d855c0b5f3fd8d98dfa8c68f9cdfd0902307714b7ef2730718513a977a1b",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -3883,9 +3883,9 @@ final List<Map<String, dynamic>> testVector = [
             "b868102fd7f4c53d5e4b971e6565208a68ce4c1c759387fb474f05adcc249901",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "e57e69a3e62739546190af3cc30d3ac3f771d582211fec7620048cbd0913d8bd",
@@ -3901,7 +3901,7 @@ final List<Map<String, dynamic>> testVector = [
             "66727896e9ae3a42c25e284efbc36dd15df7f685cbf6ad5dbd0a1defe8c1507f",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -3910,7 +3910,7 @@ final List<Map<String, dynamic>> testVector = [
             "f0856b3c7eacd1fdc704fcecd1fdd53f9904a3b2391241764936598f50630102",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -3919,7 +3919,7 @@ final List<Map<String, dynamic>> testVector = [
             "3a70791e25ba38b0b1f2f1fbf619ef9f2cc54a2d08f1ff71bee14c4756f55625",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -3928,7 +3928,7 @@ final List<Map<String, dynamic>> testVector = [
             "9eb30dca1cbee077c922a675258cd0703bc41b2b8e1f7bd31138cc3b54e5fa48",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -3937,7 +3937,7 @@ final List<Map<String, dynamic>> testVector = [
             "d09600a9bb4b7fbecac3768c807527ce420fa55d39782dcd778c6cab6cfd6516",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -3946,7 +3946,7 @@ final List<Map<String, dynamic>> testVector = [
             "a05bd589a36a6ecb363e00687404b36515230281b64ed70297acb0880d555709",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -3955,9 +3955,9 @@ final List<Map<String, dynamic>> testVector = [
             "42dda81862ddbc81a7eea516abe1a71f3836ed8a1ee7250dd1a128737fe86e07",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "d0d71f4da999e3c497cff3539832c717aac27385a1cff824f07a7c59e5e08e91",
@@ -3973,7 +3973,7 @@ final List<Map<String, dynamic>> testVector = [
             "a0184e6f0a4e9b85aa1768ba973014a2943f20fa0a2a732f8155f345e1061524",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -3982,7 +3982,7 @@ final List<Map<String, dynamic>> testVector = [
             "bad0c2b9aad1a432f893fec8084f67c1676299d1bd5025c52f95fc8cb69e0435",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -3991,7 +3991,7 @@ final List<Map<String, dynamic>> testVector = [
             "561f1033915cd9ef82bfaf405179e7cf4e5cedad78956a955941e092cb49ac6f",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -4000,7 +4000,7 @@ final List<Map<String, dynamic>> testVector = [
             "8465b8046c12a612d98df5d80b3b7ecaf628d47f38f11f59964b0522eb67284c",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -4009,7 +4009,7 @@ final List<Map<String, dynamic>> testVector = [
             "30c78dcbf89ef7a73e986179d6df25ae16a5436f96ced8a11dd693e85d13f25d",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -4018,7 +4018,7 @@ final List<Map<String, dynamic>> testVector = [
             "2a48ca7ddb7bd3c4f1f849589a52317d784c8456b21f62644f1a726bd207f14a",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -4027,9 +4027,9 @@ final List<Map<String, dynamic>> testVector = [
             "b443aa17c4f8d0f2e6702646cb136672c1be340c78087e45f58044211e2f6605",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "d8d7f486a0222f812292667aa5c01b500a6a1d70d5721219cf585b3d7cb5a3f3",
@@ -4045,7 +4045,7 @@ final List<Map<String, dynamic>> testVector = [
             "70bf76a6676d3d3d0004b1db0fc30c46eb93071fdcbf026b7f677d6136f83c35",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -4054,7 +4054,7 @@ final List<Map<String, dynamic>> testVector = [
             "9803a1aa2606c5ff29dc54c89b5adcf10f9d3ba0ee455e458107fb7754cf652f",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -4063,7 +4063,7 @@ final List<Map<String, dynamic>> testVector = [
             "ecd8f06013ede0e60e5f995e24f98aaac79c1a077be943b65f8afb05014ca958",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -4072,7 +4072,7 @@ final List<Map<String, dynamic>> testVector = [
             "76088e5a2c6c1919e160937fec7691d6c6547617f127bba051da29fa313e6312",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -4081,7 +4081,7 @@ final List<Map<String, dynamic>> testVector = [
             "faa70f94786fec7fe122418db4d9e271b7b7270ade35cb0c1c567cad7e91a41a",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -4090,7 +4090,7 @@ final List<Map<String, dynamic>> testVector = [
             "90476ab0043e08d8caaa2818e6c5e0214fb63f715a978ec9e5c3b6b0ca82f242",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -4099,9 +4099,9 @@ final List<Map<String, dynamic>> testVector = [
             "1867c4d6c633c31220067d58aa8af6576b65175c65bd108bd68ae57bc1fac112",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "15514b43b094da8191c614f78f46cd3fa56349b27b6ca96f8b1596603a6115f2",
@@ -4117,7 +4117,7 @@ final List<Map<String, dynamic>> testVector = [
             "ec79426cedcbcdacbc1d8a308e869a9f3b85462f5b2ce6ce22e61c12bd9a4a56",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -4126,7 +4126,7 @@ final List<Map<String, dynamic>> testVector = [
             "0e823ffe8a98246c4981d83ed6a764085f04230b986154c3cc71144818c8fe5d",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -4135,7 +4135,7 @@ final List<Map<String, dynamic>> testVector = [
             "548642311138a167581d5a232d4f001f203649df0608e9b2a57629cab2cd8832",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -4144,7 +4144,7 @@ final List<Map<String, dynamic>> testVector = [
             "60b88d02eba36fa82b3efc4d573f78578ff311ac6a4dbbf179b1f71069bf631c",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -4153,7 +4153,7 @@ final List<Map<String, dynamic>> testVector = [
             "28968a75fc68830726b39f950abe9f264fdb8c384e89d0bad12287e5cbda965e",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -4162,7 +4162,7 @@ final List<Map<String, dynamic>> testVector = [
             "daaea8ee114ea69016557c494989ea977768d5b0e2283059dfe98be102a47c3d",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -4171,9 +4171,9 @@ final List<Map<String, dynamic>> testVector = [
             "c092e45629de6b4a17f24628f827e1e146f14e6af531c0dc8941a2f679d5dc33",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "4ac5380b2b15d1dc8c45247d4d7481644b739132edc63e944d424924736eb0da",
@@ -4189,7 +4189,7 @@ final List<Map<String, dynamic>> testVector = [
             "5e68367c49bee10dc9e61f5be45cec985642b125cfa6de848ce980af4b4f110f",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -4198,7 +4198,7 @@ final List<Map<String, dynamic>> testVector = [
             "00a50adf568fb6ed7c90874ab4fd0c4cfe5b3362a9d4d2c028d3457183d77d4d",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -4207,7 +4207,7 @@ final List<Map<String, dynamic>> testVector = [
             "8442bfa21f917b6e4d6568796c433e95a5ea394fd86b8881ddf2d36377753f3d",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -4216,7 +4216,7 @@ final List<Map<String, dynamic>> testVector = [
             "70fd01b4a41a00bb43b574182a51049f28ccdad71367469ea53fd49c55cafa25",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -4225,7 +4225,7 @@ final List<Map<String, dynamic>> testVector = [
             "606be3af46f567b927274c1a7d6cb867b461869f6edee934e50072d79b57213a",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -4234,7 +4234,7 @@ final List<Map<String, dynamic>> testVector = [
             "440895bcc80acbae2754954dd69abe5458af9ad382f3df0155b8c13de50c043f",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -4243,9 +4243,9 @@ final List<Map<String, dynamic>> testVector = [
             "e245c3408a84b8ef824fb7954a842b024a0a1ae91ef5f94280f546a103860620",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "097716ba2cb09129f0dcf27f96aba43671f6a050b357f8a15c19c07d999b8a80",
@@ -4261,7 +4261,7 @@ final List<Map<String, dynamic>> testVector = [
             "e681f549b05c0c020f2212795eefc5d997d08ce19f92983a45be182d2f08ce79",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -4270,7 +4270,7 @@ final List<Map<String, dynamic>> testVector = [
             "4e9358ae28dfdf992fc4731da6677c36b6e8fbe4e85bd1a11adc69f90729f246",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -4279,7 +4279,7 @@ final List<Map<String, dynamic>> testVector = [
             "7c924d3e39579955fcda48dbf71684a382d97e275f5d8d17484d2de4cd5fdf4f",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -4288,7 +4288,7 @@ final List<Map<String, dynamic>> testVector = [
             "b26f04cfffde286d6fca75b75bbd4d7045c551466408eeff2e01173d315d7744",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -4297,7 +4297,7 @@ final List<Map<String, dynamic>> testVector = [
             "5ce2c37f4ddbf6713475f1bf437f7f0180de6a449db4c7b75604a89287379b79",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -4306,7 +4306,7 @@ final List<Map<String, dynamic>> testVector = [
             "40b8b05106f9b4375c1c079fabf8978eb17876c7851d85f8d7ac19cd40967b47",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -4315,9 +4315,9 @@ final List<Map<String, dynamic>> testVector = [
             "724cdfcc4764b4b945f2f0dd0a933f5ebc6746a735fc7f8beed40d2dd375f66e",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "1982d0abeecb390fda536834d0c4784bb0fe71561abb4fb7ab7ed86b4d14cc90",
@@ -4333,7 +4333,7 @@ final List<Map<String, dynamic>> testVector = [
             "9291ab64eb07801936579cd530c100e0ff4a1d63cf376601f22526ebe3a50677",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -4342,7 +4342,7 @@ final List<Map<String, dynamic>> testVector = [
             "60e50e719681725f48da986a3206fd8b99fd86d4f9f220a909a4e3821590ca76",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -4351,7 +4351,7 @@ final List<Map<String, dynamic>> testVector = [
             "cafd39406b2b2bc79a6096c0088667fabefa78a42a69fe7215792cf5e5b0660c",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -4360,7 +4360,7 @@ final List<Map<String, dynamic>> testVector = [
             "62ae7e2a451c7ad5075248f14fb3f00f74670bbd995b45d61d7bbc9533bfb715",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -4369,7 +4369,7 @@ final List<Map<String, dynamic>> testVector = [
             "58a724172629a3d2827a852da7a2d3128c9e2b2f7931d2270cf557ca92b0fd02",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -4378,7 +4378,7 @@ final List<Map<String, dynamic>> testVector = [
             "7a29094eefc1094d77b89f1e2ed30f4f20ca0507467a9d7f7f2979a986f4c351",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -4387,9 +4387,9 @@ final List<Map<String, dynamic>> testVector = [
             "440add5bd8484852d03156b53ced00b33749b69dc4fb0dc446d42dec718e1d4d",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "35d533035be2d69633578699fba0a79bb9781d4f77e84c39cac22c7046a31526",
@@ -4405,7 +4405,7 @@ final List<Map<String, dynamic>> testVector = [
             "a01cf018cf3edd0941a320408561f0beaa44452fa9f63f13190dddfdef6b0308",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -4414,7 +4414,7 @@ final List<Map<String, dynamic>> testVector = [
             "e003f377e0e4e680164ad7d712b24513774a0c7c252fe8d8388ef7902ea2c32b",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -4423,7 +4423,7 @@ final List<Map<String, dynamic>> testVector = [
             "1a0574c1f1e0414a65b8049b045935769f429a4926622fbc862ac933ee1e7042",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -4432,7 +4432,7 @@ final List<Map<String, dynamic>> testVector = [
             "9e22d9d29a7f0d4bb0dee958a548392835bf971b89d22bbc5b0b5a7352cf3159",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -4441,7 +4441,7 @@ final List<Map<String, dynamic>> testVector = [
             "b60fcc66d132793ac67e43e37f26e0f3e19a270d976b79ecb62f88e80e501c20",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -4450,7 +4450,7 @@ final List<Map<String, dynamic>> testVector = [
             "aa6ac371e623b63bb48a6d9d735947afae00e36d36ffa25dd5ed002e14f5c73d",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -4459,9 +4459,9 @@ final List<Map<String, dynamic>> testVector = [
             "9cf87ecf851a414f93bb28e4903cd9d234c3bf906144d49ee8f1bbb4268e1f38",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "91bd1d87c4c4ac182a0f42021f9c11bb94fec1b7b2e2a569b644d2047df2c770",
@@ -4477,7 +4477,7 @@ final List<Map<String, dynamic>> testVector = [
             "5a3401809395d352959f3ae0e982716702a627aff5e90135924566817111271a",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -4486,7 +4486,7 @@ final List<Map<String, dynamic>> testVector = [
             "8ea5fed6bdb5cf803d0e8ac92bba9ba66ce7d3a873fcc3e239fec1925b39f41c",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -4495,7 +4495,7 @@ final List<Map<String, dynamic>> testVector = [
             "2006be5192abc98ae5d83e220c212fd822e640109bf703c6aca017d9000eeb1e",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -4504,7 +4504,7 @@ final List<Map<String, dynamic>> testVector = [
             "100092f5616fcf81ba1b7d95e42e64fa602d5a7453cbb92140c1424118894350",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -4513,7 +4513,7 @@ final List<Map<String, dynamic>> testVector = [
             "6ecf111edd6d53145e86afc23916e838ae9709595f75cac39f243bb4233d626a",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -4522,7 +4522,7 @@ final List<Map<String, dynamic>> testVector = [
             "5256a3f7b09d8162cf03e356e00403b520a5257c2b6cfbf7f0bca7ddb2152447",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -4531,9 +4531,9 @@ final List<Map<String, dynamic>> testVector = [
             "4eed7e757f185d9095135198883b6dc883bfcc2508ce50e600ffe9f92928be76",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "7537380aac4330f38d16c48cdd3f404b172d6d94c26736ebb794343be81d676b",
@@ -4549,7 +4549,7 @@ final List<Map<String, dynamic>> testVector = [
             "066c82dd804f52b2cfa8f41ba9b50740b6eb9c48e4dde1b45f74578f16f6551d",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -4558,7 +4558,7 @@ final List<Map<String, dynamic>> testVector = [
             "2e186a31a3479741cf70c03bd9cd13966216af5bfb1adc099e70a6e29d86183a",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -4567,7 +4567,7 @@ final List<Map<String, dynamic>> testVector = [
             "70726f2bec1f5469ce7e612c9d8c48e8633069c8e14abb937a261efda539aa36",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -4576,7 +4576,7 @@ final List<Map<String, dynamic>> testVector = [
             "fa21fc73d858005fa2ae4e1192d5f1c813a3884d522131415672686708717b74",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -4585,7 +4585,7 @@ final List<Map<String, dynamic>> testVector = [
             "24c95dd533195ef6cd185713834e17ae2bf7ee21e3607a1e3ad18e7752a9561b",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -4594,7 +4594,7 @@ final List<Map<String, dynamic>> testVector = [
             "6ee9fc439191cf94e78d7f61f17e89c6d8c8c5e8efb6521dc7b37384236a332e",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -4603,9 +4603,9 @@ final List<Map<String, dynamic>> testVector = [
             "0ab09cad5506d7690d3dfd881468a41dd0d124042315d23c39a34326121cfe5b",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "9417ff1ae864f0845bbcbe946d32b63817e0d57e029577617a95ec83e4be5001",
@@ -4621,7 +4621,7 @@ final List<Map<String, dynamic>> testVector = [
             "540f38111f89180bb12fa44fb4dfa4c7d89cd916d20ed61eebbe35c06dcc3a12",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -4630,7 +4630,7 @@ final List<Map<String, dynamic>> testVector = [
             "fa9255da71679c2ba10c404e284bc7c3c8bdff899c0d8e0231e0a5c7192bde01",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -4639,7 +4639,7 @@ final List<Map<String, dynamic>> testVector = [
             "3cf0f3f896afc0b3d4093b5719a6d59c9825774da900e0f120ded7d7280cdd54",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -4648,7 +4648,7 @@ final List<Map<String, dynamic>> testVector = [
             "0a6af30893a5d5db3336d6b2d8baf641f23172f873aea75bb4244bd4f2d7236b",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -4657,7 +4657,7 @@ final List<Map<String, dynamic>> testVector = [
             "2cf97735c65e0c1b5a4b0af622c0aa8a7d658cdc1cb144b42ba804dfa48bdb44",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -4666,7 +4666,7 @@ final List<Map<String, dynamic>> testVector = [
             "9e62d2deb4004e29df698c9addfa7afd3a0a8bcf92541e6ca43025ed465e627a",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -4675,9 +4675,9 @@ final List<Map<String, dynamic>> testVector = [
             "dc088a83e35260e8412b7d75ebf34936133fcae2c28e59b5016a992ab76aa27f",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "c718980873262f8dd4be2fe009deaf44697b3696a5a36234e1c2975d56d6ad56",
@@ -4693,7 +4693,7 @@ final List<Map<String, dynamic>> testVector = [
             "c435da59acef8bba5e0b4e9ea5e385595a8c09672f0cdf156b6c8cd29e9dc422",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -4702,7 +4702,7 @@ final List<Map<String, dynamic>> testVector = [
             "ea7839181f63b71b5cf2bed1323ae6da30146a93e3fbe4818a31232cde45eb61",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -4711,7 +4711,7 @@ final List<Map<String, dynamic>> testVector = [
             "2a1ebd21bd9a43fe7490892e19a9bf4af05e3ae63234a575df83d11d93405a7e",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -4720,7 +4720,7 @@ final List<Map<String, dynamic>> testVector = [
             "6c113b52a3d2e577f74e621182009b843b6c4ef8a9f48c28aa5bcf7d08100711",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -4729,7 +4729,7 @@ final List<Map<String, dynamic>> testVector = [
             "f8f45efe28622daa9d8a8cc839ebb427927009eac24f05cb2fcb05dedc9c715b",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -4738,7 +4738,7 @@ final List<Map<String, dynamic>> testVector = [
             "465c66876b7623bad4e4f8f66e4c92dc129901ccb830b5d69eba172277b51823",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -4747,9 +4747,9 @@ final List<Map<String, dynamic>> testVector = [
             "84f5a952ef916886fe1552238139c25257c51b364950a083a91246fca5151477",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "1629bbedf7193cc7276d390d76eb2331c39976f4adea678fdd5f6d670fab43fc",
@@ -4765,7 +4765,7 @@ final List<Map<String, dynamic>> testVector = [
             "0424e4bee422d013637035442cf47187e777cad05999391eedb0a707e7c34e45",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -4774,7 +4774,7 @@ final List<Map<String, dynamic>> testVector = [
             "aeaa4e01c037e774364dd2da9d67be1df1d5df53cfa69fb9c9b54df8aa5d8305",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -4783,7 +4783,7 @@ final List<Map<String, dynamic>> testVector = [
             "4ebe4940fde18f8e00da89e4f46e458027acb23bddf1194838e3eca215e33f1b",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -4792,7 +4792,7 @@ final List<Map<String, dynamic>> testVector = [
             "06b528b1979dc5bc4335f9bd4b87223045a96d9bccd735af7c13f2aca378e423",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -4801,7 +4801,7 @@ final List<Map<String, dynamic>> testVector = [
             "2ce43ce167e494616dcc4b3314f4f8825a9b88a8f8156bd450e46551c5b67429",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -4810,7 +4810,7 @@ final List<Map<String, dynamic>> testVector = [
             "50a0b15c7da9621ba56bb432a20d6f43b73fb9fb3d0e5c5a7d3d8cd792583732",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -4819,9 +4819,9 @@ final List<Map<String, dynamic>> testVector = [
             "c0919eb7e2c8775cd8afdc8fbc5dd85abf5b7d4d6cbc50f715c38e3fd9e83d3b",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "c6c57e499f3b8e7a700df0675d677cef5707d5c96b580c445533b2510b42abcd",
@@ -4837,7 +4837,7 @@ final List<Map<String, dynamic>> testVector = [
             "ea8a87c422cb08a8816177e164252c0fa01c6f2e6476a87af094643b2e9b4d68",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -4846,7 +4846,7 @@ final List<Map<String, dynamic>> testVector = [
             "e075eb465f26d397cd4b8e36078c2bbb547e4b0dd94705e409257759e266c831",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -4855,7 +4855,7 @@ final List<Map<String, dynamic>> testVector = [
             "cc95c56ffd8abfd5a7894f9fd561e58e8d7a4b095c83c05a1feb32a88a23df35",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -4864,7 +4864,7 @@ final List<Map<String, dynamic>> testVector = [
             "145df2bb53cfebaae6c3dba7066549dfc7970d2a86a69c242fce2d22b90d4634",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -4873,7 +4873,7 @@ final List<Map<String, dynamic>> testVector = [
             "4a65bf4df1e5b5776d939e7f0639d6deb275ec31e1b37f91d46382a0d438d675",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -4882,7 +4882,7 @@ final List<Map<String, dynamic>> testVector = [
             "4838bba04ba6897deea86964dea6b5b92d12dc5a9253e55f25c0be802a4c002c",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -4891,9 +4891,9 @@ final List<Map<String, dynamic>> testVector = [
             "12f1db923728e93562c664890cf74b1db09d3f6252aae33fb270c35dbfd68440",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "872bae3701fc164ec584a67c4d95319b16da2ed999d4ad8615ae299ed7b0a355",
@@ -4909,7 +4909,7 @@ final List<Map<String, dynamic>> testVector = [
             "220c01c28de908fd07e9d0dc1200a1e10e7c42115f28d08fe5038058d5333e46",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -4918,7 +4918,7 @@ final List<Map<String, dynamic>> testVector = [
             "344ff69741b54fb144e4597d8b581358b7d2f3dcef1c598cca384e50207c6775",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -4927,7 +4927,7 @@ final List<Map<String, dynamic>> testVector = [
             "e8e366ea9adf64b23036f528ba3a60fef786c8d2052b499daa94caa87677463e",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -4936,7 +4936,7 @@ final List<Map<String, dynamic>> testVector = [
             "60c1001fc6fd062a4f91fe22338e515760e331be14a8fc893b9fa3c588ae684c",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -4945,7 +4945,7 @@ final List<Map<String, dynamic>> testVector = [
             "42c0d3cf705b3f82b16c9bb51df51dc9ac5de8db8a2e7daa24353b1fd5952e7d",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -4954,7 +4954,7 @@ final List<Map<String, dynamic>> testVector = [
             "0efdcf064dbe80a736dd481adde80426716cf325f87ba8b621d15c2eef0a443a",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -4963,9 +4963,9 @@ final List<Map<String, dynamic>> testVector = [
             "3a663b41a3852ec7a370390e5fa32ca8437d7e89ef57b94e845675f54e1e6746",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "184403675da61323b48dd026bcf5135a5b9d878778cc46586fe6052ca14bb6da",
@@ -4981,7 +4981,7 @@ final List<Map<String, dynamic>> testVector = [
             "743713145e803e0ae6787ecb98d446f29d02b3160da9c318121b2a974c1e2b5e",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -4990,7 +4990,7 @@ final List<Map<String, dynamic>> testVector = [
             "5e907cfd84464a54c287a9aeff2c210b00eb2065f948d4c8f8a7a755a8cb1744",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -4999,7 +4999,7 @@ final List<Map<String, dynamic>> testVector = [
             "9ef8b3382ed24013e87972430c4df4ba497abb2cdcf69159e4d44163e265d423",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -5008,7 +5008,7 @@ final List<Map<String, dynamic>> testVector = [
             "c2e9d43ec3a5c169335d3e83254dd19fe9603465ffbd2cef123fed4102d02403",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -5017,7 +5017,7 @@ final List<Map<String, dynamic>> testVector = [
             "56e938466a9baa26461c729e34755e879b8b7e5646fda8c8f953c73da72e5467",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -5026,7 +5026,7 @@ final List<Map<String, dynamic>> testVector = [
             "5828cce8e7950eadfd5b827de9ad9f28ddad7a01cba3d595a20cf7ff11669a44",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -5035,9 +5035,9 @@ final List<Map<String, dynamic>> testVector = [
             "8250e3e468b7362c790c91a4f91f27d0e029337fe2094ec2df54a74fcf4c730d",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "36a09f497a51953b87b1240466227c96c8c6d02bb51c9cfd255916f6121bfeed",
@@ -5053,7 +5053,7 @@ final List<Map<String, dynamic>> testVector = [
             "b4468758af9bc5f6283913f397ecf79154d2102838ce69412598979255815503",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -5062,7 +5062,7 @@ final List<Map<String, dynamic>> testVector = [
             "aa017e5b4d969fcedcbebc49bda7eab33b16416dcb62b572cb07c7c37eecfb1c",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -5071,7 +5071,7 @@ final List<Map<String, dynamic>> testVector = [
             "9c388f867322745737c43b14682dabd4e892260eaa21d32f98ba47d99a04a57a",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -5080,7 +5080,7 @@ final List<Map<String, dynamic>> testVector = [
             "9e72d48386f127eb2db718d0ac63cf559bbe5d8ecf5260f4726f702c0f88ac59",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -5089,7 +5089,7 @@ final List<Map<String, dynamic>> testVector = [
             "ec4f9f8834c363d89500fb0b25005877125c102e0a9da241085326c70e9a985e",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -5098,7 +5098,7 @@ final List<Map<String, dynamic>> testVector = [
             "fe71cc87cc29c8708c4fafc1bd4148c0f7f9f283835d01c5b709fcfc8370753c",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -5107,9 +5107,9 @@ final List<Map<String, dynamic>> testVector = [
             "18ddb0cde2885cf69966e2b9487e3f0da7215477e8364867c74b8d94b34fcf23",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "9b756fd273c5a43a69b0a0c248f7248c4ffeabc0fa2d7faa474da7ae481e04ee",
@@ -5125,7 +5125,7 @@ final List<Map<String, dynamic>> testVector = [
             "64d6f5ae5e99e22e366dbf49e5cb057c4ae4941703cfdb0da2482a9700d39c3e",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -5134,7 +5134,7 @@ final List<Map<String, dynamic>> testVector = [
             "f6d1b519aaf160134c61e33c09ecd7084655cc4f6f9c11232a288a3c6a5cd879",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -5143,7 +5143,7 @@ final List<Map<String, dynamic>> testVector = [
             "2498f51ba455bcdde2825b67752d9bd50eb63fbb70e06a5630344824b9141318",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -5152,7 +5152,7 @@ final List<Map<String, dynamic>> testVector = [
             "5ce414d06344d7cf54e5cffeeef2b2696f9e6b687b1d9d527e7d60db89ea6530",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -5161,7 +5161,7 @@ final List<Map<String, dynamic>> testVector = [
             "865bfadbbaa44092c16a04573511377d06b3f91b7df4e0c41205e2a279ff9f5b",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -5170,7 +5170,7 @@ final List<Map<String, dynamic>> testVector = [
             "b2593860ef61c65d5b40abc6bd301b62de1962a5ee8cfef65b9b5c79cd043f62",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -5179,9 +5179,9 @@ final List<Map<String, dynamic>> testVector = [
             "dac5d459a3ffcfd08ee1b0d13eabaea15584081d0e5b3c7511d223ac4a5d5136",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "d6c2dd8323cb6e680a57a2d3700d585ee668a7a826a76e0bb2e35b904be2c76c",
@@ -5197,7 +5197,7 @@ final List<Map<String, dynamic>> testVector = [
             "3ca96f182906f74170612af9402865f4a8aef4a7afd37d7e0a4e2a1bc34f0a1f",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -5206,7 +5206,7 @@ final List<Map<String, dynamic>> testVector = [
             "b41a68a748b54219e1bdbfd3a53fe19a840c20e4c43461725706a56525aab70f",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -5215,7 +5215,7 @@ final List<Map<String, dynamic>> testVector = [
             "2c7cd5ac7952d9dedb41e8df6e370cd62d2b1773d819763a27c065b5eae3a71a",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -5224,7 +5224,7 @@ final List<Map<String, dynamic>> testVector = [
             "d61d9708499273a7fefd6aad0d7e3d76b18b1dbe6857f67c43323fcabd00cc2a",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -5233,7 +5233,7 @@ final List<Map<String, dynamic>> testVector = [
             "04283fbab773dc0ca235b97b4770d64a804e5431579a08b33b21862280dbee4a",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -5242,7 +5242,7 @@ final List<Map<String, dynamic>> testVector = [
             "16cc64641457bf59115e140e812dd25d923d4437a4ca35cac6f5dfef3dd64c68",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -5251,9 +5251,9 @@ final List<Map<String, dynamic>> testVector = [
             "86fcff80bb5f23c82a52a6767a32149a5892e8fd1da6d7417dc230f20f134b65",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "3d8d06f106d3bc8963ebb4a3c19fb9c5ffd90a5ceb359dce44e8a690f14df282",
@@ -5269,7 +5269,7 @@ final List<Map<String, dynamic>> testVector = [
             "de83ade7d0d21ba28b7cf0fb2cf18f68cd335422108450fcb07527d0d4023e49",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -5278,7 +5278,7 @@ final List<Map<String, dynamic>> testVector = [
             "ca502bd42028d365cdec7c5928696f8b6b9f893f9f4f68249b827ae87d1a195a",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -5287,7 +5287,7 @@ final List<Map<String, dynamic>> testVector = [
             "d4d88a1592d5d095704bb7d49d66b065eb56dc74d3ec111f7641481380abe832",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -5296,7 +5296,7 @@ final List<Map<String, dynamic>> testVector = [
             "b41377c91815a6da12d07139c7b0af0ebf1a49ae1d9c1c7a8715f703fd21e566",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -5305,7 +5305,7 @@ final List<Map<String, dynamic>> testVector = [
             "baced67baa42e44623258b48015a6017ae92375dc31c3f8bc06d06292eede318",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -5314,7 +5314,7 @@ final List<Map<String, dynamic>> testVector = [
             "24d7302a7c2a2bfc106f650de113a05171250d249a4c4faa33683510f02fca39",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -5323,9 +5323,9 @@ final List<Map<String, dynamic>> testVector = [
             "7a6c7f9cafca7e3ae19cf659d46d8dc3eef081a361315c75140d84c4a0ddce51",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "c79581389abfe37f323e8c577c675c02bf2ffc0d49b4839e134323746c520ae7",
@@ -5341,7 +5341,7 @@ final List<Map<String, dynamic>> testVector = [
             "8abd14918b64e039c343e5f969cd9deab09ac3c905193106d3d57528ded6c64a",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -5350,7 +5350,7 @@ final List<Map<String, dynamic>> testVector = [
             "7af2afab9d410a7f922aa614b2427cd080cd47f8882c938d31b7117a565cac2a",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -5359,7 +5359,7 @@ final List<Map<String, dynamic>> testVector = [
             "5a5e0e66ec2dd77c35c68f10bed32b773e0c3ed11f95f57e82907612c0181b2d",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -5368,7 +5368,7 @@ final List<Map<String, dynamic>> testVector = [
             "b8c4bbcf7d02a39ca83490bdf4c21b846411521a8ef3f85e80eb9126a372dd04",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -5377,7 +5377,7 @@ final List<Map<String, dynamic>> testVector = [
             "b048b87c139861ec3b739a31851d2195bfddcc5d9880abf5353a88906b752d53",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -5386,7 +5386,7 @@ final List<Map<String, dynamic>> testVector = [
             "f0197fc03b1e2f7bb590c2b39798b183be72658fad995397a34e9efe8d74a276",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -5395,9 +5395,9 @@ final List<Map<String, dynamic>> testVector = [
             "fcbf4752763c08d27c58c988eb0e8965fc56b6928057efbc2c1dfe067550c627",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "a26947d397f79970a2e6d438d084d49c3694b8de50abb2872b4ce9c05da5310d",
@@ -5413,7 +5413,7 @@ final List<Map<String, dynamic>> testVector = [
             "a2660de87e6c29a613ef3b9efd4e0942421b9907c59507a7392638ee2059d85c",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -5422,7 +5422,7 @@ final List<Map<String, dynamic>> testVector = [
             "1ef5dd46f681aeb84e166b0bbf08a019740ae74f6693f91f2afbb4ef235bb42b",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -5431,7 +5431,7 @@ final List<Map<String, dynamic>> testVector = [
             "de5fb88574f52e9a8d33395d3847ee4515bdf1c01bb68fe92883d85337b09978",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -5440,7 +5440,7 @@ final List<Map<String, dynamic>> testVector = [
             "38c9860dbe9372ffd559d8c0fb42805565a03b89debca284bdbde351198dce3b",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -5449,7 +5449,7 @@ final List<Map<String, dynamic>> testVector = [
             "9caa48650abcfa13db5b3467271b18e9119ed0fb4afaf4d5994ca1a109a0a237",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -5458,7 +5458,7 @@ final List<Map<String, dynamic>> testVector = [
             "726abfc9204b5fc8aff993c08259cdfa8566bf49fa44ed6021e61c3baf050e09",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -5467,9 +5467,9 @@ final List<Map<String, dynamic>> testVector = [
             "74614746ea43a7f4d326d9761540094345c328df2ef514bdab72fbd33a79a766",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "8d662790f21aa3f714de4cde5699b6bda63aab44bd13510faefdf8963f0c6553",
@@ -5485,7 +5485,7 @@ final List<Map<String, dynamic>> testVector = [
             "cc2b9adb809147e2d198f2d9ba2684f1679edc1d1dba64ffd541943310616f00",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -5494,7 +5494,7 @@ final List<Map<String, dynamic>> testVector = [
             "c80e4b458c2f612dd949c41973fd1a591f142d38712e244b0bbe5a43c8ceac3e",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -5503,7 +5503,7 @@ final List<Map<String, dynamic>> testVector = [
             "9aaad1c308800369bc46fefb68b92d43bebaabeee77a5e3ccac13acaf626c22b",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -5512,7 +5512,7 @@ final List<Map<String, dynamic>> testVector = [
             "92fd9ddf53836a8c8344631e221300bcaa2e17d26d02f58fefc0b69dd86e0648",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -5521,7 +5521,7 @@ final List<Map<String, dynamic>> testVector = [
             "a82dfb3379a61fae7933a5ebf43ba6bfd7018eb6f8c08c3d77621ee0df9a0d1c",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -5530,7 +5530,7 @@ final List<Map<String, dynamic>> testVector = [
             "922b2d0011676e124c714d2aec76907f35cad32f3c8a487450692bf4c274d809",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -5539,9 +5539,9 @@ final List<Map<String, dynamic>> testVector = [
             "b6196cccb33e61ae672f02ff9089b70eeeebd64002303842aecf6ccd5ad9b722",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "e058f98359ef5a149b06f4a33e8ab1e707b5118e5b0c152ed3a419d30fd12166",
@@ -5557,7 +5557,7 @@ final List<Map<String, dynamic>> testVector = [
             "1e371ba303472d6975cde4e3f1fd6d26aa13dd10d690291fbba42be100855219",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -5566,7 +5566,7 @@ final List<Map<String, dynamic>> testVector = [
             "ec9586e32e655fb2e6ddcbb409dcdc7e0d72345304d0674455342cd5da1c8f43",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -5575,7 +5575,7 @@ final List<Map<String, dynamic>> testVector = [
             "a4eeedb634900e48cc5e2749e5933c779601408c511a8b26d6de8306ab1efb56",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -5584,7 +5584,7 @@ final List<Map<String, dynamic>> testVector = [
             "66af8ee0e61a5f8fc0e2c9e9ba873da2bf957191fe8cee527da1abc79e0acd4b",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -5593,7 +5593,7 @@ final List<Map<String, dynamic>> testVector = [
             "761e04ec3d64e77468ca8d88f667602c04bbf799428836d470d4747c5b3f2020",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -5602,7 +5602,7 @@ final List<Map<String, dynamic>> testVector = [
             "aeab0030c609fba880c4eeeb80c02951f65cf2f0cada482ecd3a281664214d14",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -5611,9 +5611,9 @@ final List<Map<String, dynamic>> testVector = [
             "b48ee031b479151bd59f6d682a2c2a3b6d2d0c156418de3c682f880c70364463",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "953064cd0c04197103aa723a7644e78fd7436473c220f20b8ff68c271de68328",
@@ -5629,7 +5629,7 @@ final List<Map<String, dynamic>> testVector = [
             "605075c1b54cd0beae850efc87f74580427c8d00964360e8b04d72507714fc6e",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -5638,7 +5638,7 @@ final List<Map<String, dynamic>> testVector = [
             "5003cb53d351a7fb1bc9f71d583c53d992ba6617979e9fee886035716f45d550",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -5647,7 +5647,7 @@ final List<Map<String, dynamic>> testVector = [
             "14df4a1d5250766090969c211417cd97f723e2a4a5c8131a7184313ace5a050f",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -5656,7 +5656,7 @@ final List<Map<String, dynamic>> testVector = [
             "80a7dd36c8c705b8e09d35b9cc8712fe1d9ce873b463afaa09ffdcb9c9b39a70",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -5665,7 +5665,7 @@ final List<Map<String, dynamic>> testVector = [
             "e6606e4946c14a7a832f1beacc917b008647ed0901fff6ec7d53e8716b13f363",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -5674,7 +5674,7 @@ final List<Map<String, dynamic>> testVector = [
             "94c1336e1fc3a840be1a4ad60779ba86e5262b40840285dc4b485a36a863be1b",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -5683,9 +5683,9 @@ final List<Map<String, dynamic>> testVector = [
             "84e47df1db0a0f466fcfd56b689633359a742475030639cecd0d860a9afccd2f",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "77e3747bd5e8a8373a8ce8f3646815188625773e8a0d17c439a0c1f3d878287d",
@@ -5701,7 +5701,7 @@ final List<Map<String, dynamic>> testVector = [
             "a0d1b0b329398969099dc273f47b9e091d85bd7574f07651dfcf0ba51840147f",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -5710,7 +5710,7 @@ final List<Map<String, dynamic>> testVector = [
             "b8269daddc4154e6d93993a39cdd9006c0cc1ea03a9a5464215f26e7f9b2bc25",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -5719,7 +5719,7 @@ final List<Map<String, dynamic>> testVector = [
             "84a3d3713c3fcef379e098bd80e62a41c26b79709ca5d6aa6bef4c654f96ce58",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -5728,7 +5728,7 @@ final List<Map<String, dynamic>> testVector = [
             "765d81b5eb7fb5155600f7952d79264b6613b29687367b7dd52fc9bba9643949",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -5737,7 +5737,7 @@ final List<Map<String, dynamic>> testVector = [
             "c2cd095dd8c441d5f8ca7d434565c2c3f3ba3874f70f725509258c97f3917b41",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -5746,7 +5746,7 @@ final List<Map<String, dynamic>> testVector = [
             "cc9dcca02d8983f23036dbe55c1135fafdff3df147b9f5d97ea5b01e626d8952",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -5755,9 +5755,9 @@ final List<Map<String, dynamic>> testVector = [
             "96b3d3c4e0391a340ec9180da715d8f1f60c476d9745e81eda1b43c0bc5c822f",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "e78e22131b6d4876716d641148600cd04cb68884e354a2da5b0b15401b438bc2",
@@ -5773,7 +5773,7 @@ final List<Map<String, dynamic>> testVector = [
             "48d50a71fd60f005e583a78cf3a321b5ee81fdb2c2ed82532e7b8aa9f5789d0a",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -5782,7 +5782,7 @@ final List<Map<String, dynamic>> testVector = [
             "fe431a647545ca53a7e2caf02fcef0697d118b855926df20495775410dd37e0e",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -5791,7 +5791,7 @@ final List<Map<String, dynamic>> testVector = [
             "86dc5bf807ed77af1ab3d6a013508d83caca33170254d84ee07242795dd8ab1d",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -5800,7 +5800,7 @@ final List<Map<String, dynamic>> testVector = [
             "a870bd0b8274e8f0f813b2ff044d9d1fca42d97e56e3b0950104dd4c8fd3a24d",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -5809,7 +5809,7 @@ final List<Map<String, dynamic>> testVector = [
             "f298c7e4d6774f775eb8b2b3efae7fe5bb852c06119ac1d56864b53eb6777d75",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -5818,7 +5818,7 @@ final List<Map<String, dynamic>> testVector = [
             "927db4cc5d976afcc8f507009ee0f335ff1b919889e0fb53258a3fc8d0abf373",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -5827,9 +5827,9 @@ final List<Map<String, dynamic>> testVector = [
             "d41ce1b489f3347a5cd3de29a41fb3d68399560ed54ff69a1eeb1af9b5a76d1d",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "b391ddca09c50a3679bda05d0f6b4bf83721af0e0e5bb7b622b090b87dc80717",
@@ -5845,7 +5845,7 @@ final List<Map<String, dynamic>> testVector = [
             "ccf28248f37aca9aec340a1184fd0a99c322d414a18eeec86541b47811b63755",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -5854,7 +5854,7 @@ final List<Map<String, dynamic>> testVector = [
             "46d7e0375b8a9de5ad54721e3345a119dafec2fd1c731cfa68c93c75ac6a164a",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -5863,7 +5863,7 @@ final List<Map<String, dynamic>> testVector = [
             "a875b183348fb4d864a43018c5e36f20c53a9317716e45e9f2aa7f2063651714",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -5872,7 +5872,7 @@ final List<Map<String, dynamic>> testVector = [
             "981ec497acb006c5daa909e698bc60f9015e468b85ad6c401281394f71e6bc2d",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -5881,7 +5881,7 @@ final List<Map<String, dynamic>> testVector = [
             "1482ed2de6992bdb938d434c5e2f37ba69ab36bc5cab2001fd2be855e51a9e2c",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -5890,7 +5890,7 @@ final List<Map<String, dynamic>> testVector = [
             "8c360cb05749cebe9574ccab406c864dd7921e22fcc88147f31a2bbb225a1229",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -5899,9 +5899,9 @@ final List<Map<String, dynamic>> testVector = [
             "9a26f2491e859c584eb06751db4a776fc33f74738c26b91c459f1f4f7f3fba06",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "77d8a3089c7ef55cfe2084a40c9702d310bdeb3293e27bcb442dd96d390f91a9",
@@ -5917,7 +5917,7 @@ final List<Map<String, dynamic>> testVector = [
             "f407605341404c6fb1a56624d770d9c47ef19cedd5f47d3574072ff8a45e811e",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -5926,7 +5926,7 @@ final List<Map<String, dynamic>> testVector = [
             "b06452e9246a3b62d373105fbee58156046a11764b944959df1e0a8370b7295e",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -5935,7 +5935,7 @@ final List<Map<String, dynamic>> testVector = [
             "e2cad3c0c5e6dd166091c81de948dd8ff3168e8d16429fe2fe925a4ba9f0e805",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -5944,7 +5944,7 @@ final List<Map<String, dynamic>> testVector = [
             "e02279c5d47a9de6364cbdee6ecdbcf59af09d09e0465e97a44ba9f0e3010652",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -5953,7 +5953,7 @@ final List<Map<String, dynamic>> testVector = [
             "a03ffa919bf958ec17dd5217ab1fc5ebb5b0d12f993b5755b7fe06ae11bbba32",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -5962,7 +5962,7 @@ final List<Map<String, dynamic>> testVector = [
             "429f6ec31bc78969a77b62438b0a8d4531fb4d4f1777de0ad6fb731b85b9d347",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -5971,9 +5971,9 @@ final List<Map<String, dynamic>> testVector = [
             "a4f26f6db5d403cb13a972b3aac1a545339eda22d44c3ec1d4ac3f597854893f",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "2b97fc82051914df064c151c76786e37c3dffcf1722fbbacba5abc61c78d61c4",
@@ -5989,7 +5989,7 @@ final List<Map<String, dynamic>> testVector = [
             "801c727c5151aa67f2d897c9f1cb83bd9c22f37d1574d81b7a0df21eef8e8a18",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -5998,7 +5998,7 @@ final List<Map<String, dynamic>> testVector = [
             "0492b1de879e3972da1e187dbcc76b05515ae31afb1aea07dd59597beb0cde7a",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -6007,7 +6007,7 @@ final List<Map<String, dynamic>> testVector = [
             "825b71869143b55e32cd3f561bf3365e9b6760b8f1d680b12eaa9486b1cff57f",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -6016,7 +6016,7 @@ final List<Map<String, dynamic>> testVector = [
             "9c2f03ad3f79152de568dc6054afc4335c9c41153cb31e73321002bd4b782607",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -6025,7 +6025,7 @@ final List<Map<String, dynamic>> testVector = [
             "9c8c652d29ea60b90b6e392f9ab159b4632622e5c73de3d9275b7c3fe9bb642a",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -6034,7 +6034,7 @@ final List<Map<String, dynamic>> testVector = [
             "1ea7fe3540f5fd25a898317d623ef96d8e5d6e3835689c202a778ca0b573cb46",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -6043,9 +6043,9 @@ final List<Map<String, dynamic>> testVector = [
             "989403fa7cf5edf55db7fbc6fca5f28ef70d26d29f6028458725b05f4005fe7a",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "1f135affa357f68fa6f20f38e850d4334b600b7dfcff640b7308af36bf78a177",
@@ -6061,7 +6061,7 @@ final List<Map<String, dynamic>> testVector = [
             "3aa70cd97e0275f63b447cd29f6a1937d51b4ec694eff55d06732c820f14f160",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -6070,7 +6070,7 @@ final List<Map<String, dynamic>> testVector = [
             "b08c33d59829f780e461792467387c7ac6282bd3a798cc1bb6e930ed57c8fc0a",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -6079,7 +6079,7 @@ final List<Map<String, dynamic>> testVector = [
             "f44fe94b15daee5f0a30890ce4c2d37c968b67dc8f2eedd04af90c1fea0dc10a",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -6088,7 +6088,7 @@ final List<Map<String, dynamic>> testVector = [
             "f29912e4f683c0df16e9efe8e78cceb725a7e45504fb76545d3c342d88636475",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -6097,7 +6097,7 @@ final List<Map<String, dynamic>> testVector = [
             "0014d722af2a450fb4fbe1f377587b501260c057d84226a7e167113c655d1976",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -6106,7 +6106,7 @@ final List<Map<String, dynamic>> testVector = [
             "244397eb58ecae71b68a4dbf0bfd4fdf6219b6842bb30e6ebae0950e1c1ab95a",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -6115,9 +6115,9 @@ final List<Map<String, dynamic>> testVector = [
             "e81e39c33985533c03d770df29dd8b9478398e076610a0176f8b57c0fc9a087d",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "1b92ee2263de56c98c977685512c057e634813ba77f5030c2af2dba09cf8f5dd",
@@ -6133,7 +6133,7 @@ final List<Map<String, dynamic>> testVector = [
             "2ef2a377fc0d7b4c0ed521c5c6352029395b8794591d479de1267545f303740f",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -6142,7 +6142,7 @@ final List<Map<String, dynamic>> testVector = [
             "10c5618d4d6d37f855978255538b901ea58aa0bb9645bc2dfe7aab54185be65d",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -6151,7 +6151,7 @@ final List<Map<String, dynamic>> testVector = [
             "c68fbaabdb09773375c95b23f8b8bc82c64602957e2ee084defedd30fa66ec06",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -6160,7 +6160,7 @@ final List<Map<String, dynamic>> testVector = [
             "f235fd01fbcf03c5585376c17a15ef79d721818a8ce62a84c27a232a763a231f",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -6169,7 +6169,7 @@ final List<Map<String, dynamic>> testVector = [
             "fcd0dc9cc63f5d68b6188cd6699eb996405a4cd91df04bd10c94c7f5a8623742",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -6178,7 +6178,7 @@ final List<Map<String, dynamic>> testVector = [
             "ce1a1dad7c2b205ab35a1fc4e4ccc2d461eda5ca14f7190664585925b9196448",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -6187,9 +6187,9 @@ final List<Map<String, dynamic>> testVector = [
             "7cf2a75bb4faa09d3046d717bdd25631b937d12fb7beacbc8da6ccfde4e53905",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "1a0c58231c7485d9c7e7c2ec8c54b01f2f88e964d86caf49cf6264ce40b038ad",
@@ -6205,7 +6205,7 @@ final List<Map<String, dynamic>> testVector = [
             "5ee4d31ed00f4354d82316c8509f4146205e27a40950119f0ee219d3a62eba29",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -6214,7 +6214,7 @@ final List<Map<String, dynamic>> testVector = [
             "90d008c389618887121d5649af4632b6c64c5fac8291d3481cf4dbadb1c57462",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -6223,7 +6223,7 @@ final List<Map<String, dynamic>> testVector = [
             "785b8b2b5ef5f4b9660586eb99f5d898ef7c96aaa276f5986f4201b114e8436d",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -6232,7 +6232,7 @@ final List<Map<String, dynamic>> testVector = [
             "dc4d17da9754f8d450576b883b3c2d2160b16f71809290afc50cdef5aa550e46",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -6241,7 +6241,7 @@ final List<Map<String, dynamic>> testVector = [
             "eac9895beea4fb2e9a285acd8a8be2a5317cfadf22f150417f2ee6ac4829c70e",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -6250,7 +6250,7 @@ final List<Map<String, dynamic>> testVector = [
             "d2b60713e5bf655e303f44b732566bdf78f431a1b6933acf80e569eab0a28967",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -6259,9 +6259,9 @@ final List<Map<String, dynamic>> testVector = [
             "e6a1fbd6793b9c5f593893788cddd9466d11f1c2b023e5142c0dc8e351f3d054",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "47a52fe37269aa84121575d34bbb4db8eacf3123b21c5f5d6ad663a4fa8a31a9",
@@ -6277,7 +6277,7 @@ final List<Map<String, dynamic>> testVector = [
             "c60cf5a5612159ee34cc43b04b66bef99e4dfd9585c98521548de42f6466ba7d",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -6286,7 +6286,7 @@ final List<Map<String, dynamic>> testVector = [
             "de261e18c24f866d2a80436c2b71c5740b608ab95b3ca8fba217aa4c06007e4e",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -6295,7 +6295,7 @@ final List<Map<String, dynamic>> testVector = [
             "b42f22b5a29c24751701cb80e76f914963c900d9e708bbf7aaf207cd2d556109",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -6304,7 +6304,7 @@ final List<Map<String, dynamic>> testVector = [
             "aabc4f5cb77e09f8c943a382873399d62d842d930b039da473bb286595a9425b",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -6313,7 +6313,7 @@ final List<Map<String, dynamic>> testVector = [
             "f4e90baf4a72cbe5ea36359e6efb6f985f73ce79737c143ea96f6c58767f5132",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -6322,7 +6322,7 @@ final List<Map<String, dynamic>> testVector = [
             "827cd1d7160e5369b75ffaae350352969c4791d3e4e13d1ed6b401e79052500c",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -6331,9 +6331,9 @@ final List<Map<String, dynamic>> testVector = [
             "d28d4a50dbabb9e3251219bc58eb88295682b7f1ae0c241411aad1f156d9c95c",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "5eac077d0625b8cf612088c67add6ffb1059d534c3f3e74dd6d489e894a76d4e",
@@ -6349,7 +6349,7 @@ final List<Map<String, dynamic>> testVector = [
             "faf526a4138935f6590dc87bcb8d969f14363cd38e8dd278af6ffb7e72190f29",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -6358,7 +6358,7 @@ final List<Map<String, dynamic>> testVector = [
             "fc157df9c83961867a69b283a8c8e0f190c86dc7005a2d19dee246cab2151232",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -6367,7 +6367,7 @@ final List<Map<String, dynamic>> testVector = [
             "64b719bc540250b38213fbdf2b22ca1825e24dd8943e351fe79a0ccde72b9632",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -6376,7 +6376,7 @@ final List<Map<String, dynamic>> testVector = [
             "5afaa3a5c91e074462d1586ff9d45ccc7aaa6a32c21bc5f61433c5fd469f5c38",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -6385,7 +6385,7 @@ final List<Map<String, dynamic>> testVector = [
             "a2cf9db2140a61e9e75d8f3f307b316f484b5cfcfcc43c4c38d84f6fec82bf5a",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -6394,7 +6394,7 @@ final List<Map<String, dynamic>> testVector = [
             "1263708bf27d9dd05407a7a181b1cf353b0f9c50e261eed369f57230e733123c",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -6403,9 +6403,9 @@ final List<Map<String, dynamic>> testVector = [
             "6aa3acf583432ba9b74368b13fd39ea46a0156f27040251bffa115dd488a2b45",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "ede46af0f7a18bd8f410d100b0012e387cc5df1abc5c81d2dff2e2ea5c897467",
@@ -6421,7 +6421,7 @@ final List<Map<String, dynamic>> testVector = [
             "fe7a8ffb6aa23d49af04e3494deec8d36ad0138681a8340700e2976712078f58",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -6430,7 +6430,7 @@ final List<Map<String, dynamic>> testVector = [
             "d695bda3a420e3058376040b6a70e6070892eaf6161573558ca118d3dc98fe52",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -6439,7 +6439,7 @@ final List<Map<String, dynamic>> testVector = [
             "3ea45fe33d93475ca9ba234c3dc7a819b7d68f425256920ee51444b46875ff2c",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -6448,7 +6448,7 @@ final List<Map<String, dynamic>> testVector = [
             "56639e5427f95678601c6fcd53222fd2b89fc8e92dc0bac4c6cdd48c10a05269",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -6457,7 +6457,7 @@ final List<Map<String, dynamic>> testVector = [
             "4836a1ef4ced36318cc042863dd8e0d0f83436ecbac5d80d3feecbb503824d63",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -6466,7 +6466,7 @@ final List<Map<String, dynamic>> testVector = [
             "e8abdb5852bcf1311c793ca2bbfcd73c32cf3f641e7fc92b10f49764a66f8e54",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -6475,9 +6475,9 @@ final List<Map<String, dynamic>> testVector = [
             "7e9fb2b09035a5f7344acb08ca9d73db21cb4643376f07202407434107589e1c",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "9d729ac5538111805ef1ddefe4234c2372a85788583fb39f5147f8e2b178cf97",
@@ -6493,7 +6493,7 @@ final List<Map<String, dynamic>> testVector = [
             "8e3048d795004b0287e6eb9368c7d4b106c28b963aeefaf0e080eb25edef8e40",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -6502,7 +6502,7 @@ final List<Map<String, dynamic>> testVector = [
             "7470a4031f6972870a2ef3f73c950e839ccc63730ff4d028d675f3fdf2db2810",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -6511,7 +6511,7 @@ final List<Map<String, dynamic>> testVector = [
             "c280433c5cd227d1ff3aa2801911b5d5520501504961be263c616b1b5c0a3d47",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -6520,7 +6520,7 @@ final List<Map<String, dynamic>> testVector = [
             "6a3f16baddf8968b1c52858ebfecd0a36062785360e09be8c2025a4b7568334f",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -6529,7 +6529,7 @@ final List<Map<String, dynamic>> testVector = [
             "ee05a1d9cd99390c0e830879d3ff8c6a4bd2dae13bd032466c77c47a5ff3f97b",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -6538,7 +6538,7 @@ final List<Map<String, dynamic>> testVector = [
             "b49cbef4ceddb0109794812cfcb048fc3c1ddedd41e762ffeb35a5241b6b2c56",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -6547,9 +6547,9 @@ final List<Map<String, dynamic>> testVector = [
             "081c82fe20b168858c22045611c613cee974aeb8fdfac7401564a1d9c028e034",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "821b99e5ee5158825a8edab810e4285a92808643be85a55df6c808dd21230350",
@@ -6565,7 +6565,7 @@ final List<Map<String, dynamic>> testVector = [
             "b22979deb5fe1056d6de88a819188c609f90f33a20214813d7434b9c1a5da27c",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -6574,7 +6574,7 @@ final List<Map<String, dynamic>> testVector = [
             "3e9796f011eabe391d103f5601f83e712b628ed6d23b2f113a4239f3af903b07",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -6583,7 +6583,7 @@ final List<Map<String, dynamic>> testVector = [
             "6ad6d454361b4656a46368d031acc1bf1f5cec4745ef1cf1d5b9422775b4be5d",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -6592,7 +6592,7 @@ final List<Map<String, dynamic>> testVector = [
             "605b5c582439dfdffbb3da14e4cbfcf8d2680644b657460c35a618e6266fa03f",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -6601,7 +6601,7 @@ final List<Map<String, dynamic>> testVector = [
             "42f588b3613a4aafdadc5d5551a0eec1959f2fa760a6b57333f063cbb0af9846",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -6610,7 +6610,7 @@ final List<Map<String, dynamic>> testVector = [
             "aaaec1d81fb597c9bd84f4ee313723bbb932518b3a6790e29f24fb44a3f2f14e",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -6619,9 +6619,9 @@ final List<Map<String, dynamic>> testVector = [
             "587972aa9869a78497b6a1f1be3ef1eaa64bebacded12999259c5a68125e1b46",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "e2e60ad117334beedbc5b2a4e5044015bf5b83ef9701f63108ba89a06a00f46b",
@@ -6637,7 +6637,7 @@ final List<Map<String, dynamic>> testVector = [
             "e87a2c300b0e080104d4735a3489d773d3689de17dab53e6e1f0917012ef8651",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -6646,7 +6646,7 @@ final List<Map<String, dynamic>> testVector = [
             "3a9a226c27a0a4b6ee722a639316ef4be1b773e8b6155ee30bd74c508f950d3c",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -6655,7 +6655,7 @@ final List<Map<String, dynamic>> testVector = [
             "ac741dfb9224f6c3275e00e32e78b82baf09bed46c830951b59d73eb3d70c85e",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -6664,7 +6664,7 @@ final List<Map<String, dynamic>> testVector = [
             "b0f55912cab40fc3638e24c6fe573b3c0276d313efbd78cedc72aecc6ad61f4f",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -6673,7 +6673,7 @@ final List<Map<String, dynamic>> testVector = [
             "2472ac031d6bccc00023f7010c9076a1ae4ba3584e5f53a47d940d7fa3eddc11",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -6682,7 +6682,7 @@ final List<Map<String, dynamic>> testVector = [
             "046f907c026378b042cf266192babd2b1060122691b618e71ec549e5836a6061",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -6691,9 +6691,9 @@ final List<Map<String, dynamic>> testVector = [
             "125475031ab05bfec9f6f36b6095e03b5d019e959a63af5f98ec907a0a5b6d5a",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "c27e40379554d1ee94f04801aae9a37da0f84b258a31bfb0a38cce804ff33406",
@@ -6709,7 +6709,7 @@ final List<Map<String, dynamic>> testVector = [
             "cabb086a298c49f583ea1dbb2f6c3c4e4b8ca2c316c9ad5e415a7add434b627f",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -6718,7 +6718,7 @@ final List<Map<String, dynamic>> testVector = [
             "c468621502ea2de9c86095f14f70e415d801b5d4cc29b260b81382403adf9e35",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -6727,7 +6727,7 @@ final List<Map<String, dynamic>> testVector = [
             "14f90efb985ca788a08577e5a10aeb804c2830354979412ac65c8508eacc610c",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -6736,7 +6736,7 @@ final List<Map<String, dynamic>> testVector = [
             "4abf75edd094863c2e7f231ab571d4c35405c314303a6461b177c5bda5f46113",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -6745,7 +6745,7 @@ final List<Map<String, dynamic>> testVector = [
             "d030cab368878322e13c6e244f4430b4f4270b550b7654926c1bfccb2cc52d7a",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -6754,7 +6754,7 @@ final List<Map<String, dynamic>> testVector = [
             "64cad815f88f1ee5f1339e4fee532448d50a8ae896a96a3241483ddd4834b375",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -6763,9 +6763,9 @@ final List<Map<String, dynamic>> testVector = [
             "2a019eeb364a5f0dbf2a449273d086a9e1c5ef4eddedfc5301f6283bb311bf08",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "2a1333be68fcb3ace415f9c3a5ec8aa108d3eb432b79029529ffb3b3e09bc6cb",
@@ -6781,7 +6781,7 @@ final List<Map<String, dynamic>> testVector = [
             "c408df70d7d3a29e76deba785fb39c655e6b8f18c919eac531308285661b744a",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -6790,7 +6790,7 @@ final List<Map<String, dynamic>> testVector = [
             "2e09119e88f4948b5e2a400af93e8c3b4bcbf1a3401f14657560d098b1dda10d",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -6799,7 +6799,7 @@ final List<Map<String, dynamic>> testVector = [
             "36070c13b3648b444acceecdce4f2f675f6b138fa242dd515caa66769e67c95f",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -6808,7 +6808,7 @@ final List<Map<String, dynamic>> testVector = [
             "7ac074def96561e0ec83baaf05b0adca62401fc0baec52e8e0f2c3c3cd217154",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -6817,7 +6817,7 @@ final List<Map<String, dynamic>> testVector = [
             "9028d6836e96eac1cf46e65db2576fe714f199089c9e246321d4b5034690fe0e",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -6826,7 +6826,7 @@ final List<Map<String, dynamic>> testVector = [
             "a077f96190d8a27efcfe5d01c4e185c4fa90493a58fd5c0c367d1d6d2e531127",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -6835,9 +6835,9 @@ final List<Map<String, dynamic>> testVector = [
             "8261410bb0cf9ccab94e6a9e2e817495f96c873645acc54c536cd5a01856ce0c",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "ee842499ce918ba4914eef903e6719b3e02b01efead13b18795b67f523f8ffa2",
@@ -6853,7 +6853,7 @@ final List<Map<String, dynamic>> testVector = [
             "5ae5499b91594b2cd86db83fdecfc5250bfeed05c3773d17c46fd3d60a517749",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -6862,7 +6862,7 @@ final List<Map<String, dynamic>> testVector = [
             "66e4156c03767694474bbd28878a582f3bb9482d68ed9c3420d2fd70c8444258",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -6871,7 +6871,7 @@ final List<Map<String, dynamic>> testVector = [
             "d02b15b72a288eacc3aaf13cfc801b72a252f9f9ef8c726a1ec1f54e1c276221",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -6880,7 +6880,7 @@ final List<Map<String, dynamic>> testVector = [
             "8c160e90ca3e730a7969502fbba898a851883e4f511c22965516bda8e44e8357",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -6889,7 +6889,7 @@ final List<Map<String, dynamic>> testVector = [
             "b6c8c0c82b1688ab146cdd34b3e1d2a3494916662202c3cea59fbc592ba43046",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -6898,7 +6898,7 @@ final List<Map<String, dynamic>> testVector = [
             "fc8d69b9977d85ba5f839501d588d347acb381c8de53d7d094b17ea045f2d270",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -6907,9 +6907,9 @@ final List<Map<String, dynamic>> testVector = [
             "5e607317805fc2d7244a0a424d52fa8898b15b936ccda86df64bbd379e595459",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "3f5633e6a680708d782bae277e8ddef542b4b141a0ecc31c6acd53399d77ac30",
@@ -6925,7 +6925,7 @@ final List<Map<String, dynamic>> testVector = [
             "d8b47bcb11e2d8e35e4d245b3d44dca958757f5506832bf8397d01ce38469f61",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -6934,7 +6934,7 @@ final List<Map<String, dynamic>> testVector = [
             "2a214f6868e06055b0553ed5967eb28c3df0cebd423370a8cef72755bfbf5739",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -6943,7 +6943,7 @@ final List<Map<String, dynamic>> testVector = [
             "e0ac34e288d40f21ae1598f794d0c943d7d7460f847ba456bca2ae55ed56da04",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -6952,7 +6952,7 @@ final List<Map<String, dynamic>> testVector = [
             "667b2e3160c18a5d46dd9c0986bdb13405a586d6d64ee5d31e4554900b94cb2f",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -6961,7 +6961,7 @@ final List<Map<String, dynamic>> testVector = [
             "bcb353ef26fa7992cab67be62a9305ce852b7334495cac4214bde5c6cf2b6432",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -6970,7 +6970,7 @@ final List<Map<String, dynamic>> testVector = [
             "d29ca743515646f7447196d530988177fb9005f18c822359e22474952bc8010d",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -6979,9 +6979,9 @@ final List<Map<String, dynamic>> testVector = [
             "64b6eb8d42e4c2a228293cd93403b1fa86f0ff9167393b61555c792a4d582454",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "dd952612da1f0b23aa0419f3d31f7614fc1e995385b376c8ce46aa8f5eefa6a6",
@@ -6997,7 +6997,7 @@ final List<Map<String, dynamic>> testVector = [
             "6c471e22979e3aafabb239f5695b8413cd705f0edefb2cfe5bbaa02a2fed2574",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -7006,7 +7006,7 @@ final List<Map<String, dynamic>> testVector = [
             "08797b5883342147c8163129cb469d5d79e47ebbdc0e8a49adf23595472ffa7b",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -7015,7 +7015,7 @@ final List<Map<String, dynamic>> testVector = [
             "bc715499f16e16864351383591cfab2842ea753df895df42d2a257c1da6b4853",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -7024,7 +7024,7 @@ final List<Map<String, dynamic>> testVector = [
             "0e09bd69e3266d402792499cf1c8501bebabfe2c1e7b884cfbb54b432e3bb059",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -7033,7 +7033,7 @@ final List<Map<String, dynamic>> testVector = [
             "cacc80a125c9c5960f16ca9aba55034c8ed707a20d7904919353bf4abae95820",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -7042,7 +7042,7 @@ final List<Map<String, dynamic>> testVector = [
             "2e15fb62e75f92f618d20f9dfdfb50737c7f8c0143a88cca341e9b6ad25bf125",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -7051,9 +7051,9 @@ final List<Map<String, dynamic>> testVector = [
             "cc9c948406a2aec984ceee6b2ba27129fc3e9a019c8eed56041f3c9e11bf4a65",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "d57919976e9cf2101e4fbd44fd05ad3747e7fd8b1e648d3f24064443ed0e0a5c",
@@ -7069,7 +7069,7 @@ final List<Map<String, dynamic>> testVector = [
             "287cb8d640b60bd616f16bdbf85106b01659631b9001f4a618cf22c53d682a14",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -7078,7 +7078,7 @@ final List<Map<String, dynamic>> testVector = [
             "78e6b44b3bd32a3c33b34d377e5867136a863c98b8fa24ab634931fb3e8c2951",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -7087,7 +7087,7 @@ final List<Map<String, dynamic>> testVector = [
             "16e19cee0ed806eb2c56e5714b1f84af17c899ffd76bfb35bcdee6cc28079a04",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -7096,7 +7096,7 @@ final List<Map<String, dynamic>> testVector = [
             "82f8b23f42d11c8f23a27f76b4c6bca1edc9b403fda213b8a81cd936f5a0061b",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -7105,7 +7105,7 @@ final List<Map<String, dynamic>> testVector = [
             "accf2dc9c2e3509561708a133f0110c0a28fb5af2ecf928c4c7f36e24b63873b",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -7114,7 +7114,7 @@ final List<Map<String, dynamic>> testVector = [
             "1a63f1472d63c112b103f949933604d34ae71ef4f054b4593db0c4b18211e160",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -7123,9 +7123,9 @@ final List<Map<String, dynamic>> testVector = [
             "743130082c9814c33c82e75c446735cfa61e081ff1972d327df70c6405bc7906",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
+        "is_hard": false,
+      },
+    ],
   },
   {
     "seed": "f8584248335f955ffc14e0050bda526b295c7225d8bd87d800eb3d1e59866952",
@@ -7141,7 +7141,7 @@ final List<Map<String, dynamic>> testVector = [
             "9a3024dade15d443055b0fb1c9cfe8567b8e1caa2fa6628c32da1f51c83b2064",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -7150,7 +7150,7 @@ final List<Map<String, dynamic>> testVector = [
             "5420706c8703cf00b3b40c9eb0e0379d0e610d48e8a00b5608369c652fb7ea4b",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -7159,7 +7159,7 @@ final List<Map<String, dynamic>> testVector = [
             "4e275b2769d3520c0ee51b1c4f21fb011f68f3270a46db7c3bdd30fe025b2f13",
         "chain_code":
             "1068617264000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -7168,7 +7168,7 @@ final List<Map<String, dynamic>> testVector = [
             "c0b683da4dce0282418e385119ab3d7676c61d93990e926e8d56e07aac63597e",
         "chain_code":
             "0100000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -7177,7 +7177,7 @@ final List<Map<String, dynamic>> testVector = [
             "acc4df57d8304241f6970d01b5267d5656c58c000d91c0029e9305764db9c627",
         "chain_code":
             "0000000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
+        "is_hard": false,
       },
       {
         "private_key":
@@ -7186,7 +7186,7 @@ final List<Map<String, dynamic>> testVector = [
             "92c2ef3b8ee12cd6c8bb1d5d48a77a460f1f11d93b9e215c76191be1b4717e6f",
         "chain_code":
             "0c00000000000000000000000000000000000000000000000000000000000000",
-        "is_hard": true
+        "is_hard": true,
       },
       {
         "private_key":
@@ -7195,8 +7195,8 @@ final List<Map<String, dynamic>> testVector = [
             "3e00109cb4ae3a03c0a0aeadb45ca848b920c17a73618600f1773cbc8b5ef64c",
         "chain_code":
             "10736f6674000000000000000000000000000000000000000000000000000000",
-        "is_hard": false
-      }
-    ]
-  }
+        "is_hard": false,
+      },
+    ],
+  },
 ];

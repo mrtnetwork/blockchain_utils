@@ -5,7 +5,7 @@ final List<Map<String, dynamic>> testVector = [
     "entropy":
         "082149a74a17353e1b2dac9c39939acb31f4a3d9d9139942d3060ef2beb58fa6",
     "seed": "082149a74a17353e1b2dac9c39939acb31f4a3d9d9139942d3060ef2beb58fa6",
-    "address": "LT74JRUCTFB35LZT4NJV23ZHVWNIOGDMTUJ4ASCXDXDDP5ZQFURIZAHIXA"
+    "address": "LT74JRUCTFB35LZT4NJV23ZHVWNIOGDMTUJ4ASCXDXDDP5ZQFURIZAHIXA",
   },
   {
     "mnemonic":
@@ -13,7 +13,7 @@ final List<Map<String, dynamic>> testVector = [
     "entropy":
         "4cbbbe34a1e2a4ba4a1fa8737f9f270c1499bedf97e38a024ff870d811a8fd80",
     "seed": "4cbbbe34a1e2a4ba4a1fa8737f9f270c1499bedf97e38a024ff870d811a8fd80",
-    "address": "4RQA7QQCWRW3NYWXPJBTD55GIATY7YYFVMUHG6ECRGPAL4EDINHJOVBUPU"
+    "address": "4RQA7QQCWRW3NYWXPJBTD55GIATY7YYFVMUHG6ECRGPAL4EDINHJOVBUPU",
   },
   {
     "mnemonic":
@@ -21,7 +21,7 @@ final List<Map<String, dynamic>> testVector = [
     "entropy":
         "d60a21e24ff480b4ec3ee4b538cf10eaa94ad9dd4f589dfc480abedf2582d781",
     "seed": "d60a21e24ff480b4ec3ee4b538cf10eaa94ad9dd4f589dfc480abedf2582d781",
-    "address": "5GGUFBFT3KZ3JO7MFM6Z7B5QQOL7XAL2B5VAL5JJ6P6CDQRPIOAAEPCZTM"
+    "address": "5GGUFBFT3KZ3JO7MFM6Z7B5QQOL7XAL2B5VAL5JJ6P6CDQRPIOAAEPCZTM",
   },
   {
     "mnemonic":
@@ -29,7 +29,7 @@ final List<Map<String, dynamic>> testVector = [
     "entropy":
         "435e970e40615bbf81bec472a6b2d1c98d64b6d2a6cbe87eadbaa4bafbbd4b92",
     "seed": "435e970e40615bbf81bec472a6b2d1c98d64b6d2a6cbe87eadbaa4bafbbd4b92",
-    "address": "I5TURDC5ZOPNSPY2EJMETPLZ3XGNGQJVHOVSTSSOFTY2C5Q3JF7CLAVYEA"
+    "address": "I5TURDC5ZOPNSPY2EJMETPLZ3XGNGQJVHOVSTSSOFTY2C5Q3JF7CLAVYEA",
   },
   {
     "mnemonic":
@@ -37,7 +37,7 @@ final List<Map<String, dynamic>> testVector = [
     "entropy":
         "8d0945984093f43af8c5b466f1c552203df9656c13a9452b3d3b5ccea302d7c1",
     "seed": "8d0945984093f43af8c5b466f1c552203df9656c13a9452b3d3b5ccea302d7c1",
-    "address": "IZHKX6QJU7UGRPKXWXA5K4LUDU6R47QBRYKOTRWQXF6KTKAKDJK6AON2DQ"
+    "address": "IZHKX6QJU7UGRPKXWXA5K4LUDU6R47QBRYKOTRWQXF6KTKAKDJK6AON2DQ",
   },
   {
     "mnemonic":
@@ -45,7 +45,7 @@ final List<Map<String, dynamic>> testVector = [
     "entropy":
         "bd957fd41b21df6430a5394b9adf603ffaea6f29f714843add03973ce0d0d31d",
     "seed": "bd957fd41b21df6430a5394b9adf603ffaea6f29f714843add03973ce0d0d31d",
-    "address": "2IYVLRHPRJZZJ4GEMK6YUAWARL32GC3JS4DZDYKHIBLVZ4FZ5UVQ756J3Y"
+    "address": "2IYVLRHPRJZZJ4GEMK6YUAWARL32GC3JS4DZDYKHIBLVZ4FZ5UVQ756J3Y",
   },
   {
     "mnemonic":
@@ -53,7 +53,7 @@ final List<Map<String, dynamic>> testVector = [
     "entropy":
         "7c8418f060be8d34dfc70e2566d512f318abddc71b6c53f539d5ccb4aae0be2d",
     "seed": "7c8418f060be8d34dfc70e2566d512f318abddc71b6c53f539d5ccb4aae0be2d",
-    "address": "7AJOJTZV6WK7BHI4PXONZHNY4DPSZL6NOBJSCOZS463YCMWTAHOH76UMTM"
+    "address": "7AJOJTZV6WK7BHI4PXONZHNY4DPSZL6NOBJSCOZS463YCMWTAHOH76UMTM",
   },
   {
     "mnemonic":
@@ -61,7 +61,7 @@ final List<Map<String, dynamic>> testVector = [
     "entropy":
         "70e7e102c4a7025fbd6c9050fa637a31896078864745e4a0d5cb4145f2f03d9a",
     "seed": "70e7e102c4a7025fbd6c9050fa637a31896078864745e4a0d5cb4145f2f03d9a",
-    "address": "XE4ZH775COKRUIJTUAC3PS6TTPMRBK4G7UXLILIKGCIM2JW37C3H6NZQGM"
+    "address": "XE4ZH775COKRUIJTUAC3PS6TTPMRBK4G7UXLILIKGCIM2JW37C3H6NZQGM",
   },
   {
     "mnemonic":
@@ -69,7 +69,7 @@ final List<Map<String, dynamic>> testVector = [
     "entropy":
         "77a741244db0f1d632d0a6d924076fd57efc3fae8da72d45b46222c46e5ecff4",
     "seed": "77a741244db0f1d632d0a6d924076fd57efc3fae8da72d45b46222c46e5ecff4",
-    "address": "XGZINQRCNXL5D53NKNBDEUQDSGXNSWTF7GCC3AORABSVHOQ62DDEQ3U27E"
+    "address": "XGZINQRCNXL5D53NKNBDEUQDSGXNSWTF7GCC3AORABSVHOQ62DDEQ3U27E",
   },
   {
     "mnemonic":
@@ -77,7 +77,7 @@ final List<Map<String, dynamic>> testVector = [
     "entropy":
         "33f4b8a269818ee144336d8a031de79750b0a3b903cacc00e6b1483eff604046",
     "seed": "33f4b8a269818ee144336d8a031de79750b0a3b903cacc00e6b1483eff604046",
-    "address": "VXYJDRGMRR244GBZHZC7OUOVBGLYKBE3EN4BG4YGFIGEU7NGCBEBJRO5S4"
+    "address": "VXYJDRGMRR244GBZHZC7OUOVBGLYKBE3EN4BG4YGFIGEU7NGCBEBJRO5S4",
   },
   {
     "mnemonic":
@@ -85,7 +85,7 @@ final List<Map<String, dynamic>> testVector = [
     "entropy":
         "5f8c999a6cabc9f20bb32089100abee98f996a566974d532a51f596bee7bafbb",
     "seed": "5f8c999a6cabc9f20bb32089100abee98f996a566974d532a51f596bee7bafbb",
-    "address": "NM2KS3EPB5S4JA4SJRDYCNXFPFRQLMMAHMVR4MUTIJU6KRRFOATB6NNVMQ"
+    "address": "NM2KS3EPB5S4JA4SJRDYCNXFPFRQLMMAHMVR4MUTIJU6KRRFOATB6NNVMQ",
   },
   {
     "mnemonic":
@@ -93,7 +93,7 @@ final List<Map<String, dynamic>> testVector = [
     "entropy":
         "e2090f01760f6e2211afb49f6f7ff708c6fdf86d7ba2b6c42b9f26b400b73d9a",
     "seed": "e2090f01760f6e2211afb49f6f7ff708c6fdf86d7ba2b6c42b9f26b400b73d9a",
-    "address": "6FZXW46QBVPR6J3NVMEUCII7PXNYU42XLQWBMWOP4YLKWSDMJG5K6FE77I"
+    "address": "6FZXW46QBVPR6J3NVMEUCII7PXNYU42XLQWBMWOP4YLKWSDMJG5K6FE77I",
   },
   {
     "mnemonic":
@@ -101,7 +101,7 @@ final List<Map<String, dynamic>> testVector = [
     "entropy":
         "87b31e9214024c4638acb985e805e54849060b3d538665669647a02067e3d858",
     "seed": "87b31e9214024c4638acb985e805e54849060b3d538665669647a02067e3d858",
-    "address": "SISS4GO5LM3WMPV32IIS7NQBJTCFZNO57WTPRCRJODBZSO5FKNJDEHDRYM"
+    "address": "SISS4GO5LM3WMPV32IIS7NQBJTCFZNO57WTPRCRJODBZSO5FKNJDEHDRYM",
   },
   {
     "mnemonic":
@@ -109,7 +109,7 @@ final List<Map<String, dynamic>> testVector = [
     "entropy":
         "3fa1eb11783087fe6ba2c8e97a5f54377f88900853214fac4f3890e9498f2c2a",
     "seed": "3fa1eb11783087fe6ba2c8e97a5f54377f88900853214fac4f3890e9498f2c2a",
-    "address": "KTRZUA7LGB2GQVAEF7RTE6Q4S3KPLGJ2OBDPRFJ76RCCX2NXC7DE5APAKI"
+    "address": "KTRZUA7LGB2GQVAEF7RTE6Q4S3KPLGJ2OBDPRFJ76RCCX2NXC7DE5APAKI",
   },
   {
     "mnemonic":
@@ -117,7 +117,7 @@ final List<Map<String, dynamic>> testVector = [
     "entropy":
         "38a7405e6189d0e7f056f2fdbf022117bc0ca0dba70be2ab28001b80f983ee34",
     "seed": "38a7405e6189d0e7f056f2fdbf022117bc0ca0dba70be2ab28001b80f983ee34",
-    "address": "6MVVGQBVHPOEO6BU7ZFSBILTPS4RU6G76CU4RTL7J2TEU5ZJQZC6ZVETDM"
+    "address": "6MVVGQBVHPOEO6BU7ZFSBILTPS4RU6G76CU4RTL7J2TEU5ZJQZC6ZVETDM",
   },
   {
     "mnemonic":
@@ -125,7 +125,7 @@ final List<Map<String, dynamic>> testVector = [
     "entropy":
         "3b74e35251ef8d061c2479fdaf50e9e0fa49596b26b940cd88dcc1c0aff86c7a",
     "seed": "3b74e35251ef8d061c2479fdaf50e9e0fa49596b26b940cd88dcc1c0aff86c7a",
-    "address": "D542VSQM37ZRR3KKG5I4LCBMC2GJD7I3NMIOF6KE6XTVO3OQO7HA6WWDFQ"
+    "address": "D542VSQM37ZRR3KKG5I4LCBMC2GJD7I3NMIOF6KE6XTVO3OQO7HA6WWDFQ",
   },
   {
     "mnemonic":
@@ -133,7 +133,7 @@ final List<Map<String, dynamic>> testVector = [
     "entropy":
         "476ba1b692f2d3ee8e9b0bec299852ce05358414da204e0e2285679e3fd6afcb",
     "seed": "476ba1b692f2d3ee8e9b0bec299852ce05358414da204e0e2285679e3fd6afcb",
-    "address": "WDQES2PFO2YEGWUQ4FJ2OXV2S3V3JXUFP5TOR6SGJY2KWTOQ4J2YHX5MIY"
+    "address": "WDQES2PFO2YEGWUQ4FJ2OXV2S3V3JXUFP5TOR6SGJY2KWTOQ4J2YHX5MIY",
   },
   {
     "mnemonic":
@@ -141,7 +141,7 @@ final List<Map<String, dynamic>> testVector = [
     "entropy":
         "63cbaef9d0712a74993b9dd9d3ae6609d8bb475ab6f61e8d75fb3617fe7766ad",
     "seed": "63cbaef9d0712a74993b9dd9d3ae6609d8bb475ab6f61e8d75fb3617fe7766ad",
-    "address": "ROCX26GFATDJS4KWLBZQ7PUQ7KNEGH62EID35WPZMPUULM3BCE2UVB7R6U"
+    "address": "ROCX26GFATDJS4KWLBZQ7PUQ7KNEGH62EID35WPZMPUULM3BCE2UVB7R6U",
   },
   {
     "mnemonic":
@@ -149,7 +149,7 @@ final List<Map<String, dynamic>> testVector = [
     "entropy":
         "a4bd49bd8529087142fd6cd7b603d7c83ea5fad7f03f16bbdb5c6fc4db6cb0c0",
     "seed": "a4bd49bd8529087142fd6cd7b603d7c83ea5fad7f03f16bbdb5c6fc4db6cb0c0",
-    "address": "DR7R2MTGDFZU6TCLFSPXXEABXBC4GGWVIJNMPON57QGE5ZXUK3MJMZX4DQ"
+    "address": "DR7R2MTGDFZU6TCLFSPXXEABXBC4GGWVIJNMPON57QGE5ZXUK3MJMZX4DQ",
   },
   {
     "mnemonic":
@@ -157,7 +157,7 @@ final List<Map<String, dynamic>> testVector = [
     "entropy":
         "d6e9d6248831e490e7ca039a10c3301965e14dfff7ca0760fc0528949a7c8151",
     "seed": "d6e9d6248831e490e7ca039a10c3301965e14dfff7ca0760fc0528949a7c8151",
-    "address": "T47VSJODYMYVZJHZDZLGETNGBA3F7NGWZWXFOZPC2Y2MYYGFKGNSVNZYBU"
+    "address": "T47VSJODYMYVZJHZDZLGETNGBA3F7NGWZWXFOZPC2Y2MYYGFKGNSVNZYBU",
   },
   {
     "mnemonic":
@@ -165,7 +165,7 @@ final List<Map<String, dynamic>> testVector = [
     "entropy":
         "d0f3d5d7e8e21f6a5dae088bb70c9c2737ac3ccfa2f169e7aafccfc917d27ea8",
     "seed": "d0f3d5d7e8e21f6a5dae088bb70c9c2737ac3ccfa2f169e7aafccfc917d27ea8",
-    "address": "7NSDTADTR3BXGPJ3B7U7XKAFCCDVVF5JONQRCEKSHOBBPB46KYIDFW4WLY"
+    "address": "7NSDTADTR3BXGPJ3B7U7XKAFCCDVVF5JONQRCEKSHOBBPB46KYIDFW4WLY",
   },
   {
     "mnemonic":
@@ -173,7 +173,7 @@ final List<Map<String, dynamic>> testVector = [
     "entropy":
         "d035ecdeea2634cbff114cd22cd28274aea35939b04fad7e7444ae873fbece1f",
     "seed": "d035ecdeea2634cbff114cd22cd28274aea35939b04fad7e7444ae873fbece1f",
-    "address": "U47B3M6UHEC2HNFCMINVQX4WG7IDIP23WFPMCVGBZMEJT7GDO2EQRXEAAY"
+    "address": "U47B3M6UHEC2HNFCMINVQX4WG7IDIP23WFPMCVGBZMEJT7GDO2EQRXEAAY",
   },
   {
     "mnemonic":
@@ -181,7 +181,7 @@ final List<Map<String, dynamic>> testVector = [
     "entropy":
         "d655c8b696001bdac5c4636c7263e56835d49dc5f9f5ab453e9242454f563cb8",
     "seed": "d655c8b696001bdac5c4636c7263e56835d49dc5f9f5ab453e9242454f563cb8",
-    "address": "APRN3YTQV4OFMCBBUDPFPERDGUBZUD26IMCCVMOIJSS6SU4JZRV5PZ7H3M"
+    "address": "APRN3YTQV4OFMCBBUDPFPERDGUBZUD26IMCCVMOIJSS6SU4JZRV5PZ7H3M",
   },
   {
     "mnemonic":
@@ -189,7 +189,7 @@ final List<Map<String, dynamic>> testVector = [
     "entropy":
         "807dd6b54818879316643d822b29958ced8680c116f9f99a14a2b6d3937eaabe",
     "seed": "807dd6b54818879316643d822b29958ced8680c116f9f99a14a2b6d3937eaabe",
-    "address": "AXF23DW7ZZMBXZNOKSK3PR6HFX6GZPQQMRNNTWL4U6LSQ5R6IETKUPHCMQ"
+    "address": "AXF23DW7ZZMBXZNOKSK3PR6HFX6GZPQQMRNNTWL4U6LSQ5R6IETKUPHCMQ",
   },
   {
     "mnemonic":
@@ -197,7 +197,7 @@ final List<Map<String, dynamic>> testVector = [
     "entropy":
         "d64475d649280b7e7e426fcc2814b5b40edac6178717d803203c8ed65ea7ef3b",
     "seed": "d64475d649280b7e7e426fcc2814b5b40edac6178717d803203c8ed65ea7ef3b",
-    "address": "HOHMFHBZ2IUVUFJUATRJ2KZWVELFYNJZCIJIJZE3MKRC5AO6OP3QISBDSY"
+    "address": "HOHMFHBZ2IUVUFJUATRJ2KZWVELFYNJZCIJIJZE3MKRC5AO6OP3QISBDSY",
   },
   {
     "mnemonic":
@@ -205,7 +205,7 @@ final List<Map<String, dynamic>> testVector = [
     "entropy":
         "f1735ca42482417e0f653d911dcbf68b9b0008d4003e392387c63e7bb41ab016",
     "seed": "f1735ca42482417e0f653d911dcbf68b9b0008d4003e392387c63e7bb41ab016",
-    "address": "5P7Z4PHBWRTGSJX4F2RBFW6OO4XLB2VPYXYTHO6SUFL6MZ6A2DBOVFQOSY"
+    "address": "5P7Z4PHBWRTGSJX4F2RBFW6OO4XLB2VPYXYTHO6SUFL6MZ6A2DBOVFQOSY",
   },
   {
     "mnemonic":
@@ -213,7 +213,7 @@ final List<Map<String, dynamic>> testVector = [
     "entropy":
         "371f302b14fd73b3e4ba72dc283f8534923c60c6f8f6e013661904fd264f7c2b",
     "seed": "371f302b14fd73b3e4ba72dc283f8534923c60c6f8f6e013661904fd264f7c2b",
-    "address": "6G6S46NOCSPMZM5EQNHEFRXXY3G62KDUMPXNXIHOF6NUKYNCY4UCNZ34QY"
+    "address": "6G6S46NOCSPMZM5EQNHEFRXXY3G62KDUMPXNXIHOF6NUKYNCY4UCNZ34QY",
   },
   {
     "mnemonic":
@@ -221,7 +221,7 @@ final List<Map<String, dynamic>> testVector = [
     "entropy":
         "bf1744416ccea2c1b35ecd5569610f3cd50760849554b0e99efc664bb09aabc3",
     "seed": "bf1744416ccea2c1b35ecd5569610f3cd50760849554b0e99efc664bb09aabc3",
-    "address": "LEJYGDND5RETNCWOQLIQGO4MGGBTYCT3VQVUHHNEFLM7UFIOBFW7G4KIKY"
+    "address": "LEJYGDND5RETNCWOQLIQGO4MGGBTYCT3VQVUHHNEFLM7UFIOBFW7G4KIKY",
   },
   {
     "mnemonic":
@@ -229,7 +229,7 @@ final List<Map<String, dynamic>> testVector = [
     "entropy":
         "b171c308f7f19e8dfb8d47b78637a6b4601a1aa924a93f73dcd4bafd68df4f25",
     "seed": "b171c308f7f19e8dfb8d47b78637a6b4601a1aa924a93f73dcd4bafd68df4f25",
-    "address": "YOUWJUBEEEAKVJQC5TGQ3CCCU5O52CI3TYQ62WPAN6CAOOCD5M6THWNHF4"
+    "address": "YOUWJUBEEEAKVJQC5TGQ3CCCU5O52CI3TYQ62WPAN6CAOOCD5M6THWNHF4",
   },
   {
     "mnemonic":
@@ -237,7 +237,7 @@ final List<Map<String, dynamic>> testVector = [
     "entropy":
         "5d63a1ed06942b328da66e5566f411bc3e5c4934dabb2c71f191ad39a9c21909",
     "seed": "5d63a1ed06942b328da66e5566f411bc3e5c4934dabb2c71f191ad39a9c21909",
-    "address": "2TINSQW3E227QO3OUNC3VQZJGWU4GB22YSFGBGREVU3WDMBRSC34AJMKAA"
+    "address": "2TINSQW3E227QO3OUNC3VQZJGWU4GB22YSFGBGREVU3WDMBRSC34AJMKAA",
   },
   {
     "mnemonic":
@@ -245,7 +245,7 @@ final List<Map<String, dynamic>> testVector = [
     "entropy":
         "967472593447bcc8b70c7e3e58c7497fb86f5083e635df27e1444a5aca76866c",
     "seed": "967472593447bcc8b70c7e3e58c7497fb86f5083e635df27e1444a5aca76866c",
-    "address": "2RQN2CNPP4FTT3SBSMGGLSL2IING7TK3SGQFTEMDWVWJURRMXWVEORADDM"
+    "address": "2RQN2CNPP4FTT3SBSMGGLSL2IING7TK3SGQFTEMDWVWJURRMXWVEORADDM",
   },
   {
     "mnemonic":
@@ -253,7 +253,7 @@ final List<Map<String, dynamic>> testVector = [
     "entropy":
         "966de7646985a1af4718484d867383c0a4b0cefc8288bd6661fcf999d9ecfb44",
     "seed": "966de7646985a1af4718484d867383c0a4b0cefc8288bd6661fcf999d9ecfb44",
-    "address": "OVBD33FQJ4JI5DVOQVHSSBTVK7FX3CRCFTVIO4HTVZUZEKNWNP5YSYV2OY"
+    "address": "OVBD33FQJ4JI5DVOQVHSSBTVK7FX3CRCFTVIO4HTVZUZEKNWNP5YSYV2OY",
   },
   {
     "mnemonic":
@@ -261,7 +261,7 @@ final List<Map<String, dynamic>> testVector = [
     "entropy":
         "f93516808434e8a2136fc6762860cf6bd652de6a701522241a133e089fb88a5e",
     "seed": "f93516808434e8a2136fc6762860cf6bd652de6a701522241a133e089fb88a5e",
-    "address": "CXDEEY6AQL2W2LN2XMR3V4TDEMIGO3TAPCBEMZ2FWC26RQMAHCQYGPNJHA"
+    "address": "CXDEEY6AQL2W2LN2XMR3V4TDEMIGO3TAPCBEMZ2FWC26RQMAHCQYGPNJHA",
   },
   {
     "mnemonic":
@@ -269,7 +269,7 @@ final List<Map<String, dynamic>> testVector = [
     "entropy":
         "3d1daa78e6948fa74a8f773ce7803f16e2ffc601949240e62eb2fbc1a07fa3f3",
     "seed": "3d1daa78e6948fa74a8f773ce7803f16e2ffc601949240e62eb2fbc1a07fa3f3",
-    "address": "XB7EEUFDHSVBAEWWFBNXPCUCTO2IEOMGSA7SX3527DBVP7R5B2ODT7E2TI"
+    "address": "XB7EEUFDHSVBAEWWFBNXPCUCTO2IEOMGSA7SX3527DBVP7R5B2ODT7E2TI",
   },
   {
     "mnemonic":
@@ -277,7 +277,7 @@ final List<Map<String, dynamic>> testVector = [
     "entropy":
         "f1952c200a95570e761f8b17f0a1f90a356252a8c68f65b4d4490abc26357ae5",
     "seed": "f1952c200a95570e761f8b17f0a1f90a356252a8c68f65b4d4490abc26357ae5",
-    "address": "RND3EVXK6NC4BKLJB4UZ2RKA4CTDEPSZJB5MH744LRE3XGG4POJBUF534Q"
+    "address": "RND3EVXK6NC4BKLJB4UZ2RKA4CTDEPSZJB5MH744LRE3XGG4POJBUF534Q",
   },
   {
     "mnemonic":
@@ -285,7 +285,7 @@ final List<Map<String, dynamic>> testVector = [
     "entropy":
         "9a586a6c4aeb8a889f02dd7902ca3373402f962ee9f9ae01970513a6d78bbe37",
     "seed": "9a586a6c4aeb8a889f02dd7902ca3373402f962ee9f9ae01970513a6d78bbe37",
-    "address": "EKEXZKRMAJAKK4L3BWQV2QO2OHR2Y4CJDSCQ46SXTLL5VFAZ5BMHIKR6OU"
+    "address": "EKEXZKRMAJAKK4L3BWQV2QO2OHR2Y4CJDSCQ46SXTLL5VFAZ5BMHIKR6OU",
   },
   {
     "mnemonic":
@@ -293,7 +293,7 @@ final List<Map<String, dynamic>> testVector = [
     "entropy":
         "4fe96811ef2b0f92feb0df71a270590a264ce942fa40c393d609824415cd3669",
     "seed": "4fe96811ef2b0f92feb0df71a270590a264ce942fa40c393d609824415cd3669",
-    "address": "L5I5HZQTHWAKBIPJGIYCOXKYW7W65L2I4YESKGHPH4U2PHCC3PQWRSWHXU"
+    "address": "L5I5HZQTHWAKBIPJGIYCOXKYW7W65L2I4YESKGHPH4U2PHCC3PQWRSWHXU",
   },
   {
     "mnemonic":
@@ -301,7 +301,7 @@ final List<Map<String, dynamic>> testVector = [
     "entropy":
         "de4e97de63b1adee47895c91d78561b73893a895e9c0ab17f437df5a146f10b5",
     "seed": "de4e97de63b1adee47895c91d78561b73893a895e9c0ab17f437df5a146f10b5",
-    "address": "JLGGNDD5N2KW65LOKARIMBPANJPKO5BESH5NLTTZPALLA26VXUYTJDRTTI"
+    "address": "JLGGNDD5N2KW65LOKARIMBPANJPKO5BESH5NLTTZPALLA26VXUYTJDRTTI",
   },
   {
     "mnemonic":
@@ -309,7 +309,7 @@ final List<Map<String, dynamic>> testVector = [
     "entropy":
         "550e717f7b8f95b8465501cb6cddecb61fc6e155ec3a9e1936404c24d23c283e",
     "seed": "550e717f7b8f95b8465501cb6cddecb61fc6e155ec3a9e1936404c24d23c283e",
-    "address": "47BOCJI5JLEH3ERUNQIFP46OW74TIW3XD63ZTUFHXXYMLVGF22MVOKP7IU"
+    "address": "47BOCJI5JLEH3ERUNQIFP46OW74TIW3XD63ZTUFHXXYMLVGF22MVOKP7IU",
   },
   {
     "mnemonic":
@@ -317,7 +317,7 @@ final List<Map<String, dynamic>> testVector = [
     "entropy":
         "fc134e938821345d6f18c19d39e35416ff70b4040c81b47ea93153b2d174d1b3",
     "seed": "fc134e938821345d6f18c19d39e35416ff70b4040c81b47ea93153b2d174d1b3",
-    "address": "5TATMXKPKFZUAYPTEEZEOBYZECUZV4HPN3COBQYIUKT3CK75V56RE3D2TI"
+    "address": "5TATMXKPKFZUAYPTEEZEOBYZECUZV4HPN3COBQYIUKT3CK75V56RE3D2TI",
   },
   {
     "mnemonic":
@@ -325,7 +325,7 @@ final List<Map<String, dynamic>> testVector = [
     "entropy":
         "4d97c07416363f58a880f2e1b0fb4ea510f40c71ff14164dc151d262798fcb9c",
     "seed": "4d97c07416363f58a880f2e1b0fb4ea510f40c71ff14164dc151d262798fcb9c",
-    "address": "RD5WR2C2EGC4MLN6LPPKVIWFAIWHUTKZA3ZB4BGFKRCTHVL64PEFAJ4R3M"
+    "address": "RD5WR2C2EGC4MLN6LPPKVIWFAIWHUTKZA3ZB4BGFKRCTHVL64PEFAJ4R3M",
   },
   {
     "mnemonic":
@@ -333,7 +333,7 @@ final List<Map<String, dynamic>> testVector = [
     "entropy":
         "dea07c6621a570cb40da04061805b45c3c913dc8185d33e7c5b485f9028dfaf2",
     "seed": "dea07c6621a570cb40da04061805b45c3c913dc8185d33e7c5b485f9028dfaf2",
-    "address": "3DMWSGU5U5MMOE2QXLFZTIGLNOIJSFRF2PSCGNGDY3OAADLFJP6KYWRHGQ"
+    "address": "3DMWSGU5U5MMOE2QXLFZTIGLNOIJSFRF2PSCGNGDY3OAADLFJP6KYWRHGQ",
   },
   {
     "mnemonic":
@@ -341,7 +341,7 @@ final List<Map<String, dynamic>> testVector = [
     "entropy":
         "15a714e23efbf61a35637e8047839f806dfb99db1e780987bc52010dc5cd8ad4",
     "seed": "15a714e23efbf61a35637e8047839f806dfb99db1e780987bc52010dc5cd8ad4",
-    "address": "S2HL3BMVIQPDKT7BZHT2YTJCIFTQ6DLL2SEL2BMJP3E5V37ZMYV4KSK5SQ"
+    "address": "S2HL3BMVIQPDKT7BZHT2YTJCIFTQ6DLL2SEL2BMJP3E5V37ZMYV4KSK5SQ",
   },
   {
     "mnemonic":
@@ -349,7 +349,7 @@ final List<Map<String, dynamic>> testVector = [
     "entropy":
         "fa1dbfbff4423f1c0cdd1a77a73f8a21ae1ba02e4da518c588d7d5ee65351664",
     "seed": "fa1dbfbff4423f1c0cdd1a77a73f8a21ae1ba02e4da518c588d7d5ee65351664",
-    "address": "XOA4MOFRPRULQV5BB6JYMKN3XGB7NVAQAMWVF7U26X5ONREZJZTMBRV4OE"
+    "address": "XOA4MOFRPRULQV5BB6JYMKN3XGB7NVAQAMWVF7U26X5ONREZJZTMBRV4OE",
   },
   {
     "mnemonic":
@@ -357,7 +357,7 @@ final List<Map<String, dynamic>> testVector = [
     "entropy":
         "d6f1621b30ae5f8864df9b42271af3de73b2a78f8928f24ce38a7b57e9465168",
     "seed": "d6f1621b30ae5f8864df9b42271af3de73b2a78f8928f24ce38a7b57e9465168",
-    "address": "DJAUHUUREQSMSTSOASUMJJWW34AFDRJ756HOYA4A74W3FAX2J7HF3QDCQE"
+    "address": "DJAUHUUREQSMSTSOASUMJJWW34AFDRJ756HOYA4A74W3FAX2J7HF3QDCQE",
   },
   {
     "mnemonic":
@@ -365,7 +365,7 @@ final List<Map<String, dynamic>> testVector = [
     "entropy":
         "0bfd371947c70682b089454d783680bf93f83a5913b6a27ff6c7cc074d587157",
     "seed": "0bfd371947c70682b089454d783680bf93f83a5913b6a27ff6c7cc074d587157",
-    "address": "L4Z7SI2J42ZDCXHYAF7HCX44GK37RK5XIRKA6AH5YYNP4DAQWMR7JBXM2E"
+    "address": "L4Z7SI2J42ZDCXHYAF7HCX44GK37RK5XIRKA6AH5YYNP4DAQWMR7JBXM2E",
   },
   {
     "mnemonic":
@@ -373,7 +373,7 @@ final List<Map<String, dynamic>> testVector = [
     "entropy":
         "9a975f1041b4ddc972ea35dafdb446112e2a3ef42b64fde2a201d4fbb4aac290",
     "seed": "9a975f1041b4ddc972ea35dafdb446112e2a3ef42b64fde2a201d4fbb4aac290",
-    "address": "O7Q4DGOFPAPH7S663KDLP6BXZ4AQICZKJNOB7XT3AZ5PDFQ2VSOJ53GBNU"
+    "address": "O7Q4DGOFPAPH7S663KDLP6BXZ4AQICZKJNOB7XT3AZ5PDFQ2VSOJ53GBNU",
   },
   {
     "mnemonic":
@@ -381,7 +381,7 @@ final List<Map<String, dynamic>> testVector = [
     "entropy":
         "03d54dcd9cfa92fd1da55876c34b8043a1e618e5feb1eb238da2f6e74869d925",
     "seed": "03d54dcd9cfa92fd1da55876c34b8043a1e618e5feb1eb238da2f6e74869d925",
-    "address": "RQS6LDD6DM7STGSFDFGCESV3LL5YA6GHZARMOLFLMTENC6RFDQ4I6N7FS4"
+    "address": "RQS6LDD6DM7STGSFDFGCESV3LL5YA6GHZARMOLFLMTENC6RFDQ4I6N7FS4",
   },
   {
     "mnemonic":
@@ -389,7 +389,7 @@ final List<Map<String, dynamic>> testVector = [
     "entropy":
         "6767430ef663ad53fc9c3c5d5da497092fb83bcd681d46c7b477af79cc70f345",
     "seed": "6767430ef663ad53fc9c3c5d5da497092fb83bcd681d46c7b477af79cc70f345",
-    "address": "SMRZN6X44N47VTZB42V66SLDWZ4TEU7WUEN4C5WY4KEFKE2BRMLBAZWRKY"
+    "address": "SMRZN6X44N47VTZB42V66SLDWZ4TEU7WUEN4C5WY4KEFKE2BRMLBAZWRKY",
   },
   {
     "mnemonic":
@@ -397,6 +397,6 @@ final List<Map<String, dynamic>> testVector = [
     "entropy":
         "3d455560573db3aab8a15b6beaf086eb657256fec1ba93fff665196b3bdd004c",
     "seed": "3d455560573db3aab8a15b6beaf086eb657256fec1ba93fff665196b3bdd004c",
-    "address": "LXLBCZQV7LG6AYZVS7ZY2XVLYZC57TQK6GCZ6L3LYJPBL7N4AKOHMJUJSQ"
-  }
+    "address": "LXLBCZQV7LG6AYZVS7ZY2XVLYZC57TQK6GCZ6L3LYJPBL7N4AKOHMJUJSQ",
+  },
 ];

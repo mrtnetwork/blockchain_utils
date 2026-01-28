@@ -1,5 +1,13 @@
 import 'dart:typed_data';
-import 'package:blockchain_utils/blockchain_utils.dart';
+
+import 'package:blockchain_utils/bip/ecc/keys/ed25519_keys.dart';
+import 'package:blockchain_utils/crypto/crypto/ec/curve/curves.dart';
+import 'package:blockchain_utils/crypto/crypto/exception/exception.dart';
+import 'package:blockchain_utils/crypto/quick_crypto.dart';
+import 'package:blockchain_utils/exception/exception/exception.dart';
+import 'package:blockchain_utils/helper/extensions/extensions.dart';
+import 'package:blockchain_utils/utils/binary/utils.dart';
+import 'package:blockchain_utils/utils/numbers/utils/bigint_utils.dart';
 
 /// Represents an X25519 keypair used for elliptic curve Diffie-Hellman (ECDH).
 class X25519Keypair {
@@ -18,28 +26,44 @@ class X25519Keypair {
   }
 
   X25519Keypair._({required List<int> privateKey, required List<int> publicKey})
-      : privateKey = privateKey.asImmutableBytes,
-        publicKey = publicKey.asImmutableBytes;
+    : privateKey = privateKey.asImmutableBytes,
+      publicKey = publicKey.asImmutableBytes;
 
   /// Public constructor with validation of key lengths and public key canonicality.
-  factory X25519Keypair(
-      {required List<int> privateKey,
-      required List<int> publicKey,
-      bool validatePublicKey = false}) {
-    if (privateKey.length != X25519KeyConst.privateKeyLength) {
-      throw CryptoException('invalid private key bytes length');
+  factory X25519Keypair({
+    required List<int> privateKey,
+    required List<int> publicKey,
+    bool validatePublicKey = false,
+  }) {
+    if (privateKey.length != Ed25519KeysConst.privKeyByteLen) {
+      throw ArgumentException.invalidOperationArguments(
+        "X25519Keypair",
+        name: "privateKey",
+        reason: 'Invalid private key bytes length',
+      );
     }
-    if (publicKey.length != X25519KeyConst.publickKeyLength) {
-      throw CryptoException('invalid public key bytes length');
+    if (publicKey.length != Ed25519KeysConst.pubKeyByteLen) {
+      throw ArgumentException.invalidOperationArguments(
+        "X25519Keypair",
+        name: "publicKey",
+        reason: 'Invalid public key bytes length',
+      );
     }
     final u = BigintUtils.fromBytes(publicKey, byteOrder: Endian.little);
     if (u >= X25519KeyConst.p) {
-      throw CryptoException('uBytes is not a canonical field element');
+      throw ArgumentException.invalidOperationArguments(
+        "X25519Keypair",
+        name: "uBytes",
+        reason: 'Invalid public key',
+      );
     }
     if (validatePublicKey) {
       final key = X25519.scalarMultBase(privateKey);
       if (!BytesUtils.bytesEqual(key.publicKey, publicKey)) {
-        throw CryptoException('invalid public.');
+        throw CryptoException.failed(
+          "X25519Keypair",
+          reason: "Validation public key failed.",
+        );
       }
     }
     return X25519Keypair._(privateKey: privateKey, publicKey: publicKey);
@@ -55,11 +79,7 @@ class X25519Keypair {
 }
 
 class X25519KeyConst {
-  static const int privateKeyLength = 32;
-  static const int publickKeyLength = 32;
-  static final BigInt p = Curves.curveEd25519.p;
-  static final BigInt baseU = BigInt.from(9);
-  static final BigInt a24 = BigInt.from(121666);
+  static BigInt get p => Curves.curveEd25519.p;
 }
 
 /// Implements scalar multiplication on Curve25519 using the Montgomery ladder.
@@ -89,6 +109,7 @@ class X25519 {
   /// The Montgomery ladder core for constant-time scalar multiplication.
   /// Returns the u-coordinate of the resulting point.
   static List<int> _montgomeryLadder(List<int> scalar, BigInt u) {
+    final BigInt a24 = BigInt.from(121666);
     BigInt x1 = u;
     BigInt x2 = BigInt.one;
     BigInt z2 = BigInt.zero;
@@ -124,7 +145,8 @@ class X25519 {
       final x5 = _fieldMul(_fieldAdd(da, cb), _fieldAdd(da, cb));
       final z5 = _fieldMul(x1, _fieldMul(_fieldSub(da, cb), _fieldSub(da, cb)));
       final x4 = _fieldMul(aa, bb);
-      final z4 = _fieldMul(E, _fieldAdd(bb, _fieldMul(X25519KeyConst.a24, E)));
+
+      final z4 = _fieldMul(E, _fieldAdd(bb, _fieldMul(a24, E)));
 
       x2 = x4;
       z2 = z4;
@@ -144,34 +166,50 @@ class X25519 {
     BigInt z2inv = _fieldInv(z2);
     BigInt xOut = _fieldMul(x2, z2inv);
 
-    return BigintUtils.toBytes(xOut,
-        length: X25519KeyConst.publickKeyLength, order: Endian.little);
+    return BigintUtils.toBytes(
+      xOut,
+      length: Ed25519KeysConst.pubKeyByteLen,
+      order: Endian.little,
+    );
   }
 
   /// Perform scalar multiplication with the base point (u = 9).
   /// Returns the X25519 keypair.
   static X25519Keypair scalarMultBase(List<int> scalar) {
-    if (scalar.length != X25519KeyConst.privateKeyLength) {
-      throw CryptoException('invalid scalar bytes length');
+    final BigInt baseU = BigInt.from(9);
+    if (scalar.length != Ed25519KeysConst.privKeyByteLen) {
+      throw ArgumentException.invalidOperationArguments(
+        "scalarMultBase",
+        name: "scalar",
+        reason: 'Incorrect scalar bytes length.',
+      );
     }
     final clamped = _clampScalar(scalar);
-    final pk = _montgomeryLadder(clamped, X25519KeyConst.baseU);
+    final pk = _montgomeryLadder(clamped, baseU);
     return X25519Keypair._(privateKey: clamped, publicKey: pk);
   }
 
   /// Perform scalar multiplication with an arbitrary public key (u-coordinate).
   /// Returns the shared secret.
   static List<int> scalarMult(List<int> scalar, List<int> uBytes) {
-    if (scalar.length != X25519KeyConst.privateKeyLength) {
-      throw CryptoException('invalid scalar bytes length');
+    if (scalar.length != Ed25519KeysConst.privKeyByteLen) {
+      throw ArgumentException.invalidOperationArguments(
+        "scalarMultBase",
+        name: "scalar",
+        reason: 'Incorrect scalar bytes length.',
+      );
     }
-    if (uBytes.length != X25519KeyConst.publickKeyLength) {
-      throw CryptoException('invalid u bytes length');
+    if (uBytes.length != Ed25519KeysConst.pubKeyByteLen) {
+      throw ArgumentException.invalidOperationArguments(
+        "scalarMultBase",
+        name: "uBytes",
+        reason: 'Incorrect public key bytes length.',
+      );
     }
     final clamped = _clampScalar(scalar);
     final u = BigintUtils.fromBytes(uBytes, byteOrder: Endian.little);
     if (u >= X25519KeyConst.p) {
-      throw CryptoException('uBytes is not a canonical field element');
+      throw CryptoException.failed("scalarMult", reason: "Invalid public key.");
     }
     return _montgomeryLadder(clamped, u);
   }

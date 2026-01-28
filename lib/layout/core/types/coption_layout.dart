@@ -5,14 +5,16 @@ import 'numeric.dart';
 
 class COptionLayout<T> extends Layout<T?> {
   COptionLayout(this.layout, {String? property})
-      : super(-1, property: property);
+    : super(-1, property: property);
   final Layout<T> layout;
   final IntegerLayout discriminator = IntegerLayout(1);
 
   static void _validateOption({int? value, String? property}) {
     if (value != 0 && value != 1) {
-      throw LayoutException("Invalid option bytes.",
-          details: {"property": property, "value": value});
+      throw LayoutException(
+        "Failed to decode data as boolean.",
+        details: {"property": property, "value": value},
+      );
     }
   }
 
@@ -25,7 +27,9 @@ class COptionLayout<T> extends Layout<T?> {
     _validateOption(property: property, value: decode.value);
     final result = layout.decode(bytes, offset: offset + 1);
     return LayoutDecodeResult(
-        consumed: result.consumed + decode.consumed, value: result.value as T?);
+      consumed: result.consumed + decode.consumed,
+      value: result.value as T?,
+    );
   }
 
   @override
@@ -39,12 +43,9 @@ class COptionLayout<T> extends Layout<T?> {
   }
 
   @override
-  int getSpan(LayoutByteReader? bytes, {int offset = 0, T? source}) {
-    if (bytes == null) return layout.span + 1;
-    final decode = discriminator.decode(bytes, offset: offset);
-    if (decode.value == 0) return 1;
-    _validateOption(property: property, value: decode.value);
-    return layout.span + 1;
+  int getSpan() {
+    if (layout.span > 0) return layout.span + 1;
+    return -1;
   }
 
   @override

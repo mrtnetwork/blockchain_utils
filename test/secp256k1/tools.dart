@@ -7,7 +7,8 @@
 import 'dart:math';
 
 import 'package:blockchain_utils/blockchain_utils.dart';
-import 'package:blockchain_utils/crypto/crypto/cdsa/secp256k1/secp256k1.dart';
+import 'package:blockchain_utils/crypto/crypto/ec/projective/secp256k1/secp256k1.dart';
+import 'package:test/test.dart';
 
 Secp256k1Fe randomFe() {
   while (true) {
@@ -38,16 +39,14 @@ Secp256k1Fe randomFeNonSqrt() {
 }
 
 void mulmod256(List<int> out, List<int> a, [List<int>? b, List<int>? m]) {
-  if (a.length != 16) {
-    throw ArgumentError('Expected a.length == 16 and out.length == 32');
-  }
+  expect(a.length, 16);
 
   final mul = List<int>.filled(32, 0);
   int mulBitLen = 0;
   int mBitLen = 0;
 
   if (b != null) {
-    if (b.length != 16) throw ArgumentError('b.length must be 16');
+    expect(b.length, 16);
 
     // Compute the product a * b -> mul (512-bit)
     BigInt c = BigInt.zero;
@@ -87,7 +86,7 @@ void mulmod256(List<int> out, List<int> a, [List<int>? b, List<int>? m]) {
   }
 
   if (m != null) {
-    if (m.length != 16) throw ArgumentError('m.length must be 16');
+    expect(m.length, 16);
 
     // Compute highest set bit in m
     for (int i = 255; i >= 0; i--) {
@@ -164,20 +163,18 @@ void randomGeTest(Secp256k1Ge ge) {
 }
 
 int testrandBits1() => Random().nextInt(2);
-void randomScalarOrderTest(Secp256k1Scalar num) {
+List<int> randomScalarOrderTest(Secp256k1Scalar num) {
   while (true) {
     List<int> b32 = QuickCrypto.generateRandom();
     Secp256k1.secp256k1ScalarSetB32(num, b32);
     if (Secp256k1.secp256k1ScalarIsZero(num) == 1) {
       continue;
     }
-    break;
+    return b32;
   }
 }
 
 int testrandBits(int nBits) {
-  if (nBits <= 0 || nBits > 32) {
-    throw ArgumentError('nBits must be between 1 and 32');
-  }
+  expect(nBits > 0 || nBits <= 32, true);
   return Random().nextInt(nBits);
 }

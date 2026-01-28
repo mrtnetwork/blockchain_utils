@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 import 'package:blockchain_utils/bech32/bech32_base.dart';
 import 'package:blockchain_utils/helper/helper.dart';
-import 'package:blockchain_utils/utils/utils.dart';
+
 import 'package:blockchain_utils/bip/address/addr_dec_utils.dart';
 import 'package:blockchain_utils/bip/address/addr_key_validator.dart';
 import 'package:blockchain_utils/bip/address/decoder.dart';
@@ -9,6 +9,8 @@ import 'package:blockchain_utils/bip/address/encoder.dart';
 import 'package:blockchain_utils/bip/address/exception/exception.dart';
 import 'package:blockchain_utils/bip/coin_conf/constant/coins_conf.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
+import 'package:blockchain_utils/utils/numbers/utils/bigint_utils.dart';
+import 'package:blockchain_utils/utils/numbers/utils/int_utils.dart';
 import 'ada_addres_type.dart';
 import 'network.dart';
 
@@ -21,15 +23,18 @@ class Pointer {
     return "Pointer{slot: $slot, txIndex: $txIndex, certIndex: $certIndex}";
   }
 
-  const Pointer(
-      {required this.slot, required this.txIndex, required this.certIndex});
+  const Pointer({
+    required this.slot,
+    required this.txIndex,
+    required this.certIndex,
+  });
   factory Pointer.fromBytes(List<int> data) {
     final slot = BigintUtils.variableNatDecode(data);
-    final txIndex = BigintUtils.variableNatDecode(data.sublist(slot.item2));
-    final certIndex =
-        BigintUtils.variableNatDecode(data.sublist(slot.item2 + txIndex.item2));
-    return Pointer(
-        slot: slot.item1, txIndex: txIndex.item1, certIndex: certIndex.item1);
+    final txIndex = BigintUtils.variableNatDecode(data.sublist(slot.$2));
+    final certIndex = BigintUtils.variableNatDecode(
+      data.sublist(slot.$2 + txIndex.$2),
+    );
+    return Pointer(slot: slot.$1, txIndex: txIndex.$1, certIndex: certIndex.$1);
   }
 
   List<int> toBytes() {
@@ -58,42 +63,41 @@ class AdaStakeCredential {
   final AdaStakeCredType type;
   final List<int> hash;
   AdaStakeCredential._(this.type, List<int> hash)
-      : hash = hash.asImmutableBytes;
+    : hash = hash.asImmutableBytes;
 
-  factory AdaStakeCredential(
-      {required List<int> hash, required AdaStakeCredType type}) {
+  factory AdaStakeCredential({
+    required List<int> hash,
+    required AdaStakeCredType type,
+  }) {
     if (hash.length != QuickCrypto.blake2b224DigestSize) {
-      throw AddressConverterException("Invalid credential hash length. ",
-          details: {
-            "Excepted": QuickCrypto.blake2b224DigestSize,
-            "length": hash.length
-          });
+      throw AddressConverterException.addressBytesValidationFailed(
+        reason: "Invalid bytes length.",
+        details: {
+          "Excepted": QuickCrypto.blake2b224DigestSize,
+          "length": hash.length,
+        },
+      );
     }
     return AdaStakeCredential._(type, hash);
   }
 }
 
-/// Constants related to Ada Shelley addresses, including address human-readable prefixes.
-class AdaShelleyAddrConst {
-  /// Maps Ada Shelley network tags to their corresponding address human-readable prefixes.
-  static final Map<ADANetwork, String> networkTagToAddrHrp = {
-    ADANetwork.mainnet: CoinsConf.cardanoMainNet.params.addrHrp!,
-    ADANetwork.testnet: CoinsConf.cardanoTestNet.params.addrHrp!,
-    ADANetwork.testnetPreprod: CoinsConf.cardanoTestNet.params.addrHrp!,
-    ADANetwork.testnetPreview: CoinsConf.cardanoTestNet.params.addrHrp!,
-  };
-
-  /// Maps Ada Shelley network tags to their corresponding staking (reward) address human-readable prefixes.
-  static final Map<ADANetwork, String> networkTagToRewardAddrHrp = {
-    ADANetwork.mainnet: CoinsConf.cardanoMainNet.params.stakingAddrHrp!,
-    ADANetwork.testnet: CoinsConf.cardanoTestNet.params.stakingAddrHrp!,
-    ADANetwork.testnetPreprod: CoinsConf.cardanoTestNet.params.stakingAddrHrp!,
-    ADANetwork.testnetPreview: CoinsConf.cardanoTestNet.params.stakingAddrHrp!,
-  };
-}
-
 /// Utility class for encoding and decoding Ada Shelley addresses.
 class AdaShelleyAddrUtils {
+  static String getAddressHrp(ADANetwork network) {
+    return AddrKeyValidator.getConfigArg(switch (network) {
+      ADANetwork.mainnet => CoinsConf.cardanoMainNet.params.addrHrp,
+      _ => CoinsConf.cardanoTestNet.params.addrHrp,
+    }, "addrHrp");
+  }
+
+  static String getRewardAddressHrp(ADANetwork network) {
+    return AddrKeyValidator.getConfigArg(switch (network) {
+      ADANetwork.mainnet => CoinsConf.cardanoMainNet.params.stakingAddrHrp,
+      _ => CoinsConf.cardanoTestNet.params.stakingAddrHrp,
+    }, "stakingAddrHrp");
+  }
+
   /// Computes the key hash for the given public key bytes.
   /// Key hash is calculated using the Blake2b224 hash function.
   static List<int> keyHash(List<int> pubKeyBytes) {
@@ -105,21 +109,23 @@ class AdaShelleyAddrUtils {
   ///
   /// Parameters:
   /// - [hdrType]: The header type used for encoding (e.g., payment or reward).
-  /// - [netTag]: The network tag representing the network (e.g., mainnet or testnet).
+  /// - [network]: The network tag representing the network (e.g., mainnet or testnet).
   ///
   /// Returns:
   /// A byte array representing the address prefix.
   static List<int> encodePrefix(
-      ADAAddressType hdrType, int netTag, AdaStakeCredType credType,
-      {AdaStakeCredType? stakeType}) {
+    ADAAddressType hdrType,
+    int network,
+    AdaStakeCredType credType, {
+    AdaStakeCredType? stakeType,
+  }) {
     int hdr = (hdrType.header << 4) | credType.value << 4;
     if (hdrType == ADAAddressType.base && stakeType != null) {
       hdr |= stakeType.value << 5;
     }
 
-    hdr += netTag;
-    return IntUtils.toBytes(hdr,
-        length: IntUtils.bitlengthInBytes(hdr), byteOrder: Endian.little);
+    hdr += network;
+    return IntUtils.toBytes(hdr, byteOrder: Endian.little);
   }
 
   static int decodeNetworkTag(int header) {
@@ -132,160 +138,154 @@ class AdaShelleyAddrUtils {
         : AdaStakeCredType.script;
   }
 
-  static String encode(
-      {required AdaStakeCredential credential,
-      AdaStakeCredential? stakeCredential,
-      Pointer? pointer,
-      required ADANetwork netTag,
-      required String hrp,
-      required ADAAddressType type}) {
+  static String encode({
+    required AdaStakeCredential credential,
+    AdaStakeCredential? stakeCredential,
+    Pointer? pointer,
+    required ADANetwork network,
+    required String hrp,
+    required ADAAddressType type,
+  }) {
     /// Encode the address prefix using the header type and network tag.
     final prefixByte = AdaShelleyAddrUtils.encodePrefix(
-        type, netTag.value, credential.type,
-        stakeType: stakeCredential?.type);
+      type,
+      network.value,
+      credential.type,
+      stakeType: stakeCredential?.type,
+    );
 
-    return Bech32Encoder.encode(
-        hrp,
-        List<int>.from([
-          ...prefixByte,
-          ...credential.hash,
-          ...stakeCredential?.hash ?? <int>[],
-          ...pointer?.toBytes() ?? <int>[]
-        ]));
+    return Bech32Encoder.encode(hrp, [
+      ...prefixByte,
+      ...credential.hash,
+      ...stakeCredential?.hash ?? <int>[],
+      ...pointer?.toBytes() ?? <int>[],
+    ]);
   }
 
   static String encodeBytes(List<int> addrBytes) {
     final int header = addrBytes[0];
-    final netTag = ADANetwork.fromTag(decodeNetworkTag(header));
+    final network = ADANetwork.fromTag(decodeNetworkTag(header));
     final ADAAddressType addressType = ADAAddressType.decodeAddressType(header);
     if (addressType == ADAAddressType.reward) {
-      return Bech32Encoder.encode(
-          AdaShelleyAddrConst.networkTagToRewardAddrHrp[netTag]!, addrBytes);
+      return Bech32Encoder.encode(getRewardAddressHrp(network), addrBytes);
     }
-    return Bech32Encoder.encode(
-        AdaShelleyAddrConst.networkTagToAddrHrp[netTag]!, addrBytes);
+    return Bech32Encoder.encode(getAddressHrp(network), addrBytes);
   }
 }
 
 /// Implementation of the [BlockchainAddressDecoder] for Ada Shelley address.
-class AdaShelleyAddrDecoder implements BlockchainAddressDecoder {
+class AdaShelleyAddrDecoder implements BlockchainAddressDecoder<List<int>> {
   /// Blockchain address decoder for Ada Shelley addresses.
   /// This decoder is used to decode payment addresses based on the network tag and address format.
   @override
-  List<int> decodeAddr(String addr, [Map<String, dynamic> kwargs = const {}]) {
-    /// Determine the network tag, defaulting to mainnet if not specified.
-    final netTag = kwargs["net_tag"] ?? ADANetwork.mainnet;
-
-    /// Check if the provided network tag is a valid enum value.
-    if (netTag is! ADANetwork) {
-      throw const AddressConverterException(
-          'Address type is not an enumerative of ADANetwork');
-    }
-
+  List<int> decodeAddr(String addr, {ADANetwork network = ADANetwork.mainnet}) {
     // Decode the provided Bech32 address.
     final addrDecBytes = Bech32Decoder.decode(
-        AdaShelleyAddrConst.networkTagToAddrHrp[netTag]!, addr);
+      AdaShelleyAddrUtils.getAddressHrp(network),
+      addr,
+    );
 
     /// Validate the byte length of the decoded address.
     AddrDecUtils.validateBytesLength(
-        addrDecBytes, (QuickCrypto.blake2b224DigestSize * 2) + 1);
+      addrDecBytes,
+      (QuickCrypto.blake2b224DigestSize * 2) + 1,
+    );
 
     /// Encode the address prefix based on the payment header type and network tag.
-    final prefixByte = AdaShelleyAddrUtils.encodePrefix(ADAAddressType.base,
-        netTag.value, AdaShelleyAddrUtils.decodeCred(addrDecBytes[0], 4),
-        stakeType: AdaShelleyAddrUtils.decodeCred(addrDecBytes[0], 5));
+    final prefixByte = AdaShelleyAddrUtils.encodePrefix(
+      ADAAddressType.base,
+      network.value,
+      AdaShelleyAddrUtils.decodeCred(addrDecBytes[0], 4),
+      stakeType: AdaShelleyAddrUtils.decodeCred(addrDecBytes[0], 5),
+    );
     return AddrDecUtils.validateAndRemovePrefixBytes(addrDecBytes, prefixByte);
   }
 }
 
 /// Implementation of the [BlockchainAddressEncoder] for Ada Shelley address.
 class AdaShelleyAddrEncoder implements BlockchainAddressEncoder {
-  String encodeCredential(AdaStakeCredential credential,
-      [Map<String, dynamic> kwargs = const {}]) {
-    final AdaStakeCredential pubSkey =
-        AddrKeyValidator.validateAddressArgs<AdaStakeCredential>(
-            kwargs, "pub_skey");
-
-    final netTag = kwargs["net_tag"] ?? ADANetwork.mainnet;
-
-    if (netTag is! ADANetwork) {
-      throw const AddressConverterException(
-          'Address type is not an enumerative of ADANetwork');
-    }
+  String encodeCredential(
+    AdaStakeCredential credential, {
+    ADANetwork network = ADANetwork.mainnet,
+    AdaStakeCredential? pubSkey,
+  }) {
+    pubSkey = AddrKeyValidator.getAddrArg<AdaStakeCredential>(
+      pubSkey,
+      "pubSkey",
+    );
     return AdaShelleyAddrUtils.encode(
-        credential: credential,
-        netTag: netTag,
-        hrp: AdaShelleyAddrConst.networkTagToAddrHrp[netTag]!,
-        stakeCredential: pubSkey,
-        type: ADAAddressType.base);
+      credential: credential,
+      network: network,
+      hrp: AdaShelleyAddrUtils.getAddressHrp(network),
+      stakeCredential: pubSkey,
+      type: ADAAddressType.base,
+    );
   }
 
   /// Blockchain address encoder for Ada Shelley addresses.
   /// This encoder is used to create addresses based on public and private key pairs.
   @override
-  String encodeKey(List<int> pubKey, [Map<String, dynamic> kwargs = const {}]) {
-    /// Validate the provided address arguments.
-    AddrKeyValidator.validateAddressArgs<List<int>>(kwargs, "pub_skey");
-
+  String encodeKey(
+    List<int> pubKey, {
+    List<int>? pubSkey,
+    ADANetwork network = ADANetwork.mainnet,
+  }) {
     /// Extract the public spending key (pub_skey) from the arguments.
-    final List<int> pubSkey = kwargs["pub_skey"];
-
-    /// Determine the network tag, defaulting to mainnet if not specified.
-    final netTag = kwargs["net_tag"] ?? ADANetwork.mainnet;
-
-    /// Check if the provided network tag is a valid enum value.
-    if (netTag is! ADANetwork) {
-      throw const AddressConverterException(
-          'Address type is not an enumerative of ADANetwork');
-    }
+    pubSkey = AddrKeyValidator.getAddrArg<List<int>>(pubSkey, "pubKey");
 
     /// Validate and retrieve public keys.
     final pubKeyObj = AddrKeyValidator.validateAndGetEd25519Key(pubKey);
     final pubSkeyObj = AddrKeyValidator.validateAndGetEd25519Key(pubSkey);
 
     // Compute key hashes for public spending and public delegation keys.
-    final pubKeyHash =
-        AdaShelleyAddrUtils.keyHash(pubKeyObj.compressed.sublist(1));
-    final pubSkeyHash =
-        AdaShelleyAddrUtils.keyHash(pubSkeyObj.compressed.sublist(1));
+    final pubKeyHash = AdaShelleyAddrUtils.keyHash(
+      pubKeyObj.compressed.sublist(1),
+    );
+    final pubSkeyHash = AdaShelleyAddrUtils.keyHash(
+      pubSkeyObj.compressed.sublist(1),
+    );
 
     return AdaShelleyAddrUtils.encode(
-        credential:
-            AdaStakeCredential(hash: pubKeyHash, type: AdaStakeCredType.key),
-        netTag: netTag,
-        hrp: AdaShelleyAddrConst.networkTagToAddrHrp[netTag]!,
-        stakeCredential:
-            AdaStakeCredential(hash: pubSkeyHash, type: AdaStakeCredType.key),
-        type: ADAAddressType.base);
+      credential: AdaStakeCredential(
+        hash: pubKeyHash,
+        type: AdaStakeCredType.key,
+      ),
+      network: network,
+      hrp: AdaShelleyAddrUtils.getAddressHrp(network),
+      stakeCredential: AdaStakeCredential(
+        hash: pubSkeyHash,
+        type: AdaStakeCredType.key,
+      ),
+      type: ADAAddressType.base,
+    );
   }
 }
 
 /// Implementation of the [BlockchainAddressDecoder] for Ada Shelley staking address.
-class AdaShelleyStakingAddrDecoder implements BlockchainAddressDecoder {
+class AdaShelleyStakingAddrDecoder
+    implements BlockchainAddressDecoder<List<int>> {
   /// Blockchain address decoder for Ada Shelley staking addresses.
   /// This decoder is used to decode staking addresses based on network tag and address data.
   @override
-  List<int> decodeAddr(String addr, [Map<String, dynamic> kwargs = const {}]) {
-    /// Determine the network tag, defaulting to mainnet if not specified.
-    final netTag = kwargs["net_tag"] ?? ADANetwork.mainnet;
-
-    /// Check if the provided network tag is a valid enum value.
-    if (netTag is! ADANetwork) {
-      throw const AddressConverterException(
-          'Address type is not an enumerative of ADANetwork');
-    }
-
+  List<int> decodeAddr(String addr, {ADANetwork network = ADANetwork.mainnet}) {
     /// Decode the provided address using the staking network tag's address prefix.
     final addrDecBytes = Bech32Decoder.decode(
-        AdaShelleyAddrConst.networkTagToRewardAddrHrp[netTag]!, addr);
+      AdaShelleyAddrUtils.getRewardAddressHrp(network),
+      addr,
+    );
 
     /// Validate the length of the decoded bytes and remove the prefix.
     AddrDecUtils.validateBytesLength(
-        addrDecBytes, QuickCrypto.blake2b224DigestSize + 1);
+      addrDecBytes,
+      QuickCrypto.blake2b224DigestSize + 1,
+    );
 
     /// Encode the address prefix based on the reward header type and network tag.
-    final prefixByte = AdaShelleyAddrUtils.encodePrefix(ADAAddressType.reward,
-        netTag.value, AdaShelleyAddrUtils.decodeCred(addrDecBytes[0], 4));
+    final prefixByte = AdaShelleyAddrUtils.encodePrefix(
+      ADAAddressType.reward,
+      network.value,
+      AdaShelleyAddrUtils.decodeCred(addrDecBytes[0], 4),
+    );
 
     /// Return the final decoded address by removing the prefix and converting it to bytes.
     return AddrDecUtils.validateAndRemovePrefixBytes(addrDecBytes, prefixByte);
@@ -294,219 +294,187 @@ class AdaShelleyStakingAddrDecoder implements BlockchainAddressDecoder {
 
 /// Implementation of the [BlockchainAddressEncoder] for Ada Shelley staking address.
 class AdaShelleyStakingAddrEncoder implements BlockchainAddressEncoder {
-  String encodeCredential(AdaStakeCredential credential,
-      [Map<String, dynamic> kwargs = const {}]) {
-    /// Determine the network tag, defaulting to mainnet if not specified.
-    final netTag = kwargs["net_tag"] ?? ADANetwork.mainnet;
-
-    /// Check if the provided network tag is a valid enum value.
-    if (netTag is! ADANetwork) {
-      throw const AddressConverterException(
-          'Address type is not an enumerative of ADANetwork');
-    }
+  String encodeCredential(
+    AdaStakeCredential credential, {
+    ADANetwork network = ADANetwork.mainnet,
+  }) {
     return AdaShelleyAddrUtils.encode(
-        credential: credential,
-        netTag: netTag,
-        hrp: AdaShelleyAddrConst.networkTagToRewardAddrHrp[netTag]!,
-        type: ADAAddressType.reward);
+      credential: credential,
+      network: network,
+      hrp: AdaShelleyAddrUtils.getRewardAddressHrp(network),
+      type: ADAAddressType.reward,
+    );
   }
 
   /// Blockchain address encoder for Ada Shelley staking addresses.
   /// This encoder is used to create staking addresses based on the network tag and public key.
   @override
-  String encodeKey(List<int> pubKey, [Map<String, dynamic> kwargs = const {}]) {
-    /// Determine the network tag, defaulting to mainnet if not specified.
-    final netTag = kwargs["net_tag"] ?? ADANetwork.mainnet;
-
-    /// Check if the provided network tag is a valid enum value.
-    if (netTag is! ADANetwork) {
-      throw const AddressConverterException(
-          'Address type is not an enumerative of ADANetwork');
-    }
-
+  String encodeKey(
+    List<int> pubKey, {
+    ADANetwork network = ADANetwork.mainnet,
+  }) {
     /// Validate and get the Ed25519 public key object from the provided bytes.
     final pubKeyObj = AddrKeyValidator.validateAndGetEd25519Key(pubKey);
 
     /// Compute the public key hash based on the compressed key bytes.
-    final pubKeyHash =
-        AdaShelleyAddrUtils.keyHash(pubKeyObj.compressed.sublist(1));
+    final pubKeyHash = AdaShelleyAddrUtils.keyHash(
+      pubKeyObj.compressed.sublist(1),
+    );
     return AdaShelleyAddrUtils.encode(
-        credential:
-            AdaStakeCredential(hash: pubKeyHash, type: AdaStakeCredType.key),
-        netTag: netTag,
-        hrp: AdaShelleyAddrConst.networkTagToRewardAddrHrp[netTag]!,
-        type: ADAAddressType.reward);
+      credential: AdaStakeCredential(
+        hash: pubKeyHash,
+        type: AdaStakeCredType.key,
+      ),
+      network: network,
+      hrp: AdaShelleyAddrUtils.getRewardAddressHrp(network),
+      type: ADAAddressType.reward,
+    );
   }
 }
 
 /// Implementation of the [BlockchainAddressDecoder] for Ada Shelley address.
-class AdaShelleyEnterpriseDecoder implements BlockchainAddressDecoder {
+class AdaShelleyEnterpriseDecoder
+    implements BlockchainAddressDecoder<List<int>> {
   /// Blockchain address decoder for Ada Shelley addresses.
   /// This decoder is used to decode payment addresses based on the network tag and address format.
   @override
-  List<int> decodeAddr(String addr, [Map<String, dynamic> kwargs = const {}]) {
-    /// Determine the network tag, defaulting to mainnet if not specified.
-    final netTag = kwargs["net_tag"] ?? ADANetwork.mainnet;
-
-    /// Check if the provided network tag is a valid enum value.
-    if (netTag is! ADANetwork) {
-      throw const AddressConverterException(
-          'Address type is not an enumerative of ADANetwork');
-    }
-
+  List<int> decodeAddr(String addr, {ADANetwork network = ADANetwork.mainnet}) {
     // Decode the provided Bech32 address.
     final addrDecBytes = Bech32Decoder.decode(
-        AdaShelleyAddrConst.networkTagToAddrHrp[netTag]!, addr);
+      AdaShelleyAddrUtils.getAddressHrp(network),
+      addr,
+    );
 
     /// Validate the byte length of the decoded address.
     AddrDecUtils.validateBytesLength(
-        addrDecBytes, QuickCrypto.blake2b224DigestSize + 1);
+      addrDecBytes,
+      QuickCrypto.blake2b224DigestSize + 1,
+    );
 
     /// Encode the address prefix based on the payment header type and network tag.
     final prefixByte = AdaShelleyAddrUtils.encodePrefix(
-        ADAAddressType.enterprise,
-        netTag.value,
-        AdaShelleyAddrUtils.decodeCred(addrDecBytes[0], 4));
+      ADAAddressType.enterprise,
+      network.value,
+      AdaShelleyAddrUtils.decodeCred(addrDecBytes[0], 4),
+    );
     return AddrDecUtils.validateAndRemovePrefixBytes(addrDecBytes, prefixByte);
   }
 }
 
 class AdaShelleyEnterpriseAddrEncoder implements BlockchainAddressEncoder {
-  String encodeCredential(AdaStakeCredential credential,
-      [Map<String, dynamic> kwargs = const {}]) {
-    /// Determine the network tag, defaulting to mainnet if not specified.
-    final netTag = kwargs["net_tag"] ?? ADANetwork.mainnet;
-
-    /// Check if the provided network tag is a valid enum value.
-    if (netTag is! ADANetwork) {
-      throw const AddressConverterException(
-          'Address type is not an enumerative of ADANetwork');
-    }
-
+  String encodeCredential(
+    AdaStakeCredential credential, {
+    ADANetwork network = ADANetwork.mainnet,
+  }) {
     return AdaShelleyAddrUtils.encode(
-        credential: credential,
-        netTag: netTag,
-        hrp: AdaShelleyAddrConst.networkTagToAddrHrp[netTag]!,
-        type: ADAAddressType.enterprise);
+      credential: credential,
+      network: network,
+      hrp: AdaShelleyAddrUtils.getAddressHrp(network),
+      type: ADAAddressType.enterprise,
+    );
   }
 
   /// Blockchain address encoder for Ada Shelley addresses.
   /// This encoder is used to create addresses based on public and private key pairs.
   @override
-  String encodeKey(List<int> pubKey, [Map<String, dynamic> kwargs = const {}]) {
-    /// Determine the network tag, defaulting to mainnet if not specified.
-    final netTag = kwargs["net_tag"] ?? ADANetwork.mainnet;
-
-    /// Check if the provided network tag is a valid enum value.
-    if (netTag is! ADANetwork) {
-      throw const AddressConverterException(
-          'Address type is not an enumerative of ADANetwork');
-    }
-
+  String encodeKey(
+    List<int> pubKey, {
+    ADANetwork network = ADANetwork.mainnet,
+  }) {
     /// Validate and retrieve public keys.
     final pubKeyObj = AddrKeyValidator.validateAndGetEd25519Key(pubKey);
 
     // Compute key hashes for public spending and public delegation keys.
-    final pubKeyHash =
-        AdaShelleyAddrUtils.keyHash(pubKeyObj.compressed.sublist(1));
+    final pubKeyHash = AdaShelleyAddrUtils.keyHash(
+      pubKeyObj.compressed.sublist(1),
+    );
 
     return AdaShelleyAddrUtils.encode(
-        credential:
-            AdaStakeCredential(hash: pubKeyHash, type: AdaStakeCredType.key),
-        netTag: netTag,
-        hrp: AdaShelleyAddrConst.networkTagToAddrHrp[netTag]!,
-        type: ADAAddressType.enterprise);
+      credential: AdaStakeCredential(
+        hash: pubKeyHash,
+        type: AdaStakeCredType.key,
+      ),
+      network: network,
+      hrp: AdaShelleyAddrUtils.getAddressHrp(network),
+      type: ADAAddressType.enterprise,
+    );
   }
 }
 
 /// Implementation of the [BlockchainAddressDecoder] for Ada Shelley address.
-class AdaShelleyPointerDecoder implements BlockchainAddressDecoder {
+class AdaShelleyPointerDecoder implements BlockchainAddressDecoder<List<int>> {
   /// Blockchain address decoder for Ada Shelley addresses.
   /// This decoder is used to decode payment addresses based on the network tag and address format.
   @override
-  List<int> decodeAddr(String addr, [Map<String, dynamic> kwargs = const {}]) {
-    /// Determine the network tag, defaulting to mainnet if not specified.
-    final netTag = kwargs["net_tag"] ?? ADANetwork.mainnet;
-
-    /// Check if the provided network tag is a valid enum value.
-    if (netTag is! ADANetwork) {
-      throw const AddressConverterException(
-          'Address type is not an enumerative of ADANetwork');
-    }
-
+  List<int> decodeAddr(String addr, {ADANetwork network = ADANetwork.mainnet}) {
     // Decode the provided Bech32 address.
     final addrDecBytes = Bech32Decoder.decode(
-        AdaShelleyAddrConst.networkTagToAddrHrp[netTag]!, addr);
+      AdaShelleyAddrUtils.getAddressHrp(network),
+      addr,
+    );
 
     /// Validate the byte length of the decoded address.
     AddrDecUtils.validateBytesLength(
-        addrDecBytes, QuickCrypto.blake2b224DigestSize + 1,
-        minLength: QuickCrypto.blake2b224DigestSize + 4);
+      addrDecBytes,
+      QuickCrypto.blake2b224DigestSize + 1,
+      minLength: QuickCrypto.blake2b224DigestSize + 4,
+    );
 
     /// validate pointer data
     Pointer.fromBytes(
-        addrDecBytes.sublist(QuickCrypto.blake2b224DigestSize + 1));
+      addrDecBytes.sublist(QuickCrypto.blake2b224DigestSize + 1),
+    );
 
     /// Encode the address prefix based on the payment header type and network tag.
-    final prefixByte = AdaShelleyAddrUtils.encodePrefix(ADAAddressType.pointer,
-        netTag.value, AdaShelleyAddrUtils.decodeCred(addrDecBytes[0], 4));
+    final prefixByte = AdaShelleyAddrUtils.encodePrefix(
+      ADAAddressType.pointer,
+      network.value,
+      AdaShelleyAddrUtils.decodeCred(addrDecBytes[0], 4),
+    );
     return AddrDecUtils.validateAndRemovePrefixBytes(addrDecBytes, prefixByte);
   }
 }
 
 class AdaPointerAddrEncoder implements BlockchainAddressEncoder {
-  String encodeCredential(AdaStakeCredential credential,
-      [Map<String, dynamic> kwargs = const {}]) {
-    /// Determine the network tag, defaulting to mainnet if not specified.
-    final netTag = kwargs["net_tag"] ?? ADANetwork.mainnet;
+  String encodeCredential(
+    AdaStakeCredential credential, {
+    ADANetwork network = ADANetwork.mainnet,
+    Pointer? pointer,
+  }) {
+    pointer = AddrKeyValidator.getAddrArg<Pointer>(pointer, "pointer");
 
-    /// Check if the provided network tag is a valid enum value.
-    if (netTag is! ADANetwork) {
-      throw const AddressConverterException(
-          'Address type is not an enumerative of ADANetwork');
-    }
-
-    final pointer = kwargs["pointer"];
-    if (pointer is! Pointer) {
-      throw const AddressConverterException(
-          'The provided value for "Pointer" is not of type Pointer.');
-    }
     return AdaShelleyAddrUtils.encode(
-        credential: credential,
-        pointer: pointer,
-        netTag: netTag,
-        hrp: AdaShelleyAddrConst.networkTagToAddrHrp[netTag]!,
-        type: ADAAddressType.pointer);
+      credential: credential,
+      pointer: pointer,
+      network: network,
+      hrp: AdaShelleyAddrUtils.getAddressHrp(network),
+      type: ADAAddressType.pointer,
+    );
   }
 
   @override
-  String encodeKey(List<int> pubKey, [Map<String, dynamic> kwargs = const {}]) {
-    /// Determine the network tag, defaulting to mainnet if not specified.
-    final netTag = kwargs["net_tag"] ?? ADANetwork.mainnet;
-
-    /// Check if the provided network tag is a valid enum value.
-    if (netTag is! ADANetwork) {
-      throw const AddressConverterException(
-          'Address type is not an enumerative of ADANetwork');
-    }
-
-    final pointer = kwargs["pointer"];
-    if (pointer is! Pointer) {
-      throw const AddressConverterException(
-          'The provided value for "Pointer" is not of type Pointer.');
-    }
+  String encodeKey(
+    List<int> pubKey, {
+    ADANetwork network = ADANetwork.mainnet,
+    Pointer? pointer,
+  }) {
+    // final pointer = AddrKeyValidator.getAddrArg<Pointer>(pointer, "pointer");
 
     /// Validate and retrieve public keys.
     final pubKeyObj = AddrKeyValidator.validateAndGetEd25519Key(pubKey);
     // Compute key hashes for public spending and public delegation keys.
-    final pubKeyHash =
-        AdaShelleyAddrUtils.keyHash(pubKeyObj.compressed.sublist(1));
+    final pubKeyHash = AdaShelleyAddrUtils.keyHash(
+      pubKeyObj.compressed.sublist(1),
+    );
     return AdaShelleyAddrUtils.encode(
-        credential:
-            AdaStakeCredential(hash: pubKeyHash, type: AdaStakeCredType.key),
-        netTag: netTag,
-        pointer: pointer,
-        hrp: AdaShelleyAddrConst.networkTagToAddrHrp[netTag]!,
-        type: ADAAddressType.pointer);
+      credential: AdaStakeCredential(
+        hash: pubKeyHash,
+        type: AdaStakeCredType.key,
+      ),
+      network: network,
+      pointer: AddrKeyValidator.getAddrArg<Pointer>(pointer, "pointer"),
+      hrp: AdaShelleyAddrUtils.getAddressHrp(network),
+      type: ADAAddressType.pointer,
+    );
   }
 }

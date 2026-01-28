@@ -1,7 +1,7 @@
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
 import 'package:blockchain_utils/bip/mnemonic/mnemonic.dart';
 import 'package:blockchain_utils/helper/helper.dart';
-import 'package:blockchain_utils/utils/utils.dart';
+import 'package:blockchain_utils/utils/string/string.dart';
 
 import 'bip39_mnemonic_decoder.dart';
 
@@ -15,15 +15,11 @@ class Bip39SeedGeneratorConst {
 }
 
 /// Generates a seed from a Bip39 mnemonic.
-///
-/// This class allows you to generate a seed from a Bip39 mnemonic, taking an
-/// optional passphrase into account. It validates the mnemonic before
-/// generating the seed.
 class Bip39SeedGenerator {
   final List<int> _entropy;
   final Mnemonic mnemonic;
   Bip39SeedGenerator._(this.mnemonic, List<int> entropy)
-      : _entropy = entropy.asImmutableBytes;
+    : _entropy = entropy.asImmutableBytes;
 
   /// Initializes a new instance of the Bip39SeedGenerator.
   ///
@@ -38,11 +34,6 @@ class Bip39SeedGenerator {
   ///
   /// Optionally, a [passphrase] can be provided to further secure the seed generation.
   ///
-  /// Example usage:
-  /// ```dart
-  /// final seedGenerator = Bip39SeedGenerator(mnemonic);
-  /// final seed = seedGenerator.generate("my_passphrase");
-  /// ```
   List<int> generate([String passphrase = ""]) {
     final salt = Bip39SeedGeneratorConst.seedSaltMod + passphrase;
     return QuickCrypto.pbkdf2DeriveKey(
@@ -56,11 +47,6 @@ class Bip39SeedGenerator {
   ///
   /// Optionally, a [passphrase] can be provided to further secure the seed generation.
   ///
-  /// Example usage:
-  /// ```dart
-  /// final seedGenerator = Bip39SeedGenerator(mnemonic);
-  /// final seed = seedGenerator.generateFromEntropy("my_passphrase");
-  /// ```
   List<int> generateFromEntropy([String passphrase = ""]) {
     final salt = Bip39SeedGeneratorConst.seedSaltMod + passphrase;
     return QuickCrypto.pbkdf2DeriveKey(

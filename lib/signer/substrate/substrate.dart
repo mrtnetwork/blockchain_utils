@@ -10,9 +10,12 @@ class SubstrateSigner {
   BaseSubstrateSigner get signer => _signer;
 
   factory SubstrateSigner.fromBytes(
-      List<int> keyBytes, EllipticCurveTypes algorithm) {
+    List<int> keyBytes,
+    EllipticCurveTypes algorithm,
+  ) {
     return SubstrateSigner._(
-        BaseSubstrateSigner.fromBytes(keyBytes, algorithm));
+      BaseSubstrateSigner.fromBytes(keyBytes, algorithm),
+    );
   }
   factory SubstrateSigner.fromSubstrate(Substrate substrate) {
     return SubstrateSigner._(BaseSubstrateSigner.fromSubstrate(substrate));
@@ -27,8 +30,11 @@ class SubstrateSigner {
   }
 
   List<int> vrfSign(List<int> message, {List<int>? context, List<int>? extra}) {
-    return _signer.vrfSign(message.asBytes,
-        extra: extra?.asBytes, context: context?.asBytes);
+    return _signer.vrfSign(
+      message.asBytes,
+      extra: extra?.asBytes,
+      context: context?.asBytes,
+    );
   }
 }
 
@@ -37,9 +43,12 @@ class SubstrateVerifier {
   const SubstrateVerifier._(this._verifier);
 
   factory SubstrateVerifier.fromBytes(
-      List<int> keyBytes, EllipticCurveTypes algorithm) {
+    List<int> keyBytes,
+    EllipticCurveTypes algorithm,
+  ) {
     return SubstrateVerifier._(
-        BaseSubstrateVerifier.fromBytes(keyBytes, algorithm));
+      BaseSubstrateVerifier.fromBytes(keyBytes, algorithm),
+    );
   }
   factory SubstrateVerifier.fromSubstrate(Substrate substrate) {
     return SubstrateVerifier._(BaseSubstrateVerifier.fromSubstrate(substrate));
@@ -48,9 +57,17 @@ class SubstrateVerifier {
     return _verifier.verify(message.asBytes, signature.asBytes);
   }
 
-  bool vrfVerify(List<int> message, List<int> vrfSign,
-      {List<int>? context, List<int>? extra}) {
-    return _verifier.vrfVerify(message.asBytes, vrfSign.asBytes,
-        context: context?.asBytes, extra: extra?.asBytes);
+  bool vrfVerify(
+    List<int> message,
+    List<int> vrfSign, {
+    List<int>? context,
+    List<int>? extra,
+  }) {
+    return _verifier.vrfVerify(
+      message.asBytes,
+      vrfSign.asBytes,
+      context: context?.asBytes,
+      extra: extra?.asBytes,
+    );
   }
 }

@@ -13,9 +13,9 @@ class MoneroEntropyBitLen {
 /// Constants for generating entropy with specific bit lengths for Monero-based cryptocurrencies.
 class MoneroEntropyGeneratorConst {
   /// List of supported entropy bit lengths for Monero wallets.
-  static final List<int> entropyBitLen = [
+  static const List<int> entropyBitLen = [
     MoneroEntropyBitLen.bitLen128,
-    MoneroEntropyBitLen.bitLen256
+    MoneroEntropyBitLen.bitLen256,
   ];
 }
 
@@ -24,7 +24,11 @@ class MoneroEntropyGenerator extends EntropyGenerator {
   /// Creates a Monero entropy generator with the given bit length.
   MoneroEntropyGenerator(int bitLen) : super(bitLen) {
     if (!isValidEntropyBitLen(bitLen)) {
-      throw ArgumentException('Entropy bit length is not valid ($bitLen)');
+      throw ArgumentException.invalidOperationArguments(
+        "MoneroEntropyGenerator",
+        name: "bitlen",
+        reason: "Invalid mnemonic bit length.",
+      );
     }
   }
 

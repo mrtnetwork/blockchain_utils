@@ -55,32 +55,25 @@
 import 'package:blockchain_utils/bip/bip/conf/bip/bip_coins.dart';
 import 'package:blockchain_utils/bip/bip/conf/bip84/bip84_conf.dart';
 import 'package:blockchain_utils/bip/bip/conf/config/bip_coin_conf.dart';
-import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
+import 'package:blockchain_utils/bip/bip/conf/core/coins.dart';
+import 'package:blockchain_utils/helper/extensions/extensions.dart';
 
 /// An enumeration of supported cryptocurrencies for BIP84. It includes both main
 /// networks and test networks of various cryptocurrencies.
-class Bip84Coins extends BipCoins {
-  // Main nets
-  static const Bip84Coins bitcoin = Bip84Coins._('bitcoin');
-  static const Bip84Coins litecoin = Bip84Coins._('litecoin');
-  static const Bip84Coins electraProtocol = Bip84Coins._('electraProtocol');
+enum Bip84Coins implements BipCoins {
+  // Mainnets
+  bitcoin('bitcoin'),
+  litecoin('litecoin'),
+  electraProtocol('electraProtocol'),
 
-  // Test nets
-  static const Bip84Coins bitcoinTestnet = Bip84Coins._('bitcoinTestnet');
-  static const Bip84Coins litecoinTestnet = Bip84Coins._('litecoinTestnet');
-  static const Bip84Coins electraProtocolTestnet =
-      Bip84Coins._('electraProtocolTestnet');
-  static const List<Bip84Coins> values = [
-    bitcoin,
-    litecoin,
-    electraProtocol,
-    bitcoinTestnet,
-    litecoinTestnet,
-    electraProtocolTestnet
-  ];
+  // Testnets
+  bitcoinTestnet('bitcoinTestnet'),
+  litecoinTestnet('litecoinTestnet'),
+  electraProtocolTestnet('electraProtocolTestnet');
+
   final String name;
 
-  const Bip84Coins._(this.name);
+  const Bip84Coins(this.name);
 
   @override
   Bip84Coins get value => this;
@@ -89,34 +82,22 @@ class Bip84Coins extends BipCoins {
   String get coinName => name;
 
   @override
-  BipCoinConfig get conf => _coinToConf[this]!;
+  BipCoinConfig get conf {
+    final config = Bip84Conf();
+    return switch (this) {
+      Bip84Coins.bitcoin => config.bitcoinMainNet,
+      Bip84Coins.bitcoinTestnet => config.bitcoinTestNet,
+      Bip84Coins.litecoin => config.litecoinMainNet,
+      Bip84Coins.litecoinTestnet => config.litecoinTestNet,
+      Bip84Coins.electraProtocol => config.electraProtocolMainNet,
+      Bip84Coins.electraProtocolTestnet => config.electraProtocolTestNet,
+    };
+  }
 
   static Bip84Coins? fromName(String name) {
-    try {
-      return _coinToConf.keys.firstWhere((element) => element.name == name);
-    } on StateError {
-      return null;
-    }
+    return values.firstWhereNullable((element) => element.name == name);
   }
-
-  static List<Bip84Coins> fromCurve(EllipticCurveTypes type) {
-    return _coinToConf.entries
-        .where((element) => element.value.type == type)
-        .map((e) => e.key)
-        .toList();
-  }
-
-  /// A mapping that associates each BIP84Coin (enum) with its corresponding
-  /// BipCoinConfig configuration.
-  static final Map<Bip84Coins, BipCoinConfig> _coinToConf = {
-    Bip84Coins.bitcoin: Bip84Conf.bitcoinMainNet,
-    Bip84Coins.bitcoinTestnet: Bip84Conf.bitcoinTestNet,
-    Bip84Coins.litecoin: Bip84Conf.litecoinMainNet,
-    Bip84Coins.litecoinTestnet: Bip84Conf.litecoinTestNet,
-    Bip84Coins.electraProtocol: Bip84Conf.electraProtocolMainNet,
-    Bip84Coins.electraProtocolTestnet: Bip84Conf.electraProtocolTestNet,
-  };
 
   @override
-  BipProposal get proposal => BipProposal.bip84;
+  CoinProposal get proposal => CoinProposal.bip84;
 }

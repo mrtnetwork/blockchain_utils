@@ -5,7 +5,7 @@
 // *******************************************************************************
 
 import 'dart:math';
-import 'package:blockchain_utils/crypto/crypto/cdsa/secp256k1/secp256k1.dart';
+import 'package:blockchain_utils/crypto/crypto/ec/projective/secp256k1/secp256k1.dart';
 import 'package:test/test.dart';
 import 'tools.dart';
 
@@ -159,17 +159,14 @@ void _testFeMull(Secp256k1Fe a, Secp256k1Fe b, int useSqr) {
 }
 
 void _mulmod256(List<int> out, List<int> a, [List<int>? b, List<int>? m]) {
-  if (a.length != 16) {
-    throw ArgumentError('Expected a.length == 16 and out.length == 32');
-  }
+  expect(a.length, 16);
 
   final mul = List<int>.filled(32, 0);
   int mulBitLen = 0;
   int mBitLen = 0;
 
   if (b != null) {
-    if (b.length != 16) throw ArgumentError('b.length must be 16');
-
+    expect(b.length, 16);
     // Compute the product a * b -> mul (512-bit)
     BigInt c = BigInt.zero;
     for (int i = 0; i < 32; i++) {
@@ -208,7 +205,7 @@ void _mulmod256(List<int> out, List<int> a, [List<int>? b, List<int>? m]) {
   }
 
   if (m != null) {
-    if (m.length != 16) throw ArgumentError('m.length must be 16');
+    expect(m.length, 16);
 
     // Compute highest set bit in m
     for (int i = 255; i >= 0; i--) {
@@ -269,9 +266,10 @@ void _testSqrt(Secp256k1Fe a, Secp256k1Fe? k) {
     Secp256k1.secp256k1FeNormalize(r1);
     Secp256k1.secp256k1FeNormalize(r2);
     expect(
-        Secp256k1.secp256k1FeIsZero(r1) == 1 ||
-            Secp256k1.secp256k1FeIsZero(r2) == 1,
-        true);
+      Secp256k1.secp256k1FeIsZero(r1) == 1 ||
+          Secp256k1.secp256k1FeIsZero(r2) == 1,
+      true,
+    );
   }
 }
 
@@ -324,8 +322,16 @@ void _fields() {
   Secp256k1Fe z = Secp256k1Fe();
   Secp256k1Fe q = Secp256k1Fe();
   int v;
-  Secp256k1Fe fe5 = Secp256k1Fe.constants(BigInt.zero, BigInt.zero, BigInt.zero,
-      BigInt.zero, BigInt.zero, BigInt.zero, BigInt.zero, BigInt.from(5));
+  Secp256k1Fe fe5 = Secp256k1Fe.constants(
+    BigInt.zero,
+    BigInt.zero,
+    BigInt.zero,
+    BigInt.zero,
+    BigInt.zero,
+    BigInt.zero,
+    BigInt.zero,
+    BigInt.from(5),
+  );
   int i, j;
   for (i = 0; i < 1000 * 16; i++) {
     Secp256k1FeStorage xs = Secp256k1FeStorage(),

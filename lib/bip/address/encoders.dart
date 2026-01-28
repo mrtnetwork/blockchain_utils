@@ -135,3 +135,5 @@ export 'zil_addr.dart' show ZilAddrEncoder;
 
 export 'ton_addr.dart'
     show TonAddrEncoder, TonAddressUtils, FriendlyAddressFlags;
+
+export 'zcash/zcash.dart';

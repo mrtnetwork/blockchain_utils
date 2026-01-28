@@ -7,23 +7,22 @@ import 'package:blockchain_utils/bip/address/decoder.dart';
 import 'package:blockchain_utils/bip/address/exception/exception.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
 import 'package:blockchain_utils/helper/extensions/extensions.dart';
-import 'package:blockchain_utils/utils/utils.dart';
 
 import 'ada_addres_type.dart';
 import 'network.dart';
 
 class AdaGenericAddrDecoderResult {
-  AdaGenericAddrDecoderResult._(
-      {required this.type,
-      required this.baseHashBytes,
-      required this.network,
-      required List<int> addressBytes,
-      List<int>? prefixBytes,
-      this.stakeHashBytes,
-      this.pointer,
-      this.byronAddrPayload})
-      : addressBytes = addressBytes.asImmutableBytes,
-        prefixBytes = prefixBytes?.asImmutableBytes;
+  AdaGenericAddrDecoderResult._({
+    required this.type,
+    required this.baseHashBytes,
+    required this.network,
+    required List<int> addressBytes,
+    List<int>? prefixBytes,
+    this.stakeHashBytes,
+    this.pointer,
+    this.byronAddrPayload,
+  }) : addressBytes = addressBytes.asImmutableBytes,
+       prefixBytes = prefixBytes?.asImmutableBytes;
   final ADAAddressType type;
   final List<int> addressBytes;
   final AdaStakeCredential? baseHashBytes;
@@ -36,17 +35,8 @@ class AdaGenericAddrDecoderResult {
 
 /// Implementation of the [BlockchainAddressDecoder] for Ada Shelley address.
 class AdaGenericAddrDecoder {
-  AdaGenericAddrDecoderResult decode(String addr,
-      [Map<String, dynamic> kwargs = const {}]) {
-    final netTag = kwargs["net_tag"];
-
-    if (netTag != null) {
-      if (netTag is! ADANetwork) {
-        throw const AddressConverterException(
-            'Address type is not an enumerative of ADANetwork');
-      }
-    }
-    Tuple<String, List<int>> addrDecBytes;
+  AdaGenericAddrDecoderResult decode(String addr) {
+    (String, List<int>) addrDecBytes;
     bool checkedByron = false;
     ADANetwork? network;
     try {
@@ -56,14 +46,15 @@ class AdaGenericAddrDecoder {
       final base58Decode = Base58Decoder.decode(addr);
       final byron = ADAByronAddr.deserialize(base58Decode);
       network = ADANetwork.fromProtocolMagic(byron.payload.attrs.networkMagic);
-      addrDecBytes = Tuple(
-          AdaShelleyAddrConst.networkTagToAddrHrp[network]!, base58Decode);
+      addrDecBytes = (AdaShelleyAddrUtils.getAddressHrp(network), base58Decode);
       checkedByron = true;
     }
 
-    final List<int> addressBytes = addrDecBytes.item2;
+    final List<int> addressBytes = addrDecBytes.$2;
     if (addressBytes.length < QuickCrypto.blake2b224DigestSize + 1) {
-      throw const AddressConverterException("Invalid address length.");
+      throw AddressConverterException.addressValidationFailed(
+        reason: "Invalid address length.",
+      );
     }
     final int header = addressBytes[0];
     final int networkTag = AdaShelleyAddrUtils.decodeNetworkTag(header);
@@ -72,32 +63,41 @@ class AdaGenericAddrDecoder {
     if (network == null) {
       if (addressType == ADAAddressType.byron) {
         final byron = ADAByronAddr.deserialize(addressBytes);
-        network =
-            ADANetwork.fromProtocolMagic(byron.payload.attrs.networkMagic);
+        network = ADANetwork.fromProtocolMagic(
+          byron.payload.attrs.networkMagic,
+        );
       } else {
         network = ADANetwork.fromTag(networkTag);
       }
     }
-    String? hrp = AdaShelleyAddrConst.networkTagToAddrHrp[network];
+    String hrp = AdaShelleyAddrUtils.getAddressHrp(network);
 
     switch (addressType) {
       case ADAAddressType.base:
         AddrDecUtils.validateBytesLength(
-            addressBytes, (QuickCrypto.blake2b224DigestSize * 2) + 1);
+          addressBytes,
+          (QuickCrypto.blake2b224DigestSize * 2) + 1,
+        );
         break;
       case ADAAddressType.reward:
         AddrDecUtils.validateBytesLength(
-            addressBytes, QuickCrypto.blake2b224DigestSize + 1);
-        hrp = AdaShelleyAddrConst.networkTagToRewardAddrHrp[network];
+          addressBytes,
+          QuickCrypto.blake2b224DigestSize + 1,
+        );
+        hrp = AdaShelleyAddrUtils.getRewardAddressHrp(network);
         break;
       case ADAAddressType.enterprise:
         AddrDecUtils.validateBytesLength(
-            addressBytes, QuickCrypto.blake2b224DigestSize + 1);
+          addressBytes,
+          QuickCrypto.blake2b224DigestSize + 1,
+        );
         break;
       case ADAAddressType.pointer:
         AddrDecUtils.validateBytesLength(
-            addressBytes, QuickCrypto.blake2b224DigestSize + 1 + 3,
-            minLength: QuickCrypto.blake2b224DigestSize + 1 + 3);
+          addressBytes,
+          QuickCrypto.blake2b224DigestSize + 1 + 3,
+          minLength: QuickCrypto.blake2b224DigestSize + 1 + 3,
+        );
         break;
       case ADAAddressType.byron:
         if (!checkedByron) {
@@ -106,19 +106,24 @@ class AdaGenericAddrDecoder {
 
         break;
       default:
-        throw AddressConverterException("Invalid address prefix $addressType");
+        throw AddressConverterException.addressValidationFailed(
+          reason: "Invalid address prefix.",
+        );
     }
-    if (hrp == null || addrDecBytes.item1 != hrp) {
-      throw AddressConverterException("Invalid address hrp ${hrp ?? ''}");
+    if (addrDecBytes.$1 != hrp) {
+      throw AddressConverterException.addressValidationFailed(
+        reason: "Invalid address checksum.",
+      );
     }
 
     if (addressType == ADAAddressType.byron) {
       return AdaGenericAddrDecoderResult._(
-          type: addressType,
-          baseHashBytes: null,
-          network: network,
-          addressBytes: addressBytes,
-          byronAddrPayload: ADAByronAddr.deserialize(addressBytes));
+        type: addressType,
+        baseHashBytes: null,
+        network: network,
+        addressBytes: addressBytes,
+        byronAddrPayload: ADAByronAddr.deserialize(addressBytes),
+      );
     }
 
     final prefixByte = AdaShelleyAddrUtils.encodePrefix(
@@ -132,20 +137,30 @@ class AdaGenericAddrDecoder {
       addressBytes: addressBytes,
       network: network,
       baseHashBytes: AdaStakeCredential(
-          hash: addressBytes.sublist(prefixByte.length,
-              prefixByte.length + QuickCrypto.blake2b224DigestSize),
-          type: AdaShelleyAddrUtils.decodeCred(header, 4)),
+        hash: addressBytes.sublist(
+          prefixByte.length,
+          prefixByte.length + QuickCrypto.blake2b224DigestSize,
+        ),
+        type: AdaShelleyAddrUtils.decodeCred(header, 4),
+      ),
       prefixBytes: prefixByte,
-      stakeHashBytes: addressType == ADAAddressType.base
-          ? AdaStakeCredential(
-              hash: addressBytes.sublist(
-                  prefixByte.length + QuickCrypto.blake2b224DigestSize),
-              type: AdaShelleyAddrUtils.decodeCred(header, 5))
-          : null,
-      pointer: addressType == ADAAddressType.pointer
-          ? Pointer.fromBytes(addressBytes
-              .sublist(prefixByte.length + QuickCrypto.blake2b224DigestSize))
-          : null,
+      stakeHashBytes:
+          addressType == ADAAddressType.base
+              ? AdaStakeCredential(
+                hash: addressBytes.sublist(
+                  prefixByte.length + QuickCrypto.blake2b224DigestSize,
+                ),
+                type: AdaShelleyAddrUtils.decodeCred(header, 5),
+              )
+              : null,
+      pointer:
+          addressType == ADAAddressType.pointer
+              ? Pointer.fromBytes(
+                addressBytes.sublist(
+                  prefixByte.length + QuickCrypto.blake2b224DigestSize,
+                ),
+              )
+              : null,
     );
   }
 }

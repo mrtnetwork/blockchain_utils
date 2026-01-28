@@ -12,8 +12,9 @@ import 'test_vector.dart';
 void main() {
   test("algorand", () {
     for (final i in testVector) {
-      final mn = AlgorandMnemonicGenerator()
-          .fromEntropy(BytesUtils.fromHexString(i["entropy"]));
+      final mn = AlgorandMnemonicGenerator().fromEntropy(
+        BytesUtils.fromHexString(i["entropy"]),
+      );
       final valid = AlgorandMnemonicValidator().isValid(mn.toStr());
       expect(valid, true);
       final entropy = AlgorandMnemonicDecoder().decode(mn.toStr());

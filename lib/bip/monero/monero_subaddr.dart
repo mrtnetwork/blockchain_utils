@@ -2,27 +2,21 @@ import 'dart:typed_data';
 import 'package:blockchain_utils/bip/ecc/keys/ed25519_monero_keys.dart';
 import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/helper/helper.dart';
-import 'package:blockchain_utils/utils/utils.dart';
+
 import 'package:blockchain_utils/bip/address/xmr_addr.dart';
-import 'package:blockchain_utils/crypto/crypto/cdsa/utils/ed25519.dart';
+import 'package:blockchain_utils/crypto/crypto/ec/utils/ed25519.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
+import 'package:blockchain_utils/utils/numbers/utils/int_utils.dart';
 
 /// A class containing constants related to Monero subaddresses.
 class MoneroSubaddressConst {
   /// Prefix for Monero subaddresses.
-  ///
-  /// Monero subaddresses typically start with the byte sequence [83, 117, 98, 65, 100, 100, 114, 0].
   static const subaddrPrefix = [83, 117, 98, 65, 100, 100, 114, 0];
 
   /// Maximum allowed index for a Monero subaddress.
-  ///
-  /// Monero subaddresses use a 32-bit unsigned integer for indexing, and this constant
-  /// represents the maximum valid index.
   static const subaddrMaxIdx = 4294967295;
 
   /// Byte length of the index used for Monero subaddresses.
-  ///
-  /// Monero subaddress indices are typically represented using 4 bytes.
   static const subaddrIdxByteLen = 4;
 }
 
@@ -36,8 +30,11 @@ class MoneroComputeKey {
   /// private key
   final MoneroPrivateKey privateKey;
 
-  const MoneroComputeKey(
-      {required this.pubSKey, required this.pubVKey, required this.privateKey});
+  const MoneroComputeKey({
+    required this.pubSKey,
+    required this.pubVKey,
+    required this.privateKey,
+  });
 }
 
 /// A class representing a Monero subaddress, which consists of private and public keys.
@@ -56,32 +53,43 @@ class MoneroSubaddress {
   /// The constructor takes a private view key [privVKey] and a public spend key [pubSKey].
   /// Optionally, it can also accept a public view key [publicVkey] (defaulting to `null`).
   MoneroSubaddress(this.privVKey, this.pubSKey, [MoneroPublicKey? publicVkey])
-      : pubVKey = publicVkey ?? privVKey.publicKey;
+    : pubVKey = publicVkey ?? privVKey.publicKey;
 
   /// Compute the subaddress keys based on minor and major indexes.
-  ///
-  /// This method calculates Monero subaddress keys using the provided [minorIndex] and [majorIdx].
-  /// If the indexes are out of valid range, it throws an `ArgumentException`.
-  /// It returns a tuple of subaddress public spend key and subaddress public view key.
   MoneroComputeKey computeKeys(int minorIndex, int majorIndex) {
     if (minorIndex < 0 || minorIndex > MoneroSubaddressConst.subaddrMaxIdx) {
-      throw ArgumentException('Invalid minor index ($minorIndex)');
+      throw ArgumentException.invalidOperationArguments(
+        "computeKeys",
+        name: "minorIndex",
+        reason: "Invalid minor index.",
+      );
     }
     if (majorIndex < 0 || majorIndex > MoneroSubaddressConst.subaddrMaxIdx) {
-      throw ArgumentException('Invalid major index ($majorIndex)');
+      throw ArgumentException.invalidOperationArguments(
+        "computeKeys",
+        name: "majorIndex",
+        reason: "Invalid major index.",
+      );
     }
 
     if (minorIndex == 0 && majorIndex == 0) {
       return MoneroComputeKey(
-          pubSKey: pubSKey, pubVKey: pubVKey, privateKey: privVKey);
+        pubSKey: pubSKey,
+        pubVKey: pubVKey,
+        privateKey: privVKey,
+      );
     }
 
-    final List<int> majorIdxBytes = IntUtils.toBytes(majorIndex,
-        length: MoneroSubaddressConst.subaddrIdxByteLen,
-        byteOrder: Endian.little);
-    final List<int> minorIdxBytes = IntUtils.toBytes(minorIndex,
-        length: MoneroSubaddressConst.subaddrIdxByteLen,
-        byteOrder: Endian.little);
+    final List<int> majorIdxBytes = IntUtils.toBytes(
+      majorIndex,
+      length: MoneroSubaddressConst.subaddrIdxByteLen,
+      byteOrder: Endian.little,
+    );
+    final List<int> minorIdxBytes = IntUtils.toBytes(
+      minorIndex,
+      length: MoneroSubaddressConst.subaddrIdxByteLen,
+      byteOrder: Endian.little,
+    );
 
     final List<int> privVKeyBytes = privVKey.raw;
 
@@ -89,21 +97,27 @@ class MoneroSubaddress {
       ...MoneroSubaddressConst.subaddrPrefix,
       ...privVKeyBytes,
       ...majorIdxBytes,
-      ...minorIdxBytes
+      ...minorIdxBytes,
     ]);
     final List<int> secretKey =
         Ed25519Utils.scalarReduceConst(mBytes).asImmutableBytes;
     final mult = Ed25519Utils.scalarMultBase(secretKey);
     final newPoint = Ed25519Utils.pointAdd(mult, pubSKey.point.toBytes());
     final MoneroPublicKey subaddrPubSKey = MoneroPublicKey.fromBytes(newPoint);
-    final subaddrPubVKeyPoint =
-        Ed25519Utils.pointScalarMult(newPoint, privVKey.raw);
-    final MoneroPublicKey subaddrPubVKey =
-        MoneroPublicKey.fromBytes(subaddrPubVKeyPoint);
+    final subaddrPubVKeyPoint = Ed25519Utils.pointScalarMult(
+      newPoint,
+      privVKey.raw,
+    );
+    final MoneroPublicKey subaddrPubVKey = MoneroPublicKey.fromBytes(
+      subaddrPubVKeyPoint,
+    );
 
     final sKey = MoneroPrivateKey.fromBytes(secretKey);
     return MoneroComputeKey(
-        pubSKey: subaddrPubSKey, pubVKey: subaddrPubVKey, privateKey: sKey);
+      pubSKey: subaddrPubSKey,
+      pubVKey: subaddrPubVKey,
+      privateKey: sKey,
+    );
   }
 
   /// Compute and encode Monero subaddress keys into a string representation.
@@ -114,9 +128,15 @@ class MoneroSubaddress {
   ///
   /// It returns the encoded string representation of the subaddress keys.
   String computeAndEncodeKeys(
-      int minorIndex, int majorIndex, List<int> netVer) {
+    int minorIndex,
+    int majorIndex,
+    List<int> netVer,
+  ) {
     final keys = computeKeys(minorIndex, majorIndex);
-    return XmrAddrEncoder().encodeKey(keys.pubSKey.compressed,
-        {"pub_vkey": keys.pubVKey.compressed, "net_ver": netVer});
+    return XmrAddrEncoder().encodeKey(
+      keys.pubSKey.compressed,
+      pubVKey: keys.pubVKey.compressed,
+      netVersion: netVer,
+    );
   }
 }

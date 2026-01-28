@@ -8,18 +8,23 @@ void main() {
 
 void _test() {
   test("valid sign verify", () {
-    final List<List<int>> pubKeys = (sigAggVector["pubkeys"] as List)
-        .map((e) => BytesUtils.fromHexString(e).asImmutableBytes)
-        .toList();
-    final List<List<int>> tweaks = (sigAggVector["tweaks"] as List)
-        .map((e) => BytesUtils.fromHexString(e).asImmutableBytes)
-        .toList();
-    final List<List<int>> psigs = (sigAggVector["psigs"] as List)
-        .map((e) => BytesUtils.fromHexString(e).asImmutableBytes)
-        .toList();
+    final musig = MuSig2();
+    final List<List<int>> pubKeys =
+        (sigAggVector["pubkeys"] as List)
+            .map((e) => BytesUtils.fromHexString(e).asImmutableBytes)
+            .toList();
+    final List<List<int>> tweaks =
+        (sigAggVector["tweaks"] as List)
+            .map((e) => BytesUtils.fromHexString(e).asImmutableBytes)
+            .toList();
+    final List<List<int>> psigs =
+        (sigAggVector["psigs"] as List)
+            .map((e) => BytesUtils.fromHexString(e).asImmutableBytes)
+            .toList();
     final List<int> message = BytesUtils.fromHexString(sigAggVector["msg"]);
-    final validateTestCase =
-        List<Map<String, dynamic>>.from(sigAggVector["valid_test_cases"]!);
+    final validateTestCase = List<Map<String, dynamic>>.from(
+      sigAggVector["valid_test_cases"]!,
+    );
     for (int j = 0; j < validateTestCase.length; j++) {
       final e = validateTestCase[j];
       final keyIndices = List<int>.from(e["key_indices"]);
@@ -37,12 +42,15 @@ void _test() {
       });
       final List<bool> isXOnly = List<bool>.from(e["is_xonly"]);
       final session = MuSig2Session(
-          aggnonce: aggnonce,
-          publicKeys: keys,
-          tweaks: List.generate(
-              tw.length, (i) => MuSig2Tweak(tweak: tw[i], isXOnly: isXOnly[i])),
-          msg: message);
-      final sign = MuSig2.partialSigAgg(signatures: sigs, session: session);
+        aggnonce: aggnonce,
+        publicKeys: keys,
+        tweaks: List.generate(
+          tw.length,
+          (i) => MuSig2Tweak(tweak: tw[i], isXOnly: isXOnly[i]),
+        ),
+        msg: message,
+      );
+      final sign = musig.partialSigAgg(signatures: sigs, session: session);
       final sigHex = BytesUtils.toHexString(sign, lowerCase: false);
       expect(sigHex, e["expected"]);
     }

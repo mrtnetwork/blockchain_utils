@@ -1,23 +1,18 @@
+import 'package:blockchain_utils/exception/exception/exception.dart';
 import 'package:blockchain_utils/signer/const/constants.dart';
 import 'package:blockchain_utils/signer/exception/signing_exception.dart';
-import 'package:blockchain_utils/utils/utils.dart';
+import 'package:blockchain_utils/utils/binary/utils.dart';
+import 'package:blockchain_utils/utils/numbers/utils/bigint_utils.dart';
 
 /// Utility class for Ethereum signature operations.
 class ETHSignatureUtils {
   /// Gets the canonicalized version of the signature recovery id 'v' in Ethereum signatures.
   ///
-  /// Ethereum signatures include a recovery id 'v' that can be 0 or 1 for
-  /// Ethereum mainnet or 27 or 28 for testnets. This method ensures that the
-  /// recovery id is canonicalized to 27 or 28, throwing an exception for invalid values.
-  ///
   /// Parameters:
   /// - [v]: The recovery id value extracted from an Ethereum signature.
   ///
-  /// Returns:
-  /// - The canonicalized recovery id (27 or 28).
-  ///
   /// Throws:
-  /// - [CryptoSignException] if the input recovery id is invalid or out of range.
+  /// - [ArgumentException] if the input recovery id is invalid or out of range.
   ///
   static int getSignatureV(int v) {
     if (v == 0 || v == 27) {
@@ -27,51 +22,61 @@ class ETHSignatureUtils {
       return 28;
     }
     if (v < 35) {
-      throw CryptoSignException("Invalid signature recovery id",
-          details: {"input": v});
+      throw ArgumentException.invalidOperationArguments(
+        "ETHSignature",
+        name: "v",
+        reason: "Invalid signature recovery id.",
+      );
     }
     return (v & 1) != 0 ? 27 : 28;
   }
 }
 
 /// Represents an Ethereum signature, consisting of the 'r', 's', and 'v' components.
-///
-/// An Ethereum signature is often used to authenticate transactions or messages
-/// in the Ethereum blockchain. This class provides methods for creating and
-/// manipulating Ethereum signatures, including conversion to and from bytes and hex.
 class ETHSignature {
   /// Creates an Ethereum signature from the 'r', 's', and 'v' components.
   ///
   /// Throws a [CryptoSignException] if the provided 'v' is not 27 or 28.
   ETHSignature(this.r, this.s, this.v) {
     if (v != 28 && v != 27) {
-      throw CryptoSignException("Invalid signature recovery id",
-          details: {"input": v});
+      throw ArgumentException.invalidOperationArguments(
+        "ETHSignature",
+        name: "v",
+        reason: "Invalid signature recovery id.",
+      );
     }
   }
 
   /// Creates an Ethereum signature from a byte representation.
   ///
   /// Throws a [CryptoSignException] if the provided bytes are invalid.
-  factory ETHSignature.fromBytes(List<int> bytes) {
-    if (bytes.length != CryptoSignerConst.ecdsaSignatureLength &&
-        bytes.length != CryptoSignerConst.ecdsaSignatureWithRecoveryIdLength) {
-      throw CryptoSignException("Invalid signature bytes",
-          details: {"input": BytesUtils.tryToHexString(bytes)});
+  factory ETHSignature.fromBytes(List<int> signature) {
+    if (signature.length != CryptoSignerConst.ecdsaSignatureLength &&
+        signature.length !=
+            CryptoSignerConst.ecdsaSignatureWithRecoveryIdLength) {
+      throw ArgumentException.invalidOperationArguments(
+        "ETHSignature",
+        name: "signature",
+        reason: "Invalid signature bytes length.",
+      );
     }
-    final rBytes =
-        bytes.sublist(0, CryptoSignerConst.generatorSecp256k1.curve.baselen);
-    final sBytes = bytes.sublist(
-        CryptoSignerConst.generatorSecp256k1.curve.baselen,
-        CryptoSignerConst.generatorSecp256k1.curve.baselen * 2);
+    final rBytes = signature.sublist(
+      0,
+      CryptoSignerConst.generatorSecp256k1.curve.baselen,
+    );
+    final sBytes = signature.sublist(
+      CryptoSignerConst.generatorSecp256k1.curve.baselen,
+      CryptoSignerConst.generatorSecp256k1.curve.baselen * 2,
+    );
 
     int v;
-    if (bytes.length == CryptoSignerConst.ecdsaSignatureLength) {
+    if (signature.length == CryptoSignerConst.ecdsaSignatureLength) {
       v = (sBytes[0] & 0x80) != 0 ? 28 : 27;
       sBytes[0] &= 0x7f;
     } else {
       v = ETHSignatureUtils.getSignatureV(
-          bytes[CryptoSignerConst.ecdsaSignatureLength]);
+        signature[CryptoSignerConst.ecdsaSignatureLength],
+      );
     }
     final r = BigintUtils.fromBytes(rBytes);
     final s = BigintUtils.fromBytes(sBytes);

@@ -1,6 +1,7 @@
 import 'dart:typed_data' show Endian;
 import 'package:blockchain_utils/double/codec/double_utils.dart';
 import 'package:blockchain_utils/double/codec/float_utils.dart';
+import 'package:blockchain_utils/exception/exception/exception.dart';
 import 'package:blockchain_utils/layout/byte/byte_handler.dart';
 import 'package:blockchain_utils/layout/core/core/core.dart';
 import 'package:blockchain_utils/layout/core/types/padding_layout.dart';
@@ -11,12 +12,11 @@ import 'package:blockchain_utils/utils/numbers/numbers.dart';
 /// Represents an external layout.
 abstract class ExternalLayout extends Layout<int> {
   const ExternalLayout(super.span, {super.property});
-  bool isCount() => false;
 }
 
 abstract class ExternalOffsetLayout extends ExternalLayout {
   const ExternalOffsetLayout({String? property})
-      : super(-1, property: property);
+    : super(-1, property: property);
 }
 
 /// Represents a layout that greedily consumes bytes until the end.
@@ -24,13 +24,8 @@ class GreedyCount extends ExternalLayout {
   int elementSpan;
 
   GreedyCount([this.elementSpan = 1, String? property])
-      : assert(!elementSpan.isNegative),
-        super(-1, property: property);
-
-  @override
-  bool isCount() {
-    return true;
-  }
+    : assert(!elementSpan.isNegative),
+      super(-1, property: property);
 
   @override
   LayoutDecodeResult<int> decode(LayoutByteReader bytes, {int offset = 0}) {
@@ -61,9 +56,9 @@ abstract class BaseIntiger<T> extends Layout<T> {
 class DoubleLayout extends Layout<double> {
   final Endian order;
   DoubleLayout.f32({String? property, this.order = Endian.little})
-      : super(4, property: property);
+    : super(4, property: property);
   DoubleLayout.f64({String? property, this.order = Endian.little})
-      : super(8, property: property);
+    : super(8, property: property);
 
   @override
   LayoutDecodeResult<double> decode(LayoutByteReader bytes, {int offset = 0}) {
@@ -78,9 +73,10 @@ class DoubleLayout extends Layout<double> {
 
   @override
   int encode(double source, LayoutByteWriter writer, {int offset = 0}) {
-    final bytes = span > 4
-        ? DoubleCoder.toBytes(source, byteOrder: order)
-        : FloatCoder.toBytes(source, byteOrder: order);
+    final bytes =
+        span > 4
+            ? DoubleCoder.toBytes(source, byteOrder: order)
+            : FloatCoder.toBytes(source, byteOrder: order);
     writer.setAll(offset, bytes);
     return span;
   }
@@ -102,35 +98,27 @@ class IntegerLayout extends BaseIntiger<int> {
   final Endian order;
   @override
   void validate(int value) {
-    if (value.isNegative && !sign) {
+    if ((value.isNegative && !sign) || value.bitLength > span * 8) {
       throw LayoutException(
-          "Negative value cannot be encoded with unsigned layout.",
-          details: {"property": property});
-    }
-    if (value.bitLength > span * 8) {
-      throw LayoutException(
-          "Value exceeds the maximum size for encoding with this layout.",
-          details: {
-            "property": property,
-            "layout": runtimeType.toString(),
-            "bitLength": span * 8,
-            "sign": sign,
-            "value": value
-          });
+        "Invalid ${value.bitLength}-bit ${sign ? 'signed' : 'unsigned'} integer.",
+        details: {"property": property, "value": value},
+      );
     }
   }
 
-  IntegerLayout(int span,
-      {this.sign = false, this.order = Endian.little, String? property})
-      : super(span, property: property) {
+  IntegerLayout(
+    int span, {
+    this.sign = false,
+    this.order = Endian.little,
+    String? property,
+  }) : super(span, property: property) {
     assert(!span.isNegative, "Invalid integer layout span");
     if (6 < this.span) {
-      throw LayoutException("span must not exceed 6 bytes", details: {
-        "property": property,
-        "layout": runtimeType.toString(),
-        "sign": sign,
-        "span": span
-      });
+      throw ArgumentException.invalidOperationArguments(
+        "IntegerLayout",
+        name: "span",
+        reason: "Invalid layout span",
+      );
     }
   }
 
@@ -149,9 +137,14 @@ class IntegerLayout extends BaseIntiger<int> {
   @override
   int encode(int source, LayoutByteWriter writer, {int offset = 0}) {
     validate(source);
-    final bytes = span > 4
-        ? BigintUtils.toBytes(BigInt.from(source), length: span, order: order)
-        : IntUtils.toBytes(source, length: span, byteOrder: order);
+    final bytes =
+        span > 4
+            ? BigintUtils.toBytes(
+              BigInt.from(source),
+              length: span,
+              order: order,
+            )
+            : IntUtils.toBytes(source, length: span, byteOrder: order);
     writer.setAll(offset, bytes);
     return span;
   }
@@ -164,30 +157,38 @@ class IntegerLayout extends BaseIntiger<int> {
 
 /// Represents a layout for big integers.
 class BigIntLayout extends BaseIntiger<BigInt> {
+  final int bitlen;
   @override
   final bool sign;
   @override
   final Endian order;
-  BigIntLayout(super.span,
-      {this.sign = false, this.order = Endian.little, super.property});
+  BigIntLayout(
+    super.span, {
+    this.sign = false,
+    this.order = Endian.little,
+    super.property,
+  }) : bitlen = (() {
+         final bitlen = span * 8;
+         if (sign) return bitlen - 1;
+         return bitlen;
+       }());
   @override
   void validate(BigInt value) {
-    if (value.isNegative && !sign) {
+    if ((value.isNegative && !sign) || value.bitLength > bitlen) {
       throw LayoutException(
-          "Negative value cannot be encoded with unsigned layout.",
-          details: {"property": property});
-    }
-    if (value.bitLength > span * 8) {
-      throw LayoutException(
-          "Value exceeds the maximum size for encoding with this layout.",
-          details: {"property": property});
+        "Invalid ${value.bitLength}-bit ${sign ? 'signed' : 'unsigned'} integer.",
+        details: {"property": property, "value": value},
+      );
     }
   }
 
   @override
   LayoutDecodeResult<BigInt> decode(LayoutByteReader bytes, {int offset = 0}) {
-    final result = BigintUtils.fromBytes(bytes.sublist(offset, offset + span),
-        byteOrder: order, sign: sign);
+    final result = BigintUtils.fromBytes(
+      bytes.sublist(offset, offset + span),
+      byteOrder: order,
+      sign: sign,
+    );
     return LayoutDecodeResult(consumed: span, value: result);
   }
 
@@ -205,48 +206,12 @@ class BigIntLayout extends BaseIntiger<BigInt> {
   }
 }
 
-/// Represents a union discriminator layout.
-abstract class UnionDiscriminatorLayout extends Layout<int> {
-  UnionDiscriminatorLayout(String property) : super(0, property: property);
-}
-
-/// Represents a union layout discriminator.
-class UnionLayoutDiscriminatorLayout extends UnionDiscriminatorLayout {
-  final ExternalLayout layout;
-
-  UnionLayoutDiscriminatorLayout(this.layout, {String? property})
-      : assert(layout.isCount(),
-            'layout must be an unsigned integer ExternalLayout'),
-        super(property ?? layout.property ?? 'variant');
-
-  @override
-  LayoutDecodeResult<int> decode(LayoutByteReader bytes, {int offset = 0}) {
-    return layout.decode(bytes, offset: offset);
-  }
-
-  @override
-  int encode(int source, LayoutByteWriter writer, {int offset = 0}) {
-    return layout.encode(source, writer, offset: offset);
-  }
-
-  @override
-  UnionLayoutDiscriminatorLayout clone({String? newProperty}) {
-    return UnionLayoutDiscriminatorLayout(layout, property: newProperty);
-  }
-}
-
 /// Represents an offset layout.
 class OffsetLayout extends ExternalLayout {
   final PaddingLayout<int> layout;
   final int offset;
-
   OffsetLayout(this.layout, {this.offset = 0, String? property})
-      : super(layout.span, property: property ?? layout.property);
-
-  @override
-  bool isCount() {
-    return true;
-  }
+    : super(layout.span, property: property ?? layout.property);
 
   @override
   LayoutDecodeResult<int> decode(LayoutByteReader bytes, {int offset = 0}) {
@@ -268,22 +233,18 @@ class OffsetLayout extends ExternalLayout {
 class CompactIntLayout extends Layout<int> {
   final IntegerLayout layout;
   const CompactIntLayout(this.layout, {String? property})
-      : super(-1, property: property);
-  @override
-  int getSpan(LayoutByteReader? bytes, {int offset = 0, int? source}) {
-    return bytes!.getCompactDataOffset(offset);
-  }
+    : super(-1, property: property);
 
   @override
   LayoutDecodeResult<int> decode(LayoutByteReader bytes, {int offset = 0}) {
-    final decode = bytes.getCompactLengthInfos(offset);
-    layout.validate(decode.item2);
-    return LayoutDecodeResult(consumed: decode.item1, value: decode.item2);
+    final decode = bytes.decodeScaleAsInteger(offset);
+    layout.validate(decode.value);
+    return LayoutDecodeResult(consumed: decode.consumed, value: decode.value);
   }
 
   @override
   int encode(int source, LayoutByteWriter writer, {int offset = 0}) {
-    final bytes = LayoutSerializationUtils.compactIntToBytes(source);
+    final bytes = LayoutSerializationUtils.encodeLength(source.toString());
     writer.setAll(offset, bytes);
     return bytes.length;
   }
@@ -296,24 +257,20 @@ class CompactIntLayout extends Layout<int> {
 
 class CompactBigIntLayout extends Layout<BigInt> {
   CompactBigIntLayout(this.layout, {String? property})
-      : super(-1, property: property);
+    : super(-1, property: property);
   final BaseIntiger layout;
-  @override
-  int getSpan(LayoutByteReader? bytes, {int offset = 0, BigInt? source}) {
-    return bytes!.getCompactDataOffset(offset);
-  }
 
   @override
   LayoutDecodeResult<BigInt> decode(LayoutByteReader bytes, {int offset = 0}) {
-    final decode = bytes.getCompactBigintInfos(offset);
-    layout.validate(decode.item2);
-    return LayoutDecodeResult(consumed: decode.item1, value: decode.item2);
+    final decode = bytes.decodeScale(offset);
+    layout.validate(decode.value);
+    return decode;
   }
 
   @override
   int encode(BigInt source, LayoutByteWriter writer, {int offset = 0}) {
     layout.validate(source);
-    final bytes = LayoutSerializationUtils.compactToBytes(source);
+    final bytes = LayoutSerializationUtils.encodeLength(source.toString());
     writer.setAll(offset, bytes);
     return bytes.length;
   }
@@ -321,5 +278,30 @@ class CompactBigIntLayout extends Layout<BigInt> {
   @override
   CompactBigIntLayout clone({String? newProperty}) {
     return CompactBigIntLayout(layout, property: newProperty);
+  }
+}
+
+class VarintIntLayout extends Layout<int> {
+  final IntegerLayout layout;
+  const VarintIntLayout(this.layout, {String? property})
+    : super(-1, property: property);
+
+  @override
+  LayoutDecodeResult<int> decode(LayoutByteReader bytes, {int offset = 0}) {
+    final decode = bytes.decodeVarintAsInteger(offset);
+    layout.validate(decode.value);
+    return LayoutDecodeResult(consumed: decode.consumed, value: decode.value);
+  }
+
+  @override
+  int encode(int source, LayoutByteWriter writer, {int offset = 0}) {
+    final bytes = LayoutSerializationUtils.encodeVarint(source);
+    writer.setAll(offset, bytes);
+    return bytes.length;
+  }
+
+  @override
+  CompactIntLayout clone({String? newProperty}) {
+    return CompactIntLayout(layout, property: newProperty);
   }
 }

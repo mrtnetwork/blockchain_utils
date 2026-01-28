@@ -1,10 +1,6 @@
-import 'package:blockchain_utils/utils/utils.dart';
+import 'package:blockchain_utils/utils/binary/binary_operation.dart';
 
 /// A class for calculating and verifying XModem CRC (Cyclic Redundancy Check).
-///
-/// XModem CRC is a simple error-checking algorithm often used for file
-/// transfers. This class provides methods to calculate and verify the CRC value
-/// for data blocks.
 class XModemCrc {
   static List<int> _calculateXmodemCrc(List<int> bytes) {
     int crc = 0;
@@ -19,24 +15,14 @@ class XModemCrc {
       }
     }
 
-    // Convert the 16-bit CRC integer to a `List<int>` with two bytes
-    final crcBytes = List<int>.filled(2, 0);
-    crcBytes[0] = (crc >> 8) & mask8;
-    crcBytes[1] = crc & mask8;
-
-    return crcBytes;
+    return [(crc >> 8) & BinaryOps.mask8, crc & BinaryOps.mask8];
   }
 
   /// Calculates the XModem CRC (Cyclic Redundancy Check) for the given [data].
   ///
-  /// This method computes the CRC value for a block of data using the XModem CRC
-  /// algorithm and returns the result as a 16-bit [`List<int>`].
-  ///
   /// Parameters:
   /// - [data]: The data block for which to calculate the CRC.
   ///
-  /// Returns:
-  /// A 16-bit CRC value as a `List<int>`.
   static List<int> quickDigest(List<int> data) {
     return _calculateXmodemCrc(data);
   }

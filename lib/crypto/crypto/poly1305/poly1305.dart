@@ -1,16 +1,11 @@
-// import 'dart:typed_data';
 import 'package:blockchain_utils/crypto/crypto/exception/exception.dart';
-import 'package:blockchain_utils/utils/utils.dart';
-
-const _digestLength = 16;
+import 'package:blockchain_utils/utils/binary/binary_operation.dart';
 
 /// The `Poly1305` class represents an implementation of the Poly1305 one-time message authentication code (MAC).
 ///
-/// Poly1305 is a fast and secure MAC algorithm used for data integrity verification and authentication.
-/// The algorithm produces a fixed-size digest of 16 bytes.
 class Poly1305 {
   /// The length of the Poly1305 digest (always 16 bytes).
-  final int digestLength = _digestLength;
+  final int digestLength = 16;
 
   /// A buffer for temporary data storage.
   final List<int> _buffer = List<int>.filled(16, 0);
@@ -23,33 +18,31 @@ class Poly1305 {
 
   /// Constructor for the `Poly1305` class.
   ///
-  /// This constructor initializes the Poly1305 instance with a provided key and sets up the necessary data structures
-  /// for Poly1305 calculations.
-  ///
   /// Parameters:
-  /// - `key`: A `List<int>` containing the key used for Poly1305 authentication and data integrity verification.
+  /// - `key`: Containing the key used for Poly1305 authentication and data integrity verification.
+  ///
   Poly1305(List<int> key) {
     /// Initialize the Poly1305 instance with the provided key.
     _init(key);
   }
   void _init(List<int> key) {
     final int t0 = key[0] | (key[1] << 8);
-    _r[0] = (t0) & mask13;
+    _r[0] = (t0) & BinaryOps.mask13;
     final int t1 = key[2] | (key[3] << 8);
-    _r[1] = ((t0 >> 13) | (t1 << 3)) & mask13;
+    _r[1] = ((t0 >> 13) | (t1 << 3)) & BinaryOps.mask13;
     final int t2 = key[4] | (key[5] << 8);
     _r[2] = ((t1 >> 10) | (t2 << 6)) & 0x1f03;
     final int t3 = key[6] | (key[7] << 8);
-    _r[3] = ((t2 >> 7) | (t3 << 9)) & mask13;
+    _r[3] = ((t2 >> 7) | (t3 << 9)) & BinaryOps.mask13;
     final int t4 = key[8] | (key[9] << 8);
     _r[4] = ((t3 >> 4) | (t4 << 12)) & 0x00ff;
     _r[5] = ((t4 >> 1)) & 0x1ffe;
     final int t5 = key[10] | (key[11] << 8);
-    _r[6] = ((t4 >> 14) | (t5 << 2)) & mask13;
+    _r[6] = ((t4 >> 14) | (t5 << 2)) & BinaryOps.mask13;
     final int t6 = key[12] | (key[13] << 8);
     _r[7] = ((t5 >> 11) | (t6 << 5)) & 0x1f81;
     final int t7 = key[14] | (key[15] << 8);
-    _r[8] = ((t6 >> 8) | (t7 << 8)) & mask13;
+    _r[8] = ((t6 >> 8) | (t7 << 8)) & BinaryOps.mask13;
     _r[9] = ((t7 >> 5)) & 0x007f;
     _pad[0] = key[16] | (key[17] << 8);
     _pad[1] = key[18] | (key[19] << 8);
@@ -87,22 +80,22 @@ class Poly1305 {
 
     while (bytes >= 16) {
       final t0 = m[mpos] | m[mpos + 1] << 8;
-      h0 += (t0) & mask13;
+      h0 += (t0) & BinaryOps.mask13;
       final t1 = m[mpos + 2] | m[mpos + 3] << 8;
-      h1 += ((t0 >> 13) | (t1 << 3)) & mask13;
+      h1 += ((t0 >> 13) | (t1 << 3)) & BinaryOps.mask13;
       final t2 = m[mpos + 4] | m[mpos + 5] << 8;
-      h2 += ((t1 >> 10) | (t2 << 6)) & mask13;
+      h2 += ((t1 >> 10) | (t2 << 6)) & BinaryOps.mask13;
       final t3 = m[mpos + 6] | m[mpos + 7] << 8;
-      h3 += ((t2 >> 7) | (t3 << 9)) & mask13;
+      h3 += ((t2 >> 7) | (t3 << 9)) & BinaryOps.mask13;
       final t4 = m[mpos + 8] | m[mpos + 9] << 8;
-      h4 += ((t3 >> 4) | (t4 << 12)) & mask13;
-      h5 += ((t4 >> 1)) & mask13;
+      h4 += ((t3 >> 4) | (t4 << 12)) & BinaryOps.mask13;
+      h5 += ((t4 >> 1)) & BinaryOps.mask13;
       final t5 = m[mpos + 10] | m[mpos + 11] << 8;
-      h6 += ((t4 >> 14) | (t5 << 2)) & mask13;
+      h6 += ((t4 >> 14) | (t5 << 2)) & BinaryOps.mask13;
       final t6 = m[mpos + 12] | m[mpos + 13] << 8;
-      h7 += ((t5 >> 11) | (t6 << 5)) & mask13;
+      h7 += ((t5 >> 11) | (t6 << 5)) & BinaryOps.mask13;
       final t7 = m[mpos + 14] | m[mpos + 15] << 8;
-      h8 += ((t6 >> 8) | (t7 << 8)) & mask13;
+      h8 += ((t6 >> 8) | (t7 << 8)) & BinaryOps.mask13;
       h9 += ((t7 >> 5)) | hibit;
 
       var c = 0;
@@ -114,14 +107,14 @@ class Poly1305 {
       d0 += h3 * (5 * r7);
       d0 += h4 * (5 * r6);
       c = (d0 >> 13);
-      d0 &= mask13;
+      d0 &= BinaryOps.mask13;
       d0 += h5 * (5 * r5);
       d0 += h6 * (5 * r4);
       d0 += h7 * (5 * r3);
       d0 += h8 * (5 * r2);
       d0 += h9 * (5 * r1);
       c += (d0 >> 13);
-      d0 &= mask13;
+      d0 &= BinaryOps.mask13;
 
       var d1 = c;
       d1 += h0 * r1;
@@ -130,14 +123,14 @@ class Poly1305 {
       d1 += h3 * (5 * r8);
       d1 += h4 * (5 * r7);
       c = (d1 >> 13);
-      d1 &= mask13;
+      d1 &= BinaryOps.mask13;
       d1 += h5 * (5 * r6);
       d1 += h6 * (5 * r5);
       d1 += h7 * (5 * r4);
       d1 += h8 * (5 * r3);
       d1 += h9 * (5 * r2);
       c += (d1 >> 13);
-      d1 &= mask13;
+      d1 &= BinaryOps.mask13;
 
       var d2 = c;
       d2 += h0 * r2;
@@ -146,14 +139,14 @@ class Poly1305 {
       d2 += h3 * (5 * r9);
       d2 += h4 * (5 * r8);
       c = (d2 >> 13);
-      d2 &= mask13;
+      d2 &= BinaryOps.mask13;
       d2 += h5 * (5 * r7);
       d2 += h6 * (5 * r6);
       d2 += h7 * (5 * r5);
       d2 += h8 * (5 * r4);
       d2 += h9 * (5 * r3);
       c += (d2 >> 13);
-      d2 &= mask13;
+      d2 &= BinaryOps.mask13;
 
       var d3 = c;
       d3 += h0 * r3;
@@ -162,14 +155,14 @@ class Poly1305 {
       d3 += h3 * r0;
       d3 += h4 * (5 * r9);
       c = (d3 >> 13);
-      d3 &= mask13;
+      d3 &= BinaryOps.mask13;
       d3 += h5 * (5 * r8);
       d3 += h6 * (5 * r7);
       d3 += h7 * (5 * r6);
       d3 += h8 * (5 * r5);
       d3 += h9 * (5 * r4);
       c += (d3 >> 13);
-      d3 &= mask13;
+      d3 &= BinaryOps.mask13;
 
       var d4 = c;
       d4 += h0 * r4;
@@ -178,14 +171,14 @@ class Poly1305 {
       d4 += h3 * r1;
       d4 += h4 * r0;
       c = (d4 >> 13);
-      d4 &= mask13;
+      d4 &= BinaryOps.mask13;
       d4 += h5 * (5 * r9);
       d4 += h6 * (5 * r8);
       d4 += h7 * (5 * r7);
       d4 += h8 * (5 * r6);
       d4 += h9 * (5 * r5);
       c += (d4 >> 13);
-      d4 &= mask13;
+      d4 &= BinaryOps.mask13;
 
       var d5 = c;
       d5 += h0 * r5;
@@ -194,14 +187,14 @@ class Poly1305 {
       d5 += h3 * r2;
       d5 += h4 * r1;
       c = (d5 >> 13);
-      d5 &= mask13;
+      d5 &= BinaryOps.mask13;
       d5 += h5 * r0;
       d5 += h6 * (5 * r9);
       d5 += h7 * (5 * r8);
       d5 += h8 * (5 * r7);
       d5 += h9 * (5 * r6);
       c += (d5 >> 13);
-      d5 &= mask13;
+      d5 &= BinaryOps.mask13;
 
       var d6 = c;
       d6 += h0 * r6;
@@ -210,14 +203,14 @@ class Poly1305 {
       d6 += h3 * r3;
       d6 += h4 * r2;
       c = (d6 >> 13);
-      d6 &= mask13;
+      d6 &= BinaryOps.mask13;
       d6 += h5 * r1;
       d6 += h6 * r0;
       d6 += h7 * (5 * r9);
       d6 += h8 * (5 * r8);
       d6 += h9 * (5 * r7);
       c += (d6 >> 13);
-      d6 &= mask13;
+      d6 &= BinaryOps.mask13;
 
       var d7 = c;
       d7 += h0 * r7;
@@ -226,14 +219,14 @@ class Poly1305 {
       d7 += h3 * r4;
       d7 += h4 * r3;
       c = (d7 >> 13);
-      d7 &= mask13;
+      d7 &= BinaryOps.mask13;
       d7 += h5 * r2;
       d7 += h6 * r1;
       d7 += h7 * r0;
       d7 += h8 * (5 * r9);
       d7 += h9 * (5 * r8);
       c += (d7 >> 13);
-      d7 &= mask13;
+      d7 &= BinaryOps.mask13;
 
       var d8 = c;
       d8 += h0 * r8;
@@ -242,14 +235,14 @@ class Poly1305 {
       d8 += h3 * r5;
       d8 += h4 * r4;
       c = (d8 >> 13);
-      d8 &= mask13;
+      d8 &= BinaryOps.mask13;
       d8 += h5 * r3;
       d8 += h6 * r2;
       d8 += h7 * r1;
       d8 += h8 * r0;
       d8 += h9 * (5 * r9);
       c += (d8 >> 13);
-      d8 &= mask13;
+      d8 &= BinaryOps.mask13;
 
       var d9 = c;
       d9 += h0 * r9;
@@ -258,18 +251,18 @@ class Poly1305 {
       d9 += h3 * r6;
       d9 += h4 * r5;
       c = (d9 >> 13);
-      d9 &= mask13;
+      d9 &= BinaryOps.mask13;
       d9 += h5 * r4;
       d9 += h6 * r3;
       d9 += h7 * r2;
       d9 += h8 * r1;
       d9 += h9 * r0;
       c += (d9 >> 13);
-      d9 &= mask13;
+      d9 &= BinaryOps.mask13;
 
       c = (((c << 2) + c)) | 0;
       c = (c + d0) | 0;
-      d0 = c & mask13;
+      d0 = c & BinaryOps.mask13;
       c = (c >> 13);
       d1 += c;
 
@@ -302,16 +295,10 @@ class Poly1305 {
 
   /// Finalizes the Poly1305 authentication process and computes the authentication code (MAC).
   ///
-  /// This method completes the Poly1305 authentication operation, producing the message authentication code (MAC).
-  ///
   /// Parameters:
-  /// - `mac`: A `List<int>` to store the computed MAC.
-  /// - `macpos`: An optional parameter that specifies the starting position within the `mac` buffer to store the MAC.
+  /// - [mac]: To store the computed MAC.
+  /// - [macpos]: An optional parameter that specifies the starting position within the [mac] buffer to store the MAC.
   ///
-  /// Returns:
-  /// A reference to the `Poly1305` instance, allowing method chaining if needed.
-  ///
-  /// This method is used to complete the Poly1305 authentication, and the resulting MAC is stored in the `mac` buffer.
   Poly1305 finish(List<int> mac, [int macpos = 0]) {
     final g = List<int>.filled(10, 0);
     int c;
@@ -330,27 +317,27 @@ class Poly1305 {
     }
 
     c = _h[1] >> 13;
-    _h[1] &= mask13;
+    _h[1] &= BinaryOps.mask13;
     for (i = 2; i < 10; i++) {
       _h[i] += c;
       c = _h[i] >> 13;
-      _h[i] &= mask13;
+      _h[i] &= BinaryOps.mask13;
     }
     _h[0] += (c * 5);
     c = _h[0] >> 13;
-    _h[0] &= mask13;
+    _h[0] &= BinaryOps.mask13;
     _h[1] += c;
     c = _h[1] >> 13;
-    _h[1] &= mask13;
+    _h[1] &= BinaryOps.mask13;
     _h[2] += c;
 
     g[0] = _h[0] + 5;
     c = g[0] >> 13;
-    g[0] &= mask13;
+    g[0] &= BinaryOps.mask13;
     for (i = 1; i < 10; i++) {
       g[i] = _h[i] + c;
       c = g[i] >> 13;
-      g[i] &= mask13;
+      g[i] &= BinaryOps.mask13;
     }
     g[9] -= (1 << 13);
 
@@ -363,23 +350,23 @@ class Poly1305 {
       _h[i] = (_h[i] & mask) | g[i];
     }
 
-    _h[0] = ((_h[0]) | (_h[1] << 13)) & mask16;
-    _h[1] = ((_h[1] >> 3) | (_h[2] << 10)) & mask16;
-    _h[2] = ((_h[2] >> 6) | (_h[3] << 7)) & mask16;
-    _h[3] = ((_h[3] >> 9) | (_h[4] << 4)) & mask16;
-    _h[4] = ((_h[4] >> 12) | (_h[5] << 1) | (_h[6] << 14)) & mask16;
-    _h[5] = ((_h[6] >> 2) | (_h[7] << 11)) & mask16;
-    _h[6] = ((_h[7] >> 5) | (_h[8] << 8)) & mask16;
-    _h[7] = ((_h[8] >> 8) | (_h[9] << 5)) & mask16;
+    _h[0] = ((_h[0]) | (_h[1] << 13)) & BinaryOps.mask16;
+    _h[1] = ((_h[1] >> 3) | (_h[2] << 10)) & BinaryOps.mask16;
+    _h[2] = ((_h[2] >> 6) | (_h[3] << 7)) & BinaryOps.mask16;
+    _h[3] = ((_h[3] >> 9) | (_h[4] << 4)) & BinaryOps.mask16;
+    _h[4] = ((_h[4] >> 12) | (_h[5] << 1) | (_h[6] << 14)) & BinaryOps.mask16;
+    _h[5] = ((_h[6] >> 2) | (_h[7] << 11)) & BinaryOps.mask16;
+    _h[6] = ((_h[7] >> 5) | (_h[8] << 8)) & BinaryOps.mask16;
+    _h[7] = ((_h[8] >> 8) | (_h[9] << 5)) & BinaryOps.mask16;
 
     f = _h[0] + _pad[0];
-    _h[0] = f & mask16;
+    _h[0] = f & BinaryOps.mask16;
     for (i = 1; i < 8; i++) {
       f = (((_h[i] + _pad[i]) | 0) + (f >> 16)) | 0;
-      _h[i] = f & mask16;
+      _h[i] = f & BinaryOps.mask16;
     }
     for (int i = 0; i < 8; i++) {
-      writeUint16LE(_h[i], mac, i * 2);
+      BinaryOps.writeUint16LE(_h[i], mac, i * 2);
     }
 
     _finished = true;
@@ -388,15 +375,9 @@ class Poly1305 {
 
   /// Updates the Poly1305 authentication state with additional data from the given `List<int>`.
   ///
-  /// This method incorporates more data into the Poly1305 authentication process, allowing it to be computed incrementally.
-  ///
   /// Parameters:
-  /// - `data`: A `List<int>` containing the additional data to be included in the authentication calculation.
+  /// - `data`: Containing the additional data to be included in the authentication calculation.
   ///
-  /// Returns:
-  /// A reference to the `Poly1305` instance, enabling method chaining for convenience.
-  ///
-  /// This method extends the Poly1305 authentication state with the provided data from `data`.
   Poly1305 update(List<int> data) {
     int mpos = 0;
     int bytes = data.length;
@@ -407,7 +388,7 @@ class Poly1305 {
         want = bytes;
       }
       for (int i = 0; i < want; i++) {
-        _buffer[_leftover + i] = data[mpos + i] & mask8;
+        _buffer[_leftover + i] = data[mpos + i] & BinaryOps.mask8;
       }
       bytes -= want;
       mpos += want;
@@ -428,7 +409,7 @@ class Poly1305 {
 
     if (bytes > 0) {
       for (int i = 0; i < bytes; i++) {
-        _buffer[_leftover + i] = data[mpos + i] & mask8;
+        _buffer[_leftover + i] = data[mpos + i] & BinaryOps.mask8;
       }
       _leftover += bytes;
     }
@@ -438,21 +419,15 @@ class Poly1305 {
 
   /// Computes and returns the Poly1305 message authentication code (MAC) for the current state.
   ///
-  /// This method finalizes the Poly1305 authentication and produces the authentication code (MAC) based on
-  /// the current state of the instance. After calling this method, further updates or finishing operations
-  /// are not allowed.
-  ///
-  /// Returns:
-  /// A `List<int>` containing the computed Poly1305 message authentication code (MAC).
-  ///
   /// Throws:
-  /// - `StateError` if the `Poly1305` instance was already finished before calling `digest`.
+  /// - [CryptoException] if the [Poly1305] instance was already finished before calling `digest`.
   ///
-  /// This method is used to obtain the final MAC from the current Poly1305 state, and it should not be called
-  /// after the `Poly1305` instance has been finished.
   List<int> digest() {
     if (_finished) {
-      throw const CryptoException("Poly1305 was finished");
+      throw CryptoException.failed(
+        "Poly1305.digest",
+        reason: "State was finished.",
+      );
     }
     final List<int> mac = List<int>.filled(16, 0);
     finish(mac);
@@ -460,19 +435,11 @@ class Poly1305 {
   }
 
   /// Cleans up and resets the internal state of the Poly1305 instance.
-  ///
-  /// This method is used to securely clear sensitive data and prepare the instance for reuse or disposal.
-  ///
-  /// Returns:
-  /// A reference to the `Poly1305` instance, allowing method chaining if needed.
-  ///
-  /// This method zeros and resets the internal buffers, counters, and flags of the Poly1305 instance
-  /// to ensure that sensitive data is securely cleared and the instance is marked as finished.
   Poly1305 clean() {
-    zero(_buffer);
-    zero(_r);
-    zero(_h);
-    zero(_pad);
+    BinaryOps.zero(_buffer);
+    BinaryOps.zero(_r);
+    BinaryOps.zero(_h);
+    BinaryOps.zero(_pad);
     _leftover = 0;
     _fin = 0;
     _finished = true;
@@ -481,18 +448,10 @@ class Poly1305 {
 
   /// Computes a Poly1305 authentication code (MAC) for the provided data using the given key.
   ///
-  /// This static method simplifies the process of generating a Poly1305 authentication code (MAC) for a
-  /// specific data set and key.
-  ///
   /// Parameters:
-  /// - `key`: A `List<int>` representing the key used for Poly1305 authentication.
-  /// - `data`: A `List<int>` containing the data to be authenticated.
+  /// - [key]: Representing the key used for Poly1305 authentication.
+  /// - [data]: Containing the data to be authenticated.
   ///
-  /// Returns:
-  /// A `List<int>` containing the computed Poly1305 authentication code (MAC).
-  ///
-  /// This method creates a `Poly1305` instance initialized with the provided key, updates it with the data,
-  /// computes the MAC, and then cleans up the instance before returning the MAC.
   static List<int> auth(List<int> key, List<int> data) {
     final Poly1305 h = Poly1305(key);
     h.update(data);

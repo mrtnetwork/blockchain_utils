@@ -1,12 +1,9 @@
+import 'package:blockchain_utils/bip/bip/bip39/word_list/word_list.dart';
 import 'package:blockchain_utils/bip/mnemonic/mnemonic.dart';
 import 'package:blockchain_utils/bip/mnemonic/mnemonic_utils.dart';
-import 'word_list/languages.dart' as languages;
+import 'package:blockchain_utils/helper/extensions/extensions.dart';
 
 /// Enumeration representing the number of words in a BIP-39 mnemonic phrase.
-///
-/// BIP-39 defines standard word lengths of 12, 15, 18, 21, and 24 words for
-/// mnemonic phrases used in mnemonic-based seed generation.
-// Class representing different numbers of words for BIP39.
 class Bip39WordsNum {
   // Named constants representing each number of words
   static const int _wordsNum12 = 12;
@@ -30,11 +27,7 @@ class Bip39WordsNum {
 
   /// Retrieve an instance of Bip39WordsNum based on the provided numeric value.
   static Bip39WordsNum? fromValue(int value) {
-    try {
-      return values.firstWhere((element) => element.value == value);
-    } on StateError {
-      return null;
-    }
+    return values.firstWhereNullable((element) => element.value == value);
   }
 
   // List of all instances of Bip39WordsNum
@@ -47,11 +40,13 @@ class Bip39WordsNum {
   ];
 }
 
+abstract class Bip39LanguagesBase implements MnemonicLanguages {}
+
 /// Enumeration representing the supported languages for BIP-39 mnemonic phrases.
 ///
 /// BIP-39 allows mnemonic phrases to be generated in various languages.
 // Class representing different languages for BIP39.
-class Bip39Languages implements MnemonicLanguages {
+class Bip39Languages implements Bip39LanguagesBase {
   // Named constants representing each language
 
   /// Chinese (Simplified)
@@ -97,7 +92,7 @@ class Bip39Languages implements MnemonicLanguages {
   // Access to words list
   @override
   List<String> get wordList {
-    return languages.bip39WordList(this);
+    return Bip32WorList.bip39WordList(this);
   }
 
   // List of all instances of Bip39Languages
@@ -117,23 +112,6 @@ class Bip39Languages implements MnemonicLanguages {
 
 /// Constants related to BIP-39 mnemonics, including word counts and word list properties.
 class Bip39MnemonicConst {
-  static final List<Bip39WordsNum> mnemonicWordNum = [
-    /// 12 words
-    Bip39WordsNum.wordsNum12,
-
-    /// 15 words
-    Bip39WordsNum.wordsNum15,
-
-    /// 18 words
-    Bip39WordsNum.wordsNum18,
-
-    /// 21 words
-    Bip39WordsNum.wordsNum21,
-
-    /// 24 words
-    Bip39WordsNum.wordsNum24,
-  ];
-
   /// Number of words in the BIP-39 word list.
   static const int wordsListNum = 2048;
 

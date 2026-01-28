@@ -8,12 +8,12 @@ import 'test_vector.dart' show testVector;
 void main() {
   test("neo address test", () {
     for (final i in testVector) {
-      final params = Map<String, dynamic>.from(i["params"]);
-      final z = NanoAddrEncoder()
-          .encodeKey(BytesUtils.fromHexString(i["public"]), params);
+      final z = NanoAddrEncoder().encodeKey(
+        BytesUtils.fromHexString(i["public"]),
+      );
 
       expect(z, i["address"]);
-      final decode = NanoAddrDecoder().decodeAddr(z, params);
+      final decode = NanoAddrDecoder().decodeAddr(z);
       expect(decode.toHex(), i["decode"]);
     }
   });

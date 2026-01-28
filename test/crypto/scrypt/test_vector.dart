@@ -5,7 +5,7 @@ final List<Map<String, dynamic>> testVector = [
     "salt": "1fa336e517bcec065da80f1f5f6a9f55",
     "n": 8192,
     "r": 38,
-    "p": 1
+    "p": 1,
   },
   {
     "password":
@@ -14,7 +14,7 @@ final List<Map<String, dynamic>> testVector = [
     "salt": "566c2b49602ced6a5cc0281f8cad5d21",
     "n": 8192,
     "r": 7,
-    "p": 1
+    "p": 1,
   },
   {
     "password": "c46fa4d118ba63d1c1344f46d82c24a2e9ffc2e84ab9400585",
@@ -22,7 +22,7 @@ final List<Map<String, dynamic>> testVector = [
     "salt": "76744458a7c5c2f268ed6dc844b32488",
     "n": 8192,
     "r": 6,
-    "p": 1
+    "p": 1,
   },
   {
     "password":
@@ -31,7 +31,7 @@ final List<Map<String, dynamic>> testVector = [
     "salt": "a487d5913ebc6c0cff3a4800bc0feace",
     "n": 8192,
     "r": 10,
-    "p": 1
+    "p": 1,
   },
   {
     "password":
@@ -40,7 +40,7 @@ final List<Map<String, dynamic>> testVector = [
     "salt": "2957dfd6af7b44707ae6758883ae2363",
     "n": 8192,
     "r": 6,
-    "p": 1
+    "p": 1,
   },
   {
     "password":
@@ -49,7 +49,7 @@ final List<Map<String, dynamic>> testVector = [
     "salt": "dab73cb8a1cf47e693381381232a8ff0",
     "n": 8192,
     "r": 62,
-    "p": 1
+    "p": 1,
   },
   {
     "password":
@@ -58,7 +58,7 @@ final List<Map<String, dynamic>> testVector = [
     "salt": "41c885a6d931673ef7f82a4f28e67f21",
     "n": 8192,
     "r": 35,
-    "p": 1
+    "p": 1,
   },
   {
     "password":
@@ -67,7 +67,7 @@ final List<Map<String, dynamic>> testVector = [
     "salt": "26f3ddcce6957ded9cd669d15ded5430",
     "n": 8192,
     "r": 14,
-    "p": 1
+    "p": 1,
   },
   {
     "password":
@@ -76,7 +76,7 @@ final List<Map<String, dynamic>> testVector = [
     "salt": "50b91f7158d1097e8499a9e156f0ed00",
     "n": 8192,
     "r": 45,
-    "p": 1
+    "p": 1,
   },
   {
     "password":
@@ -85,7 +85,7 @@ final List<Map<String, dynamic>> testVector = [
     "salt": "3779684870066923a4c71009a596abfe",
     "n": 8192,
     "r": 24,
-    "p": 1
+    "p": 1,
   },
   {
     "password":
@@ -94,7 +94,7 @@ final List<Map<String, dynamic>> testVector = [
     "salt": "60fba5c7058bf5db01fbed2df87685ee",
     "n": 1024,
     "r": 15,
-    "p": 1
+    "p": 1,
   },
   {
     "password":
@@ -103,7 +103,7 @@ final List<Map<String, dynamic>> testVector = [
     "salt": "9efd668984a9d11ee7a2802d37e7be55",
     "n": 1024,
     "r": 26,
-    "p": 1
+    "p": 1,
   },
   {
     "password":
@@ -112,7 +112,7 @@ final List<Map<String, dynamic>> testVector = [
     "salt": "8cf4ae6d7b1ad3f90a10998d6b35518d",
     "n": 1024,
     "r": 5,
-    "p": 1
+    "p": 1,
   },
   {
     "password":
@@ -121,7 +121,7 @@ final List<Map<String, dynamic>> testVector = [
     "salt": "454eb7e469d9d02b8327a5f8636d0fd5",
     "n": 1024,
     "r": 54,
-    "p": 1
+    "p": 1,
   },
   {
     "password":
@@ -130,7 +130,7 @@ final List<Map<String, dynamic>> testVector = [
     "salt": "7ba7793e71b973ec5eaf1a9a5ea0e637",
     "n": 1024,
     "r": 48,
-    "p": 1
+    "p": 1,
   },
   {
     "password":
@@ -139,7 +139,7 @@ final List<Map<String, dynamic>> testVector = [
     "salt": "84e35def4c11bf89b97b380e608f33d2",
     "n": 1024,
     "r": 51,
-    "p": 1
+    "p": 1,
   },
   {
     "password":
@@ -148,7 +148,7 @@ final List<Map<String, dynamic>> testVector = [
     "salt": "8fd29e9f1fa8c9f90c8ae1f55960b46d",
     "n": 1024,
     "r": 56,
-    "p": 1
+    "p": 1,
   },
   {
     "password":
@@ -157,7 +157,7 @@ final List<Map<String, dynamic>> testVector = [
     "salt": "cbc345103f3a6638c777dafc1af1a05d",
     "n": 1024,
     "r": 21,
-    "p": 1
+    "p": 1,
   },
   {
     "password":
@@ -166,7 +166,7 @@ final List<Map<String, dynamic>> testVector = [
     "salt": "fa7ee1febb49c6feb2a9619e6c5ca20f",
     "n": 1024,
     "r": 27,
-    "p": 1
+    "p": 1,
   },
   {
     "password":
@@ -175,7 +175,7 @@ final List<Map<String, dynamic>> testVector = [
     "salt": "270472e4f7829572d59b495efd8e9298",
     "n": 1024,
     "r": 55,
-    "p": 1
+    "p": 1,
   },
   {
     "password":
@@ -184,7 +184,7 @@ final List<Map<String, dynamic>> testVector = [
     "salt": "faf5c345e9579d1c88a94bb33631876f",
     "n": 1024,
     "r": 47,
-    "p": 1
+    "p": 1,
   },
   {
     "password":
@@ -193,7 +193,7 @@ final List<Map<String, dynamic>> testVector = [
     "salt": "4ec17d3ad5b43495bb6b46f86f61a7b7",
     "n": 1024,
     "r": 60,
-    "p": 1
+    "p": 1,
   },
   {
     "password":
@@ -202,7 +202,7 @@ final List<Map<String, dynamic>> testVector = [
     "salt": "506d2698055c9328d39a3bce80f79a81",
     "n": 1024,
     "r": 24,
-    "p": 1
+    "p": 1,
   },
   {
     "password":
@@ -211,7 +211,7 @@ final List<Map<String, dynamic>> testVector = [
     "salt": "9d12eeb5b1e2a0dde0107d7135195e1b",
     "n": 1024,
     "r": 43,
-    "p": 1
+    "p": 1,
   },
   {
     "password":
@@ -220,6 +220,6 @@ final List<Map<String, dynamic>> testVector = [
     "salt": "eb71869590c742c5b62b55f1af60d703",
     "n": 1024,
     "r": 10,
-    "p": 1
-  }
+    "p": 1,
+  },
 ];

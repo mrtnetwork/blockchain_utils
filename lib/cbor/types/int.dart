@@ -1,16 +1,19 @@
 import 'package:blockchain_utils/cbor/core/cbor.dart';
 import 'package:blockchain_utils/cbor/exception/exception.dart';
+import 'package:blockchain_utils/cbor/utils/cbor_utils.dart';
 import 'package:blockchain_utils/cbor/utils/dynamic_bytes.dart';
 import 'package:blockchain_utils/cbor/core/tags.dart';
-import 'package:blockchain_utils/utils/utils.dart';
-
-import 'bigint.dart';
+import 'package:blockchain_utils/utils/binary/utils.dart';
 
 /// A class representing a CBOR (Concise Binary Object Representation) int value.
 class CborIntValue extends CborNumeric<int> {
   /// Constructor for creating a CborDecimalFracValue instance with the provided parameters.
   /// It accepts the int value.
   const CborIntValue(super.value);
+
+  factory CborIntValue.decode(List<int> bytes) {
+    return CborUtils.decodeCbor(bytes);
+  }
 
   /// Encode the value into CBOR bytes
   @override
@@ -19,13 +22,17 @@ class CborIntValue extends CborNumeric<int> {
     if (value.bitLength > 31 && value.isNegative) {
       final value = (~BigInt.parse(this.value.toString()));
       if (!value.isValidInt) {
-        throw CborException("Value is to large for encoding as CborInteger",
-            details: {"value": this.value.toString()});
+        throw CborException(
+          "Value is to large for encoding as CborInteger",
+          details: {"value": this.value.toString()},
+        );
       }
       bytes.pushInt(MajorTags.negInt, value.toInt());
     } else {
-      bytes.pushInt(value.isNegative ? MajorTags.negInt : MajorTags.posInt,
-          value.isNegative ? ~value : value);
+      bytes.pushInt(
+        value.isNegative ? MajorTags.negInt : MajorTags.posInt,
+        value.isNegative ? ~value : value,
+      );
     }
     return bytes.toBytes();
   }
@@ -53,16 +60,4 @@ class CborIntValue extends CborNumeric<int> {
   String toString() {
     return value.toString();
   }
-
-  /// overide equal operation
-  @override
-  operator ==(other) {
-    if (other is! CborNumeric) return false;
-    if (other is CborBigIntValue) return false;
-    return toBigInt() == other.toBigInt();
-  }
-
-  /// ovveride hash code
-  @override
-  int get hashCode => value.hashCode;
 }

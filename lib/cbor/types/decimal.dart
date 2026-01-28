@@ -1,23 +1,33 @@
+import 'package:blockchain_utils/cbor/utils/cbor_utils.dart';
 import 'package:blockchain_utils/helper/extensions/extensions.dart';
-import 'package:blockchain_utils/utils/utils.dart';
+
 import 'package:blockchain_utils/cbor/types/int64.dart';
 import 'package:blockchain_utils/cbor/utils/dynamic_bytes.dart';
 import 'package:blockchain_utils/cbor/core/tags.dart';
 import 'package:blockchain_utils/cbor/types/bigint.dart';
 import 'package:blockchain_utils/cbor/core/cbor.dart';
+import 'package:blockchain_utils/utils/binary/utils.dart';
 
 /// A class representing a CBOR (Concise Binary Object Representation) Dcecimal value.
 class CborDecimalFracValue extends CborObject<List<BigInt>> {
   /// Constructor for creating a CborDecimalFracValue instance with the provided parameters.
   /// It accepts the Bigint exponent and mantissa value.
   CborDecimalFracValue(this.exponent, this.mantissa)
-      : super([exponent, mantissa].immutable);
+    : super([exponent, mantissa].immutable);
+
+  factory CborDecimalFracValue.decode(List<int> bytes) {
+    return CborUtils.decodeCbor(bytes);
+  }
 
   /// Create a CborBigFloatValue from two CborNumeric values representing the exponent and mantissa.
   factory CborDecimalFracValue.fromCborNumeric(
-      CborNumeric exponent, CborNumeric mantissa) {
-    return CborDecimalFracValue(CborNumeric.getCborNumericValue(exponent),
-        CborNumeric.getCborNumericValue(mantissa));
+    CborNumeric exponent,
+    CborNumeric mantissa,
+  ) {
+    return CborDecimalFracValue(
+      CborNumeric.getCborNumericValue(exponent),
+      CborNumeric.getCborNumericValue(mantissa),
+    );
   }
 
   /// exponent value
@@ -55,15 +65,4 @@ class CborDecimalFracValue extends CborObject<List<BigInt>> {
   String toString() {
     return value.join(", ");
   }
-
-  /// overide equal operation
-  @override
-  operator ==(other) {
-    if (other is! CborDecimalFracValue) return false;
-    return CompareUtils.iterableIsEqual(value, other.value);
-  }
-
-  /// ovveride hash code
-  @override
-  int get hashCode => value.hashCode;
 }

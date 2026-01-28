@@ -1,4 +1,5 @@
 import 'package:blockchain_utils/exception/exceptions.dart';
+import 'package:blockchain_utils/utils/equatable/equatable.dart';
 import 'package:blockchain_utils/utils/numbers/utils/bigint_utils.dart';
 
 class _BigRationalConst {
@@ -6,7 +7,7 @@ class _BigRationalConst {
 }
 
 /// Represents a rational number with arbitrary precision using BigInt for the numerator and denominator.
-class BigRational {
+class BigRational with Equality {
   static final BigRational zero = BigRational.from(0);
   static final BigRational one = BigRational.from(1);
   static final BigRational ten = BigRational.from(10);
@@ -36,7 +37,11 @@ class BigRational {
       return BigRational._(numerator, _one);
     }
     if (denominator == _zero) {
-      throw const ArgumentException("Denominator cannot be 0.");
+      throw ArgumentException.invalidOperationArguments(
+        "BigRational",
+        name: "denominator",
+        reason: "Denominator cannot be 0.",
+      );
     }
     if (numerator == _zero) {
       return BigRational._(_zero, _one);
@@ -46,8 +51,10 @@ class BigRational {
 
   /// Constructs a BigRational instance from the given numerator and optional denominator as integers.
   factory BigRational.from(int numerator, {int? denominator}) {
-    return BigRational(BigInt.from(numerator),
-        denominator: BigInt.from(denominator ?? 1));
+    return BigRational(
+      BigInt.from(numerator),
+      denominator: BigInt.from(denominator ?? 1),
+    );
   }
 
   /// Finds the greatest common divisor of two BigInt numbers a and b.
@@ -84,7 +91,12 @@ class BigRational {
   factory BigRational.parseDecimal(String decimal) {
     List<String> parts = decimal.split(RegExp(r'e', caseSensitive: false));
     if (parts.length > 2) {
-      throw const ArgumentException("Invalid input: too many 'e' tokens");
+      throw ArgumentException.invalidOperationArguments(
+        "parseDecimal",
+        name: "decimal",
+
+        reason: "Invalid decimals.",
+      );
     }
 
     if (parts.length > 1) {
@@ -97,8 +109,10 @@ class BigRational {
         parts[1] = parts[1].substring(1);
       }
       final BigRational significand = BigRational.parseDecimal(parts[0]);
-      final BigRational exponent =
-          BigRational._(_ten.pow(int.parse(parts[1])), _one);
+      final BigRational exponent = BigRational._(
+        _ten.pow(int.parse(parts[1])),
+        _one,
+      );
       if (isPositive) {
         return significand * exponent;
       } else {
@@ -108,7 +122,11 @@ class BigRational {
 
     parts = decimal.trim().split(".");
     if (parts.length > 2) {
-      throw const ArgumentException("Invalid input: too many '.' tokens");
+      throw ArgumentException.invalidOperationArguments(
+        "parseDecimal",
+        name: "decimal",
+        reason: "Invalid decimals.",
+      );
     }
     if (parts.length > 1) {
       final bool isNegative = parts[0][0] == '-';
@@ -121,7 +139,9 @@ class BigRational {
 
       final String exp = "1${"0" * length}";
       final BigRational decPart = _reduce(
-          parts[1].isEmpty ? _zero : BigInt.parse(parts[1]), BigInt.parse(exp));
+        parts[1].isEmpty ? _zero : BigInt.parse(parts[1]),
+        BigInt.parse(exp),
+      );
       intPart = intPart + decPart;
       if (isNegative) intPart = ~intPart;
       return intPart;
@@ -358,7 +378,7 @@ class BigRational {
     return BigRational._(num, denom);
   }
 
-// Returns the remainder of division of this BigRational by the given BigRational.
+  // Returns the remainder of division of this BigRational by the given BigRational.
   ///
   /// [other] The divisor
   /// Returns a new BigRational representing the remainder of the division.
@@ -452,12 +472,5 @@ class BigRational {
   }
 
   @override
-  bool operator ==(other) {
-    return other is BigRational &&
-        other.denominator == denominator &&
-        other.numerator == numerator;
-  }
-
-  @override
-  int get hashCode => numerator.hashCode ^ denominator.hashCode;
+  List<dynamic> get variables => [denominator, numerator];
 }

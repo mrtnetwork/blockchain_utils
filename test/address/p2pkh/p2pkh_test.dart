@@ -9,24 +9,30 @@ void main() {
   test("p2pkh address test", () {
     for (final i in compresedTestVector) {
       final params = Map<String, dynamic>.from(i["params"]);
-      params["pub_key_mode"] = PubKeyModes.compressed;
-      params["net_ver"] = BytesUtils.fromHexString(params["net_ver"]);
-      final z = P2PKHAddrEncoder()
-          .encodeKey(BytesUtils.fromHexString(i["public"]), params);
+      final mode = PubKeyModes.compressed;
+      final netVersion = BytesUtils.fromHexString(params["net_ver"]);
+      final z = P2PKHAddrEncoder().encodeKey(
+        BytesUtils.fromHexString(i["public"]),
+        pubKeyMode: mode,
+        netVersion: netVersion,
+      );
       expect(z, i["address"]);
-      final decode = P2PKHAddrDecoder().decodeAddr(z, params);
+      final decode = P2PKHAddrDecoder().decodeAddr(z, netVersion: netVersion);
       expect(decode.toHex(), i["decode"]);
     }
   });
   test("p2pkh uncompressed publickey address test", () {
     for (final i in uncompressedTestVector) {
       final params = Map<String, dynamic>.from(i["params"]);
-      params["pub_key_mode"] = PubKeyModes.uncompressed;
-      params["net_ver"] = BytesUtils.fromHexString(params["net_ver"]);
-      final z = P2PKHAddrEncoder()
-          .encodeKey(BytesUtils.fromHexString(i["public"]), params);
+      final mode = PubKeyModes.uncompressed;
+      final netVersion = BytesUtils.fromHexString(params["net_ver"]);
+      final z = P2PKHAddrEncoder().encodeKey(
+        BytesUtils.fromHexString(i["public"]),
+        pubKeyMode: mode,
+        netVersion: netVersion,
+      );
       expect(z, i["address"]);
-      final decode = P2PKHAddrDecoder().decodeAddr(z, params);
+      final decode = P2PKHAddrDecoder().decodeAddr(z, netVersion: netVersion);
       expect(decode.toHex(), i["decode"]);
     }
   });

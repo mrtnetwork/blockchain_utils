@@ -11,13 +11,14 @@ import 'package:blockchain_utils/bip/slip/slip44/slip44.dart';
 /// maps each supported BIP84Coin to its corresponding BipCoinConfig.
 class Bip84Conf {
   /// The key network version for Bitcoin.
-  static final Bip32KeyNetVersions bip84BtcKeyNetVer = Bip32KeyNetVersions(
-    List<int>.from([0x04, 0xb2, 0x47, 0x46]),
-    List<int>.from([0x04, 0xb2, 0x43, 0x0c]),
-  );
+  static const Bip32KeyNetVersions bip84BtcKeyNetVer =
+      Bip32KeyNetVersions.unsafe(
+        [0x04, 0xb2, 0x47, 0x46],
+        [0x04, 0xb2, 0x43, 0x0c],
+      );
 
   /// Configuration for Bitcoin main net
-  static final BipCoinConfig bitcoinMainNet = BipCoinConfig(
+  final BipCoinConfig bitcoinMainNet = BipCoinConfig(
     coinNames: CoinsConf.bitcoinMainNet.coinName,
     coinIdx: Slip44.bitcoin,
     chainType: ChainType.mainnet,
@@ -25,28 +26,34 @@ class Bip84Conf {
     keyNetVer: bip84BtcKeyNetVer,
     wifNetVer: CoinsConf.bitcoinMainNet.params.wifNetVer,
     type: EllipticCurveTypes.secp256k1,
-    addressEncoder: ([dynamic kwargs]) => P2WPKHAddrEncoder(),
-    addrParams: {"hrp": CoinsConf.bitcoinMainNet.params.p2wpkhHrp},
+    addressEncoder:
+        (params, config) => P2WPKHAddrEncoder().encodeKey(
+          params.pubKey,
+          hrp: CoinsConf.bitcoinMainNet.params.p2wpkhHrp,
+        ),
   );
 
   /// Configuration for Bitcoin test net
-  static final BipCoinConfig bitcoinTestNet = BipCoinConfig(
+  final BipCoinConfig bitcoinTestNet = BipCoinConfig(
     coinNames: CoinsConf.bitcoinTestNet.coinName,
     coinIdx: Slip44.testnet,
     chainType: ChainType.testnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: Bip32KeyNetVersions(
-      List<int>.from([0x04, 0x5f, 0x1c, 0xf6]),
-      List<int>.from([0x04, 0x5f, 0x18, 0xbc]),
+      [0x04, 0x5f, 0x1c, 0xf6],
+      [0x04, 0x5f, 0x18, 0xbc],
     ),
     wifNetVer: CoinsConf.bitcoinTestNet.params.wifNetVer,
     type: EllipticCurveTypes.secp256k1,
-    addrParams: {"hrp": CoinsConf.bitcoinTestNet.params.p2wpkhHrp!},
-    addressEncoder: ([dynamic kwargs]) => P2WPKHAddrEncoder(),
+    addressEncoder:
+        (params, config) => P2WPKHAddrEncoder().encodeKey(
+          params.pubKey,
+          hrp: CoinsConf.bitcoinTestNet.params.p2wpkhHrp,
+        ),
   );
 
   /// Configuration for Litecoin main net
-  static final BipCoinConfig litecoinMainNet = BipCoinConfig(
+  final BipCoinConfig litecoinMainNet = BipCoinConfig(
     coinNames: CoinsConf.litecoinMainNet.coinName,
     coinIdx: Slip44.litecoin,
     chainType: ChainType.mainnet,
@@ -54,59 +61,67 @@ class Bip84Conf {
     keyNetVer: bip84BtcKeyNetVer,
     wifNetVer: CoinsConf.litecoinMainNet.params.wifNetVer,
     type: EllipticCurveTypes.secp256k1,
-    addrParams: {"hrp": CoinsConf.litecoinMainNet.params.p2wpkhHrp!},
-    addressEncoder: ([dynamic kwargs]) => P2WPKHAddrEncoder(),
+    addressEncoder:
+        (params, config) => P2WPKHAddrEncoder().encodeKey(
+          params.pubKey,
+          hrp: CoinsConf.litecoinMainNet.params.p2wpkhHrp,
+        ),
   );
 
   /// Configuration for Litecoin test net
-  static final BipCoinConfig litecoinTestNet = BipCoinConfig(
+  final BipCoinConfig litecoinTestNet = BipCoinConfig(
     coinNames: CoinsConf.litecoinTestNet.coinName,
     coinIdx: Slip44.testnet,
     chainType: ChainType.testnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: Bip32KeyNetVersions(
-      List<int>.from([0x04, 0x36, 0xf6, 0xe1]),
-      List<int>.from([0x04, 0x36, 0xef, 0x7d]),
+      [0x04, 0x36, 0xf6, 0xe1],
+      [0x04, 0x36, 0xef, 0x7d],
     ),
     wifNetVer: CoinsConf.litecoinTestNet.params.wifNetVer,
     type: EllipticCurveTypes.secp256k1,
-    addrParams: {"hrp": CoinsConf.litecoinTestNet.params.p2wpkhHrp!},
-    addressEncoder: ([dynamic kwargs]) => P2WPKHAddrEncoder(),
+    addressEncoder:
+        (params, config) => P2WPKHAddrEncoder().encodeKey(
+          params.pubKey,
+          hrp: CoinsConf.litecoinTestNet.params.p2wpkhHrp,
+        ),
   );
 
   /// Configuration for Electra Protocol main net
-  static final BipCoinConfig electraProtocolMainNet = BipCoinConfig(
+  final BipCoinConfig electraProtocolMainNet = BipCoinConfig(
     coinNames: CoinsConf.electraProtocolMainNet.coinName,
     coinIdx: Slip44.electraProtocol,
     chainType: ChainType.mainnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: Bip32KeyNetVersions(
-      List<int>.from([0x04, 0x88, 0xb2, 0x1e]),
-      List<int>.from([0x04, 0x88, 0xad, 0xe4]),
+      [0x04, 0x88, 0xb2, 0x1e],
+      [0x04, 0x88, 0xad, 0xe4],
     ),
     wifNetVer: CoinsConf.electraProtocolMainNet.params.wifNetVer,
     type: EllipticCurveTypes.secp256k1,
-    addressEncoder: ([dynamic kwargs]) => P2WPKHAddrEncoder(),
-    addrParams: {
-      "hrp": CoinsConf.electraProtocolMainNet.params.p2wpkhHrp!,
-    },
+    addressEncoder:
+        (params, config) => P2WPKHAddrEncoder().encodeKey(
+          params.pubKey,
+          hrp: CoinsConf.electraProtocolMainNet.params.p2wpkhHrp,
+        ),
   );
 
   /// Configuration for Electra Protocol test net
-  static final BipCoinConfig electraProtocolTestNet = BipCoinConfig(
+  final BipCoinConfig electraProtocolTestNet = BipCoinConfig(
     coinNames: CoinsConf.electraProtocolTestNet.coinName,
     coinIdx: Slip44.testnet,
     chainType: ChainType.testnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: Bip32KeyNetVersions(
-      List<int>.from([0x04, 0x35, 0x87, 0xcf]),
-      List<int>.from([0x04, 0x35, 0x83, 0x94]),
+      [0x04, 0x35, 0x87, 0xcf],
+      [0x04, 0x35, 0x83, 0x94],
     ),
     wifNetVer: CoinsConf.electraProtocolTestNet.params.wifNetVer,
     type: EllipticCurveTypes.secp256k1,
-    addressEncoder: ([dynamic kwargs]) => P2WPKHAddrEncoder(),
-    addrParams: {
-      "hrp": CoinsConf.electraProtocolMainNet.params.p2wpkhHrp!,
-    },
+    addressEncoder:
+        (params, config) => P2WPKHAddrEncoder().encodeKey(
+          params.pubKey,
+          hrp: CoinsConf.electraProtocolMainNet.params.p2wpkhHrp,
+        ),
   );
 }

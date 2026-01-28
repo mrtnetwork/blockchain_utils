@@ -52,21 +52,15 @@
   OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-import 'package:blockchain_utils/bip/address/encoder.dart';
 import 'package:blockchain_utils/bip/bip/bip32/bip32_key_data.dart';
 import 'package:blockchain_utils/bip/bip/bip32/bip32_key_net_ver.dart';
-import 'package:blockchain_utils/bip/bip/bip32/bip32_keys.dart';
 import 'package:blockchain_utils/bip/bip/conf/core/coin_conf.dart';
 import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
 import 'package:blockchain_utils/bip/coin_conf/models/coins_name.dart';
 
 /// A base class representing configuration parameters for a cryptocurrency coin.
-class BipCoinConfig implements CoinConfig {
-  /// Returns the address encoder for this coin configuration.
-  BlockchainAddressEncoder encoder() {
-    return addressEncoder();
-  }
-
+abstract class BaseBipCoinConfig<CONFIG extends BaseCoinConfig>
+    implements CoinConfig<CONFIG> {
   /// Configuration properties.
   @override
   final CoinNames coinNames;
@@ -79,15 +73,53 @@ class BipCoinConfig implements CoinConfig {
   @override
   final List<int>? wifNetVer;
   @override
-  final AddrEncoder addressEncoder;
-  @override
-  final Map<String, dynamic> addrParams;
+  final ADDRENCODER<CONFIG> addressEncoder;
+
+  String encodeAddress(EncodeAddressDefaultParams params) {
+    return addressEncoder(params, this as CONFIG);
+  }
+
   @override
   final EllipticCurveTypes type;
 
   final Bip32KeyIndex? purpose;
 
+  /// Constructor for BipCoinConfig.
+  const BaseBipCoinConfig({
+    required this.coinNames,
+    required this.coinIdx,
+    required this.chainType,
+    required this.defPath,
+    required this.keyNetVer,
+    required this.wifNetVer,
+    required this.type,
+    required this.addressEncoder,
+    this.purpose,
+  });
+
+  BaseBipCoinConfig<CONFIG> copy({
+    CoinNames? coinNames,
+    int? coinIdx,
+    ChainType? chainType,
+    String? defPath,
+    Bip32KeyNetVersions? keyNetVer,
+    List<int>? wifNetVer,
+    EllipticCurveTypes? type,
+    ADDRENCODER<CONFIG>? addressEncoder,
+    Bip32KeyIndex? purpose,
+  });
+
+  @override
+  bool get hasExtendedKeys => true;
+
+  @override
+  bool get hasWif => wifNetVer != null;
+}
+
+/// A base class representing configuration parameters for a cryptocurrency coin.
+class BipCoinConfig extends BaseBipCoinConfig<BipCoinConfig> {
   /// Creates a copy of the BipCoinConfig object with optional properties updated.
+  @override
   BipCoinConfig copy({
     CoinNames? coinNames,
     int? coinIdx,
@@ -95,53 +127,46 @@ class BipCoinConfig implements CoinConfig {
     String? defPath,
     Bip32KeyNetVersions? keyNetVer,
     List<int>? wifNetVer,
-    Map<String, dynamic>? addrParams,
     EllipticCurveTypes? type,
-    AddrEncoder? addressEncoder,
+    ADDRENCODER<BipCoinConfig>? addressEncoder,
     Bip32KeyIndex? purpose,
+    DefaultHdKeyDerivator? defaultHdKeyDerivator,
   }) {
     return BipCoinConfig(
-        coinNames: coinNames ?? this.coinNames,
-        coinIdx: coinIdx ?? this.coinIdx,
-        chainType: chainType ?? this.chainType,
-        defPath: defPath ?? this.defPath,
-        keyNetVer: keyNetVer ?? this.keyNetVer,
-        wifNetVer: wifNetVer ?? this.wifNetVer,
-        addrParams: addrParams ?? this.addrParams,
-        type: type ?? this.type,
-        addressEncoder: addressEncoder ?? this.addressEncoder,
-        purpose: purpose ?? this.purpose);
+      coinNames: coinNames ?? this.coinNames,
+      coinIdx: coinIdx ?? this.coinIdx,
+      chainType: chainType ?? this.chainType,
+      defPath: defPath ?? this.defPath,
+      keyNetVer: keyNetVer ?? this.keyNetVer,
+      wifNetVer: wifNetVer ?? this.wifNetVer,
+      type: type ?? this.type,
+      addressEncoder: addressEncoder ?? this.addressEncoder,
+      defaultHdKeyDerivator:
+          defaultHdKeyDerivator ?? this.defaultHdKeyDerivator,
+      purpose: purpose ?? this.purpose,
+    );
   }
 
   /// Constructor for BipCoinConfig.
   const BipCoinConfig({
-    required this.coinNames,
-    required this.coinIdx,
-    required this.chainType,
-    required this.defPath,
-    required this.keyNetVer,
-    required this.wifNetVer,
-    required this.addrParams,
-    required this.type,
-    required this.addressEncoder,
-    this.purpose,
+    required super.coinNames,
+    required super.coinIdx,
+    required super.chainType,
+    required super.defPath,
+    required super.keyNetVer,
+    required super.wifNetVer,
+    required super.type,
+    required super.addressEncoder,
+    this.defaultHdKeyDerivator,
+    super.purpose,
   });
-
-  /// Get address parameters with optional chain code inclusion.
-  /// If 'chain_code' is specified in 'addrParams', it will be replaced with the chain code
-  /// from the provided 'pubKey'.
-  Map<String, dynamic> getParams(Bip32PublicKey pubKey) {
-    if (addrParams["chain_code"] == true) {
-      final params = {...addrParams};
-      params["chain_code"] = pubKey.chainCode.toBytes();
-      return params;
-    }
-    return addrParams;
-  }
 
   @override
   bool get hasExtendedKeys => true;
 
   @override
   bool get hasWif => wifNetVer != null;
+
+  @override
+  final DefaultHdKeyDerivator? defaultHdKeyDerivator;
 }

@@ -2,7 +2,7 @@ import 'package:blockchain_utils/bip/electrum/mnemonic_v2/electrum_v2_mnemonic.d
 import 'package:blockchain_utils/bip/electrum/mnemonic_v2/electrum_v2_mnemonic_validator.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
 import 'package:blockchain_utils/bip/mnemonic/mnemonic.dart';
-import 'package:blockchain_utils/utils/utils.dart';
+import 'package:blockchain_utils/utils/string/string.dart';
 
 /// Constants and configurations related to Electrum V2 seed generation.
 class ElectrumV2SeedGeneratorConst {
@@ -20,6 +20,7 @@ class ElectrumV2SeedGenerator {
   /// Creates an ElectrumV2SeedGenerator instance with the given [mnemonic].
   /// Optionally, you can specify the [language] used in the mnemonic.
   /// The [mnemonic] is validated to ensure its correctness based on the specified language.
+  ///
   ElectrumV2SeedGenerator(this.mnemonic, [ElectrumV2Languages? language]) {
     /// Validate the provided mnemonic to ensure its correctness.
     ElectrumV2MnemonicValidator(language: language).validate(mnemonic.toStr());

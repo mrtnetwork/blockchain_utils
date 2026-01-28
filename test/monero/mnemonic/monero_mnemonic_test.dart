@@ -9,9 +9,11 @@ import "test_vector.dart";
 void main() {
   test("monero mnemonic", () {
     for (final i in testVector) {
-      final lang = MoneroLanguages.values.firstWhere((element) =>
-          element.name.toLowerCase() ==
-          (i["lang"] as String).replaceAll("_", "").toLowerCase());
+      final lang = MoneroLanguages.values.firstWhere(
+        (element) =>
+            element.name.toLowerCase() ==
+            (i["lang"] as String).replaceAll("_", "").toLowerCase(),
+      );
       final entropy = BytesUtils.fromHexString(i["entropy"]);
       final mn = MoneroMnemonicGenerator(lang).fromEntropyWithChecksum(entropy);
       expect(mn.toStr(), i["mnemonic"]);

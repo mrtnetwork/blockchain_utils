@@ -1,3 +1,5 @@
+import 'package:blockchain_utils/exception/exception/exception.dart';
+
 /// An enumeration of common elliptic curve types used in cryptographic operations.
 enum EllipticCurveTypes {
   /// Edwards-curve Digital Signature Algorithm (EdDSA) using ed25519 curve
@@ -22,13 +24,24 @@ enum EllipticCurveTypes {
   secp256k1,
 
   /// Schnorr over Ristretto255 curve
-  sr25519;
+  sr25519,
+
+  /// reddsa jubjub
+  redJubJub,
+
+  /// reddsa pallas
+  redPallas;
 
   /// Retrieves the [EllipticCurveTypes] from its string [name]
   static EllipticCurveTypes fromName(String name) {
     return EllipticCurveTypes.values.firstWhere(
       (element) => element.name == name,
-      orElse: () => throw ArgumentError('Invalid curve type name: $name'),
+      orElse:
+          () =>
+              throw ItemNotFoundException(
+                value: name,
+                name: "EllipticCurveTypes",
+              ),
     );
   }
 }

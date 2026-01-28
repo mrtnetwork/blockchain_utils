@@ -2,23 +2,14 @@ part of 'package:blockchain_utils/crypto/crypto/hash/hash.dart';
 
 /// The `SHA224` class represents the SHA-224 hash algorithm, which is a variant of SHA-256.
 ///
-/// SHA-224 is a cryptographic hash function that produces a 224-bit (28-byte) hash
-/// value from an input message. It's a variant of SHA-256 and follows a similar
-/// implementation with a different initial hash value and digest length.
 class SHA224 extends SHA256 {
   /// digest length
-  static const int digestLength = 28;
-
-  // block size
-  static const int blockSize = 64;
-
-  /// digest length
   @override
-  int get getDigestLength => SHA224.digestLength;
+  int get getDigestLength => 28;
 
-  // block size
+  /// block size
   @override
-  int get getBlockSize => SHA224.blockSize;
+  int get getBlockSize => 64;
 
   @override
   void _initState() {

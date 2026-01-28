@@ -53,12 +53,10 @@
 */
 
 import 'dart:typed_data';
-
-import 'package:blockchain_utils/helper/helper.dart';
-import 'package:blockchain_utils/utils/utils.dart';
+import 'package:blockchain_utils/bech32/bech32_ex.dart';
+import 'package:blockchain_utils/utils/numbers/utils/int_utils.dart';
 
 import 'bech32_utils.dart';
-import 'package:blockchain_utils/exception/exceptions.dart';
 
 /// A utility class containing constants used for Bitcoin Cash (BCH) Bech32 encoding and decoding.
 class BchBech32Const {
@@ -70,7 +68,6 @@ class BchBech32Const {
 }
 
 class _BchBech32Utils {
-  static final _mask5 = BigInt.from(0x1f);
   static BigInt polyMod(List<int> values) {
     final List<List<BigInt>> generator = [
       [BigInt.from(0x01), BigInt.from(0x98f2bc8e61)],
@@ -79,13 +76,13 @@ class _BchBech32Utils {
       [BigInt.from(0x08), BigInt.from(0xae2eabe2a8)],
       [BigInt.from(0x10), BigInt.from(0x1e4f43e470)],
     ];
-
+    final mask = BigInt.from(0x07ffffffff);
     // Compute modulus
     BigInt chk = BigInt.one;
     for (final int value in values) {
       final BigInt top = chk >> 35;
       final BigInt valueBig = BigInt.from(value);
-      chk = ((chk & BigInt.from(0x07ffffffff)) << 5) ^ valueBig;
+      chk = ((chk & mask) << 5) ^ valueBig;
 
       for (final List<BigInt> i in generator) {
         if ((top & i[0]) != BigInt.zero) {
@@ -98,19 +95,21 @@ class _BchBech32Utils {
   }
 
   static List<int> hrpExpand(String hrp) {
-    final List<int> expandedHrp = hrp.runes.map((int rune) {
-      return rune & 0x1f;
-    }).toList();
+    final List<int> expandedHrp =
+        hrp.runes.map((int rune) {
+          return rune & 0x1f;
+        }).toList();
     expandedHrp.add(0);
     return expandedHrp;
   }
 
   static List<int> computeChecksum(String hrp, List<int> data) {
+    final mask5 = BigInt.from(0x1f);
     final List<int> values = hrpExpand(hrp) + data;
     final BigInt polymod = polyMod(values + [0, 0, 0, 0, 0, 0, 0, 0]);
     return List<int>.generate(
       BchBech32Const.checksumStrLen,
-      (i) => ((polymod >> (5 * (7 - i))) & _mask5).toInt(),
+      (i) => ((polymod >> (5 * (7 - i))) & mask5).toInt(),
     );
   }
 
@@ -132,12 +131,13 @@ class _BchBech32Utils {
 class BchBech32Encoder extends Bech32EncoderBase {
   /// Combine the network version bytes and data.
   static String encode(String hrp, List<int> netVar, List<int> data) {
-    final concatBytes = [...netVar, ...data].asImmutableBytes;
+    final concatBytes = [...netVar, ...data];
     return Bech32EncoderBase.encodeBech32(
-        hrp,
-        Bech32BaseUtils.convertToBase32(concatBytes),
-        BchBech32Const.separator,
-        _BchBech32Utils.computeChecksum);
+      hrp,
+      Bech32BaseUtils.convertToBase32(concatBytes),
+      BchBech32Const.separator,
+      _BchBech32Utils.computeChecksum,
+    );
   }
 }
 
@@ -155,21 +155,24 @@ class BchBech32Decoder extends Bech32DecoderBase {
   ///
   /// Throws:
   /// - ArgumentException: If the decoded HRP does not match the expected HRP.
-  static Tuple<List<int>, List<int>> decode(String hrp, String address) {
+  static (List<int>, List<int>) decode(String hrp, String address) {
     final decode = Bech32DecoderBase.decodeBech32(
-        address,
-        BchBech32Const.separator,
-        BchBech32Const.checksumStrLen,
-        _BchBech32Utils.verifyChecksum);
-    if (decode.item1 != hrp) {
-      throw ArgumentException(
-          "Invalid format (HRP not valid, expected $hrp, got ${decode.item2})");
+      address,
+      BchBech32Const.separator,
+      BchBech32Const.checksumStrLen,
+      _BchBech32Utils.verifyChecksum,
+    );
+    if (decode.$1 != hrp) {
+      throw Bech32Error(
+        "Incorrect bech32 hrp.",
+        details: {"expected": hrp, "hrp": decode.$1},
+      );
     }
-    final convData = Bech32BaseUtils.convertFromBase32(decode.item2);
+    final convData = Bech32BaseUtils.convertFromBase32(decode.$2);
     final ver = convData[0];
-    return Tuple(
-        IntUtils.toBytes(ver,
-            length: IntUtils.bitlengthInBytes(ver), byteOrder: Endian.little),
-        convData.sublist(1));
+    return (
+      IntUtils.toBytes(ver, byteOrder: Endian.little),
+      convData.sublist(1),
+    );
   }
 }

@@ -7,9 +7,11 @@ class BchAddrConverter {
   static String convert(String address, String hrp, List<int>? netVer) {
     // Decode address
     final decode = BchBech32Decoder.decode(
-        address.substring(0, address.indexOf(":")), address);
-    final currNetVer = decode.item1;
-    final data = decode.item2;
+      address.substring(0, address.indexOf(":")),
+      address,
+    );
+    final currNetVer = decode.$1;
+    final data = decode.$2;
     // Encode again with new HRP and net version
     return BchBech32Encoder.encode(hrp, netVer ?? currNetVer, data);
   }

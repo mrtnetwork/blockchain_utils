@@ -1,20 +1,15 @@
-import 'dart:math';
-
+import 'dart:math' show Random;
 import 'package:blockchain_utils/crypto/crypto/aes/aes.dart';
 import 'package:blockchain_utils/crypto/crypto/ctr/ctr.dart';
-import 'package:blockchain_utils/crypto/crypto/exception/exception.dart';
 import 'package:blockchain_utils/crypto/crypto/hash/hash.dart';
+import 'package:blockchain_utils/crypto/crypto/prng/rng.dart';
+import 'package:blockchain_utils/exception/exception/exception.dart';
 
 /// The `GenerateRandom` typedef defines a function signature for generating random data with a specified length.
 typedef GenerateRandom = List<int> Function(int length);
 
-/// The `FortunaPRNG` class represents an implementation of the Fortuna pseudorandom number generator (PRNG) algorithm.
-///
-/// Fortuna is a cryptographic PRNG designed to provide a strong source of randomness, suitable for various
-/// security and cryptographic applications.
-///
-/// The class includes methods for initializing and generating random data.
-class FortunaPRNG {
+/// The [FortunaPRNG] class represents an implementation of the Fortuna pseudorandom number generator (PRNG) algorithm.
+class FortunaPRNG with Rng {
   late final List<int> _key = List<int>.filled(32, 0);
   late final List<int> _counter = List<int>.filled(16, 0);
   final List<int> _zeroBlock = List<int>.filled(16, 0);
@@ -30,26 +25,12 @@ class FortunaPRNG {
     return seed;
   }
 
-  /// Constructor for the `FortunaPRNG` class, initializing the pseudorandom number generator (PRNG).
-  ///
-  /// This constructor sets up the `FortunaPRNG` instance with an optional initial seed for randomness.
+  /// Constructor for the [FortunaPRNG] class, initializing the pseudorandom number generator (PRNG).
   ///
   /// Parameters:
-  /// - `seed`: An optional `List<int>` seed used to initialize the PRNG. If not provided, the PRNG will be
+  /// - [seed]: An optional seed used to initialize the PRNG. If not provided, the PRNG will be
   ///   initialized with a secure random seed.
   ///
-  /// Example Usage:
-  /// ```dart
-  /// // Initialize a FortunaPRNG instance with a custom seed.
-  /// List<int> customSeed = // Provide your custom seed here.
-  /// FortunaPRNG prng = FortunaPRNG(customSeed);
-  ///
-  /// // Initialize a FortunaPRNG instance with a secure random seed.
-  /// FortunaPRNG prng = FortunaPRNG();
-  /// ```
-  ///
-  /// This constructor allows you to create a `FortunaPRNG` instance with a specified initial seed for randomness.
-  /// If no seed is provided, the PRNG is initialized with a secure random seed.
   FortunaPRNG([List<int>? seed]) {
     _initKey(seed);
   }
@@ -75,11 +56,6 @@ class FortunaPRNG {
     if (n == 0) {
       return;
     }
-
-    if (n > 65536) {
-      throw const CryptoException('Size is too large!');
-    }
-
     final tempBlock = List<int>.filled(32, 0);
 
     for (int i = 0; i < n; i++) {
@@ -107,20 +83,18 @@ class FortunaPRNG {
     }
   }
 
-  void _encryptBlock(List<int> input, int inputLength, List<int> iv,
-      List<int> key, List<int> output) {
+  void _encryptBlock(
+    List<int> input,
+    int inputLength,
+    List<int> iv,
+    List<int> key,
+    List<int> output,
+  ) {
     final ctr = CTR(AES(key), iv);
     ctr.streamXOR(input, output);
   }
 
   /// Generates and returns the next 8 bits (1 byte) of pseudorandom data from the Fortuna PRNG.
-  ///
-  /// If the internal buffer is exhausted, this method generates new blocks of random data to replenish it.
-  ///
-  /// Returns:
-  /// An integer representing the next 8 bits (1 byte) of pseudorandom data.
-  ///
-  /// This method is used to obtain a single byte of pseudorandom data from the Fortuna PRNG.
   int get nextUint8 {
     if (_c == _out.length) {
       final out = List<int>.filled(16, 0);
@@ -131,15 +105,12 @@ class FortunaPRNG {
     return _out[_c++];
   }
 
-  /// Generates and returns a `List<int>` containing pseudorandom data of the specified length from the Fortuna PRNG.
+  /// Generates and returns a bytes containing pseudorandom data of the specified length from the Fortuna PRNG.
   ///
   /// Parameters:
-  /// - `length`: An integer specifying the desired length of the pseudorandom data in bytes.
+  /// - [length]: An integer specifying the desired length of the pseudorandom data in bytes.
   ///
-  /// Returns:
-  /// A `List<int>` containing the requested pseudorandom data.
-  ///
-  /// This method is used to generate and return a sequence of pseudorandom bytes of the specified length.
+  @override
   List<int> nextBytes(int length) {
     final out = List<int>.filled(length, 0);
     for (int i = 0; i < length; i++) {
@@ -153,7 +124,8 @@ class FortunaPRNG {
       _generateBlocks(_out, 1);
       _c = 0;
     }
-    final int result = (_out[_c] << 24) |
+    final int result =
+        (_out[_c] << 24) |
         (_out[_c + 1] << 16) |
         (_out[_c + 2] << 8) |
         (_out[_c + 3]);
@@ -161,17 +133,31 @@ class FortunaPRNG {
     return result;
   }
 
-  double get nextDouble {
+  @override
+  double nextDouble() {
     // Get a 32-bit integer and scale it to the range [0, 1)
     return nextUint32 / 4294967296.0;
   }
 
+  @override
   int nextInt(int max) {
-    if (max <= 0) throw ArgumentError("max must be greater than 0");
+    if (max <= 0) {
+      throw ArgumentException.invalidOperationArguments(
+        "nextInt",
+        name: "max",
+        reason: "Max must be greater than 0",
+      );
+    }
 
-    // Generate a random double in the range [0.0, 1.0)
-    final double fraction =
-        nextUint32 / 4294967296.0; // Divide by 2^32 to get a fraction
+    final double fraction = nextUint32 / 4294967296.0;
     return (fraction * max).floor();
+  }
+
+  BigInt nextUint64() {
+    // Two 32-bit halves → full 64-bit
+    final hi = nextInt(1 << 32);
+    final lo = nextInt(1 << 32);
+
+    return (BigInt.from(hi) << 32) | BigInt.from(lo);
   }
 }

@@ -1,6 +1,4 @@
-library;
-
-/// Export for cryptocurrency address encoding utilities.
+// Export for cryptocurrency address encoding utilities.
 export 'address/encoders.dart';
 
 /// Export for cryptocurrency address decoding utilities.
@@ -40,3 +38,5 @@ export 'mnemonic/mnemonic.dart';
 export 'coin_conf/config.dart';
 
 export 'slip/slip.dart';
+
+export 'zcash/zcash.dart';

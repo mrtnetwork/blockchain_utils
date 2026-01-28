@@ -1,63 +1,57 @@
 import 'package:blockchain_utils/crypto/crypto/aes/aes.dart';
 import 'package:blockchain_utils/crypto/crypto/aes/padding.dart';
 import 'package:blockchain_utils/crypto/crypto/exception/exception.dart';
+import 'package:blockchain_utils/exception/exception/exception.dart';
+import 'package:blockchain_utils/helper/extensions/extensions.dart';
 
 /// Electronic Codebook (ECB) mode for AES encryption and decryption.
 ///
-/// This class extends the AES block cipher to implement the Electronic Codebook (ECB) mode,
-/// which is a basic block cipher mode that encrypts and decrypts data in fixed-size blocks.
 class ECB extends AES {
   /// Creates an ECB instance with the specified encryption key.
   ///
   /// Parameters:
-  /// - `key`: The encryption key used for ECB mode.
+  /// - [key]: The encryption key used for ECB mode.
   ECB(super.key);
 
   /// Encrypts a single data block using the Electronic Codebook (ECB) mode.
   ///
-  /// This method encrypts a single data block using the AES block cipher in Electronic Codebook (ECB) mode.
-  /// The block size is determined by the AES algorithm. Optionally, a padding style can be applied to the
-  /// input data before encryption.
-  ///
   /// Parameters:
-  /// - `src`: The data block to be encrypted.
-  /// - `dst`: (Optional) The destination for the encrypted block. If not provided, a new `List<int>` is created.
-  /// - `paddingStyle`: (Optional) The padding style to be applied before encryption (default is PKCS#7).
-  ///
-  /// Returns:
-  /// - The encrypted data block.
-  ///
-  /// Throws:
-  /// - `CryptoException` if the source data size is not a multiple of the block size or if the destination size
-  ///   does not match the source size.
-  /// - Exceptions related to padding, if padding is applied.
-  ///
-  /// Note: This method encrypts a single block of data using AES in ECB mode. If padding is applied, it ensures
-  /// the source data is appropriately padded before encryption.
+  /// - [src]: The data block to be encrypted.
+  /// - [dst]: (Optional) The destination for the encrypted block. If not provided, a new `List<int>` is created.
+  /// - [paddingStyle]: (Optional) The padding style to be applied before encryption (default is PKCS#7).
   @override
-  List<int> encryptBlock(List<int> src,
-      [List<int>? dst,
-      PaddingAlgorithm? paddingStyle = PaddingAlgorithm.pkcs7]) {
+  List<int> encryptBlock(
+    List<int> src, [
+    List<int>? dst,
+    PaddingAlgorithm? paddingStyle = PaddingAlgorithm.pkcs7,
+  ]) {
     if (paddingStyle == null) {
       if ((src.length % blockSize) != 0) {
-        throw CryptoException("src size must be a multiple of $blockSize");
+        throw ArgumentException.invalidOperationArguments(
+          "encryptBlock",
+          name: "src",
+          reason: "Invalid source bytes length.",
+        );
       }
     }
-    List<int> input = List<int>.from(src);
+    List<int> input = src.clone();
     if (paddingStyle != null) {
       input = BlockCipherPadding.pad(input, blockSize, style: paddingStyle);
     }
 
     final out = dst ?? List<int>.filled(input.length, 0);
     if (out.length != input.length) {
-      throw const CryptoException(
-          "The destination size does not match with source size");
+      throw ArgumentException.invalidOperationArguments(
+        "encryptBlock",
+        name: "out",
+        reason: "Incorrect destination length.",
+      );
     }
     final numBlocks = input.length ~/ blockSize;
     for (var i = 0; i < numBlocks; i++) {
       final start = i * blockSize;
       final end = (i + 1) * blockSize;
-      final List<int> block = List<int>.from(input.sublist(start, end));
+      final List<int> block = input.sublist(start, end);
       final enc = super.encryptBlock(block);
       out.setRange(start, end, enc);
     }
@@ -66,31 +60,27 @@ class ECB extends AES {
 
   /// Decrypts a single data block using the Electronic Codebook (ECB) mode.
   ///
-  /// This method decrypts a single data block using the AES block cipher in Electronic Codebook (ECB) mode.
-  /// The block size is determined by the AES algorithm. Optionally, a padding style can be applied to the
-  /// output data after decryption.
-  ///
   /// Parameters:
-  /// - `src`: The data block to be decrypted.
-  /// - `dst`: (Optional) The destination for the decrypted block. If not provided, a new `List<int>` is created.
-  /// - `paddingStyle`: (Optional) The padding style to be applied after decryption (default is PKCS#7).
-  ///
-  /// Returns:
-  /// - The decrypted data block.
+  /// - [src]: The data block to be decrypted.
+  /// - [dst]: (Optional) The destination for the decrypted block.
+  /// - [paddingStyle]: (Optional) The padding style to be applied after decryption (default is PKCS#7).
   ///
   /// Throws:
-  /// - `CryptoException` if the source data size is not a multiple of the block size or if the destination size
+  /// - [CryptoException] if the source data size is not a multiple of the block size or if the destination size
   ///   is too small.
   /// - Exceptions related to padding, if padding is applied.
-  ///
-  /// Note: This method decrypts a single block of data using AES in ECB mode. If padding is applied, it ensures
-  /// the output data is appropriately unpadded after decryption.
   @override
-  List<int> decryptBlock(List<int> src,
-      [List<int>? dst,
-      PaddingAlgorithm? paddingStyle = PaddingAlgorithm.pkcs7]) {
+  List<int> decryptBlock(
+    List<int> src, [
+    List<int>? dst,
+    PaddingAlgorithm? paddingStyle = PaddingAlgorithm.pkcs7,
+  ]) {
     if ((src.length % blockSize) != 0) {
-      throw CryptoException("src size must be a multiple of $blockSize");
+      throw ArgumentException.invalidOperationArguments(
+        "decryptBlock",
+        name: "src",
+        reason: "Incorrect source length.",
+      );
     }
     List<int> out = List<int>.filled(src.length, 0);
 
@@ -106,7 +96,11 @@ class ECB extends AES {
     }
     if (dst != null) {
       if (dst.length < out.length) {
-        throw const CryptoException("Destination size is small");
+        throw ArgumentException.invalidOperationArguments(
+          "decryptBlock",
+          name: "dst",
+          reason: "Incorrect destination length.",
+        );
       }
       dst.setAll(0, out);
       return dst;

@@ -63,8 +63,10 @@ class Slip32KeyNetVersions {
   /// Constructor to create Slip32KeyNetVersions.
   ///
   /// Initializes the network versions for public and private keys.
-  const Slip32KeyNetVersions(
-      {required this.pubNetVar, required this.privNetVar});
+  const Slip32KeyNetVersions({
+    required this.pubNetVar,
+    required this.privNetVar,
+  });
 
   /// Get the public key network version.
   String get public => pubNetVar;

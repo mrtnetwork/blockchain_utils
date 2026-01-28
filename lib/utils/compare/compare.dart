@@ -1,4 +1,74 @@
+import 'package:blockchain_utils/exception/exception/exception.dart';
+import 'package:blockchain_utils/utils/binary/utils.dart';
+
 class CompareUtils {
+  static List<List<T>> chunk<T>(List<T> items, int chunk) {
+    if (chunk < 0) {
+      throw ArgumentException.invalidOperationArguments(
+        "chunk",
+        reason: 'chunk size must be greater than 0',
+      );
+    }
+
+    final result = <List<T>>[];
+
+    for (var i = 0; i < items.length; i += chunk) {
+      final end = (i + chunk < items.length) ? i + chunk : items.length;
+      result.add(items.sublist(i, end));
+    }
+
+    return result;
+  }
+
+  static List<List<T>> groupConsecutive<T>(List<T> items) {
+    if (items.isEmpty) return [];
+
+    final List<List<T>> result = [];
+    List<T> currentGroup = [items.first];
+    for (int i = 1; i < items.length; i++) {
+      if (items[i] == items[i - 1]) {
+        currentGroup.add(items[i]);
+      } else {
+        result.add(currentGroup);
+        currentGroup = [items[i]];
+      }
+    }
+
+    // add the last group
+    result.add(currentGroup);
+
+    return result;
+  }
+
+  static bool constantTimeBigIntEquals(List<BigInt> a, List<BigInt> b) {
+    if (a.length != b.length) return false;
+
+    BigInt diff = BigInt.zero;
+    for (int i = 0; i < a.length; i++) {
+      diff |= (a[i] ^ b[i]);
+    }
+    return diff == BigInt.zero;
+  }
+
+  static bool iterableConstantTime(
+    Iterable<List<int>> a,
+    Iterable<List<int>> b,
+  ) {
+    if (a.isEmpty && b.isEmpty) return true;
+    if (a.length != b.length) {
+      return false;
+    }
+    if (identical(a, b)) {
+      return true;
+    }
+    for (int index = 0; index < a.length; index += 1) {
+      final valueA = a.elementAt(index);
+      final valueB = b.elementAt(index);
+      if (!BytesUtils.bytesEqualConst(valueA, valueB)) return false;
+    }
+    return true;
+  }
+
   /// Compare two lists of bytes for equality.
   /// This function compares two lists of bytes 'a' and 'b' for equality. It returns true
   /// if the lists are equal (including null check), false if they have different lengths

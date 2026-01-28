@@ -65,38 +65,40 @@ import 'package:blockchain_utils/bip/slip/slip44/slip44.dart';
 /// maps each supported BIP86Coin to its corresponding BipCoinConfig.
 class Bip86Conf {
   /// The key network version for the mainnet of Bitcoin.
-  static final bip86BtcKeyNetVer = Bip32Const.mainNetKeyNetVersions;
+  static const bip86BtcKeyNetVer = Bip32Const.mainNetKeyNetVersions;
 
   /// The key network version for the testnet of Bitcoin.
-  static final bip86BtcKeyNetVerTest = Bip32Const.testNetKeyNetVersions;
+  static const bip86BtcKeyNetVerTest = Bip32Const.testNetKeyNetVersions;
 
   /// Configuration for Bitcoin main net
-  static BipCoinConfig bitcoinMainNet = BipCoinConfig(
+  final BipCoinConfig bitcoinMainNet = BipCoinConfig(
     coinNames: CoinsConf.bitcoinMainNet.coinName,
     coinIdx: Slip44.bitcoin,
     chainType: ChainType.mainnet,
     defPath: derPathNonHardenedFull,
     keyNetVer: bip86BtcKeyNetVer,
     wifNetVer: CoinsConf.bitcoinMainNet.params.wifNetVer,
-    addressEncoder: ([dynamic kwargs]) => P2TRAddrEncoder(),
+    addressEncoder:
+        (params, config) => P2TRAddrEncoder().encodeKey(
+          params.pubKey,
+          hrp: CoinsConf.bitcoinMainNet.params.p2trHrp,
+        ),
     type: EllipticCurveTypes.secp256k1,
-    addrParams: {
-      "hrp": CoinsConf.bitcoinMainNet.params.p2trHrp!,
-    },
   );
 
   /// Configuration for Bitcoin test net
-  static BipCoinConfig bitcoinTestNet = BipCoinConfig(
+  final BipCoinConfig bitcoinTestNet = BipCoinConfig(
     coinNames: CoinsConf.bitcoinTestNet.coinName,
     coinIdx: Slip44.testnet,
     chainType: ChainType.testnet,
     defPath: derPathNonHardenedFull,
-    addressEncoder: ([dynamic kwargs]) => P2TRAddrEncoder(),
+    addressEncoder:
+        (params, config) => P2TRAddrEncoder().encodeKey(
+          params.pubKey,
+          hrp: CoinsConf.bitcoinTestNet.params.p2trHrp,
+        ),
     keyNetVer: bip86BtcKeyNetVerTest,
     wifNetVer: CoinsConf.bitcoinTestNet.params.wifNetVer,
     type: EllipticCurveTypes.secp256k1,
-    addrParams: {
-      "hrp": CoinsConf.bitcoinTestNet.params.p2trHrp,
-    },
   );
 }

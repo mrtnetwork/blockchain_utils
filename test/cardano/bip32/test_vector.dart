@@ -28,7 +28,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "bc944a84",
             "chaincode":
                 "e94d68bdadd0ae3cb165100906863784e2cd68add922ca3777efd3b500c759d2",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -38,7 +38,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "395b601c",
             "chaincode":
                 "b044282bcafb7c5b73188708fa2583070bc25e48272697756841a3cbbff52c5a",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -48,7 +48,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "4aeb2b66",
             "chaincode":
                 "1d9793ddc1d26c9da92e14a2d5f2f06d63b1ee255e16de159a494f47ad618ef2",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -58,7 +58,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "0ca0a502",
             "chaincode":
                 "75ab01fa555f0ff3601a46829a47fcc8932402f7587fde5b334e7be6daa07bbd",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -68,9 +68,9 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "4e3b0d54",
             "chaincode":
                 "75001965910b59c8c1bf61b8e4805edc48c8a06b7ba2adf48a5fde6cdf2cec19",
-            "index": 4
-          }
-        ]
+            "index": 4,
+          },
+        ],
       },
       {
         "public":
@@ -90,7 +90,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "dea2df04",
             "chaincode":
                 "71a87f8b909d26584fe36cdcee5922a904180cf5c555c5c03146d32bf0ad7d8e",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -100,7 +100,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "8828cf18",
             "chaincode":
                 "dde42cc0b896100a8906e197ef78d6a20eba9e18226fa6bf2789c7d187d8435f",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -110,7 +110,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "3fa5f905",
             "chaincode":
                 "02e242fab2d07a77aa3e3bdac84181fb8e5b9581ba8ccaa317487bc9a929f17b",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -120,7 +120,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "63c40875",
             "chaincode":
                 "725ed37edd2a6d5a78fd71138b71bf50f355b17584faffc70ce43caa1f282b46",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -130,9 +130,9 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "77cdb3dd",
             "chaincode":
                 "9540b6e74e1e7bbc441d3a6c4e3b4c3f1dedfb0b110639f83c5069cd4a330d1f",
-            "index": 4
-          }
-        ]
+            "index": 4,
+          },
+        ],
       },
       {
         "public":
@@ -152,7 +152,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "d4e9993b",
             "chaincode":
                 "258964ec1a0241a210c9433afaade6064adf1381e594b156b2cd220baa852acc",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -162,7 +162,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "26e6aea8",
             "chaincode":
                 "3fcdac897da296b617d8da750a2a5c582dec68ad443bc086f5a7bd65c44688a2",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -172,7 +172,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "4e798468",
             "chaincode":
                 "b87b26a364704930af7e28ba0b47d6a590ff50c31c6d9c155945aa93d96b7c28",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -182,7 +182,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "356d9440",
             "chaincode":
                 "4b5a29be3e5f964b73b3acfc082ab3b59eec12f2186980fa6623c4e18b0e58d0",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -192,9 +192,9 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "2b8ed8ea",
             "chaincode":
                 "a04734e5a832940cbc9fa10fd9e77e1c4c0d803942837c2f1f9e1834a90d556f",
-            "index": 4
-          }
-        ]
+            "index": 4,
+          },
+        ],
       },
       {
         "public":
@@ -214,7 +214,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "539f173b",
             "chaincode":
                 "6c6bba4af5fa47c8e75da25109966706d8d93b6cef25301e1ad55a6b1d6165ec",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -224,7 +224,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "8a1477ef",
             "chaincode":
                 "0b3a0767167c23a66cb2d2b48836e742c217c0e66bd20b1dae5a2289f1022a54",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -234,7 +234,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "f204ffc3",
             "chaincode":
                 "5e7f6d1747d92316d448d8bd9a47a8375a85d7d5fcb86a90175eaca0313b8c7c",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -244,7 +244,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "e5300788",
             "chaincode":
                 "433350d6bed182af50601d7f136ca77809bb2c28f932cfb680c7a5e4db549e8c",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -254,9 +254,9 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "4f8cd771",
             "chaincode":
                 "7923416c23fcb73044809e685db1ccad31b5aadc75d1864f28e5a3dbe6d6d7d2",
-            "index": 4
-          }
-        ]
+            "index": 4,
+          },
+        ],
       },
       {
         "public":
@@ -276,7 +276,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "31535ad1",
             "chaincode":
                 "df5f64551a852b133dd4ad3676f6e25ff5476d6ac92c2b4ebb99761840518bfc",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -286,7 +286,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "eb5203dc",
             "chaincode":
                 "781209d7e60918eb3afe8de5cc20b2a27fbd8a38bf8980a7c08cbe42d7a07d5f",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -296,7 +296,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "8eb6fd5b",
             "chaincode":
                 "0b8f67d9e23ba2bc4d8171ed58b5760255ea903865950cbba829c25424371be5",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -306,7 +306,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "bbb838ef",
             "chaincode":
                 "f930109d85099f18e499fab9822be2a5443f9be6cc16bcb59ef343ac97f7f0c5",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -316,11 +316,11 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "55fd064f",
             "chaincode":
                 "7e712fb36d4462f851022c5f2c5b98afecd57859c412565502889fcb93602c87",
-            "index": 4
-          }
-        ]
-      }
-    ]
+            "index": 4,
+          },
+        ],
+      },
+    ],
   },
   {
     "seed": "98c24476237e774b4a36c5add8820c287e9a027881d3b37c87dbd7359f6d5e98",
@@ -351,7 +351,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "fb990efb",
             "chaincode":
                 "a636c8ea65ffa2b54d391ac2c750f342c50c5f5f77acc136913b0edb7bbee224",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -361,7 +361,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "d7f5e473",
             "chaincode":
                 "c3b30376d0cbe92d46ee4b5e330402d8241a72fffa07b56145d6d248c9578e23",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -371,7 +371,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "b7cf9937",
             "chaincode":
                 "b95952d13ea16e955904406db08d0fa679812b3f1b0b6214a627d1493c8a3282",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -381,7 +381,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "a39bd64a",
             "chaincode":
                 "9bfcc723d18999b8a67cbb79cfaa00f4f5e2861c767fd170af54980d8df0ebc7",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -391,9 +391,9 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "d363222d",
             "chaincode":
                 "7b2d3c36003cfcc56317f72ce4fa5f1d975d447f37b2edd4c0e5c3891730690f",
-            "index": 4
-          }
-        ]
+            "index": 4,
+          },
+        ],
       },
       {
         "public":
@@ -413,7 +413,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "98089d90",
             "chaincode":
                 "b9f81ed62d397b05a0a72579c303287f12b06de847b9c26d2cbd5344cc41a4b9",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -423,7 +423,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "63a3299b",
             "chaincode":
                 "e0261e9232648fc4295b99abd2572f11d6bb26c14ac6f63f9209cf4a0929eac3",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -433,7 +433,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "ea67e67d",
             "chaincode":
                 "036bf4b190b77a2b6809724b6999738e1388baac8efdbb66ceacb8147cb9dedd",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -443,7 +443,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "3efb7f78",
             "chaincode":
                 "ec103d60b7a317d298f27eb77dbd65a6e12f156670e9b7442395c81089671bc1",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -453,9 +453,9 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "6e773724",
             "chaincode":
                 "03f4cc3f30cf96b909000cbe73e6ead662a4cdcbe9f2ff48def649d6760abf9e",
-            "index": 4
-          }
-        ]
+            "index": 4,
+          },
+        ],
       },
       {
         "public":
@@ -475,7 +475,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "e8fabc08",
             "chaincode":
                 "61272a8bd3271a7194a6b0f716ecde231cd938751da52e28c7dbe4084e08edc3",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -485,7 +485,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "229ed47b",
             "chaincode":
                 "9a0b5df7b1a9d75410b96369d7640eac59c9e8417784f377c6874da7a532f519",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -495,7 +495,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "3d8f9783",
             "chaincode":
                 "3c74062859c7fa8e8bb04cf47132d0569641e485f2226d45cb9d5e4a0df89e92",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -505,7 +505,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "affe3351",
             "chaincode":
                 "8bf95e5c1ea22c93496b1612b34eeaf6239784dcd7e04d89cd51e27f3f466f96",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -515,9 +515,9 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "85aebde3",
             "chaincode":
                 "af41d197f84f036ce3394e7b723853f75e53093027053a9068d626d00fec6ddd",
-            "index": 4
-          }
-        ]
+            "index": 4,
+          },
+        ],
       },
       {
         "public":
@@ -537,7 +537,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "f8dc12af",
             "chaincode":
                 "bda797d0f470c622f05b0befa30208f1f236746f783cc92365f02b9764dcecbf",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -547,7 +547,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "99a86638",
             "chaincode":
                 "103819aa6a75ef497b26f5aaf200376b8d7ccc8241eb2c30d72296fdf427e3f3",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -557,7 +557,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "41fbe9b6",
             "chaincode":
                 "d87be64ced1ef55b95ac3a2eba8395207b6352e6e99a167c82408430c5dfb62c",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -567,7 +567,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "b32baed0",
             "chaincode":
                 "e6b1272b645b3ac32a37d7d41eeb8db65b7cf742d0a7ae15d403a048b4faf40d",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -577,9 +577,9 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "6bf91796",
             "chaincode":
                 "d15c8e6cf029c64fc9ebab81d291527fff8d9faf53a089ce04dcd04a5c7d75b7",
-            "index": 4
-          }
-        ]
+            "index": 4,
+          },
+        ],
       },
       {
         "public":
@@ -599,7 +599,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "f3b00fd5",
             "chaincode":
                 "950c3c2bcb60151d9e6270fac95f8c29a55404e8e81baf902f176e8ddcbd3988",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -609,7 +609,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "1140512e",
             "chaincode":
                 "54d13118f0549dc25ac4cc327068da79a22d04ef0364f1daad03c2171e782bb9",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -619,7 +619,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "95625e1f",
             "chaincode":
                 "55b3acc01e5795d75c9e24c7554a2f78ec0a33f51af81a84a3b3315d27bbd606",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -629,7 +629,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "e54e4f82",
             "chaincode":
                 "3490746346892052f6c167e9dd703270d857f7ab976b644da2e74046555f9fc6",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -639,11 +639,11 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "70bf2596",
             "chaincode":
                 "938ed41f3a23a92f94a6d9d3aa64406036cc699c508ca3581be70f7ced34647d",
-            "index": 4
-          }
-        ]
-      }
-    ]
+            "index": 4,
+          },
+        ],
+      },
+    ],
   },
   {
     "seed": "d237067ee6b0c6bd47df9fe3fd5e594ed502de207a0e4ccf197cd90768a751da",
@@ -674,7 +674,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "de9a144e",
             "chaincode":
                 "f83661a99e8db6a097ced86e4daddb2c504d3025df3cd24e4bad41b778a9b1cf",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -684,7 +684,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "fa8e4a13",
             "chaincode":
                 "1be85cb678d2aad08f0906f8a1669d2defc1b22c67619354a70be25c0f5380f2",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -694,7 +694,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "d811b354",
             "chaincode":
                 "53f25b6a68dfdbd8ce0f3eafbc3ffbdaf47ba9d1371f22d0874833f7808a2944",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -704,7 +704,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "e3e22dd1",
             "chaincode":
                 "427928f169be8bf6add6bf6f4d6a0f0938f4252de9f2a36f9be4b092d8b7141a",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -714,9 +714,9 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "f6b5729e",
             "chaincode":
                 "54097a924fb5fd9a558293ceaff70b260e86e7199f0219b1cbd8e4ab747d026a",
-            "index": 4
-          }
-        ]
+            "index": 4,
+          },
+        ],
       },
       {
         "public":
@@ -736,7 +736,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "95c84471",
             "chaincode":
                 "d658fb78839f985cd5c70023b027ff357d6ef82592f2a8dde938944649eb7ddb",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -746,7 +746,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "c53303e0",
             "chaincode":
                 "185a84ca139a3df867adff47d59c30e0bc4773704888665ce0a9ecc0d46e7c45",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -756,7 +756,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "e385e789",
             "chaincode":
                 "3b5aa88de88897d07828b3def4849d2825a3fba83d7a6044c86f60bc5c98bc89",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -766,7 +766,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "aaa41b30",
             "chaincode":
                 "8a48b6f681240a9d137d3f5e7a7da33ae86b151bdc202f634b941c3fe88260d9",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -776,9 +776,9 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "1013a96f",
             "chaincode":
                 "8d4736c1e307626830378cbedae8b38b50d88564126a1016e764e2c9ada03e38",
-            "index": 4
-          }
-        ]
+            "index": 4,
+          },
+        ],
       },
       {
         "public":
@@ -798,7 +798,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "098e4e2c",
             "chaincode":
                 "78d6b05161cb32ac5b030af1e080de2e1d855bd96a760bab59f44d845eab0c96",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -808,7 +808,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "887ee823",
             "chaincode":
                 "1af5578ac352997b717953dedbc3e9b0d2f5fd6855ae6189a5f1377a89728d81",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -818,7 +818,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "c447060d",
             "chaincode":
                 "7f5a54653de6acf666ea888bafaec8476584c01a6416e3758300d38bbbcdf8f9",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -828,7 +828,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "da9ea6c8",
             "chaincode":
                 "fd819d9f7645295f1a1857b1e0c058472456ff1a63ff313b276046e40ba6f247",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -838,9 +838,9 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "18ac8044",
             "chaincode":
                 "7cc77b0637aa3c9ba3cbde4bc2b7f6568cead26704d192c2ea1c62c156a00430",
-            "index": 4
-          }
-        ]
+            "index": 4,
+          },
+        ],
       },
       {
         "public":
@@ -860,7 +860,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "9450e9d2",
             "chaincode":
                 "4537092b6f80cc6e7727b0c532f1ca964bad604254538c5af4ce35260eb2bf61",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -870,7 +870,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "4200e8cb",
             "chaincode":
                 "693bc504daedcd354bb8193ce1227ecf3b5b17c2c6206e20189538a60841f548",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -880,7 +880,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "d2ad6d80",
             "chaincode":
                 "972bfa2b4f8addb785fd47c2366108c105a8b9fb9692a3ec629f125f15a74727",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -890,7 +890,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "11bba083",
             "chaincode":
                 "4511d2210af60d9f26111b997efecb6beebf36b6ca0c3839780ca1e962b7be23",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -900,9 +900,9 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "93726a77",
             "chaincode":
                 "4d04a944730d2fddbd304ab1a6a938ae4ec4583106e36b6b4328d2b1496b422f",
-            "index": 4
-          }
-        ]
+            "index": 4,
+          },
+        ],
       },
       {
         "public":
@@ -922,7 +922,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "4e6a14cd",
             "chaincode":
                 "63de043fef8e7330d37e163bc2973cfbbbbc6e5264469981ee44cccc6146f180",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -932,7 +932,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "dc0d4e1f",
             "chaincode":
                 "914566c152547d1b00288642a87aea9278ccc06ff26c020e3d26955e981b8e86",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -942,7 +942,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "86af5690",
             "chaincode":
                 "afd740a551eab5f12fde547fcf2648954f5e0efd36304dd08ec294209c0ceeff",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -952,7 +952,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "0636ec8b",
             "chaincode":
                 "2fa5f570e433ced156505469ef0fe899717dd0150a5107ca4323a17b9409308d",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -962,11 +962,11 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "bedc7ca9",
             "chaincode":
                 "5c3aae23d276e70dd4696c862fb14705d0f84e0b74a5edcfe5cc827486679529",
-            "index": 4
-          }
-        ]
-      }
-    ]
+            "index": 4,
+          },
+        ],
+      },
+    ],
   },
   {
     "seed": "efe4263dff607dbcb881981af0d2b898be9c5520c1ef49ece2d863ffbf28a286",
@@ -997,7 +997,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "0f258b40",
             "chaincode":
                 "99eae4a90d3d87c6c0d6e4dcab6564c2025a477b8e69e9ecc8fc28e2b882740a",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -1007,7 +1007,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "555d5564",
             "chaincode":
                 "bcd55a2affa0bf775fae9e2a37aba4429d117329b6e4da9fb64de2375861fb4d",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -1017,7 +1017,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "28b5de14",
             "chaincode":
                 "94b6f632b54abcc8dd3ce1eb4e60cd61cfb4bf57c1dcf952801a98905518ccfb",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -1027,7 +1027,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "86bce96e",
             "chaincode":
                 "a9c85a8dca6c7415b0ddb11627f9baf6fa72f8a51d8052312031caabcf4dab17",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -1037,9 +1037,9 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "bb8c1be9",
             "chaincode":
                 "95c1846484df4b19cea94c0a92993cec6de1a14ce6c768aae04792cf9bb15b27",
-            "index": 4
-          }
-        ]
+            "index": 4,
+          },
+        ],
       },
       {
         "public":
@@ -1059,7 +1059,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "aeddd0ec",
             "chaincode":
                 "e9bfc7be12c6e611960d284025abbe25bc8ab94c249a70e4b9c776581d2310e2",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -1069,7 +1069,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "c9d9937f",
             "chaincode":
                 "b807c99a8779670cce2c2dc871b586cb75912476038354f08ad1c54d3d7df283",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -1079,7 +1079,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "7e300f48",
             "chaincode":
                 "488cdcb3ef96ae9a984e74a60662934574f440f1e3578d8adb197ba8bb28911a",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -1089,7 +1089,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "2baacca3",
             "chaincode":
                 "80313c41f9547d7fb98adcf03d1a2e0427641927a67ef1a9c7d7c5512477d304",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -1099,9 +1099,9 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "5d90c28f",
             "chaincode":
                 "924392b1748019b4c33420debac3ac7e0f4ef5a2d5da8c4bd4a71190a61b65f7",
-            "index": 4
-          }
-        ]
+            "index": 4,
+          },
+        ],
       },
       {
         "public":
@@ -1121,7 +1121,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "1dc65a82",
             "chaincode":
                 "d614a19ff682f19a0717257f467ce14d1c8fd5527076a582a3ab72a44098a34d",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -1131,7 +1131,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "d26d2e61",
             "chaincode":
                 "931a586da0f42a72855e40538e49fe1634b4ca921b0eb929c54b2183afeadc9a",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -1141,7 +1141,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "f0158b20",
             "chaincode":
                 "dfcbcf1d4fb71dd4e7099c02f0ffc19624c522f5df9155ece1bb358654a3602b",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -1151,7 +1151,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "62ada192",
             "chaincode":
                 "aadb9c748d4c02a236db8049e83a29704dd1591058644d4f99a92230b41be284",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -1161,9 +1161,9 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "84b44ed8",
             "chaincode":
                 "85e3e1a2ebc4d1422b1a38af5629d6216f229f7238edfa6889c39db46d6bc488",
-            "index": 4
-          }
-        ]
+            "index": 4,
+          },
+        ],
       },
       {
         "public":
@@ -1183,7 +1183,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "d7578362",
             "chaincode":
                 "77085112457554fdf1a33788e98af3f2f13fdbebfa56728141b43c578439e171",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -1193,7 +1193,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "9bbd05ae",
             "chaincode":
                 "52848ab5f4dac666ef9f14bcb8fbc47a67ab8faf0a6125364171f8cd03818820",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -1203,7 +1203,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "0e589d3e",
             "chaincode":
                 "b86bd1c4e262b32ae869bbb9fab0a51e9cda367d2f6199a9c310857165308d29",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -1213,7 +1213,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "b5ff4c6f",
             "chaincode":
                 "9136cdcf5e91b40cf78e83b8c59129dcc5920d505b4010ea3ca6aa2234be6f72",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -1223,9 +1223,9 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "56bebc32",
             "chaincode":
                 "48a4c753fc98b79454bde30545a2f6e7af6ed76558a2a003d9b2e2ec380253f3",
-            "index": 4
-          }
-        ]
+            "index": 4,
+          },
+        ],
       },
       {
         "public":
@@ -1245,7 +1245,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "d22d5c6e",
             "chaincode":
                 "4ba8d3c737eeeb0ce7b0fd516bdd098ebdc1929f788238a66bb39bfbf93ebcc1",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -1255,7 +1255,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "aa4fa212",
             "chaincode":
                 "0e39bbb841e90a8158ba5215977a36c3ba6bf53e1f5198f533f632ae41c11c7a",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -1265,7 +1265,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "3089fecc",
             "chaincode":
                 "6471d2cba3d81c7671107fe0f901350f02b895349b36cfc00c13c5733599cde5",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -1275,7 +1275,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "07b35608",
             "chaincode":
                 "381fd1d5b8050f98ac0146cf6bfbd5ae1f320ebbf64db2fc2780ca0ee7337604",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -1285,11 +1285,11 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "6ac293f9",
             "chaincode":
                 "9c42e651a0aef9d5f2ba9b5557af61856efa0734289acdf49192cd72fbb5ff51",
-            "index": 4
-          }
-        ]
-      }
-    ]
+            "index": 4,
+          },
+        ],
+      },
+    ],
   },
   {
     "seed": "6de2b27dbf0db4cd4b6b3d0bfc3bf8d27bf96c8641c8c8a2a982213f6e968c27",
@@ -1320,7 +1320,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "1a9623f7",
             "chaincode":
                 "dee0b515404e8fd2697b97998788b587c5ad40753cb707ac74d7550d8c14ce61",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -1330,7 +1330,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "0737259b",
             "chaincode":
                 "d89b05a6e4269c83a6a986b755489ae47d2ada452ee6ac1f75a4bb39da9f9180",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -1340,7 +1340,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "8ebd71a1",
             "chaincode":
                 "e1b84860fa7b1dd7a66119873a0bb27b09088aa303b5f62ecfe2b1d36b4aaf6a",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -1350,7 +1350,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "c655f8b4",
             "chaincode":
                 "ccb50cae0dad5ea9dfe56a0c0f62a9a3977c2eafe7c239d6cced3c5d0d1670bc",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -1360,9 +1360,9 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "d393deb4",
             "chaincode":
                 "56435eb635c7b2f968322a1df013e831c3b092436d8ad63b966b3d1ac66f85ed",
-            "index": 4
-          }
-        ]
+            "index": 4,
+          },
+        ],
       },
       {
         "public":
@@ -1382,7 +1382,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "367d391a",
             "chaincode":
                 "13b0fba8c00de0e924b6d4be8b9530a71cb363bae7040199e96755e71d587424",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -1392,7 +1392,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "c57ea3f3",
             "chaincode":
                 "64f10897c9bf200e031007108e86dbfd3db32cc3f50f629702ae3f01e39ae86a",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -1402,7 +1402,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "d82858d7",
             "chaincode":
                 "61f514c09b3270b0cb01c1edd8894fc76ee277caf450e5d215de355958910936",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -1412,7 +1412,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "8fd2efe5",
             "chaincode":
                 "a6882450e5fd1319d0779876c152001895a49e5fc9271c26df886236da2592ff",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -1422,9 +1422,9 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "fc9d6342",
             "chaincode":
                 "9aedfdc3fc6bdf93fc5f95d7fbdb82107a51224d673313be3a346173c8d355bb",
-            "index": 4
-          }
-        ]
+            "index": 4,
+          },
+        ],
       },
       {
         "public":
@@ -1444,7 +1444,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "9fc859f7",
             "chaincode":
                 "1d0d84e1de01c36cbfa9283d9da5663b9197b3a791ea7eba09baf60b3b360634",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -1454,7 +1454,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "2dee22c6",
             "chaincode":
                 "cf57feda0157e80961525ebad96df96694ea6c12873ccc8c7619611585ce34e2",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -1464,7 +1464,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "b2db6670",
             "chaincode":
                 "416ec1d7ffa418dd240755000257d27a60b3c355e1a7345bd816458cf88f8df2",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -1474,7 +1474,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "fa66f3e2",
             "chaincode":
                 "d4da06feeb0153552e4b2399f21d66ec22ccfef7eb73a8b08cd3cffac9a8b2f6",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -1484,9 +1484,9 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "122f7337",
             "chaincode":
                 "d868a61ee7192c434455b12ff33a2421fc1449f0fff73cd3d0bc7123eab6de40",
-            "index": 4
-          }
-        ]
+            "index": 4,
+          },
+        ],
       },
       {
         "public":
@@ -1506,7 +1506,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "95fb6a5c",
             "chaincode":
                 "aaad97dcef90ac78db588a746c0423a1d6576daa4374bdf28ab0780493ed144f",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -1516,7 +1516,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "d56ca711",
             "chaincode":
                 "fc6f420db79007b8474bf22ce0ef1b928b0abdb226d9f850719641e18a1dc2c6",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -1526,7 +1526,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "382af7c9",
             "chaincode":
                 "6d48886785afdf9a08b98500b2f6bb758619a1142222f39ff44876b87c1a7686",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -1536,7 +1536,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "7baec0b7",
             "chaincode":
                 "28da857b2cf35231f85c2df82e55df7af4caef3314e7fe553433c9a0e977c5ee",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -1546,9 +1546,9 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "3dd9e749",
             "chaincode":
                 "2bb4f5be787ef16499631474c40a4d91b417b63b1926060e04c5787c3a23a872",
-            "index": 4
-          }
-        ]
+            "index": 4,
+          },
+        ],
       },
       {
         "public":
@@ -1568,7 +1568,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "fd382a69",
             "chaincode":
                 "a7d084b4a1466ec4e59577d833fb7731b73a7115d42c3d4b5d021eb295fd00ba",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -1578,7 +1578,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "96ee7904",
             "chaincode":
                 "72e6247c39a26146ff03a564e5776426174a426294ea33df56ce434fb30312c3",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -1588,7 +1588,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "b0e34ac1",
             "chaincode":
                 "9a6cc66084652a97fc50e099a1c3ffb7498d4dfae3b4c44cc060d2156dbb91f9",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -1598,7 +1598,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "82fad3ac",
             "chaincode":
                 "ec51c9f3cbef97f8224fa852ee3a25fcc5a2f053bcb2cdd2632da0a9b3e7819c",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -1608,11 +1608,11 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "3036082a",
             "chaincode":
                 "16d6897b31be603e1722fe394aef8d60ff9c9b14d813bfc98420d368686b986f",
-            "index": 4
-          }
-        ]
-      }
-    ]
+            "index": 4,
+          },
+        ],
+      },
+    ],
   },
   {
     "seed": "e68db487706303799b7a60c3f7366ff33aec3cd00c0214422bd1400fa72091fd",
@@ -1643,7 +1643,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "0b44ae3e",
             "chaincode":
                 "dbe40796e2d2c7ad8993fb4cea6e560296bd76d500de9f2cfd02a88689c70f41",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -1653,7 +1653,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "335f759e",
             "chaincode":
                 "109c36b2ac4bce910aed3c7c28f6cd38d2909fa894dfc026243c92286980ec6c",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -1663,7 +1663,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "9ed1e736",
             "chaincode":
                 "82411667fc7b344e5f8d26eb21ba37a7a8a9085791fe906e30115aeaa5582572",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -1673,7 +1673,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "e1e1e9da",
             "chaincode":
                 "62efb74ececc4dcbdfab0695ed3fd82dbf1cc68a48e95e1e10c19834aaab76ec",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -1683,9 +1683,9 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "754a918e",
             "chaincode":
                 "dc07ee9879afed890155e9f5013c3dcdb62718a53a9c22c13ec9ead4fb3518c5",
-            "index": 4
-          }
-        ]
+            "index": 4,
+          },
+        ],
       },
       {
         "public":
@@ -1705,7 +1705,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "f7ab17f4",
             "chaincode":
                 "53a7344adef216795be580b7833a9dafadb64b50e1f2a2d69a9d615490b7d915",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -1715,7 +1715,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "6d4c2237",
             "chaincode":
                 "cd3fbebf8c40cde0c3eaae500bd78b88e046449d3d64d31a89c7c84e9746fa51",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -1725,7 +1725,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "8bac4ee8",
             "chaincode":
                 "c50f8d4501d9789c249d590c8c6e671e892304370246dcbba82b94ad7d924f29",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -1735,7 +1735,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "a372e26d",
             "chaincode":
                 "18dec86da68bac971648f4ac95cc7d6f8443d66aeccfe67c69114928dfcbd630",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -1745,9 +1745,9 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "373f8618",
             "chaincode":
                 "42059ed35e5f753126f27345f8ec6977b4a35af80cd75bf14c399cc42ef33b6e",
-            "index": 4
-          }
-        ]
+            "index": 4,
+          },
+        ],
       },
       {
         "public":
@@ -1767,7 +1767,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "76c69f0d",
             "chaincode":
                 "07f84c583e84a42c6db1b313809bc21ba45d6699d67dd3f90011a64b8c289a9c",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -1777,7 +1777,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "930405a1",
             "chaincode":
                 "df9756c93ced9b164d7ca3f421221c9c751729dbba2f76bfeb85dc5e94f809c6",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -1787,7 +1787,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "d0358c51",
             "chaincode":
                 "a0eea235b73c87e2037b1f1a1a6fe7ae345c0f0bded26b57315f87abfbb4ae2e",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -1797,7 +1797,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "0859e101",
             "chaincode":
                 "8d64fe25a459954cd236c8cd26c355066e1a5ee00c37b372b019dc2306dd0e17",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -1807,9 +1807,9 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "b6e91a63",
             "chaincode":
                 "a527d3b2e82e50a782bfe05872a2bf6900c7b88f8b9d4947c7d01f2533bc8e1b",
-            "index": 4
-          }
-        ]
+            "index": 4,
+          },
+        ],
       },
       {
         "public":
@@ -1829,7 +1829,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "d724ff80",
             "chaincode":
                 "6d414c795dd2ac3de0f77f88a7a3e5b68137e5189b1ca04f4e94c08e800afccb",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -1839,7 +1839,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "e189898d",
             "chaincode":
                 "c6151851afcff387d32504c4ba1bd4d1302fdf8f0e825c1fa7d4942ae4045462",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -1849,7 +1849,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "1e89d996",
             "chaincode":
                 "f245baeee05686c3f442c1eda83949d53610578b37c7ae7b672046c7a137e48f",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -1859,7 +1859,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "2b939a56",
             "chaincode":
                 "20c5ccce4a9da7919d403658e3fd72c1d7fcc28560ba50ce8cb37bcaf62c7c32",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -1869,9 +1869,9 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "b123b5bd",
             "chaincode":
                 "5a5b78954391a5a16e356abddf77c467ca4a6b9a64c45881ec19752fa4505f80",
-            "index": 4
-          }
-        ]
+            "index": 4,
+          },
+        ],
       },
       {
         "public":
@@ -1891,7 +1891,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "473e055c",
             "chaincode":
                 "5e3ed2c871f93777e88eda3a8f3d5d0298c7b6c922d5140c91aa692c93f0eedd",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -1901,7 +1901,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "cdc4b97c",
             "chaincode":
                 "c2e609b4e869f2399bc04191934d3eadc33fadc25fb8d3114820853833fb2230",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -1911,7 +1911,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "2bcaff09",
             "chaincode":
                 "818c703af6053099af3745b5d17b344a54ecd8a2163cb549fe9f442359be2be6",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -1921,7 +1921,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "e59dc11c",
             "chaincode":
                 "554305edd2189531efd3f9722833bcdfe03d001791d4c083892cb008c0251280",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -1931,11 +1931,11 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "abb7b75c",
             "chaincode":
                 "31e58696b7400b0ae486cf2e468782c9b95e69ad7448cebb841f119d0d3b5677",
-            "index": 4
-          }
-        ]
-      }
-    ]
+            "index": 4,
+          },
+        ],
+      },
+    ],
   },
   {
     "seed": "bfb1c5d5ccb6e4cea56d43f6879b9720806e6f0c6b7835a2ca7cb62779c6c11d",
@@ -1966,7 +1966,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "d514f572",
             "chaincode":
                 "84350348ab4b736788fe7e0fee2282c2b2d9040576bb3ec4d580b13a0ff186d2",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -1976,7 +1976,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "39193f31",
             "chaincode":
                 "b1013c21e0707d43f18b76bfbe2f8beccf8c9277d4cf6b9aa925fd0497209292",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -1986,7 +1986,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "149d6e19",
             "chaincode":
                 "2c469002537873c4a633c40996076499462de41db10d507e6364c048edc0f80b",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -1996,7 +1996,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "6dcc0a6b",
             "chaincode":
                 "83498ff6b575c3b871d8df8563797788e618ef71ebc6d82aafd75c41ced6ff1b",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -2006,9 +2006,9 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "2cce6142",
             "chaincode":
                 "93324c030681c9a89b87d2807c65c9f2c0ba1222c6ca5c3f0de3f8647af1af72",
-            "index": 4
-          }
-        ]
+            "index": 4,
+          },
+        ],
       },
       {
         "public":
@@ -2028,7 +2028,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "54fd5242",
             "chaincode":
                 "df4e91a13e5687f99b79ea1cd00482dcecb464875682af6c5d3364697b9593a0",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -2038,7 +2038,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "9d4e9c29",
             "chaincode":
                 "086ca5d091035f7ab2df7ecbf6380ce523719c44a44a95fdde36055d062e535b",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -2048,7 +2048,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "069a582f",
             "chaincode":
                 "3fa9e7bc2e885a964df6e41f7b2c292b50c763a1e7e0450c934370dda3119717",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -2058,7 +2058,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "f8278a50",
             "chaincode":
                 "045756b222eb26c9c021596893d3560a1de5d5ba430e8b790fa8ac09a2e3cb0f",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -2068,9 +2068,9 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "03ed1a5a",
             "chaincode":
                 "6bc06d82c1c2032cdda37ff5e1b7acb8e86d613569a9e05f6d7f11edb0417043",
-            "index": 4
-          }
-        ]
+            "index": 4,
+          },
+        ],
       },
       {
         "public":
@@ -2090,7 +2090,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "0d40a5fa",
             "chaincode":
                 "d5c9d179dba235612394475276c45e71881a7e91400deb730369c2e37ebd022b",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -2100,7 +2100,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "bb2c3697",
             "chaincode":
                 "aed685a5250808db22a0dbe38c5e1c333a0b2c907efd0e989c020e41ba99d6af",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -2110,7 +2110,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "92b30ff8",
             "chaincode":
                 "1a4d94a15e01ac9b12e3b0da7dfd221580c01f651ff44f30d3f402b3caf6692f",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -2120,7 +2120,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "1e32d1a2",
             "chaincode":
                 "bc5d18c8ee943e7c3405edcd703506129e4abaecfc009fe4e098bedc63330fd3",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -2130,9 +2130,9 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "556e3f28",
             "chaincode":
                 "0808b794474a109474e18009b7356c60bdfa0605be91412e0a5866afb73ff166",
-            "index": 4
-          }
-        ]
+            "index": 4,
+          },
+        ],
       },
       {
         "public":
@@ -2152,7 +2152,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "6ded2016",
             "chaincode":
                 "641eef3dd15b01cf07798803a8e90acbd04f2eaa46552d465f770eb003905870",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -2162,7 +2162,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "e1666995",
             "chaincode":
                 "4a4441d6cf86b83c453a11fad61344fd0d4956b1df9f1e523be50a5d85e470cd",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -2172,7 +2172,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "0ae604f2",
             "chaincode":
                 "7a3bd33927ab97e2ecdc8dea40ab474d8749a4011a58d0591b97ea2aca23faa4",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -2182,7 +2182,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "c8aa89a6",
             "chaincode":
                 "af055e025bf2bb4df090c89f378269625992f7e322bc774ede20c90c2ad695e2",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -2192,9 +2192,9 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "bba87d19",
             "chaincode":
                 "9f87b614167613590cbe1a0d05ba1a8312e0b5104572c878545dfb23b7ec59b1",
-            "index": 4
-          }
-        ]
+            "index": 4,
+          },
+        ],
       },
       {
         "public":
@@ -2214,7 +2214,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "79a20814",
             "chaincode":
                 "30b2ddc831977bca21bd14ffb19d3f27098153d372e47426aa25426bffb0d1a4",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -2224,7 +2224,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "acc7e78c",
             "chaincode":
                 "b2b7671119c86991bcb26bf1d431b7ff866526aa6965f81059c0cb0b29f39d2f",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -2234,7 +2234,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "3cf8a79e",
             "chaincode":
                 "8e75aecf1862f8ac2faea4ecdb3845072fefe98f5b4522e0f450f47e966bd27f",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -2244,7 +2244,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "ed1da8d0",
             "chaincode":
                 "e163eb97cada440a6e1eec9d1d0ffec0b1a27fe0cff9ded7a0e3f802000d6277",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -2254,11 +2254,11 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "58c72035",
             "chaincode":
                 "286e16776a52a60e3f37618d812e466d78b2d75780c68617cc479f51d2a18ce0",
-            "index": 4
-          }
-        ]
-      }
-    ]
+            "index": 4,
+          },
+        ],
+      },
+    ],
   },
   {
     "seed": "d7dca5c90acff51b6bbf8dd04b1156526cdc44f418caa9a4d0c34263ab6700a2",
@@ -2289,7 +2289,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "c56d3d45",
             "chaincode":
                 "1478a543f0dbb6efd1454de7a8e2ee7c76a0aa5c8f0e6c61f4004ade38854546",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -2299,7 +2299,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "12954e27",
             "chaincode":
                 "9f711de30329f49f795bd25c603f2bdceb7e8b7f2ea265df13081f6ce074a306",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -2309,7 +2309,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "4c167e82",
             "chaincode":
                 "21a7a2d6d76832e26d46e8abd2c725ce47a75d0c158a25c32c3ef8a91ff27a58",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -2319,7 +2319,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "3d6be9a6",
             "chaincode":
                 "db3dc07eb8d8bf3c2590e54fc5bf878f0328fed35dbb313535a8a3410eec5be9",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -2329,9 +2329,9 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "2ff621da",
             "chaincode":
                 "92d66d74fe9efcc426f2ab1a7dc82d8b783f11fe3f72688b2cf28cb464ed025c",
-            "index": 4
-          }
-        ]
+            "index": 4,
+          },
+        ],
       },
       {
         "public":
@@ -2351,7 +2351,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "2dc1a4c3",
             "chaincode":
                 "9b572f4bd361ec6b27a4fb8326ef9393e1f5698e01aa9d34b4588ec3a79ac4a9",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -2361,7 +2361,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "2c04e827",
             "chaincode":
                 "56247c05ab521f1e942799461175c47129dc38a0a2b49b3e628123859ce83607",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -2371,7 +2371,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "bb1e83e5",
             "chaincode":
                 "356c909a5afdf63005f7d91467e63142e4947ef9a3236c91004450d672b89028",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -2381,7 +2381,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "ef190aa6",
             "chaincode":
                 "945858e6f1a5f4170cf94140ee9c305430398722899e97446027cbdd64ee158c",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -2391,9 +2391,9 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "9ba9c510",
             "chaincode":
                 "b7d7b9858a35ff1596aecb4ebb48122f795125d47fc47a9b783c04662376284b",
-            "index": 4
-          }
-        ]
+            "index": 4,
+          },
+        ],
       },
       {
         "public":
@@ -2413,7 +2413,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "5cd66d8c",
             "chaincode":
                 "05083f73d968950461ce88c4d51755a65304da681b08142f5d21b26644419ea2",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -2423,7 +2423,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "8eeaedae",
             "chaincode":
                 "12de3b3e836249d372333fc52d640bf530afd82c0828d392ca6ede9b09d61952",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -2433,7 +2433,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "1e2e3648",
             "chaincode":
                 "948c155c9e690a84343db4beb2bc7749d3772d36e61a05a439f574e5b8e35ff0",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -2443,7 +2443,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "fb8c877e",
             "chaincode":
                 "7651ed3c174e4d60313d52190d4e4490999f1c87ec72ebb07011b843397f1e39",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -2453,9 +2453,9 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "4f570a96",
             "chaincode":
                 "4b44e10442a58d545cbf90403986a5a950bc4b5a6d8cfd1c03b82afaa4a75033",
-            "index": 4
-          }
-        ]
+            "index": 4,
+          },
+        ],
       },
       {
         "public":
@@ -2475,7 +2475,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "abb7859f",
             "chaincode":
                 "c5d6ab61c0ac9de76882d086cb9d9576a3f64971564c2800108b640130c9abe5",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -2485,7 +2485,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "2daabfea",
             "chaincode":
                 "6c80924a319ca06515919911d752509068f0bacf78e1d926974d179596999b7e",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -2495,7 +2495,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "1cc693cf",
             "chaincode":
                 "f0892ccf145d8e2f603a267a1acc3c238b2c3c634eaaaa9692c2445748529908",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -2505,7 +2505,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "a22933f2",
             "chaincode":
                 "1e19b1204bc7be823942a0c944f32b80dd413f4e15ae70dca77765513082828b",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -2515,9 +2515,9 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "97e7f3e7",
             "chaincode":
                 "473715e5ddd2943a2b5c97f00cb6f7554a624ec1d81dfa5580edc39946c19f11",
-            "index": 4
-          }
-        ]
+            "index": 4,
+          },
+        ],
       },
       {
         "public":
@@ -2537,7 +2537,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "3c68828d",
             "chaincode":
                 "e95c01791cab6bb39b76def12d24be3f5cefdc157ad3afb4bc2b67bbf7ebe8ee",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -2547,7 +2547,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "920f1b1e",
             "chaincode":
                 "b9eb6f34cc7b5096893c093536ed2b03bfe780952591911d80f33fbdc257990f",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -2557,7 +2557,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "6e3ee62c",
             "chaincode":
                 "18fb9cd60f44ca8534cb90319107608fd7173adf750cf78dd0a7778c6b773881",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -2567,7 +2567,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "6c28096c",
             "chaincode":
                 "2e7e7f85af4f563b00e68b479b28d0b7569122f85d0e5dca33457adb48bbf87d",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -2577,11 +2577,11 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "371a7940",
             "chaincode":
                 "ffaf490bdd2c9e6c5541446d05470e8145f0933fbde4ae2e0d1cc72a4707f995",
-            "index": 4
-          }
-        ]
-      }
-    ]
+            "index": 4,
+          },
+        ],
+      },
+    ],
   },
   {
     "seed": "80c864564c2bb5e58bfb9e1ff9596499f8f968b3e074840d14f3cd07ba43acd5",
@@ -2612,7 +2612,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "88eec4a5",
             "chaincode":
                 "317d679c157e69dd547cf79236a50275a12452dd045efe5789e2b00807785ace",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -2622,7 +2622,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "5d7881fe",
             "chaincode":
                 "a1f01c4a506e404cb7fbf3265bb796ae8084d13aab9f1259cd4f4b06d9dc279e",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -2632,7 +2632,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "752d92be",
             "chaincode":
                 "b09cb5b63cad367709df5299740d6ca7f52d8f77c1e1877f6feb48a485c16ebf",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -2642,7 +2642,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "ad55d0d6",
             "chaincode":
                 "876a4aaae016d24343416199fe693a4e87c307d326395b621b1d7843f571201b",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -2652,9 +2652,9 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "e7bc2919",
             "chaincode":
                 "4696177912ee213862a6610f1d498f341c905eda919f1e66f6f5c96958f078b3",
-            "index": 4
-          }
-        ]
+            "index": 4,
+          },
+        ],
       },
       {
         "public":
@@ -2674,7 +2674,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "fd5dfd99",
             "chaincode":
                 "f8628d5011bad99920ae7f2417b3e060b9376fc0821ea96620ec2dc6916c263f",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -2684,7 +2684,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "5bb0d148",
             "chaincode":
                 "d60dca6a0b3f37cbbadabc169f4a64bd3b0d48d1be0201476ec6ada139e87116",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -2694,7 +2694,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "7da5a80f",
             "chaincode":
                 "68cb76be2cff7c678680840e29fea607e1e80105d96599e64ca3badf55ab448c",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -2704,7 +2704,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "6569a9d1",
             "chaincode":
                 "4b777fcab7bbc8073a67e041f840a8eaf52f25087fcfdd795358d1eaef1710c9",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -2714,9 +2714,9 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "ea481df5",
             "chaincode":
                 "daa78f92ca089d3db489a3b9ad9abd373ddc05e4b60a1533d6934ae25b90c3db",
-            "index": 4
-          }
-        ]
+            "index": 4,
+          },
+        ],
       },
       {
         "public":
@@ -2736,7 +2736,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "f5131f3b",
             "chaincode":
                 "fec298272f0551c9f68bceac4b7d6cc3b2d870d6e041bf6d292deb1a86df52cf",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -2746,7 +2746,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "1fa1f6fb",
             "chaincode":
                 "17d1b0352d8f8d8699b2b5d6dd8ea54493a7e7862d111ce647692d2de3d1fc55",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -2756,7 +2756,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "3e9be482",
             "chaincode":
                 "78f753f0e4acdd976827074eb669765768113fb1531e6d9ee361954078fce310",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -2766,7 +2766,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "d19d6df4",
             "chaincode":
                 "edc84babd49901e118686653587ab36f3aabe5ba809fa8017e2cdd288282c100",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -2776,9 +2776,9 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "c4c753e8",
             "chaincode":
                 "b37865f5a45f30c993b9f43fca40d84e672dc042fca91899444727f80185862e",
-            "index": 4
-          }
-        ]
+            "index": 4,
+          },
+        ],
       },
       {
         "public":
@@ -2798,7 +2798,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "27939986",
             "chaincode":
                 "6f4d5f26af18c28987d80f2544de41176a4ee62cb142120df0f60be72b982d5e",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -2808,7 +2808,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "c0f91e12",
             "chaincode":
                 "90fac6a56f376efa93b4ca5be936d690c2432283413e29bf39016379464ea2ae",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -2818,7 +2818,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "8995278e",
             "chaincode":
                 "73ece8b3b9d2ec03d0ef6e2461f9682f854148dfe24da3b6324885976b876566",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -2828,7 +2828,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "d2473c5d",
             "chaincode":
                 "5c22808caba9f5123cfd0f2c36e31542883e9d9dbea2d8243fc1988bf2f0037c",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -2838,9 +2838,9 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "001c4d25",
             "chaincode":
                 "679001e9fc1db5cf09a2734011e365984b5d83f4335d34b7e4bc8f8ad085ec63",
-            "index": 4
-          }
-        ]
+            "index": 4,
+          },
+        ],
       },
       {
         "public":
@@ -2860,7 +2860,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "efc938a0",
             "chaincode":
                 "898635aee97ad539cc6768faa47c934814296e5b0f63de3ab44922b713363760",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -2870,7 +2870,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "e9f64808",
             "chaincode":
                 "4d2cdb8c2dd353079be9bec0319272a602f699103a73fec57c40027f8c1826b2",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -2880,7 +2880,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "83e0d787",
             "chaincode":
                 "04e3a4d64e1c5818536f7af54bbd4313e1a83b04328c07f736916065ae9ba8e8",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -2890,7 +2890,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "5e7cdf31",
             "chaincode":
                 "89abdb35cf0b4aa6387db98a3ab2127727bca11495a2eba8eab642bd12a2af9e",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -2900,11 +2900,11 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "381053a5",
             "chaincode":
                 "6b2c045ba867aa604bc8101711ac2495935aba398f0bf783446a3b28f24bc040",
-            "index": 4
-          }
-        ]
-      }
-    ]
+            "index": 4,
+          },
+        ],
+      },
+    ],
   },
   {
     "seed": "9d2f7ecee1aa36934a64f475d3bc527f451f60edd411b24c035e71981ff6a25a",
@@ -2935,7 +2935,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "92945967",
             "chaincode":
                 "021d4232bbf9c4756017c98f1c196118f74f699fa262c80eb4031112acfc78fe",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -2945,7 +2945,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "be6e5d12",
             "chaincode":
                 "c3d28c42d92c01925b3d77f9895c693cfba6f90fe43276a38364e287f8a8b2e7",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -2955,7 +2955,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "49eaaf5c",
             "chaincode":
                 "2201a35b5e04c7be69951345bb126315ab51925e562e964e06727df689d18669",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -2965,7 +2965,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "64f6a261",
             "chaincode":
                 "b59b8ad48aaa25f2178f1a8d3f7c707793d6500e28faec6f25c6563775ca8f80",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -2975,9 +2975,9 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "f1f1f19b",
             "chaincode":
                 "4d1ea7d762df91264d8447d11d6a25748350fedc777a6502c438a04a0f08ccb4",
-            "index": 4
-          }
-        ]
+            "index": 4,
+          },
+        ],
       },
       {
         "public":
@@ -2997,7 +2997,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "55df8477",
             "chaincode":
                 "181043ea3135a1716dc587d2cf4e0444ff669beb948dcd2c9da55e9db87f9706",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -3007,7 +3007,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "cd6aab63",
             "chaincode":
                 "30404f196514b45fe6c5501cd56e9bc8415e8cf6b5a3392d78daa4afb7c3c98f",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -3017,7 +3017,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "a9adffc5",
             "chaincode":
                 "4090b767504e50f34047aa01d19739a31f514e121fec8ae531d3ab4ee32fb5d2",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -3027,7 +3027,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "54252b6d",
             "chaincode":
                 "d0eb2eca7603041659be8429b1cc4cb164baa6434ecdd445f107af5d9348b551",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -3037,9 +3037,9 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "e4072bf5",
             "chaincode":
                 "4df45ff611d0bf0819fa9e8198047bce0f454c7c5575fd7d66c16e5be1fffb94",
-            "index": 4
-          }
-        ]
+            "index": 4,
+          },
+        ],
       },
       {
         "public":
@@ -3059,7 +3059,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "04e5061d",
             "chaincode":
                 "5ffc5476718ca61dab0ff2f06c51092bb4aaefc6eceef934bddc96f752044952",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -3069,7 +3069,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "a52c129a",
             "chaincode":
                 "e8c4aaac4cb18f55dd46ff39e8c4fb8b11721e2edba1205ebcd160531a2157f1",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -3079,7 +3079,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "f050f084",
             "chaincode":
                 "c78aa9c3d2edc0fd667ed53ce231d93e2f4f45b08b2b016fc300ce07222c6c56",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -3089,7 +3089,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "7b8cfa9c",
             "chaincode":
                 "30289ba575bb264f16d71206168665b386f3273a2f5cb48ef1e84a8aeffb14a7",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -3099,9 +3099,9 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "b8e80762",
             "chaincode":
                 "b8013b8ed7077d390db971fa7b0ca5f25084f5c2b31825e60cf481a02a5a977f",
-            "index": 4
-          }
-        ]
+            "index": 4,
+          },
+        ],
       },
       {
         "public":
@@ -3121,7 +3121,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "012c3b1d",
             "chaincode":
                 "4ac42342d07d8eb8f363c4e8f7951a981835626e986f5d6ad11dd36a9babeb1a",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -3131,7 +3131,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "038aaaf6",
             "chaincode":
                 "0c75f4f420f255f69a59e630fb7cb575fc85ea5a00997addc03b7af1f2629639",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -3141,7 +3141,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "c152bf10",
             "chaincode":
                 "89b63678564302e9ad9dce132daf26b9e4be5fe4bb2ce5a3df1fb1ce8526dcd1",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -3151,7 +3151,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "8cf20fad",
             "chaincode":
                 "56c028209d0a33c56904a587a8be4229b45b4d583ecf201a76c082d01a98163f",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -3161,9 +3161,9 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "d336a564",
             "chaincode":
                 "d24b38ef79794671d970d44811a98f6f0d4417f2b58ce160592abcb96975070f",
-            "index": 4
-          }
-        ]
+            "index": 4,
+          },
+        ],
       },
       {
         "public":
@@ -3183,7 +3183,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "16785529",
             "chaincode":
                 "488998573163a68ff49c2f108b9988bae4d352b4e9bd1984bb287b246ba08110",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -3193,7 +3193,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "adf170c1",
             "chaincode":
                 "eb3b47e297b240d058dd0becccacc130c1508ab493f463391c73d29f872d0477",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -3203,7 +3203,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "11c3c5ec",
             "chaincode":
                 "c90d398e2f4f31e15f70469a89d0222dad69a1e859bc553e1220a5c89d72169a",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -3213,7 +3213,7 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "1f1d3637",
             "chaincode":
                 "116e60c4a812999990e04978c571eeea73c4c8c8d81414b935229c27ed331b50",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -3223,10 +3223,10 @@ final List<Map<String, dynamic>> testVector = [
             "finger_print": "946ae8e1",
             "chaincode":
                 "b4f26a82b1efc904bbfaa57554bc62808c8682d90e4f941f5e75f2536bc68a57",
-            "index": 4
-          }
-        ]
-      }
-    ]
-  }
+            "index": 4,
+          },
+        ],
+      },
+    ],
+  },
 ];

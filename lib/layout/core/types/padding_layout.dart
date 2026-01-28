@@ -5,11 +5,11 @@ import 'numeric.dart';
 class PaddingLayout<T> extends Layout<T> {
   final BaseIntiger<T> layout;
   PaddingLayout(this.layout, {String? property})
-      : super(layout.span, property: property);
+    : super(layout.span, property: property);
 
   @override
-  int getSpan(LayoutByteReader? bytes, {int offset = 0, T? source}) {
-    return layout.getSpan(bytes, offset: offset, source: source);
+  int getSpan() {
+    return layout.getSpan();
   }
 
   @override

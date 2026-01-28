@@ -63,8 +63,8 @@ import 'package:blockchain_utils/bip/coin_conf/constant/coins_conf.dart';
 abstract class ElectrumV2Base {
   final Bip32Slip10Secp256k1 bip32;
 
-  ElectrumV2Base(this.bip32);
-// Check if the instance contains only public keys (no private keys).
+  const ElectrumV2Base(this.bip32);
+  // Check if the instance contains only public keys (no private keys).
   bool get isPublicOnly {
     return bip32.isPublicOnly;
   }
@@ -115,8 +115,9 @@ class ElectrumV2Standard extends ElectrumV2Base {
   @override
   String getAddress(int changeIndex, int addressIndex) {
     return P2PKHAddrEncoder().encodeKey(
-        getPublicKey(changeIndex, addressIndex).compressed,
-        {"net_ver": CoinsConf.bitcoinMainNet.params.p2pkhNetVer!});
+      getPublicKey(changeIndex, addressIndex).compressed,
+      netVersion: CoinsConf.bitcoinMainNet.params.p2pkhNetVer,
+    );
   }
 
   /// Derive a key for a specific change and address index.
@@ -152,14 +153,14 @@ class ElectrumV2Segwit extends ElectrumV2Base {
   /// Get the P2WPKH (pay-to-witness-pub-key-hash) address for a specific change and address index.
   @override
   String getAddress(int changeIndex, int addressIndex) {
-    return P2WPKHAddrEncoder()
-        .encodeKey(getPublicKey(changeIndex, addressIndex).compressed, {
-      "hrp": CoinsConf.bitcoinMainNet.params.p2wpkhHrp!,
-    });
+    return P2WPKHAddrEncoder().encodeKey(
+      getPublicKey(changeIndex, addressIndex).compressed,
+      hrp: CoinsConf.bitcoinMainNet.params.p2wpkhHrp,
+    );
   }
 
   /// Derive a key for a specific change and address index.
-  Bip32Base _deriveKey(int changeIndex, int addressIndex) {
+  Bip32Base<dynamic> _deriveKey(int changeIndex, int addressIndex) {
     return bip32Account.derivePath('$changeIndex/$addressIndex');
   }
 }

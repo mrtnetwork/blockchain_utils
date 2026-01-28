@@ -13,10 +13,15 @@ void _test() {
     final decoder = TonAddrDecoder();
     for (final i in tonTestVector) {
       final hash = BytesUtils.fromHexString(i["hash"]);
-      final String bounceable =
-          encoder.encodeKey(hash, {"workchain": i["workchain"]});
-      final String nonBounceable = encoder
-          .encodeKey(hash, {"workchain": i["workchain"], "bounceable": false});
+      final String bounceable = encoder.encodeKey(
+        hash,
+        workChain: i["workchain"],
+      );
+      final String nonBounceable = encoder.encodeKey(
+        hash,
+        workChain: i["workchain"],
+        bounceable: false,
+      );
       expect(bounceable, i["bounceable"]);
       expect(nonBounceable, i["nonBounceable"]);
       final decodeBounceable = decoder.decodeAddr(bounceable);

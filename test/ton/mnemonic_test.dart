@@ -5,13 +5,16 @@ List<int> bip39MnemonicToBytes(Mnemonic mnemonic) {
   final decoder = Bip39MnemonicDecoder();
   final language = decoder.findLanguage(mnemonic);
 
-  final mnemonicBinStr = decoder.mnemonicToBinaryStr(mnemonic, language.item1);
+  final mnemonicBinStr = decoder.mnemonicToBinaryStr(mnemonic, language.$1);
   final mnemonicBitLen = mnemonicBinStr.length;
-  final padBitLen = mnemonicBitLen % 8 == 0
-      ? mnemonicBitLen
-      : mnemonicBitLen + (8 - mnemonicBitLen % 8);
-  final result =
-      BytesUtils.fromBinary(mnemonicBinStr, zeroPadByteLen: padBitLen);
+  final padBitLen =
+      mnemonicBitLen % 8 == 0
+          ? mnemonicBitLen
+          : mnemonicBitLen + (8 - mnemonicBitLen % 8);
+  final result = BytesUtils.fromBinary(
+    mnemonicBinStr,
+    zeroPadByteLen: padBitLen,
+  );
   return [mnemonic.wordsCount(), ...result];
 }
 
@@ -19,13 +22,17 @@ List<int> bip39MnemonicToBytes(Mnemonic mnemonic) {
 List<String> bytesToBip39Mnemonic(List<int> bytes) {
   int length = bytes[0];
   bytes = bytes.sublist(1);
-  final toBinary = BytesUtils.toBinary(bytes,
-      zeroPadBitLen: length * Bip39MnemonicConst.wordBitLen);
+  final toBinary = BytesUtils.toBinary(
+    bytes,
+    zeroPadBitLen: length * Bip39MnemonicConst.wordBitLen,
+  );
   bytes = bytes.sublist(1);
   final words = <String>[];
-  for (var i = 0;
-      i + Bip39MnemonicConst.wordBitLen <= toBinary.length;
-      i += Bip39MnemonicConst.wordBitLen) {
+  for (
+    var i = 0;
+    i + Bip39MnemonicConst.wordBitLen <= toBinary.length;
+    i += Bip39MnemonicConst.wordBitLen
+  ) {
     final wordBinStr = toBinary.substring(i, i + Bip39MnemonicConst.wordBitLen);
     final wordIdx = int.parse(wordBinStr, radix: 2);
     words.add(Bip39Languages.english.wordList[wordIdx]);
@@ -63,14 +70,18 @@ void _test() {
       "genuine",
       "happy",
       "wrong",
-      "trust"
+      "trust",
     ];
-    final seed =
-        TonSeedGenerator(Mnemonic.fromList(mnemonic)).generate(password: "");
+    final seed = TonSeedGenerator(
+      Mnemonic.fromList(mnemonic),
+    ).generate(password: "");
     final privateKey = Ed25519PrivateKey.fromBytes(
-        seed.sublist(0, Ed25519KeysConst.privKeyByteLen));
-    expect(privateKey.publicKey.toHex(withPrefix: false),
-        "cd1fea46e4a59115211ed483161bb315a8e0028ae190b24c1838351dc0bdf040");
+      seed.sublist(0, Ed25519KeysConst.privKeyByteLen),
+    );
+    expect(
+      privateKey.publicKey.toHex(withPrefix: false),
+      "cd1fea46e4a59115211ed483161bb315a8e0028ae190b24c1838351dc0bdf040",
+    );
   });
 
   test("mnemonic seed generator_2", () {
@@ -98,14 +109,18 @@ void _test() {
       "salad",
       "supreme",
       "acquire",
-      "bulb"
+      "bulb",
     ];
-    final seed =
-        TonSeedGenerator(Mnemonic.fromList(mnemonic)).generate(password: "");
+    final seed = TonSeedGenerator(
+      Mnemonic.fromList(mnemonic),
+    ).generate(password: "");
     final privateKey = Ed25519PrivateKey.fromBytes(
-        seed.sublist(0, Ed25519KeysConst.privKeyByteLen));
-    expect(privateKey.toHex(),
-        "ab460eb3462747a1e57e75e2c6a3afab420a7a297f53d5258b9b7fe25113cebe");
+      seed.sublist(0, Ed25519KeysConst.privKeyByteLen),
+    );
+    expect(
+      privateKey.toHex(),
+      "ab460eb3462747a1e57e75e2c6a3afab420a7a297f53d5258b9b7fe25113cebe",
+    );
   });
 
   test("mnemonic with password", () {
@@ -121,14 +136,18 @@ void _test() {
       "win",
       "coil",
       "lawsuit",
-      "illegal"
+      "illegal",
     ];
-    final seed = TonSeedGenerator(Mnemonic.fromList(mnemonic))
-        .generate(password: "MRTNETWORK");
+    final seed = TonSeedGenerator(
+      Mnemonic.fromList(mnemonic),
+    ).generate(password: "MRTNETWORK");
     final privateKey = Ed25519PrivateKey.fromBytes(
-        seed.sublist(0, Ed25519KeysConst.privKeyByteLen));
-    expect(privateKey.toHex(),
-        "b91ad008bdf851289acaa77401612674ea3906eba0ca044374ff38f2a170ba85");
+      seed.sublist(0, Ed25519KeysConst.privKeyByteLen),
+    );
+    expect(
+      privateKey.toHex(),
+      "b91ad008bdf851289acaa77401612674ea3906eba0ca044374ff38f2a170ba85",
+    );
   });
   test("validate mnemonic", () {
     final mnemonic = [
@@ -143,12 +162,13 @@ void _test() {
       "win",
       "coil",
       "lawsuit",
-      "illegal"
+      "illegal",
     ];
     final validator = TomMnemonicValidator();
     expect(validator.isValid(Mnemonic.fromList(mnemonic)), false);
     expect(
-        validator.isValid(Mnemonic.fromList(mnemonic), password: "MRTNETWORK"),
-        true);
+      validator.isValid(Mnemonic.fromList(mnemonic), password: "MRTNETWORK"),
+      true,
+    );
   });
 }

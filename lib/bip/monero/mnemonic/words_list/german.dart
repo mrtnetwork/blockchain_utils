@@ -1626,5 +1626,5 @@ const List<String> _german = [
   "Zugvogel",
   "Zündung",
   "Zweck",
-  "Zyklop"
+  "Zyklop",
 ];

@@ -9,12 +9,16 @@ void main() {
   test("xml address test", () {
     for (final i in testVector) {
       final params = Map<String, dynamic>.from(i["params"]);
-      params["addr_type"] = XlmAddrTypes.values
-          .firstWhere((element) => element.value == params["addr_type"]);
-      final z = XlmAddrEncoder()
-          .encodeKey(BytesUtils.fromHexString(i["public"]), params);
+      final addrType = XlmAddrTypes.values.firstWhere(
+        (element) => element.value == params["addr_type"],
+      );
+
+      final z = XlmAddrEncoder().encodeKey(
+        BytesUtils.fromHexString(i["public"]),
+        addrType: addrType,
+      );
       expect(z, i["address"]);
-      final decode = XlmAddrDecoder().decodeAddr(z, params);
+      final decode = XlmAddrDecoder().decodeAddr(z, addrType: addrType);
       expect(decode.toHex(), i["decode"]);
     }
   });

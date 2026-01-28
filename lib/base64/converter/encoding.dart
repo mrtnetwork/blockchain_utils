@@ -1,4 +1,4 @@
-import 'package:blockchain_utils/blockchain_utils.dart';
+import 'package:blockchain_utils/helper/extensions/extensions.dart';
 
 /// A Base64 encoder that supports streaming data in chunks.
 /// It accumulates bytes and encodes them in groups of 3,
@@ -9,29 +9,30 @@ class _Base64StreamEncoder {
 
   static String _encode(List<int> bytes) {
     final output = StringBuffer();
+    final int mask = 0x3F;
     int i = 0;
 
     while (i + 3 <= bytes.length) {
       int chunk = (bytes[i] << 16) | (bytes[i + 1] << 8) | (bytes[i + 2]);
-      output.write(_base64Table[(chunk >> 18) & 0x3F]);
-      output.write(_base64Table[(chunk >> 12) & 0x3F]);
-      output.write(_base64Table[(chunk >> 6) & 0x3F]);
-      output.write(_base64Table[chunk & 0x3F]);
+      output.write(_base64Table[(chunk >> 18) & mask]);
+      output.write(_base64Table[(chunk >> 12) & mask]);
+      output.write(_base64Table[(chunk >> 6) & mask]);
+      output.write(_base64Table[chunk & mask]);
       i += 3;
     }
 
     int remaining = bytes.length - i;
     if (remaining == 1) {
       int chunk = bytes[i] << 16;
-      output.write(_base64Table[(chunk >> 18) & 0x3F]);
-      output.write(_base64Table[(chunk >> 12) & 0x3F]);
+      output.write(_base64Table[(chunk >> 18) & mask]);
+      output.write(_base64Table[(chunk >> 12) & mask]);
       output.write('=');
       output.write('=');
     } else if (remaining == 2) {
       int chunk = (bytes[i] << 16) | (bytes[i + 1] << 8);
-      output.write(_base64Table[(chunk >> 18) & 0x3F]);
-      output.write(_base64Table[(chunk >> 12) & 0x3F]);
-      output.write(_base64Table[(chunk >> 6) & 0x3F]);
+      output.write(_base64Table[(chunk >> 18) & mask]);
+      output.write(_base64Table[(chunk >> 12) & mask]);
+      output.write(_base64Table[(chunk >> 6) & mask]);
       output.write('=');
     }
 
@@ -79,8 +80,11 @@ class B64Encoder {
   /// and '/' with '_'. Defaults to false (standard Base64).
   ///
   /// Returns the Base64-encoded string.
-  static String encode(List<int> data,
-      {bool noPadding = false, bool urlSafe = false}) {
+  static String encode(
+    List<int> data, {
+    bool noPadding = false,
+    bool urlSafe = false,
+  }) {
     final encoder = _Base64StreamEncoder();
     try {
       encoder.add(data.asBytes);

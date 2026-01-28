@@ -1,22 +1,23 @@
 import 'package:blockchain_utils/crypto/crypto/exception/exception.dart';
-import 'package:blockchain_utils/utils/utils.dart';
+import 'package:blockchain_utils/exception/exception/exception.dart';
+import 'package:blockchain_utils/utils/binary/binary_operation.dart';
 
 class ChaCha20 {
   static void _quarterround(List<int> output, int a, int b, int c, int d) {
-    output[d] = rotl32(output[d] ^ (output[a] += output[b]), 16);
-    output[b] = rotl32(output[b] ^ (output[c] += output[d]), 12);
-    output[d] = rotl32(output[d] ^ (output[a] += output[b]), 8);
-    output[b] = rotl32(output[b] ^ (output[c] += output[d]), 7);
+    output[d] = BinaryOps.rotl32(output[d] ^ (output[a] += output[b]), 16);
+    output[b] = BinaryOps.rotl32(output[b] ^ (output[c] += output[d]), 12);
+    output[d] = BinaryOps.rotl32(output[d] ^ (output[a] += output[b]), 8);
+    output[b] = BinaryOps.rotl32(output[b] ^ (output[c] += output[d]), 7);
 
     // Ensure all values are within UINT32 range
-    output[a] &= mask32;
-    output[b] &= mask32;
-    output[c] &= mask32;
-    output[d] &= mask32;
+    output[a] &= BinaryOps.mask32;
+    output[b] &= BinaryOps.mask32;
+    output[c] &= BinaryOps.mask32;
+    output[d] &= BinaryOps.mask32;
   }
 
-  static const _rounds = 20;
   static void _core(List<int> out, List<int> input, List<int> key) {
+    const rounds = 20;
     const j0 = 0x61707865;
     const j1 = 0x3320646E;
     const j2 = 0x79622D32;
@@ -58,7 +59,7 @@ class ChaCha20 {
     mix[14] = j14;
     mix[15] = j15;
 
-    for (int i = 0; i < _rounds; i += 2) {
+    for (int i = 0; i < rounds; i += 2) {
       _quarterround(mix, 0, 4, 8, 12);
       _quarterround(mix, 1, 5, 9, 13);
       _quarterround(mix, 2, 6, 10, 14);
@@ -68,22 +69,22 @@ class ChaCha20 {
       _quarterround(mix, 2, 7, 8, 13);
       _quarterround(mix, 3, 4, 9, 14);
     }
-    writeUint32LE(mix[0] + j0 & mask32, out, 0);
-    writeUint32LE(mix[1] + j1 & mask32, out, 4);
-    writeUint32LE(mix[2] + j2 & mask32, out, 8);
-    writeUint32LE(mix[3] + j3 & mask32, out, 12);
-    writeUint32LE(mix[4] + j4 & mask32, out, 16);
-    writeUint32LE(mix[5] + j5 & mask32, out, 20);
-    writeUint32LE(mix[6] + j6 & mask32, out, 24);
-    writeUint32LE(mix[7] + j7 & mask32, out, 28);
-    writeUint32LE(mix[8] + j8 & mask32, out, 32);
-    writeUint32LE(mix[9] + j9 & mask32, out, 36);
-    writeUint32LE(mix[10] + j10 & mask32, out, 40);
-    writeUint32LE(mix[11] + j11 & mask32, out, 44);
-    writeUint32LE(mix[12] + j12 & mask32, out, 48);
-    writeUint32LE(mix[13] + j13 & mask32, out, 52);
-    writeUint32LE(mix[14] + j14 & mask32, out, 56);
-    writeUint32LE(mix[15] + j15 & mask32, out, 60);
+    BinaryOps.writeUint32LE(mix[0] + j0 & BinaryOps.mask32, out, 0);
+    BinaryOps.writeUint32LE(mix[1] + j1 & BinaryOps.mask32, out, 4);
+    BinaryOps.writeUint32LE(mix[2] + j2 & BinaryOps.mask32, out, 8);
+    BinaryOps.writeUint32LE(mix[3] + j3 & BinaryOps.mask32, out, 12);
+    BinaryOps.writeUint32LE(mix[4] + j4 & BinaryOps.mask32, out, 16);
+    BinaryOps.writeUint32LE(mix[5] + j5 & BinaryOps.mask32, out, 20);
+    BinaryOps.writeUint32LE(mix[6] + j6 & BinaryOps.mask32, out, 24);
+    BinaryOps.writeUint32LE(mix[7] + j7 & BinaryOps.mask32, out, 28);
+    BinaryOps.writeUint32LE(mix[8] + j8 & BinaryOps.mask32, out, 32);
+    BinaryOps.writeUint32LE(mix[9] + j9 & BinaryOps.mask32, out, 36);
+    BinaryOps.writeUint32LE(mix[10] + j10 & BinaryOps.mask32, out, 40);
+    BinaryOps.writeUint32LE(mix[11] + j11 & BinaryOps.mask32, out, 44);
+    BinaryOps.writeUint32LE(mix[12] + j12 & BinaryOps.mask32, out, 48);
+    BinaryOps.writeUint32LE(mix[13] + j13 & BinaryOps.mask32, out, 52);
+    BinaryOps.writeUint32LE(mix[14] + j14 & BinaryOps.mask32, out, 56);
+    BinaryOps.writeUint32LE(mix[15] + j15 & BinaryOps.mask32, out, 60);
   }
 
   static void _incrementCounter(List<int> counter, int pos, int len) {
@@ -96,43 +97,50 @@ class ChaCha20 {
       len--;
     }
     if (carry > 0) {
-      throw const CryptoException("ChaCha: counter overflow");
+      throw CryptoException.failed(
+        "incrementCounter",
+        reason: "Counter overflow.",
+      );
     }
   }
 
   /// Encrypts or decrypts data by XORing it with the output of the ChaCha stream cipher.
   ///
-  /// This function takes a key, nonce, source data (`src`), and destination data (`dst`) and encrypts
-  /// or decrypts the source data by XORing it with the output of the ChaCha stream cipher. The nonce can
-  /// be used with or without an inplace counter, depending on the value of `nonceInplaceCounterLength`.
-  ///
   /// Parameters:
-  /// - `key`: The 256-bit (32-byte) encryption key as a `List<int>`.
-  /// - `nonce`: The nonce data, which must be either 8, 12, or 16 bytes in length depending on the
+  /// - [key]: The 256-bit (32-byte) encryption key`.
+  /// - [nonce]: The nonce data, which must be either 8, 12, or 16 bytes in length depending on the
   ///   value of `nonceInplaceCounterLength`.
-  /// - `src`: The source data to be encrypted or decrypted.
-  /// - `dst`: The destination data where the result will be written.
-  /// - `nonceInplaceCounterLength`: An optional parameter to specify the length of the nonce inplace counter
+  /// - [src]: The source data to be encrypted or decrypted.
+  /// - [dst]: The destination data where the result will be written.
+  /// - [nonceInplaceCounterLength]: An optional parameter to specify the length of the nonce inplace counter
   ///   (0 for no counter, 16 bytes if a counter is included in the nonce).
   ///
   /// Throws:
-  /// - `CryptoException` if the key size is not 32 bytes, if the destination is shorter than the source, or if
+  /// - `ArgumentException.invalidBytesArgumentLength(reason: ` if the key size is not 32 bytes, if the destination is shorter than the source, or if
   ///   the nonce length is invalid.
-  ///
-  /// Returns:
-  /// - The `dst` `List<int>` containing the result of the XOR operation.
-  ///
-  /// Note: This function securely zeros temporary data to protect sensitive information.
   static List<int> streamXOR(
-      List<int> key, List<int> nonce, List<int> src, List<int> dst,
-      {int nonceInplaceCounterLength = 0}) {
+    List<int> key,
+    List<int> nonce,
+    List<int> src,
+    List<int> dst, {
+    int nonceInplaceCounterLength = 0,
+    int seekBytes = 0,
+  }) {
     // We only support 256-bit keys.
     if (key.length != 32) {
-      throw const CryptoException("ChaCha: key size must be 32 bytes");
+      throw ArgumentException.invalidOperationArguments(
+        "streamXOR",
+        name: "key",
+        reason: "Invalid key bytes length.",
+      );
     }
 
     if (dst.length < src.length) {
-      throw const CryptoException("ChaCha: destination is shorter than source");
+      throw ArgumentException.invalidOperationArguments(
+        "streamXOR",
+        name: "dst",
+        reason: "Invalid destination bytes length.",
+      );
     }
 
     List<int> nc;
@@ -140,36 +148,76 @@ class ChaCha20 {
 
     if (nonceInplaceCounterLength == 0) {
       if (nonce.length != 8 && nonce.length != 12) {
-        throw const CryptoException("ChaCha nonce must be 8 or 12 bytes");
+        throw ArgumentException.invalidOperationArguments(
+          "streamXOR",
+          name: "nonce",
+          reason: "Invalid nonce bytes length.",
+        );
       }
       nc = List<int>.filled(16, 0);
       counterLength = nc.length - nonce.length;
       nc.setAll(counterLength, nonce);
     } else {
       if (nonce.length != 16) {
-        throw const CryptoException(
-            "ChaCha nonce with counter must be 16 bytes");
+        throw ArgumentException.invalidOperationArguments(
+          "streamXOR",
+          name: "nonce",
+          reason: "Invalid nonce bytes length.",
+        );
       }
       nc = nonce;
       counterLength = nonceInplaceCounterLength;
     }
-
+    BinaryOps.zero(dst);
     final block = List<int>.filled(64, 0);
 
-    for (int i = 0; i < src.length; i += 64) {
+    final int blockSkip = seekBytes ~/ 64;
+    final int byteSkip = seekBytes % 64;
+
+    if (blockSkip != 0) {
+      for (int b = 0; b < blockSkip; b++) {
+        for (int i = 0; i < src.length; i += 64) {
+          _core(block, nc, key);
+
+          for (int j = 0; j < 64 && i + j < src.length; j++) {
+            dst[i + j] = (src[i + j] & BinaryOps.mask8) ^ block[j];
+          }
+
+          _incrementCounter(nc, 0, counterLength);
+        }
+      }
+    }
+    int srcOffset = 0;
+
+    if (byteSkip != 0) {
       _core(block, nc, key);
 
-      for (int j = i; j < i + 64 && j < src.length; j++) {
-        dst[j] = (src[j] & mask8) ^ block[j - i];
+      // XOR only after byteSkip
+      for (
+        int j = byteSkip;
+        j < 64 && srcOffset < src.length;
+        j++, srcOffset++
+      ) {
+        dst[srcOffset] = (src[srcOffset] & BinaryOps.mask8) ^ block[j];
       }
 
       _incrementCounter(nc, 0, counterLength);
     }
 
-    zero(block);
+    for (; srcOffset < src.length; srcOffset += 64) {
+      _core(block, nc, key);
+
+      for (int j = 0; j < 64 && srcOffset + j < src.length; j++) {
+        dst[srcOffset + j] = (src[srcOffset + j] & BinaryOps.mask8) ^ block[j];
+      }
+
+      _incrementCounter(nc, 0, counterLength);
+    }
+
+    BinaryOps.zero(block);
 
     if (nonceInplaceCounterLength == 0) {
-      zero(nc);
+      BinaryOps.zero(nc);
     }
 
     return dst;
@@ -182,21 +230,25 @@ class ChaCha20 {
   /// in the encrypted output. It also provides the option to incorporate a nonce inplace counter.
   ///
   /// Parameters:
-  /// - `key`: The encryption key as a `List<int>`.
-  /// - `nonce`: A unique nonce as a `List<int>`.
-  /// - `dst`: The destination `List<int>` where the generated stream will be XORed.
-  /// - `nonceInplaceCounterLength`: An optional parameter to specify the length of the nonce inplace counter
+  /// - [key]: The encryption key as a `List<int>`.
+  /// - [nonce]: A unique nonce as a `List<int>`.
+  /// - [dst]: The destination `List<int>` where the generated stream will be XORed.
+  /// - [nonceInplaceCounterLength]: An optional parameter to specify the length of the nonce inplace counter
   ///   (default is 0, meaning no nonce inplace counter).
   ///
-  /// Returns:
-  /// - The `dst` `List<int>` containing the encrypted data.
-  ///
-  /// Note: This function securely zeros the `dst` data before writing the generated stream and should
-  /// be used for generating secure random data.
-  static List<int> stream(List<int> key, List<int> nonce, List<int> dst,
-      {int nonceInplaceCounterLength = 0}) {
-    zero(dst);
-    return streamXOR(key, nonce, dst, dst,
-        nonceInplaceCounterLength: nonceInplaceCounterLength);
+  static List<int> stream(
+    List<int> key,
+    List<int> nonce,
+    List<int> dst, {
+    int nonceInplaceCounterLength = 0,
+  }) {
+    BinaryOps.zero(dst);
+    return streamXOR(
+      key,
+      nonce,
+      dst,
+      dst,
+      nonceInplaceCounterLength: nonceInplaceCounterLength,
+    );
   }
 }

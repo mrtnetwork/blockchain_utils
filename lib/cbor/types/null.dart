@@ -1,12 +1,18 @@
-import 'package:blockchain_utils/utils/utils.dart';
+import 'package:blockchain_utils/cbor/utils/cbor_utils.dart';
+
 import 'package:blockchain_utils/cbor/utils/dynamic_bytes.dart';
 import 'package:blockchain_utils/cbor/core/tags.dart';
 import 'package:blockchain_utils/cbor/core/cbor.dart';
+import 'package:blockchain_utils/utils/binary/utils.dart';
 
 /// A class representing a CBOR (Concise Binary Object Representation) null value.
 class CborNullValue extends CborObject<Null> {
   /// Constructor for creating a CborNullValue instance with the provided parameters.
   const CborNullValue() : super(null);
+
+  factory CborNullValue.decode(List<int> bytes) {
+    return CborUtils.decodeCbor(bytes);
+  }
 
   /// Encode the value into CBOR bytes
   @override
@@ -27,23 +33,16 @@ class CborNullValue extends CborObject<Null> {
   String toString() {
     return "null";
   }
-
-  /// override equal operation
-  @override
-  operator ==(other) {
-    if (other is! CborNullValue) return false;
-    return true;
-  }
-
-  /// override hashcode
-  @override
-  int get hashCode => "null".hashCode;
 }
 
 /// A class representing a CBOR (Concise Binary Object Representation) undefined value.
 class CborUndefinedValue extends CborObject<Null> {
   /// Constructor for creating a CborUndefinedValue instance with the provided parameters.
   const CborUndefinedValue() : super(null);
+
+  factory CborUndefinedValue.decode(List<int> bytes) {
+    return CborUtils.decodeCbor(bytes);
+  }
 
   /// Encode the value into CBOR bytes
   @override
@@ -64,15 +63,4 @@ class CborUndefinedValue extends CborObject<Null> {
   String toCborHex() {
     return BytesUtils.toHexString(encode());
   }
-
-  /// override equal operation
-  @override
-  operator ==(other) {
-    if (other is! CborUndefinedValue) return false;
-    return true;
-  }
-
-  /// override hashcode
-  @override
-  int get hashCode => "undefined".hashCode;
 }

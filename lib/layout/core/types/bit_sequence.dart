@@ -3,8 +3,8 @@ import 'package:blockchain_utils/layout/constant/constant.dart';
 import 'package:blockchain_utils/layout/core/core/core.dart';
 
 class BitSequenceLayout extends Layout<List<int>> {
-  const BitSequenceLayout({String? property}) : super(-1, property: property);
-  static final _lengthCodec = LayoutConst.compactIntU48();
+  BitSequenceLayout({String? property}) : super(-1, property: property);
+  final _lengthCodec = LayoutConst.compactIntU48();
 
   @override
   BitSequenceLayout clone({String? newProperty}) {
@@ -12,23 +12,31 @@ class BitSequenceLayout extends Layout<List<int>> {
   }
 
   @override
-  int getSpan(LayoutByteReader? bytes, {int offset = 0, List<int>? source}) {
-    return bytes!.getCompactTotalLenght(offset).item2 ~/ 8;
+  int getSpan() {
+    return -1;
   }
 
   @override
-  LayoutDecodeResult<List<int>> decode(LayoutByteReader bytes,
-      {int offset = 0}) {
-    final decode = bytes.getCompactLengthInfos(offset);
-    final totalLength = decode.item1 + (decode.item2 ~/ 8);
-    final result = bytes.sublist(offset + decode.item1, offset + totalLength);
+  LayoutDecodeResult<List<int>> decode(
+    LayoutByteReader bytes, {
+    int offset = 0,
+  }) {
+    final decode = bytes.decodeScaleAsInteger(offset);
+    final totalLength = decode.consumed + (decode.value ~/ 8);
+    final result = bytes.sublist(
+      offset + decode.consumed,
+      offset + totalLength,
+    );
     return LayoutDecodeResult(consumed: totalLength, value: result);
   }
 
   @override
   int encode(List<int> source, LayoutByteWriter writer, {int offset = 0}) {
-    final int length =
-        _lengthCodec.encode(source.length * 8, writer, offset: offset);
+    final int length = _lengthCodec.encode(
+      source.length * 8,
+      writer,
+      offset: offset,
+    );
 
     writer.setAll(offset + length, source);
     return source.length + length;

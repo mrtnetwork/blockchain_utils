@@ -1,6 +1,6 @@
 import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
-import 'package:blockchain_utils/crypto/crypto/cdsa/curve/curves.dart';
-import 'package:blockchain_utils/crypto/crypto/cdsa/point/base.dart';
+import 'package:blockchain_utils/crypto/crypto/ec/curve/curves.dart';
+import 'package:blockchain_utils/crypto/crypto/ec/core/point.dart';
 
 /// A utility class for obtaining elliptic curve generators based on curve types.
 class EllipticCurveGetter {
@@ -10,7 +10,7 @@ class EllipticCurveGetter {
   /// - `type`: The type of elliptic curve.
   ///
   /// Returns an abstract elliptic curve point generator.
-  static AbstractPoint generatorFromType(EllipticCurveTypes type) {
+  static ECPoint generatorFromType(EllipticCurveTypes type) {
     switch (type) {
       case EllipticCurveTypes.secp256k1:
         return Curves.generatorSecp256k1;

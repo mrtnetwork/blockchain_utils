@@ -52,18 +52,20 @@
   OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-import 'package:blockchain_utils/utils/utils.dart';
+import 'package:blockchain_utils/crypto/crypto/ec/core/point.dart';
+import 'package:blockchain_utils/utils/binary/utils.dart';
+import 'package:blockchain_utils/utils/equatable/equatable.dart';
+
 import 'package:blockchain_utils/bip/ecc/keys/ecdsa_keys.dart';
 import 'package:blockchain_utils/bip/ecc/keys/i_keys.dart';
 import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
-import 'package:blockchain_utils/crypto/crypto/cdsa/curve/curves.dart';
-import 'package:blockchain_utils/crypto/crypto/cdsa/ecdsa/private_key.dart';
-import 'package:blockchain_utils/crypto/crypto/cdsa/ecdsa/public_key.dart';
-import 'package:blockchain_utils/crypto/crypto/cdsa/point/base.dart';
-import 'package:blockchain_utils/crypto/crypto/cdsa/point/ec_projective_point.dart';
+import 'package:blockchain_utils/crypto/crypto/ec/curve/curves.dart';
+import 'package:blockchain_utils/crypto/crypto/ec/ecdsa/private_key.dart';
+import 'package:blockchain_utils/crypto/crypto/ec/ecdsa/public_key.dart';
+import 'package:blockchain_utils/crypto/crypto/ec/projective/native/native.dart';
 
 /// A class representing a NIST P-256 public key that implements the IPublicKey interface.
-class Nist256p1PublicKey implements IPublicKey {
+class Nist256p1PublicKey with Equality implements IPublicKey {
   final ECDSAPublicKey publicKey;
 
   /// Private constructor for creating a Nist256p1PublicKey instance from an ECDSAPublicKey.
@@ -72,7 +74,10 @@ class Nist256p1PublicKey implements IPublicKey {
   /// Factory method for creating a Nist256p1PublicKey from a byte array.
   factory Nist256p1PublicKey.fromBytes(List<int> keyBytes) {
     final point = ProjectiveECCPoint.fromBytes(
-        curve: Curves.curve256, data: keyBytes, order: null);
+      curve: Curves.curve256,
+      data: keyBytes,
+      order: null,
+    );
     final pub = ECDSAPublicKey(Curves.generator256, point);
     return Nist256p1PublicKey._(pub);
   }
@@ -123,24 +128,24 @@ class Nist256p1PublicKey implements IPublicKey {
   }
 
   @override
-  String toHex(
-      {bool withPrefix = true, bool lowerCase = true, String? prefix = ""}) {
-    return BytesUtils.toHexString(compressed,
-        prefix: prefix, lowerCase: lowerCase);
+  String toHex({
+    bool withPrefix = true,
+    bool lowerCase = true,
+    String? prefix = "",
+  }) {
+    return BytesUtils.toHexString(
+      compressed,
+      prefix: prefix,
+      lowerCase: lowerCase,
+    );
   }
 
   @override
-  operator ==(other) {
-    if (other is! Nist256p1PublicKey) return false;
-    return publicKey == other.publicKey && curve == other.curve;
-  }
-
-  @override
-  int get hashCode => publicKey.hashCode ^ curve.hashCode;
+  List<dynamic> get variables => [publicKey];
 }
 
 /// A class representing a NIST P-256 private key that implements the IPrivateKey interface.
-class Nist256p1PrivateKey implements IPrivateKey {
+class Nist256p1PrivateKey with Equality implements IPrivateKey {
   final ECDSAPrivateKey privateKey;
 
   /// Private constructor for creating a Nist256p1PrivateKey instance from an ECDSAPrivateKey.
@@ -192,11 +197,5 @@ class Nist256p1PrivateKey implements IPrivateKey {
   }
 
   @override
-  operator ==(other) {
-    if (other is! Nist256p1PrivateKey) return false;
-    return privateKey == other.privateKey && curve == other.curve;
-  }
-
-  @override
-  int get hashCode => privateKey.hashCode ^ curve.hashCode;
+  List<dynamic> get variables => [privateKey];
 }

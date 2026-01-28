@@ -16,11 +16,7 @@ class CardanoShelley {
   /// - `bipObj`: The Cip1852 Bip44 object used to initialize the wallet.
   ///
   /// Throws an `ArgumentException` if the provided Bip object is not a Cip1852 instance.
-  factory CardanoShelley.fromCip1852Object(Bip44Base bip) {
-    if (bip is! Cip1852) {
-      throw const ArgumentException(
-          "The Bip object shall be a Cip1852 instance");
-    }
+  factory CardanoShelley.fromCip1852Object(Cip1852 bip) {
     return CardanoShelley(bip, __deriveStakingKeys(bip));
   }
 
@@ -33,11 +29,18 @@ class CardanoShelley {
   /// Throws an `ArgumentException` if the provided Bip object is below the account level or if `bipSk` is not at the address index level.
   factory CardanoShelley(Bip44Base bip, Bip44Base bipSk) {
     if (bip.level.value < Bip44Levels.account.value) {
-      throw const ArgumentException("The bip shall not be below account level");
+      throw ArgumentException.invalidOperationArguments(
+        "CardanoShelley",
+        name: "bip",
+        reason: "The bip must not be below account level.",
+      );
     }
     if (bipSk.level != Bip44Levels.addressIndex) {
-      throw const ArgumentException(
-          "The bipSK shall be of address index level");
+      throw ArgumentException.invalidOperationArguments(
+        "CardanoShelley",
+        name: "bip",
+        reason: "The bipSK must be of address index level.",
+      );
     }
     return CardanoShelley._(bip, bipSk);
   }
@@ -45,17 +48,19 @@ class CardanoShelley {
   /// Retrieves and returns the public keys associated with the wallet.
   CardanoShelleyPublicKeys get publicKeys {
     return CardanoShelleyPublicKeys(
-        pubAddrKey: bip44.publicKey.key,
-        pubSkKey: bip44Sk.publicKey.key,
-        coinConf: bip44.coinConf);
+      pubAddrKey: bip44.publicKey.key,
+      pubSkKey: bip44Sk.publicKey.key,
+      coinConf: bip44.coinConf,
+    );
   }
 
   /// Retrieves and returns the private keys associated with the wallet.
   CardanoShelleyPrivateKeys get privateKeys {
     return CardanoShelleyPrivateKeys(
-        privAddrKey: bip44.privateKey.key,
-        privSkKey: bip44Sk.privateKey.key,
-        coinConf: bip44.coinConf);
+      privAddrKey: bip44.privateKey.key,
+      privSkKey: bip44Sk.privateKey.key,
+      coinConf: bip44.coinConf,
+    );
   }
 
   /// Retrieves the Bip44 object for reward keys.
@@ -75,18 +80,20 @@ class CardanoShelley {
 
   /// Creates a new Cardano Shelley wallet with a specified change type.
   CardanoShelley change(Bip44Changes changeType) {
-    return CardanoShelley(bip44.change(changeType), bip44Sk);
+    return CardanoShelley(bip44.change(changeType) as Bip44Base, bip44Sk);
   }
 
   /// Creates a new Cardano Shelley wallet with a specified address index.
   CardanoShelley addressIndex(int addrIdx) {
-    return CardanoShelley(bip44.addressIndex(addrIdx), bip44Sk);
+    return CardanoShelley(bip44.addressIndex(addrIdx) as Bip44Base, bip44Sk);
   }
 
   /// Internal method to derive staking keys from the provided Bip object.
   static Bip44Base __deriveStakingKeys(Bip44Base bipObj) {
     final coinConf = bipObj.coinConf.copy(
-      addressEncoder: ([dynamic kwargs]) => AdaShelleyStakingAddrEncoder(),
+      addressEncoder:
+          (params, confing) =>
+              AdaShelleyStakingAddrEncoder().encodeKey(params.pubKey),
     );
     return Cip1852.fromBip32(bipObj.bip32Object.derivePath("2/0"), coinConf);
   }

@@ -15,7 +15,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "5024341ef68b1e73849a43d4e23b553ec747ae18b0d81bbb2074ff6c8030a360",
         "path": "//0",
-        "address": "12p5axbNBe7yqhQ2z877ijTDboGcjGxPQ7j7HinroturWhPM"
+        "address": "12p5axbNBe7yqhQ2z877ijTDboGcjGxPQ7j7HinroturWhPM",
       },
       {
         "private_key":
@@ -23,7 +23,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "9c73a7a7ae5f404ff90aeb6f22b8ea2df46d5b5f83d0b64d6960c59d87906a20",
         "path": "/1",
-        "address": "14Y8px1MvVkCoygUSUjeF6RUUDi7B84CNH8k8M1hqt8fVvy7"
+        "address": "14Y8px1MvVkCoygUSUjeF6RUUDi7B84CNH8k8M1hqt8fVvy7",
       },
       {
         "private_key":
@@ -31,7 +31,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "246ce0f1597be83976a202259840962f47c563f23b760082da4770dd6ac30273",
         "path": "//hard",
-        "address": "1pm4vKW1HpeJXksu69mULrSKJkgJPyGJANoUE3xrYX3jm5s"
+        "address": "1pm4vKW1HpeJXksu69mULrSKJkgJPyGJANoUE3xrYX3jm5s",
       },
       {
         "private_key":
@@ -39,7 +39,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "d63f18d817a2819fd045c1884d4b05318a2030c06f77b618a0b0ee0751e5356d",
         "path": "//1",
-        "address": "15quzUwft5KmuJMbmZSR4SAc1MY3CoCgaaN3n1pzLUvWWgEt"
+        "address": "15quzUwft5KmuJMbmZSR4SAc1MY3CoCgaaN3n1pzLUvWWgEt",
       },
       {
         "private_key":
@@ -47,7 +47,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "ae8a844d35d714a16e606648d5a185a72a282806620e1d4033520e544d349856",
         "path": "/0",
-        "address": "14wrUqoTBwgXWJHQCR3wgn7nZGE9LeAyFgSaH9JmzPZEnjZ9"
+        "address": "14wrUqoTBwgXWJHQCR3wgn7nZGE9LeAyFgSaH9JmzPZEnjZ9",
       },
       {
         "private_key":
@@ -55,7 +55,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "1e7646dd919433ba39d9aa85c16b0afac1d9f9d143c1b897dbecb5ba15da305e",
         "path": "//12",
-        "address": "1gwaBXeLR9yqQpRL4XXAg7zaziW5LW4DVNTuNJkkJa9hRyd"
+        "address": "1gwaBXeLR9yqQpRL4XXAg7zaziW5LW4DVNTuNJkkJa9hRyd",
       },
       {
         "private_key":
@@ -63,9 +63,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "7e8cc143f41f743be1c6220dc39270a348d55a746ca78edae918a98462266307",
         "path": "/soft",
-        "address": "13rvr6NcXgr5CTy53j3wFNtDYaZaUnVJv1X72ozZ7HVGzJYd"
-      }
-    ]
+        "address": "13rvr6NcXgr5CTy53j3wFNtDYaZaUnVJv1X72ozZ7HVGzJYd",
+      },
+    ],
   },
   {
     "seed": "ef06c01ff5a9b7a9273b174258e9af76df0841b8446bcea2040f4343cd2348ec",
@@ -83,7 +83,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "4277c1ce8828729e45700dfce3260c66142e7cc09639840b127d28fb3fad1764",
         "path": "//0",
-        "address": "5R9B7KcJP9fjAGSRnzQg1A3WSZEL1FLnxCAXVcAiRzFRAvwQ"
+        "address": "5R9B7KcJP9fjAGSRnzQg1A3WSZEL1FLnxCAXVcAiRzFRAvwQ",
       },
       {
         "private_key":
@@ -91,7 +91,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "e293cb21c407ef02ffb2db1559154a18b1a6750e71980443716234c83459114e",
         "path": "/1",
-        "address": "5Um76kLqVCx9wYECRpTGocTSR5o6SRjo6RKRB6o1afPB1xLj"
+        "address": "5Um76kLqVCx9wYECRpTGocTSR5o6SRjo6RKRB6o1afPB1xLj",
       },
       {
         "private_key":
@@ -99,7 +99,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "5058c8d0ce0d489b7deb7d6c3c7e85bc000006b6930049df342a54bedcfa9618",
         "path": "//hard",
-        "address": "5RTNaZL14s1vKh8EvrS4HxHTctLaGVnxpQyGpoadATEhWcKg"
+        "address": "5RTNaZL14s1vKh8EvrS4HxHTctLaGVnxpQyGpoadATEhWcKg",
       },
       {
         "private_key":
@@ -107,7 +107,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "922e93e987ee685f8cd51af9fedd6a96f2997a428626ded8e3e07687082c7274",
         "path": "//1",
-        "address": "5SwhCf4omyzuLG8hYLhtUnsEybF2FUqyRcbevA5qi6xJbZLM"
+        "address": "5SwhCf4omyzuLG8hYLhtUnsEybF2FUqyRcbevA5qi6xJbZLM",
       },
       {
         "private_key":
@@ -115,7 +115,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "5223714aea88845a0d460285bbab825b2cd7ff994d4563f43370357638d6f959",
         "path": "/0",
-        "address": "5RViq44EmGL3JjNtB9kd2rKeR1vSAUEW7qYeCyisakhaYJMh"
+        "address": "5RViq44EmGL3JjNtB9kd2rKeR1vSAUEW7qYeCyisakhaYJMh",
       },
       {
         "private_key":
@@ -123,7 +123,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "4446c1694e634a516a53215ace7aa4cdac62e552186eae570de3dd9c4c97272e",
         "path": "//12",
-        "address": "5RBYebiNmzEhqDtc79kro313dMxjj24FTe8DsNLz8rchQvv8"
+        "address": "5RBYebiNmzEhqDtc79kro313dMxjj24FTe8DsNLz8rchQvv8",
       },
       {
         "private_key":
@@ -131,9 +131,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "a8d649a85d231408d14f123d808041fa9d897b923b80321b044e473cc8f92674",
         "path": "/soft",
-        "address": "5TTQ5LGe39tuwTguUur64A3j1NxJ2h6fuWvMdx3mmZ4pTy7H"
-      }
-    ]
+        "address": "5TTQ5LGe39tuwTguUur64A3j1NxJ2h6fuWvMdx3mmZ4pTy7H",
+      },
+    ],
   },
   {
     "seed": "b5b615a751e3a5b17311b85802dce20aa65e5c0cae46594b2aa04996f65bb34f",
@@ -151,7 +151,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "8c3b5f6ab14cc67cbcdbafd6cc181be2f4dfcfd75390c2a38c0a5ff71b2a652c",
         "path": "//0",
-        "address": "14AsLnwE4DK88rKNYhrQEN8pJBhkxvqrH48zmV6q2bT3cy3u"
+        "address": "14AsLnwE4DK88rKNYhrQEN8pJBhkxvqrH48zmV6q2bT3cy3u",
       },
       {
         "private_key":
@@ -159,7 +159,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "425b4dd669527d2f94e96532eea4470f31cd6ee105770ec50b058c5d3fa9c91a",
         "path": "/1",
-        "address": "12W1HSDrmZJLY6RViVwToqDnTjU2NckVJiS7j2RD9RpyHerx"
+        "address": "12W1HSDrmZJLY6RViVwToqDnTjU2NckVJiS7j2RD9RpyHerx",
       },
       {
         "private_key":
@@ -167,7 +167,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "1c3c50822322e543f794813067e9313e7299dc72affb8e397238d2ef59f18d25",
         "path": "//hard",
-        "address": "1e2Fxdbrbk91BumiBGHhbRursoSitMnzVSiX49dpPwgFJFG"
+        "address": "1e2Fxdbrbk91BumiBGHhbRursoSitMnzVSiX49dpPwgFJFG",
       },
       {
         "private_key":
@@ -175,7 +175,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "e4dffa14e72c21b2d9affe72d2d5e5afde6c3d5ca38cf19ed84984d876c92109",
         "path": "//1",
-        "address": "16B6TG2p27GdfJNee5swfekb77wsmBs6SBA1U7ZA8cenYYmH"
+        "address": "16B6TG2p27GdfJNee5swfekb77wsmBs6SBA1U7ZA8cenYYmH",
       },
       {
         "private_key":
@@ -183,7 +183,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "4e6a5511eee4285db7e48145cfb151fe0be48188e9979231ae053bdf662a1059",
         "path": "/0",
-        "address": "12mpKhDUkbGAmKynjPNon27p4ztk8FN5VAgz4dhxRf2eX3ra"
+        "address": "12mpKhDUkbGAmKynjPNon27p4ztk8FN5VAgz4dhxRf2eX3ra",
       },
       {
         "private_key":
@@ -191,7 +191,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "2efaae7bee0f636c29656cbc90e5df8668963b55540288790fd9ebfbdc4e8e07",
         "path": "//12",
-        "address": "124bfuAhkGC81AuM8LbDaSEwtvZoTsvDf2FDBpaSQYV4wepy"
+        "address": "124bfuAhkGC81AuM8LbDaSEwtvZoTsvDf2FDBpaSQYV4wepy",
       },
       {
         "private_key":
@@ -199,9 +199,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "b65d4ef26f62833080383f97ce03cad3beb7ac2c9fe5abb78dc8dd32003b3c30",
         "path": "/soft",
-        "address": "1587S8wvmrNGQD1jLbYKDMGiBmMiHYHSXJRxnS7TwGCtRUQP"
-      }
-    ]
+        "address": "1587S8wvmrNGQD1jLbYKDMGiBmMiHYHSXJRxnS7TwGCtRUQP",
+      },
+    ],
   },
   {
     "seed": "4f6c0aedae6be0117379b0e0d976e4ed1f75b1dee21fa55b118b6d9fd706e2a7",
@@ -219,7 +219,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "34d04132f6c0523d820e718007e1e4ca563474e740b1ebdc9c5133878d1ae51e",
         "path": "//0",
-        "address": "DmZsYrFnFB5qM6QjqTpeTWtWS3xnD1PnYq7GxGV8xyjjQa3"
+        "address": "DmZsYrFnFB5qM6QjqTpeTWtWS3xnD1PnYq7GxGV8xyjjQa3",
       },
       {
         "private_key":
@@ -227,7 +227,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "76c7677d980dcf6ae2ca043d6b72eb546ca41d4a807a07ec01953307a4546942",
         "path": "/1",
-        "address": "FG4QN2XYn3Wf68gK5ENmG4XmhNFbDfgZxsEqiAUWR6ngTpX"
+        "address": "FG4QN2XYn3Wf68gK5ENmG4XmhNFbDfgZxsEqiAUWR6ngTpX",
       },
       {
         "private_key":
@@ -235,7 +235,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "ac4143668a0242cbccc2e609cc2c85d9ff702a26678a0ea8da62c57250cac212",
         "path": "//hard",
-        "address": "GUB99FLpWrrKtoewUrNJnA5mpJ18mbzCB7cHNJZTVcuzPUq"
+        "address": "GUB99FLpWrrKtoewUrNJnA5mpJ18mbzCB7cHNJZTVcuzPUq",
       },
       {
         "private_key":
@@ -243,7 +243,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "e4848f321aab5880690fb8de860db557711bf81b23c961823b61638c22f0f922",
         "path": "//1",
-        "address": "HjwpA46LQwknpXbYq9cpdkbuAVRBD8LBToMN89QgSaKjurS"
+        "address": "HjwpA46LQwknpXbYq9cpdkbuAVRBD8LBToMN89QgSaKjurS",
       },
       {
         "private_key":
@@ -251,7 +251,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "66f14f799b0ab0efb73e661ecf63fa05597477c868287ee69017395b62cf383c",
         "path": "/0",
-        "address": "EuJ5xEhDAw1KXFUXHCdaCUPkd1vXa4BvuLasKEToEanFJ7N"
+        "address": "EuJ5xEhDAw1KXFUXHCdaCUPkd1vXa4BvuLasKEToEanFJ7N",
       },
       {
         "private_key":
@@ -259,7 +259,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "baff877486f3dbbaf54bfd67e0cf4131ab36cd43712ece5752ee349fa887a963",
         "path": "//12",
-        "address": "GoWLEGBZdhZtp8fRR4PanqzRAUwHH3qjXAsURUvjgmJDeAv"
+        "address": "GoWLEGBZdhZtp8fRR4PanqzRAUwHH3qjXAsURUvjgmJDeAv",
       },
       {
         "private_key":
@@ -267,9 +267,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "3ed2e562b1998343eb5a499f69cef9d03cad049ad78a205052e3dace9cbbcd32",
         "path": "/soft",
-        "address": "Dzh8qEsoS8KReXp47EUszyvThU6P4ndLTRYkUjSfZfvyseb"
-      }
-    ]
+        "address": "Dzh8qEsoS8KReXp47EUszyvThU6P4ndLTRYkUjSfZfvyseb",
+      },
+    ],
   },
   {
     "seed": "ab00c4bb8be6c2086ed7f98b1456485713938cdc7a6bd7b504e7e8e68bb8eaf5",
@@ -287,7 +287,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "d4dbfed9b9b8f0446f832460d4e339916a7c4f456afa429817745228defab70f",
         "path": "//0",
-        "address": "25gh69SyUwLShwCjB1AfHJuWEJL9kccBvn2BQHyr9cpqNFSP"
+        "address": "25gh69SyUwLShwCjB1AfHJuWEJL9kccBvn2BQHyr9cpqNFSP",
       },
       {
         "private_key":
@@ -295,7 +295,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "5c5577ff301e005298d3e654c8b6518d39e4023eb4a4a153d040d0dfa2e69d6e",
         "path": "/1",
-        "address": "22xfP2VkCos3qfRTJFVsFAZqyL52f69Fgh6b3Eot9JYruhky"
+        "address": "22xfP2VkCos3qfRTJFVsFAZqyL52f69Fgh6b3Eot9JYruhky",
       },
       {
         "private_key":
@@ -303,7 +303,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "84f61b5cb330481e43ed158266cf5ae8c9eb288f9f56171849e344cd2bb28e26",
         "path": "//hard",
-        "address": "23sw1rFRTTGAw3EBovKZ6Nw4Vvn4WM3HkAQe8PUViEXkFDhT"
+        "address": "23sw1rFRTTGAw3EBovKZ6Nw4Vvn4WM3HkAQe8PUViEXkFDhT",
       },
       {
         "private_key":
@@ -311,7 +311,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "069bebb359d7dcf08db26cb3b651599d1ce50851d2948e8324925bfffbaab415",
         "path": "//1",
-        "address": "212GC36C19BH7zSS5GvPqpG4KtxnXmw8b6yhzayVccLfqBU6"
+        "address": "212GC36C19BH7zSS5GvPqpG4KtxnXmw8b6yhzayVccLfqBU6",
       },
       {
         "private_key":
@@ -319,7 +319,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "360eb8159d108db4c28adaa1a5bd7778bed3c2674ae3f6f732142e62ba3c1511",
         "path": "/0",
-        "address": "226UYVyu62fdXwc7fQ9x4aby8ysF9ScNyBbRQaCj9uQ9a6Um"
+        "address": "226UYVyu62fdXwc7fQ9x4aby8ysF9ScNyBbRQaCj9uQ9a6Um",
       },
       {
         "private_key":
@@ -327,7 +327,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "2ee648ac0f10bd580cfdbb4467c73bbf705643ccc0d2347e0345ed0433065626",
         "path": "//12",
-        "address": "21w6CNpJX7GmafLKvmzWADJ7D2DuKwuB5XP1fgihdF4K1Kyf"
+        "address": "21w6CNpJX7GmafLKvmzWADJ7D2DuKwuB5XP1fgihdF4K1Kyf",
       },
       {
         "private_key":
@@ -335,9 +335,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "ee55d3b056a3e778df2b6b4d4a883132022a7d90367bec01a0bf0e1ef6717673",
         "path": "/soft",
-        "address": "26G6Ugi4yALUMsPhLyyvS3zgYtXfC7PjhjPeKpvos45uabnT"
-      }
-    ]
+        "address": "26G6Ugi4yALUMsPhLyyvS3zgYtXfC7PjhjPeKpvos45uabnT",
+      },
+    ],
   },
   {
     "seed": "e801ec9fe6ec5340982cd0582ffedd7753b0feb0ab9c4e3974519d92e5ce5b5d",
@@ -355,7 +355,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "aa2833f964e785372b21486639f82a98bbd226c634d88e55b2237e5fc610c637",
         "path": "//0",
-        "address": "GRRbowfwAJALTgnvEd3EMNiJiuiLXpYaFxRFP2vU5fvHM9j"
+        "address": "GRRbowfwAJALTgnvEd3EMNiJiuiLXpYaFxRFP2vU5fvHM9j",
       },
       {
         "private_key":
@@ -363,7 +363,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "e8a422da79d47542cedaab972b8fd69184f57e4bbeb5ab19f65d5bd46f8b7f01",
         "path": "/1",
-        "address": "HqMPKbwjeB1pNGSyeD9ughNzm6QxdHXZifJpzoPU4wi6ZVG"
+        "address": "HqMPKbwjeB1pNGSyeD9ughNzm6QxdHXZifJpzoPU4wi6ZVG",
       },
       {
         "private_key":
@@ -371,7 +371,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "2422ca41310baaf0e82533c544392844f2c7ae7e56f6a52ce21ccc20e48eca18",
         "path": "//hard",
-        "address": "DPhaPQ7iEtDCxG9rxdK2zj2matPHAPSWUAmQcweK8sGH3nu"
+        "address": "DPhaPQ7iEtDCxG9rxdK2zj2matPHAPSWUAmQcweK8sGH3nu",
       },
       {
         "private_key":
@@ -379,7 +379,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "b6909453189e6bbddca933655bbbd0ad4870a2b0dd65d2b766dd82915a070e09",
         "path": "//1",
-        "address": "GhhBW1FjvZ1oZs1bZuySXr7jQuHA2wYfVRjtMn22eYbJiRm"
+        "address": "GhhBW1FjvZ1oZs1bZuySXr7jQuHA2wYfVRjtMn22eYbJiRm",
       },
       {
         "private_key":
@@ -387,7 +387,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "c4098dcc91e70d3c9ceb4b76707faa88a3dcd26ea373c1782db295f08ebafc14",
         "path": "/0",
-        "address": "H1Mjwx8DQ7JH7pxeg1yGEXf6mHg8SAQ1yaHFo8WrM1NRmMN"
+        "address": "H1Mjwx8DQ7JH7pxeg1yGEXf6mHg8SAQ1yaHFo8WrM1NRmMN",
       },
       {
         "private_key":
@@ -395,7 +395,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "b8e5201a8c64e244cf482144f278a216e0d2ca564f3772002f4d980e5d6d4f67",
         "path": "//12",
-        "address": "GkkPkRDRze6aW2CPweJ9a3MHRAtUWspwQ7qwFk6ZVv7BE1h"
+        "address": "GkkPkRDRze6aW2CPweJ9a3MHRAtUWspwQ7qwFk6ZVv7BE1h",
       },
       {
         "private_key":
@@ -403,9 +403,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "d4b2103b65ef790785743763761c004f0c412f2d22bd777777e367040acfc531",
         "path": "/soft",
-        "address": "HPCZjfVikBzvfVttE9APL61syKAS5HhMNK99ZLhKhch8BBh"
-      }
-    ]
+        "address": "HPCZjfVikBzvfVttE9APL61syKAS5HhMNK99ZLhKhch8BBh",
+      },
+    ],
   },
   {
     "seed": "0796e5abf6436dbd30130675587623764c717a95e7e53acc7ec7e79d530c8a83",
@@ -423,7 +423,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "e4ed96c6d31707920ee28c285ebf9947c1ef8426d7c51b4f79d141448273e84a",
         "path": "//0",
-        "address": "35vMfdeeajXS5B8YsDfnU333mc3MmT8dq2imiw1jvJCQgbNx"
+        "address": "35vMfdeeajXS5B8YsDfnU333mc3MmT8dq2imiw1jvJCQgbNx",
       },
       {
         "private_key":
@@ -431,7 +431,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "0e9f53a74a56c948764fbd8c8085b48adc980270915bd8ee382af6eea558c83b",
         "path": "/1",
-        "address": "315NArv7TaynzzZsUCZEpW3py7MC5xLEjgJvisH6pT65PsWW"
+        "address": "315NArv7TaynzzZsUCZEpW3py7MC5xLEjgJvisH6pT65PsWW",
       },
       {
         "private_key":
@@ -439,7 +439,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "14136b997d000b748901d87c98c4a26fe72e002f52688099e8ec2e5bd003fc5d",
         "path": "//hard",
-        "address": "31CWtzZ5uVcivYFomWy9UATcHtne8oyBJVqTippLypb8rNds"
+        "address": "31CWtzZ5uVcivYFomWy9UATcHtne8oyBJVqTippLypb8rNds",
       },
       {
         "private_key":
@@ -447,7 +447,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "d268903680b1214ec14d81bb9484eee1cbf621026c9894ee085ddbf7b16e565f",
         "path": "//1",
-        "address": "35W5HfPRQPRPx5pZhhePfKLKRrZXuoEBj4ogcmavxJ4R9WFR"
+        "address": "35W5HfPRQPRPx5pZhhePfKLKRrZXuoEBj4ogcmavxJ4R9WFR",
       },
       {
         "private_key":
@@ -455,7 +455,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "f4bcaed2b6ea825e582e86f381943f90ecf826208b3fc8a359ca257f3efd2b60",
         "path": "/0",
-        "address": "36H5uSLsmDuNRpma26mB87NTJP9sKou19RUsSX5MY6oT3B56"
+        "address": "36H5uSLsmDuNRpma26mB87NTJP9sKou19RUsSX5MY6oT3B56",
       },
       {
         "private_key":
@@ -463,7 +463,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "f6d9928cdb4e92b8c9c2e4370500b179c2b368ede08f8f52ae1d635f1fa22c67",
         "path": "//12",
-        "address": "36KrakLBoKnHm21bJUGVPQ5VoD1r4TTjutt3q37176czWtdj"
+        "address": "36KrakLBoKnHm21bJUGVPQ5VoD1r4TTjutt3q37176czWtdj",
       },
       {
         "private_key":
@@ -471,9 +471,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "1a39587723f5460898530cfc4e16a7d8f97eee3f5995ae1044882f41687bc461",
         "path": "/soft",
-        "address": "31LaT6QL1ANfd8ZzoXABt57MYJdRKbuugKdXA43zyCqFtugN"
-      }
-    ]
+        "address": "31LaT6QL1ANfd8ZzoXABt57MYJdRKbuugKdXA43zyCqFtugN",
+      },
+    ],
   },
   {
     "seed": "d89b4600f9f0f7dbe29689e5ef686c1520cd1ac7348faf1c3f66ed1fd02a5289",
@@ -491,7 +491,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "98a8613db00b258fa6891c3f04f93165d622a27001e21be5afe6eb52525e2075",
         "path": "//0",
-        "address": "G2UpFg1VBzyD3odbheabiZQFfFRjihEn1odedLsCJCgZYRC"
+        "address": "G2UpFg1VBzyD3odbheabiZQFfFRjihEn1odedLsCJCgZYRC",
       },
       {
         "private_key":
@@ -499,7 +499,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "345864c70dabcb92eccc82abcde3494fe8d4d0621fde93cd5f2336a82254c228",
         "path": "/1",
-        "address": "DkxGPj2AonDcPT6DsQZyZMwmSWzfj8dUYoKG2eZ3z6QCqeK"
+        "address": "DkxGPj2AonDcPT6DsQZyZMwmSWzfj8dUYoKG2eZ3z6QCqeK",
       },
       {
         "private_key":
@@ -507,7 +507,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "f8840450d157fc1e081ea2824c5600fe4a7e01b4f75e32045e2a41baa979e400",
         "path": "//hard",
-        "address": "JCAcMcCJUi5Yv5R37tj25YWjsNm32GKA3EwAo6RxhtsEqNU"
+        "address": "JCAcMcCJUi5Yv5R37tj25YWjsNm32GKA3EwAo6RxhtsEqNU",
       },
       {
         "private_key":
@@ -515,7 +515,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "7672f2ef017cf846aba55ed488a875457408d32b698b46553c3a20c88736f946",
         "path": "//1",
-        "address": "FFdKERzjZBgg9sWjyLGDbGWdY6xdgW5UW4mP16iaX4dBwvK"
+        "address": "FFdKERzjZBgg9sWjyLGDbGWdY6xdgW5UW4mP16iaX4dBwvK",
       },
       {
         "private_key":
@@ -523,7 +523,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "70df78ffe072ba1e4eef71273e7e00d1d3e601f3be419ea550fd8b3698d1800a",
         "path": "/0",
-        "address": "F8KGPUHxrtRvsi1ANNPwg2qVfeY5YYdMqBJtRYhY7H4eBEf"
+        "address": "F8KGPUHxrtRvsi1ANNPwg2qVfeY5YYdMqBJtRYhY7H4eBEf",
       },
       {
         "private_key":
@@ -531,7 +531,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "ea2031473a04f1042d39a79fa7be48100f82991c3cb468376841a813ab444d59",
         "path": "//12",
-        "address": "HsJHYGfprhbLSPVP6FLmKedgGgKszPSoLCrU1d6c6GATWKG"
+        "address": "HsJHYGfprhbLSPVP6FLmKedgGgKszPSoLCrU1d6c6GATWKG",
       },
       {
         "private_key":
@@ -539,9 +539,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "b6fef28057726efdd4c650ac89ecb2e9aa7df508458ea9e0c4bf513e97dd1a70",
         "path": "/soft",
-        "address": "GiFy6UMzeyAZUYr4F26V2n8Scox8wQ1NdcZBeDaYTZV9NgK"
-      }
-    ]
+        "address": "GiFy6UMzeyAZUYr4F26V2n8Scox8wQ1NdcZBeDaYTZV9NgK",
+      },
+    ],
   },
   {
     "seed": "0ddd005d8c8f0314ee76f1850b4bafc479c917def39e4a16b537c0e37c9f4d46",
@@ -559,7 +559,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "6e24cf065110253a172706dba366e54887546213a894eceb7250a1a219b5cc54",
         "path": "//0",
-        "address": "5S8SaMcv5tT1waYHqbdzyKGepdB27KnjZ8QcMSnv9b4JVrgz"
+        "address": "5S8SaMcv5tT1waYHqbdzyKGepdB27KnjZ8QcMSnv9b4JVrgz",
       },
       {
         "private_key":
@@ -567,7 +567,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "6c23098047e9ad60c3ac087ab3f493a3bd3ef935af1b5946c9ed825cdb3eba7a",
         "path": "/1",
-        "address": "5S5oxH5vfjUi2YrGkcjfUmJfhDhCzZ4tNhK8AZcGga5yssyv"
+        "address": "5S5oxH5vfjUi2YrGkcjfUmJfhDhCzZ4tNhK8AZcGga5yssyv",
       },
       {
         "private_key":
@@ -575,7 +575,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "1e38fd6aa4cc7d3d5aa9eec6ad81a89b2dccb384ed9e83310dcc97ada5e87d47",
         "path": "//hard",
-        "address": "5QKejtKNeNF8JDUZ3bCsmbS5JzxwphVb2npeHJfoCUbqRqZW"
+        "address": "5QKejtKNeNF8JDUZ3bCsmbS5JzxwphVb2npeHJfoCUbqRqZW",
       },
       {
         "private_key":
@@ -583,7 +583,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "12314867d78d4312d5767aef34aa9b84674b01f95de3c84859bc69db97e02e11",
         "path": "//1",
-        "address": "5Q3ssmVwdMYxa5XuRt3taYXLH7m27bQCqBRyW5uANRGKJG5e"
+        "address": "5Q3ssmVwdMYxa5XuRt3taYXLH7m27bQCqBRyW5uANRGKJG5e",
       },
       {
         "private_key":
@@ -591,7 +591,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "8a3a598b08c3b473fbdb6cfd8e9fa7c039d1e1da2ddadb8038bb6233bb321819",
         "path": "/0",
-        "address": "5SmGKGLzSJ4nRTMVr5GSeCPPv9TKnRFFahbu8QsmeiFNCuTP"
+        "address": "5SmGKGLzSJ4nRTMVr5GSeCPPv9TKnRFFahbu8QsmeiFNCuTP",
       },
       {
         "private_key":
@@ -599,7 +599,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "9009dd73a10f95e1e38d4b48cd7a4f33b4818cb8a1a459f40aefee084424ff79",
         "path": "//12",
-        "address": "5SttCZFEHFnMifyjVBRwrNnJ3Jkkj7Q8fAFyrC7kkZzug9Uu"
+        "address": "5SttCZFEHFnMifyjVBRwrNnJ3Jkkj7Q8fAFyrC7kkZzug9Uu",
       },
       {
         "private_key":
@@ -607,9 +607,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "002ae52405c711f9491613fff34dec1a98f1faa23c1116134f4606281cef111d",
         "path": "/soft",
-        "address": "5PeF7ibXbVA19CjhnTjzsLvcHRSzSJE9iXjQWCJusaUjof2A"
-      }
-    ]
+        "address": "5PeF7ibXbVA19CjhnTjzsLvcHRSzSJE9iXjQWCJusaUjof2A",
+      },
+    ],
   },
   {
     "seed": "29d7841cc3d184a4c88d0ffdb401b3f4a701f87ad6aa6437209564acc60095ca",
@@ -627,7 +627,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "54f9fefbef2d9feb044168900ccf0ba16b1563031b557affbadee097323f2c08",
         "path": "//0",
-        "address": "32fcTU7gHKmNCxkGKa1ASzoopXKEENjGd2YcGeMRNVH1vhai"
+        "address": "32fcTU7gHKmNCxkGKa1ASzoopXKEENjGd2YcGeMRNVH1vhai",
       },
       {
         "private_key":
@@ -635,7 +635,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "5a2b2535711d558d794279cabee2c05fabef146588b50163846426e4eaede829",
         "path": "/1",
-        "address": "32nRJBGbPU17PBWEWms2aL88vWVwzLBtZUhavtQsB2BVEYnj"
+        "address": "32nRJBGbPU17PBWEWms2aL88vWVwzLBtZUhavtQsB2BVEYnj",
       },
       {
         "private_key":
@@ -643,7 +643,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "ced64a1498db1b13b2cbaf6ff8dc3031c1481cb6b405435d2d5fcfd3b5672763",
         "path": "//hard",
-        "address": "35RPh689GqyFiyrC1ruQ1NefiLdZf4vKR3PZYsDZj6khXuGa"
+        "address": "35RPh689GqyFiyrC1ruQ1NefiLdZf4vKR3PZYsDZj6khXuGa",
       },
       {
         "private_key":
@@ -651,7 +651,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "9412dbac6d989509c196e5c72e0906d74f5bd2e5fc86e77dd36fe9da6c265279",
         "path": "//1",
-        "address": "346LroVq2w83VuoBUDzdSqVLBP6qGA8bcm8GSdxXUu8e5SdB"
+        "address": "346LroVq2w83VuoBUDzdSqVLBP6qGA8bcm8GSdxXUu8e5SdB",
       },
       {
         "private_key":
@@ -659,7 +659,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "a8f0c7b6e6b03b8be66b58fb07fd8c01bf0d23a95273d9709dc042f905063018",
         "path": "/0",
-        "address": "34Zhjyapsbe2eZ99LizJ29mV3tJVLMXHJNivuVcsjRB9XZrw"
+        "address": "34Zhjyapsbe2eZ99LizJ29mV3tJVLMXHJNivuVcsjRB9XZrw",
       },
       {
         "private_key":
@@ -667,7 +667,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "844fb044a8ca4806247f9a9da2e89e08f064e12f2c22c54ce429471e1b22ae7a",
         "path": "//12",
-        "address": "33jgAT33ZFTeqB3h4J9dKuWEgzMMrT2ZF51EyJ6AkDb5RvBL"
+        "address": "33jgAT33ZFTeqB3h4J9dKuWEgzMMrT2ZF51EyJ6AkDb5RvBL",
       },
       {
         "private_key":
@@ -675,9 +675,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "20cc1f01e41f5b472cae67fd324c181e7f09e73bb4ed9c5d0b9a27c94e669107",
         "path": "/soft",
-        "address": "31VCLeBAARZHeXbgvt7gKzyEjMSZFsLRfyFHC2aN7mSDJZfR"
-      }
-    ]
+        "address": "31VCLeBAARZHeXbgvt7gKzyEjMSZFsLRfyFHC2aN7mSDJZfR",
+      },
+    ],
   },
   {
     "seed": "499e789ab3c7e0eb83b0747c029d3f6aeddec4afe8d6dcde65a7e0db0feff779",
@@ -695,7 +695,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "1663d6997e7b82a1a9d5542d9c21895d23d6d2bb730c0304f8f4241f063dcb17",
         "path": "//0",
-        "address": "1WMiGv4Xsve9gNH36p4dePzyECSq7pzLQd8tSMwZzW5xvv9"
+        "address": "1WMiGv4Xsve9gNH36p4dePzyECSq7pzLQd8tSMwZzW5xvv9",
       },
       {
         "private_key":
@@ -703,7 +703,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "aed3841620019a826cc08c22ea5064907054c4278318051da3355be528f60c1a",
         "path": "/1",
-        "address": "14xEAb5noA1bXTrbTKJ3t9LYAZbw9CaPafU4bNuafUcDLbC9"
+        "address": "14xEAb5noA1bXTrbTKJ3t9LYAZbw9CaPafU4bNuafUcDLbC9",
       },
       {
         "private_key":
@@ -711,7 +711,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "bedc1a9f8a468138fdb918e690fb8f85dc21af140ea2cf4ab4b972dc72d2ad7a",
         "path": "//hard",
-        "address": "15KFUzbXbnteWP1T68QevmQG9rJmvAx8uCzjwXvsygsL8aGb"
+        "address": "15KFUzbXbnteWP1T68QevmQG9rJmvAx8uCzjwXvsygsL8aGb",
       },
       {
         "private_key":
@@ -719,7 +719,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "bc6eb7b6197420c0c1ce2fe01e549f1a7e57adcafa99433b6360612ad0588555",
         "path": "//1",
-        "address": "15G4tknxYv8XFK22vb8dLS7x5Q8wmvu5DFgEpbf6QNEpWNoA"
+        "address": "15G4tknxYv8XFK22vb8dLS7x5Q8wmvu5DFgEpbf6QNEpWNoA",
       },
       {
         "private_key":
@@ -727,7 +727,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "365a91636b1b1c7fb2081579f4036c50dd8c237ec024328edbe287b30818167b",
         "path": "/0",
-        "address": "12EGVRawny5UUqTNi5XBmwqJm8CkWFzEg9S9FUUW3is2dksJ"
+        "address": "12EGVRawny5UUqTNi5XBmwqJm8CkWFzEg9S9FUUW3is2dksJ",
       },
       {
         "private_key":
@@ -735,7 +735,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "2e975fc8ad60e4ff601348fb8d8d17627635c41b656a590f3840a27929132557",
         "path": "//12",
-        "address": "1246AsbgL1ieR227Hrg74sPwYkbRzAvnYVBZMFQgYs7pXSKa"
+        "address": "1246AsbgL1ieR227Hrg74sPwYkbRzAvnYVBZMFQgYs7pXSKa",
       },
       {
         "private_key":
@@ -743,9 +743,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "fc06170062cb4f3be9b30286c8019c6570f5b0c416694bbbd80cd38c239a7501",
         "path": "/soft",
-        "address": "16hSsotpkp1GmwELTZnsZn5Sk812m8PMoHD3z34fnbTeC7Y7"
-      }
-    ]
+        "address": "16hSsotpkp1GmwELTZnsZn5Sk812m8PMoHD3z34fnbTeC7Y7",
+      },
+    ],
   },
   {
     "seed": "bd2364eafef8f2bfac89d19d5e500d10260d7189b43a768e6481a305e7c068f3",
@@ -763,7 +763,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "ba1d572f614acc586142910af8c3d051a80f6a6167723b9f3cc84ad42dfac850",
         "path": "//0",
-        "address": "34xDnwzxLafY5VzbKH1oA2xuFykuGXZzqYHk5zs3sfs4cZ8F"
+        "address": "34xDnwzxLafY5VzbKH1oA2xuFykuGXZzqYHk5zs3sfs4cZ8F",
       },
       {
         "private_key":
@@ -771,7 +771,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "520fcb8214128fb6458635d41d8a706f063a96cf70beea3724297af92ec3e969",
         "path": "/1",
-        "address": "32bnnitdNTdoVzJt4ppr1X4NwVDwbiYwwsmq5ir68YygENHV"
+        "address": "32bnnitdNTdoVzJt4ppr1X4NwVDwbiYwwsmq5ir68YygENHV",
       },
       {
         "private_key":
@@ -779,7 +779,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "ae635c4b4b5056f758fd65dd80820baddeec88a46883440e5ffdb3ff88632c68",
         "path": "//hard",
-        "address": "34gr2374NUBPscGCv1WbwAw9as4VLvnKmi5XFrrufp5Zc2om"
+        "address": "34gr2374NUBPscGCv1WbwAw9as4VLvnKmi5XFrrufp5Zc2om",
       },
       {
         "private_key":
@@ -787,7 +787,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "46a01dbacd368ffd87259ead73c8e31c0af610046f16efbf5e11804b14b31979",
         "path": "//1",
-        "address": "32Lo5zT2goNnfcF5j9XwqAqEXqWSH5Hm2jC6AkCEVZhWV8Kf"
+        "address": "32Lo5zT2goNnfcF5j9XwqAqEXqWSH5Hm2jC6AkCEVZhWV8Kf",
       },
       {
         "private_key":
@@ -795,7 +795,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "241cfb55d23209931266d0d40530c935051b4c94fd8f1b0d4d7391ab30b3e232",
         "path": "/0",
-        "address": "31ZYWAqNXcNGqGaanXWkgCdR6KMcgNos6pbrGt6PmNmLyHfA"
+        "address": "31ZYWAqNXcNGqGaanXWkgCdR6KMcgNos6pbrGt6PmNmLyHfA",
       },
       {
         "private_key":
@@ -803,7 +803,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "2efcf2189630f8b1ba75ab8e5899d86a3c99c5afc5ed748880c30c7aaf36d418",
         "path": "//12",
-        "address": "31ooWkZNXRyiwim2XKZcnwtbcvuo2oLm7qQVLc1bhh2aL97q"
+        "address": "31ooWkZNXRyiwim2XKZcnwtbcvuo2oLm7qQVLc1bhh2aL97q",
       },
       {
         "private_key":
@@ -811,9 +811,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "1c12c8769562441b0ebd9e9b7439188e578fcf2e10dcb86c99fcfed52445bf43",
         "path": "/soft",
-        "address": "31P16EQocoLn11vUURvnBAdC2sgnN7jpFt5ufF13RcuEZoFj"
-      }
-    ]
+        "address": "31P16EQocoLn11vUURvnBAdC2sgnN7jpFt5ufF13RcuEZoFj",
+      },
+    ],
   },
   {
     "seed": "a9ab54d60883fa08cea39b3cc597e2d8c2a50129a62e3f90b259ceac67adcfb5",
@@ -831,7 +831,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "8414f27633269c22b2d49e9ee4c46ff5cee8a4ea34fc3712f837cf169e8fb97a",
         "path": "//0",
-        "address": "23rn8SKsJFyfbmwugc5a63Ri3GjeZkKWSUKiEhudkkoVtfg3"
+        "address": "23rn8SKsJFyfbmwugc5a63Ri3GjeZkKWSUKiEhudkkoVtfg3",
       },
       {
         "private_key":
@@ -839,7 +839,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "3a228dac02a7662f15ecf5a7675d89fc3780e5523f25d44daf6400c3e9e6973c",
         "path": "/1",
-        "address": "22BpdM6KAhGauWZVciuwWzcqfS5Eio6d8kxmS5ChsifG7L2p"
+        "address": "22BpdM6KAhGauWZVciuwWzcqfS5Eio6d8kxmS5ChsifG7L2p",
       },
       {
         "private_key":
@@ -847,7 +847,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "b6e6d41769e8e1fd5d82eacc8987e5a144d1cada0d24721f92cd3dc4db796b64",
         "path": "//hard",
-        "address": "251QsUVfSCdCcvQrNVm3REUiqpQjzjvuNPFivDtUt64XjqgL"
+        "address": "251QsUVfSCdCcvQrNVm3REUiqpQjzjvuNPFivDtUt64XjqgL",
       },
       {
         "private_key":
@@ -855,7 +855,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "1aff1ce757a43d5219530ee6890b903bb8c99b29444fda8be65d31dc9b306f5b",
         "path": "//1",
-        "address": "21UzcdCT6u7YuGyyMLSorGKtBGFMbYwdgZDgHFKpZsyJMWa3"
+        "address": "21UzcdCT6u7YuGyyMLSorGKtBGFMbYwdgZDgHFKpZsyJMWa3",
       },
       {
         "private_key":
@@ -863,7 +863,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "9837f1e1c45d171969a878b771c6cfdadd09f3b9208d3049d9af38eca1a69055",
         "path": "/0",
-        "address": "24KBUyqB6bGLwaWhu6UTg3yAefchmFvdg22MJg6XJVhxnMgD"
+        "address": "24KBUyqB6bGLwaWhu6UTg3yAefchmFvdg22MJg6XJVhxnMgD",
       },
       {
         "private_key":
@@ -871,7 +871,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "04b11f256698a15d7a3af7dc010645eb99c121436b5727950c2f9d2f179cff76",
         "path": "//12",
-        "address": "zykPmPsW75o2cnictCchn7uhptWm9V7cTc2wJzg4SuLDabN"
+        "address": "zykPmPsW75o2cnictCchn7uhptWm9V7cTc2wJzg4SuLDabN",
       },
       {
         "private_key":
@@ -879,9 +879,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "88f63ad72f3bb9a06c602bffd9bcb1d6c51190b16ae63a703045896a5880cf4b",
         "path": "/soft",
-        "address": "23yBF5Tug5Zcg3UtqVTPiM7Y9bRwc6wnXnnqYnXwUw54yHd5"
-      }
-    ]
+        "address": "23yBF5Tug5Zcg3UtqVTPiM7Y9bRwc6wnXnnqYnXwUw54yHd5",
+      },
+    ],
   },
   {
     "seed": "bd7d9d7c09620a2a9fd8096a02e93d8b35b8edf2b8959569518e4e1278adf9a0",
@@ -899,7 +899,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "7ca86a2e0f38077fb7fdfee913958c08e08ec075381bd01947aa1d106bdf1033",
         "path": "//0",
-        "address": "33Ze8wxTfUeNzWJyt34rfrUdDQageNuFjtm3Wh6KSLrV29MY"
+        "address": "33Ze8wxTfUeNzWJyt34rfrUdDQageNuFjtm3Wh6KSLrV29MY",
       },
       {
         "private_key":
@@ -907,7 +907,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "8ed43c0adab6f0a3a499c8904bcd34cb533fd4a13060983058fb6b8b694c7856",
         "path": "/1",
-        "address": "33yU1wJj8G4nYintNhGN3dyYGZa2ncuzMZrQqbNbuZkVVwXN"
+        "address": "33yU1wJj8G4nYintNhGN3dyYGZa2ncuzMZrQqbNbuZkVVwXN",
       },
       {
         "private_key":
@@ -915,7 +915,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "1e28670d59f6be9cf422e83af47d997c8970ec6fbe8ff5861000e587885f6a40",
         "path": "//hard",
-        "address": "31RjcHJ72sdtJsRjJiVjkjr3pVtHDJNY17hwBBACqugiggP6"
+        "address": "31RjcHJ72sdtJsRjJiVjkjr3pVtHDJNY17hwBBACqugiggP6",
       },
       {
         "private_key":
@@ -923,7 +923,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "62466d06c798e8418540d001538667492f2c2a01afe4141700f26f23503c9e00",
         "path": "//1",
-        "address": "32y3nRqjKVBtArn6bH99nixPsemGJR2czjxE9ZUcUHihPakL"
+        "address": "32y3nRqjKVBtArn6bH99nixPsemGJR2czjxE9ZUcUHihPakL",
       },
       {
         "private_key":
@@ -931,7 +931,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "f650158fb235e7e6d4730c04a9d8ead76dd840f4b2c9769e0a0133441e195039",
         "path": "/0",
-        "address": "36K9jt2xeA2LSxtmgAy5wz5vzcZdC2Ac8nAUAyaSD8WtJQav"
+        "address": "36K9jt2xeA2LSxtmgAy5wz5vzcZdC2Ac8nAUAyaSD8WtJQav",
       },
       {
         "private_key":
@@ -939,7 +939,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "b6da39508104b35813a277a3601cc5af65e6f4f35801fbca780c52625c797d0d",
         "path": "//12",
-        "address": "34swiDvYbLn5qq4Y3VaWVcdCnZX5V6uTMWxG8CcL6dwkdXBv"
+        "address": "34swiDvYbLn5qq4Y3VaWVcdCnZX5V6uTMWxG8CcL6dwkdXBv",
       },
       {
         "private_key":
@@ -947,9 +947,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "ba3886b8f891ee24e5e22199da998ce1b9215e31459703bf75a6aa0f892c384c",
         "path": "/soft",
-        "address": "34xMsM7ovFNxvTU8HAZgLBeVatQkHHe7y8km73bHrYVGx8Qw"
-      }
-    ]
+        "address": "34xMsM7ovFNxvTU8HAZgLBeVatQkHHe7y8km73bHrYVGx8Qw",
+      },
+    ],
   },
   {
     "seed": "205dc9cb31c63c30f427581b595305bc26c530a43674f6b0c076f25b672496a0",
@@ -967,7 +967,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "66c8933b95c4578f2a3b80d1052c2ab2a91560fc4b05b7edfffdaa09a961fa2b",
         "path": "//0",
-        "address": "13KmU7fZg2bijc3fTLFx3JPF3XmtLtVWH61d1CUwrHZmvAVv"
+        "address": "13KmU7fZg2bijc3fTLFx3JPF3XmtLtVWH61d1CUwrHZmvAVv",
       },
       {
         "private_key":
@@ -975,7 +975,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "8c7b2d9e6462415bb10042861c718b929dbd9865e3e1fd44a714a66b2cd59834",
         "path": "/1",
-        "address": "14BCJ8pHTFf22zJzQwvs6e4zuy5WUTU8r3jegGLHhnHiad29"
+        "address": "14BCJ8pHTFf22zJzQwvs6e4zuy5WUTU8r3jegGLHhnHiad29",
       },
       {
         "private_key":
@@ -983,7 +983,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "bc4d4da8c6301f9294775cb2752cfabef7e5238b82bc2edb561ea9e6092cab5b",
         "path": "//hard",
-        "address": "15Fty3Mj7uFmzwjUgEb1SeGURfR84EbFfUYJEm2XnQxQh4i4"
+        "address": "15Fty3Mj7uFmzwjUgEb1SeGURfR84EbFfUYJEm2XnQxQh4i4",
       },
       {
         "private_key":
@@ -991,7 +991,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "4cb3351f1230dccf9109a647fd381866d7ded6631fa718260ccc293616637e65",
         "path": "//1",
-        "address": "12jZskTM5VU5WwWFnEQnzSK2AP9v6L7rFUnitziyncZjpmaJ"
+        "address": "12jZskTM5VU5WwWFnEQnzSK2AP9v6L7rFUnitziyncZjpmaJ",
       },
       {
         "private_key":
@@ -999,7 +999,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "ba3081a7289526529dc00814e60e67232746f2fb8869f886eead2c93963b9138",
         "path": "/0",
-        "address": "15D8KKxzL8bqEMhBd7tTTKFPS47BNm4uxzHixVzTKzUZSRNT"
+        "address": "15D8KKxzL8bqEMhBd7tTTKFPS47BNm4uxzHixVzTKzUZSRNT",
       },
       {
         "private_key":
@@ -1007,7 +1007,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "32c6c7b4aebce8cfbd59af65fec40124fbba87889ab312827359d97ffd81660f",
         "path": "//12",
-        "address": "129aSmVLXNmbVcViU8GpUmNGnRGprJQQeUZGC5tHKWqBfzxy"
+        "address": "129aSmVLXNmbVcViU8GpUmNGnRGprJQQeUZGC5tHKWqBfzxy",
       },
       {
         "private_key":
@@ -1015,9 +1015,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "0cdff0e7cb71232efa7c59e64a196cc4f532ea0eb1392611ce0966ac258fa746",
         "path": "/soft",
-        "address": "1Ht6k34gPmuJcGvnfPD35oVmBdpj3S1y22XRqQavjpnbEiQ"
-      }
-    ]
+        "address": "1Ht6k34gPmuJcGvnfPD35oVmBdpj3S1y22XRqQavjpnbEiQ",
+      },
+    ],
   },
   {
     "seed": "ac11f27001328a14e7317f8986f44c0dfc55f55829d4e3b0862a839caf8f9614",
@@ -1035,7 +1035,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "1a2418f87123312c3bebcd35a0e1ef54e215b0e3999b2fc6f257eb2c78c33e5f",
         "path": "//0",
-        "address": "1bGyA4k6vC3Kbh8qXkufVQpfFFX3TQcJU27PQZNwDzXvQaP"
+        "address": "1bGyA4k6vC3Kbh8qXkufVQpfFFX3TQcJU27PQZNwDzXvQaP",
       },
       {
         "private_key":
@@ -1043,7 +1043,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "605ea51b34d42ea31a76f95765187156abc6c1e8396200c333a40acf0175d65a",
         "path": "/1",
-        "address": "13BMiKMhQgNtsP9G3goHgtPNRB7tDd3kVRgM4LrMdRSEARsk"
+        "address": "13BMiKMhQgNtsP9G3goHgtPNRB7tDd3kVRgM4LrMdRSEARsk",
       },
       {
         "private_key":
@@ -1051,7 +1051,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "fecb7e7680d13f0545bec8bc60b4a5eaea3116a4804f934d41ff932a6ed06838",
         "path": "//hard",
-        "address": "16m5cZL49Nw6NBTCgRA5xV61RckmosgwyxzZGuSFaGPd7cTZ"
+        "address": "16m5cZL49Nw6NBTCgRA5xV61RckmosgwyxzZGuSFaGPd7cTZ",
       },
       {
         "private_key":
@@ -1059,7 +1059,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "bc625b9723c78cbf35e9df396884facb47903b80e57bd04166504d9482c5c264",
         "path": "//1",
-        "address": "15G1DoPd2bFrjm23hksFZe1ddo7CpMKAAo5D7ch2h1nANuTL"
+        "address": "15G1DoPd2bFrjm23hksFZe1ddo7CpMKAAo5D7ch2h1nANuTL",
       },
       {
         "private_key":
@@ -1067,7 +1067,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "f2b2c2fe19346ed4e0c98f186371211505c08a6166e0e2949022115145ef9f33",
         "path": "/0",
-        "address": "16VDh6usJnLwHc7LxtfKBH85FpbjMmHZbXGC4gmjArGoPdy8"
+        "address": "16VDh6usJnLwHc7LxtfKBH85FpbjMmHZbXGC4gmjArGoPdy8",
       },
       {
         "private_key":
@@ -1075,7 +1075,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "9e5ab9dc8c8f8b72f94b545d737a34e7a9db2924688c5328e054643c09667334",
         "path": "//12",
-        "address": "14adWzKxAyQfYuubJs1NmnAGaq9x4W5CgWU6VXuDtRtxNHP1"
+        "address": "14adWzKxAyQfYuubJs1NmnAGaq9x4W5CgWU6VXuDtRtxNHP1",
       },
       {
         "private_key":
@@ -1083,9 +1083,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "72ecdbfeb0b0eb58312ac6cde137cc8df7e1d4b5beb37e593d18fe2311a61708",
         "path": "/soft",
-        "address": "13bgpc7NvHhsNA4W4egmL3FZ4jXafkryyKs8MkJrwYLv7a3z"
-      }
-    ]
+        "address": "13bgpc7NvHhsNA4W4egmL3FZ4jXafkryyKs8MkJrwYLv7a3z",
+      },
+    ],
   },
   {
     "seed": "1d6003ab1270c6baa8f3c56ced146d7e9a246e8a198c391546f9b142db0a5afa",
@@ -1103,7 +1103,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "a00590ad1174188f736ee67f99c4a2f7ebd12802f55ff9d649b158af90eece32",
         "path": "//0",
-        "address": "34N1V6dZk69XGjTQGDAqcZSFmC7eyX6stnAJijj5JLPLnMpE"
+        "address": "34N1V6dZk69XGjTQGDAqcZSFmC7eyX6stnAJijj5JLPLnMpE",
       },
       {
         "private_key":
@@ -1111,7 +1111,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "86465bf1c5d342fe1f89cee33594c654ae864bf5219bc724e1db74a591a6a515",
         "path": "/1",
-        "address": "33nFVGBvDMPKVX1x66Jv6Vf9NQ994L2W6JVm9NBSK2r9Rxh1"
+        "address": "33nFVGBvDMPKVX1x66Jv6Vf9NQ994L2W6JVm9NBSK2r9Rxh1",
       },
       {
         "private_key":
@@ -1119,7 +1119,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "72fc75850b57abbaa061aa7b8cb856d1eab78ede70159744e941990736cc0b35",
         "path": "//hard",
-        "address": "33LxdDzCip6ojbK84pj53fsHbRsyVrBqeQG7Y5k1QfDRK66r"
+        "address": "33LxdDzCip6ojbK84pj53fsHbRsyVrBqeQG7Y5k1QfDRK66r",
       },
       {
         "private_key":
@@ -1127,7 +1127,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "968cd220cd6a20081ba1a8eea112f40388173596f6173b6fc6b04243cde61834",
         "path": "//1",
-        "address": "349bBj3ejkG7SbFP5Csg2eLrdHuBjwAwfUYAssreUSLWT42j"
+        "address": "349bBj3ejkG7SbFP5Csg2eLrdHuBjwAwfUYAssreUSLWT42j",
       },
       {
         "private_key":
@@ -1135,7 +1135,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "0659835a3a8729a6040358900b19f8c9562209d66bc6db41932e8c5b4eed5910",
         "path": "/0",
-        "address": "2ztX3nGYHCw5vU7T1dV1X2rhGSeraDt8dubSpUow72fEugmA"
+        "address": "2ztX3nGYHCw5vU7T1dV1X2rhGSeraDt8dubSpUow72fEugmA",
       },
       {
         "private_key":
@@ -1143,7 +1143,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "16d0d08c12b2db37bc968c688e1238d5423d8036f6f9084a08d96ae1b9096b7a",
         "path": "//12",
-        "address": "31G7FjeD1HG5nusQq3VF1JVRMoBZwCPv9jWJpFoDcz4FfUdB"
+        "address": "31G7FjeD1HG5nusQq3VF1JVRMoBZwCPv9jWJpFoDcz4FfUdB",
       },
       {
         "private_key":
@@ -1151,9 +1151,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "fe9c8ffc1ce33a4aa3f12fb943adfb3d2feb8db29559d5306458a2f99d5b2479",
         "path": "/soft",
-        "address": "36W2qnfo4muQwntTXr3oKLGTpv5Xwdn3U8yKc1YBG1wsZ6FD"
-      }
-    ]
+        "address": "36W2qnfo4muQwntTXr3oKLGTpv5Xwdn3U8yKc1YBG1wsZ6FD",
+      },
+    ],
   },
   {
     "seed": "c31e132b9ac941cd51c2617d8377e921cda8549cf9f54ad7e181c97fc3d44076",
@@ -1171,7 +1171,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "544d0ee5a0657dc43b4c30994f9e68354dd218144345d78b50d0c588e0c50d52",
         "path": "//0",
-        "address": "EUrRxh6YvRm75xoQAezou1xErE4sGcaKnANCgtTZaRm9cDx"
+        "address": "EUrRxh6YvRm75xoQAezou1xErE4sGcaKnANCgtTZaRm9cDx",
       },
       {
         "private_key":
@@ -1179,7 +1179,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "ceb64cfdd59d0528c9143ef85fac411a97ebd5a8811902747735fca9ecb80209",
         "path": "/1",
-        "address": "HFMY5c7nmFxkpZw9KsVBneegrCLeknGQUXViSj7EY1nX43R"
+        "address": "HFMY5c7nmFxkpZw9KsVBneegrCLeknGQUXViSj7EY1nX43R",
       },
       {
         "private_key":
@@ -1187,7 +1187,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "a29f000d1c00b5612f2f4406f800b154e8082ca16ec15d8bcadc3f2f0a89f040",
         "path": "//hard",
-        "address": "GFYWRGy9JeZKQdcQxFUjiE4gBXomcnEfC6k84HyYxDuMp7X"
+        "address": "GFYWRGy9JeZKQdcQxFUjiE4gBXomcnEfC6k84HyYxDuMp7X",
       },
       {
         "private_key":
@@ -1195,7 +1195,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "48face5e99d40a9dfa0e2dcfb8736355392557f4208ed3ae95a20a4851b9c869",
         "path": "//1",
-        "address": "EE1UEuWXAYH4jfWrdijHuRFD9hoSrbTNu8wUcS1fSMUEBwx"
+        "address": "EE1UEuWXAYH4jfWrdijHuRFD9hoSrbTNu8wUcS1fSMUEBwx",
       },
       {
         "private_key":
@@ -1203,7 +1203,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "26d58318319f7f04ecb76b76d4edaeac4653fa4366cca2b4e00b058362afa751",
         "path": "/0",
-        "address": "DTEmFV1oBKpPdhwSMF3VFRpTFXwpgGzB2ASUAzB19QMKuLV"
+        "address": "DTEmFV1oBKpPdhwSMF3VFRpTFXwpgGzB2ASUAzB19QMKuLV",
       },
       {
         "private_key":
@@ -1211,7 +1211,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "247f7c4c90d7574be31a4af24ce5d4618f9587d7a1a10fb3931560ee502eab58",
         "path": "//12",
-        "address": "DQB7VYqto9TMgaKfjBVS7VFZexn4sUpKDKCdV9CiSmiXScj"
+        "address": "DQB7VYqto9TMgaKfjBVS7VFZexn4sUpKDKCdV9CiSmiXScj",
       },
       {
         "private_key":
@@ -1219,9 +1219,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "4c8554ce261daf8d89a0a94eedee9c382795f0e65c2ab4c48623a29be43e2f3a",
         "path": "/soft",
-        "address": "EJemJeaky4qdRHXVsx6GaZvXNxjNMphRqHPgFivK671Q3u1"
-      }
-    ]
+        "address": "EJemJeaky4qdRHXVsx6GaZvXNxjNMphRqHPgFivK671Q3u1",
+      },
+    ],
   },
   {
     "seed": "5ff449b6535c14aec63a453971198a93e86a20af80810859955d0eb86a9070bb",
@@ -1239,7 +1239,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "c088cc34e63b914ac04ad4dfb7481c19931d6033b987943cab6c79f630fd6d5c",
         "path": "//0",
-        "address": "356e14CUcF3M59q1vr4SKLfSykvcY7axShLvBaz7erHbiMpa"
+        "address": "356e14CUcF3M59q1vr4SKLfSykvcY7axShLvBaz7erHbiMpa",
       },
       {
         "private_key":
@@ -1247,7 +1247,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "a8a61b7be3390c883b9a25740ff3330b7f7c38673956a1d6e069772b1b7d7378",
         "path": "/1",
-        "address": "34ZKZPq5pam1gWnn7Zz6FTC7TmbpN6ZhGFrZ8jJX9gaiP2Rg"
+        "address": "34ZKZPq5pam1gWnn7Zz6FTC7TmbpN6ZhGFrZ8jJX9gaiP2Rg",
       },
       {
         "private_key":
@@ -1255,7 +1255,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "f20ada38f850c32d491cbf2b07ecf697150f79928ea453a41871425fce3df84c",
         "path": "//hard",
-        "address": "36DYywD7KRVNLsBumHwVTJaMJckVRnHePe8Yfs4AHryHL8ke"
+        "address": "36DYywD7KRVNLsBumHwVTJaMJckVRnHePe8Yfs4AHryHL8ke",
       },
       {
         "private_key":
@@ -1263,7 +1263,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "2a528f60208b4274284aab819c4f003bfbc7ddc7db9cec808a2046fe91e4ae26",
         "path": "//1",
-        "address": "31hghy1kaGs4Ea1PnTDUTSDasSG1LLTjLhmpF3W72WLFLG48"
+        "address": "31hghy1kaGs4Ea1PnTDUTSDasSG1LLTjLhmpF3W72WLFLG48",
       },
       {
         "private_key":
@@ -1271,7 +1271,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "ea21d5c3053ea629c6d463f83e60ff090dec8f1d7ef5351e39d4cf4992e6143d",
         "path": "/0",
-        "address": "363BRhQeKyRfuBHrb1N6v2ZNooVFmCmTwTo8DNpbDi9NVCRE"
+        "address": "363BRhQeKyRfuBHrb1N6v2ZNooVFmCmTwTo8DNpbDi9NVCRE",
       },
       {
         "private_key":
@@ -1279,7 +1279,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "243c0db2c3b06cc85ad2ef1efab5c58eab8a11dd4d43344e21e3dce188869d78",
         "path": "//12",
-        "address": "31ZhjXLQ8Hb15Cz72czeAv6FUTmE7PHHD266AydWKLrz8eK7"
+        "address": "31ZhjXLQ8Hb15Cz72czeAv6FUTmE7PHHD266AydWKLrz8eK7",
       },
       {
         "private_key":
@@ -1287,9 +1287,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "104950587a6a016747f00f9fc975e6edac6a50c22818e6d7c4ef7bcca4774c54",
         "path": "/soft",
-        "address": "317YiSw5FtxuQ5nHyYhFqEaqdBiLAJJg8Y1AP2gk8fkkr7ME"
-      }
-    ]
+        "address": "317YiSw5FtxuQ5nHyYhFqEaqdBiLAJJg8Y1AP2gk8fkkr7ME",
+      },
+    ],
   },
   {
     "seed": "6ebe031d1cd7945e2735a70b54381126a19d21010ac1837eaf7de608e28a052b",
@@ -1307,7 +1307,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "9a1cbc510dd845a0edeb8dde1ee9a30f8ae1352d8f8cb8e997779615c5238a7d",
         "path": "//0",
-        "address": "34EG5emNHhQkJHdbEgAw8es3MzuVHZ3xi67pTLnhJ5uc37qo"
+        "address": "34EG5emNHhQkJHdbEgAw8es3MzuVHZ3xi67pTLnhJ5uc37qo",
       },
       {
         "private_key":
@@ -1315,7 +1315,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "3ae2e387547a8e7a632f01b97a18c1268deb378fc0fb818b1771d87f2b40bc49",
         "path": "/1",
-        "address": "325QM8U8NTd66bjVdCzN2VtuXRgppH2L5p7EgXpREsxxu6L2"
+        "address": "325QM8U8NTd66bjVdCzN2VtuXRgppH2L5p7EgXpREsxxu6L2",
       },
       {
         "private_key":
@@ -1323,7 +1323,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "1458a245bfa0ec220e8739f3a7ae123d0ea464e37de08f203f53e09705c24071",
         "path": "//hard",
-        "address": "31CsTWq2Er68BSZFihL6ahrJmPewshgXAbi8mbsQW4XAvgVC"
+        "address": "31CsTWq2Er68BSZFihL6ahrJmPewshgXAbi8mbsQW4XAvgVC",
       },
       {
         "private_key":
@@ -1331,7 +1331,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "760b59a4bb7bcd18c8f22e7bc757af74cceb59fd4252edb25966f89964c1754e",
         "path": "//1",
-        "address": "33QyC8B1iwU5W4wJfoJ5vEJK8RJCQn2ZV65oGFuhhUKNd35f"
+        "address": "33QyC8B1iwU5W4wJfoJ5vEJK8RJCQn2ZV65oGFuhhUKNd35f",
       },
       {
         "private_key":
@@ -1339,7 +1339,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "ba5093a2373bb3f4e5faa1692c9352d1f37750a94229f59ba506e12add265432",
         "path": "/0",
-        "address": "34xV1j7szgJkECkkRHKBsUwdWcM1rtbgSeJz9jodFWwnf8kA"
+        "address": "34xV1j7szgJkECkkRHKBsUwdWcM1rtbgSeJz9jodFWwnf8kA",
       },
       {
         "private_key":
@@ -1347,7 +1347,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "cc207082f6df464c03c6260db6573e091553c4bc62c23feda71347c75b91793b",
         "path": "//12",
-        "address": "35MqaLL2i6b8S8RUJWpeY6gWVUkXnfTz7Y2jWq8GdQv5RBMq"
+        "address": "35MqaLL2i6b8S8RUJWpeY6gWVUkXnfTz7Y2jWq8GdQv5RBMq",
       },
       {
         "private_key":
@@ -1355,9 +1355,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "2894899e164b61cb35c037171d8e117c9c7ba84fe8e66fc9ad201aa9594bb30c",
         "path": "/soft",
-        "address": "31fQDBGoay6kA6ewYYSbYvF63gsBcPgc4vB1yGM61rLsoPKR"
-      }
-    ]
+        "address": "31fQDBGoay6kA6ewYYSbYvF63gsBcPgc4vB1yGM61rLsoPKR",
+      },
+    ],
   },
   {
     "seed": "655d3830b8508ead2345a211daf223560c74286c75c37a00aacfedb60ca0ac4a",
@@ -1375,7 +1375,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "325498b8d07fc346dff4817fdebd19162a1b82077b2669e06c4c5829e6c38123",
         "path": "//0",
-        "address": "221b7MPcLzkMf4G5EibzQwjLAc9mjnVqUYKw11oWt2hAYo1X"
+        "address": "221b7MPcLzkMf4G5EibzQwjLAc9mjnVqUYKw11oWt2hAYo1X",
       },
       {
         "private_key":
@@ -1383,7 +1383,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "501834ec4bf9013f9ef73956ca068b819301d182b080a07d9affea24c111441d",
         "path": "/1",
-        "address": "22gccBLYmLRujpanaNH2i7e9tgdLA87mPZbfK5ZwfVDM19Cg"
+        "address": "22gccBLYmLRujpanaNH2i7e9tgdLA87mPZbfK5ZwfVDM19Cg",
       },
       {
         "private_key":
@@ -1391,7 +1391,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "0c75f5848ac96a883eced3a24ed4525d7f19a3e3f7f814ccd7a5abe7d1fa750a",
         "path": "//hard",
-        "address": "219wCdt4w3CB5n3nxMByrrcsKcYbfHzbNL5HzBYZrHCSSvTS"
+        "address": "219wCdt4w3CB5n3nxMByrrcsKcYbfHzbNL5HzBYZrHCSSvTS",
       },
       {
         "private_key":
@@ -1399,7 +1399,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "462511139859e2c7e3210234a093b5caec4e406cd57a678489d46697906d7b30",
         "path": "//1",
-        "address": "22TZwyge6RZj9bk7kXyrjXhN9RTviJDsKErj3gmNYtu4MQZH"
+        "address": "22TZwyge6RZj9bk7kXyrjXhN9RTviJDsKErj3gmNYtu4MQZH",
       },
       {
         "private_key":
@@ -1407,7 +1407,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "b6920f09f91e75fb9a607e8a3b5f5f765501d61e5a4dc75998020d4f7386b66d",
         "path": "/0",
-        "address": "24zygvgKwksK4moDqBg1wx5QtZ8AHMFVnD4ZwFUEJHqMRdFz"
+        "address": "24zygvgKwksK4moDqBg1wx5QtZ8AHMFVnD4ZwFUEJHqMRdFz",
       },
       {
         "private_key":
@@ -1415,7 +1415,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "fe728739946a0a0c0adf4cebbdc9656eba4dccbf901984cf7b048862369ff84f",
         "path": "//12",
-        "address": "26dDmdktXq6piyyG9vhcMZhrJPEBnbKdjRq7dbjjrRd1VJF5"
+        "address": "26dDmdktXq6piyyG9vhcMZhrJPEBnbKdjRq7dbjjrRd1VJF5",
       },
       {
         "private_key":
@@ -1423,9 +1423,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "764db1f71a0c159cf8c18ffcf7a9315fc8bd006a7823d8bc03485b0e4bfb345a",
         "path": "/soft",
-        "address": "23YiKJSAi2gSHuiEevgLPKLFypsBM7TLTJ4gLwoDN7huyJyq"
-      }
-    ]
+        "address": "23YiKJSAi2gSHuiEevgLPKLFypsBM7TLTJ4gLwoDN7huyJyq",
+      },
+    ],
   },
   {
     "seed": "2185a0b678d5b3854171a2b5c24429c8b12b7b908723d5b13d3612dc00611f1c",
@@ -1443,7 +1443,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "c0f1ef778e0316d6813dee861175576e0f7f51d51882f3a84790d79d3db19269",
         "path": "//0",
-        "address": "15Mz4hGYnc9UxeURXUp5gSJYGrfRGhVHhWKryLnQf4Re7TDr"
+        "address": "15Mz4hGYnc9UxeURXUp5gSJYGrfRGhVHhWKryLnQf4Re7TDr",
       },
       {
         "private_key":
@@ -1451,7 +1451,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "a0228321f8fccc06efdeed1d40a190ed111d99e7225b66780ce1ded394a11236",
         "path": "/1",
-        "address": "14cxv17w56mMXgG8Nk8C3yRDTtyEofJFQUpAYrCRo2sTVa6S"
+        "address": "14cxv17w56mMXgG8Nk8C3yRDTtyEofJFQUpAYrCRo2sTVa6S",
       },
       {
         "private_key":
@@ -1459,7 +1459,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "e088fe3b310be55646b6c7707e9dc9ee53ee54b233cff315e0bcb411e645e350",
         "path": "//hard",
-        "address": "165QRTLYBWnLpscwbbP8m8c5n74RQaLCYGPAETkvnra4z6TZ"
+        "address": "165QRTLYBWnLpscwbbP8m8c5n74RQaLCYGPAETkvnra4z6TZ",
       },
       {
         "private_key":
@@ -1467,7 +1467,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "c61b5c97626a434fdbe799778322a78660d0681483b854194d38d28f693a1056",
         "path": "//1",
-        "address": "15UkcLejfPr9tzHd9DAPfvgVcJjuEAufsQLua8WnsZWvNn3P"
+        "address": "15UkcLejfPr9tzHd9DAPfvgVcJjuEAufsQLua8WnsZWvNn3P",
       },
       {
         "private_key":
@@ -1475,7 +1475,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "286a361917fffc24f3baf84f6f14a0a01c44f55c781fb618863eaf171679090d",
         "path": "/0",
-        "address": "1uzU57iSHpsiJZUJKqRfK1gc1dT1hWAU5MjKFH9JqTHQxyD"
+        "address": "1uzU57iSHpsiJZUJKqRfK1gc1dT1hWAU5MjKFH9JqTHQxyD",
       },
       {
         "private_key":
@@ -1483,7 +1483,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "7c4bd7d632a9b0c55e3d2ad6a8d769534b5da8e7b362405e4c5b4f35ef968a5b",
         "path": "//12",
-        "address": "13oyU8j52VZgC14NiJ6kGFT4ssDSinxgJjk6wpkSUvmzkRMe"
+        "address": "13oyU8j52VZgC14NiJ6kGFT4ssDSinxgJjk6wpkSUvmzkRMe",
       },
       {
         "private_key":
@@ -1491,9 +1491,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "483b067e74ba438f480f4bb6183d90fb7220ebd66f9ae7f9d55f4191ae7e5823",
         "path": "/soft",
-        "address": "12dhyx6Yg8XnQX7RJ2bn5YMRMgB37ySc3ZD5oQ5zmHpGTxMj"
-      }
-    ]
+        "address": "12dhyx6Yg8XnQX7RJ2bn5YMRMgB37ySc3ZD5oQ5zmHpGTxMj",
+      },
+    ],
   },
   {
     "seed": "a1d3adfb14be55d5871258bb4db2a87966c21971069d88906576c7d80da1b633",
@@ -1511,7 +1511,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "f073d6afe5e1f015d49e3f268a81b477a39fcca3211ca28942e6fdaa6ba09509",
         "path": "//0",
-        "address": "26JsVL5nLm5soNfjNVoqABwuquitFo4DQ6HkLua8wmWrxNE9"
+        "address": "26JsVL5nLm5soNfjNVoqABwuquitFo4DQ6HkLua8wmWrxNE9",
       },
       {
         "private_key":
@@ -1519,7 +1519,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "ca9c6a367f05b9eeb927ec542405bf1be852a487d4915ba122cdf151a3ffe658",
         "path": "/1",
-        "address": "25TFiuS7vmJKfNqKkPJP4Df8gjNBQAmZbeTZqqYSt1Uxh27T"
+        "address": "25TFiuS7vmJKfNqKkPJP4Df8gjNBQAmZbeTZqqYSt1Uxh27T",
       },
       {
         "private_key":
@@ -1527,7 +1527,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "ccdad5421da4a7c13b6bc60752ae0368e8fb152228711c6a7e19688c4de83477",
         "path": "//hard",
-        "address": "25WCMu6m3W21HG2QVDUzL7wK3htaC5fB7KhGWEk4Gvdwidaq"
+        "address": "25WCMu6m3W21HG2QVDUzL7wK3htaC5fB7KhGWEk4Gvdwidaq",
       },
       {
         "private_key":
@@ -1535,7 +1535,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "40176eee0095de659ef69f17cd9e5c475337a69e04ca748f4e9bb120b42f6c11",
         "path": "//1",
-        "address": "22KdcR7FAQefHADiGkn7cxSuLV2tMv52gBCR5DwbX12Nvwhc"
+        "address": "22KdcR7FAQefHADiGkn7cxSuLV2tMv52gBCR5DwbX12Nvwhc",
       },
       {
         "private_key":
@@ -1543,7 +1543,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "eed1f591aee9cae38d39171a02d1f697694951ea1290762daada1c8d0b42f811",
         "path": "/0",
-        "address": "26GjMSEn2PmPthY5vpiu8K4arYpToJRyneJAK4t1t2nW729m"
+        "address": "26GjMSEn2PmPthY5vpiu8K4arYpToJRyneJAK4t1t2nW729m",
       },
       {
         "private_key":
@@ -1551,7 +1551,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "94614010d4bc6dd4ffd0231c9cf0fac868dd03c47af9d9da3b876c7586a3164e",
         "path": "//12",
-        "address": "24E9ZYgGmbo4P1WYJkaxyx2G9KiYJ7CcLZ7pxEU3YPsu2wXk"
+        "address": "24E9ZYgGmbo4P1WYJkaxyx2G9KiYJ7CcLZ7pxEU3YPsu2wXk",
       },
       {
         "private_key":
@@ -1559,9 +1559,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "b05d817e0d1130b93d667c370e5ad30dcfaa1488ebb482e9164d63b5603fff09",
         "path": "/soft",
-        "address": "24rqnoAYCh7b64C6DX4h8JS9Vxzowxu7j2skTTYRwJcCt83D"
-      }
-    ]
+        "address": "24rqnoAYCh7b64C6DX4h8JS9Vxzowxu7j2skTTYRwJcCt83D",
+      },
+    ],
   },
   {
     "seed": "ee66f26259aac5c75cae9f9264ef2b0182743e36dd7e05b8c36c4d8e9d1dcb98",
@@ -1579,7 +1579,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "7ef60782d6b5cade6df547060d57a52d48a78d32bd338c043dbf571065a67f02",
         "path": "//0",
-        "address": "23k4hrFiU19uE5ejWoXUdrssZaSBr1EGKGVvzzqfAHYhdxyj"
+        "address": "23k4hrFiU19uE5ejWoXUdrssZaSBr1EGKGVvzzqfAHYhdxyj",
       },
       {
         "private_key":
@@ -1587,7 +1587,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "10df4b34bfe6e6ffd2c7681f7aea3bc502c7d6a8edf197e0f72e206580655f72",
         "path": "/1",
-        "address": "21FigcxzvQUvbL3FzZ8jFg9673XgGDf4ZZWDxpQw5DEopCab"
+        "address": "21FigcxzvQUvbL3FzZ8jFg9673XgGDf4ZZWDxpQw5DEopCab",
       },
       {
         "private_key":
@@ -1595,7 +1595,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "0626ccd29b254d4bc5e304a8aadc1af87623b625dd86e437743c4902275b2a66",
         "path": "//hard",
-        "address": "211fQ6Vq8iVibTQ5yfeTErt2Qc3p47Qmj5whiaKcph78hVxk"
+        "address": "211fQ6Vq8iVibTQ5yfeTErt2Qc3p47Qmj5whiaKcph78hVxk",
       },
       {
         "private_key":
@@ -1603,7 +1603,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "04b344708e20a2cad0abba6f039400a92c69d0133673c7e1f70300c21e776455",
         "path": "//1",
-        "address": "zym2jcAVppcAVWm5rcDb3EGJuxH4yoVvtiiWb3RuUe2a4pq"
+        "address": "zym2jcAVppcAVWm5rcDb3EGJuxH4yoVvtiiWb3RuUe2a4pq",
       },
       {
         "private_key":
@@ -1611,7 +1611,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "40715a1484c8e93c6d47365dfcefb5613feab7dd7e21b048b7bbfd531effdf3a",
         "path": "/0",
-        "address": "22L6KgE6yeJ7uCMbjbb9YtkCLG2E24UWtufqgAFK1NTNX9nQ"
+        "address": "22L6KgE6yeJ7uCMbjbb9YtkCLG2E24UWtufqgAFK1NTNX9nQ",
       },
       {
         "private_key":
@@ -1619,7 +1619,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "e85110442a4e43120fd7e70543834f43b795eee77fdb355fab869b5cd19cf879",
         "path": "//12",
-        "address": "268Cmx68iaks52zoXKiGFN2TmRU7JF7b9wpKKnFK9PzQxSEc"
+        "address": "268Cmx68iaks52zoXKiGFN2TmRU7JF7b9wpKKnFK9PzQxSEc",
       },
       {
         "private_key":
@@ -1627,9 +1627,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "6aadc41fa01f5b3d5a1d3df00b733a2bcdb2da8d5701688a7c08ed0c5bba1a06",
         "path": "/soft",
-        "address": "23HUHEiMs8PJVjGNith47EdH9nSsMAGrdXE4gNeZxQC1j9Dh"
-      }
-    ]
+        "address": "23HUHEiMs8PJVjGNith47EdH9nSsMAGrdXE4gNeZxQC1j9Dh",
+      },
+    ],
   },
   {
     "seed": "0708cb19a275e65ff11aa6cfdb4fafd080388a85ddbad5077e196416ae637a1e",
@@ -1647,7 +1647,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "60c6a2edc5a9728e0788a2025696a11b1e64faae71cb581bafb765c3e6f27436",
         "path": "//0",
-        "address": "32w5mtdJrN6v8BTGNnAyn8urhF4JT3h1a2oZh36Lm4DXav4P"
+        "address": "32w5mtdJrN6v8BTGNnAyn8urhF4JT3h1a2oZh36Lm4DXav4P",
       },
       {
         "private_key":
@@ -1655,7 +1655,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "dc2ff34b9e8989de6518ed9221bc64bc5cd1122f0949e12b7e95b45589c5b32d",
         "path": "/1",
-        "address": "35itx1x8yc6Wdsqgn79RV29VLjFKN3bE8sAux34NW8w96v3j"
+        "address": "35itx1x8yc6Wdsqgn79RV29VLjFKN3bE8sAux34NW8w96v3j",
       },
       {
         "private_key":
@@ -1663,7 +1663,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "c0a7b12488603b4ec4af25704bbae1d51ec0865b7bfaf5ddda4433d018e04926",
         "path": "//hard",
-        "address": "356oBMNV1LTvEXTLz9YGwGHREnNkGyqyziLfcriLDuaTcku8"
+        "address": "356oBMNV1LTvEXTLz9YGwGHREnNkGyqyziLfcriLDuaTcku8",
       },
       {
         "private_key":
@@ -1671,7 +1671,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "f211061c8a3e4b2f6c1475832f28901d246e6affca8da50cb075421667f8af48",
         "path": "//1",
-        "address": "36DapGS8Qr6EFvbTEd7CrLzzarMMnh338mcLZhqKiSjJN1g7"
+        "address": "36DapGS8Qr6EFvbTEd7CrLzzarMMnh338mcLZhqKiSjJN1g7",
       },
       {
         "private_key":
@@ -1679,7 +1679,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "eefb5ae0ebbafaf5571f402b07d61708bc5a3c0b06956b3ed2d2563c39aaa15f",
         "path": "/0",
-        "address": "369YEb7G3R1rspvqFiGZzdnGuhY8jCPKtKZUwoTFvnzHCJ16"
+        "address": "369YEb7G3R1rspvqFiGZzdnGuhY8jCPKtKZUwoTFvnzHCJ16",
       },
       {
         "private_key":
@@ -1687,7 +1687,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "36f832063a424af39118981403e15fe7e0de4deb218dc8797f02443d0a20c609",
         "path": "//12",
-        "address": "31zGV8CRDnzX1A4NpWteroYP6zsoePqqh5Dqm12dKLgdb8nh"
+        "address": "31zGV8CRDnzX1A4NpWteroYP6zsoePqqh5Dqm12dKLgdb8nh",
       },
       {
         "private_key":
@@ -1695,9 +1695,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "82a7dc96b2b814b7f4acb4c33427f1f571b900fff65e23b59e94c1a706a7db16",
         "path": "/soft",
-        "address": "33hWG5kPmLibhowL6gLe755nxk4mdUue1mc755sCMvuk2UKr"
-      }
-    ]
+        "address": "33hWG5kPmLibhowL6gLe755nxk4mdUue1mc755sCMvuk2UKr",
+      },
+    ],
   },
   {
     "seed": "1470e3ca250f03feba5e24af412295ebb5d628a5b1d4ad332d9472f8d105fc15",
@@ -1715,7 +1715,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "84d301957354701f55a85bff2345310a809af24246cec523931f966032017263",
         "path": "//0",
-        "address": "5SeBNowkPcuDpeQpcE1VbCk4qyH4qLrqap7oGA3PJYF6YKNW"
+        "address": "5SeBNowkPcuDpeQpcE1VbCk4qyH4qLrqap7oGA3PJYF6YKNW",
       },
       {
         "private_key":
@@ -1723,7 +1723,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "ee8ffb172b07e0ff6cca4932ce2318a9a9ae187ffb0032675165fd8ffcb4d46b",
         "path": "/1",
-        "address": "5V2pYPJ7jb7GqWwiPPJnUgTgAzMSYCDvZWwGSCtDN7VRwy7R"
+        "address": "5V2pYPJ7jb7GqWwiPPJnUgTgAzMSYCDvZWwGSCtDN7VRwy7R",
       },
       {
         "private_key":
@@ -1731,7 +1731,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "ecedead3adf0f3744c73e4111eec2ed50f6ef6cfdc64b2dae689366dd2ec1346",
         "path": "//hard",
-        "address": "5UzgMKQz3uFEmFfBXjq8kvAASKvk22fGUNzn1puXUds74r9n"
+        "address": "5UzgMKQz3uFEmFfBXjq8kvAASKvk22fGUNzn1puXUds74r9n",
       },
       {
         "private_key":
@@ -1739,7 +1739,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "c272b2facfd38d9e5b99018b589b3c1c056a1bc59b3f6f3bf651d5403ea0215e",
         "path": "//1",
-        "address": "5U2yjfvCFvj6Bhvio82xUq4SbHiB1s2G8xoLvHcriYKBi2rU"
+        "address": "5U2yjfvCFvj6Bhvio82xUq4SbHiB1s2G8xoLvHcriYKBi2rU",
       },
       {
         "private_key":
@@ -1747,7 +1747,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "f8499a8973b5212619c9720b9f550b2aacf3588e05b934448a308416dba80508",
         "path": "/0",
-        "address": "5VFa7b4WD9Qy7gEfyH9fr2djzwiExYMt8mqWZyvvXSfGjTz7"
+        "address": "5VFa7b4WD9Qy7gEfyH9fr2djzwiExYMt8mqWZyvvXSfGjTz7",
       },
       {
         "private_key":
@@ -1755,7 +1755,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "4cf0549eacfaa86630d12abab15e558d7ddec6d880dc866bd2cee6e08b8b0d7d",
         "path": "//12",
-        "address": "5RNuQXZBrGQ5zLaiqS1VyxKgDtT85hzPQrPNbWD7hqWDFnr7"
+        "address": "5RNuQXZBrGQ5zLaiqS1VyxKgDtT85hzPQrPNbWD7hqWDFnr7",
       },
       {
         "private_key":
@@ -1763,9 +1763,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "68bf21943a826c23f7578561bf3bc625313f4a1e1d221287b13fa48813139677",
         "path": "/soft",
-        "address": "5S1N8c9eZveeXNngBcJmHwjx1KqHrNf54QVi2g228N2rzLm9"
-      }
-    ]
+        "address": "5S1N8c9eZveeXNngBcJmHwjx1KqHrNf54QVi2g228N2rzLm9",
+      },
+    ],
   },
   {
     "seed": "d8554687427b418c01bc3cd76b0583c5fb9c0f78fdd607c736d731bdb3be8f30",
@@ -1783,7 +1783,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "8ad4f66e45cfdf95d89474e82476205811e83f04eba1ef261c45eb1c15bdc50e",
         "path": "//0",
-        "address": "1492sXiu8BSLuFdjoMico8eecJNQY279GRxub1XHLmcCWPLN"
+        "address": "1492sXiu8BSLuFdjoMico8eecJNQY279GRxub1XHLmcCWPLN",
       },
       {
         "private_key":
@@ -1791,7 +1791,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "f0fd0b776a84b904a17c6ca1843ea98fd5e2d2590f0cf161c129101ff466b55b",
         "path": "/1",
-        "address": "16SyfR6BViFUozF76MNyWLNuRmY8qVF1yVsKnqKvQcSt8HXx"
+        "address": "16SyfR6BViFUozF76MNyWLNuRmY8qVF1yVsKnqKvQcSt8HXx",
       },
       {
         "private_key":
@@ -1799,7 +1799,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "78eb3b423b9147dcd3ae16414cf35c376497e1d4927f3038cc46254839168411",
         "path": "//hard",
-        "address": "13jYdDrPNeuSPo7u5k2W4pjfvZdaUAhRCrfE3EfAsaWbcnQD"
+        "address": "13jYdDrPNeuSPo7u5k2W4pjfvZdaUAhRCrfE3EfAsaWbcnQD",
       },
       {
         "private_key":
@@ -1807,7 +1807,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "62c84490357195d152c2482110e549894a480c0fa5d9f026d3a1fc58fa5e7704",
         "path": "//1",
-        "address": "13EXBiEg9VuejuxhS26DsiwK1mEcamq86VzCFAGNBUQLygJE"
+        "address": "13EXBiEg9VuejuxhS26DsiwK1mEcamq86VzCFAGNBUQLygJE",
       },
       {
         "private_key":
@@ -1815,7 +1815,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "f6d5f9275309d4a7fba1edcdddf27950bdf222762d9712260f1df48ec97c4e3c",
         "path": "/0",
-        "address": "16aeLtkqZhKuWgot4io6WusxaDj3NfkUo2V7KpYRct6kFJ26"
+        "address": "16aeLtkqZhKuWgot4io6WusxaDj3NfkUo2V7KpYRct6kFJ26",
       },
       {
         "private_key":
@@ -1823,7 +1823,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "38a295f87e7b672e5e9ac2f15a64aa382dee7b2e59bb7d025e5e77c64e60246f",
         "path": "//12",
-        "address": "12HFypSsATouxBBnN8oNLKNQFqPFb7eNhhoCcL8wdWGgij9o"
+        "address": "12HFypSsATouxBBnN8oNLKNQFqPFb7eNhhoCcL8wdWGgij9o",
       },
       {
         "private_key":
@@ -1831,9 +1831,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "4ec8cbf00691f1a1c4462c224b23ae5808c769fc91195f3343ed8c3752081a18",
         "path": "/soft",
-        "address": "12nJPGzr39h1GVpw7hUZN1LbdfYj3DjVS3k2GQJ2dLw5Vvou"
-      }
-    ]
+        "address": "12nJPGzr39h1GVpw7hUZN1LbdfYj3DjVS3k2GQJ2dLw5Vvou",
+      },
+    ],
   },
   {
     "seed": "06166b4a0bd083f3980f832065f0f1b7258b52d0e7db932b5582383cb346e76b",
@@ -1851,7 +1851,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "54f935562bdccc109c0bfa59572027919a9c39495ae1580d4f17eda63b8d9c5f",
         "path": "//0",
-        "address": "EVja3DsXmkP2emFm3oMcKzuENS5HcZzUvcwUk21cp7KV3HE"
+        "address": "EVja3DsXmkP2emFm3oMcKzuENS5HcZzUvcwUk21cp7KV3HE",
       },
       {
         "private_key":
@@ -1859,7 +1859,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "e09a2e58679e8d589944cb04e69ad8d4d90762015179900eddc92ef21ed36e53",
         "path": "/1",
-        "address": "Hep3ad3vXU1DBJdDfbdaUsNUyez3GKjUk67pm9vBzX6jFB2"
+        "address": "Hep3ad3vXU1DBJdDfbdaUsNUyez3GKjUk67pm9vBzX6jFB2",
       },
       {
         "private_key":
@@ -1867,7 +1867,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "bce0d9a0b8f3eb1854135c411c9a58dfd83114e09db637b7738d19ca51eef522",
         "path": "//hard",
-        "address": "GqyKCNyLrXC33zUfhzcUio5ZzqeDHfXasA2kripMiM76fX5"
+        "address": "GqyKCNyLrXC33zUfhzcUio5ZzqeDHfXasA2kripMiM76fX5",
       },
       {
         "private_key":
@@ -1875,7 +1875,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "843a7c93ff4bdc6324a6c06f854159cdda10406c7e5ac8475e0fdefa6ecb3333",
         "path": "//1",
-        "address": "FZhDHryGzQxws1mb5RnywKjzqixMfaE3btd9ykFNmN9dsRT"
+        "address": "FZhDHryGzQxws1mb5RnywKjzqixMfaE3btd9ykFNmN9dsRT",
       },
       {
         "private_key":
@@ -1883,7 +1883,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "429eb4e6113dc0d3ab651a580424b520056465870d7e9f98fd5b2bfe57ea0e0c",
         "path": "/0",
-        "address": "E5fpjqLTaPvG9QW2yJjSEyD5yiBgXQdbxGAkrHZfnK7jxux"
+        "address": "E5fpjqLTaPvG9QW2yJjSEyD5yiBgXQdbxGAkrHZfnK7jxux",
       },
       {
         "private_key":
@@ -1891,7 +1891,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "1efb60c074db012e30b3b06b2b7735f4f971757f94eef33d00aca7e980e00127",
         "path": "//12",
-        "address": "DGwdSnbbxNLN4UdzDUxGwsg2LnT2v1agwx17k6Qe88C4HRp"
+        "address": "DGwdSnbbxNLN4UdzDUxGwsg2LnT2v1agwx17k6Qe88C4HRp",
       },
       {
         "private_key":
@@ -1899,9 +1899,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "8c216f4d9334b7898a7cc875a388810507e6dcedfb09c2f7b7960abf5407ab49",
         "path": "/soft",
-        "address": "Fk49soAfSvKvfNzEWjtEk89JfgRYrpanfnyWUSXs2hB6ZZG"
-      }
-    ]
+        "address": "Fk49soAfSvKvfNzEWjtEk89JfgRYrpanfnyWUSXs2hB6ZZG",
+      },
+    ],
   },
   {
     "seed": "e4efcc563fb5d27b93ebf7cc4996936a0035ce5de97d951fbd17b86ba5629ddc",
@@ -1919,7 +1919,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "5a7a6b20ed7b8c5bace1fa3f10e4e68388a8bbb309cdc14d6eb9b85bee365536",
         "path": "//0",
-        "address": "32npr2EGZuApjbNN8pRpKvrE4BVY2tq1oZtsZyLHyDw4ArFp"
+        "address": "32npr2EGZuApjbNN8pRpKvrE4BVY2tq1oZtsZyLHyDw4ArFp",
       },
       {
         "private_key":
@@ -1927,7 +1927,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "6048245a359ffe5032393d7f245950d48822f24442cac2cd7a6111be7c86eb22",
         "path": "/1",
-        "address": "32vSCScjZF1awoKg86bb827jyRgzJbjCb6pXh87hQoxuJouA"
+        "address": "32vSCScjZF1awoKg86bb827jyRgzJbjCb6pXh87hQoxuJouA",
       },
       {
         "private_key":
@@ -1935,7 +1935,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "744e993068a4c787ca315bc32ab6893ebe72b97c3cd339427e9080711f1e247a",
         "path": "//hard",
-        "address": "33Nh5EHJLnsc8zp4zRCy7JUT8LHCe7gXR59ey4ZGPsfhP59e"
+        "address": "33Nh5EHJLnsc8zp4zRCy7JUT8LHCe7gXR59ey4ZGPsfhP59e",
       },
       {
         "private_key":
@@ -1943,7 +1943,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "dcbebe7255cf5bdf02a2ff480f36f11e0f03d451c46913475d441c840456793b",
         "path": "//1",
-        "address": "35jdNHwmeMc1EPtGSyCQSDYpY4p93p281Zc7zjB1igiqYm8Q"
+        "address": "35jdNHwmeMc1EPtGSyCQSDYpY4p93p281Zc7zjB1igiqYm8Q",
       },
       {
         "private_key":
@@ -1951,7 +1951,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "8a666d6e85d178df18939feb2d72f2ca4b098ef975096e2a3a51f7e767f15514",
         "path": "/0",
-        "address": "33sfCtvZUEZ6df6VWFnGF22Dse9B79KiHSstTCTysxGnfEEG"
+        "address": "33sfCtvZUEZ6df6VWFnGF22Dse9B79KiHSstTCTysxGnfEEG",
       },
       {
         "private_key":
@@ -1959,7 +1959,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "ccc50136c69f329f0f31c473a624f839cdfbe9299d239e7daf007183057e6434",
         "path": "//12",
-        "address": "35NgTj8YizYptPBdqnHCfaWVZYQGsjEmS5oXEohoi2bzu5ZL"
+        "address": "35NgTj8YizYptPBdqnHCfaWVZYQGsjEmS5oXEohoi2bzu5ZL",
       },
       {
         "private_key":
@@ -1967,9 +1967,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "300be3697f1088716892e22bb1e599ce260615ed350b0771e30635b29ae6a04d",
         "path": "/soft",
-        "address": "31qBzz5FeEXq3vAdc87R7pk5VhdWdk46FHg94n75fBaVQSYz"
-      }
-    ]
+        "address": "31qBzz5FeEXq3vAdc87R7pk5VhdWdk46FHg94n75fBaVQSYz",
+      },
+    ],
   },
   {
     "seed": "b41ae926ba19156396a2da3cab5b7429c969ec4008bf5230281e611698d6d041",
@@ -1987,7 +1987,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "a2349ba7f20b6673eb78b59d74cab0eeb0824ed9cdbf5cc5467270bd42f13506",
         "path": "//0",
-        "address": "GEzuKoSdY2GdAYyY3Z9iWgrmekHHsaj1EwPc3obSyJvtSxK"
+        "address": "GEzuKoSdY2GdAYyY3Z9iWgrmekHHsaj1EwPc3obSyJvtSxK",
       },
       {
         "private_key":
@@ -1995,7 +1995,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "749c3a013a28a6754e7960365282c925e08ccc0f9bb2c256d1d115c73b1ec94c",
         "path": "/1",
-        "address": "FDDUsgVXHWHhQcfcD79mRrGXifFjVjhW6UaX1QwmgsCQs8A"
+        "address": "FDDUsgVXHWHhQcfcD79mRrGXifFjVjhW6UaX1QwmgsCQs8A",
       },
       {
         "private_key":
@@ -2003,7 +2003,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "088819e1ddd71026da911d13b7fda38c3ac9914ac3f46f98a76be53125e3270f",
         "path": "//hard",
-        "address": "CmWLAsCv6U3qk54SGvw8ZFrMw78KWSvPCjag8EL4tH9DxMX"
+        "address": "CmWLAsCv6U3qk54SGvw8ZFrMw78KWSvPCjag8EL4tH9DxMX",
       },
       {
         "private_key":
@@ -2011,7 +2011,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "5cf43a0fb52260c5878b0246706ef37d5a927f905ff5a459f74ddde51e4a4f72",
         "path": "//1",
-        "address": "EgCURknMHtne5QLfPtd9ff2fFq94HLkT8YzjYtpHk9aKjKJ"
+        "address": "EgCURknMHtne5QLfPtd9ff2fFq94HLkT8YzjYtpHk9aKjKJ",
       },
       {
         "private_key":
@@ -2019,7 +2019,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "b0d195bd95dec942314948fafe965a7fd9d7e55f0df6081b39a2d8cf28f1a40c",
         "path": "/0",
-        "address": "GaACrcefPGVHKha9eBPhEacweDxFef4626Dybj2eMrYexuA"
+        "address": "GaACrcefPGVHKha9eBPhEacweDxFef4626Dybj2eMrYexuA",
       },
       {
         "private_key":
@@ -2027,7 +2027,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "a22ac83a440d144954b3e2e9cf94ab3f825db3fe17fac10f6a03241b065cb52c",
         "path": "//12",
-        "address": "GEwz2d5gjU44C5SDzvP5aQHuCU1sx37gBuMvMr2MT3qPGbD"
+        "address": "GEwz2d5gjU44C5SDzvP5aQHuCU1sx37gBuMvMr2MT3qPGbD",
       },
       {
         "private_key":
@@ -2035,9 +2035,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "96548d2e95bc0f848bdc4a7cb4994307d34436819ab46ff709bd4e2b0aba3950",
         "path": "/soft",
-        "address": "FyRpNRhQ1cJPVMzTuyCW2f21E6fb6QAFqLwLVAW6qWAFF9P"
-      }
-    ]
+        "address": "FyRpNRhQ1cJPVMzTuyCW2f21E6fb6QAFqLwLVAW6qWAFF9P",
+      },
+    ],
   },
   {
     "seed": "8fcc935aa88b3f8811c0e0808c8b7934786a52b596af37a10c2f0acc52957287",
@@ -2055,7 +2055,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "6cdc133f8755aee43014d04f294a566a8524f684361c2c3dc15b76edeca35d7f",
         "path": "//0",
-        "address": "5S6kvQjJTfvByLicNeYi2q93MBUFiUxCg9tRhxBckhzrBs8G"
+        "address": "5S6kvQjJTfvByLicNeYi2q93MBUFiUxCg9tRhxBckhzrBs8G",
       },
       {
         "private_key":
@@ -2063,7 +2063,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "e87e9a19594c8504c7b830d3fca611fe0fc7a75febc935e559e52f5245af3b67",
         "path": "/1",
-        "address": "5Uts6Hnv3VeAAJiDHztrKLxcAE5iSa91MQqmfffSmQgiPXQe"
+        "address": "5Uts6Hnv3VeAAJiDHztrKLxcAE5iSa91MQqmfffSmQgiPXQe",
       },
       {
         "private_key":
@@ -2071,7 +2071,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "781532ce9b4f4dd600d01d4ee81c5bf42db2c8a1f1a9997ca3635c97150b1558",
         "path": "//hard",
-        "address": "5SMURAuHoHQETUjFNwED1Eixpvwnh23ezUmyXtXJUutSea3S"
+        "address": "5SMURAuHoHQETUjFNwED1Eixpvwnh23ezUmyXtXJUutSea3S",
       },
       {
         "private_key":
@@ -2079,7 +2079,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "e6639088840baf424ddaef3bf47607cc6c010d69e82e40f71580e828a917d371",
         "path": "//1",
-        "address": "5Ur6xtjPQYWBx3kAEMUgvqFmUA7s4K8SdirwRicc9WAVkZy7"
+        "address": "5Ur6xtjPQYWBx3kAEMUgvqFmUA7s4K8SdirwRicc9WAVkZy7",
       },
       {
         "private_key":
@@ -2087,7 +2087,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "dc6957cd6fc84ca766a05c28b0d7e7c91e5bd5a7c0b370ca3f28b3284b80df29",
         "path": "/0",
-        "address": "5Ud2CgLXBjcXYv9G2dP9xHfFSVxuqxzY1RWaZeompR1Z2MTs"
+        "address": "5Ud2CgLXBjcXYv9G2dP9xHfFSVxuqxzY1RWaZeompR1Z2MTs",
       },
       {
         "private_key":
@@ -2095,7 +2095,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "6c4477f74a3a8824c18206998db8a6ab43fdf359e9d49b800bc4dca810534c1e",
         "path": "//12",
-        "address": "5S5ytHkFnf64vPPduDtVkfyDCS6jSnZGGMUoZBNRfifgabX2"
+        "address": "5S5ytHkFnf64vPPduDtVkfyDCS6jSnZGGMUoZBNRfifgabX2",
       },
       {
         "private_key":
@@ -2103,9 +2103,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "eace26df433a062f47775b2efcf744e5ba49daf6b6d77c6df75e761a5aaea765",
         "path": "/soft",
-        "address": "5UwtpTW4yxt7wDjn8qQAH4AGPyBHHu88zW4eZurobnoWMWNz"
-      }
-    ]
+        "address": "5UwtpTW4yxt7wDjn8qQAH4AGPyBHHu88zW4eZurobnoWMWNz",
+      },
+    ],
   },
   {
     "seed": "6ad6f920e226ddc6b1b682795ee597a261fb27775891687289a29b02e94779e6",
@@ -2123,7 +2123,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "a021c71d5373de59b3e9d7999755559aa2721307e1ccff2e2568fca9ec17c345",
         "path": "//0",
-        "address": "5TFz4zzv6T5j8jRzY5SkvhmJbFdH3Q8AU8j3JTvRn2JFAHDq"
+        "address": "5TFz4zzv6T5j8jRzY5SkvhmJbFdH3Q8AU8j3JTvRn2JFAHDq",
       },
       {
         "private_key":
@@ -2131,7 +2131,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "7ab1013bb8307f0a6e7c76fe537be61ea75cc70d9d8acb3f81dc4b776addeb65",
         "path": "/1",
-        "address": "5SQtoCxz3CK3e4RNXmQXKFpn36dvMoZ8seSLRj6BbXtoAJvw"
+        "address": "5SQtoCxz3CK3e4RNXmQXKFpn36dvMoZ8seSLRj6BbXtoAJvw",
       },
       {
         "private_key":
@@ -2139,7 +2139,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "c06edbd42f9ccaefa9b4a2becab43231ab276b262a487feda356f8b66a4e8476",
         "path": "//hard",
-        "address": "5TzLVwwWJz2sGuJZpmmFS7LQsF5xWy5NHjKGLTv88qavXppz"
+        "address": "5TzLVwwWJz2sGuJZpmmFS7LQsF5xWy5NHjKGLTv88qavXppz",
       },
       {
         "private_key":
@@ -2147,7 +2147,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "4e1d07bcf890590138f5069629e4831d0da27b531441b797fcbe6bda72ad8361",
         "path": "//1",
-        "address": "5RQSjTn9V9JdcAFSayVGRPz4DdAnDdC6gJkBt5Sbdpsf9z4S"
+        "address": "5RQSjTn9V9JdcAFSayVGRPz4DdAnDdC6gJkBt5Sbdpsf9z4S",
       },
       {
         "private_key":
@@ -2155,7 +2155,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "84fca554c1eac957331dc93f4f416692706371f82e642eb91d903f5f38be053d",
         "path": "/0",
-        "address": "5SePkF8bJV9QWHLYgJHFb4wn5xRRnbCTtuPUJPvMw5AM97kZ"
+        "address": "5SePkF8bJV9QWHLYgJHFb4wn5xRRnbCTtuPUJPvMw5AM97kZ",
       },
       {
         "private_key":
@@ -2163,7 +2163,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "b4f6e5209661e10218bed7100c7d3523cc42e5dc6d63c044f20c7598669f1279",
         "path": "//12",
-        "address": "5TjJLUJasMDeSiryTrDPyHPZDnbchoLt54BCMTe9zvgfUssk"
+        "address": "5TjJLUJasMDeSiryTrDPyHPZDnbchoLt54BCMTe9zvgfUssk",
       },
       {
         "private_key":
@@ -2171,9 +2171,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "38c23454ca09200ab9fdfd8547acadaf79f67084d2c566e139d9eb8bee4a0f4d",
         "path": "/soft",
-        "address": "5QvSkFG8vnNA4Vdhb9Dnne6742dMbPcHFqcq9W23NzYjSYWf"
-      }
-    ]
+        "address": "5QvSkFG8vnNA4Vdhb9Dnne6742dMbPcHFqcq9W23NzYjSYWf",
+      },
+    ],
   },
   {
     "seed": "042e745dd88ece8bea4a8fdf35885b2b0f25dfbf6b4753ce398a03719ca35ea7",
@@ -2191,7 +2191,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "725856c79260c8d98d988a70c9be7ff3af5287e1b7178347d9c157dc5094e97c",
         "path": "//0",
-        "address": "13avhfDZ9kzx13bJP4HVQJyud8ePHAQCZ8RXXUeXRQf23dPh"
+        "address": "13avhfDZ9kzx13bJP4HVQJyud8ePHAQCZ8RXXUeXRQf23dPh",
       },
       {
         "private_key":
@@ -2199,7 +2199,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "ce3447876cc38b4bf8a0faa4feba4597481057ad5e3e76dd3cee83f054088274",
         "path": "/1",
-        "address": "15fNPt2NPGtXPDg6zSF2tqDdMoKoP1BqJw7AdZH2HCuhfRTi"
+        "address": "15fNPt2NPGtXPDg6zSF2tqDdMoKoP1BqJw7AdZH2HCuhfRTi",
       },
       {
         "private_key":
@@ -2207,7 +2207,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "a009230bcacae72c21439e4296160b37d7298b32460aa33c0d89adc9d3173262",
         "path": "//hard",
-        "address": "14cqNo7uqvVsQhmFTF8wzkNZpoGg1Gcph2xUr6YcU576XCtg"
+        "address": "14cqNo7uqvVsQhmFTF8wzkNZpoGg1Gcph2xUr6YcU576XCtg",
       },
       {
         "private_key":
@@ -2215,7 +2215,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "24dfbf1b1d9834d547e74c59b17f9e1c533351a7e74cca6850538cab95adcc12",
         "path": "//1",
-        "address": "1qMC3fCWyagGUW8kwuavkUEhLsvmLrefzT6FkQ4BzwNMr2Z"
+        "address": "1qMC3fCWyagGUW8kwuavkUEhLsvmLrefzT6FkQ4BzwNMr2Z",
       },
       {
         "private_key":
@@ -2223,7 +2223,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "e298b8ae087cbac12e4541b7e9192fbe9250dcc208ad56f2bff3dba56d093b1f",
         "path": "/0",
-        "address": "1687C15FrvZemedSG28AqM58646GQP54we8kYnpsRArVpB4L"
+        "address": "1687C15FrvZemedSG28AqM58646GQP54we8kYnpsRArVpB4L",
       },
       {
         "private_key":
@@ -2231,7 +2231,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "72b9b175080029a803065b5530b8b34b93857193f5ad2926f647b80c4ef3a15e",
         "path": "//12",
-        "address": "13bRd2ucAoXsHZ9sH3EbfWbKByuqWcmWkj8jJwZW7H3zYna9"
+        "address": "13bRd2ucAoXsHZ9sH3EbfWbKByuqWcmWkj8jJwZW7H3zYna9",
       },
       {
         "private_key":
@@ -2239,9 +2239,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "0e28c4c36b0b4118073ac1f78bf7b4130960b8b16bfd38ba00e77cd8077f140b",
         "path": "/soft",
-        "address": "1KZnJvtaq8X8X27DiakMBeR1Rw237JBQ9MygULVvHnaEFbE"
-      }
-    ]
+        "address": "1KZnJvtaq8X8X27DiakMBeR1Rw237JBQ9MygULVvHnaEFbE",
+      },
+    ],
   },
   {
     "seed": "2aee84624a22d65c4be797759ebd1d4d4795b56447ea705daa19cc1b3d766c1a",
@@ -2259,7 +2259,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "7832234ed77db75aae092676af1c5a343464abe24539c6cf389c8b76a876943e",
         "path": "//0",
-        "address": "23bCE4BDfViMTgv8Eb7NvMPbHTnzA5fhLjv41vkQydKeLG7g"
+        "address": "23bCE4BDfViMTgv8Eb7NvMPbHTnzA5fhLjv41vkQydKeLG7g",
       },
       {
         "private_key":
@@ -2267,7 +2267,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "1043f0451c548db478ac402cfc68c160b93fdb3d257d2d2782942b40e8722431",
         "path": "/1",
-        "address": "21EvXutvQTNGiBzAZya6rYuMNaz539BUq5aJB7t41wukDyAF"
+        "address": "21EvXutvQTNGiBzAZya6rYuMNaz539BUq5aJB7t41wukDyAF",
       },
       {
         "private_key":
@@ -2275,7 +2275,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "5c5c8915be47ba9f1dad71e85eac3f43b34a316466994b7aad6ae16c82c0690d",
         "path": "//hard",
-        "address": "22xhUnRDey3NVCUiW6tMHYswhjbvHNrCgohfVZHvbofXkxxj"
+        "address": "22xhUnRDey3NVCUiW6tMHYswhjbvHNrCgohfVZHvbofXkxxj",
       },
       {
         "private_key":
@@ -2283,7 +2283,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "7a798550507a9fae62b751064ea916a564b0fecb84c38b88adbe4e0a4c6b1d73",
         "path": "//1",
-        "address": "23eBXWQYw8cU6KdAJeuRgkfkGaKG7QB6RmZ4AJMqpAhn4ZZc"
+        "address": "23eBXWQYw8cU6KdAJeuRgkfkGaKG7QB6RmZ4AJMqpAhn4ZZc",
       },
       {
         "private_key":
@@ -2291,7 +2291,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "0eea16410274c9174c928ba7cce449fe0a5e2bcbea091f6e7dad118bc36bec4f",
         "path": "/0",
-        "address": "21D9o2aYs67oWaehzWFifxfnMJdakYTG2jErXbSDRrWvnfMK"
+        "address": "21D9o2aYs67oWaehzWFifxfnMJdakYTG2jErXbSDRrWvnfMK",
       },
       {
         "private_key":
@@ -2299,7 +2299,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "26fc4dac216a5c5192f387220d30b92160c21eac0d2433b746a4b218f203c16b",
         "path": "//12",
-        "address": "21kiMYdWogsb4k5wPAmRNx9LshKPN1tkPfAaEbyxYkJAhSWN"
+        "address": "21kiMYdWogsb4k5wPAmRNx9LshKPN1tkPfAaEbyxYkJAhSWN",
       },
       {
         "private_key":
@@ -2307,9 +2307,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "dadd35fc7c93ec896092499c602cb69a99951cbc7b5d88a05e7a9433609cb055",
         "path": "/soft",
-        "address": "25pZjkVo2rJQiMcJprFZuVr5chausjfYA9PC2p2cKKmpYbRN"
-      }
-    ]
+        "address": "25pZjkVo2rJQiMcJprFZuVr5chausjfYA9PC2p2cKKmpYbRN",
+      },
+    ],
   },
   {
     "seed": "5633a24fd0536c66ec5f17b0a91b8bf497f64353f86a54cd4347cc9e9c992f25",
@@ -2327,7 +2327,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "d0538550577af153557c7f01d685468e2a5ca019c8b82b315b7bfb12dd60115f",
         "path": "//0",
-        "address": "35TLwZ2FA9wCs45du6u6Q63rG9ANDvBE2B5tK2xd32Q6iymR"
+        "address": "35TLwZ2FA9wCs45du6u6Q63rG9ANDvBE2B5tK2xd32Q6iymR",
       },
       {
         "private_key":
@@ -2335,7 +2335,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "e6e817a2fa9d63f3f950038c077284eb17a1e5a1761febeceb2d9cd425de6e09",
         "path": "/1",
-        "address": "35xx8Uw5R7uT8fhMRZnTdwbNWBf7mEYSXAmSErEixaSdT8Gm"
+        "address": "35xx8Uw5R7uT8fhMRZnTdwbNWBf7mEYSXAmSErEixaSdT8Gm",
       },
       {
         "private_key":
@@ -2343,7 +2343,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "72792bc2f26439d4a872008b50eb7d78193ccabea9015ce4a61e61cfa95da352",
         "path": "//hard",
-        "address": "33LHdBaEBTDTeGtuYVHFbhx2KwTZsh3TGHNDc7rFG9Vz6WFX"
+        "address": "33LHdBaEBTDTeGtuYVHFbhx2KwTZsh3TGHNDc7rFG9Vz6WFX",
       },
       {
         "private_key":
@@ -2351,7 +2351,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "0a035b6878e1898f02daded4932ece5bab70d68f8bf01c322f19b41f90113e3a",
         "path": "//1",
-        "address": "2zyKeTSUdtyHsi8KLhz4MxJGbEcWJPmS85XKe9aCoDeKAqAn"
+        "address": "2zyKeTSUdtyHsi8KLhz4MxJGbEcWJPmS85XKe9aCoDeKAqAn",
       },
       {
         "private_key":
@@ -2359,7 +2359,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "6a60f7265461bad988c022c7099417d6bea8cfde1b09756c6b1b1fa770187423",
         "path": "/0",
-        "address": "339g3uvaMJ9AqFgy7nVFhAFyvByoevhZ5K3BvCRxgudA95ib"
+        "address": "339g3uvaMJ9AqFgy7nVFhAFyvByoevhZ5K3BvCRxgudA95ib",
       },
       {
         "private_key":
@@ -2367,7 +2367,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "f8b7511cc32e87638afd2ef7007f63dd97bf795cacb749a4ec26483923b3833a",
         "path": "//12",
-        "address": "36NJW6Hi7HZP88TQbjyLujKcgvqfY5T15JmPErsSb7UbHSRs"
+        "address": "36NJW6Hi7HZP88TQbjyLujKcgvqfY5T15JmPErsSb7UbHSRs",
       },
       {
         "private_key":
@@ -2375,9 +2375,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "6cad7b5cea24b266b4144d5903ced2cba7386f31783db3b1d2af6e370ba91453",
         "path": "/soft",
-        "address": "33CgspGbWTinPvHVBY682ef85pQAAz4dFtHRLYbAwsnZVnzX"
-      }
-    ]
+        "address": "33CgspGbWTinPvHVBY682ef85pQAAz4dFtHRLYbAwsnZVnzX",
+      },
+    ],
   },
   {
     "seed": "3d0eba76accfe5bba9a77abf068f58cb3a4b852587c40ae487b3a3398aa6de0f",
@@ -2395,7 +2395,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "30218005c7b2f81d7a47e22f09d9d3c7fba09a2f497b278d0381d283a97a5323",
         "path": "//0",
-        "address": "DfRmVKbeaxBfDXQCGRC69Evm7uKoSHSvNnTq1ATzvLF3Phq"
+        "address": "DfRmVKbeaxBfDXQCGRC69Evm7uKoSHSvNnTq1ATzvLF3Phq",
       },
       {
         "private_key":
@@ -2403,7 +2403,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "0c73ba07160e6c33bc79e1cde068fb44c089f4710c5c0b5dbdc9676ea089197b",
         "path": "/1",
-        "address": "CreUEh6PyvaYvwGVtaXFC8xZsD2mVcHkW4WKWNH4TtSwSYn"
+        "address": "CreUEh6PyvaYvwGVtaXFC8xZsD2mVcHkW4WKWNH4TtSwSYn",
       },
       {
         "private_key":
@@ -2411,7 +2411,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "e65e753bf807c178055d50e47122f3db393dc0bb11017f5dd3da6300da591b06",
         "path": "//hard",
-        "address": "HnNbEqtpGDK7mvdyQwEhUXmoXkz64GJJpDgtD1T9KesaDqf"
+        "address": "HnNbEqtpGDK7mvdyQwEhUXmoXkz64GJJpDgtD1T9KesaDqf",
       },
       {
         "private_key":
@@ -2419,7 +2419,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "f852bea41f48dee9deab5f8367dac95e1feb9c1cc4dfbcc30d3dfda253707559",
         "path": "//1",
-        "address": "JBuyR7AsU3Tj758w9ChSypYg4i7Vig7J2m9Su9mFfm6VooY"
+        "address": "JBuyR7AsU3Tj758w9ChSypYg4i7Vig7J2m9Su9mFfm6VooY",
       },
       {
         "private_key":
@@ -2427,7 +2427,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "403265ce21329e5eb5aee76d6d73f1ccf962593bb84bb60f36c7b0680a175a73",
         "path": "/0",
-        "address": "E2VZ4iAkVZUSJC2sdhasVsY63psbAxPMn2BNT5U4wqgZ22h"
+        "address": "E2VZ4iAkVZUSJC2sdhasVsY63psbAxPMn2BNT5U4wqgZ22h",
       },
       {
         "private_key":
@@ -2435,7 +2435,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "5a921e3cee9835d1a4b032822ce5c3c23359e46749cd3171524839bc69e5cd06",
         "path": "//12",
-        "address": "Ed5EVwHHGHzN4vUZDMsV5N7BB75kYbyvoTs4BzDnivEhze4"
+        "address": "Ed5EVwHHGHzN4vUZDMsV5N7BB75kYbyvoTs4BzDnivEhze4",
       },
       {
         "private_key":
@@ -2443,9 +2443,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "e621c5970ffb0d6ce93a103f4b6d2db3269ef858711dc0ab978c778b0f30d260",
         "path": "/soft",
-        "address": "Hn4ZeCTwj5xphPPbBkvBfsvX4RUqyAQvst3r8ehEYFC7RPp"
-      }
-    ]
+        "address": "Hn4ZeCTwj5xphPPbBkvBfsvX4RUqyAQvst3r8ehEYFC7RPp",
+      },
+    ],
   },
   {
     "seed": "e03bd93fd1bec8c9cced669a25cfd357519adf2b08ca96089e9a421023b5ea3c",
@@ -2463,7 +2463,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "6461b2dee801a5659ed7c59cba7852c3428a3ca66e3c595235f9af9ecd07ee5d",
         "path": "//0",
-        "address": "331oytCmnS1z3n1GYADwFDnG2s32Nv1C9hLNsPXhaxRcsobF"
+        "address": "331oytCmnS1z3n1GYADwFDnG2s32Nv1C9hLNsPXhaxRcsobF",
       },
       {
         "private_key":
@@ -2471,7 +2471,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "f225baea06738facb81efcddf66832d0d0ce9cb10db43b184cb8a40deae67a13",
         "path": "/1",
-        "address": "36Dgy2YfAhNqctjdSXpBqyjfyeDBbKxyKxmd7exsTCESBm9u"
+        "address": "36Dgy2YfAhNqctjdSXpBqyjfyeDBbKxyKxmd7exsTCESBm9u",
       },
       {
         "private_key":
@@ -2479,7 +2479,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "14cb90a2d4cfa3b21d04ff2d8f72314d965000209485fd01af0e3cc3e965ef63",
         "path": "//hard",
-        "address": "31DTbjQdQiXp73FP4HXwstujFL98eDGAaT1JJZy3T1zmu7RM"
+        "address": "31DTbjQdQiXp73FP4HXwstujFL98eDGAaT1JJZy3T1zmu7RM",
       },
       {
         "private_key":
@@ -2487,7 +2487,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "3a264a8e77caf873e7f7b5a0669484fd9e0fc4596dd4d45f59e71961915de149",
         "path": "//1",
-        "address": "324SKfnPHmEDi5LhWJCyqg9U5TKvZidFgZcqwAc56Jn5nzbb"
+        "address": "324SKfnPHmEDi5LhWJCyqg9U5TKvZidFgZcqwAc56Jn5nzbb",
       },
       {
         "private_key":
@@ -2495,7 +2495,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "68f45154817ff0d9599480612a0f51ffa79ce253dbe0e3bc5c42b3208b5d845d",
         "path": "/0",
-        "address": "337ojBLpzg1RZJbgvAmWauknJXL7yFGGVdVxyfvo89phPU46"
+        "address": "337ojBLpzg1RZJbgvAmWauknJXL7yFGGVdVxyfvo89phPU46",
       },
       {
         "private_key":
@@ -2503,7 +2503,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "86f68a402a919b128dc9483bfd7af2b5d1d4624d4f839ed3f3fa4de164e58c6a",
         "path": "//12",
-        "address": "33o9pnhEYazxaEMTGgXUhtE9KRf16syzdRBZzE9163XPSzjz"
+        "address": "33o9pnhEYazxaEMTGgXUhtE9KRf16syzdRBZzE9163XPSzjz",
       },
       {
         "private_key":
@@ -2511,9 +2511,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "0c7a7eff28e0f74dbec3b73450648190863840bb643ebb1622d1a8af6804af54",
         "path": "/soft",
-        "address": "312Z8jDt4A8xJDqK7c4iPEtZAvM1q6QdXHeTW5qNezJr3qYk"
-      }
-    ]
+        "address": "312Z8jDt4A8xJDqK7c4iPEtZAvM1q6QdXHeTW5qNezJr3qYk",
+      },
+    ],
   },
   {
     "seed": "1e61bcd0bcdf1a48d4dc69d33fd165b66b33be75f9a71c897ca7d83ce7450859",
@@ -2531,7 +2531,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "a63f53d82cdbebb4223f18bc79f1cbae9433770b0fc6933b0b25d4da2d058c11",
         "path": "//0",
-        "address": "34WAvz3bhinevopgzMFGPKPftz2kLEs35wgLykUSKgn4AV3B"
+        "address": "34WAvz3bhinevopgzMFGPKPftz2kLEs35wgLykUSKgn4AV3B",
       },
       {
         "private_key":
@@ -2539,7 +2539,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "026fac75eb022b6a27d4fcbbf0163abe686f4480b166e02413fd5552987bcd3b",
         "path": "/1",
-        "address": "2zoPSVNNmr83iriRPoZdywK1qtzpdGo7tUupBVtVb4FChGWd"
+        "address": "2zoPSVNNmr83iriRPoZdywK1qtzpdGo7tUupBVtVb4FChGWd",
       },
       {
         "private_key":
@@ -2547,7 +2547,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "f2e8528cfc46ac93a29e49195b1eeb44f4b6aa58ce8151b01c63ba3bd4e3d327",
         "path": "//hard",
-        "address": "36EgmmvFCrsHBsHw1Tx7sAA6KKdyyx6qb6B8AKgAA3awTG6W"
+        "address": "36EgmmvFCrsHBsHw1Tx7sAA6KKdyyx6qb6B8AKgAA3awTG6W",
       },
       {
         "private_key":
@@ -2555,7 +2555,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "4ae08bc2896b7f5ae81c16f1984618cda76df835a981ec28ee37787853cac179",
         "path": "//1",
-        "address": "32SNRCZxcm3s1SF8iJXmQzXBWKFRobirfyrG7ykn9pEVjvNX"
+        "address": "32SNRCZxcm3s1SF8iJXmQzXBWKFRobirfyrG7ykn9pEVjvNX",
       },
       {
         "private_key":
@@ -2563,7 +2563,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "90db4a12e4c698cb8755f8e5ff3c0d9514a70f5fc357938a262c7106a62c613b",
         "path": "/0",
-        "address": "3428D3TuAdUcUqP2RcjpLpJnUmMiZX7jMaCmazn2FUmyPJN2"
+        "address": "3428D3TuAdUcUqP2RcjpLpJnUmMiZX7jMaCmazn2FUmyPJN2",
       },
       {
         "private_key":
@@ -2571,7 +2571,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "6460e0613b3ac2e3aa60d6a550097016708863c087102d56161afcac474bdc07",
         "path": "//12",
-        "address": "331ojiY1U9JWwfjWW1UtZpCnVuST1wRgg1aPjLgtejMzKEMT"
+        "address": "331ojiY1U9JWwfjWW1UtZpCnVuST1wRgg1aPjLgtejMzKEMT",
       },
       {
         "private_key":
@@ -2579,9 +2579,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "102ce45ad1d32637f9d3b9887321dab1228248a9af82f921105750fa5279c744",
         "path": "/soft",
-        "address": "317QGkWjeTFjDKGj8syZa79JCHGArxoDXUQU5z2bLk84MgRi"
-      }
-    ]
+        "address": "317QGkWjeTFjDKGj8syZa79JCHGArxoDXUQU5z2bLk84MgRi",
+      },
+    ],
   },
   {
     "seed": "c41a8b4aa2848b1a01825ffeeb7a0bbaa5ea5307ca613f9a4a51691ca9289591",
@@ -2599,7 +2599,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "5611cb127eae494028e7c94c66924f36c093b3a7d63e19020b242b0e385c625a",
         "path": "//0",
-        "address": "5Rasn59t8D3PqqSw9e7Ldaa8iK28NqkoPKv97finaBsPBDLT"
+        "address": "5Rasn59t8D3PqqSw9e7Ldaa8iK28NqkoPKv97finaBsPBDLT",
       },
       {
         "private_key":
@@ -2607,7 +2607,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "8080acefe4b8a38ea47c84cf8e55e269f8e71ca0b2bc40346a46b72a6aaa763e",
         "path": "/1",
-        "address": "5SYWjBDAnMczypYdhDgKpum9UZm8V869bk3EsEJ1erJcgtH1"
+        "address": "5SYWjBDAnMczypYdhDgKpum9UZm8V869bk3EsEJ1erJcgtH1",
       },
       {
         "private_key":
@@ -2615,7 +2615,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "5cc32f3b280fcf4706a5740a87fae39bd5f81d61c227d18f37edf5af9e1a892c",
         "path": "//hard",
-        "address": "5Rjem7hVo22fa3SE7BpxqeFT4nA9rHLEP7t5AYsYpYYuCpoa"
+        "address": "5Rjem7hVo22fa3SE7BpxqeFT4nA9rHLEP7t5AYsYpYYuCpoa",
       },
       {
         "private_key":
@@ -2623,7 +2623,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "c61b99777cedd00318639144b0d5690740538f2249725d88c5887b8a6bed7b46",
         "path": "//1",
-        "address": "5U7n4678s73ucXxkDCZja4wtoujfa4278nAdkm9zVQHY7zXV"
+        "address": "5U7n4678s73ucXxkDCZja4wtoujfa4278nAdkm9zVQHY7zXV",
       },
       {
         "private_key":
@@ -2631,7 +2631,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "a6df66f11bf7f4f2cfefa555595e1f94cdad02f4c083790fdff65eace735bf35",
         "path": "/0",
-        "address": "5TQpgpGNdVmuJh23iV2F5DwYJN5rQfNZ429kt2Tpu2JFsuxL"
+        "address": "5TQpgpGNdVmuJh23iV2F5DwYJN5rQfNZ429kt2Tpu2JFsuxL",
       },
       {
         "private_key":
@@ -2639,7 +2639,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "2668e1abf2170671cb80cb1148b7cfbee16ddd3bc18ea220281133311bf3e745",
         "path": "//12",
-        "address": "5QWPMFtYc8jrrot51PXeuAb5jrQgRqCFCQmTtzh69RYLhYCj"
+        "address": "5QWPMFtYc8jrrot51PXeuAb5jrQgRqCFCQmTtzh69RYLhYCj",
       },
       {
         "private_key":
@@ -2647,9 +2647,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "18e65e388126581323604eccfa592080afe409f13a7615ad343b393148d6613e",
         "path": "/soft",
-        "address": "5QCfxTVQu1YrRhPNkGJ7WhpAEtLPeToDQ4F6gmtXYW8ukUJD"
-      }
-    ]
+        "address": "5QCfxTVQu1YrRhPNkGJ7WhpAEtLPeToDQ4F6gmtXYW8ukUJD",
+      },
+    ],
   },
   {
     "seed": "382a3195f806653b17bd71d60adb41f60a52c7f2369497c7effd4c47a8c0c51a",
@@ -2667,7 +2667,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "2a44b3292cb42d820ec5103cad3661f41cd64299d6a86a208a14d3977007b16c",
         "path": "//0",
-        "address": "1xRRKSaPw4XWxi6fqfXpcKynESCzRHZYxB2d7hziAffunmC"
+        "address": "1xRRKSaPw4XWxi6fqfXpcKynESCzRHZYxB2d7hziAffunmC",
       },
       {
         "private_key":
@@ -2675,7 +2675,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "ec14442ed175fa74eab717bd75006cfd2bf802baa99cd2aa702735b8c9f27157",
         "path": "/1",
-        "address": "16LYKdMLUdTpDU43RHtUeBFBg2C6CRqWk1mRapp3CMYKuvCo"
+        "address": "16LYKdMLUdTpDU43RHtUeBFBg2C6CRqWk1mRapp3CMYKuvCo",
       },
       {
         "private_key":
@@ -2683,7 +2683,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "08d524aefbfa710ea474a7cfb31f119ff1188e05dc2ee978e702af664453c919",
         "path": "//hard",
-        "address": "1CahbLRStF5YMvKJx2ytFiszuQDaqYuvczHCGA4p15Ezz9b"
+        "address": "1CahbLRStF5YMvKJx2ytFiszuQDaqYuvczHCGA4p15Ezz9b",
       },
       {
         "private_key":
@@ -2691,7 +2691,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "a83699fd39834e1bdc31ac2652b8ea13b5eb3f441bd5512c8074fabd9d3b8b19",
         "path": "//1",
-        "address": "14oZGMMGQY94NgdJWmVidRU17tR1AFWJMDxBW6EKJxpXF13V"
+        "address": "14oZGMMGQY94NgdJWmVidRU17tR1AFWJMDxBW6EKJxpXF13V",
       },
       {
         "private_key":
@@ -2699,7 +2699,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "06ca088eff6f67f99e843f0376d4798a6e77dcabf40bb31997375d2a97c5f762",
         "path": "/0",
-        "address": "19uJctszCa4F7LpzfNzmvZ28yhQSFivqWWngMogGyXUvpDV"
+        "address": "19uJctszCa4F7LpzfNzmvZ28yhQSFivqWWngMogGyXUvpDV",
       },
       {
         "private_key":
@@ -2707,7 +2707,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "e67e062a48cb464759b1359b19a43b6ebb8fb3c1afe8419c971883c63f09883e",
         "path": "//12",
-        "address": "16DDT8L434RDgP898raF1h8czZVex8MhNufxSResRvdrqae1"
+        "address": "16DDT8L434RDgP898raF1h8czZVex8MhNufxSResRvdrqae1",
       },
       {
         "private_key":
@@ -2715,9 +2715,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "f880b49bde486342fb8b56e6222fc3e3e8391247a23f4c16d82833d31a4b8e64",
         "path": "/soft",
-        "address": "16cq7KS35gSmQX6GjE7YA7oCa9fdPBZvLi6pnTq58k95pD4Z"
-      }
-    ]
+        "address": "16cq7KS35gSmQX6GjE7YA7oCa9fdPBZvLi6pnTq58k95pD4Z",
+      },
+    ],
   },
   {
     "seed": "b729e9820c9c5f4d037020a82ce88158ea7e27e8e3c1d754eda4d4995117db93",
@@ -2735,7 +2735,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "b6f5161b3df8b8d63c80ef3696639bd411b89ea7a2b16eb8d63d3d84d66a5a1a",
         "path": "//0",
-        "address": "158tXDD7awkYEVhi66XGVGq6UsG39Bt4gj31NJq7skEqSFMF"
+        "address": "158tXDD7awkYEVhi66XGVGq6UsG39Bt4gj31NJq7skEqSFMF",
       },
       {
         "private_key":
@@ -2743,7 +2743,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "2ebfd3291d3cfef82ea96397272b34c7f78ddfb014615442d41cdf13b64ad506",
         "path": "/1",
-        "address": "124JBpegJpsfzUfnf8rUSSuFULhGWJNEjvs7JhK69HDysccF"
+        "address": "124JBpegJpsfzUfnf8rUSSuFULhGWJNEjvs7JhK69HDysccF",
       },
       {
         "private_key":
@@ -2751,7 +2751,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "bc5b84d0bdfbed38a42dead605befdecb4b7d289c4f48bf3692a40ec2ac86574",
         "path": "//hard",
-        "address": "15FyBy6goPVKWhcB2qU5YQCP9i8RpKSUbPhNJff7dvhPHWTc"
+        "address": "15FyBy6goPVKWhcB2qU5YQCP9i8RpKSUbPhNJff7dvhPHWTc",
       },
       {
         "private_key":
@@ -2759,7 +2759,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "74ede94548f82855f479adaf6bca44f93735e8a9e5095c3a36f6c32a7eb1895e",
         "path": "//1",
-        "address": "13eKEHRF9pcZz5djL44EWQjwup9NRt2WtDNY6d6qnLDj1pta"
+        "address": "13eKEHRF9pcZz5djL44EWQjwup9NRt2WtDNY6d6qnLDj1pta",
       },
       {
         "private_key":
@@ -2767,7 +2767,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "3484ca5850962a684f5f4dffd9ee6e8b9f797bf3c83468a78252d073557a8b5b",
         "path": "/0",
-        "address": "12BrwM4AnjC1tn8Cn9fdzQjPm3dHBSsKLi9XZusYw8rcqgCK"
+        "address": "12BrwM4AnjC1tn8Cn9fdzQjPm3dHBSsKLi9XZusYw8rcqgCK",
       },
       {
         "private_key":
@@ -2775,7 +2775,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "643ca39e4b5ebde68f15136b8f757ee99b55f395075f04af44d8a997a2f7151f",
         "path": "//12",
-        "address": "13GRoX7jjkf9txV5MMYtGT4f2gw713sWDdnSUZKiVdAxca1i"
+        "address": "13GRoX7jjkf9txV5MMYtGT4f2gw713sWDdnSUZKiVdAxca1i",
       },
       {
         "private_key":
@@ -2783,9 +2783,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "6a55ea70acfff0ab27ba4c69ed3c7b9f74e6cda2d623578ad58d28516e8d8869",
         "path": "/soft",
-        "address": "13QRbgztRWSt7xpGFnpTxjPYZbuZn6Rv8KsLacCFNEUcWtga"
-      }
-    ]
+        "address": "13QRbgztRWSt7xpGFnpTxjPYZbuZn6Rv8KsLacCFNEUcWtga",
+      },
+    ],
   },
   {
     "seed": "26f8cff1eb0e7ed9b83faa6a3bb4b14f1dcb6a2986bfe5a45c35c7ceb9e84b26",
@@ -2803,7 +2803,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "8ef64b20ed2ba278fd899d13a34267da735622a1a3b2495a52c986c8c243d133",
         "path": "//0",
-        "address": "14ESxv8uDEBj5Hw75zwJGX1bvtkPuGwFwX3Ac6vmy9iE3Zh5"
+        "address": "14ESxv8uDEBj5Hw75zwJGX1bvtkPuGwFwX3Ac6vmy9iE3Zh5",
       },
       {
         "private_key":
@@ -2811,7 +2811,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "14801e70193ab65d159943ca1b89d65e8e53af08536140de3d552f3944741e73",
         "path": "/1",
-        "address": "1Tt1z3RSLTmVWGe23d9shwcfkeesUzVVzExBVE3TYng5YX5"
+        "address": "1Tt1z3RSLTmVWGe23d9shwcfkeesUzVVzExBVE3TYng5YX5",
       },
       {
         "private_key":
@@ -2819,7 +2819,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "9640d68216d33786b90ba908e6353ec70cd1cfe30f0d08e477b47a23cbde6339",
         "path": "//hard",
-        "address": "14Q1SjF6HZKRMgf6PahSNPmY1ivrC4PAajNGiXjEzt8NbGku"
+        "address": "14Q1SjF6HZKRMgf6PahSNPmY1ivrC4PAajNGiXjEzt8NbGku",
       },
       {
         "private_key":
@@ -2827,7 +2827,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "aaee0f93bce04fee3d72ee93b9d91554f06926b68becca5da501e80c44ee3467",
         "path": "//1",
-        "address": "14s7rqVffAqkcTsZDtUC1dt9s4ztye33EQN7zzHB7zB7LE1V"
+        "address": "14s7rqVffAqkcTsZDtUC1dt9s4ztye33EQN7zzHB7zB7LE1V",
       },
       {
         "private_key":
@@ -2835,7 +2835,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "527d305f53c18e7f7ed2515e2b82e26ac7909c256915e98db75141eba7caa966",
         "path": "/0",
-        "address": "12sA7hKQVu83p9FXSxAUhkFkaCHH4g5UeUPDGRL8KQYbNRuk"
+        "address": "12sA7hKQVu83p9FXSxAUhkFkaCHH4g5UeUPDGRL8KQYbNRuk",
       },
       {
         "private_key":
@@ -2843,7 +2843,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "0c9dc32be078cbc01841b22d82c51ff8b0ecd99519d2212f445ceadd3a13e809",
         "path": "//12",
-        "address": "1HYSWc4VNx3YsG3jPEs3z49E3jiiQu72JTYAMRrvt2Fciwx"
+        "address": "1HYSWc4VNx3YsG3jPEs3z49E3jiiQu72JTYAMRrvt2Fciwx",
       },
       {
         "private_key":
@@ -2851,9 +2851,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "f228b3c3952664ca286e37b7b79f96a2278ffeb35cea84f5c79457618be82f3b",
         "path": "/soft",
-        "address": "16UWgPkrWm5ziq7uJd9eAGNdr3o9egPNtcnFuMppKSNzF2Wo"
-      }
-    ]
+        "address": "16UWgPkrWm5ziq7uJd9eAGNdr3o9egPNtcnFuMppKSNzF2Wo",
+      },
+    ],
   },
   {
     "seed": "caf2d20f74fc8fc792afd3d5a5904af491f14baa38d36e213be02a5602aafcde",
@@ -2871,7 +2871,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "9e7f80434019677b965d6b8300bee268995d6061fa9e7fc29f5e3859f21e2f1c",
         "path": "//0",
-        "address": "GA8xbHevgy3CKeAzTGT1qr7rMVAzieuMWxfR6A9TBvd6i95"
+        "address": "GA8xbHevgy3CKeAzTGT1qr7rMVAzieuMWxfR6A9TBvd6i95",
       },
       {
         "private_key":
@@ -2879,7 +2879,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "d4cd1d078be7789d3e924081146c92a0ebede0af31c703cc0849dce591d39b20",
         "path": "/1",
-        "address": "HPLboAwmXkrQGu87X68R7W1TH4aL1UTbhMZXkf7XVgRnftj"
+        "address": "HPLboAwmXkrQGu87X68R7W1TH4aL1UTbhMZXkf7XVgRnftj",
       },
       {
         "private_key":
@@ -2887,7 +2887,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "e03396979a5e5fd042fb1364c79b95264e7d253228c245e15021fda9f3ef8e63",
         "path": "//hard",
-        "address": "HeHZwwApJxNcUPsVgPyHzt74oWj6GtyHDgLQSqUwoAuNrfE"
+        "address": "HeHZwwApJxNcUPsVgPyHzt74oWj6GtyHDgLQSqUwoAuNrfE",
       },
       {
         "private_key":
@@ -2895,7 +2895,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "cea645b182c7145bbb88adb3c7fa799b1b1274aaec157c3421467c3bf3a63740",
         "path": "//1",
-        "address": "HFGmv3qGTAA9PgPDBTV6AruVUnLNPP2Nhb1eVH8tdRMNHqP"
+        "address": "HFGmv3qGTAA9PgPDBTV6AruVUnLNPP2Nhb1eVH8tdRMNHqP",
       },
       {
         "private_key":
@@ -2903,7 +2903,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "76486ef13841e98ecf96d50cc847e2d884dc3eb2b2ed8963d17708bc0e842519",
         "path": "/0",
-        "address": "FFQghta7qSBwRfNewWoM6iEsNS6EwB889utu6Gz6wta6oRJ"
+        "address": "FFQghta7qSBwRfNewWoM6iEsNS6EwB889utu6Gz6wta6oRJ",
       },
       {
         "private_key":
@@ -2911,7 +2911,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "96b3def3dc27905588366af142f8639dfded5e04406afb00a7549f81c9847a3a",
         "path": "//12",
-        "address": "Fyv8giQEmwweCxP2kCwuZ6gEA4SZXVqPZdbTJ9DFPNnoaim"
+        "address": "Fyv8giQEmwweCxP2kCwuZ6gEA4SZXVqPZdbTJ9DFPNnoaim",
       },
       {
         "private_key":
@@ -2919,9 +2919,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "2c9ab9e33a7f4611425816c1e8ab5e4f243e251bddf8937fa465ff75f1e7c76c",
         "path": "/soft",
-        "address": "Daob4C1bHxUPPSHQ86QrAQiAuxXfo1m9g9j3T59rj1b6hst"
-      }
-    ]
+        "address": "Daob4C1bHxUPPSHQ86QrAQiAuxXfo1m9g9j3T59rj1b6hst",
+      },
+    ],
   },
   {
     "seed": "0ff674e11f2e74205f179627e9745581b02dd31d0fa6be2b6263bcaeeb5ec2c1",
@@ -2939,7 +2939,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "da7f8813e0cc480f1bf416e359f3314225f4fa8ef9ecfcc89da6538140623a6e",
         "path": "//0",
-        "address": "5UaWhRanL7iM1PpZwu7pdYmw36cmfu8Bx64X7bztQHeK7o4r"
+        "address": "5UaWhRanL7iM1PpZwu7pdYmw36cmfu8Bx64X7bztQHeK7o4r",
       },
       {
         "private_key":
@@ -2947,7 +2947,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "6c0214ab8941a61cfa2e2eabe489e00ab92ddd3b76689982538168c99d4eed7a",
         "path": "/1",
-        "address": "5S5eATESCWekhK7hgw7mGVTa8PULkkPbgKQ2qSoSQLxktgjJ"
+        "address": "5S5eATESCWekhK7hgw7mGVTa8PULkkPbgKQ2qSoSQLxktgjJ",
       },
       {
         "private_key":
@@ -2955,7 +2955,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "5c1fbd0edeede7e39b33ae139454836956d6b90f8d4b141fe6fcdfa4eaf2a436",
         "path": "//hard",
-        "address": "5RipD1PSXxfTSzvDhUp1vHc7qwEQwDbTdagavmdcq2M5cZ8V"
+        "address": "5RipD1PSXxfTSzvDhUp1vHc7qwEQwDbTdagavmdcq2M5cZ8V",
       },
       {
         "private_key":
@@ -2963,7 +2963,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "5cb494469147cf8f993232e9fa6b379b040de01ed25fb702136b87709367c70d",
         "path": "//1",
-        "address": "5RjaRUPCyYiCjACZrxWJnEibWvLnsFqEL3iXGegCqYstUovo"
+        "address": "5RjaRUPCyYiCjACZrxWJnEibWvLnsFqEL3iXGegCqYstUovo",
       },
       {
         "private_key":
@@ -2971,7 +2971,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "540c5fda6b7a6a67f1d27efe8c0e7c596b68b5a158b37247d34faebdd39a8c4c",
         "path": "/0",
-        "address": "5RYE59s3wToGFnR3B1HBgKb9gcXNEFeezpBe7BqxcHEKZXkn"
+        "address": "5RYE59s3wToGFnR3B1HBgKb9gcXNEFeezpBe7BqxcHEKZXkn",
       },
       {
         "private_key":
@@ -2979,7 +2979,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "061130d68e18e08ef5d0f4225a081c21466ed0553f9c0a12b4bad3f14ab51153",
         "path": "//12",
-        "address": "5PmymWMeVgzaXGaTJWbS1iFFK4DUh6AT1f2y11J9bdrc4TvV"
+        "address": "5PmymWMeVgzaXGaTJWbS1iFFK4DUh6AT1f2y11J9bdrc4TvV",
       },
       {
         "private_key":
@@ -2987,9 +2987,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "4a04d1559190ea7a1de173a867a445dc6115fb955725a5377b969dc65ebcd925",
         "path": "/soft",
-        "address": "5RK5MBUGKRrCCETNdb3wP4Pt8mAdaLFjPtEwpfvnG1uZvCAV"
-      }
-    ]
+        "address": "5RK5MBUGKRrCCETNdb3wP4Pt8mAdaLFjPtEwpfvnG1uZvCAV",
+      },
+    ],
   },
   {
     "seed": "2c3fe9ddc8770dfd8d3d046ae3f9718e47a3bde20ad5cf9b71ca98579a830cac",
@@ -3007,7 +3007,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "e28f64bec895576691c60dcd30089a00601bf1d88a09b97bb1d11db6c037ee7e",
         "path": "//0",
-        "address": "HhNwGfJ5VbwZvJJiJYHuMkwXvLGLiuw98ckxDxouq1jcS63"
+        "address": "HhNwGfJ5VbwZvJJiJYHuMkwXvLGLiuw98ckxDxouq1jcS63",
       },
       {
         "private_key":
@@ -3015,7 +3015,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "84f2b95cd49545bc46ed452c12dd945862580d9eadc6b283872c2ec449f4c631",
         "path": "/1",
-        "address": "FadwdRFEKd87dTgCcasdtzhmTjjdWZZtJGYucyTkJUdMoJy"
+        "address": "FadwdRFEKd87dTgCcasdtzhmTjjdWZZtJGYucyTkJUdMoJy",
       },
       {
         "private_key":
@@ -3023,7 +3023,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "d2f9efcd7f9ed2214b70c10c0ae9612d6bfa5be1c8136f40b88fb2fabf89794b",
         "path": "//hard",
-        "address": "HLwpXiBH4fxBTQ3FLeWqoe2e3m29YYn8pquLcoUTK1opJKt"
+        "address": "HLwpXiBH4fxBTQ3FLeWqoe2e3m29YYn8pquLcoUTK1opJKt",
       },
       {
         "private_key":
@@ -3031,7 +3031,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "d22efc11176346e02f4dbcc0507cfaa20d153c1b06f96177594b697513d8920e",
         "path": "//1",
-        "address": "HKuXkHcUx9GxJbSVwPmrX8wQCT29W3Kn1n9vTNCNx685NHf"
+        "address": "HKuXkHcUx9GxJbSVwPmrX8wQCT29W3Kn1n9vTNCNx685NHf",
       },
       {
         "private_key":
@@ -3039,7 +3039,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "aa73d1c49abc0b8d783df6dfefe1031b43b8027a36a9fa81e1afc368acb4c056",
         "path": "/0",
-        "address": "GRp4efCRpb9BWiaDC9Az6SY3164FMoGg2vAaQihHCPLrfo3"
+        "address": "GRp4efCRpb9BWiaDC9Az6SY3164FMoGg2vAaQihHCPLrfo3",
       },
       {
         "private_key":
@@ -3047,7 +3047,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "9cd495e7915191d041e4481b0cb8da0e38319ac7428d48005adb5cc16266902f",
         "path": "//12",
-        "address": "G7x91XHHuRC66MAWnhDY1emsYYSFCZz3NRLsW5D3Yrde8st"
+        "address": "G7x91XHHuRC66MAWnhDY1emsYYSFCZz3NRLsW5D3Yrde8st",
       },
       {
         "private_key":
@@ -3055,9 +3055,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "6678c7e1321f467162e42d71d51fd60c4c7570dd5a8a45d0d8dbfb95a5818923",
         "path": "/soft",
-        "address": "EtgHGvPSEqikPjaDNbCkGiB6E1s41KkGxKkn6xBmBEfUx9i"
-      }
-    ]
+        "address": "EtgHGvPSEqikPjaDNbCkGiB6E1s41KkGxKkn6xBmBEfUx9i",
+      },
+    ],
   },
   {
     "seed": "6bde648ef4e8df24d164ae2c65d53e415518144d8bba166e44be70048e144234",
@@ -3075,7 +3075,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "06fcc8bd9f817c0a4228537647a6b8150fbe0dfb43c9ad6fe6cdc55ed6231414",
         "path": "//0",
-        "address": "5PoBkgkfWCFt4NWYUk4xyk7jpYeFobRq6gut14jYM9jzwoWZ"
+        "address": "5PoBkgkfWCFt4NWYUk4xyk7jpYeFobRq6gut14jYM9jzwoWZ",
       },
       {
         "private_key":
@@ -3083,7 +3083,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "b83c74368626b8defde029711743a31f7529ba0109a97eeaa802c4f9c872930e",
         "path": "/1",
-        "address": "5Tob9GxW1qTDoLvGqBaHgaXiWwrKoFDTUsAPPt9Dtd57KeQt"
+        "address": "5Tob9GxW1qTDoLvGqBaHgaXiWwrKoFDTUsAPPt9Dtd57KeQt",
       },
       {
         "private_key":
@@ -3091,7 +3091,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "1a0cfa3e30c251131f7ff26a1a29b2502221088c2605e30492d7e59058d4cf13",
         "path": "//hard",
-        "address": "5QEBUTf1LkEixb6CZY1LKQSdN4i4rLyNv1Urq2UYXRYuNUyP"
+        "address": "5QEBUTf1LkEixb6CZY1LKQSdN4i4rLyNv1Urq2UYXRYuNUyP",
       },
       {
         "private_key":
@@ -3099,7 +3099,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "b8ae6e0f02423905034104bfd45346f3d98627a622b5af0b8104a9e7a730813a",
         "path": "//1",
-        "address": "5TpB133MmaLA9CbUzcd8zfuBFQvBVBrQcrCj99pxGmyZMxW8"
+        "address": "5TpB133MmaLA9CbUzcd8zfuBFQvBVBrQcrCj99pxGmyZMxW8",
       },
       {
         "private_key":
@@ -3107,7 +3107,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "b689e4212720c62fbcfd3bbd1a5fecf2fe007614aa5d41827b61c6aa2db02a0e",
         "path": "/0",
-        "address": "5TmN3w43Fvy79MtBbDGeRidTbyopUai4dCf4NUYgmFVkvcuv"
+        "address": "5TmN3w43Fvy79MtBbDGeRidTbyopUai4dCf4NUYgmFVkvcuv",
       },
       {
         "private_key":
@@ -3115,7 +3115,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "e8da04bac17999f6702a371c3bd7aa0a2c8cd6f8fc990b1a57c293e691e1c21f",
         "path": "//12",
-        "address": "5UuLFMrcBo7Utq2B5CkcYs52qX492edGxdaGFVqy5hd9auC1"
+        "address": "5UuLFMrcBo7Utq2B5CkcYs52qX492edGxdaGFVqy5hd9auC1",
       },
       {
         "private_key":
@@ -3123,9 +3123,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "34844c5c2123a2a120afc0806b877766f35c977829ab60f5a48a733759c92e66",
         "path": "/soft",
-        "address": "5QptAX5uvGGzQuRDzM8dW8VgKr5bBFqjkmPCPpH9aqSKB89u"
-      }
-    ]
+        "address": "5QptAX5uvGGzQuRDzM8dW8VgKr5bBFqjkmPCPpH9aqSKB89u",
+      },
+    ],
   },
   {
     "seed": "d98a72db2e7d6493d1cc675ecbe1d8b4307165021e16c8cbaf2bd7681557b9b2",
@@ -3143,7 +3143,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "be9e4227a93227ba990a6172d98ea35e0f1a24b6894e629f53e566db372e094c",
         "path": "//0",
-        "address": "5TwxV56aLCt8bWou7cRAWkoL1GL5qX27aYfaiMpuYYgizrsd"
+        "address": "5TwxV56aLCt8bWou7cRAWkoL1GL5qX27aYfaiMpuYYgizrsd",
       },
       {
         "private_key":
@@ -3151,7 +3151,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "4eea34a1f4699c561719c5d908a1939211b3a0e25362c22db5b43cc4aac8ce7e",
         "path": "/1",
-        "address": "5RRVgYxaX9iLAC56ErXU2V25K1spGufx5hoEKUhWdx2WjKLU"
+        "address": "5RRVgYxaX9iLAC56ErXU2V25K1spGufx5hoEKUhWdx2WjKLU",
       },
       {
         "private_key":
@@ -3159,7 +3159,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "7ee0c589b98408d7ccb41de4c7e10e8c9283cfdb8e923850d8f127b99c882501",
         "path": "//hard",
-        "address": "5SWPBKUpfKuParEMp8EFQCBCJUMVzHYSDyYrFymCDxPns1co"
+        "address": "5SWPBKUpfKuParEMp8EFQCBCJUMVzHYSDyYrFymCDxPns1co",
       },
       {
         "private_key":
@@ -3167,7 +3167,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "309ea1ccfe390434c93777d1f3053a1037286c279958691db23d47b38644413c",
         "path": "//1",
-        "address": "5Qjmo8WVtzqwsMbas1KmXz2An5E4mhMDsVHEjJVCNbb7oBqW"
+        "address": "5Qjmo8WVtzqwsMbas1KmXz2An5E4mhMDsVHEjJVCNbb7oBqW",
       },
       {
         "private_key":
@@ -3175,7 +3175,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "5aee139a639d7b03e6916ea7bd325dd980e0d118e58e92af73c1e0935c013a63",
         "path": "/0",
-        "address": "5RhFQaJUuUPr5aj2kXFYgS2EnYvDLC6fvmo9BdKjZ4EmrcvM"
+        "address": "5RhFQaJUuUPr5aj2kXFYgS2EnYvDLC6fvmo9BdKjZ4EmrcvM",
       },
       {
         "private_key":
@@ -3183,7 +3183,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "6029537ee1370d61755c789b34a970830426f00a994a32cbe9c85a9493d8ac5b",
         "path": "//12",
-        "address": "5Rp7FJpWoCRvu1SRssAfyXBauyY6xzAu2nfourcgg8UwViPo"
+        "address": "5Rp7FJpWoCRvu1SRssAfyXBauyY6xzAu2nfourcgg8UwViPo",
       },
       {
         "private_key":
@@ -3191,9 +3191,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "34ab5e86cc6e44d169111cb3735243c46101abffd56c986b2023c43fc0944876",
         "path": "/soft",
-        "address": "5Qq5mhMSeTJgbfwxRYT6eCyb7GShdnf5s8qAWFPtrhT95TzG"
-      }
-    ]
+        "address": "5Qq5mhMSeTJgbfwxRYT6eCyb7GShdnf5s8qAWFPtrhT95TzG",
+      },
+    ],
   },
   {
     "seed": "1c3346fcbb26d6b3a7956f098904da7306e45c862077825c21baa95538a1a3a8",
@@ -3211,7 +3211,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "d202119feb53987c948f04ede874f93ad626b493cb9e93a3533e18bc37ec6b00",
         "path": "//0",
-        "address": "5UPP3XvkHqaKwdTfXJdjJyTZYHMsfEXwX9pNUePjSuvDQRgA"
+        "address": "5UPP3XvkHqaKwdTfXJdjJyTZYHMsfEXwX9pNUePjSuvDQRgA",
       },
       {
         "private_key":
@@ -3219,7 +3219,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "da3fb14950617a220e09b6a395221c256ec34edcf291b42cc43607e2f2cc0a40",
         "path": "/1",
-        "address": "5UaBjWB364VphTKj1C11oXjBnHR7NRhdy46keJmMBUGoxmVQ"
+        "address": "5UaBjWB364VphTKj1C11oXjBnHR7NRhdy46keJmMBUGoxmVQ",
       },
       {
         "private_key":
@@ -3227,7 +3227,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "3aea5cf22f06a8ee9f7766b382334ba040029215c13184987183b0d832158f56",
         "path": "//hard",
-        "address": "5QyGmieEQTy25d6Yy4XngMoaPSpuyoNxx2KthNNK64FsEQpb"
+        "address": "5QyGmieEQTy25d6Yy4XngMoaPSpuyoNxx2KthNNK64FsEQpb",
       },
       {
         "private_key":
@@ -3235,7 +3235,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "181fc0cc6acb396329af8947feedc478af148bc870ef846bdde978d1f405d638",
         "path": "//1",
-        "address": "5QBexQGRjH8yQaU7nceScuMkehyPMxe55RtG7YJoH8ucBw6o"
+        "address": "5QBexQGRjH8yQaU7nceScuMkehyPMxe55RtG7YJoH8ucBw6o",
       },
       {
         "private_key":
@@ -3243,7 +3243,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "e0fbc2dd5df71b76b8165befe856d14d3a8f946119fc46e43bc0379e7cd4386f",
         "path": "/0",
-        "address": "5Uj1tWqsFohLQVacgyhJhxDZ5Titik1Ruje3BC1EeHVpseRa"
+        "address": "5Uj1tWqsFohLQVacgyhJhxDZ5Titik1Ruje3BC1EeHVpseRa",
       },
       {
         "private_key":
@@ -3251,7 +3251,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "442f7f9d5d1b869d76c112b4c344d161b2228c364cfc1b8cd34db4479af9b229",
         "path": "//12",
-        "address": "5RBRjtaz1S6sR7aWfgNwSrHCxfffE9emCSUJ8nGUMQ5sVvUq"
+        "address": "5RBRjtaz1S6sR7aWfgNwSrHCxfffE9emCSUJ8nGUMQ5sVvUq",
       },
       {
         "private_key":
@@ -3259,9 +3259,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "e85413fc3f7de7b4a3660d8c39122693a8f1bbdad9f20bbf17a27e123d854832",
         "path": "/soft",
-        "address": "5UteTcxyq4EQPy7mPY1u58RfoSKggD2gJy9KEbKBeDsmhQRx"
-      }
-    ]
+        "address": "5UteTcxyq4EQPy7mPY1u58RfoSKggD2gJy9KEbKBeDsmhQRx",
+      },
+    ],
   },
   {
     "seed": "0890092c47c8b77610c5f99696fbedf9e48da46b450ea5765c0d20b511379561",
@@ -3279,7 +3279,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "e65ce5914b91d3d0f95463c50ef6688ae9c90614cd7789efaf423cf1b64b3730",
         "path": "//0",
-        "address": "265eCH3WA8dg4LHReU6TY2iAR19V2sLEcftnLhz1E9Ex74pY"
+        "address": "265eCH3WA8dg4LHReU6TY2iAR19V2sLEcftnLhz1E9Ex74pY",
       },
       {
         "private_key":
@@ -3287,7 +3287,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "f6cfe6e362c6afe1b19660e169b3cb3fc72cccb3bc806ff1396f582801f23e68",
         "path": "/1",
-        "address": "26TD8CyDrRjqXKCeRmvBWayapoUXMjNJzrHW9aFJXRWyjThT"
+        "address": "26TD8CyDrRjqXKCeRmvBWayapoUXMjNJzrHW9aFJXRWyjThT",
       },
       {
         "private_key":
@@ -3295,7 +3295,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "e8c7459c817a29627d108abd2245b13df5099bd54578139312ea1e6de159c16c",
         "path": "//hard",
-        "address": "268otdhc2BxuUYbPAoPQCMYJaeQZpqEkTkytahrX9GLg1Prh"
+        "address": "268otdhc2BxuUYbPAoPQCMYJaeQZpqEkTkytahrX9GLg1Prh",
       },
       {
         "private_key":
@@ -3303,7 +3303,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "60297ee85c54b0d3f3bf624db10c9c7996e74e9ddcd308c62725e05f69af9f6c",
         "path": "//1",
-        "address": "233gWVsdDy5ZTzyyD1B7KEHTEW4Q67CRvAjdxaERi2UwmCUy"
+        "address": "233gWVsdDy5ZTzyyD1B7KEHTEW4Q67CRvAjdxaERi2UwmCUy",
       },
       {
         "private_key":
@@ -3311,7 +3311,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "e6deb0ce0fb3e9ce450a18f7c634ace9f072baac1c3b70b88ba9c954c67c3f06",
         "path": "/0",
-        "address": "266JkaFpT8uz38MaDAkL1qecpmvTWuvWGNZ1kXnAY5xcJBpw"
+        "address": "266JkaFpT8uz38MaDAkL1qecpmvTWuvWGNZ1kXnAY5xcJBpw",
       },
       {
         "private_key":
@@ -3319,7 +3319,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "10687dc21722e372a7ccdd0515fbc0ae2160e245ad37c0a09aa0290214832953",
         "path": "//12",
-        "address": "21F7PhcHKevyuT3prbUBgi6PGq2kYyEVZfDaC7AREsDCmx5w"
+        "address": "21F7PhcHKevyuT3prbUBgi6PGq2kYyEVZfDaC7AREsDCmx5w",
       },
       {
         "private_key":
@@ -3327,9 +3327,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "bcea50546b07c24338536b9ae62921d032f3ae0605e40a4bc6ae8fa2080d914b",
         "path": "/soft",
-        "address": "259JCBvZk6Qa1vr5YUp4xNASzfAJCF6FNrCp4L8Mxy7Q6i52"
-      }
-    ]
+        "address": "259JCBvZk6Qa1vr5YUp4xNASzfAJCF6FNrCp4L8Mxy7Q6i52",
+      },
+    ],
   },
   {
     "seed": "da692fffb0cfe80c17010de730e3dab91f4758371ed7e4b038f560fa9c332e56",
@@ -3347,7 +3347,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "f8bbe2e588b8357386f3d76254589f96a12c02d49cc0204da521b212ea1a8039",
         "path": "//0",
-        "address": "26VjGuDqfnjM6kbjR2BQRhe8BjH9WBSXzkPnsPu5xmEh4q3Y"
+        "address": "26VjGuDqfnjM6kbjR2BQRhe8BjH9WBSXzkPnsPu5xmEh4q3Y",
       },
       {
         "private_key":
@@ -3355,7 +3355,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "84bf1d52333af082e79a8ebea9ef4af11648cee9480af04fee9912c3dc204b1d",
         "path": "/1",
-        "address": "23segMUZrazSXotA5dJyqZXieg62rrqBqFWh7ieB1Bwekeuo"
+        "address": "23segMUZrazSXotA5dJyqZXieg62rrqBqFWh7ieB1Bwekeuo",
       },
       {
         "private_key":
@@ -3363,7 +3363,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "50cb069b790f12ccad3bbe6b906a14e6b6cf40e3d981a1fc0a95eeebc215b57c",
         "path": "//hard",
-        "address": "22hXjAEeyVnxBx3raf1ptW8j6u6m2wz2mTNrLq1QKL4gWfcz"
+        "address": "22hXjAEeyVnxBx3raf1ptW8j6u6m2wz2mTNrLq1QKL4gWfcz",
       },
       {
         "private_key":
@@ -3371,7 +3371,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "12549a27b1f23c463aca220a58a422b1a204bd169bef14f67594345f35592732",
         "path": "//1",
-        "address": "21HdaaHuVmixq8PErfLLZLowSqiazXcmutxGFCF2CkeHj94f"
+        "address": "21HdaaHuVmixq8PErfLLZLowSqiazXcmutxGFCF2CkeHj94f",
       },
       {
         "private_key":
@@ -3379,7 +3379,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "40d64372ddeb4385fe296c7a1dd24e2cfea8022a51ca6937404ca77561e30211",
         "path": "/0",
-        "address": "22LcJLsbsqoXBL9RCSwACDZxEy4crNt9poZGFV9UbyJVQxuH"
+        "address": "22LcJLsbsqoXBL9RCSwACDZxEy4crNt9poZGFV9UbyJVQxuH",
       },
       {
         "private_key":
@@ -3387,7 +3387,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "dc395ac6e034e12e6f21ff95a9128255b528e124d8ffded95266fe630051567c",
         "path": "//12",
-        "address": "25rMA8LSh3iTbqrtQ957Ny3EUhfYU2SgiksbJwxbTeh5cTak"
+        "address": "25rMA8LSh3iTbqrtQ957Ny3EUhfYU2SgiksbJwxbTeh5cTak",
       },
       {
         "private_key":
@@ -3395,9 +3395,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "40fbc3abe1ed0ba10f638c7c569e336962c79edbcba4d5a897eab53a9ebd9163",
         "path": "/soft",
-        "address": "22LoSU7vdtnqkMSwLgfThMqbcCEFZqcXpP7a8b1aqWNZmog9"
-      }
-    ]
+        "address": "22LoSU7vdtnqkMSwLgfThMqbcCEFZqcXpP7a8b1aqWNZmog9",
+      },
+    ],
   },
   {
     "seed": "42ab73e917bf6e6e12d816c4ac4f59f0d1c3267fd21c787158012f80af569316",
@@ -3415,7 +3415,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "4ed7d68ebf3e9293be6f8887f77e4642ef268d4dbbd802816f3a5fafde359e6a",
         "path": "//0",
-        "address": "5RRQE62bYrxECudr7GkKwpuXjzn1YCKocgV2SkM2Dr8TCqjn"
+        "address": "5RRQE62bYrxECudr7GkKwpuXjzn1YCKocgV2SkM2Dr8TCqjn",
       },
       {
         "private_key":
@@ -3423,7 +3423,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "3490b140a93d75c24b7e50e07e56e35d62222f92f46520dfff917a99e9fee50f",
         "path": "/1",
-        "address": "5Qpwr4jFAasB33nPm9cCh9bgfT6i6MktEcyEbZ2m4B2pquEh"
+        "address": "5Qpwr4jFAasB33nPm9cCh9bgfT6i6MktEcyEbZ2m4B2pquEh",
       },
       {
         "private_key":
@@ -3431,7 +3431,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "8297b22683007b7cbb9f9263d2feb57d4722a46eb310075bf8ed134c4a9e946e",
         "path": "//hard",
-        "address": "5SbFfN1oEpWroGoesBe1ZDz8MBH8ewXFZ95J9Rmkj57CmtZB"
+        "address": "5SbFfN1oEpWroGoesBe1ZDz8MBH8ewXFZ95J9Rmkj57CmtZB",
       },
       {
         "private_key":
@@ -3439,7 +3439,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "e07484040cdceb02888f9407a215f47557bc6b0bdba64fad7f374984253ff071",
         "path": "//1",
-        "address": "5UiKiHkMnyjc28777XBSbuSTFdiUsSh8yHuYLhU8isW1A1VZ"
+        "address": "5UiKiHkMnyjc28777XBSbuSTFdiUsSh8yHuYLhU8isW1A1VZ",
       },
       {
         "private_key":
@@ -3447,7 +3447,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "6e8a07b03c5076b32cd409b9539da64215dace9f98016393e518c26f2af6493d",
         "path": "/0",
-        "address": "5S8xeMoTVjL2JYYFk947qGig7kPyg4dowbM1XGgdteawqfpM"
+        "address": "5S8xeMoTVjL2JYYFk947qGig7kPyg4dowbM1XGgdteawqfpM",
       },
       {
         "private_key":
@@ -3455,7 +3455,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "fe6e4add2300876341e85f18fb5cec3c08f9813608980fed990ff4be56d6315c",
         "path": "//12",
-        "address": "5VPdJPGtv4RwWRjXeLQBZsettXKkUHshD3AaDm7F5RmtYhqQ"
+        "address": "5VPdJPGtv4RwWRjXeLQBZsettXKkUHshD3AaDm7F5RmtYhqQ",
       },
       {
         "private_key":
@@ -3463,9 +3463,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "cc06dde0aa6d5008679b187fd0268c42d46b8109e3c39f1c782299dfa3625805",
         "path": "/soft",
-        "address": "5UFYBY1NxAq3a2Sfk8x45rA2vMXjGEq2vTb2NivC45ourhLt"
-      }
-    ]
+        "address": "5UFYBY1NxAq3a2Sfk8x45rA2vMXjGEq2vTb2NivC45ourhLt",
+      },
+    ],
   },
   {
     "seed": "a60ec3515f8267137e53e23167e6c0fe181cb7d5add59f3f6bec2b465f82569d",
@@ -3483,7 +3483,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "fee2d0e14981d0a005940c6780da3cc0886bda13f713dcbbe4427a5bcd1f6622",
         "path": "//0",
-        "address": "36WPiEAWnzXzrfneR7D6HJkEuFJg6Eo6k9Mh8PpAYkAnY3mW"
+        "address": "36WPiEAWnzXzrfneR7D6HJkEuFJg6Eo6k9Mh8PpAYkAnY3mW",
       },
       {
         "private_key":
@@ -3491,7 +3491,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "fea7f784e84c34452651302d6ec62bcf8fb01b8a77016508ae020a996db44538",
         "path": "/1",
-        "address": "36W6EHJr4H9YVrwTVAJQFgS6G3SA7v2BV8NbEr7tZC7fZrFU"
+        "address": "36W6EHJr4H9YVrwTVAJQFgS6G3SA7v2BV8NbEr7tZC7fZrFU",
       },
       {
         "private_key":
@@ -3499,7 +3499,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "ecd793651241f9e67f1490a425cae5a9ab5b0cea8e98d1edabf81f82f6845f4b",
         "path": "//hard",
-        "address": "366jWa9rxvmTyJDbyn6TQRBaswKbiouDxgCuhkzj44Bhj1mm"
+        "address": "366jWa9rxvmTyJDbyn6TQRBaswKbiouDxgCuhkzj44Bhj1mm",
       },
       {
         "private_key":
@@ -3507,7 +3507,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "2602e1d116f1833089cbf32fff4ae6cdd85ab9d32f4676dc12ca1b36bdf1521f",
         "path": "//1",
-        "address": "31c2r39v57t5DahMN7KRrTsDcJ6ZHPrJjUwkqo6CCVR2KqYZ"
+        "address": "31c2r39v57t5DahMN7KRrTsDcJ6ZHPrJjUwkqo6CCVR2KqYZ",
       },
       {
         "private_key":
@@ -3515,7 +3515,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "8ea37ccab98244203f073062efb4fbb1b20fac7edcda4baae30751b49756c61f",
         "path": "/0",
-        "address": "33yDY3YMG2DFNwTVBXnWxmZPSrBxypg7pEEBNmr95Wy9JcGV"
+        "address": "33yDY3YMG2DFNwTVBXnWxmZPSrBxypg7pEEBNmr95Wy9JcGV",
       },
       {
         "private_key":
@@ -3523,7 +3523,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "7c9602477e9417b22f2f6507a691b2a7471c797df31ba0dd476d59fe90fa3132",
         "path": "//12",
-        "address": "33ZYfpftCRCBXGCg5LmqiY3UhChu8wxyoJWoYKBzTMd5BCNa"
+        "address": "33ZYfpftCRCBXGCg5LmqiY3UhChu8wxyoJWoYKBzTMd5BCNa",
       },
       {
         "private_key":
@@ -3531,9 +3531,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "fac38425c9ce1fc972c5c2bd096e59ed8a7e53c77dd12416b5fe561a5c5b9d45",
         "path": "/soft",
-        "address": "36QzDqUhA7Pg3BboECgyzMT4q4KYFN7zPHvTNGw5thSqjMxs"
-      }
-    ]
+        "address": "36QzDqUhA7Pg3BboECgyzMT4q4KYFN7zPHvTNGw5thSqjMxs",
+      },
+    ],
   },
   {
     "seed": "16404f415baf734cb77e33b9263fd78090fa2f1cd97dc9cf5e9bc86be220ef18",
@@ -3551,7 +3551,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "66a5333db3630859f03fff28dfa21bfe0dedaf8abb1ff2f2123f5bf9e62a9962",
         "path": "//0",
-        "address": "23CBYYHMcHtXuumeT7nToAURLnp9wZzJXFscgD8RnbgkjNeE"
+        "address": "23CBYYHMcHtXuumeT7nToAURLnp9wZzJXFscgD8RnbgkjNeE",
       },
       {
         "private_key":
@@ -3559,7 +3559,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "62f110a42a674d3c33240f939212de33d762909358c95e1fe43764870e23e449",
         "path": "/1",
-        "address": "237KtYxMRTuH93F8UY5YsdsoxF5Dwk3fJSoyCMjHM9aivz2E"
+        "address": "237KtYxMRTuH93F8UY5YsdsoxF5Dwk3fJSoyCMjHM9aivz2E",
       },
       {
         "private_key":
@@ -3567,7 +3567,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "4c0fec3cd55473a54d8364880702105ff8f31cab61b17b5c19b72181af1c2626",
         "path": "//hard",
-        "address": "22bKxLjXVXLGP6ctgLKUHgedrwCyzbkADoXw2tjSiCChM6iT"
+        "address": "22bKxLjXVXLGP6ctgLKUHgedrwCyzbkADoXw2tjSiCChM6iT",
       },
       {
         "private_key":
@@ -3575,7 +3575,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "5a4dbd90dcc62644427fc0b5019fcc3163aee8be5d5739dce6b1a8f59ee7b745",
         "path": "//1",
-        "address": "22uzzKMz9THKd2V5dfMWkAJsMQYkzTCfXoDMAJ3GgzaGzbjg"
+        "address": "22uzzKMz9THKd2V5dfMWkAJsMQYkzTCfXoDMAJ3GgzaGzbjg",
       },
       {
         "private_key":
@@ -3583,7 +3583,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "0864b4de69139bed7e0573d8152b7502c9ea2f8450f8ff53fe9f326abf9bd860",
         "path": "/0",
-        "address": "214btGoE3Pk9mhewSGP5YFxZmSBV2qxgvrSk9AZk7cgrEVWL"
+        "address": "214btGoE3Pk9mhewSGP5YFxZmSBV2qxgvrSk9AZk7cgrEVWL",
       },
       {
         "private_key":
@@ -3591,7 +3591,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "321b5b6520ce5a714cf2d37788c1010bc0a58e455abb7be1fb025e269fd62829",
         "path": "//12",
-        "address": "221J78wbtUSPpcL3gDbXWxdnn3zqQwhfjVotV1AmQUb5mAcf"
+        "address": "221J78wbtUSPpcL3gDbXWxdnn3zqQwhfjVotV1AmQUb5mAcf",
       },
       {
         "private_key":
@@ -3599,9 +3599,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "2c645447d07165fd55153093f19e6b7a36ee7bbf570fc2cc5a621ce52cdc9e6a",
         "path": "/soft",
-        "address": "21soVknbWzEX4j4ZuirNyyQKd3w2r6v7fmMtsy7cvmYKmrag"
-      }
-    ]
+        "address": "21soVknbWzEX4j4ZuirNyyQKd3w2r6v7fmMtsy7cvmYKmrag",
+      },
+    ],
   },
   {
     "seed": "5429d51e62dd17f8090e9844da78a26c1e51a6f2a97e0f9e0b6dd762dc12ac3c",
@@ -3619,7 +3619,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "96dddcc867d42ba4698dac39a8d681384dd49d9ead741c07699a61e72f61b34d",
         "path": "//0",
-        "address": "Fz8cBYin4Kyvr3vbbbLZRWWURiAFjaVhheieASY9sKMG8yc"
+        "address": "Fz8cBYin4Kyvr3vbbbLZRWWURiAFjaVhheieASY9sKMG8yc",
       },
       {
         "private_key":
@@ -3627,7 +3627,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "704deb545ee16de178aa7d1fad9259c2793a02350239ad6a4309250a6e1ca336",
         "path": "/1",
-        "address": "F7a2ZXPM9mPJubudYCed6u7V6bgXXjC5BycC734fpmyW4Bb"
+        "address": "F7a2ZXPM9mPJubudYCed6u7V6bgXXjC5BycC734fpmyW4Bb",
       },
       {
         "private_key":
@@ -3635,7 +3635,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "be2aec9c118cf47f976e9b42b64498ef4986331db98f41b0686b8cb097903a32",
         "path": "//hard",
-        "address": "GsfNEzuhXwfAceV2dD5V8Zi32eDJLWv7nZptKGYwjUCScy5"
+        "address": "GsfNEzuhXwfAceV2dD5V8Zi32eDJLWv7nZptKGYwjUCScy5",
       },
       {
         "private_key":
@@ -3643,7 +3643,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "96ed36cbd051a682f93812548fbfebef247220c3d47b0df36f7f8107d6bbe709",
         "path": "//1",
-        "address": "FzDAgfzEE8U6DAahCweCbfkTvY9nJGJHEJL2KWg55YoJab2"
+        "address": "FzDAgfzEE8U6DAahCweCbfkTvY9nJGJHEJL2KWg55YoJab2",
       },
       {
         "private_key":
@@ -3651,7 +3651,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "5e1a7b21ee21aa34416320faf30d83ca2cf661054846ad5e5bee83a972dbd315",
         "path": "/0",
-        "address": "EhhtJtN3J4ov9GidNFDmKE2MHNrcn9NSrQw5SmFtwRJyfSE"
+        "address": "EhhtJtN3J4ov9GidNFDmKE2MHNrcn9NSrQw5SmFtwRJyfSE",
       },
       {
         "private_key":
@@ -3659,7 +3659,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "62597cc02095043349a0fa379ee9ac73b1507fb673e42d2b6317dbcae6f6d91e",
         "path": "//12",
-        "address": "EoGnzVZ2Tzy1SdGk5Xk5QtwwdJf3DdgYcbed7eXwLFHVp5i"
+        "address": "EoGnzVZ2Tzy1SdGk5Xk5QtwwdJf3DdgYcbed7eXwLFHVp5i",
       },
       {
         "private_key":
@@ -3667,9 +3667,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "522cb52347c24c843f6f7dd97810cebc9e2cbfb9aad3be7e1d28cd15ae11bb59",
         "path": "/soft",
-        "address": "ES4j21JuiGWZbWx846YomLe4cQaXREm2i98Pc4ZcYskZXtP"
-      }
-    ]
+        "address": "ES4j21JuiGWZbWx846YomLe4cQaXREm2i98Pc4ZcYskZXtP",
+      },
+    ],
   },
   {
     "seed": "7e24b49e3287d3996df3ea3af5038052d920969abccb31eae6da2442e04131f5",
@@ -3687,7 +3687,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "d63f571a9ee9232e2f61fe5e427ad9061dd8ba550b7c7b595e42bc42b98f8148",
         "path": "//0",
-        "address": "35b7EWorFswsa4X695aS9rZJYywgVX2BkeDN523thvtDfY1r"
+        "address": "35b7EWorFswsa4X695aS9rZJYywgVX2BkeDN523thvtDfY1r",
       },
       {
         "private_key":
@@ -3695,7 +3695,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "16885b16504218ff0742b17363e14013790e7bcbf731d0538b1c0b2f10629030",
         "path": "/1",
-        "address": "31FjjJKg6boX1Lueaj7Y7fimnfWQN3aGQFPNPZDVvZULv2AY"
+        "address": "31FjjJKg6boX1Lueaj7Y7fimnfWQN3aGQFPNPZDVvZULv2AY",
       },
       {
         "private_key":
@@ -3703,7 +3703,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "62971873f5705266c185f1e234ab503b3f2ec8d9b2913b53c8c3911e2bb01831",
         "path": "//hard",
-        "address": "32yTkLMey9dVyZbXgB2g5Y2nHxWCuFqkjpx6bjNj6S5omw2g"
+        "address": "32yTkLMey9dVyZbXgB2g5Y2nHxWCuFqkjpx6bjNj6S5omw2g",
       },
       {
         "private_key":
@@ -3711,7 +3711,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "805745f8648603c83a0c10fad5888707a9ff50802f4d45c49eb166dc7cef5767",
         "path": "//1",
-        "address": "33eUE2HpbQ8qNLNpCYFEj7XAWG8bgUSrxGetWP1E2zPPB97r"
+        "address": "33eUE2HpbQ8qNLNpCYFEj7XAWG8bgUSrxGetWP1E2zPPB97r",
       },
       {
         "private_key":
@@ -3719,7 +3719,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "46cbf18378f8163f8c74e537b6dd76bb22ae702ab39fc6aafad30a8b03c59c21",
         "path": "/0",
-        "address": "32M277nTx37bYT1YSLr2Uu6iE6L7ZfXtY2Sn8LdNsT2cJZMV"
+        "address": "32M277nTx37bYT1YSLr2Uu6iE6L7ZfXtY2Sn8LdNsT2cJZMV",
       },
       {
         "private_key":
@@ -3727,7 +3727,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "b4802584e8aa981367e16266f5f959ce004457a156b3c7d7b93ab4859a64404d",
         "path": "//12",
-        "address": "34prrfyczLMpKFGySG7NYfzNp6hA1NiHNb76GrDKndg1HhUu"
+        "address": "34prrfyczLMpKFGySG7NYfzNp6hA1NiHNb76GrDKndg1HhUu",
       },
       {
         "private_key":
@@ -3735,9 +3735,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "584879281a180a1baa99c741b1fdeb21183dfcb95a0ead15a0ba13071375530b",
         "path": "/soft",
-        "address": "32jwuvz2fwcVifZEESqMT73rC3DAG4yrzytZymD63tgRYLyB"
-      }
-    ]
+        "address": "32jwuvz2fwcVifZEESqMT73rC3DAG4yrzytZymD63tgRYLyB",
+      },
+    ],
   },
   {
     "seed": "9cdf12c29e1d3d2cba543e4de7993845611e74d53674494a26260b0a549eb4de",
@@ -3755,7 +3755,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "f8bece8d1a883f7904e86f957fc745a983e8be3aee34037d41a23c974f511c09",
         "path": "//0",
-        "address": "16d9ZJLZJaj2kouuwkQY1WhVPRm1134PV6BvHHaC5bsZ1tvn"
+        "address": "16d9ZJLZJaj2kouuwkQY1WhVPRm1134PV6BvHHaC5bsZ1tvn",
       },
       {
         "private_key":
@@ -3763,7 +3763,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "d009aa771b837f1d86d678d782c88034d11c020d519480e5ebf119a0e5179d1f",
         "path": "/1",
-        "address": "15hmqDn8AnXbVGuTpLCNBqJXXynvKY95oGWVr4aGoqJDtNHJ"
+        "address": "15hmqDn8AnXbVGuTpLCNBqJXXynvKY95oGWVr4aGoqJDtNHJ",
       },
       {
         "private_key":
@@ -3771,7 +3771,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "a251f15984e06d22a842a9b33b6a832477290c81b3ea947475be44603c73f927",
         "path": "//hard",
-        "address": "14fq6mR5vu5NpdXKNS12oNwAWZTN8fU6bWvxiaVq9AfPZcve"
+        "address": "14fq6mR5vu5NpdXKNS12oNwAWZTN8fU6bWvxiaVq9AfPZcve",
       },
       {
         "private_key":
@@ -3779,7 +3779,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "d25981996f20f4de306513e4acc902bd48a5cdd997b3a0aa6ecb247789e3b360",
         "path": "//1",
-        "address": "15koePmBJvNXxESf9Pm7HtAbF9YJVmsVvLLWGWoSTP5p7Xs4"
+        "address": "15koePmBJvNXxESf9Pm7HtAbF9YJVmsVvLLWGWoSTP5p7Xs4",
       },
       {
         "private_key":
@@ -3787,7 +3787,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "562867f4fe1ab3fe95220c565644270ab7c88451d2742f1bee9a1c3327a2272f",
         "path": "/0",
-        "address": "12wy82iDJEBwzHEpV7jxDnTVBAzkxCKE9A2rjtsXqSNHTCU2"
+        "address": "12wy82iDJEBwzHEpV7jxDnTVBAzkxCKE9A2rjtsXqSNHTCU2",
       },
       {
         "private_key":
@@ -3795,7 +3795,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "80074d0699f19f959b788da6fec0764f13001f616fe14ffeff0ce568bb241d57",
         "path": "//12",
-        "address": "13tsJHfXZiR36mueixHF1esaBmxiAAQ5qBiR5mFTewWKZfmm"
+        "address": "13tsJHfXZiR36mueixHF1esaBmxiAAQ5qBiR5mFTewWKZfmm",
       },
       {
         "private_key":
@@ -3803,9 +3803,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "eca73e33b08bdcda68719f25cc41b680e3bf6cf947b0e0e10fcdab2684c30134",
         "path": "/soft",
-        "address": "16MHyyZgSndjuB6mJie58nVKBgrZa4NgtFm5qnvyk2EYffZY"
-      }
-    ]
+        "address": "16MHyyZgSndjuB6mJie58nVKBgrZa4NgtFm5qnvyk2EYffZY",
+      },
+    ],
   },
   {
     "seed": "2bf058de2424b2c2345619a0f950a276081e0bd738e3d601c1a5b33c6d76443b",
@@ -3823,7 +3823,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "febba0e1f632af04ab48e282b6b671645fc73f3917e5f29c2be3de37ff0fc569",
         "path": "//0",
-        "address": "16kzuCd2Kb2pGR7BtJGNF8XRJXzK5ULFofqT6nU1SZFoDUNR"
+        "address": "16kzuCd2Kb2pGR7BtJGNF8XRJXzK5ULFofqT6nU1SZFoDUNR",
       },
       {
         "private_key":
@@ -3831,7 +3831,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "48d4f57350b3eec0ac18577ff5ed41ab5b513eaa7cd831fcbc971a63e8f7db3d",
         "path": "/1",
-        "address": "12eViALqezrb8GwTQse9mw63dqowz8BfFJaF7i9vtGB6kPxJ"
+        "address": "12eViALqezrb8GwTQse9mw63dqowz8BfFJaF7i9vtGB6kPxJ",
       },
       {
         "private_key":
@@ -3839,7 +3839,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "aac9e85c100f22ab2d146e8554de8ffdd00d5356abb51a43798fb811d44d684a",
         "path": "//hard",
-        "address": "14rw7w1BhQyU8Yg5dCbLrryQzbzPpT9ebip9y6VsjmUWFYMv"
+        "address": "14rw7w1BhQyU8Yg5dCbLrryQzbzPpT9ebip9y6VsjmUWFYMv",
       },
       {
         "private_key":
@@ -3847,7 +3847,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "16e1493e9f78550a63785ab7906d868d123221aa11eb0fc3762f287fdbbcd90b",
         "path": "//1",
-        "address": "1Wzyh2ueBxqjvsKsF8ZWKdqqbX1btE5stJafpMdaz3hH5H3"
+        "address": "1Wzyh2ueBxqjvsKsF8ZWKdqqbX1btE5stJafpMdaz3hH5H3",
       },
       {
         "private_key":
@@ -3855,7 +3855,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "d07e70dce59fb395376c80da6ebad286301ce8a21058a2677f273545735cb916",
         "path": "/0",
-        "address": "15iNXCys6CyHtjveFwDja8o4Ns1iXtwXWT5QakMpYCWpHXuW"
+        "address": "15iNXCys6CyHtjveFwDja8o4Ns1iXtwXWT5QakMpYCWpHXuW",
       },
       {
         "private_key":
@@ -3863,7 +3863,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "f431d7e836adc05c5e09e42abff86ffb9dde9d0a6de1a748b463258a4dfa7f65",
         "path": "//12",
-        "address": "16XBVSs2PnbV7LQQCbfwz9DG9Tbvp69qgmWQegQhPZt5vUdy"
+        "address": "16XBVSs2PnbV7LQQCbfwz9DG9Tbvp69qgmWQegQhPZt5vUdy",
       },
       {
         "private_key":
@@ -3871,9 +3871,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "42fff67ea860d13462a049e591d403f1d07601993b0df9af24f2cc0360e3a97a",
         "path": "/soft",
-        "address": "12WrCSXw4EhhjUyLTzVVkmCzhcGRnpv4WkoD9vwk3AGunYsB"
-      }
-    ]
+        "address": "12WrCSXw4EhhjUyLTzVVkmCzhcGRnpv4WkoD9vwk3AGunYsB",
+      },
+    ],
   },
   {
     "seed": "f0cc0068044b027014fe0b863132537c887e22538be39815db582a509e6c7246",
@@ -3891,7 +3891,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "6ccc53241b3cd7a8078bab6d9d05e7c61937dcd1a7e676aea9e08a35d63e2070",
         "path": "//0",
-        "address": "23LFTJfWBr8WZyhsoBVEmLNW3zmTX8dQXhPpYupZMEpxoAEf"
+        "address": "23LFTJfWBr8WZyhsoBVEmLNW3zmTX8dQXhPpYupZMEpxoAEf",
       },
       {
         "private_key":
@@ -3899,7 +3899,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "68194f981240e3e8799df53d1e01e067c6346b6dc9e6a9ed145ecbf61b9afa70",
         "path": "/1",
-        "address": "23E65rnZxavvJm8nxSnLfeZYTute2oe3hQmJQr5eK1Gtk5cE"
+        "address": "23E65rnZxavvJm8nxSnLfeZYTute2oe3hQmJQr5eK1Gtk5cE",
       },
       {
         "private_key":
@@ -3907,7 +3907,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "06ba4f780190400a9aa4ad66f84cf75ebf3fef5aba2f4a97c329d71a0f57022d",
         "path": "//hard",
-        "address": "212RDe3bRCRyqBGUc3jewmDnti7qAGD8ZvhefKRsk6UqFB7X"
+        "address": "212RDe3bRCRyqBGUc3jewmDnti7qAGD8ZvhefKRsk6UqFB7X",
       },
       {
         "private_key":
@@ -3915,7 +3915,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "9eb89583665cb41537bddf597586fcfe0f82cfe05e0d6ed6a9b3d20e8497c740",
         "path": "//1",
-        "address": "24Thz3dJSw1sPqd4Jkd1jxjS6QpRaKo1WWWZgDbna1fNDfc1"
+        "address": "24Thz3dJSw1sPqd4Jkd1jxjS6QpRaKo1WWWZgDbna1fNDfc1",
       },
       {
         "private_key":
@@ -3923,7 +3923,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "e4f211b27b62eb4d59612dfa68145bcb1e78c70f2c841c1a56fba32bfe59862f",
         "path": "/0",
-        "address": "263nQuLFksBuB7bZGkjWEsNouS5jY2upzU2vBgd9WLEfz2A9"
+        "address": "263nQuLFksBuB7bZGkjWEsNouS5jY2upzU2vBgd9WLEfz2A9",
       },
       {
         "private_key":
@@ -3931,7 +3931,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "1e5d221bb6e3a8c670d4f9ff5e12f780a2ab0d9bd0df6dc40e1432bf271adf1b",
         "path": "//12",
-        "address": "21ZQgtYHeV6rW9ut8Fd7kC4dfuro3kVEbpnpdDPSMgJsEME9"
+        "address": "21ZQgtYHeV6rW9ut8Fd7kC4dfuro3kVEbpnpdDPSMgJsEME9",
       },
       {
         "private_key":
@@ -3939,9 +3939,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "40c0ffc760e69726028a0617771a39af5cee410fce3465dde0af44f1ca1df258",
         "path": "/soft",
-        "address": "22LVyy4qZU5NgyjAUmMKcNjwacbeAKQ4JHyCHTRRHyGpcNCL"
-      }
-    ]
+        "address": "22LVyy4qZU5NgyjAUmMKcNjwacbeAKQ4JHyCHTRRHyGpcNCL",
+      },
+    ],
   },
   {
     "seed": "79f1e1e6736dac108d3005cf8886aa1094026877d73f76575e672edcdcf78632",
@@ -3959,7 +3959,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "5a9cc28bea2e4c9a917ff6727f8950bcdccfbea1f50a069015ea27a094105428",
         "path": "//0",
-        "address": "133ossQtxTHMxNqunCuyTJN9Hswsu1pan7DnfVPgZ8SvTSqq"
+        "address": "133ossQtxTHMxNqunCuyTJN9Hswsu1pan7DnfVPgZ8SvTSqq",
       },
       {
         "private_key":
@@ -3967,7 +3967,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "5c413e8da825816b7f40bad766783a442e36860d9b3fd838e5e9d5ab1d6c882e",
         "path": "/1",
-        "address": "135xneWex2HjjKnraUFpY1JdEcyFpTRYmciM7c9fiho6Pra8"
+        "address": "135xneWex2HjjKnraUFpY1JdEcyFpTRYmciM7c9fiho6Pra8",
       },
       {
         "private_key":
@@ -3975,7 +3975,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "f65b66dec965e625c0405a436eca3cadd2426dcbe214eba0baa246d2c314d709",
         "path": "//hard",
-        "address": "16a1w35wmZWg8jTRWDjcZcfoAW4fZwwbE1xY1JatfCkPkUCX"
+        "address": "16a1w35wmZWg8jTRWDjcZcfoAW4fZwwbE1xY1JatfCkPkUCX",
       },
       {
         "private_key":
@@ -3983,7 +3983,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "167924bd1a5c9f4434089b5bdff83569eafd606a406f0d4c10d9605378e87827",
         "path": "//1",
-        "address": "1WU3Mb8xW14g1ZMfi4Mn9pCWMuoKfzitmCgb6Zo3npjgPWj"
+        "address": "1WU3Mb8xW14g1ZMfi4Mn9pCWMuoKfzitmCgb6Zo3npjgPWj",
       },
       {
         "private_key":
@@ -3991,7 +3991,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "e88e3766ceeb3fcd97131e28112f0602ec68326d0cb3e8e7d503015d037f474a",
         "path": "/0",
-        "address": "16FvMfmFPtwEiYoCPScmnZ8UAHqNtqMLjxUibLfcabPZBUoM"
+        "address": "16FvMfmFPtwEiYoCPScmnZ8UAHqNtqMLjxUibLfcabPZBUoM",
       },
       {
         "private_key":
@@ -3999,7 +3999,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "aabcb31e2c3060a09930b0422d96ee18cc96fd5b374109e3149df5280578630b",
         "path": "//12",
-        "address": "14rsCN42JEDBxM6nGeMxpUnP2evntZjw1UgvndpWGjMn9Ne4"
+        "address": "14rsCN42JEDBxM6nGeMxpUnP2evntZjw1UgvndpWGjMn9Ne4",
       },
       {
         "private_key":
@@ -4007,9 +4007,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "3a1c734fc1becc311553ecf0ca9c91d11a18dc3d641feedd7ed7f2baf263802f",
         "path": "/soft",
-        "address": "12KCEGssM5LUzi9s5cgzp8srcAqnP3aGgNCuRfkSS5wqdhqY"
-      }
-    ]
+        "address": "12KCEGssM5LUzi9s5cgzp8srcAqnP3aGgNCuRfkSS5wqdhqY",
+      },
+    ],
   },
   {
     "seed": "f736cf3026ec674d4249b2d031d89be4174613545a6696d651b7757072a62db3",
@@ -4027,7 +4027,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "d007026f0cca10048e8525b5e678f34e67f9bf9234eaa26022f0ac86e059c374",
         "path": "//0",
-        "address": "25aMdNdo6gWriAZpW7gAy9REGxSCWfBR7PW2a2wMVLnFxrte"
+        "address": "25aMdNdo6gWriAZpW7gAy9REGxSCWfBR7PW2a2wMVLnFxrte",
       },
       {
         "private_key":
@@ -4035,7 +4035,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "cafcf2e23694927f670dffad8bac14b0d070feb65989851fcf2860daa3834055",
         "path": "/1",
-        "address": "25TkQ9M1ooTuj5WZsJfR8sSXrdBAiNcgvGgRSoKSmgwwHhmM"
+        "address": "25TkQ9M1ooTuj5WZsJfR8sSXrdBAiNcgvGgRSoKSmgwwHhmM",
       },
       {
         "private_key":
@@ -4043,7 +4043,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "dc39eaf27de1121573ddb17cb2cbdb907bde2a22937832dbf3ab56bd9c3dee42",
         "path": "//hard",
-        "address": "25rMKq7j5jzpeMB3pTdQqthkyR8uqd6qQQXyAnjq4jY6cFYs"
+        "address": "25rMKq7j5jzpeMB3pTdQqthkyR8uqd6qQQXyAnjq4jY6cFYs",
       },
       {
         "private_key":
@@ -4051,7 +4051,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "fa64cfd1d455cc880c04d1034687cc77e82898627eea301a9ba2815c4f8f503d",
         "path": "//1",
-        "address": "26XuWCNBadeAo7BJn6WB9r25kBA3PdsyrRoctP98sXLm7cSz"
+        "address": "26XuWCNBadeAo7BJn6WB9r25kBA3PdsyrRoctP98sXLm7cSz",
       },
       {
         "private_key":
@@ -4059,7 +4059,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "803692a0f324b3b4e8c7ee906f7486abe1ebaac563e90af11d9d7b76d0ab1a7f",
         "path": "/0",
-        "address": "23mhvgfcisPBbmVD28xnNJQ6eHrfk5mQxhDoWdwKkSgPgwx3"
+        "address": "23mhvgfcisPBbmVD28xnNJQ6eHrfk5mQxhDoWdwKkSgPgwx3",
       },
       {
         "private_key":
@@ -4067,7 +4067,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "24ad1ab39f3e350fb26399c46495c18c994018f7d241ec69de3f4620f3b8a06b",
         "path": "//12",
-        "address": "21hgjRUJmXYhvNywY3TTRE6VQB2ApdPu628sV6mkojbdezQs"
+        "address": "21hgjRUJmXYhvNywY3TTRE6VQB2ApdPu628sV6mkojbdezQs",
       },
       {
         "private_key":
@@ -4075,9 +4075,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "fcc4b3b8818ab4009a428f50183669a101727e9c196efcc21c78def29da50c78",
         "path": "/soft",
-        "address": "26b25uFiHi52ks3TNZA9xFMphbJAnKMT4k5d4hAHnriJcMzN"
-      }
-    ]
+        "address": "26b25uFiHi52ks3TNZA9xFMphbJAnKMT4k5d4hAHnriJcMzN",
+      },
+    ],
   },
   {
     "seed": "d0dfdbdd53c20595c0afab97df163bebd9ad3bdb3dfb36e64a5bb758e537d01f",
@@ -4095,7 +4095,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "002484f03cabfc3e002b6972177a4cc3c3771b787aa97b4356a897d6bd107322",
         "path": "//0",
-        "address": "11BrDLdHA2esyfx1c3zaJqYvLwFCrf9n1PrwFnnMxqhppzc"
+        "address": "11BrDLdHA2esyfx1c3zaJqYvLwFCrf9n1PrwFnnMxqhppzc",
       },
       {
         "private_key":
@@ -4103,7 +4103,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "9c0d969765afd309ca9638da50be7b5d5365b0ac67d1e20cab6e4dc0ea8b213f",
         "path": "/1",
-        "address": "14XcWP6E1gDEVb989vJnzctNX324R16N6bUgzmeW48VDV43P"
+        "address": "14XcWP6E1gDEVb989vJnzctNX324R16N6bUgzmeW48VDV43P",
       },
       {
         "private_key":
@@ -4111,7 +4111,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "a0007ad3e18e71622fda692843587ab3e8b2b8c6995c33a9c936a3973c067011",
         "path": "//hard",
-        "address": "14cnodw1HCJnbBDiqYaQRYEaszGvQrsnxgtX7KE6SNEV1vAc"
+        "address": "14cnodw1HCJnbBDiqYaQRYEaszGvQrsnxgtX7KE6SNEV1vAc",
       },
       {
         "private_key":
@@ -4119,7 +4119,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "bc29c380439615072b469c9b2abc985513f9a5ad827c6fed83c9935a4c0d4463",
         "path": "//1",
-        "address": "15FiQhxfYbQsaYakv7KBu328NXwf6eWcJftTgdbZCyj8Ukty"
+        "address": "15FiQhxfYbQsaYakv7KBu328NXwf6eWcJftTgdbZCyj8Ukty",
       },
       {
         "private_key":
@@ -4127,7 +4127,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "10ef050419d879d1eeacc4c855355204e90b97e8a04a47b67047f771e8c7dc19",
         "path": "/0",
-        "address": "1PCmedLJwsTDFmWfuo6EnaFMyu2fRQgSRsBLy2YdJRycmd2"
+        "address": "1PCmedLJwsTDFmWfuo6EnaFMyu2fRQgSRsBLy2YdJRycmd2",
       },
       {
         "private_key":
@@ -4135,7 +4135,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "08ae49fe47fff5a858da40fbd642554535c53a61a4ca73cc3d68753a8a5abe07",
         "path": "//12",
-        "address": "1CPA9dBatnEtJTmqWSF6xgmvh7mewrZPXK5wfNf2XXCK1mz"
+        "address": "1CPA9dBatnEtJTmqWSF6xgmvh7mewrZPXK5wfNf2XXCK1mz",
       },
       {
         "private_key":
@@ -4143,9 +4143,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "523217ff5bca0149c38ed7efcf6312bd2a5ede35e350a5fc1988fe9ac8f14772",
         "path": "/soft",
-        "address": "12rmoqQwztzQMEzjqHgLqUpUifKjMWenFFkG7vmvBqqRxLKJ"
-      }
-    ]
+        "address": "12rmoqQwztzQMEzjqHgLqUpUifKjMWenFFkG7vmvBqqRxLKJ",
+      },
+    ],
   },
   {
     "seed": "d480eaffef7a70c78e25254466a69ac101f4000afb55073b23c7981d0e1ae57d",
@@ -4163,7 +4163,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "0edd671dfa37e6fbcc0d8f0df78bb00e3b14a858041660af6c1f42a8b3ddb632",
         "path": "//0",
-        "address": "5PyWpDXUrFeET6ETZ1YfQJeQvcLh382qfF6i2dcnpJiPAYPz"
+        "address": "5PyWpDXUrFeET6ETZ1YfQJeQvcLh382qfF6i2dcnpJiPAYPz",
       },
       {
         "private_key":
@@ -4171,7 +4171,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "0ea27d24e149953cd70b9298ff3c6d0d706ee7280c0a95d3b5459db143cd2651",
         "path": "/1",
-        "address": "5PyDK9pgrqjHXxwhafFnygDaeqmfXwSFJW497PEfKS3Hmbbw"
+        "address": "5PyDK9pgrqjHXxwhafFnygDaeqmfXwSFJW497PEfKS3Hmbbw",
       },
       {
         "private_key":
@@ -4179,7 +4179,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "2e0bf5d35b3027bbdbf841a24ce55019cca3a9fc9a76b569fc23b0d37d05ad4e",
         "path": "//hard",
-        "address": "5QgQ8Un8W1RuR4Vr6Xv3gNV9zi9nbDMmBoHwhCXweQSKUXVk"
+        "address": "5QgQ8Un8W1RuR4Vr6Xv3gNV9zi9nbDMmBoHwhCXweQSKUXVk",
       },
       {
         "private_key":
@@ -4187,7 +4187,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "9accbe4a6cddfeaabd4cbf75d53e65cc8d90e7a6b6c7d9369c94a2f1cec2a54e",
         "path": "//1",
-        "address": "5T8za1DE8r985MzMjXMNupYKH69DAEdLpMyrArjjpZbsGsqS"
+        "address": "5T8za1DE8r985MzMjXMNupYKH69DAEdLpMyrArjjpZbsGsqS",
       },
       {
         "private_key":
@@ -4195,7 +4195,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "a8f562f050347ad470359aae5d43868e22d0a45c5cfa46efcc3af6e76a804a13",
         "path": "/0",
-        "address": "5TTZK9mxGgTi7NF5uKoCBREkDHYC6j7Hd5dBRuyeBKrhny8T"
+        "address": "5TTZK9mxGgTi7NF5uKoCBREkDHYC6j7Hd5dBRuyeBKrhny8T",
       },
       {
         "private_key":
@@ -4203,7 +4203,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "f4a7ca89dd815696175822f20a307bf68652a01b1444f3aba3159dfb6364b903",
         "path": "//12",
-        "address": "5VAouHskprb1XaLb9eB6cCeuEtvkYq5XUqG3W8nmo6jJUMxd"
+        "address": "5VAouHskprb1XaLb9eB6cCeuEtvkYq5XUqG3W8nmo6jJUMxd",
       },
       {
         "private_key":
@@ -4211,9 +4211,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "b6f968baeb16bb126fb5d736ede3610f2cba7a10e77ffa303b515dcb93835d0b",
         "path": "/soft",
-        "address": "5TmwBLpzATuPRJdWomJFbq7AtxLcr5wZ9RXZ9uZsmJzCX59p"
-      }
-    ]
+        "address": "5TmwBLpzATuPRJdWomJFbq7AtxLcr5wZ9RXZ9uZsmJzCX59p",
+      },
+    ],
   },
   {
     "seed": "96b7519504a10cebb66286e569948f113e2e74d2bd83e2222c41dc5daa134e65",
@@ -4231,7 +4231,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "f02e3c416da4d198dba482e4e3e5fb8385e86b361ffb18ff32cd0650c722fb0e",
         "path": "//0",
-        "address": "26JWp6PiwSMb4L8f9hrTWGiVjBUAxFuJFGv4E2CdSXV81XNd"
+        "address": "26JWp6PiwSMb4L8f9hrTWGiVjBUAxFuJFGv4E2CdSXV81XNd",
       },
       {
         "private_key":
@@ -4239,7 +4239,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "58c77567b5508caaa4425f9f30e832ee11c6a91924ea117d7a71208e6f9b7273",
         "path": "/1",
-        "address": "22t13v9gztNEa75qGooNNGqsuhMebzoyaGGuKzzG23apoLcN"
+        "address": "22t13v9gztNEa75qGooNNGqsuhMebzoyaGGuKzzG23apoLcN",
       },
       {
         "private_key":
@@ -4247,7 +4247,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "e6eedf63b1acc9583b4297c8756f6dcdd2fe5f60e7df8d7a079c861c1b5b596d",
         "path": "//hard",
-        "address": "266PZPAqcagYXj9iNGwE8Cfdjftjsw7QHLWjLbdgviWc5Kgg"
+        "address": "266PZPAqcagYXj9iNGwE8Cfdjftjsw7QHLWjLbdgviWc5Kgg",
       },
       {
         "private_key":
@@ -4255,7 +4255,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "b4f4cb55f8c7b4971ef56c13fcd62ebd0df949c652b8907c78012472350f8b6f",
         "path": "//1",
-        "address": "24xrvYakNtpbSQJa21nq7kGRLt7D6aCkqAGM7VmstccNzWMC"
+        "address": "24xrvYakNtpbSQJa21nq7kGRLt7D6aCkqAGM7VmstccNzWMC",
       },
       {
         "private_key":
@@ -4263,7 +4263,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "066285b0a0de5e105bf35633090c88b130b448df7608278e2c656f9b2432a500",
         "path": "/0",
-        "address": "211y95q57gDPR8Z32hFa3Ydn8p5K1c8n5hVgRVVV2k6ot2jz"
+        "address": "211y95q57gDPR8Z32hFa3Ydn8p5K1c8n5hVgRVVV2k6ot2jz",
       },
       {
         "private_key":
@@ -4271,7 +4271,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "feac7c4d0b38ab53ed3c6b48ed20426afec8d5d4cda948663cda95d379a9385f",
         "path": "//12",
-        "address": "26dWzDV7dW3smYwPqhbzJte8N1dQ392a19e2Wevov9y8sD8E"
+        "address": "26dWzDV7dW3smYwPqhbzJte8N1dQ392a19e2Wevov9y8sD8E",
       },
       {
         "private_key":
@@ -4279,9 +4279,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "6cb93eb0107cfe8c5b456371064ab8542f387e246bdbe9cb26379556451c0b67",
         "path": "/soft",
-        "address": "23L9nZogPwnYWzbUjE8iM2kC9b5z5dLYP9JS49ytYWcrhs7e"
-      }
-    ]
+        "address": "23L9nZogPwnYWzbUjE8iM2kC9b5z5dLYP9JS49ytYWcrhs7e",
+      },
+    ],
   },
   {
     "seed": "2d128139f45c90ef3092493025d4c655ce7ba89d3f137936419d5a7be520530c",
@@ -4299,7 +4299,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "3a4d18b43312a67c413fc5bb5b0b9d565abfb140b193c02da7c795a1b462b44e",
         "path": "//0",
-        "address": "324drGXpnPor1x3tuogS5xDM6FMRfyNjsbrjhEav8qxRvRRr"
+        "address": "324drGXpnPor1x3tuogS5xDM6FMRfyNjsbrjhEav8qxRvRRr",
       },
       {
         "private_key":
@@ -4307,7 +4307,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "182729b5b2926b3b2efeedae5ae28840fe9591271b4d26a96547d09cdc0b9844",
         "path": "/1",
-        "address": "31HrxG24Sp1hmQ1HeLRejkaZmh69iCvAY8eDRzCaZLuHhLDo"
+        "address": "31HrxG24Sp1hmQ1HeLRejkaZmh69iCvAY8eDRzCaZLuHhLDo",
       },
       {
         "private_key":
@@ -4315,7 +4315,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "86f7b538e7ecd3416ea27db4bfed7c94322d0a7338c85764a42a92b03d5f9c2b",
         "path": "//hard",
-        "address": "33oAAukiRCAf1vmZHjGzV3CABKGvNUZ7e6Fp5UTr9SbbDBJ6"
+        "address": "33oAAukiRCAf1vmZHjGzV3CABKGvNUZ7e6Fp5UTr9SbbDBJ6",
       },
       {
         "private_key":
@@ -4323,7 +4323,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "0e73770788911cdedacd64fdcaa439a5c20a65e0c1167bedb25c984607e45571",
         "path": "//1",
-        "address": "3159995C5iJF6L6mApnMhyVxL5HDLj5Xt7BHYfAbdupUHxzr"
+        "address": "3159995C5iJF6L6mApnMhyVxL5HDLj5Xt7BHYfAbdupUHxzr",
       },
       {
         "private_key":
@@ -4331,7 +4331,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "46f59bfc6e37a56f22f49eaaac933fee31f31e85157352e3ee673f2cac32c47c",
         "path": "/0",
-        "address": "32MEV1DwoQ74ymLLC4zgU1pVA56QgED1eM5zE8JRhGaVhdN4"
+        "address": "32MEV1DwoQ74ymLLC4zgU1pVA56QgED1eM5zE8JRhGaVhdN4",
       },
       {
         "private_key":
@@ -4339,7 +4339,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "804cf58ebe1ff569d7de7392d40042f7fe1d1596d9b99d4a2ece762d9310b44c",
         "path": "//12",
-        "address": "33eRAKE4YWMGZkSAcbCb1ciZWKf6MSPcUgrkm759JEPsh8Sk"
+        "address": "33eRAKE4YWMGZkSAcbCb1ciZWKf6MSPcUgrkm759JEPsh8Sk",
       },
       {
         "private_key":
@@ -4347,9 +4347,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "8ce42fd5b6aa8de3212917e2e97ee3978820918bbd9821fac45dc5acfcf53a1d",
         "path": "/soft",
-        "address": "33vvfEZ1HmhQfdKoo2RDKC7CSHrFNUYXVCgLjUdVqNWr92qw"
-      }
-    ]
+        "address": "33vvfEZ1HmhQfdKoo2RDKC7CSHrFNUYXVCgLjUdVqNWr92qw",
+      },
+    ],
   },
   {
     "seed": "e219cbd7a99defce16e6a81c409691f5fe335eb9e192d68089a309e24d0efdc2",
@@ -4367,7 +4367,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "e6dfb33daf584281a3d65e34614c007157ad4ace2b55e158c2836b7f1be5715f",
         "path": "//0",
-        "address": "35xudtVksWxrYM8EEhYhNsxhmN52xgbicDtZ2JnxYvSXC2et"
+        "address": "35xudtVksWxrYM8EEhYhNsxhmN52xgbicDtZ2JnxYvSXC2et",
       },
       {
         "private_key":
@@ -4375,7 +4375,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "a42584c4abe49b107c3de0aac59f7b623c11eed22e2ce96bf71f0223f9f5a468",
         "path": "/1",
-        "address": "34TRAkcvtAupA1CypCYFHgqYc7zeYNfLPrNBK22LnzRzAXDs"
+        "address": "34TRAkcvtAupA1CypCYFHgqYc7zeYNfLPrNBK22LnzRzAXDs",
       },
       {
         "private_key":
@@ -4383,7 +4383,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "debf295db2e0a05b5019cb4fda3d9702244829b07b7c9c8ae569d4b36b427a30",
         "path": "//hard",
-        "address": "35nFb3UuPup2zJTKNyqAMUTy9XmxBBaBbePscWFEg3zN8fsf"
+        "address": "35nFb3UuPup2zJTKNyqAMUTy9XmxBBaBbePscWFEg3zN8fsf",
       },
       {
         "private_key":
@@ -4391,7 +4391,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "f8fc4f55907bb07ffe3fbd1af7f83a6104f21c9834207fe909c947af09c95705",
         "path": "//1",
-        "address": "36NezpChkRjVMWTUQwkZmmMh7LmAQh6N32oQgzuzMkkW6kfP"
+        "address": "36NezpChkRjVMWTUQwkZmmMh7LmAQh6N32oQgzuzMkkW6kfP",
       },
       {
         "private_key":
@@ -4399,7 +4399,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "24da0313aaa48e5a490b63295f6f6e16ef0de04fc36c2b8194447d71438c475c",
         "path": "/0",
-        "address": "31aWf5vB5qpUThUwJp9YcjWUMSuPXwNDA2YX5CKinTdBRwVr"
+        "address": "31aWf5vB5qpUThUwJp9YcjWUMSuPXwNDA2YX5CKinTdBRwVr",
       },
       {
         "private_key":
@@ -4407,7 +4407,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "82154b2eae71cc27ee1eda751307c763a1b2660965cd9a7c631e2d2891a37079",
         "path": "//12",
-        "address": "33gkimuAyG7xUtr3PkRWDJgZf52dvgSYp2i5VWiKqnh7yWnM"
+        "address": "33gkimuAyG7xUtr3PkRWDJgZf52dvgSYp2i5VWiKqnh7yWnM",
       },
       {
         "private_key":
@@ -4415,9 +4415,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "7052b6b4c1e6d1a405468344c22bc4355106f8d42d656903167376e8e355a268",
         "path": "/soft",
-        "address": "33HU72S8hBTKdokyXViUMKzWyAqVtKLgLcSKCVfRSeTVgH74"
-      }
-    ]
+        "address": "33HU72S8hBTKdokyXViUMKzWyAqVtKLgLcSKCVfRSeTVgH74",
+      },
+    ],
   },
   {
     "seed": "5a0a16fd174da026b9c4b4ad999065d17b9ecd14a1ca549134810d4371395383",
@@ -4435,7 +4435,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "80bc3dcfda2b9f060a6db18007ac4ca9dd3b900da20dc516a38fb938b311f63e",
         "path": "//0",
-        "address": "23nPdk27AmFk9ev9Sf31JCv38RjcMeURBag4A8ACCE8g2wwo"
+        "address": "23nPdk27AmFk9ev9Sf31JCv38RjcMeURBag4A8ACCE8g2wwo",
       },
       {
         "private_key":
@@ -4443,7 +4443,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "823b4659b360b220a4afb84fbf6446e1abcc78bdbdd5d2757281f6ce3f030e21",
         "path": "/1",
-        "address": "23pMRFfET9Mma1FdwRabTq3MpJejGSASxhLoFJjMbpp7n9BP"
+        "address": "23pMRFfET9Mma1FdwRabTq3MpJejGSASxhLoFJjMbpp7n9BP",
       },
       {
         "private_key":
@@ -4451,7 +4451,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "28a24bc662091ae6870d2179c7f83e2698c20fba8c29dcf1ef126821ead2d552",
         "path": "//hard",
-        "address": "21nsiJtKcBE7PfMzkET78JrwrN1yznHg3wXYKNgruDd61HrH"
+        "address": "21nsiJtKcBE7PfMzkET78JrwrN1yznHg3wXYKNgruDd61HrH",
       },
       {
         "private_key":
@@ -4459,7 +4459,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "6e1a7f375712b44f3bb3f12b9b8421417b42b0531d6a8b5e183feb3313455111",
         "path": "//1",
-        "address": "23MxixWF28GW2S7v4CRGnMpw6RnPWis2gafzczW31moBKMfw"
+        "address": "23MxixWF28GW2S7v4CRGnMpw6RnPWis2gafzczW31moBKMfw",
       },
       {
         "private_key":
@@ -4467,7 +4467,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "ba5a61ac58714b773032cedea6bd0fe669b6bfaa3d011ec70d04c4bd70e24679",
         "path": "/0",
-        "address": "255wLjr8QE8rE2FNSc5tgFymBR49cXH9S1oP1a9EwoSqWSEQ"
+        "address": "255wLjr8QE8rE2FNSc5tgFymBR49cXH9S1oP1a9EwoSqWSEQ",
       },
       {
         "private_key":
@@ -4475,7 +4475,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "a811aed5d4065332b9a930c7d0b55278bad730cef364637c089bef2b98213f16",
         "path": "//12",
-        "address": "24fxtBRJbo4QWvFPXv3v8HfwLZ9sTdA249GPc8aCg9K5LKxL"
+        "address": "24fxtBRJbo4QWvFPXv3v8HfwLZ9sTdA249GPc8aCg9K5LKxL",
       },
       {
         "private_key":
@@ -4483,9 +4483,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "c8a88aa0d4c62251e45cfeb4fa17fe39d581c3707339343cf41ebcfc17a4e45c",
         "path": "/soft",
-        "address": "25QhEHbtwUNjLmFpjeBxJnWgtZaM92XshznTibDokdqSRRNF"
-      }
-    ]
+        "address": "25QhEHbtwUNjLmFpjeBxJnWgtZaM92XshznTibDokdqSRRNF",
+      },
+    ],
   },
   {
     "seed": "cf2292dccc5cadf6a1f9826806bb3d630d572a95b2a903bc423e8635b474a3a2",
@@ -4503,7 +4503,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "5892285f6fdc4267044e125d965b2edf88878c4d19d02983a7049631b36beb59",
         "path": "//0",
-        "address": "EaT9dL7ZLLsKaRwFLtYe3eca3rn6msusMJcfUtS7DB1jMwM"
+        "address": "EaT9dL7ZLLsKaRwFLtYe3eca3rn6msusMJcfUtS7DB1jMwM",
       },
       {
         "private_key":
@@ -4511,7 +4511,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "2a84bccb04e4d3baed4a0bc9e0e61f896f6ca5381cddbc58377e60aaf00fbe2d",
         "path": "/1",
-        "address": "DY4xePueG93fxY8QNYsNFCAvP9NZH46DBnfHJHBtBvnHu5n"
+        "address": "DY4xePueG93fxY8QNYsNFCAvP9NZH46DBnfHJHBtBvnHu5n",
       },
       {
         "private_key":
@@ -4519,7 +4519,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "8653604908d129908f311e76c4e658126c40e1a6194883e5bb5282b16c610e62",
         "path": "//hard",
-        "address": "FcShgWHTy7LS7ckk58eSQzsCNtwp875o1aZtDEooUjhSvjM"
+        "address": "FcShgWHTy7LS7ckk58eSQzsCNtwp875o1aZtDEooUjhSvjM",
       },
       {
         "private_key":
@@ -4527,7 +4527,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "36c06f526c41ffc70ea9a37f5e250928109f83d7ab79c44d1acb10aeb7077257",
         "path": "//1",
-        "address": "Dp7GXzfRCZtk5TYpWxw7vspgtHAzLhyUG6S8zifACrLEb1C"
+        "address": "Dp7GXzfRCZtk5TYpWxw7vspgtHAzLhyUG6S8zifACrLEb1C",
       },
       {
         "private_key":
@@ -4535,7 +4535,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "6c86563eb27973b1b5c735c9f5cdcaafe919a877570a79c0f8f1248de9a9fb6d",
         "path": "/0",
-        "address": "F2cbWH5J1eYH3exGg8vgjF5b2U1jr5wZNkDZytVaixDae4f"
+        "address": "F2cbWH5J1eYH3exGg8vgjF5b2U1jr5wZNkDZytVaixDae4f",
       },
       {
         "private_key":
@@ -4543,7 +4543,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "7c7bb75b48cca625c95e912996e918235a1af16fbc0bc08ee69d7484a77e664a",
         "path": "//12",
-        "address": "FPYCxDv2JH2hcLQJUWzgqsPgtCe7XsZXtheQDxBxgv1PV7T"
+        "address": "FPYCxDv2JH2hcLQJUWzgqsPgtCe7XsZXtheQDxBxgv1PV7T",
       },
       {
         "private_key":
@@ -4551,9 +4551,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "2cca9e578b447d74516714133f4e094b1d6ecd114c321836b96cb02b24325a40",
         "path": "/soft",
-        "address": "Db3pDsFn4FJSG9zHe7wxhpp3LGfrUuaW9DnYAjW6N3kY2bh"
-      }
-    ]
+        "address": "Db3pDsFn4FJSG9zHe7wxhpp3LGfrUuaW9DnYAjW6N3kY2bh",
+      },
+    ],
   },
   {
     "seed": "3c4300de608d0b08fd3a95c684d30c74b7d5719a447f30d1703613141bd9ed77",
@@ -4571,7 +4571,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "fcdbca1ee50246ecbb19828101c6dcec250e189ba642d1c1dbb0fabd2ee65b13",
         "path": "//0",
-        "address": "JHrskeXvXsV2AcY5bLpKUzmQfNQizvHDhCMkk7HhNBFoveS"
+        "address": "JHrskeXvXsV2AcY5bLpKUzmQfNQizvHDhCMkk7HhNBFoveS",
       },
       {
         "private_key":
@@ -4579,7 +4579,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "2c73174b0c2292b92e39e6a06724c36319ed0308ba9524b8bb794870bb5d8829",
         "path": "/1",
-        "address": "DabpA8vJR7tJKssFr7Jxpj56Zvgg887KsXqVoamgToCve6G"
+        "address": "DabpA8vJR7tJKssFr7Jxpj56Zvgg887KsXqVoamgToCve6G",
       },
       {
         "private_key":
@@ -4587,7 +4587,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "208274b36b62e3c063322a189e7ab606572481beacdbd112f8b989e34a402a7e",
         "path": "//hard",
-        "address": "DJwoZW8sSVwHEoJzgDXReib3gqkcLmcEfCB15J4GzbAnLXX"
+        "address": "DJwoZW8sSVwHEoJzgDXReib3gqkcLmcEfCB15J4GzbAnLXX",
       },
       {
         "private_key":
@@ -4595,7 +4595,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "bcf6285d19407f55ad55988e127ef97dbf592f53f68432f688de01ef52b47809",
         "path": "//1",
-        "address": "Gr5eKPA3GgSNG9kxD863ZrB5ZjVkPrsJvNp5BScSsVNyj7r"
+        "address": "Gr5eKPA3GgSNG9kxD863ZrB5ZjVkPrsJvNp5BScSsVNyj7r",
       },
       {
         "private_key":
@@ -4603,7 +4603,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "4898bad781ef056e529ad75e7f2ccd2be1fbdc4520728e2121892364f0199069",
         "path": "/0",
-        "address": "EDWLRdxv39hu8GE3E2eEgiL564QoUguCskHTxSPqsw1EVyW"
+        "address": "EDWLRdxv39hu8GE3E2eEgiL564QoUguCskHTxSPqsw1EVyW",
       },
       {
         "private_key":
@@ -4611,7 +4611,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "cae1b8708f721cd922ada14c0280c246329e92bffb1e83cc4cf990446e11f75e",
         "path": "//12",
-        "address": "HALF5KcxQTcTGbweN1acba3YSVutkWpAKPbapP3w8N4CiJG"
+        "address": "HALF5KcxQTcTGbweN1acba3YSVutkWpAKPbapP3w8N4CiJG",
       },
       {
         "private_key":
@@ -4619,9 +4619,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "e894a993eea105915c96d8e39d627e86a8fa20df5a9ce56be7876ecd5951bb07",
         "path": "/soft",
-        "address": "HqGniSfVS7Na8P7SQuCVAHZBPYvYwCSZ3CkqCPTXoefhiaz"
-      }
-    ]
+        "address": "HqGniSfVS7Na8P7SQuCVAHZBPYvYwCSZ3CkqCPTXoefhiaz",
+      },
+    ],
   },
   {
     "seed": "538c1405843089cf2c90faf14abe40b014ea723796ff574722e3ab0a378e9f6f",
@@ -4639,7 +4639,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "0a4039080c7574080066e406fcf5e9e6ee5f43473ca50d539e57409fee03791c",
         "path": "//0",
-        "address": "21739E9uzusksriQ4kYcHDx31V8VrHwZ25S2HcGXJpgBEnCu"
+        "address": "21739E9uzusksriQ4kYcHDx31V8VrHwZ25S2HcGXJpgBEnCu",
       },
       {
         "private_key":
@@ -4647,7 +4647,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "5e587316aee14a61f93575e466a5438cef2fcea629596b9d3ea07c09bcd13b6f",
         "path": "/1",
-        "address": "231JMwTMnxT2fA3Kt8Hc1QTCYpiQcbEGyhSb3vLszC2LXB9S"
+        "address": "231JMwTMnxT2fA3Kt8Hc1QTCYpiQcbEGyhSb3vLszC2LXB9S",
       },
       {
         "private_key":
@@ -4655,7 +4655,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "8ef06ea26325425ad53b11b1b829071dac43ae35141c8650b0773814a12d2d43",
         "path": "//hard",
-        "address": "2471orFUTgubAfwLigFLTMVAj4mHZi5PvvgNCHzDjEo2xgtU"
+        "address": "2471orFUTgubAfwLigFLTMVAj4mHZi5PvvgNCHzDjEo2xgtU",
       },
       {
         "private_key":
@@ -4663,7 +4663,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "b23e218bc4849267a35a4099f41f2f9faf7fe3fadacd6808ed433465cec01e42",
         "path": "//1",
-        "address": "24uJZmyoVNRNtwEKPtLPNtNtVW5XpVwxfCnTdmNwckkymoEf"
+        "address": "24uJZmyoVNRNtwEKPtLPNtNtVW5XpVwxfCnTdmNwckkymoEf",
       },
       {
         "private_key":
@@ -4671,7 +4671,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "ea31783eea88803128ce075a75d12d1a2b549753733091edbf824e10072e2b35",
         "path": "/0",
-        "address": "26AfVA1nwtfo4A42uHqcBg4GaC67yn5SWHQPRYigKQ5Ys25H"
+        "address": "26AfVA1nwtfo4A42uHqcBg4GaC67yn5SWHQPRYigKQ5Ys25H",
       },
       {
         "private_key":
@@ -4679,7 +4679,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "44f0981f33e2d343c3d44ed2018a6526bcbb49e96318e7a44c023a638edc5e7d",
         "path": "//12",
-        "address": "22RzK7yRQdmNFWMoBGBpb9kqk87uWADRf6woQiDbETgFfZqD"
+        "address": "22RzK7yRQdmNFWMoBGBpb9kqk87uWADRf6woQiDbETgFfZqD",
       },
       {
         "private_key":
@@ -4687,9 +4687,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "1a6a4767d03545b806751add4c587eef1d4c195154cecbc19bc3796c6da68f09",
         "path": "/soft",
-        "address": "21UEQGuyH6QHGtirCAQoP9bjWH6ZApRYw2riHq74BLLB6mDZ"
-      }
-    ]
+        "address": "21UEQGuyH6QHGtirCAQoP9bjWH6ZApRYw2riHq74BLLB6mDZ",
+      },
+    ],
   },
   {
     "seed": "6a22e9fda32e999ec31e3f0a255b78cc565d0580f8b6c8bb0f9e1b3b4affcbea",
@@ -4707,7 +4707,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "327327220ec79c4c5efc709ba729181191d6ffee93cc5f6db345ad12d28eea0e",
         "path": "//0",
-        "address": "DiU7tUUU2KBdzh2ifLPn2izQNAJYNYeB6dpcjpbz476jNeR"
+        "address": "DiU7tUUU2KBdzh2ifLPn2izQNAJYNYeB6dpcjpbz476jNeR",
       },
       {
         "private_key":
@@ -4715,7 +4715,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "2e817e51858eba7cb85003f1657d9967e499c6ec6e41fede78ceeb8f0c719842",
         "path": "/1",
-        "address": "DdJBrub5JveU4PZ8oSqfAhrq8pK69No5W4mwsWrnyoXXKNu"
+        "address": "DdJBrub5JveU4PZ8oSqfAhrq8pK69No5W4mwsWrnyoXXKNu",
       },
       {
         "private_key":
@@ -4723,7 +4723,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "cea3a59fa9509562bebec20beff11c27c67c3c05c7c41d37523e714346c93263",
         "path": "//hard",
-        "address": "HFFzga5EzwcS65qp1EkenNHgh1tGrq4RGpVXyhNYBLZJ8bn"
+        "address": "HFFzga5EzwcS65qp1EkenNHgh1tGrq4RGpVXyhNYBLZJ8bn",
       },
       {
         "private_key":
@@ -4731,7 +4731,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "a489248a867eb2a63efc438a8cc5f7109d3a112317404a89e6397066356c8c29",
         "path": "//1",
-        "address": "GJ47NvAubu3yLzsPHdgWyA4NcVZTBCKpJ5ux69s2No44EGf"
+        "address": "GJ47NvAubu3yLzsPHdgWyA4NcVZTBCKpJ5ux69s2No44EGf",
       },
       {
         "private_key":
@@ -4739,7 +4739,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "b6b036f580abb649b8311b5f5f9c4855d3310c57b83163b1bab25acfa4072f7a",
         "path": "/0",
-        "address": "GhraZgRaKtaStD6qtdQYtvfTTc41xBFnfrPmy3Q7PcA4PhR"
+        "address": "GhraZgRaKtaStD6qtdQYtvfTTc41xBFnfrPmy3Q7PcA4PhR",
       },
       {
         "private_key":
@@ -4747,7 +4747,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "1651558a8dd39383f3535d37f74002022f26da6a9e3b39503ecaf6b8e739605d",
         "path": "//12",
-        "address": "D5ajSWPccciusfphyp4gjXJkYyLRYVpFw9uhDnsUQNsYoYA"
+        "address": "D5ajSWPccciusfphyp4gjXJkYyLRYVpFw9uhDnsUQNsYoYA",
       },
       {
         "private_key":
@@ -4755,9 +4755,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "7683dd2ff11765cae648b199e8026e7348802110e9a5cbaeb1223a13d7b0f967",
         "path": "/soft",
-        "address": "FFiLfvksXQRPWMxzvZhHLpgZEd57iYdK1yTh2rcnrd8nxFV"
-      }
-    ]
+        "address": "FFiLfvksXQRPWMxzvZhHLpgZEd57iYdK1yTh2rcnrd8nxFV",
+      },
+    ],
   },
   {
     "seed": "13ce1490fe252e870759fa794b7e7a3f040804e32d71bda9c1637db55b525870",
@@ -4775,7 +4775,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "8c5301d4243e5b95d21166543b1d32e3e8e817c7fbed86194a4e6320e636507e",
         "path": "//0",
-        "address": "243awvd66te5U6hFf9jDiNq4gqwLJg4MS25FkiMNXstsvoFi"
+        "address": "243awvd66te5U6hFf9jDiNq4gqwLJg4MS25FkiMNXstsvoFi",
       },
       {
         "private_key":
@@ -4783,7 +4783,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "be90287d8f211bb0abb4b6a3d5ef056b78895a20a0ccf76cb28d9fa8db8a1a7b",
         "path": "/1",
-        "address": "25BTWQ53hP3kHXRHQsknTpYcv3Mgpp7H5kCBC6JdNPn11rHK"
+        "address": "25BTWQ53hP3kHXRHQsknTpYcv3Mgpp7H5kCBC6JdNPn11rHK",
       },
       {
         "private_key":
@@ -4791,7 +4791,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "a2ce6d7c6df5c69b6a94368a4525f1c889809fe928822085d4f640db5dcd2748",
         "path": "//hard",
-        "address": "24Z4fWgWEZRmsY4MLsbiPEa6otZ2dXR58wGW5YbaegpXp3kP"
+        "address": "24Z4fWgWEZRmsY4MLsbiPEa6otZ2dXR58wGW5YbaegpXp3kP",
       },
       {
         "private_key":
@@ -4799,7 +4799,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "9acfeb1707565a4f0493ca5ef82210ad143a2e28710d7381d5c0ce99784c481b",
         "path": "//1",
-        "address": "24NaiydXEbV7RAwkUSceiFuhBQCiLRJC64cjFXPakdaDUzLn"
+        "address": "24NaiydXEbV7RAwkUSceiFuhBQCiLRJC64cjFXPakdaDUzLn",
       },
       {
         "private_key":
@@ -4807,7 +4807,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "34b4b7f4d5e9c1f7b382e956b9c96a9e67c5ad582061b8fae8730bb7b214a203",
         "path": "/0",
-        "address": "224hm3tfzCAV2yL5WjuGMSsXHjiLG5PVc78NKS49JbVnBeSn"
+        "address": "224hm3tfzCAV2yL5WjuGMSsXHjiLG5PVc78NKS49JbVnBeSn",
       },
       {
         "private_key":
@@ -4815,7 +4815,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "801b5c5157d4f5f03ef1fe054b799c6ed7e1d0f0d0620903c9b155eb1910ff46",
         "path": "//12",
-        "address": "23mZqq7Bwu8cWGXvS3vVUhtoiCvSjAWmZd3KHWmQdZiDV1p9"
+        "address": "23mZqq7Bwu8cWGXvS3vVUhtoiCvSjAWmZd3KHWmQdZiDV1p9",
       },
       {
         "private_key":
@@ -4823,9 +4823,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "32fc14ff18cf44178df9a2a6e879fadcf75e143768e9ee7a5ae824a421670617",
         "path": "/soft",
-        "address": "222Ss4QDaDUXwL9RpF35AWC9EpQheA8q6YCoVH673y5pRksY"
-      }
-    ]
+        "address": "222Ss4QDaDUXwL9RpF35AWC9EpQheA8q6YCoVH673y5pRksY",
+      },
+    ],
   },
   {
     "seed": "5a6da6ccdf659e6b509e3d7e26478d6bad89a365a049d290525ce1083d3cb2f4",
@@ -4843,7 +4843,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "d8720e0140b40b70d3ffecd8c93f0c18c3ec4826af07115651c685a1dde03462",
         "path": "//0",
-        "address": "25mPowNHQcTJQrWty6gHejzxb4y7JyGENuL8Nk9vHQG7NS6n"
+        "address": "25mPowNHQcTJQrWty6gHejzxb4y7JyGENuL8Nk9vHQG7NS6n",
       },
       {
         "private_key":
@@ -4851,7 +4851,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "ba296903212e33cdafb7b6acfe1b4433c2d1580b91795efb22ca0f8d518d4305",
         "path": "/1",
-        "address": "255gnyyaEsMRYjvnQYZPyGKvNQnP7HJWj5VmxciN2gFuaRSK"
+        "address": "255gnyyaEsMRYjvnQYZPyGKvNQnP7HJWj5VmxciN2gFuaRSK",
       },
       {
         "private_key":
@@ -4859,7 +4859,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "2291c73f1d866c07a09e3627301e4c6027d71dc06c0def4b863e30af17439f2a",
         "path": "//hard",
-        "address": "21evX3yfJdJDC2Bvv5JUmMH3h6MDYa3ovxoCiYqPYrNfqwQv"
+        "address": "21evX3yfJdJDC2Bvv5JUmMH3h6MDYa3ovxoCiYqPYrNfqwQv",
       },
       {
         "private_key":
@@ -4867,7 +4867,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "e28601058959043354cc5ced10789551dfda607673c3198e09e5bbe78bd48b0e",
         "path": "//1",
-        "address": "25zcDRrzM8xTaZGG93fSoi33vvh4XxQ3KatwgrVA5NSNwMS2"
+        "address": "25zcDRrzM8xTaZGG93fSoi33vvh4XxQ3KatwgrVA5NSNwMS2",
       },
       {
         "private_key":
@@ -4875,7 +4875,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "5a17ae0558d5b5454af4c58dd2774b897d2af2d9a45705458386ec7b0a708300",
         "path": "/0",
-        "address": "22uivsaU8ohzQzEripmYAdGyZcEBVQ1zYkMxaZ9bFE2ap323"
+        "address": "22uivsaU8ohzQzEripmYAdGyZcEBVQ1zYkMxaZ9bFE2ap323",
       },
       {
         "private_key":
@@ -4883,7 +4883,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "70bcb6b6b31f29d2b228d42a1db63a8461bd40693a2a4fcae77c4c9f7bff4c02",
         "path": "//12",
-        "address": "23RR1Sd76Q1TWWRv1AbmYDRh4mUfDLsK8XwSyd3eKTckBoho"
+        "address": "23RR1Sd76Q1TWWRv1AbmYDRh4mUfDLsK8XwSyd3eKTckBoho",
       },
       {
         "private_key":
@@ -4891,9 +4891,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "7020ec8e507c734bcba02343ccf60ffa8f6efcd20f615521e43e33674d03a453",
         "path": "/soft",
-        "address": "23QcjFPazESehPXdyT7NhgBNwYYt1oheX9CrTsZa85WicMJ8"
-      }
-    ]
+        "address": "23QcjFPazESehPXdyT7NhgBNwYYt1oheX9CrTsZa85WicMJ8",
+      },
+    ],
   },
   {
     "seed": "485c5aea0a7e69255a46189c8e03c9b1cf04b1d60864dcc23d273d68350df2c4",
@@ -4911,7 +4911,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "52bb08e42cf3db3bc19ecab7b1767312a4a0a04db511c410041e3ba99de09466",
         "path": "//0",
-        "address": "ESo1FvNi4Kzcf6T12RsF2315fNC5zFrgPe4mkYa58NWbqkq"
+        "address": "ESo1FvNi4Kzcf6T12RsF2315fNC5zFrgPe4mkYa58NWbqkq",
       },
       {
         "private_key":
@@ -4919,7 +4919,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "5cc6635a33538da24d34947ce270824aec093524469bef91cf52b3a6a9f2f331",
         "path": "/1",
-        "address": "EfxreNLB8Z9eawvwoZRXtGVrhew2MfuemEDLy5ZiWnp53ET"
+        "address": "EfxreNLB8Z9eawvwoZRXtGVrhew2MfuemEDLy5ZiWnp53ET",
       },
       {
         "private_key":
@@ -4927,7 +4927,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "204341c6dfb967e77a7e2f94ac4f162fc78cc0d476ff5e3a941a459dcae0e917",
         "path": "//hard",
-        "address": "DJd2fmCZA6RQfxXZgu9N58YHe7L4nX7m6un2YaZZs5rWSL3"
+        "address": "DJd2fmCZA6RQfxXZgu9N58YHe7L4nX7m6un2YaZZs5rWSL3",
       },
       {
         "private_key":
@@ -4935,7 +4935,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "e66422eb88d0e10606bc3cd92bb462e6bddc65a0718312b138598743e49b2e42",
         "path": "//1",
-        "address": "HnQH5RYroHvqrfLRRrNDnzz16NZG5b6wZNWwWfvyc92Gm3T"
+        "address": "HnQH5RYroHvqrfLRRrNDnzz16NZG5b6wZNWwWfvyc92Gm3T",
       },
       {
         "private_key":
@@ -4943,7 +4943,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "24eedcfd53d8e8b869c72ef6919933d53b3fa644ab7a03cf5b64b1fbae681127",
         "path": "/0",
-        "address": "DQkCV9T8bSfGkW23VjTv6egFiyui3waP1X7w9DKY1K7YR2A"
+        "address": "DQkCV9T8bSfGkW23VjTv6egFiyui3waP1X7w9DKY1K7YR2A",
       },
       {
         "private_key":
@@ -4951,7 +4951,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "c4dd249da92ea3a04ab5949fb82afcedf23b6f1e7528667cdc9309c740a4de51",
         "path": "//12",
-        "address": "H2SbYWQLf56XLj8uSkrDTJjx1VJe7mckHdtGTNmNkS2ZZhT"
+        "address": "H2SbYWQLf56XLj8uSkrDTJjx1VJe7mckHdtGTNmNkS2ZZhT",
       },
       {
         "private_key":
@@ -4959,9 +4959,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "96fb85bead1f2406963a67cbf93f424e7a012b29af989ee7d1bb4c6836604607",
         "path": "/soft",
-        "address": "FzHRDHmMYWyYB9axMKdjtkvBAdvDpBLnHRzxY6FPCoRjSv6"
-      }
-    ]
+        "address": "FzHRDHmMYWyYB9axMKdjtkvBAdvDpBLnHRzxY6FPCoRjSv6",
+      },
+    ],
   },
   {
     "seed": "574d7e327247d488bc0e016a70e0c08b0f31e7d0346de9f7c6fec2acae611e07",
@@ -4979,7 +4979,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "9060fb382687b9599498a74a9c6ec017532ef2457037957cee480f8f472ccc08",
         "path": "//0",
-        "address": "FqdDsGAjLKu4Eb7abLyxJnWLyA5njnVnVmWvtwizHRFP3yr"
+        "address": "FqdDsGAjLKu4Eb7abLyxJnWLyA5njnVnVmWvtwizHRFP3yr",
       },
       {
         "private_key":
@@ -4987,7 +4987,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "68ba25d083b2abdfe817e8b16af7107d913af79c07c5411f1616483201829c3b",
         "path": "/1",
-        "address": "Ewdo5MovdcsDJDLo8FaWE3wQ95ShZcHccviFpiB1TNJ3V82"
+        "address": "Ewdo5MovdcsDJDLo8FaWE3wQ95ShZcHccviFpiB1TNJ3V82",
       },
       {
         "private_key":
@@ -4995,7 +4995,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "c03e483995df2661cec6c561fde65c87758d3e8b07f17b3868726341f0ceeb28",
         "path": "//hard",
-        "address": "GvPDKp812NmUFxEBERt5fQCxabP5J4c1dFc7bq1Gxpx3Gsq"
+        "address": "GvPDKp812NmUFxEBERt5fQCxabP5J4c1dFc7bq1Gxpx3Gsq",
       },
       {
         "private_key":
@@ -5003,7 +5003,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "8c4db31a2eb7db9ddc37a4d288c0cf36aeb5fa9a6428b91db898022085586214",
         "path": "//1",
-        "address": "FkHJYPkFvxUHmwnAVByX2f7h4kicQMUkhFY9pkVKCghuXLe"
+        "address": "FkHJYPkFvxUHmwnAVByX2f7h4kicQMUkhFY9pkVKCghuXLe",
       },
       {
         "private_key":
@@ -5011,7 +5011,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "7c2d1dd975c460e01475004a0078bf195416dbeca9d718d8f87958f68cdb4b5f",
         "path": "/0",
-        "address": "FP8riHozZsYGGLfKYXYG5vMchd4yofFTcKrReHvH5bae6yN"
+        "address": "FP8riHozZsYGGLfKYXYG5vMchd4yofFTcKrReHvH5bae6yN",
       },
       {
         "private_key":
@@ -5019,7 +5019,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "eea948af364c9ae6c86f993f54c50f2550a26bfe5bad9389b6fa558f46ef5c60",
         "path": "//12",
-        "address": "HyFCgNJxFyA2D3D8ZPyWVymNiKLmkattSDCQTm2EE1veUaA"
+        "address": "HyFCgNJxFyA2D3D8ZPyWVymNiKLmkattSDCQTm2EE1veUaA",
       },
       {
         "private_key":
@@ -5027,9 +5027,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "267f31c1f8bdb00f443a4d27cda6af501d3af5541c47a3edb17cb26f15612271",
         "path": "/soft",
-        "address": "DSo82jrwEfo365ZutrPnBBAxqfU8ghq34dUm8KEfiyiMMhy"
-      }
-    ]
+        "address": "DSo82jrwEfo365ZutrPnBBAxqfU8ghq34dUm8KEfiyiMMhy",
+      },
+    ],
   },
   {
     "seed": "058f52e3e445ff81f2baf6120737e02a3ab6e7ad890cb6f8f5378cb976713703",
@@ -5047,7 +5047,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "a0da5864144600a8f70ffa2ea6fd5308290bea112c624442748aff074251cc4e",
         "path": "//0",
-        "address": "24WW7Hy6R7dHbW9ePkDiMgej5uJHnqfWviXigmdGVV3hDq5i"
+        "address": "24WW7Hy6R7dHbW9ePkDiMgej5uJHnqfWviXigmdGVV3hDq5i",
       },
       {
         "private_key":
@@ -5055,7 +5055,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "da76872c7d1ddb7c9e7d12ffc614fbe633389f042dc37680404f3008bd459056",
         "path": "/1",
-        "address": "25p3EZo6ZdqfrweKorXT3ugSrT8P2NYSoBFx4iqJ6AkvnedH"
+        "address": "25p3EZo6ZdqfrweKorXT3ugSrT8P2NYSoBFx4iqJ6AkvnedH",
       },
       {
         "private_key":
@@ -5063,7 +5063,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "deb811efae2a69b7d3e10a8ed1f67958043e300bfc05df589251ee2181097766",
         "path": "//hard",
-        "address": "25uctwPbm5WmtBTop7TNpkV7h1soMPQYkCaeMCfkUyEKEX2p"
+        "address": "25uctwPbm5WmtBTop7TNpkV7h1soMPQYkCaeMCfkUyEKEX2p",
       },
       {
         "private_key":
@@ -5071,7 +5071,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "1a25a1735702f0c1b33d0d388697a117173890f15450ec5e316fb2465da86e75",
         "path": "//1",
-        "address": "21Tt1VZHUQBEdD7ebhJzhvaQTziCTvQKoYCb51ujPwz5KDDB"
+        "address": "21Tt1VZHUQBEdD7ebhJzhvaQTziCTvQKoYCb51ujPwz5KDDB",
       },
       {
         "private_key":
@@ -5079,7 +5079,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "cebe085639cd67837100e9dd6613a0329e26339bafa45ec7fd2bb3e2ad252f3f",
         "path": "/0",
-        "address": "25YfuEUMJnmkYG58Bcrsx8zYWtCxpxCPvrWAqdZTAaep2cyC"
+        "address": "25YfuEUMJnmkYG58Bcrsx8zYWtCxpxCPvrWAqdZTAaep2cyC",
       },
       {
         "private_key":
@@ -5087,7 +5087,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "c84144fbd1c24f818c199610e2f0d2185d7a018e64ca9905ea19542bea75d455",
         "path": "//12",
-        "address": "25QAYx7er8jiVfZ9HjwwRRfeezMfMQH3rHzRXJjFEjo3oKxq"
+        "address": "25QAYx7er8jiVfZ9HjwwRRfeezMfMQH3rHzRXJjFEjo3oKxq",
       },
       {
         "private_key":
@@ -5095,9 +5095,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "60128437bd63f373e6d1c524389c6a6b0238204e6df6fd8cefef464b7fcaa610",
         "path": "/soft",
-        "address": "233ZgaKLqFEE7F3gJ8vRVBcZiVbhZbT6JosCGopkg1wy1yxx"
-      }
-    ]
+        "address": "233ZgaKLqFEE7F3gJ8vRVBcZiVbhZbT6JosCGopkg1wy1yxx",
+      },
+    ],
   },
   {
     "seed": "e6a0e5ccb29e25ddd5c128244cd156f6c3e04964703ab34091929b85852d48e8",
@@ -5115,7 +5115,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "c67af533795f265524bad525d465af7891a4183aa8198ef5abbaac3d599e422f",
         "path": "//0",
-        "address": "15VF1RTxn364hyKguvviH9S8m37YN6dt2LaGiehf6qYUmLm9"
+        "address": "15VF1RTxn364hyKguvviH9S8m37YN6dt2LaGiehf6qYUmLm9",
       },
       {
         "private_key":
@@ -5123,7 +5123,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "e4ee6f545cadf9616219088e0b02468e76ea7f999c250c41b9260334c8f9a515",
         "path": "/1",
-        "address": "16BAkN9pmTdBehzsXA7WGtJGEHipVYsfRJkQjMeHqRt7qVN9"
+        "address": "16BAkN9pmTdBehzsXA7WGtJGEHipVYsfRJkQjMeHqRt7qVN9",
       },
       {
         "private_key":
@@ -5131,7 +5131,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "1218259f309e64fd0d403c268eb5c69ecff64ae6c53e43e6099d44342d06aa2c",
         "path": "//hard",
-        "address": "1Qj32ycnEBDX96ahtom6xPFunEtdLMCEPspQia7PuQG62h3"
+        "address": "1Qj32ycnEBDX96ahtom6xPFunEtdLMCEPspQia7PuQG62h3",
       },
       {
         "private_key":
@@ -5139,7 +5139,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "b0b2e0f7dea85f42a2f0525a7f367ced7e75f527a00cb344c6f71765d25ae336",
         "path": "//1",
-        "address": "14zgZpNUiSo5GLxxmpKKuf6u92Gd1bqJN1ndjpGheBSm2ras"
+        "address": "14zgZpNUiSo5GLxxmpKKuf6u92Gd1bqJN1ndjpGheBSm2ras",
       },
       {
         "private_key":
@@ -5147,7 +5147,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "849e88d49614926526ed3f0369b5bf181e543a07bc2ecb758b0fd944cf6b1125",
         "path": "/0",
-        "address": "13ztR6HF2TvvgDJjXH9aQ1wGwvhmpx24v8RR9EsFkK8v5PbK"
+        "address": "13ztR6HF2TvvgDJjXH9aQ1wGwvhmpx24v8RR9EsFkK8v5PbK",
       },
       {
         "private_key":
@@ -5155,7 +5155,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "3e5f9a8ae7e1659ccce2af73f06f5bb2ddcf3ead73c125df9c2e75ffd13f0f34",
         "path": "//12",
-        "address": "12QnNQaSANRNdpHNBh4caRBFeC5DNuek5Vpv5W9Lc2gAUuhQ"
+        "address": "12QnNQaSANRNdpHNBh4caRBFeC5DNuek5Vpv5W9Lc2gAUuhQ",
       },
       {
         "private_key":
@@ -5163,9 +5163,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "1a0eeafdecefaaba14817d76fff2cfd8ed3433427e2e8782c2135adabf3d9867",
         "path": "/soft",
-        "address": "1bAgEw4E1NWFmXHFbKPkrAKZwH9zUbJgmUtK6mzPWvXDBmE"
-      }
-    ]
+        "address": "1bAgEw4E1NWFmXHFbKPkrAKZwH9zUbJgmUtK6mzPWvXDBmE",
+      },
+    ],
   },
   {
     "seed": "a84baa302b0d1acf8eb0777aa605eebb554e589331755f49ccd1c95fec5a3339",
@@ -5183,7 +5183,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "a49efd6a869e2bd4e82969db6242837cd235c53a06900c5ce51f3fdc15cae941",
         "path": "//0",
-        "address": "34U3FeuP6sQkhtPyd6SsT47dLnS2SRUGG3my78movjEzwnWg"
+        "address": "34U3FeuP6sQkhtPyd6SsT47dLnS2SRUGG3my78movjEzwnWg",
       },
       {
         "private_key":
@@ -5191,7 +5191,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "f856413b14e392cc8d0f8e3fa99564703f781e69c5e186149ab2c8148dbd3a19",
         "path": "/1",
-        "address": "36Mofka3raRkmBPZdKHexHjz7BCXC3mS6HdiSeKroDBF8r9u"
+        "address": "36Mofka3raRkmBPZdKHexHjz7BCXC3mS6HdiSeKroDBF8r9u",
       },
       {
         "private_key":
@@ -5199,7 +5199,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "66a5383149f73f27eb7de8cb170b26dbf664b6fc0437231509285a8e8f718c03",
         "path": "//hard",
-        "address": "334n8o2T1rCS8BgMkNhKTt3E4D39KdBxE7fesBdJjrgLdFKe"
+        "address": "334n8o2T1rCS8BgMkNhKTt3E4D39KdBxE7fesBdJjrgLdFKe",
       },
       {
         "private_key":
@@ -5207,7 +5207,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "3a30cf79de8ab1c442cb8232e321a5af4c873bfff1449131c9c228149adfe405",
         "path": "//1",
-        "address": "324VSup6cin8Q5AjhPH4J9AW5CWBEJhszfQFH8hS4aCGANg5"
+        "address": "324VSup6cin8Q5AjhPH4J9AW5CWBEJhszfQFH8hS4aCGANg5",
       },
       {
         "private_key":
@@ -5215,7 +5215,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "342b8680536c91afafd48284d3d2ba4e51e9bdccbaca71718d13ec8dd3961e5c",
         "path": "/0",
-        "address": "31vbbBrujBkj73gDHy4QEwZpBJikwtYwt1fRxPgB6vKw2Pb9"
+        "address": "31vbbBrujBkj73gDHy4QEwZpBJikwtYwt1fRxPgB6vKw2Pb9",
       },
       {
         "private_key":
@@ -5223,7 +5223,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "b8f6aaeae76efacb673bafa809ed4c77486f0d3657b2b916346d49377afcce70",
         "path": "//12",
-        "address": "34viFrRJhrakoegorZScTHorKDu16oDajr6gwcBQFYCSHmaV"
+        "address": "34viFrRJhrakoegorZScTHorKDu16oDajr6gwcBQFYCSHmaV",
       },
       {
         "private_key":
@@ -5231,9 +5231,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "f488eebd6cdaac83db6f6d7a271c51e63654f08e3c7c0bd888de86ab15e3070d",
         "path": "/soft",
-        "address": "36GpXoNsHGcpNmBKzrTTGUvHMH7KPrTLpQjSBi5wJZPtwhaG"
-      }
-    ]
+        "address": "36GpXoNsHGcpNmBKzrTTGUvHMH7KPrTLpQjSBi5wJZPtwhaG",
+      },
+    ],
   },
   {
     "seed": "d2c39523444473f99b7b54cd6bdeffdbe1d70f25675fb95ed6d39c6e1b167fcb",
@@ -5251,7 +5251,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "fae532716a0763a4d3a93eb01f1ac32c96c86982c68b743b31fa146cb6592c1a",
         "path": "//0",
-        "address": "26YZeDtiSsQRHan6iDTEzmCUdFfCUtfaA8vMfxub5KUK1Ubb"
+        "address": "26YZeDtiSsQRHan6iDTEzmCUdFfCUtfaA8vMfxub5KUK1Ubb",
       },
       {
         "private_key":
@@ -5259,7 +5259,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "d086525093aab11347987ca21fde4f95ba8c2619c5cdda05d87d47fe63170023",
         "path": "/1",
-        "address": "25b1SugXigY8S9T7Jr3vVaczoRoi1RLev3gcKtQcLsN24sGN"
+        "address": "25b1SugXigY8S9T7Jr3vVaczoRoi1RLev3gcKtQcLsN24sGN",
       },
       {
         "private_key":
@@ -5267,7 +5267,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "ec3cd2dce1e81f0a711528c7a4e2262fca06283e24183032ac6f0669a111a56b",
         "path": "//hard",
-        "address": "26DLxLQ2gg2BWbmHQV7259MpPAwSh16RBsEmigPRgrhwE2Y7"
+        "address": "26DLxLQ2gg2BWbmHQV7259MpPAwSh16RBsEmigPRgrhwE2Y7",
       },
       {
         "private_key":
@@ -5275,7 +5275,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "6c91618aa6248e56b70d9301058e9508b0d00b7528b79af8fa20797b903f4e48",
         "path": "//1",
-        "address": "23KwwjC2vgtTbP2P7ubKsgUik89DcdJPoJsjehKkjVmDh8Mn"
+        "address": "23KwwjC2vgtTbP2P7ubKsgUik89DcdJPoJsjehKkjVmDh8Mn",
       },
       {
         "private_key":
@@ -5283,7 +5283,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "fe276e707ced1d2242653a2aad9b6825c241dfdd59fdb52b81d8a2810c44a255",
         "path": "/0",
-        "address": "26cqTkFTgwh9HnRJi11ej6TK4SLLenTcTS3ECcVAfC3quFZ7"
+        "address": "26cqTkFTgwh9HnRJi11ej6TK4SLLenTcTS3ECcVAfC3quFZ7",
       },
       {
         "private_key":
@@ -5291,7 +5291,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "bec30f0d8d9589469cbc079beb93f81fc2ef363dbdbc725e581ba131b0dbce4c",
         "path": "//12",
-        "address": "25BidPvhSk15rvoTGg4o8PV1vC76cHR7SDjnXaM3FNtHDHfg"
+        "address": "25BidPvhSk15rvoTGg4o8PV1vC76cHR7SDjnXaM3FNtHDHfg",
       },
       {
         "private_key":
@@ -5299,9 +5299,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "94ad1b5c6bc2ac2b35591b5fb69f355b4cb04261252bf82a6532b407d7eaa008",
         "path": "/soft",
-        "address": "24EY6XUCzmweUjC7a45nm26VMsSnJ4iLt4UHXsSnhhbyqstK"
-      }
-    ]
+        "address": "24EY6XUCzmweUjC7a45nm26VMsSnJ4iLt4UHXsSnhhbyqstK",
+      },
+    ],
   },
   {
     "seed": "ca977cb85a2fd5185141b72c9246b88bb55d07172500916520bac54455e01509",
@@ -5319,7 +5319,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "00524eb505e9ab3b458179b62001c172043ec74c8c52cea37b3574b87884f058",
         "path": "//0",
-        "address": "zt233dKe36eoqrKgbMWWbbjyZatgPhfi1NX5kt9zuwfBCAr"
+        "address": "zt233dKe36eoqrKgbMWWbbjyZatgPhfi1NX5kt9zuwfBCAr",
       },
       {
         "private_key":
@@ -5327,7 +5327,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "b034a7d54e9f40a5ef086bdc849a29d29497f8387f29764cfa60193c2866b870",
         "path": "/1",
-        "address": "24rdexr1G68WPi8RAhaMaSZaCXbSco8dWYttvriuTHaMp5Bh"
+        "address": "24rdexr1G68WPi8RAhaMaSZaCXbSco8dWYttvriuTHaMp5Bh",
       },
       {
         "private_key":
@@ -5335,7 +5335,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "88e9552938119fdb05a15d5664079d1a806afede4a75fa7f396e7dada913af25",
         "path": "//hard",
-        "address": "23y7Qs6F2kjUfnbjYKisXDS8HoFDenX7Sc8xdNapD1t8o4P8"
+        "address": "23y7Qs6F2kjUfnbjYKisXDS8HoFDenX7Sc8xdNapD1t8o4P8",
       },
       {
         "private_key":
@@ -5343,7 +5343,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "fc5d23f413e655df2a7720703476e3e2c14a9be280b2ee62f138071f3717483d",
         "path": "//1",
-        "address": "26aVKaRWqEucviGfTkVN89KhdUvAP34SwnLA8dUwFD3HjpCV"
+        "address": "26aVKaRWqEucviGfTkVN89KhdUvAP34SwnLA8dUwFD3HjpCV",
       },
       {
         "private_key":
@@ -5351,7 +5351,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "782cd1a5ae27a0b64023ab88de3d2dce2512a0d197191e7b4b14bf19d0baf043",
         "path": "/0",
-        "address": "23bAeQpjbcBNC3jbr8MzTqxpgEBtUmUYkJ3AFuhFjyfRMgDt"
+        "address": "23bAeQpjbcBNC3jbr8MzTqxpgEBtUmUYkJ3AFuhFjyfRMgDt",
       },
       {
         "private_key":
@@ -5359,7 +5359,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "caa243d3dbb0a9ac20cc668baf5d725e92c96b9fec6e1979009cc98607dff15e",
         "path": "//12",
-        "address": "25THThVceuDVLLnBNpjACBvmerh9YxU1t6DrM6ZEGoM52reV"
+        "address": "25THThVceuDVLLnBNpjACBvmerh9YxU1t6DrM6ZEGoM52reV",
       },
       {
         "private_key":
@@ -5367,9 +5367,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "02e431fc7d27d68eebc6d1b598ee520b5921be9c5068de21326a09e5f4af913c",
         "path": "/soft",
-        "address": "zwPUBvaNMtG7LEKB5ke5SxqF8w2yis8b7217BdsM245xZkJ"
-      }
-    ]
+        "address": "zwPUBvaNMtG7LEKB5ke5SxqF8w2yis8b7217BdsM245xZkJ",
+      },
+    ],
   },
   {
     "seed": "b8f77784c601ae145acc931e1ddf1886a79907732cee7cfeb8424601980dd975",
@@ -5387,7 +5387,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "d44359930041d622a016b2d8565d2da0d5bfa60985428282e1c70fea683f2604",
         "path": "//0",
-        "address": "25fuk88pXCfwj24AB38jGSLRPoRDusUVUScszyt3jeAA5Rp6"
+        "address": "25fuk88pXCfwj24AB38jGSLRPoRDusUVUScszyt3jeAA5Rp6",
       },
       {
         "private_key":
@@ -5395,7 +5395,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "caea4f9325c70262b56d3204b8cf442d5e5b35848ef84c05bbc5f85e52676f5d",
         "path": "/1",
-        "address": "25Tes29xneDpyMaHZSKjVi55oQr2oE5JqgtLjKPq4WJnSJkJ"
+        "address": "25Tes29xneDpyMaHZSKjVi55oQr2oE5JqgtLjKPq4WJnSJkJ",
       },
       {
         "private_key":
@@ -5403,7 +5403,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "f0d9c6c2c5f719a61db6ed08669216da94bad8cc596f04ba6db0eb6e70360944",
         "path": "//hard",
-        "address": "26KPmgDkqzuuNNXa484uCjNPRewW2kobRUMryMA4CxrWgpg3"
+        "address": "26KPmgDkqzuuNNXa484uCjNPRewW2kobRUMryMA4CxrWgpg3",
       },
       {
         "private_key":
@@ -5411,7 +5411,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "821b9f4cb0c92736b1a646fc6ea195481162f5f7ec985af2d9f1bf2cad03e422",
         "path": "//1",
-        "address": "23pC1tk9k4DDG8vt2z4TtmeZCqgguxqES1BUMGVmxXHTGjyk"
+        "address": "23pC1tk9k4DDG8vt2z4TtmeZCqgguxqES1BUMGVmxXHTGjyk",
       },
       {
         "private_key":
@@ -5419,7 +5419,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "76a67e11524d51438e22545bf2198c92ea240e58d2bfa0b2dae65fb4ae993770",
         "path": "/0",
-        "address": "23ZAhF39DrmsYiYtDJJRDjoGRcW1iTUDmLUFAfWRfPfJDdUE"
+        "address": "23ZAhF39DrmsYiYtDJJRDjoGRcW1iTUDmLUFAfWRfPfJDdUE",
       },
       {
         "private_key":
@@ -5427,7 +5427,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "92972c90ade38441b6157213572f058e7704fb55a88cc900a0780de561226962",
         "path": "//12",
-        "address": "24BoV5VSYh8sYpd6zWheSUmTJYcVXjwfS2GzrGqpCv1HcSML"
+        "address": "24BoV5VSYh8sYpd6zWheSUmTJYcVXjwfS2GzrGqpCv1HcSML",
       },
       {
         "private_key":
@@ -5435,9 +5435,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "a0220605d8d68acf5eee68cca78275e220734982e9ddfc6dfba489e936366752",
         "path": "/soft",
-        "address": "24VZMWA8PbA8r9XRWYuDn5DhcDiSK8psis91UW6tQ2HdxqN9"
-      }
-    ]
+        "address": "24VZMWA8PbA8r9XRWYuDn5DhcDiSK8psis91UW6tQ2HdxqN9",
+      },
+    ],
   },
   {
     "seed": "19536381295f88599866ca0d5b4f4eb74c58cb296fd27505fde0ebe41d39c889",
@@ -5455,7 +5455,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "7e3068dae0207f29f8f7faca6a195ddd27b841ecbd0c855d39ffe451cf3f840e",
         "path": "//0",
-        "address": "23j3zwXjnVqBZPY4p71arjN1VDMsVwBZ43WtUQsm1VUrn6uc"
+        "address": "23j3zwXjnVqBZPY4p71arjN1VDMsVwBZ43WtUQsm1VUrn6uc",
       },
       {
         "private_key":
@@ -5463,7 +5463,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "d0aeb65fdb1baa04994a49a1391df93c33dfd6ac13f769b9cf98f38ad6b8a532",
         "path": "/1",
-        "address": "25bDSpwdy79Y6ZENBNXUhWDCnEb9b4w11EhEtpn8JFEaE8N2"
+        "address": "25bDSpwdy79Y6ZENBNXUhWDCnEb9b4w11EhEtpn8JFEaE8N2",
       },
       {
         "private_key":
@@ -5471,7 +5471,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "fc897082f3e83cbbd5dbcbec10e5a483474fd3fe92255e10af010363c0f4e37e",
         "path": "//hard",
-        "address": "26aiUqDAecNYxvmC11FBtTzJkRXNAZrNBJFSVJbitku2RGQi"
+        "address": "26aiUqDAecNYxvmC11FBtTzJkRXNAZrNBJFSVJbitku2RGQi",
       },
       {
         "private_key":
@@ -5479,7 +5479,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "8ab93825c5e4679bc7abc3e07f82e5872c927cde3ba49ad1270b6e5bc86af56b",
         "path": "//1",
-        "address": "241VDSoLq53fPV7DXu1WmRcjX9KdHmLfDwNxtc61DGrS124Q"
+        "address": "241VDSoLq53fPV7DXu1WmRcjX9KdHmLfDwNxtc61DGrS124Q",
       },
       {
         "private_key":
@@ -5487,7 +5487,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "b010aad7ea2d24da6215f85b295bfc4c3510204912e8ce45fabecc7d5627634c",
         "path": "/0",
-        "address": "24rSxuCC6FSATGPGxcAZmxaMFtJiJaaYRbqDqZZucYMwxjnD"
+        "address": "24rSxuCC6FSATGPGxcAZmxaMFtJiJaaYRbqDqZZucYMwxjnD",
       },
       {
         "private_key":
@@ -5495,7 +5495,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "e0ef4fcd4daccef67bcf5a549e3d2cc43fb9e31b741afd18b5fa3841cda7a110",
         "path": "//12",
-        "address": "25xXQHUctxKMNaA2q3vsKaNrvrTxQAAGbCDgBhXSXK5GKeoA"
+        "address": "25xXQHUctxKMNaA2q3vsKaNrvrTxQAAGbCDgBhXSXK5GKeoA",
       },
       {
         "private_key":
@@ -5503,9 +5503,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "d0c01aad7e64a96d2e4df821888868ff5a23d3865894481254f4e15258057a44",
         "path": "/soft",
-        "address": "25bJcUsNXMrjFXviLbb5A2us33bJf9hj9a7T68teR4CxUBMq"
-      }
-    ]
+        "address": "25bJcUsNXMrjFXviLbb5A2us33bJf9hj9a7T68teR4CxUBMq",
+      },
+    ],
   },
   {
     "seed": "8e6c5e2004ba283aa294f2295b97a28fcd8e2e1f188ab7fbb70bd2dbc9594104",
@@ -5523,7 +5523,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "c048f688503d1e1b7e1ad64af73efa34fee21bd43edf1e6e0cec59e116e12630",
         "path": "//0",
-        "address": "5Tz9F29Kz1maMab7Gi1edfEh1kvviH71sHsQUBaNe3Eyn7zk"
+        "address": "5Tz9F29Kz1maMab7Gi1edfEh1kvviH71sHsQUBaNe3Eyn7zk",
       },
       {
         "private_key":
@@ -5531,7 +5531,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "aeb5f5c0b6c36f7c776b9dcdd703ce99897deb0e7be5553b3fc17386bb87aa62",
         "path": "/1",
-        "address": "5Tb6m17MJseaEscv1zkrngMePMQ9veb4KSJW45C8A1FQk1g6"
+        "address": "5Tb6m17MJseaEscv1zkrngMePMQ9veb4KSJW45C8A1FQk1g6",
       },
       {
         "private_key":
@@ -5539,7 +5539,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "ccbf94cd4b2e98d7b2224d5c78889abc32ceb6fe8cf2c6cd9465e82aab5bb36f",
         "path": "//hard",
-        "address": "5UGV46M3tQnpYwWDjuUswWmhDZZqk9kGqW4p2r6AXdsg44hG"
+        "address": "5UGV46M3tQnpYwWDjuUswWmhDZZqk9kGqW4p2r6AXdsg44hG",
       },
       {
         "private_key":
@@ -5547,7 +5547,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "368e2e34fdadc2d4710662e6e2539c452fa4bd654561fc12368b294ce8126a72",
         "path": "//1",
-        "address": "5QsZCLiXzezG31VZbGGUvrk6i3wyGfc7Qa8fPcbhppdFCwwr"
+        "address": "5QsZCLiXzezG31VZbGGUvrk6i3wyGfc7Qa8fPcbhppdFCwwr",
       },
       {
         "private_key":
@@ -5555,7 +5555,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "3c32ade147bc025cb6a4965eba2f99564d48380bfb8fa8c83476321249842f4b",
         "path": "/0",
-        "address": "5QzxJUTsW7QXTPuVLjMqwBSYzDKXp5UfPaECiMAQnuagS8cW"
+        "address": "5QzxJUTsW7QXTPuVLjMqwBSYzDKXp5UfPaECiMAQnuagS8cW",
       },
       {
         "private_key":
@@ -5563,7 +5563,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "1850a18c53c2184798fdb842ae6f8816b37f4f82fdb104f10a906fa662e9ed4d",
         "path": "//12",
-        "address": "5QBuUYoGUzVsQTLx6Up8cC9xQHbzWwxt4oB4FwJXeJQQVog4"
+        "address": "5QBuUYoGUzVsQTLx6Up8cC9xQHbzWwxt4oB4FwJXeJQQVog4",
       },
       {
         "private_key":
@@ -5571,9 +5571,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "9211910c411d7e5bfa2b29ba863b302fd3b4495b478cc01d3655ac90df6ee673",
         "path": "/soft",
-        "address": "5SwYaohYbUaAzkS6fHFvWDCd1xPYntFmSLYirxrPytyeE66W"
-      }
-    ]
+        "address": "5SwYaohYbUaAzkS6fHFvWDCd1xPYntFmSLYirxrPytyeE66W",
+      },
+    ],
   },
   {
     "seed": "66c62c46a674091729b622e4eb93bdf803c99b20d1c9dd4b230adc2e708b03a1",
@@ -5591,7 +5591,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "be01c28d48d8a457413ae2bffc250e6fe6653e6008c9b6e1199ada43d9c7952a",
         "path": "//0",
-        "address": "15J8d1ki5Ma9wsWtDhLtr6AD1PZny3Zktc2PbRycLAKRQ3km"
+        "address": "15J8d1ki5Ma9wsWtDhLtr6AD1PZny3Zktc2PbRycLAKRQ3km",
       },
       {
         "private_key":
@@ -5599,7 +5599,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "56b51abb647bc068e1ae904d6b09c3cbba45e718586daa592ae0d9fb256a224f",
         "path": "/1",
-        "address": "12xgvCv8t61QmGJicBP8fQxJgupbbqgVxaucdy7vvwjGUYpg"
+        "address": "12xgvCv8t61QmGJicBP8fQxJgupbbqgVxaucdy7vvwjGUYpg",
       },
       {
         "private_key":
@@ -5607,7 +5607,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "721a777eddfcfee3da567d180b2a756153c473d08fed7069a79607981d9bb850",
         "path": "//hard",
-        "address": "13acKdHjHnhcccEXw39wZTTA2UH8cpRSrwidgViMGujzN3eU"
+        "address": "13acKdHjHnhcccEXw39wZTTA2UH8cpRSrwidgViMGujzN3eU",
       },
       {
         "private_key":
@@ -5615,7 +5615,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "327f7910ad1fdbb438d72034a847b52f0cdbab1c169b665677676d1767b6e364",
         "path": "//1",
-        "address": "129DGB2B5FMZEvZhPjZ2fdvQAjm3dX4KniRCebpZ3ZCQaG1n"
+        "address": "129DGB2B5FMZEvZhPjZ2fdvQAjm3dX4KniRCebpZ3ZCQaG1n",
       },
       {
         "private_key":
@@ -5623,7 +5623,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "faff1c7efb5557629f4df66b363741d8720766b2f4778f8235eba9975bfc5a00",
         "path": "/0",
-        "address": "16g6ko3MF3zHFXHWpzzRYfvJmKQ3MmV8akaEXVBWb529d8dK"
+        "address": "16g6ko3MF3zHFXHWpzzRYfvJmKQ3MmV8akaEXVBWb529d8dK",
       },
       {
         "private_key":
@@ -5631,7 +5631,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "bade6e69d21e113605993a38bfe0d6893ff176cafc31a741a4821d5f2fec200c",
         "path": "//12",
-        "address": "15E1yyyV4eo38hXxf2yx8XzGCre4gb8WWvT7oNZxEcQZDKKm"
+        "address": "15E1yyyV4eo38hXxf2yx8XzGCre4gb8WWvT7oNZxEcQZDKKm",
       },
       {
         "private_key":
@@ -5639,9 +5639,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "0a534fd6726a24823494e5119fda9edf9e516ba69f46ef08aafaaf246669902f",
         "path": "/soft",
-        "address": "1EYECnS7LpWu9BRWLSEbLfSnGy4x3KS2qGsY75wwAhBuVSe"
-      }
-    ]
+        "address": "1EYECnS7LpWu9BRWLSEbLfSnGy4x3KS2qGsY75wwAhBuVSe",
+      },
+    ],
   },
   {
     "seed": "fd979005086b38865163df72d7c14ff61ac19aec687a0dcbbbc541b37b5cb420",
@@ -5659,7 +5659,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "88eb79a144970ef43604dbbbd7666b4b6226b985559091846510a6e2b961d02f",
         "path": "//0",
-        "address": "33qidhVs7E8CsjuSNo2MpbammHTkiBdc8nKa6zFoFuCnHinq"
+        "address": "33qidhVs7E8CsjuSNo2MpbammHTkiBdc8nKa6zFoFuCnHinq",
       },
       {
         "private_key":
@@ -5667,7 +5667,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "f28519f8902f42986c87572d9c58a35a9840de85b1b21108dcb55d1a43759359",
         "path": "/1",
-        "address": "36EBJEhTUK3FjPbeZT3ucRmTvXcJVEpAXCzMtszWBafayUHr"
+        "address": "36EBJEhTUK3FjPbeZT3ucRmTvXcJVEpAXCzMtszWBafayUHr",
       },
       {
         "private_key":
@@ -5675,7 +5675,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "92af29f23ceaeca6f8fcf7a5122215f2871b2debeec9425ebd10f3ccb1a19543",
         "path": "//hard",
-        "address": "344XCLHRgjADadVctLAfozY218qPimbLxsyoTGYiWw1uSv5F"
+        "address": "344XCLHRgjADadVctLAfozY218qPimbLxsyoTGYiWw1uSv5F",
       },
       {
         "private_key":
@@ -5683,7 +5683,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "56352bea7197917074af5d483fffa2284e21fbd4caa171cfb089409472bd872a",
         "path": "//1",
-        "address": "32hE5pHJYDYBLRCEeDGEED42ZhDBcx8QT78CzxKBZcUFnCQe"
+        "address": "32hE5pHJYDYBLRCEeDGEED42ZhDBcx8QT78CzxKBZcUFnCQe",
       },
       {
         "private_key":
@@ -5691,7 +5691,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "706e4fc551c5d25fde372ff2d0193fc968afbbbb5413785fb771fc5b9bd59b57",
         "path": "/0",
-        "address": "33HcJXVAZVTFU6YMQzYnv7aeFstz7hoFL6o5XfR4nt6iY1AD"
+        "address": "33HcJXVAZVTFU6YMQzYnv7aeFstz7hoFL6o5XfR4nt6iY1AD",
       },
       {
         "private_key":
@@ -5699,7 +5699,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "d6248d915849086e35fd0ff3ccb45e040854b0de95769360ef890db110375c2f",
         "path": "//12",
-        "address": "35ayGyrrn3RGANLwfybwrS499RjkreL6yGeSRC4JVLDPXeuF"
+        "address": "35ayGyrrn3RGANLwfybwrS499RjkreL6yGeSRC4JVLDPXeuF",
       },
       {
         "private_key":
@@ -5707,9 +5707,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "1aa595e8f75ea4321b799ed14d01a8fc1e9ea83d1d4548973806aff9db982d7c",
         "path": "/soft",
-        "address": "31M8c2TtoBZmUa6aVT7NfJSSF8u8rUaDjTiH9Ncaej7rPUXP"
-      }
-    ]
+        "address": "31M8c2TtoBZmUa6aVT7NfJSSF8u8rUaDjTiH9Ncaej7rPUXP",
+      },
+    ],
   },
   {
     "seed": "60f7e21f6f38ec6e2fb68d549aecd42addac7607f60ed9a1b27e7c7e3fdd3f38",
@@ -5727,7 +5727,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "4a3e7d674446c2d720c5c0eb883683597ebb89adae8711b262cc527264c39640",
         "path": "//0",
-        "address": "22Ywh7oTZx3NFESVMqA1dxxTLyi8sH2PidyZZM1zFbg97SCd"
+        "address": "22Ywh7oTZx3NFESVMqA1dxxTLyi8sH2PidyZZM1zFbg97SCd",
       },
       {
         "private_key":
@@ -5735,7 +5735,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "84d0ac67f1963751bf4237d630ed00675f4f1a66b31327213961b2623283e027",
         "path": "/1",
-        "address": "23sjttQQ5zAYsaocFTTX72SFYZVXqah1UW9tstAtpxiSUL73"
+        "address": "23sjttQQ5zAYsaocFTTX72SFYZVXqah1UW9tstAtpxiSUL73",
       },
       {
         "private_key":
@@ -5743,7 +5743,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "40be910b4461f0ccbe875da9126d85e24c5fc57c5e29168c484ec5d6a7d7ff05",
         "path": "//hard",
-        "address": "22LVG4AtBv5HUbtoXn3YbdfQu3bxcMgYascqBS5CF3RjJrx3"
+        "address": "22LVG4AtBv5HUbtoXn3YbdfQu3bxcMgYascqBS5CF3RjJrx3",
       },
       {
         "private_key":
@@ -5751,7 +5751,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "c80c0cabb01b347e0c54189a74a0ec2c54ab9ee7390b29d83884556bed40d252",
         "path": "//1",
-        "address": "25PtjzWJxQ7CT84YadbhcAcpwjsxUysy7nqrCj4SXdQc9Hfm"
+        "address": "25PtjzWJxQ7CT84YadbhcAcpwjsxUysy7nqrCj4SXdQc9Hfm",
       },
       {
         "private_key":
@@ -5759,7 +5759,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "d0dbcdd0ee39f942ce8b93a0f8566f517a7c4f4d415b2e3ca73de908bf6f9656",
         "path": "/0",
-        "address": "25bSqjhhPrFFR4Qyx8KWFXantYwXuYuYWc26mj5sa5tqThPd"
+        "address": "25bSqjhhPrFFR4Qyx8KWFXantYwXuYuYWc26mj5sa5tqThPd",
       },
       {
         "private_key":
@@ -5767,7 +5767,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "ba81506a42eef09e89da38cf41b771357b02edd41cdd8b6c073eeeac9dee1c19",
         "path": "//12",
-        "address": "2568uXqCxSyQUR8Sc2G31ogCCshD3nvxieWBY3j9vtLfvdBh"
+        "address": "2568uXqCxSyQUR8Sc2G31ogCCshD3nvxieWBY3j9vtLfvdBh",
       },
       {
         "private_key":
@@ -5775,9 +5775,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "d209104e20e79a69f166b7f604f20ba2a1341ee4ed620b153dfe52d180d26c68",
         "path": "/soft",
-        "address": "25czLKatZGZ8dyXgQADhQHxX7snK6aJTcS2jRoydXbfYxi8x"
-      }
-    ]
+        "address": "25czLKatZGZ8dyXgQADhQHxX7snK6aJTcS2jRoydXbfYxi8x",
+      },
+    ],
   },
   {
     "seed": "0063f1051151bf37f71a8236bf35b3677c6128fd6e82743412f5ebc5c1dbf89c",
@@ -5795,7 +5795,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "a8f6957870b56291afac4437b8e2eec30a9cddb4bcaea54438f624550fa7e932",
         "path": "//0",
-        "address": "14pYJ8XMt2sffEroZ3BkDheNERNGxskj97gHZJDpPRdcGv1W"
+        "address": "14pYJ8XMt2sffEroZ3BkDheNERNGxskj97gHZJDpPRdcGv1W",
       },
       {
         "private_key":
@@ -5803,7 +5803,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "bc75015b92c9777ecb69609292e7723144e56e2f786c3f89edf0471ad7178622",
         "path": "/1",
-        "address": "15G6m6BHnmrkGxf6n5HTbWgNR8VJN4zXEAiYeW5nxfe8bzp7"
+        "address": "15G6m6BHnmrkGxf6n5HTbWgNR8VJN4zXEAiYeW5nxfe8bzp7",
       },
       {
         "private_key":
@@ -5811,7 +5811,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "72dccc3b17e6ee74da83a8d6cdba29f3c0e0849d1674e42cd9fbe71061698a72",
         "path": "//hard",
-        "address": "13bc3sWM3YSu6LdjZAhkTLHoLsZHx2Jv6UteTE8dqPsPhURL"
+        "address": "13bc3sWM3YSu6LdjZAhkTLHoLsZHx2Jv6UteTE8dqPsPhURL",
       },
       {
         "private_key":
@@ -5819,7 +5819,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "eec8829910cfeaa88c58753ad9170c125b16b915f1a17df8a112f40f10d84179",
         "path": "//1",
-        "address": "16Q5xiB449MA3awgaAWmmy6ozHjiepBieciBiLKPmXZG2R9c"
+        "address": "16Q5xiB449MA3awgaAWmmy6ozHjiepBieciBiLKPmXZG2R9c",
       },
       {
         "private_key":
@@ -5827,7 +5827,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "5cb1f399f10d34646291f10ba15b937f33baf496ad604f70ddbb3f6a6165a23d",
         "path": "/0",
-        "address": "136YGYiphxLUS8dSEPpDuDvvWBJ4aFxiKwyfh3pFtvdq2Hz8"
+        "address": "136YGYiphxLUS8dSEPpDuDvvWBJ4aFxiKwyfh3pFtvdq2Hz8",
       },
       {
         "private_key":
@@ -5835,7 +5835,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "603120fea089cb9234ef2c2c425ea6da9244833adbe3888b95116247f4836e1a",
         "path": "//12",
-        "address": "13B8C6PvkYcqAt8vByasgyqJHCqtMSq1E1UJoaqLmdvyiufN"
+        "address": "13B8C6PvkYcqAt8vByasgyqJHCqtMSq1E1UJoaqLmdvyiufN",
       },
       {
         "private_key":
@@ -5843,9 +5843,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "642f94535b38357c8e6642fa7eeb7effa5068abbe69088a52bc45714ff8ce323",
         "path": "/soft",
-        "address": "13GMvWJXbsHAxCQ5vB7wPFNmjVbhRpi7eq9cVRmTkHyQWNN4"
-      }
-    ]
+        "address": "13GMvWJXbsHAxCQ5vB7wPFNmjVbhRpi7eq9cVRmTkHyQWNN4",
+      },
+    ],
   },
   {
     "seed": "b5148af6e1aea8077e487d373d1fd2c92fcc1688e7f4ae95aba9a0ea164d0cb5",
@@ -5863,7 +5863,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "cc573eb3bb3b75b787da2020eabd38247d04ae073771f9f5c3665b52cf1e8722",
         "path": "//0",
-        "address": "35N7rcKADQ9DGF8Ezc8WVz8cqyLMNNvGoKTWZnviqdt2sjsT"
+        "address": "35N7rcKADQ9DGF8Ezc8WVz8cqyLMNNvGoKTWZnviqdt2sjsT",
       },
       {
         "private_key":
@@ -5871,7 +5871,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "0a48efc2dff282d63c1261040809c82ddab830f4981cbc45058b8c46880c3f40",
         "path": "/1",
-        "address": "2zygKHQLouLi4s3LbQRUjgTZwcrrKQTgKe6aKVmkejtZ64hh"
+        "address": "2zygKHQLouLi4s3LbQRUjgTZwcrrKQTgKe6aKVmkejtZ64hh",
       },
       {
         "private_key":
@@ -5879,7 +5879,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "62cdf4b3f154d7625fcae6b04cbb65e83da5c9dffb8a4dca68cc85f2c1cb5535",
         "path": "//hard",
-        "address": "32yk3ZDx5qxYiLw7onrtJJrXLmUdJiw7tZ4AQKhkuZsPPNBj"
+        "address": "32yk3ZDx5qxYiLw7onrtJJrXLmUdJiw7tZ4AQKhkuZsPPNBj",
       },
       {
         "private_key":
@@ -5887,7 +5887,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "70a17a718c331b15389afee2be4987bfd6879bccf22c687f41462a37efb4b82b",
         "path": "//1",
-        "address": "33HsW7DWZPQEsKkjVsin1ychvGrimGebGq79ihMJF37D1QsD"
+        "address": "33HsW7DWZPQEsKkjVsin1ychvGrimGebGq79ihMJF37D1QsD",
       },
       {
         "private_key":
@@ -5895,7 +5895,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "7c1ecbe395e42bc4ed302d83c81dc11d5266d9e4af8d71c6cab468d0bb817477",
         "path": "/0",
-        "address": "33YwFqfQLsUdKP9hybHB4WpTuv992sHmGgc933g7x1tSJXVA"
+        "address": "33YwFqfQLsUdKP9hybHB4WpTuv992sHmGgc933g7x1tSJXVA",
       },
       {
         "private_key":
@@ -5903,7 +5903,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "247561388108e6fa9f86e833f8ad28fbe323bde9a2f02138743a611d1859080e",
         "path": "//12",
-        "address": "31ZzmEReKJZXvyTEQSniBgWjumLLM75pVeS9SRaLrWW3ERL8"
+        "address": "31ZzmEReKJZXvyTEQSniBgWjumLLM75pVeS9SRaLrWW3ERL8",
       },
       {
         "private_key":
@@ -5911,9 +5911,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "cea3ad727c33e62f6206c8fd66decc1ac6c1f880e639859842933faac3139c08",
         "path": "/soft",
-        "address": "35R8f4rdzgcJkSD82KfsKeurNTjeCnaHMf6a23w8ZWr1fZ9B"
-      }
-    ]
+        "address": "35R8f4rdzgcJkSD82KfsKeurNTjeCnaHMf6a23w8ZWr1fZ9B",
+      },
+    ],
   },
   {
     "seed": "1571c51205ae4815b151987bdedc8ad71320143fef4225d72d8e7485fef8d1ce",
@@ -5931,7 +5931,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "14ac76b71022644305788fb02febb1576c3f048cfe1d1f93e33fc9389ee7791a",
         "path": "//0",
-        "address": "5Q78ZgQ7EaKKLkzKRidsPfKDkRyJJCZSigCVBhHzaXhWnG8U"
+        "address": "5Q78ZgQ7EaKKLkzKRidsPfKDkRyJJCZSigCVBhHzaXhWnG8U",
       },
       {
         "private_key":
@@ -5939,7 +5939,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "4e6b8b8624eb56664dccd6a39b0c7340da10c480d119e620646aae79f9dba953",
         "path": "/1",
-        "address": "5RQr4EvPAuQT9T8q5nDZK6UyxWUtGKn19p5Ex8Grt2vKRDbT"
+        "address": "5RQr4EvPAuQT9T8q5nDZK6UyxWUtGKn19p5Ex8Grt2vKRDbT",
       },
       {
         "private_key":
@@ -5947,7 +5947,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "1a56ef619bc65d6ec3421c0df0eeccd22da14d379b22e3984dd4d8ced7012224",
         "path": "//hard",
-        "address": "5QEZSihGkDssy3NQD25NUCzcx4kxg1VYkK1ftAnKfmEHBAFq"
+        "address": "5QEZSihGkDssy3NQD25NUCzcx4kxg1VYkK1ftAnKfmEHBAFq",
       },
       {
         "private_key":
@@ -5955,7 +5955,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "fa93d09ebd0b2049c1e4ed60daa82e876ab4720dbdefb891b9f9e16558f93c70",
         "path": "//1",
-        "address": "5VJaFmnXtLRMgBcAJcR6xU3XpMBj4D3CkKQ5hDMDWLTa1qvn"
+        "address": "5VJaFmnXtLRMgBcAJcR6xU3XpMBj4D3CkKQ5hDMDWLTa1qvn",
       },
       {
         "private_key":
@@ -5963,7 +5963,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "64e2b9d6f7b95d278bfadf20d2a102bfbc06f888800f7fff87e66f92b2330b7a",
         "path": "/0",
-        "address": "5RvJWnG6MCHFYMJg2KJKRnxDxh8xviuT4wMHYc3qLjh4HAka"
+        "address": "5RvJWnG6MCHFYMJg2KJKRnxDxh8xviuT4wMHYc3qLjh4HAka",
       },
       {
         "private_key":
@@ -5971,7 +5971,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "84aef2fa47376a1bd275c3c199a09723b017d57163ce5c0d9b8939b5e5850831",
         "path": "//12",
-        "address": "5SdzfZXTq8MUPrxxjLPgW9rD32gbZbAqyodKfZG6T6zkxW54"
+        "address": "5SdzfZXTq8MUPrxxjLPgW9rD32gbZbAqyodKfZG6T6zkxW54",
       },
       {
         "private_key":
@@ -5979,9 +5979,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "4851229d133381282838ac48aaf9d6a511eb318b18961b36f1820de0c8d98e34",
         "path": "/soft",
-        "address": "5RGqvYewE32D2pVGzbmZ87nhCHBKLK9uu3JUMXgMPHzxQkbP"
-      }
-    ]
+        "address": "5RGqvYewE32D2pVGzbmZ87nhCHBKLK9uu3JUMXgMPHzxQkbP",
+      },
+    ],
   },
   {
     "seed": "d5db556e76df6b49eae9140e585ef756b4877fc4fcc6c9e74cd376cb1ea446fd",
@@ -5999,7 +5999,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "8085cbbc8335838951f1ef19d4ee73a63b382cb03c79e703299c31fac3e04528",
         "path": "//0",
-        "address": "33ei3b2YUMAosWFEpaWnZrb5bH1avQF1MGmk29xsZAEXRSFh"
+        "address": "33ei3b2YUMAosWFEpaWnZrb5bH1avQF1MGmk29xsZAEXRSFh",
       },
       {
         "private_key":
@@ -6007,7 +6007,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "42552df2a984fda59816777b15f2011643e005acd2faad216acce4d666464d46",
         "path": "/1",
-        "address": "32FAdkfdvkidgaf2WbMKc3mB1FPXtuYyeDvdJCdJC2LLbDUW"
+        "address": "32FAdkfdvkidgaf2WbMKc3mB1FPXtuYyeDvdJCdJC2LLbDUW",
       },
       {
         "private_key":
@@ -6015,7 +6015,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "5ee08361f60e2b278bfd9a738be888fd0a580484b91fb636c967fc21fceab10f",
         "path": "//hard",
-        "address": "32tbNBYtueEw3WWxz68VZwjE5bp6qPs5Uy4Rgmhs9HgygsQo"
+        "address": "32tbNBYtueEw3WWxz68VZwjE5bp6qPs5Uy4Rgmhs9HgygsQo",
       },
       {
         "private_key":
@@ -6023,7 +6023,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "044d8d9d09dbf7995cdbf0d1bea52237d8d2e168054662826caa3f324d1ef020",
         "path": "//1",
-        "address": "2zqqQAMVhVhURrvrz3gtqxYiB5UKFJtaZSJdPH1wLDdCtFMB"
+        "address": "2zqqQAMVhVhURrvrz3gtqxYiB5UKFJtaZSJdPH1wLDdCtFMB",
       },
       {
         "private_key":
@@ -6031,7 +6031,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "a6adb91dbb4a01c0b00aa184211d858a442b21abb95aad223e1c90ca4d2d5835",
         "path": "/0",
-        "address": "34Wjj4D4XMJTJidmGWUc3KqsSujW2iy7P289SDapGfDiS5y6"
+        "address": "34Wjj4D4XMJTJidmGWUc3KqsSujW2iy7P289SDapGfDiS5y6",
       },
       {
         "private_key":
@@ -6039,7 +6039,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "167d98d1f9abc066d48917123266c8ca3308da9c0a3b098d7b18a44b7dfc946b",
         "path": "//12",
-        "address": "31FgXvpSGv68Px7M6rfVAXytAfs74A6Xk5cnHfrj3rFAZ79J"
+        "address": "31FgXvpSGv68Px7M6rfVAXytAfs74A6Xk5cnHfrj3rFAZ79J",
       },
       {
         "private_key":
@@ -6047,9 +6047,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "b2acbc2ed8393b87401e071bf3dd30edc56b5df9548a56bb87cd94b68be29e69",
         "path": "/soft",
-        "address": "34nU1Mscbw9reK2fpsGzvXamQi4KkuAGwgXyRdGUiJHfKecN"
-      }
-    ]
+        "address": "34nU1Mscbw9reK2fpsGzvXamQi4KkuAGwgXyRdGUiJHfKecN",
+      },
+    ],
   },
   {
     "seed": "bd9c88138acaec641dd0dbe06de2c4a1aa9444a9835ac3c7ad73e285459bf6cb",
@@ -6067,7 +6067,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "9aa4552b0f4759e239933bd9435affa769afddcce2ea323bf08fa822d5372120",
         "path": "//0",
-        "address": "34ExMwCBGMqzXE632w8q2M1DTY19SUNeYq8kWPEGcvcNKjHj"
+        "address": "34ExMwCBGMqzXE632w8q2M1DTY19SUNeYq8kWPEGcvcNKjHj",
       },
       {
         "private_key":
@@ -6075,7 +6075,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "ee8ee1d99b319d0a07697ff9a8f424574f1df0848c669c5876698c2973e29f45",
         "path": "/1",
-        "address": "368z1eTS1MfHWuZADFMRu15fskHyG8YD9PwQK9SWP2Si6mx7"
+        "address": "368z1eTS1MfHWuZADFMRu15fskHyG8YD9PwQK9SWP2Si6mx7",
       },
       {
         "private_key":
@@ -6083,7 +6083,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "e213a5be355cfd48f59393e189847340c1def327325b8aedddbbf8c374e1fc24",
         "path": "//hard",
-        "address": "35rcq2rayArdcD7NxS2X7wh1gnpiE1A8e9ZC5Qt8zpoxev3r"
+        "address": "35rcq2rayArdcD7NxS2X7wh1gnpiE1A8e9ZC5Qt8zpoxev3r",
       },
       {
         "private_key":
@@ -6091,7 +6091,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "1056c0b4f44e585d0c99e05f75cae354fb7da479c7d67d29d9d6d05d342fe72d",
         "path": "//1",
-        "address": "317chzfLixigUDC5VSLXJe6APi1kXk5gfpAP3KCVAmaW3LEB"
+        "address": "317chzfLixigUDC5VSLXJe6APi1kXk5gfpAP3KCVAmaW3LEB",
       },
       {
         "private_key":
@@ -6099,7 +6099,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "2642ccbb606be2fcb778548d13812fa1267470d06caa576ff181af5f3673ba60",
         "path": "/0",
-        "address": "31cMqK7sV63vGrSUdwRk3yAbZnVxiQKJHv7oCXXjL1vc3FFZ"
+        "address": "31cMqK7sV63vGrSUdwRk3yAbZnVxiQKJHv7oCXXjL1vc3FFZ",
       },
       {
         "private_key":
@@ -6107,7 +6107,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "b858f8f291c8af071e7638ca90135a9057e3ed2ecd3ad75c1ff8b6afe231617b",
         "path": "//12",
-        "address": "34uuQpyKuaDbdLxLAz62kp3La5TNVyf8p1uXCWUXUqs7LFhD"
+        "address": "34uuQpyKuaDbdLxLAz62kp3La5TNVyf8p1uXCWUXUqs7LFhD",
       },
       {
         "private_key":
@@ -6115,9 +6115,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "d29321b98c65b636a402dbf1122503c84c6c4d63de3ad3190e7b5a97285b410b",
         "path": "/soft",
-        "address": "35WHw6i13XmnKJiex4WJVvXfLWTteFZZjULcUVeQrihQphY2"
-      }
-    ]
+        "address": "35WHw6i13XmnKJiex4WJVvXfLWTteFZZjULcUVeQrihQphY2",
+      },
+    ],
   },
   {
     "seed": "b372588cf32369927c31c806635934549963043cb73a5b75d79ab71fe90796b3",
@@ -6135,7 +6135,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "ec395d0e7596936ca981b479b13776c8ed9c5be87a34604fdff2de2378bc6348",
         "path": "//0",
-        "address": "16LjLoAd93rpji3m5ULzqhFdf4KoZAuZXztLa5rZkV2sSjhH"
+        "address": "16LjLoAd93rpji3m5ULzqhFdf4KoZAuZXztLa5rZkV2sSjhH",
       },
       {
         "private_key":
@@ -6143,7 +6143,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "cac1738dba868153dd568633037347032dbaeef864683d2f55f0443d6ec0a130",
         "path": "/1",
-        "address": "15ar97Ccu5rfH36pCeXf9d64ND88BLVZAou3d6vmyKqHr7WV"
+        "address": "15ar97Ccu5rfH36pCeXf9d64ND88BLVZAou3d6vmyKqHr7WV",
       },
       {
         "private_key":
@@ -6151,7 +6151,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "1878214ff284a38b122726bdf54835103c58794ea28961f0399eedc9d0da1477",
         "path": "//hard",
-        "address": "1Z5qT4mTwZQQF3jypHayXJbZP4gSNQRyXndFmyohZqyNGm8"
+        "address": "1Z5qT4mTwZQQF3jypHayXJbZP4gSNQRyXndFmyohZqyNGm8",
       },
       {
         "private_key":
@@ -6159,7 +6159,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "9ae4d4b1add1842db6a05fc6bfc8d187927bc130a8c3aa2d5422e52ed235da52",
         "path": "//1",
-        "address": "14W6MNSfozgpXAvYSpRMjnT7o3dWYPcenZ34wV1wgPopff3Z"
+        "address": "14W6MNSfozgpXAvYSpRMjnT7o3dWYPcenZ34wV1wgPopff3Z",
       },
       {
         "private_key":
@@ -6167,7 +6167,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "fe61946a70c14eec490f5278ad82116828a257584c28d347de1c3cb62c5d033a",
         "path": "/0",
-        "address": "16kY9hT4zKsLTRQ56YRJnpxGUpkDNCEb34Kn2MFMZt1SU2So"
+        "address": "16kY9hT4zKsLTRQ56YRJnpxGUpkDNCEb34Kn2MFMZt1SU2So",
       },
       {
         "private_key":
@@ -6175,7 +6175,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "de2a219ae1ce929045b6d1fae071916c7b3c77a4dedd690f164d160b1873f861",
         "path": "//12",
-        "address": "162J9UAU1T75xPS7V16WEBzvqeDzsB6PLFL9g4H3gN86M2U2"
+        "address": "162J9UAU1T75xPS7V16WEBzvqeDzsB6PLFL9g4H3gN86M2U2",
       },
       {
         "private_key":
@@ -6183,9 +6183,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "9cfcd8cf8a1ed7685ce4bb289f3e1fca1c2a93ff7f9d348c60c1dc5519373564",
         "path": "/soft",
-        "address": "14YqaiHNA5PpXCxybwaBovfp6FbefUi5DqUcapyfBP5pDL88"
-      }
-    ]
+        "address": "14YqaiHNA5PpXCxybwaBovfp6FbefUi5DqUcapyfBP5pDL88",
+      },
+    ],
   },
   {
     "seed": "1be6a50e2758cca32655b7986b4f1645da14b16f2614f016a6205da738af84be",
@@ -6203,7 +6203,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "b660d40bcebc17960f17e0c20f2285055adb5eb41d4ebaf814674554b0873a7f",
         "path": "//0",
-        "address": "GhSzmYWWFzvy9pnWBzUU8x1gn9gbgTabKMwK1oQKGWUKp6N"
+        "address": "GhSzmYWWFzvy9pnWBzUU8x1gn9gbgTabKMwK1oQKGWUKp6N",
       },
       {
         "private_key":
@@ -6211,7 +6211,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "82b1d646c8af3ee855d93107548fee822833c86abe8302a721f5173fe854c20f",
         "path": "/1",
-        "address": "FXga6XihCjKpVYUd3TVxwJVpCfNBaB8pJ5FkYY5MuZR4BRJ"
+        "address": "FXga6XihCjKpVYUd3TVxwJVpCfNBaB8pJ5FkYY5MuZR4BRJ",
       },
       {
         "private_key":
@@ -6219,7 +6219,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "4e7da6f6cd1f5ec77f96e25cd6ce973122fee385b0666805be63526478f9d02f",
         "path": "//hard",
-        "address": "EMEaYzmDahqgQENtfRN6M2wVeicCcBzDZtFnSKMYgg6GuyQ"
+        "address": "EMEaYzmDahqgQENtfRN6M2wVeicCcBzDZtFnSKMYgg6GuyQ",
       },
       {
         "private_key":
@@ -6227,7 +6227,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "567b48077dce4947e821fbd607662587d7fa3cc3e923a87d03f7539ea5234255",
         "path": "//1",
-        "address": "EXiFvT6V2gQbs1txefMAUrAy6zWdDYNDSKY2RdeDEDWAiQb"
+        "address": "EXiFvT6V2gQbs1txefMAUrAy6zWdDYNDSKY2RdeDEDWAiQb",
       },
       {
         "private_key":
@@ -6235,7 +6235,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "28f60bbea2fc1969f17ead077ce26d6137fb4f38238d1746200e8324b4db4d07",
         "path": "/0",
-        "address": "DW2XMDHW7vStsNtZHAarc5BXizoKswrGRc59RqEiTwNAo8Y"
+        "address": "DW2XMDHW7vStsNtZHAarc5BXizoKswrGRc59RqEiTwNAo8Y",
       },
       {
         "private_key":
@@ -6243,7 +6243,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "2280c5c83939ddf9985b5ffd2085ed92b20e0a20212c1c1ced2c8ad8e8319a2c",
         "path": "//12",
-        "address": "DMZQ7YaXpmtv9a1yoj18wbfdmpDSMmJzhkLjcWarUXbpAHU"
+        "address": "DMZQ7YaXpmtv9a1yoj18wbfdmpDSMmJzhkLjcWarUXbpAHU",
       },
       {
         "private_key":
@@ -6251,9 +6251,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "f0b12dc7eda736fec4042b5efa993d5ced0df8352c36248122346f7021bf761d",
         "path": "/soft",
-        "address": "J1ueG3tSGtrJpU4DJ5ErV6GGqrYx4WhkSWYdRE8GxEkmoDF"
-      }
-    ]
+        "address": "J1ueG3tSGtrJpU4DJ5ErV6GGqrYx4WhkSWYdRE8GxEkmoDF",
+      },
+    ],
   },
   {
     "seed": "43bdd899f8d21cde3f63cc5975f196f511c12799b1259b898c5901c66ef42c6e",
@@ -6271,7 +6271,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "56c0f345ebc1f99b3347757312b0f6424f7c5828df3b67a65f8f89b99e23de6c",
         "path": "//0",
-        "address": "EY4xHmbdZqiwLddr1fFP8wfugPycZRtE2zDBJAf6L1BanoD"
+        "address": "EY4xHmbdZqiwLddr1fFP8wfugPycZRtE2zDBJAf6L1BanoD",
       },
       {
         "private_key":
@@ -6279,7 +6279,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "32f1506afb57b93af3127fbf82ff35d50f36132dca0051a222c3f677fe132379",
         "path": "/1",
-        "address": "Dj7bbYPBxCHwvSYRqGmUWkWCeCiDwLXu8wdLHPU4MXa76HD"
+        "address": "Dj7bbYPBxCHwvSYRqGmUWkWCeCiDwLXu8wdLHPU4MXa76HD",
       },
       {
         "private_key":
@@ -6287,7 +6287,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "0eb30ab6da904fb37a3ebe029c9a9f10079fa34cfaedd01fd47effecf9e22368",
         "path": "//hard",
-        "address": "CubNgnGcBJ69XcmbcqRPuuucMdEefKGWnCVe9RuZQKafkQo"
+        "address": "CubNgnGcBJ69XcmbcqRPuuucMdEefKGWnCVe9RuZQKafkQo",
       },
       {
         "private_key":
@@ -6295,7 +6295,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "1e9872c916b4a5899f60c4f33a6f17fea31fd4c9651129b93bffca1e76e18871",
         "path": "//1",
-        "address": "DGSEvpstrERd7dyGFQXnCKBi6tBNKHJ2s6NQPV6N6Axfhjc"
+        "address": "DGSEvpstrERd7dyGFQXnCKBi6tBNKHJ2s6NQPV6N6Axfhjc",
       },
       {
         "private_key":
@@ -6303,7 +6303,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "6aad6c71e8cc35904fda3021778e86b89c22b28c9923a593ba38cc6a81357f14",
         "path": "/0",
-        "address": "EzC7Q82hC3hRkeG6NED2C2Y3QuGDMkJkpr499Xj8G7VazXn"
+        "address": "EzC7Q82hC3hRkeG6NED2C2Y3QuGDMkJkpr499Xj8G7VazXn",
       },
       {
         "private_key":
@@ -6311,7 +6311,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "aeed4fd3a47b7d5e13c0589104cae35920e74f662caaca3b900d2d5821b9d50e",
         "path": "//12",
-        "address": "GXgM2QEbnwJTGrMwDrXTaV63Wa8kq6cfqRVMd5Xo2vpY2zM"
+        "address": "GXgM2QEbnwJTGrMwDrXTaV63Wa8kq6cfqRVMd5Xo2vpY2zM",
       },
       {
         "private_key":
@@ -6319,9 +6319,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "8ab1929c39ba80cf0e41b9f76b9d3cedfb06634be82392feb2c4d9ce2d55595b",
         "path": "/soft",
-        "address": "FiAsm4c3aKQLLiC1CyTQuEdqfhbwyR2RGqG79v9aeVsj82C"
-      }
-    ]
+        "address": "FiAsm4c3aKQLLiC1CyTQuEdqfhbwyR2RGqG79v9aeVsj82C",
+      },
+    ],
   },
   {
     "seed": "5a53676f7c9e00445b68aa0e34547f42329f8434c94752701edebee7984ffff7",
@@ -6339,7 +6339,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "4e1f572120b43acddcfe36cb3feb8462e9b0227097b66676dfb6b6cc5ea96471",
         "path": "//0",
-        "address": "5RQTRGKg9CzVp8cs1gYpQY9BsBJdLAqHSULF2vK69KuGn35x"
+        "address": "5RQTRGKg9CzVp8cs1gYpQY9BsBJdLAqHSULF2vK69KuGn35x",
       },
       {
         "private_key":
@@ -6347,7 +6347,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "e436abd544551d2864b45e7edfab5d4e33f1400cd1a72cc6c20a08c6f99c5902",
         "path": "/1",
-        "address": "5UoFXqsqNmSdCBztiUSXLqa1oT3MVGrboCNNt9pTU5eVKgfY"
+        "address": "5UoFXqsqNmSdCBztiUSXLqa1oT3MVGrboCNNt9pTU5eVKgfY",
       },
       {
         "private_key":
@@ -6355,7 +6355,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "6ae85a21503b913fe09c5382ca704e06a7a89fc95a7924222339b2ec0b71ec2a",
         "path": "//hard",
-        "address": "5S4CUP4DGtY52aAEmweA1DusUu1LxbREn5td46jsJAwA5UVV"
+        "address": "5S4CUP4DGtY52aAEmweA1DusUu1LxbREn5td46jsJAwA5UVV",
       },
       {
         "private_key":
@@ -6363,7 +6363,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "b0d4167ba772ce37f4b4292bbffadb3b66613e78d771a38d72c6dfab0cfdb22c",
         "path": "//1",
-        "address": "5TdsoeYcDD1fMiVYgVdVQCMgcySY5WHVRvaseNZsEL5WqXvQ"
+        "address": "5TdsoeYcDD1fMiVYgVdVQCMgcySY5WHVRvaseNZsEL5WqXvQ",
       },
       {
         "private_key":
@@ -6371,7 +6371,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "0c40e8d97b7b66e831907ac7506d08caf5b5132719256cb34ce622304baa1e24",
         "path": "/0",
-        "address": "5Pv6EM3xLbyrJYYrFDdCqVW7RpfRP6NhUHKbZ1TTCoATXnmZ"
+        "address": "5Pv6EM3xLbyrJYYrFDdCqVW7RpfRP6NhUHKbZ1TTCoATXnmZ",
       },
       {
         "private_key":
@@ -6379,7 +6379,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "56d0ff3060b0b63687968b2d24c55ada92862db1d9909106e3ad780e7a0f287a",
         "path": "//12",
-        "address": "5RbraS6JQFMFfbVoXjxQGtTH3y8QFEt2XLHA3TJgDc9gHeHq"
+        "address": "5RbraS6JQFMFfbVoXjxQGtTH3y8QFEt2XLHA3TJgDc9gHeHq",
       },
       {
         "private_key":
@@ -6387,9 +6387,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "4cc9fb1e35bc6abdab5ad574780aab6998934b63e3b3b6d8f83b5dd91d37f434",
         "path": "/soft",
-        "address": "5RNi1n9CjfV1ZDtfPirLDthsYDuVQsJCy6NrfjQsNsHJeeqn"
-      }
-    ]
+        "address": "5RNi1n9CjfV1ZDtfPirLDthsYDuVQsJCy6NrfjQsNsHJeeqn",
+      },
+    ],
   },
   {
     "seed": "e4e592abc8facfaaca13e6cb1e917502d7c3454192869a115d87b9fa22094e9c",
@@ -6407,7 +6407,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "cc20b770803cf4b7b0655306a2d215f217dcabd7938679514640cd7443c75d6f",
         "path": "//0",
-        "address": "25VF5Bncg8k8AdiTvvUqQZ4ooHtzeAXjo15ckFf42canAWLg"
+        "address": "25VF5Bncg8k8AdiTvvUqQZ4ooHtzeAXjo15ckFf42canAWLg",
       },
       {
         "private_key":
@@ -6415,7 +6415,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "f874d7b16ae1a544f71003d07d85d3c105bece6dbfedbd8a42499a4a0443c61a",
         "path": "/1",
-        "address": "26VNAqzwyMf4qXj85YibLFkEF7fHUTn4FFjHPuFb3UB8KPTs"
+        "address": "26VNAqzwyMf4qXj85YibLFkEF7fHUTn4FFjHPuFb3UB8KPTs",
       },
       {
         "private_key":
@@ -6423,7 +6423,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "4eaa994e0b697cee5ffddfdccd28e6f80a4019dfda5284be54cafb72d3338812",
         "path": "//hard",
-        "address": "22ejzuG7mSa4bjDjEfyWG5uHmbWLBgqwh8UeQr63KuZv7AWY"
+        "address": "22ejzuG7mSa4bjDjEfyWG5uHmbWLBgqwh8UeQr63KuZv7AWY",
       },
       {
         "private_key":
@@ -6431,7 +6431,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "740833b3219984c94fae37ffec48960aab7ca7acbb4d3939f4a81554ef1ebe01",
         "path": "//1",
-        "address": "23VjaQXMHfSWQCvWvANJt482Wsf1TAEaX5mzMXZMBfo1NeFX"
+        "address": "23VjaQXMHfSWQCvWvANJt482Wsf1TAEaX5mzMXZMBfo1NeFX",
       },
       {
         "private_key":
@@ -6439,7 +6439,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "146e54a6cba6e1367b7008337e6b7556cd0370e5842d7ad34c7900aa28b83406",
         "path": "/0",
-        "address": "21LPKRPAxqh94PXHdanGkitzGrwvh3pJHvUFCXwYnq1METB2"
+        "address": "21LPKRPAxqh94PXHdanGkitzGrwvh3pJHvUFCXwYnq1METB2",
       },
       {
         "private_key":
@@ -6447,7 +6447,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "70921083552f4d357b39a35d0ca19d539bfa4a6f2382121979003c04c7feb779",
         "path": "//12",
-        "address": "23RCLcYS3HBqNXqDebXvtL2jwcYtRJrHk9zqZGsteUSJQoSc"
+        "address": "23RCLcYS3HBqNXqDebXvtL2jwcYtRJrHk9zqZGsteUSJQoSc",
       },
       {
         "private_key":
@@ -6455,9 +6455,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "10dde4738ac7724e7b810b84abbbaebb7778b1fbd5334d473368429921b51b48",
         "path": "/soft",
-        "address": "21FiGUYAoxuKRAjwmV1XRof6aMrMrVeoPnTnitJxXsoMvXdG"
-      }
-    ]
+        "address": "21FiGUYAoxuKRAjwmV1XRof6aMrMrVeoPnTnitJxXsoMvXdG",
+      },
+    ],
   },
   {
     "seed": "128f5a7083825053ca90ca4e3bbf20aaae1f8936c19342a4e2bb6acc4a5794e3",
@@ -6475,7 +6475,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "32220c5022f99162b077a41803bdff6106ae0708f53383d49ccc983b1af83828",
         "path": "//0",
-        "address": "Di42V8CSqPzPq5n3xqqeG7p7NXPcj3HYY5U8LdXZkyqBLM8"
+        "address": "Di42V8CSqPzPq5n3xqqeG7p7NXPcj3HYY5U8LdXZkyqBLM8",
       },
       {
         "private_key":
@@ -6483,7 +6483,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "a2af56362ba706981c26667567cf4c65db2d5cbabce24fb9550a57587323fc23",
         "path": "/1",
-        "address": "GFdMtgGw5Xzadbpa8RXasCvWjvznHVChFXjAG6Eotzg7CYv"
+        "address": "GFdMtgGw5Xzadbpa8RXasCvWjvznHVChFXjAG6Eotzg7CYv",
       },
       {
         "private_key":
@@ -6491,7 +6491,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "40e4ff6fb91f6fe70735133424aeeaaa1c82da23bcd0590d74af979e0d4e4351",
         "path": "//hard",
-        "address": "E3QcGoS2cxedZSTGuvCr7c6kpihxt5ZBwr4KjaVrrhhkTak"
+        "address": "E3QcGoS2cxedZSTGuvCr7c6kpihxt5ZBwr4KjaVrrhhkTak",
       },
       {
         "private_key":
@@ -6499,7 +6499,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "869645948169b65574622f324e8f8162ae16689a3dbbd32846364f9b24ddfd54",
         "path": "//1",
-        "address": "FcnaGUrbNH1FaZpHudkvQbF9KkgCubP8WHZxiCooKtvRmAP"
+        "address": "FcnaGUrbNH1FaZpHudkvQbF9KkgCubP8WHZxiCooKtvRmAP",
       },
       {
         "private_key":
@@ -6507,7 +6507,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "a82453bfd14b911daf0e3218d59a1080d678ba131f55f1eb0e94334211ce9e00",
         "path": "/0",
-        "address": "GNnMUYZ5cYcjbSc7VmctP246zG5N2ck8QTsA7cxYHsAPD96"
+        "address": "GNnMUYZ5cYcjbSc7VmctP246zG5N2ck8QTsA7cxYHsAPD96",
       },
       {
         "private_key":
@@ -6515,7 +6515,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "e64e00647ec912b645a4d8ee03874a2a10142be5463529497184293159bf283a",
         "path": "//12",
-        "address": "HnHhhg74KKuwzYKVRnKokLtaL1VwBesSXJJ2UHtcdaP4w3c"
+        "address": "HnHhhg74KKuwzYKVRnKokLtaL1VwBesSXJJ2UHtcdaP4w3c",
       },
       {
         "private_key":
@@ -6523,9 +6523,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "b05dabfdb0a94f59d381db3f106eb1eadbcf49b50fd78512cc5795a211cf3a6c",
         "path": "/soft",
-        "address": "GZZmijKb1PXXZd5oxoWyrQC6AttfhoZBuLh1WiaY2puNcZG"
-      }
-    ]
+        "address": "GZZmijKb1PXXZd5oxoWyrQC6AttfhoZBuLh1WiaY2puNcZG",
+      },
+    ],
   },
   {
     "seed": "d5e86e4d265725061f198bb05cd79406c8100f85ce6a159659974e0b0adb52bc",
@@ -6543,7 +6543,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "4eb9f2ffeca4a7d09b331bb85f79f456580114f63b82725863df0265af25ca50",
         "path": "//0",
-        "address": "22epZP9HBSyHpyKv2oC8dp3Eg22L6nBYyJvJtkB9yH2tNYJC"
+        "address": "22epZP9HBSyHpyKv2oC8dp3Eg22L6nBYyJvJtkB9yH2tNYJC",
       },
       {
         "private_key":
@@ -6551,7 +6551,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "04adae093c2f5ee314b4dc9f7016cc1088f29210d3a77537497a0a64d9f35a1a",
         "path": "/1",
-        "address": "zyjNTunC1D1fezM4tq3oZfzfHrrj7QHjo746BjyBiJAYiF1"
+        "address": "zyjNTunC1D1fezM4tq3oZfzfHrrj7QHjo746BjyBiJAYiF1",
       },
       {
         "private_key":
@@ -6559,7 +6559,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "229253573074b9b3d31b4492fcf6f9b920a05d20c7b86f1a0b1483127294ee76",
         "path": "//hard",
-        "address": "21evgUr2hJLFAq7ZuyzX2catDQ87PziwhPnkk2juSDoo4nNV"
+        "address": "21evgUr2hJLFAq7ZuyzX2catDQ87PziwhPnkk2juSDoo4nNV",
       },
       {
         "private_key":
@@ -6567,7 +6567,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "ec16aa3857b5d7eff9943f74f20b30cf6a5a508ed0420562a37852e387f07644",
         "path": "//1",
-        "address": "26D9csi7p5cGMbGqbkeXjMskGiRTKzn8E11HKbfRR7pKijWy"
+        "address": "26D9csi7p5cGMbGqbkeXjMskGiRTKzn8E11HKbfRR7pKijWy",
       },
       {
         "private_key":
@@ -6575,7 +6575,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "be0100b16f73dc27a90ed46ddc5c467a9baa28a7f6cda7ef91cfaeb676e13d78",
         "path": "/0",
-        "address": "25AiytRcsqqdhHGRcuogvR3qaHEKCSQvtjFCSQ7WT6YaAL79"
+        "address": "25AiytRcsqqdhHGRcuogvR3qaHEKCSQvtjFCSQ7WT6YaAL79",
       },
       {
         "private_key":
@@ -6583,7 +6583,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "fe3850ab4489c991fd53aa09d5a26a2d34ec23ffd8cf5758a455f64b6d950b63",
         "path": "//12",
-        "address": "26cvUeRWsMaLSkba6C6JCX3RSckt6cvSuxAwAGaUtdVDfreW"
+        "address": "26cvUeRWsMaLSkba6C6JCX3RSckt6cvSuxAwAGaUtdVDfreW",
       },
       {
         "private_key":
@@ -6591,9 +6591,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "022e44c5d1246ec4b3f0c0dbd83924cd6faeddeb83f6ff5e899d096cb924c430",
         "path": "/soft",
-        "address": "zvTRfcWteCCsFWQdFRNx29BtC17jR72AkDFpE7Q1ry5iS1p"
-      }
-    ]
+        "address": "zvTRfcWteCCsFWQdFRNx29BtC17jR72AkDFpE7Q1ry5iS1p",
+      },
+    ],
   },
   {
     "seed": "3d12c9a800fa3bed7a758332f6696cbde2e62ad9234494e295a82332b78cd9b2",
@@ -6611,7 +6611,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "04578e7f2559e2538fc11487e335b02f506701a9c46bde9c66f62dbb6b27c957",
         "path": "//0",
-        "address": "zyHnbZ97JxkioaU7B7BpkuDmw4YU7SBe5RpHv2GrvWdAMrf"
+        "address": "zyHnbZ97JxkioaU7B7BpkuDmw4YU7SBe5RpHv2GrvWdAMrf",
       },
       {
         "private_key":
@@ -6619,7 +6619,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "143066774bd0f4dc2ab525e1aee4b21720f89d12c122a65775161ea4420f8808",
         "path": "/1",
-        "address": "21L4vPHXKfwp6bmg4oN1hjh9vL1m5pewGNWb32TWiYPX48TS"
+        "address": "21L4vPHXKfwp6bmg4oN1hjh9vL1m5pewGNWb32TWiYPX48TS",
       },
       {
         "private_key":
@@ -6627,7 +6627,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "fe206898a03dcef06966be49447adcdf01b14b1be9ff713fd3eabf4c0f7e7c68",
         "path": "//hard",
-        "address": "26coNkDvER9JLpiyPu38DYXNd6SRrqtCMQuKrW2V2i2Zi7jh"
+        "address": "26coNkDvER9JLpiyPu38DYXNd6SRrqtCMQuKrW2V2i2Zi7jh",
       },
       {
         "private_key":
@@ -6635,7 +6635,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "e07a63c54f1e679961bb6cff5cf4dbf8ae08e9ef15f424becd63a5f62b906125",
         "path": "//1",
-        "address": "25wvfmNLgEhWEkLfMRaFTnge9uUqUCg7Bv8nn1i9zMpx11iT"
+        "address": "25wvfmNLgEhWEkLfMRaFTnge9uUqUCg7Bv8nn1i9zMpx11iT",
       },
       {
         "private_key":
@@ -6643,7 +6643,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "50e9d59ad8a058e01200a01d72243af8a7ec7a74ecaaa70d32b996d1a20d9f32",
         "path": "/0",
-        "address": "22hgsymcYCDmnkAGA1pNTKBv9aedecCd4bhkamcdwRB2FbLP"
+        "address": "22hgsymcYCDmnkAGA1pNTKBv9aedecCd4bhkamcdwRB2FbLP",
       },
       {
         "private_key":
@@ -6651,7 +6651,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "9e9b51a4dd633682f23c7c13efb0b9cbdb96546b5152ca547a26289ed8882f65",
         "path": "//12",
-        "address": "24TZHpWRhDvcEs5dy7t6nuASA8naVbyQYcV6ZU8W47Vby7Yz"
+        "address": "24TZHpWRhDvcEs5dy7t6nuASA8naVbyQYcV6ZU8W47Vby7Yz",
       },
       {
         "private_key":
@@ -6659,9 +6659,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "d298b21edf4e59f9bbb9ff5608fd2e3c694f513561661359d0cb452bc25fc372",
         "path": "/soft",
-        "address": "25dj13Y9ERYfct51cc1fKTr59j2DbLX89abHqbAAxut9BkjH"
-      }
-    ]
+        "address": "25dj13Y9ERYfct51cc1fKTr59j2DbLX89abHqbAAxut9BkjH",
+      },
+    ],
   },
   {
     "seed": "9394906c5b8f9bdf4cfa634f1efb94e69fc1b99cad6e48c6515ce65792cb4527",
@@ -6679,7 +6679,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "d0d1c33ff51c2fb60a77c0f6fca9f4cbd9667369fb84274eac152a4703c82703",
         "path": "//0",
-        "address": "5UMpeThQZo63w7Skr7m9mpCzL5fVyzSF7mUD622o6mr4Cs75"
+        "address": "5UMpeThQZo63w7Skr7m9mpCzL5fVyzSF7mUD622o6mr4Cs75",
       },
       {
         "private_key":
@@ -6687,7 +6687,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "d6d0e674d154a514cddb2acc1abfcb3cac7d679328340f97baa9de823fdaf213",
         "path": "/1",
-        "address": "5UVggGKLbWHC8ZsjJc9MHgi3DK3Km6dKZv7a2xdbMTFeLZby"
+        "address": "5UVggGKLbWHC8ZsjJc9MHgi3DK3Km6dKZv7a2xdbMTFeLZby",
       },
       {
         "private_key":
@@ -6695,7 +6695,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "f8905fa190db883ecd511027b89c6182476a528aedbc602f0cc588c79ddb2f72",
         "path": "//hard",
-        "address": "5VFw8vc6F2graEkfYG58ESeNpC93UKX317r7ca64WtTEm2pX"
+        "address": "5VFw8vc6F2graEkfYG58ESeNpC93UKX317r7ca64WtTEm2pX",
       },
       {
         "private_key":
@@ -6703,7 +6703,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "329fa84120fe45e05ed6febd6e0092d568cc8dfd6646527b3a735e17d9a20542",
         "path": "//1",
-        "address": "5QnQCMBneowPPR35smYyMCe7mtSMxW3ZJMiEvj1aYrfCXFXB"
+        "address": "5QnQCMBneowPPR35smYyMCe7mtSMxW3ZJMiEvj1aYrfCXFXB",
       },
       {
         "private_key":
@@ -6711,7 +6711,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "50ed8e6e6244eda209ed066a594e028c2f9413511189cb8a467dd8b7bf2f873d",
         "path": "/0",
-        "address": "5RU8mqcXyURUusBD8Vb15puYTzeHvb5FEnDqZzu48bABpGYV"
+        "address": "5RU8mqcXyURUusBD8Vb15puYTzeHvb5FEnDqZzu48bABpGYV",
       },
       {
         "private_key":
@@ -6719,7 +6719,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "16252413b6d14f2b831d58dfd407fc618db61c3080d3670e2f56f3e8e85d6a51",
         "path": "//12",
-        "address": "5Q94TgDwHk1nL5U7EM8i56dAmyufQ4urcyW1udLTZste34By"
+        "address": "5Q94TgDwHk1nL5U7EM8i56dAmyufQ4urcyW1udLTZste34By",
       },
       {
         "private_key":
@@ -6727,9 +6727,9 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "ca082ff63a549b7a8bfc3a03cb0aca542db78eb26f806ee14d45dd411b226a55",
         "path": "/soft",
-        "address": "5UCvUjaVMzvgYwxxh5ah1hTdoppjzTP6c7dSoQXiyzbBB2MK"
-      }
-    ]
+        "address": "5UCvUjaVMzvgYwxxh5ah1hTdoppjzTP6c7dSoQXiyzbBB2MK",
+      },
+    ],
   },
   {
     "seed": "42d6aa550ae1886ba79a65ef9f41fb6b55219b92fd5d3a987ef5c9a2cd0bdc47",
@@ -6747,7 +6747,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "527d75718c182adf2f476c4c69bbc9b92a10c125367c3c2e70e9a445b569a303",
         "path": "//0",
-        "address": "12sACLweiK4b9UpzbbanpUsrVkSR6KJWKvBfqTYQKqA1KCyo"
+        "address": "12sACLweiK4b9UpzbbanpUsrVkSR6KJWKvBfqTYQKqA1KCyo",
       },
       {
         "private_key":
@@ -6755,7 +6755,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "d6acb23276948f699648a61b4a0151f797c30c739cadf9441ccca205b4299844",
         "path": "/1",
-        "address": "15rUYq6NWjYDErTe69Vn8pGSK2cvvbC5KsnMRcAm45oNBTYF"
+        "address": "15rUYq6NWjYDErTe69Vn8pGSK2cvvbC5KsnMRcAm45oNBTYF",
       },
       {
         "private_key":
@@ -6763,7 +6763,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "5e11bd2c8176fe14d838e617d3661a84e3add2747c85c4f770963dc4b77ef745",
         "path": "//hard",
-        "address": "138LmhkUwwbLzE47xjCcmPzuKuApCJThqLQxQkUNs92BGwne"
+        "address": "138LmhkUwwbLzE47xjCcmPzuKuApCJThqLQxQkUNs92BGwne",
       },
       {
         "private_key":
@@ -6771,7 +6771,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "c01e373865becb3a8bcbc35ad6958baa67213cdf3511e256442f46ee0b3b7c29",
         "path": "//1",
-        "address": "15LuArDURLNGknmofHzToaA3dnEjYRGZ125hzWYjqoPHb4jk"
+        "address": "15LuArDURLNGknmofHzToaA3dnEjYRGZ125hzWYjqoPHb4jk",
       },
       {
         "private_key":
@@ -6779,7 +6779,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "bcd215610fcf97b7fc0734feec251c84988a6819925611c9e0a0b0e1a12a4e07",
         "path": "/0",
-        "address": "15GaQnnmQiUZXo7d8off9kpsBWVBrNYQCm91Kk2fc3FN1yWV"
+        "address": "15GaQnnmQiUZXo7d8off9kpsBWVBrNYQCm91Kk2fc3FN1yWV",
       },
       {
         "private_key":
@@ -6787,7 +6787,7 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "784a1d23153fc40c7c4a8b0d59e3929f2d82b352d165eafb7127008ff554f53a",
         "path": "//12",
-        "address": "13iimEGwEB6WV4t3SFnf1NcFhyyW1Ch3S4sn75KqBpPi4JHp"
+        "address": "13iimEGwEB6WV4t3SFnf1NcFhyyW1Ch3S4sn75KqBpPi4JHp",
       },
       {
         "private_key":
@@ -6795,8 +6795,8 @@ final List<Map<String, dynamic>> testVector = [
         "public_key":
             "44eb279c6188aa82f40de98c0770af317656736a0da7b30f0cecbac3c8421c02",
         "path": "/soft",
-        "address": "12ZN7UnB7edx1jctahyiEFbfwJ696vCCh2t4sWu5tBpS8EXi"
-      }
-    ]
-  }
+        "address": "12ZN7UnB7edx1jctahyiEFbfwJ696vCCh2t4sWu5tBpS8EXi",
+      },
+    ],
+  },
 ];

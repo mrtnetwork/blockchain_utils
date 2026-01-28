@@ -22,7 +22,7 @@ enum ServiceResponseType {
   error,
 
   /// Indicates that the service response is successful.
-  success
+  success,
 }
 
 abstract class BaseServiceResponse<T> {
@@ -31,39 +31,50 @@ abstract class BaseServiceResponse<T> {
   const BaseServiceResponse({required this.statusCode, required this.type});
   E cast<E extends BaseServiceResponse>() {
     if (this is! E) {
-      throw ArgumentException("BaseServiceResponse casting faild.",
-          details: {"expected": "$T", "type": type.name});
+      throw CastFailedException<E>(value: this);
     }
     return this as E;
   }
 
   T getResult(BaseServiceRequestParams params) {
     return switch (type) {
-      ServiceResponseType.error => throw RPCError(
-          message: ServiceConst.httpErrorMessages[statusCode] ??
+      ServiceResponseType.error =>
+        throw RPCError(
+          message:
+              ServiceConst.httpErrorMessages[statusCode] ??
               "Unknown Error${statusCode == 200 ? '' : ' $statusCode'}: An unexpected error occurred.",
           errorCode: null,
           request: params.toJson(),
           details: ServiceProviderUtils.findErrorDetails(
-              statusCode: statusCode,
-              errorStatusCodes: params.errorStatusCodes,
-              object: cast<ServiceErrorResponse>().error)),
-      ServiceResponseType.success => cast<ServiceSuccessRespose<T>>().response
+            statusCode: statusCode,
+            errorStatusCodes: params.errorStatusCodes,
+            object: cast<ServiceErrorResponse>().error,
+          ),
+        ),
+      ServiceResponseType.success => cast<ServiceSuccessRespose<T>>().response,
     };
   }
 }
 
 class ServiceSuccessRespose<T> extends BaseServiceResponse<T> {
   final T response;
-  const ServiceSuccessRespose(
-      {required super.statusCode, required this.response})
-      : super(type: ServiceResponseType.success);
+  const ServiceSuccessRespose({
+    required super.statusCode,
+    required this.response,
+  }) : super(type: ServiceResponseType.success);
 }
 
 class ServiceErrorResponse<T> extends BaseServiceResponse<T> {
   final String? error;
   const ServiceErrorResponse({required super.statusCode, required this.error})
-      : super(type: ServiceResponseType.error);
+    : super(type: ServiceResponseType.error);
+}
+
+abstract class BaseGRPCServiceRequestParams<RESULT> {
+  const BaseGRPCServiceRequestParams();
+  List<int> toBuffer();
+  String method();
+  RESULT onResponse(List<int> bytes);
 }
 
 abstract class BaseServiceRequestParams {
@@ -72,12 +83,13 @@ abstract class BaseServiceRequestParams {
   final int requestID;
   final List<int>? successStatusCodes;
   final List<int>? errorStatusCodes;
-  const BaseServiceRequestParams(
-      {required this.headers,
-      required this.type,
-      required this.requestID,
-      this.successStatusCodes,
-      this.errorStatusCodes});
+  const BaseServiceRequestParams({
+    required this.headers,
+    required this.type,
+    required this.requestID,
+    this.successStatusCodes,
+    this.errorStatusCodes,
+  });
   Uri toUri(String uri);
   List<int>? body();
   Map<String, dynamic> toJson();
@@ -85,55 +97,75 @@ abstract class BaseServiceRequestParams {
     statusCode ??= 200;
     if (!ServiceProviderUtils.isSuccessStatusCode(statusCode)) {
       return ServiceErrorResponse(
+        statusCode: statusCode,
+        error: ServiceProviderUtils.findError(
+          object: body,
           statusCode: statusCode,
-          error: ServiceProviderUtils.findError(
-              object: body, statusCode: statusCode));
+        ),
+      );
     }
     try {
       T response;
       if (body is List<int>) {
         response = ServiceProviderUtils.toResult<T>(body);
       } else {
-        response =
-            ServiceProviderUtils.parseResponse<T>(object: body, params: this);
+        response = ServiceProviderUtils.parseResponse<T>(
+          object: body,
+          params: this,
+        );
       }
       return ServiceSuccessRespose<T>(
-          statusCode: statusCode, response: response);
+        statusCode: statusCode,
+        response: response,
+      );
     } catch (_) {}
 
     throw RPCError(
-        message: "Parsing response failed.",
-        request: toJson(),
-        details: {"expected": "$T"});
+      message: "Parsing response failed.",
+      request: toJson(),
+      details: {"expected": "$T"},
+    );
   }
 
-  BaseServiceResponse<T> parseResponse<T>(List<int> bodyBytes,
-      [int? statusCode]) {
+  BaseServiceResponse<T> parseResponse<T>(
+    List<int> bodyBytes, [
+    int? statusCode,
+  ]) {
     statusCode ??= 200;
-    if (!ServiceProviderUtils.isSuccessStatusCode(statusCode,
-        allowSuccessStatusCodes: successStatusCodes)) {
+    if (!ServiceProviderUtils.isSuccessStatusCode(
+      statusCode,
+      allowSuccessStatusCodes: successStatusCodes,
+    )) {
       return ServiceErrorResponse(
+        statusCode: statusCode,
+        error: ServiceProviderUtils.findError(
+          object: bodyBytes,
           statusCode: statusCode,
-          error: ServiceProviderUtils.findError(
-              object: bodyBytes,
-              statusCode: statusCode,
-              allowStatusCode: errorStatusCodes));
+          allowStatusCode: errorStatusCodes,
+        ),
+      );
     }
     try {
       T response = ServiceProviderUtils.toResult<T>(bodyBytes);
       return ServiceSuccessRespose<T>(
-          statusCode: statusCode, response: response);
+        statusCode: statusCode,
+        response: response,
+      );
     } catch (_) {}
 
     throw RPCError(
-        message: "Parsing response failed.",
-        request: toJson(),
-        details: {"expected": "$T"});
+      message: "Parsing response failed.",
+      request: toJson(),
+      details: {"expected": "$T"},
+    );
   }
 }
 
-abstract class BaseServiceRequest<RESULT, SERVICERESPONSE,
-    PARAMS extends BaseServiceRequestParams> {
+abstract class BaseServiceRequest<
+  RESULT,
+  SERVICERESPONSE,
+  PARAMS extends BaseServiceRequestParams
+> {
   const BaseServiceRequest();
   abstract final RequestServiceType requestType;
   RESULT onResonse(SERVICERESPONSE result) {
@@ -143,25 +175,45 @@ abstract class BaseServiceRequest<RESULT, SERVICERESPONSE,
   PARAMS buildRequest(int requestID);
 }
 
+abstract class BaseGRPCServiceRequest<
+  RESULT,
+  PARAMS extends BaseGRPCServiceRequestParams<RESULT>
+> {
+  const BaseGRPCServiceRequest();
+  // abstract final RequestServiceType requestType;
+  RESULT onResonse(List<int> result);
+  PARAMS buildRequest();
+}
+
 abstract class BaseProvider<PARAMS extends BaseServiceRequestParams> {
   Future<SERVICERESPONSE> requestDynamic<RESULT, SERVICERESPONSE>(
-      BaseServiceRequest<RESULT, SERVICERESPONSE, PARAMS> request,
-      {Duration? timeout});
+    BaseServiceRequest<RESULT, SERVICERESPONSE, PARAMS> request, {
+    Duration? timeout,
+  });
 
   Future<RESULT> request<RESULT, SERVICERESPONSE>(
-      BaseServiceRequest<RESULT, SERVICERESPONSE, PARAMS> request,
-      {Duration? timeout});
+    BaseServiceRequest<RESULT, SERVICERESPONSE, PARAMS> request, {
+    Duration? timeout,
+  });
 }
 
 mixin BaseServiceProvider<PARAMS extends BaseServiceRequestParams> {
-  Future<BaseServiceResponse<T>> doRequest<T>(PARAMS params,
-      {Duration? timeout});
+  Future<BaseServiceResponse<T>> doRequest<T>(
+    PARAMS params, {
+    Duration? timeout,
+  });
+}
+mixin GRPCServiceProvider<PARAMS extends BaseGRPCServiceRequestParams> {
+  Future<List<int>> doRequest<T>(PARAMS params, {Duration? timeout});
+  Stream<List<int>> doRequestStream<T>(PARAMS params, {Duration? timeout});
 }
 
 /// A mixin for providing JSON-RPC service functionality.
 abstract mixin class MultichainServiceProvider
     implements BaseServiceProvider<BaseServiceRequestParams> {
   @override
-  Future<BaseServiceResponse<T>> doRequest<T>(BaseServiceRequestParams params,
-      {Duration? timeout});
+  Future<BaseServiceResponse<T>> doRequest<T>(
+    BaseServiceRequestParams params, {
+    Duration? timeout,
+  });
 }

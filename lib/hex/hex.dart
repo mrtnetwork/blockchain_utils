@@ -1,5 +1,6 @@
-import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/exception/exceptions.dart';
+import 'package:blockchain_utils/utils/binary/binary_operation.dart';
+import 'package:blockchain_utils/utils/binary/utils.dart';
 
 // ignore: library_private_types_in_public_api
 const _Hex hex = _Hex();
@@ -22,7 +23,7 @@ class _Hex {
     'c',
     'd',
     'e',
-    'f'
+    'f',
   ];
   static const _lookupTableUpper = [
     '0',
@@ -40,12 +41,12 @@ class _Hex {
     'C',
     'D',
     'E',
-    'F'
+    'F',
   ];
 
-// Invalid character used in decoding to indicate
-// that the character to decode is out of range of
-// the hex alphabet and cannot be decoded.
+  // Invalid character used in decoding to indicate
+  // that the character to decode is out of range of
+  // the hex alphabet and cannot be decoded.
   static const _invalidHexNibble = 256;
 
   static const List<int> _nibbleLookupTable = [
@@ -77,7 +78,16 @@ class _Hex {
   ///        lowerCase - a flag indicating whether to use lowercase hexadecimal characters (default is true).
   /// Output: Returns a hex-encoded string.
   String encode(List<int> data, {bool lowerCase = true}) {
-    BytesUtils.validateBytes(data, onError: "Invalid hex bytes");
+    BytesUtils.areBytesValid(
+      data,
+      onValidationFailed:
+          () =>
+              throw ArgumentException.invalidOperationArguments(
+                "encode",
+                name: "data",
+                reason: "Invalid bytes.",
+              ),
+    );
     final table = lowerCase ? _lookupTableLower : _lookupTableUpper;
     final int length = data.length;
     final List<String> result = List<String>.filled(length * 2, '');
@@ -97,22 +107,29 @@ class _Hex {
   /// Throws an error if the hex string length is not divisible by 2 or contains non-hex characters.
   List<int> decode(String hex) {
     if (hex.isEmpty) {
-      return List.empty();
+      return [];
     }
     if (!hex.length.isEven) {
-      throw const ArgumentException(
-          "Hex input string must be divisible by two");
+      throw ArgumentException.invalidOperationArguments(
+        "decode",
+        name: "hex",
+        reason: "Invalid hex string.",
+      );
     }
     final result = List<int>.filled(hex.length ~/ 2, 0);
     bool haveBad = false;
     for (int i = 0; i < hex.length; i += 2) {
       final int v0 = _decodeNibble(hex.codeUnitAt(i));
       final int v1 = _decodeNibble(hex.codeUnitAt(i + 1));
-      result[i ~/ 2] = ((v0 << 4) | v1) & mask8;
+      result[i ~/ 2] = ((v0 << 4) | v1) & BinaryOps.mask8;
       haveBad |= (v0 == _invalidHexNibble) | (v1 == _invalidHexNibble);
     }
     if (haveBad) {
-      throw const ArgumentException("Incorrect characters for hex decoding");
+      throw ArgumentException.invalidOperationArguments(
+        "decode",
+        name: "hex",
+        reason: "Invalid hex string.",
+      );
     }
     return result;
   }

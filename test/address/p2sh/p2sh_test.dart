@@ -9,11 +9,13 @@ void main() {
   test("p2sh address test", () {
     for (final i in testVector) {
       final params = Map<String, dynamic>.from(i["params"]);
-      params["net_ver"] = BytesUtils.fromHexString(params["net_ver"]);
-      final z = P2SHAddrEncoder()
-          .encodeKey(BytesUtils.fromHexString(i["public"]), params);
+      final netVersion = BytesUtils.fromHexString(params["net_ver"]);
+      final z = P2SHAddrEncoder().encodeKey(
+        BytesUtils.fromHexString(i["public"]),
+        netVersion: netVersion,
+      );
       expect(z, i["address"]);
-      final decode = P2SHAddrDecoder().decodeAddr(z, params);
+      final decode = P2SHAddrDecoder().decodeAddr(z, netVersion: netVersion);
       expect(decode.toHex(), i["decode"]);
     }
   });

@@ -1,4 +1,13 @@
-import 'package:blockchain_utils/blockchain_utils.dart';
+import 'package:blockchain_utils/bip/ecc/keys/ed25519_keys.dart';
+import 'package:blockchain_utils/crypto/crypto/exception/exception.dart';
+import 'package:blockchain_utils/crypto/crypto/hash/hash.dart'
+    show SHA384, SHA512, SHA256;
+import 'package:blockchain_utils/crypto/crypto/hmac/hmac.dart';
+import 'package:blockchain_utils/helper/extensions/extensions.dart';
+import 'package:blockchain_utils/signer/ed25519/ed25519.dart';
+import 'package:blockchain_utils/signer/secp256k1/secp256k1_signer.dart';
+import 'package:blockchain_utils/signer/secp256r1/secp256r1_signer.dart';
+import 'package:blockchain_utils/utils/string/string.dart';
 
 enum JwtSupportedAlgorithm {
   hs256('HS256'),
@@ -31,12 +40,13 @@ class JwtHeader {
   factory JwtHeader.fromJson(Map<String, dynamic> json) {
     json = json.clone();
     return JwtHeader(
-        alg: JwtSupportedAlgorithm.fromName(json['alg']),
-        typ: json['typ'],
-        kid: json['kid'],
-        cty: json['cty'],
-        customClaims: json
-          ..removeWhere((k, v) => ['typ', 'kid', 'cty'].contains(k)));
+      alg: JwtSupportedAlgorithm.fromName(json['alg']),
+      typ: json['typ'],
+      kid: json['kid'],
+      cty: json['cty'],
+      customClaims:
+          json..removeWhere((k, v) => ['typ', 'kid', 'cty'].contains(k)),
+    );
   }
 
   JwtHeader({
@@ -48,10 +58,7 @@ class JwtHeader {
   }) : customClaims = customClaims?.immutable;
 
   Map<String, dynamic> toJson() {
-    final map = <String, dynamic>{
-      'alg': alg?.name,
-      'typ': typ,
-    };
+    final map = <String, dynamic>{'alg': alg?.name, 'typ': typ};
     if (kid != null) map['kid'] = kid;
     if (cty != null) map['cty'] = cty;
     if (customClaims != null) {
@@ -75,25 +82,28 @@ class JwtPayload {
   factory JwtPayload.fromJson(Map<String, dynamic> json) {
     json = json.clone();
     return JwtPayload(
-        iss: json['iss'],
-        sub: json['sub'],
-        aud: json['aud'],
-        exp: json['exp'],
-        iat: json['iat'],
-        nbf: json['nbf'],
-        jti: json['jti'],
-        name: json['name'],
-        customClaims: json
-          ..removeWhere((k, v) => [
-                'name',
-                'jti',
-                'nbf',
-                'iat',
-                'iss',
-                'sub',
-                'aud',
-                'exp',
-              ].contains(k)));
+      iss: json['iss'],
+      sub: json['sub'],
+      aud: json['aud'],
+      exp: json['exp'],
+      iat: json['iat'],
+      nbf: json['nbf'],
+      jti: json['jti'],
+      name: json['name'],
+      customClaims:
+          json..removeWhere(
+            (k, v) => [
+              'name',
+              'jti',
+              'nbf',
+              'iat',
+              'iss',
+              'sub',
+              'aud',
+              'exp',
+            ].contains(k),
+          ),
+    );
   }
 
   JwtPayload({
@@ -136,25 +146,38 @@ class Jwt {
       throw CryptoException("Invalid serialized jwt.");
     }
     final header = StringUtils.decodeJson<Map<String, dynamic>>(
-        StringUtils.encode(parts[0],
-            validateB64Padding: false, type: StringEncoding.base64));
+      StringUtils.encode(
+        parts[0],
+        validateB64Padding: false,
+        type: StringEncoding.base64,
+      ),
+    );
     final payload = StringUtils.decodeJson<Map<String, dynamic>>(
-        StringUtils.encode(parts[1],
-            validateB64Padding: false, type: StringEncoding.base64));
+      StringUtils.encode(
+        parts[1],
+        validateB64Padding: false,
+        type: StringEncoding.base64,
+      ),
+    );
     return Jwt(
-        header: JwtHeader.fromJson(header),
-        payload: JwtPayload.fromJson(payload));
+      header: JwtHeader.fromJson(header),
+      payload: JwtPayload.fromJson(payload),
+    );
   }
 
   String serialize() {
     final headerJson = header.toJson();
 
-    final encodedHeader = StringUtils.decode(StringUtils.encodeJson(headerJson),
-        b64NoPadding: true, type: StringEncoding.base64UrlSafe);
+    final encodedHeader = StringUtils.decode(
+      StringUtils.encodeJson(headerJson),
+      b64NoPadding: true,
+      type: StringEncoding.base64UrlSafe,
+    );
     final encodedPayload = StringUtils.decode(
-        StringUtils.encodeJson(payload.toJson()),
-        b64NoPadding: true,
-        type: StringEncoding.base64UrlSafe);
+      StringUtils.encodeJson(payload.toJson()),
+      b64NoPadding: true,
+      type: StringEncoding.base64UrlSafe,
+    );
     return '$encodedHeader.$encodedPayload';
   }
 
@@ -170,7 +193,8 @@ class Jwt {
     switch (alg) {
       case JwtSupportedAlgorithm.eddsa:
         final signer = Ed25519Signer.fromKeyBytes(
-            key.sublist(0, Ed25519KeysConst.privKeyByteLen));
+          key.sublist(0, Ed25519KeysConst.privKeyByteLen),
+        );
         signature = signer.sign(signInputBytes);
         break;
       case JwtSupportedAlgorithm.hs256:
@@ -200,8 +224,11 @@ class Jwt {
         signature = signer.sign(SHA256.hash(signInputBytes));
         break;
     }
-    final encodedSignature = StringUtils.decode(signature,
-        b64NoPadding: true, type: StringEncoding.base64UrlSafe);
+    final encodedSignature = StringUtils.decode(
+      signature,
+      b64NoPadding: true,
+      type: StringEncoding.base64UrlSafe,
+    );
     return '$signingInput.$encodedSignature';
   }
 }

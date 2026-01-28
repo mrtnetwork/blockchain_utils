@@ -42,12 +42,14 @@ class AmountConverterUtils {
     final BigRational? aPrice = BigRational.tryParseDecimaal(amount);
     if (bPrice == null || aPrice == null) {
       throw AmountConverterException(
-          'Invalid amount format: cannot parse the input string.');
+        'Invalid amount format: cannot parse the input string.',
+      );
     }
     return toUnit(
-        amount: (bPrice * aPrice).toDecimal(),
-        decimals: decimals,
-        enforceMaxDecimals: false);
+      amount: (bPrice * aPrice).toDecimal(),
+      decimals: decimals,
+      enforceMaxDecimals: false,
+    );
   }
 
   /// Converts a decimal string to a base unit (BigInt) value.
@@ -59,12 +61,14 @@ class AmountConverterUtils {
     BigRational? dec = BigRational.tryParseDecimaal(amount);
     if (dec == null) {
       throw AmountConverterException(
-          'Invalid amount format: cannot parse the input string.',
-          details: {"amount": amount});
+        'Invalid amount format: cannot parse the input string.',
+        details: {"amount": amount},
+      );
     }
     if (enforceMaxDecimals && dec.scale > decimals) {
       throw AmountConverterException(
-          'Invalid amount format: too many decimal places.');
+        'Invalid amount format: too many decimal places.',
+      );
     }
     dec = dec * _AmountConverterConstants.fromDecimalNumber(decimals);
 
@@ -77,7 +81,8 @@ class AmountConverterUtils {
     required int decimals,
     int? showDecimals = 8,
   }) {
-    final BigRational dec = BigRational(unit) /
+    final BigRational dec =
+        BigRational(unit) /
         _AmountConverterConstants.fromDecimalNumber(decimals);
     return dec.toDecimal(digits: showDecimals);
   }
@@ -112,46 +117,65 @@ class AmountConverter {
   final int? displayPrecision;
   const AmountConverter._({required this.decimals, this.displayPrecision = 8});
 
-  static const AmountConverter btc =
-      AmountConverter._(decimals: 8, displayPrecision: 8);
+  static const AmountConverter btc = AmountConverter._(
+    decimals: 8,
+    displayPrecision: 8,
+  );
 
-  static const AmountConverter eth =
-      AmountConverter._(decimals: 18, displayPrecision: 18);
+  static const AmountConverter eth = AmountConverter._(
+    decimals: 18,
+    displayPrecision: 18,
+  );
 
-  static const AmountConverter tron =
-      AmountConverter._(decimals: 6, displayPrecision: 6);
+  static const AmountConverter tron = AmountConverter._(
+    decimals: 6,
+    displayPrecision: 6,
+  );
 
-  static const AmountConverter polkadot =
-      AmountConverter._(decimals: 10, displayPrecision: 10);
-  static const AmountConverter kusama =
-      AmountConverter._(decimals: 12, displayPrecision: 12);
+  static const AmountConverter polkadot = AmountConverter._(
+    decimals: 10,
+    displayPrecision: 10,
+  );
+  static const AmountConverter kusama = AmountConverter._(
+    decimals: 12,
+    displayPrecision: 12,
+  );
 
-  static const AmountConverter sol =
-      AmountConverter._(decimals: 9, displayPrecision: 9);
+  static const AmountConverter sol = AmountConverter._(
+    decimals: 9,
+    displayPrecision: 9,
+  );
 
-  static const AmountConverter xrp =
-      AmountConverter._(decimals: 6, displayPrecision: 6);
+  static const AmountConverter xrp = AmountConverter._(
+    decimals: 6,
+    displayPrecision: 6,
+  );
 
-  static const AmountConverter ada =
-      AmountConverter._(decimals: 6, displayPrecision: 6);
+  static const AmountConverter ada = AmountConverter._(
+    decimals: 6,
+    displayPrecision: 6,
+  );
 
   /// Creates a converter with the specified [decimals] and [displayPrecision].
   ///
   /// Throws [AmountConverterException] if:
-  /// - [decimals] is negative or exceeds [mask8].
+  /// - [decimals] is negative or exceeds [BinaryOps.mask8].
   /// - [displayPrecision] is negative.
   factory AmountConverter({required int decimals, int? displayPrecision = 8}) {
-    if (decimals.isNegative || decimals > mask8) {
+    if (decimals.isNegative || decimals > BinaryOps.mask8) {
       throw AmountConverterException(
-        'Invalid decimals value: must be between 0 and $mask8.',
+        'Invalid decimals value: must be between 0 and ${BinaryOps.mask8}.',
       );
     }
     if (displayPrecision != null && displayPrecision.isNegative) {
       throw AmountConverterException(
-          "Invalid displayPrecision value: must be non-negative.");
+        "Invalid displayPrecision value: must be non-negative.",
+      );
     }
     return AmountConverter._(
-        decimals: decimals, displayPrecision: displayPrecision);
+      decimals: decimals,
+      displayPrecision: displayPrecision,
+    );
   }
 
   /// Converts a human-readable amount string to its base unit representation.
@@ -164,9 +188,10 @@ class AmountConverter {
   /// Example: For decimals = 2, "1.234" would trigger an exception.
   BigInt toUnit(String amount, {bool enforceMaxDecimals = true}) {
     return AmountConverterUtils.toUnit(
-        amount: amount,
-        decimals: decimals,
-        enforceMaxDecimals: enforceMaxDecimals);
+      amount: amount,
+      decimals: decimals,
+      enforceMaxDecimals: enforceMaxDecimals,
+    );
   }
 
   /// Converts a base unit value to a human-readable decimal string.
@@ -174,6 +199,9 @@ class AmountConverter {
   /// Example: `123000000n` → `"1.23"` (with [displayPrecision]).
   String toAmount(BigInt unit) {
     return AmountConverterUtils.toAmount(
-        unit: unit, decimals: decimals, showDecimals: displayPrecision);
+      unit: unit,
+      decimals: decimals,
+      showDecimals: displayPrecision,
+    );
   }
 }

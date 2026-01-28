@@ -9,28 +9,23 @@ import 'package:blockchain_utils/bip/bip/bip32/slip10/bip32_slip10_nist256p1_hyb
 import 'package:blockchain_utils/bip/bip/bip32/slip10/bip32_slip10_secp256k1.dart';
 import 'package:blockchain_utils/bip/bip/bip44/base/bip44_base_ex.dart';
 import 'package:blockchain_utils/bip/bip/conf/config/bip_coin_conf.dart';
+import 'package:blockchain_utils/bip/bip/conf/core/coin_conf.dart';
 import 'package:blockchain_utils/bip/cardano/bip32/cardano_icarus_bip32.dart';
 import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
 import 'package:blockchain_utils/exception/exceptions.dart';
-import 'package:blockchain_utils/utils/utils.dart';
-
 import 'bip44_keys.dart';
 
 /// Enumeration of BIP-44 changes (external and internal).
-class Bip44Changes {
-  // Named constants representing each change
-
+enum Bip44Changes {
   /// External chain for receiving funds
-  static const chainExt = Bip44Changes._(0);
+  chainExt(0),
 
   /// Internal chain for change addresses
-  static const chainInt = Bip44Changes._(1);
-
-  // The value associated with each instance
+  chainInt(1);
 
   /// Constructor to associate a value with each instance
   final int value;
-  const Bip44Changes._(this.value);
+  const Bip44Changes(this.value);
 }
 
 /// Enumeration of BIP-44 levels in hierarchical deterministic wallets.
@@ -66,7 +61,15 @@ class Bip44Levels {
 
   /// Create a [Bip44Levels] instance from an integer value.
   factory Bip44Levels.fromInt(int value) {
-    return values.firstWhere((e) => e.value == value);
+    return values.firstWhere(
+      (e) => e.value == value,
+      orElse:
+          () =>
+              throw ArgumentException.invalidOperationArguments(
+                "Bip44Levels",
+                reason: "Invalid BIP-44 depth.",
+              ),
+    );
   }
 
   // List of all instances of Bip44Levels
@@ -85,12 +88,12 @@ class Bip44Levels {
 }
 
 /// Abstract base class for BIP-44 hierarchical deterministic wallets.
-abstract class Bip44Base {
-  late final Bip32Base bip32;
-  late final BipCoinConfig coinConf;
+abstract class Bip44Base<BIP44 extends Bip44Base<BIP44>> {
+  late final Bip32Base<dynamic> bip32;
+  late final BaseBipCoinConfig coinConf;
 
   /// Constructor for creating a [Bip44Base] object from a seed and coin.
-  Bip44Base.fromSeed(List<int> seedBytes, BipCoinConfig coin) {
+  Bip44Base.fromSeed(List<int> seedBytes, BaseBipCoinConfig coin) {
     Bip32Base bip;
     switch (coin.type) {
       case EllipticCurveTypes.secp256k1:
@@ -100,7 +103,7 @@ abstract class Bip44Base {
         bip = Bip32Slip10Ed25519.fromSeed(seedBytes, coin.keyNetVer);
         break;
       case EllipticCurveTypes.ed25519Kholaw:
-        if (coin.addrParams["is_icarus"] == true) {
+        if (coin.defaultHdKeyDerivator == DefaultHdKeyDerivator.icarus) {
           bip = CardanoIcarusBip32.fromSeed(seedBytes, coin.keyNetVer);
           break;
         }
@@ -116,15 +119,20 @@ abstract class Bip44Base {
         bip = Bip32Slip10Nist256p1Hybrid.fromSeed(seedBytes, coin.keyNetVer);
         break;
       default:
-        throw ArgumentException("Bip44 does not supported ${coin.type}");
+        throw ArgumentException.invalidOperationArguments(
+          "Bip44",
+          name: "coin",
+          reason: "Unsupported coin key algorithm",
+          details: {"algorithm": coin.type.name},
+        );
     }
     final validate = _validate(bip, coin);
-    bip32 = validate.item1;
-    coinConf = validate.item2;
+    bip32 = validate.$1;
+    coinConf = validate.$2;
   }
 
   /// Constructor for creating a [Bip44Base] object from a extended key and coin.
-  Bip44Base.fromExtendedKey(String extendedKey, BipCoinConfig coin) {
+  Bip44Base.fromExtendedKey(String extendedKey, BaseBipCoinConfig coin) {
     Bip32Base bip;
 
     switch (coin.type) {
@@ -135,7 +143,7 @@ abstract class Bip44Base {
         bip = Bip32Slip10Ed25519.fromExtendedKey(extendedKey, coin.keyNetVer);
         break;
       case EllipticCurveTypes.ed25519Kholaw:
-        if (coin.addrParams["is_icarus"] == true) {
+        if (coin.defaultHdKeyDerivator == DefaultHdKeyDerivator.icarus) {
           bip = CardanoIcarusBip32.fromExtendedKey(extendedKey, coin.keyNetVer);
 
           break;
@@ -144,130 +152,186 @@ abstract class Bip44Base {
         break;
       case EllipticCurveTypes.ed25519Blake2b:
         bip = Bip32Slip10Ed25519Blake2b.fromExtendedKey(
-            extendedKey, coin.keyNetVer);
+          extendedKey,
+          coin.keyNetVer,
+        );
         break;
       case EllipticCurveTypes.nist256p1:
         bip = Bip32Slip10Nist256p1.fromExtendedKey(extendedKey, coin.keyNetVer);
         break;
       case EllipticCurveTypes.nist256p1Hybrid:
         bip = Bip32Slip10Nist256p1Hybrid.fromExtendedKey(
-            extendedKey, coin.keyNetVer);
+          extendedKey,
+          coin.keyNetVer,
+        );
         break;
       default:
-        throw ArgumentException("Unsuported curve type.", details: {
-          "coin": coinConf.coinNames.name,
-          "curve": coinConf.type.toString()
-        });
+        throw ArgumentException.invalidOperationArguments(
+          "Bip44",
+          name: "coin",
+          reason: "Unsupported coin key algorithm",
+          details: {"algorithm": coin.type.name},
+        );
     }
     final validate = _validate(bip, coin);
-    bip32 = validate.item1;
-    coinConf = validate.item2;
+    bip32 = validate.$1;
+    coinConf = validate.$2;
   }
 
   /// Constructor for creating a [Bip44Base] object from a private key and coin.
-  Bip44Base.fromPrivateKey(List<int> privateKeyBytes, BipCoinConfig coin,
-      {Bip32KeyData? keyData}) {
+  Bip44Base.fromPrivateKey(
+    List<int> privateKeyBytes,
+    BaseBipCoinConfig coin, {
+    Bip32KeyData? keyData,
+  }) {
     Bip32Base bip;
     switch (coin.type) {
       case EllipticCurveTypes.secp256k1:
-        bip = Bip32Slip10Secp256k1.fromPrivateKey(privateKeyBytes,
-            keyData: keyData, keyNetVer: coin.keyNetVer);
+        bip = Bip32Slip10Secp256k1.fromPrivateKey(
+          privateKeyBytes,
+          keyData: keyData,
+          keyNetVer: coin.keyNetVer,
+        );
         break;
       case EllipticCurveTypes.ed25519:
-        bip = Bip32Slip10Ed25519.fromPrivateKey(privateKeyBytes,
-            keyData: keyData, keyNetVer: coin.keyNetVer);
+        bip = Bip32Slip10Ed25519.fromPrivateKey(
+          privateKeyBytes,
+          keyData: keyData,
+          keyNetVer: coin.keyNetVer,
+        );
         break;
       case EllipticCurveTypes.ed25519Kholaw:
-        if (coin.addrParams["is_icarus"] == true) {
-          bip = CardanoIcarusBip32.fromPrivateKey(privateKeyBytes,
-              keyData: keyData, keyNetVer: coin.keyNetVer);
+        if (coin.defaultHdKeyDerivator == DefaultHdKeyDerivator.icarus) {
+          bip = CardanoIcarusBip32.fromPrivateKey(
+            privateKeyBytes,
+            keyData: keyData,
+            keyNetVer: coin.keyNetVer,
+          );
           break;
         }
-        bip = Bip32KholawEd25519.fromPrivateKey(privateKeyBytes,
-            keyData: keyData, keyNetVer: coin.keyNetVer);
+        bip = Bip32KholawEd25519.fromPrivateKey(
+          privateKeyBytes,
+          keyData: keyData,
+          keyNetVer: coin.keyNetVer,
+        );
         break;
       case EllipticCurveTypes.ed25519Blake2b:
-        bip = Bip32Slip10Ed25519Blake2b.fromPrivateKey(privateKeyBytes,
-            keyData: keyData, keyNetVer: coin.keyNetVer);
+        bip = Bip32Slip10Ed25519Blake2b.fromPrivateKey(
+          privateKeyBytes,
+          keyData: keyData,
+          keyNetVer: coin.keyNetVer,
+        );
         break;
       case EllipticCurveTypes.nist256p1:
-        bip = Bip32Slip10Nist256p1.fromPrivateKey(privateKeyBytes,
-            keyData: keyData, keyNetVer: coin.keyNetVer);
+        bip = Bip32Slip10Nist256p1.fromPrivateKey(
+          privateKeyBytes,
+          keyData: keyData,
+          keyNetVer: coin.keyNetVer,
+        );
         break;
       default:
-        throw ArgumentException("Unsuported curve type.", details: {
-          "coin": coinConf.coinNames.name,
-          "curve": coinConf.type.toString()
-        });
+        throw ArgumentException.invalidOperationArguments(
+          "Bip44",
+          name: "coin",
+          reason: "Unsupported coin key algorithm",
+          details: {"algorithm": coin.type.name},
+        );
     }
     final validate = _validate(bip, coin);
-    bip32 = validate.item1;
-    coinConf = validate.item2;
+    bip32 = validate.$1;
+    coinConf = validate.$2;
   }
 
   /// Constructor for creating a [Bip44Base] object from a public key and coin.
-  Bip44Base.fromPublicKey(List<int> pubkeyBytes, BipCoinConfig coin,
-      {Bip32KeyData? keyData}) {
+  Bip44Base.fromPublicKey(
+    List<int> pubkeyBytes,
+    BaseBipCoinConfig coin, {
+    Bip32KeyData? keyData,
+  }) {
     Bip32Base bip;
     switch (coin.type) {
       case EllipticCurveTypes.secp256k1:
-        bip = Bip32Slip10Secp256k1.fromPublicKey(pubkeyBytes,
-            keyData: keyData, keyNetVer: coin.keyNetVer);
+        bip = Bip32Slip10Secp256k1.fromPublicKey(
+          pubkeyBytes,
+          keyData: keyData,
+          keyNetVer: coin.keyNetVer,
+        );
         break;
       case EllipticCurveTypes.ed25519:
-        bip = Bip32Slip10Ed25519.fromPublicKey(pubkeyBytes,
-            keyData: keyData, keyNetVer: coin.keyNetVer);
+        bip = Bip32Slip10Ed25519.fromPublicKey(
+          pubkeyBytes,
+          keyData: keyData,
+          keyNetVer: coin.keyNetVer,
+        );
         break;
       case EllipticCurveTypes.ed25519Blake2b:
-        bip = Bip32Slip10Ed25519Blake2b.fromPublicKey(pubkeyBytes,
-            keyData: keyData, keyNetVer: coin.keyNetVer);
+        bip = Bip32Slip10Ed25519Blake2b.fromPublicKey(
+          pubkeyBytes,
+          keyData: keyData,
+          keyNetVer: coin.keyNetVer,
+        );
         break;
       case EllipticCurveTypes.ed25519Kholaw:
-        if (coin.addrParams["is_icarus"] == true) {
-          bip = CardanoIcarusBip32.fromPublicKey(pubkeyBytes,
-              keyData: keyData, keyNetVer: coin.keyNetVer);
+        if (coin.defaultHdKeyDerivator == DefaultHdKeyDerivator.icarus) {
+          bip = CardanoIcarusBip32.fromPublicKey(
+            pubkeyBytes,
+            keyData: keyData,
+            keyNetVer: coin.keyNetVer,
+          );
           break;
         }
-        bip = Bip32KholawEd25519.fromPublicKey(pubkeyBytes,
-            keyData: keyData, keyNetVer: coin.keyNetVer);
+        bip = Bip32KholawEd25519.fromPublicKey(
+          pubkeyBytes,
+          keyData: keyData,
+          keyNetVer: coin.keyNetVer,
+        );
         break;
       case EllipticCurveTypes.nist256p1:
-        bip = Bip32Slip10Nist256p1.fromPublicKey(pubkeyBytes,
-            keyData: keyData, keyNetVer: coin.keyNetVer);
+        bip = Bip32Slip10Nist256p1.fromPublicKey(
+          pubkeyBytes,
+          keyData: keyData,
+          keyNetVer: coin.keyNetVer,
+        );
         break;
       default:
-        throw ArgumentException("Unsuported curve type.", details: {
-          "coin": coinConf.coinNames.name,
-          "curve": coinConf.type.toString()
-        });
+        throw ArgumentException.invalidOperationArguments(
+          "Bip44",
+          name: "coin",
+          reason: "Unsupported coin key algorithm",
+          details: {"algorithm": coin.type.name},
+        );
     }
     final validate = _validate(bip, coin);
-    bip32 = validate.item1;
-    coinConf = validate.item2;
+    bip32 = validate.$1;
+    coinConf = validate.$2;
   }
 
   /// Internal validation method for checking the depth of the BIP object.
-  static Tuple<Bip32Base, BipCoinConfig> _validate(
-      Bip32Base bip32Obj, BipCoinConfig coinConf) {
+  static (Bip32Base<dynamic>, BaseBipCoinConfig) _validate(
+    Bip32Base<dynamic> bip32Obj,
+    BaseBipCoinConfig coinConf,
+  ) {
     final int depth = bip32Obj.depth.depth;
 
     if (bip32Obj.isPublicOnly) {
       if (depth < Bip44Levels.account.value ||
           depth > Bip44Levels.addressIndex.value) {
         throw Bip44DepthError(
-            "Depth of the public-only Bip object ($depth) is below account level or beyond address index level");
+          "Depth of the public-only Bip object ($depth) is below account level or beyond address index level",
+        );
       }
     } else {
       if (depth < 0 || depth > Bip44Levels.addressIndex.value) {
         throw Bip44DepthError(
-            "Depth of the Bip object ($depth) is invalid or beyond address index level");
+          "Depth of the Bip object ($depth) is invalid or beyond address index level",
+        );
       }
     }
 
-    return Tuple(bip32Obj, coinConf);
+    return (bip32Obj, coinConf);
   }
 
-  /// Constructor for creating a [Bip44Base] object from a bip32 [Bip32Base] and coin [BipCoinConfig].
+  /// Constructor for creating a [Bip44Base] object from a bip32 [Bip32Base] and coin [BaseBipCoinConfig].
   Bip44Base(this.bip32, this.coinConf) {
     _validate(bip32, coinConf);
   }
@@ -285,7 +349,7 @@ abstract class Bip44Base {
     return Bip44PrivateKey(bip32.privateKey, coinConf);
   }
 
-  Bip32Base get bip32Object => bip32;
+  Bip32Base<dynamic> get bip32Object => bip32;
 
   /// check if is public only
   bool get isPublicOnly => bip32.isPublicOnly;
@@ -301,22 +365,22 @@ abstract class Bip44Base {
   }
 
   /// derive default path
-  Bip44Base get deriveDefaultPath;
+  BIP44 get deriveDefaultPath;
 
   /// derive purpose
-  Bip44Base get purpose;
+  BIP44 get purpose;
 
   /// derive coin
-  Bip44Base get coin;
+  BIP44 get coin;
 
   /// derive account with index
-  Bip44Base account(int accIndex);
+  BIP44 account(int accIndex);
 
   /// derive change with change type [Bip44Changes] internal or external
-  Bip44Base change(Bip44Changes changeType);
+  BIP44 change(Bip44Changes changeType);
 
   /// derive address with index
-  Bip44Base addressIndex(int addressIndex);
+  BIP44 addressIndex(int addressIndex);
 
   /// spec name
   String get specName;

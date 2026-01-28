@@ -28,7 +28,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "783d9123",
             "chaincode":
                 "00703b73228cc09f47c72db8a85adfdee0324b1c25b86fbea8a1d4da12a20a60",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -38,7 +38,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "ee7d425b",
             "chaincode":
                 "761ffeea2e9c1aa6f57ab7ef47b5a953d2ff0f5c4a9aa9ba6cd918ac6dd28841",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -48,7 +48,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "717e5f94",
             "chaincode":
                 "a0cf84026cdeef0e6641dd4ea53660b70853a31208eebb30a9344bae168e1f3d",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -58,7 +58,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "5ab40d6f",
             "chaincode":
                 "a0a0a70eca6e5850565408867ed78c229170f2c169d123a4e7ed4e439d69503d",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -68,9 +68,9 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "0b3ceef6",
             "chaincode":
                 "caddcd1317b6458982b82526a066b714d297a4cb6076735d8b32e2607e72ef93",
-            "index": 4
-          }
-        ]
+            "index": 4,
+          },
+        ],
       },
       {
         "public":
@@ -90,7 +90,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "da5b6c07",
             "chaincode":
                 "e2792be4513ae46f381f23b2a8a03e08ca537d6c888b7adacfe12368f96de126",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -100,7 +100,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "13d9c850",
             "chaincode":
                 "40f01970e8b2c7dea65d8f1d552256b7304db3d12465232e4780314747cff7ae",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -110,7 +110,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "ee8c1efb",
             "chaincode":
                 "ea2976dfa4b28502d95235adeb6139bb55f99e0ea184d71774eb8a2c7554af89",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -120,7 +120,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "d9ac56ed",
             "chaincode":
                 "3d3f8347b342658b224bb3e73a59385f59ebb250cd6b0af6144ab821bc457aa5",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -130,9 +130,9 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "a016471d",
             "chaincode":
                 "38b904b3797f2491fb48bbb0145bccfdd579f0a58a57a00d18118366c7ff9ac0",
-            "index": 4
-          }
-        ]
+            "index": 4,
+          },
+        ],
       },
       {
         "public":
@@ -152,7 +152,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "4afd8fe9",
             "chaincode":
                 "c106b820be14320c3b16b376cb6e8ab2c0f84969ea74a06fe9e43f6c8d767282",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -162,7 +162,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "e1bf7f0a",
             "chaincode":
                 "e4950aaaf58fa716fc8691bf4a4fc0856c753e08459581b223d278cfa62dd2ec",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -172,7 +172,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "3ce4712c",
             "chaincode":
                 "2d49c2636ab0f32335376535da715e78f47f8cc8f0b2c4af3333212cde6a8479",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -182,7 +182,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "04558fa0",
             "chaincode":
                 "9f8b081139ef8117b5466fff14d2f1b4629022fe632ce6c0680e8931ad41bfe1",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -192,9 +192,9 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "deb902ab",
             "chaincode":
                 "27b91ac8eb2d5ce7b9f9373872df3512efd4a5ef9f242369700a927190c7d78a",
-            "index": 4
-          }
-        ]
+            "index": 4,
+          },
+        ],
       },
       {
         "public":
@@ -214,7 +214,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "038f1d75",
             "chaincode":
                 "5b4717d4e23c95a0995619bbf83df65a7e42ac571b0a8d7a19f5b5c6f6dfd846",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -224,7 +224,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "b166130f",
             "chaincode":
                 "99590fb72894860a44a67c8dc31a3b1aa729e0f7efabbbd0b7841d7a664b1a67",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -234,7 +234,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "20151214",
             "chaincode":
                 "a38bdbe2cc4bd2d77a7ef35fb9b6ddc7c5ec711c519f461266fa84f942b63212",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -244,7 +244,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "63a3f3a4",
             "chaincode":
                 "87fc8d2e1892f34576e8c59df947b7ff134ae352442c897ba4e9bb43bd78358b",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -254,9 +254,9 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "061d0a91",
             "chaincode":
                 "c11d7f9173fe2cc66fce2bb39e1d5f00f8558dd75dca2f0f2c25f3dd2fa012bb",
-            "index": 4
-          }
-        ]
+            "index": 4,
+          },
+        ],
       },
       {
         "public":
@@ -276,7 +276,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "1e479477",
             "chaincode":
                 "b4123a1a9626e9a8da6c39b43df58fe7035d8d6b82c10b7dc20b9c976c8ef5b3",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -286,7 +286,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "b49e25b3",
             "chaincode":
                 "cbc1b4acf7538b5b7ef000c22fc5908b9dad1a93ba0c08424a8b4f598916f643",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -296,7 +296,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "ce4f559d",
             "chaincode":
                 "89a22b47433584757b9c8e19491b8a3f92d61c87edbe8fa5a4e15a82652c847c",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -306,7 +306,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "83d68c41",
             "chaincode":
                 "c3f758088fb25f6da5a90e38c9f0318bcf4ad1254425da9396599e2beb18fb5e",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -316,11 +316,11 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "271969b2",
             "chaincode":
                 "9e2e9495512b02c5566221c640db51def63132f60bcd530f75efee47504befbb",
-            "index": 4
-          }
-        ]
-      }
-    ]
+            "index": 4,
+          },
+        ],
+      },
+    ],
   },
   {
     "seed": "5dabffdf4ac286336ab50001925acfb5e50645f8308466c5c8eb495b439847b8",
@@ -351,7 +351,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "2a34bcc9",
             "chaincode":
                 "217733df46d7f7b325cb75a82ae2b37220104dc8febcf551b72b465cbe827f04",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -361,7 +361,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "0a5f765e",
             "chaincode":
                 "d91567968cc944029c605eba26c289d83ea5ae6641956631c40b44d6af3d6c95",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -371,7 +371,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "c12b3f2a",
             "chaincode":
                 "69d1a8ce97ed7c8a011b6156e4d15dfd3cdbef3ff14c8b87439a6c5298d971c1",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -381,7 +381,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "67934460",
             "chaincode":
                 "16b20e1f03c039111d04aa24e31e0d6a56baa9ef44948751092b059e2ce695f0",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -391,9 +391,9 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "df8df2b5",
             "chaincode":
                 "2de488a9cd7a824a8400b94415dd9701da69a43df4a153c2eafe937aa40b7654",
-            "index": 4
-          }
-        ]
+            "index": 4,
+          },
+        ],
       },
       {
         "public":
@@ -413,7 +413,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "d4210699",
             "chaincode":
                 "94d1796cb5c01d2a603ac773df6b79608d04737f94bedf35e949dff9ec9a9080",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -423,7 +423,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "d323e9f0",
             "chaincode":
                 "ac8d1441f330f8091362e1ca0c7e22cb244d0f8945a48141360b79b6efa76669",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -433,7 +433,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "3815aaba",
             "chaincode":
                 "038f6e061310388de62d1eaebd3dea64fed5bc821b0a72a8ec25614d08b6f0d7",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -443,7 +443,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "481dae1e",
             "chaincode":
                 "241ebc0c0b8cb514242355948cd1a27daa6744fc884ab7346e38c81f77b0a297",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -453,9 +453,9 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "8935bcf3",
             "chaincode":
                 "8a2c2691bebb77d6d400d5409c2652bd5786be2b1cbf446c319a4ae64207e4b5",
-            "index": 4
-          }
-        ]
+            "index": 4,
+          },
+        ],
       },
       {
         "public":
@@ -475,7 +475,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "50d53ed8",
             "chaincode":
                 "0d7e250efdafaef60146cdf2de8f177f72ccba7695d602aac1188d5dba8fe73c",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -485,7 +485,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "7cbbafd0",
             "chaincode":
                 "c26a6db11277251f9c36ceb79da90e8ea70c82dd364d6a4b72179e28a3dd25f5",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -495,7 +495,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "b5b5b82a",
             "chaincode":
                 "82bd2bc51dd41963b998b4496cef072276dbe06e46c3f08ffaaa2ab6abed5cc0",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -505,7 +505,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "06718873",
             "chaincode":
                 "9897b617ce23e5e348cde23ab2784c649f70533a5c28d4e10150d7c4d769b1e3",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -515,9 +515,9 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "ff049684",
             "chaincode":
                 "7a1429e1b375bd609bc94b5ca3016b8f24276d9bf25b215544c56a63ad7cb35f",
-            "index": 4
-          }
-        ]
+            "index": 4,
+          },
+        ],
       },
       {
         "public":
@@ -537,7 +537,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "bc9c8eaf",
             "chaincode":
                 "c73ab7f8a9465c3f68459bbb5e5701b4e38c814c2a052798be49c8704978e944",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -547,7 +547,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "b942b293",
             "chaincode":
                 "7109e4138c85f03332a4b899a037a65c5081a70f21cfc88a5d22b1abd411a9d7",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -557,7 +557,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "085cfff5",
             "chaincode":
                 "71381ebfc4ab2210ec86891a16562f02b8eeb43443c8c579fe60125ad0eeef42",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -567,7 +567,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "c082f66d",
             "chaincode":
                 "98433ef50151d86961808512dcfba4b9c9444fb8c28e4fc608b7639cdca6303b",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -577,9 +577,9 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "888e3f5e",
             "chaincode":
                 "163d6ca7659b273cfa090343b8a065017af79ca4a34872c7509e383c65081296",
-            "index": 4
-          }
-        ]
+            "index": 4,
+          },
+        ],
       },
       {
         "public":
@@ -599,7 +599,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "c26453fc",
             "chaincode":
                 "0a21c65258eeab9ca0fb8618a16ecee97995c420e580bef4edeb18154e04d7c2",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -609,7 +609,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "8d3d79a1",
             "chaincode":
                 "0022765fe7f44e3ab3c4f38de1d8de913d66d7be48dd5aa15bf2a9d462e6cc0f",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -619,7 +619,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "b737db32",
             "chaincode":
                 "3dfa39800ea714b24b4caf44605b7a28b25584bf06d6d87f454fd3a28fc48a19",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -629,7 +629,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "6ae0f296",
             "chaincode":
                 "71471e21fb3650cbf38b07c617644ab83363f9597b62464fe92342400e42dd91",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -639,11 +639,11 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "950f44a7",
             "chaincode":
                 "390d758f7f6100f499c6ad3bffd2f8b9e82cbda7857a72ec21c6d0156ff0917b",
-            "index": 4
-          }
-        ]
-      }
-    ]
+            "index": 4,
+          },
+        ],
+      },
+    ],
   },
   {
     "seed": "daccb27d961ad8cd11ccf4754cbd6a256694673add507834061a86eee1bbd626",
@@ -674,7 +674,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "f48bad47",
             "chaincode":
                 "16a72c96e58cf29e97e6f01068fd0037d84c48cbe0f17093011589a224694a0f",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -684,7 +684,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "fec4f3e0",
             "chaincode":
                 "02aedace08c98b2191031ba3ac420645fb8e71350c20a00d908e70fd66d6a762",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -694,7 +694,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "71646360",
             "chaincode":
                 "0f169f4d02871bd32bb90998ffdb97e6a8d2d86c81a7287260e323e9937ab833",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -704,7 +704,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "f25f1633",
             "chaincode":
                 "b735ec7aaa0c9ab6fdc6b43cd5138f820e4a104ca25ffb9b5aac8cd892968080",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -714,9 +714,9 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "77909d61",
             "chaincode":
                 "35f3c2045f111f121ef779b645ecb62f585bf6d0e0dbb1d0155368f3478d2436",
-            "index": 4
-          }
-        ]
+            "index": 4,
+          },
+        ],
       },
       {
         "public":
@@ -736,7 +736,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "cc059fbf",
             "chaincode":
                 "3c62a323cdd9316d30e2ee1c1667a2b5f3e39b25e16400bb64a6e778a92e22d0",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -746,7 +746,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "9e7d4519",
             "chaincode":
                 "e4c1679f9b5b1eb543b3af874aebc8b4291a5a529f2ac9f552d0aec6743d56b3",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -756,7 +756,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "13fd2219",
             "chaincode":
                 "37f9a09b80222ecf9b7773a0396799fc6abd607fc8a51a91da8cdcd445438784",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -766,7 +766,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "5ca4398b",
             "chaincode":
                 "6341698838ca43a36b2318654a88528b64046e47431ef4a3703e6089ce684a22",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -776,9 +776,9 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "7493206b",
             "chaincode":
                 "3327db04cb8f62d1ce3f8193a42f3d0719511c0107cf30d9379ff410b119de35",
-            "index": 4
-          }
-        ]
+            "index": 4,
+          },
+        ],
       },
       {
         "public":
@@ -798,7 +798,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "d45bf838",
             "chaincode":
                 "0ba439877405d543c692b72f7ba66690ec506879d0212ff69bff2e3daac98d1d",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -808,7 +808,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "46056439",
             "chaincode":
                 "33a9451ea1c73b55263e4ab65f08ce69cc810ee28a2eea706a4afcb11e41aca1",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -818,7 +818,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "e6be96fd",
             "chaincode":
                 "65f6b28afeb11ebf910b6d3d844b2f28a5ba617a6236e6a18d5c08a18ce21fc2",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -828,7 +828,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "dc74ad8a",
             "chaincode":
                 "1a1f0b8d41045b0ac450d22a8a3b3d3b5376c77e31ed4e78be078a16463151e6",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -838,9 +838,9 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "0e1eb271",
             "chaincode":
                 "6398830cca7349142b2f653a9af8b5144549033dcd9e9bda44c1ba979677db85",
-            "index": 4
-          }
-        ]
+            "index": 4,
+          },
+        ],
       },
       {
         "public":
@@ -860,7 +860,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "19304802",
             "chaincode":
                 "3fa583fa934bc7a76a850fdb3c4a65a872c0abddeea694bf9e5ea02ccc7b8dc8",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -870,7 +870,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "2a2b708e",
             "chaincode":
                 "24aa725a2e713743fcc676477166a08713fbba016afe4e176b6abacf85ae6a69",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -880,7 +880,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "c1818876",
             "chaincode":
                 "789ed5f6c23b3aab219e00bccdc8a0207b8b0551888ae6d1f1ff0d3eae8e7d2e",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -890,7 +890,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "77d1468b",
             "chaincode":
                 "d9d7eabed57368649a6a49939f10568e99ba55fe0e3847ddfaa412cd58a30bbd",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -900,9 +900,9 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "4a1f961d",
             "chaincode":
                 "6ee29c678371761db465c7a310846f0b4b405c811407671917682025e20def07",
-            "index": 4
-          }
-        ]
+            "index": 4,
+          },
+        ],
       },
       {
         "public":
@@ -922,7 +922,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "d7db7da3",
             "chaincode":
                 "e5bf515496630eb8e1a9674e1a6bfbf92cf2ae9a474b54b3a085ef29a7762a10",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -932,7 +932,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "10684d76",
             "chaincode":
                 "8661ac36020aceec235e27e5b0eacfc54806532e4264bb6e84f9c58b9fd36d79",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -942,7 +942,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "26f7af90",
             "chaincode":
                 "3e4c627710a7b29c511d58379022310f95febc95714ad4bfc121c57465b3809f",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -952,7 +952,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "61678ad9",
             "chaincode":
                 "4a7b2a868c2ebee8cba613c710e3dcfab5c038490fd90724a956e969fcb20cb0",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -962,11 +962,11 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "4fe7c487",
             "chaincode":
                 "4251152066e71e37b330e86d7f1e72d5db47257234430b1fabe13c408e1baa6d",
-            "index": 4
-          }
-        ]
-      }
-    ]
+            "index": 4,
+          },
+        ],
+      },
+    ],
   },
   {
     "seed": "a754f05d00c49fe005a483a49c6f252ffb0baa877dfe27af36cf4f74acf2dbf2",
@@ -997,7 +997,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "56efb4f4",
             "chaincode":
                 "ed366a984ee79ba1a0f6789be4770bcadfef6289acfea8ac085a17308cb2eab0",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -1007,7 +1007,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "4f769ce9",
             "chaincode":
                 "fe8dbba564f0bd05650de6e8322bb71d75d0cb96d38eaf45937f3ec0ae24314f",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -1017,7 +1017,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "1c66dbdb",
             "chaincode":
                 "3fb638297dd71943b5bda213d1b2c6cc44e4b6e6308d2ed6cc91cb7eb42bc7c9",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -1027,7 +1027,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "9750e22c",
             "chaincode":
                 "5906b293843d65c4848c98acf62f738d7a6aaef4c743e8e1c47980a6b8ef9570",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -1037,9 +1037,9 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "56072abc",
             "chaincode":
                 "3100daaca9146091302cf9e5fa893d3eca65d4c88d96c472c8f0a8925bd8a475",
-            "index": 4
-          }
-        ]
+            "index": 4,
+          },
+        ],
       },
       {
         "public":
@@ -1059,7 +1059,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "9bfd3f86",
             "chaincode":
                 "4669d359ff828bdb913f9f913d8acf3dcbd2eb27435685e4b5fc0298f94ef76d",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -1069,7 +1069,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "4846a46d",
             "chaincode":
                 "0bf68b466c74b49d5e8a55bc101efda0903d77468f93e523193214ddfd4608f3",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -1079,7 +1079,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "38daf1ad",
             "chaincode":
                 "9461dc0d99147415b3fab8e71910be473680bd087de5e7666e571bb3a87526d7",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -1089,7 +1089,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "2da9d17a",
             "chaincode":
                 "f26b6136096bf513fd4eca5c5f42b6af4e423b99f64c547ed781de5e764f3c7a",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -1099,9 +1099,9 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "ee7b8639",
             "chaincode":
                 "6046ac9c0c7ce4759d2d12b363daecae0193427f596954616d88dc874a95f5fd",
-            "index": 4
-          }
-        ]
+            "index": 4,
+          },
+        ],
       },
       {
         "public":
@@ -1121,7 +1121,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "759419d8",
             "chaincode":
                 "0126e550bd78637a6240a8b61e147586f928c75b8ca0419bbbac9e1d1c2740e9",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -1131,7 +1131,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "4b356e9b",
             "chaincode":
                 "e2c27fc76600cda878ba8ca60a6b951a0042999650698082a5b5681acafebe8d",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -1141,7 +1141,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "25a84edc",
             "chaincode":
                 "33de248962c0896ed75fda04ea3ca9f39f1e2de5125b5663b432d4799d0d2a20",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -1151,7 +1151,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "d0792dd3",
             "chaincode":
                 "5e2250245bcb5987b48f03b32d6dad0fed78fcd101a1dfe294c04a358ba5e270",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -1161,9 +1161,9 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "19aba00c",
             "chaincode":
                 "1ffbd623f7e504f8453efac16ac1379ce673fb905c6637d8e0a3d20f3fe11355",
-            "index": 4
-          }
-        ]
+            "index": 4,
+          },
+        ],
       },
       {
         "public":
@@ -1183,7 +1183,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "8a3f3954",
             "chaincode":
                 "61cc29fd0b5a9118e59cb1cbfb585147c76aeda022f865be4a02a910adc54852",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -1193,7 +1193,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "550359b4",
             "chaincode":
                 "b3b25db171d50f1dcd8977606a2d04a6b14149f42423ef9f45a302e0deeebf94",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -1203,7 +1203,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "87a62e4f",
             "chaincode":
                 "993f4f29b39c2faf242202db27fdd2dc21ff0338d20f852f007cc6fbb2c4aa70",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -1213,7 +1213,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "e8b9d3f4",
             "chaincode":
                 "f9aa26a595ba69e967497a04a9328653969bf5bacd7c1860e1a951b1f86695b7",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -1223,9 +1223,9 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "7fe81915",
             "chaincode":
                 "bfd701ec75a0164ad11830ae35de08802094fb9c97b0e08346ccf3e297b9770f",
-            "index": 4
-          }
-        ]
+            "index": 4,
+          },
+        ],
       },
       {
         "public":
@@ -1245,7 +1245,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "a6a90d90",
             "chaincode":
                 "33fc6104860e120e716843d2e49aa7e6a6764b1f7b769b9ce84472e79271da00",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -1255,7 +1255,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "906e9f3b",
             "chaincode":
                 "a1678c3effd33e068c4769b8c3c212bb1b16cfffb56236a3538d614d3cce341d",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -1265,7 +1265,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "5ecf7593",
             "chaincode":
                 "5e04f3354be58322701807fa653b1f70b5231564499a4588a0e29ccbc7308b19",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -1275,7 +1275,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "7cdee04a",
             "chaincode":
                 "06169bef25ad39c95e68324689057c5b6d0be34a5cd92bdbbb6235a4a3942d32",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -1285,11 +1285,11 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "12fcbbbf",
             "chaincode":
                 "24111d62a647b04946f1d6fab316f5ba3121659159440d61cf0e4997d92c9f6a",
-            "index": 4
-          }
-        ]
-      }
-    ]
+            "index": 4,
+          },
+        ],
+      },
+    ],
   },
   {
     "seed": "086ff0be7cead584210071627b33590201334cbbb0deb8603288399b75009718",
@@ -1320,7 +1320,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "e6186871",
             "chaincode":
                 "f4332c5c2987a98123ae019c8b70a87469cbe430232f511abf54844d18ef6b05",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -1330,7 +1330,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "17585e39",
             "chaincode":
                 "a111a578e0f2dcde5773aac316b13c98c8351b0a48207807fb033042e5429300",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -1340,7 +1340,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "8f91a8bc",
             "chaincode":
                 "146efc8983987a840b8af811dfce91d155fe1c00e68274fd1876c05a1b6c8d66",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -1350,7 +1350,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "a5f03a61",
             "chaincode":
                 "7206145e3bb8f1f3250021ced3ec02cbc825d8d54dcdd57539ff6a28a239eea1",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -1360,9 +1360,9 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "1e8e564a",
             "chaincode":
                 "0e01e55205657145e3b343c941e0911ea2a6e4c4cfe4507f5bf87bf6534cbc2b",
-            "index": 4
-          }
-        ]
+            "index": 4,
+          },
+        ],
       },
       {
         "public":
@@ -1382,7 +1382,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "eb5c4ed2",
             "chaincode":
                 "cf2abe915b11a112c6b99ae5f0b0f3a2ec23cc0afaa9629527276e11cdb404ac",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -1392,7 +1392,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "4d3a9ca4",
             "chaincode":
                 "72643d34bc4194c53f18d114dad82c02d1ba80ada1cef3ad6b66e489d835e180",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -1402,7 +1402,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "d77a6b0b",
             "chaincode":
                 "93cad9ffa74b5c96aa6505f303569aaa09939b320677a772d9168c5a20451685",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -1412,7 +1412,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "c0217b37",
             "chaincode":
                 "93aec8998fdae52e09212b250c83dadc4fdb4447e5139ea70d35e54d6e49deb4",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -1422,9 +1422,9 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "97ff6213",
             "chaincode":
                 "8efd84cb91e1e67a53f33569803ad01b960ffeca440d7c0f3b3b1c94ebe65f46",
-            "index": 4
-          }
-        ]
+            "index": 4,
+          },
+        ],
       },
       {
         "public":
@@ -1444,7 +1444,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "2c44269c",
             "chaincode":
                 "1b187dd053e5f433990bbce780f87096b7c642283ebfe3d4417442d1f8275a83",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -1454,7 +1454,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "e644ead1",
             "chaincode":
                 "2984c4d0315e379488f509354c7bf084fe3b9821aca23f643e3dd615d5be12bf",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -1464,7 +1464,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "445df499",
             "chaincode":
                 "4ef75df0adc0b32ca35c89d085f508c94effe143793004a9ebb3e41f9940a8b6",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -1474,7 +1474,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "6ca98d40",
             "chaincode":
                 "bb3a099251e5256ebb837974cd91d263e8031fafcbf6acf2a6fd6db058f8d84d",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -1484,9 +1484,9 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "4a0c6247",
             "chaincode":
                 "390a2b89720721eade3f79510857b3d30f8e9b580d8f1ff3a94daa684077aec0",
-            "index": 4
-          }
-        ]
+            "index": 4,
+          },
+        ],
       },
       {
         "public":
@@ -1506,7 +1506,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "1a61bb47",
             "chaincode":
                 "4e76c82d66286f2bee71f332dd8fb4ce58bb527c0e46dc97cf0d062cbfa97b52",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -1516,7 +1516,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "6bff6993",
             "chaincode":
                 "64223d989495b0073f069ebbde53c596bf0bee4cbd3e8b8a18f344ccf8d3ffce",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -1526,7 +1526,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "35b3ec26",
             "chaincode":
                 "4f3e6423fad42d7997a6911b96d481b14f31cba50588372c7b8b5e48f7ce3ac8",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -1536,7 +1536,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "e41f4466",
             "chaincode":
                 "75c00fdc4da7f1ae99499af62971e0fd3bf687a7b66bdb4875e3a91e0d5683ac",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -1546,9 +1546,9 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "4a573318",
             "chaincode":
                 "b9cbcbbcbcdc81f074c0e052df25bd131f1d0e644c42bd95456c6b1a20d65089",
-            "index": 4
-          }
-        ]
+            "index": 4,
+          },
+        ],
       },
       {
         "public":
@@ -1568,7 +1568,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "1a71e1f2",
             "chaincode":
                 "019a2bfc417234e32282cdf3312c76de301a49e83a034b5ae93847b316c650b8",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -1578,7 +1578,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "bb0e16c1",
             "chaincode":
                 "346c1efe23c914fd0a81a362dc3e4e4bbb787d15cfbe46170ecde6255ff707fa",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -1588,7 +1588,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "f3ce3178",
             "chaincode":
                 "27d9a8b7f038ffe01385812f7abf97e7d236fd0d5fee1cd083463d4e63b40a8a",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -1598,7 +1598,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "782802d8",
             "chaincode":
                 "7638f0cb65aba00cede0b59525e579e227f7ee8961a1c42a7a8ac1f2d74342ed",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -1608,11 +1608,11 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "5813a505",
             "chaincode":
                 "a3b2de10cabcf6e1a09d449017c679dec078e7632ab0b8613d7e945a9731fc75",
-            "index": 4
-          }
-        ]
-      }
-    ]
+            "index": 4,
+          },
+        ],
+      },
+    ],
   },
   {
     "seed": "78b46372c4f2b0379b7d6802606e571ced8c2e4566237fc66b5e47ad0873b77c",
@@ -1643,7 +1643,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "fac618d0",
             "chaincode":
                 "4c405b6148646d366ed327e4b1e7aa31d0918aef9b7b209ecc916a04811ac6b1",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -1653,7 +1653,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "21360557",
             "chaincode":
                 "4b8405c99980e177d287580c8e1e9a40d5bf95e9087e68b378ce81b4e66516f5",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -1663,7 +1663,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "890222c1",
             "chaincode":
                 "2fc3d8d5ad63e3c9b00ae22a0d98691d37c1249143381706372f9c66d534079e",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -1673,7 +1673,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "0a431db6",
             "chaincode":
                 "79c3c9a300b56393f6a5a34bf3abf1c2b4be4fb5373d2bab47e9eece63eab7e8",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -1683,9 +1683,9 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "3cda145c",
             "chaincode":
                 "840d6653e2951372117cce688b32eeb7fd092269e2db56b5334db8386f30f3b5",
-            "index": 4
-          }
-        ]
+            "index": 4,
+          },
+        ],
       },
       {
         "public":
@@ -1705,7 +1705,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "fd964025",
             "chaincode":
                 "613bd3013eb83761f4b31ce4116f1117b6b07db09f2096d92abbb88aa6b00c92",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -1715,7 +1715,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "d93a846c",
             "chaincode":
                 "c36d261544b117398ac12425e61bc038b754fbc9660fe8888ad12341ca2158e8",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -1725,7 +1725,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "32957db0",
             "chaincode":
                 "5f6562947625756b5f1216d5777b116826b3df5d1b5a393916c2e00e868426f7",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -1735,7 +1735,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "6a9c34c1",
             "chaincode":
                 "d3784cefa76fd4efbfc29305735f1ceafe13636f87965c4b282b775aa40b3854",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -1745,9 +1745,9 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "037e41fe",
             "chaincode":
                 "f51152ccf645fe9986849fbd7fe6120a16cb93a0063a67c0b65078afccef02be",
-            "index": 4
-          }
-        ]
+            "index": 4,
+          },
+        ],
       },
       {
         "public":
@@ -1767,7 +1767,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "ffb51197",
             "chaincode":
                 "d594f404b64aa772a2445b70c3369237255cec659ffa37cb7e76d8ad295b5511",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -1777,7 +1777,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "c6fd5b48",
             "chaincode":
                 "41d00aba344a6cd96bec93bf87733d62c9b20859012ccb954d92685415a56239",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -1787,7 +1787,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "7eb761b8",
             "chaincode":
                 "253c2e4d4b49d63ba3ab3faf8ffc0ee0b365bacafa768329d84130fbed46a118",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -1797,7 +1797,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "e81af265",
             "chaincode":
                 "d4a2c055f664c6330b442f73cf40401098c1704562f6e188605cc125f1749276",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -1807,9 +1807,9 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "04b502ea",
             "chaincode":
                 "4adc3936b3200ef9d5279134b75eb9b35e808f7924c05f9affeba7ac8abddbd7",
-            "index": 4
-          }
-        ]
+            "index": 4,
+          },
+        ],
       },
       {
         "public":
@@ -1829,7 +1829,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "22e3e4c0",
             "chaincode":
                 "eb9df9d9f90771416ae07efffde0ab583189c3fd976edce6d02fa402cb2a5ccb",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -1839,7 +1839,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "3baa6380",
             "chaincode":
                 "192f1c61baf7d72df0dbc85937e6091ade2d10594482bff18f53be3ad00e5106",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -1849,7 +1849,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "920a65c2",
             "chaincode":
                 "667793e4b836b7233745b922bc6c3f8723368455194166aa748be46f37476175",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -1859,7 +1859,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "5739407c",
             "chaincode":
                 "2f91209eda00e2f852fa7c80dfa92801c777093a051cf5ab0fc58131718d10da",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -1869,9 +1869,9 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "09a88131",
             "chaincode":
                 "d368bbc31706e5308b1374aa106648715c34eab4aa8e6c1db7f5fcd9bc2066f0",
-            "index": 4
-          }
-        ]
+            "index": 4,
+          },
+        ],
       },
       {
         "public":
@@ -1891,7 +1891,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "1693606d",
             "chaincode":
                 "79fefcb1c6319369eadd63d3d94ce3d02a4d9fad49d0caec908c9a207e57558c",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -1901,7 +1901,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "c71ebc55",
             "chaincode":
                 "68f4a8b586f3af172a763c00e201479cd868f0e8802b39af1e0f9e7c85ba921a",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -1911,7 +1911,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "9071313f",
             "chaincode":
                 "7a9f7318302ca0be3e32a51bbe6dd725915ce436e63cb81d4a1c18167c9cdd5d",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -1921,7 +1921,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "562c3df4",
             "chaincode":
                 "6cc968039258519296b1be3c296991fc4c275a2524b32a509b09d21950dfb92e",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -1931,11 +1931,11 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "5419248e",
             "chaincode":
                 "292d8448f14b35374ff2905923fd6944c0c68829236881e5eaca3761d617cc09",
-            "index": 4
-          }
-        ]
-      }
-    ]
+            "index": 4,
+          },
+        ],
+      },
+    ],
   },
   {
     "seed": "518d0c30ec82a5a58f1006a32b7d97ab2b9d7f676b81b6d0ba3b2906722f229c",
@@ -1966,7 +1966,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "c34447b5",
             "chaincode":
                 "1e584984bf56515a4d80da4e1400baa04ffaba5f7c93d9ff591a731835e70265",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -1976,7 +1976,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "ce7c9208",
             "chaincode":
                 "11016697f64bbbadaeac8c4095f33fbb3ab6552882a6de4b6f8988d07a941dbd",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -1986,7 +1986,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "fba97a2c",
             "chaincode":
                 "b5a188b61c112535ee4de9720818759a21e07207809b20784b3d161757d42b80",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -1996,7 +1996,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "6b2d235c",
             "chaincode":
                 "4c8db07325af2f987d96f15b5f4394dfaf651731ee8ef55b6111a4a640d540c7",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -2006,9 +2006,9 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "888d8a19",
             "chaincode":
                 "7d4e13544af0fdd2881b8342a373faab78da6a12e273a312edd94700331fcf3f",
-            "index": 4
-          }
-        ]
+            "index": 4,
+          },
+        ],
       },
       {
         "public":
@@ -2028,7 +2028,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "51ee1795",
             "chaincode":
                 "05ffc6ddf752deacabda49f4079dfc1711fc59442f754594136f4b56c693a6a8",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -2038,7 +2038,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "db0c0451",
             "chaincode":
                 "4310e320215cf3d10f63ea7d7e74f8ef05d966e040581a4facf5476044158b30",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -2048,7 +2048,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "d2809d68",
             "chaincode":
                 "da9527d851fc98fc3f64953fc7e20d2df3b46fd5e8ce40013f4e26d1aad7ee28",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -2058,7 +2058,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "74178418",
             "chaincode":
                 "d2a701da3a2b34601d69f8b2dfd0005eb2398bfef39cdaa7c5ad43dff4e4ef1e",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -2068,9 +2068,9 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "b8be880f",
             "chaincode":
                 "aae4f877c1373971285f345ba20eb940763f2770061d194d5988a503984461e5",
-            "index": 4
-          }
-        ]
+            "index": 4,
+          },
+        ],
       },
       {
         "public":
@@ -2090,7 +2090,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "c720b14c",
             "chaincode":
                 "88ca0bdda9f98b7729c88a5f020adf79ef84bb182d294fb6f56cfa2f004edffa",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -2100,7 +2100,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "d1237a60",
             "chaincode":
                 "4f23039745de70ac678db21d6570813e9342940ae2cafa5d75c072a19dedc78c",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -2110,7 +2110,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "041975ee",
             "chaincode":
                 "dffb39fd0384c59e522af53ca6a1b16e2250146bdaff1a0874c97a87e62260c6",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -2120,7 +2120,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "55f0b184",
             "chaincode":
                 "d54442c5e47c4d305f1ec9d7533659fb7568bcb41dc590b4e50ff8068fc953a3",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -2130,9 +2130,9 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "759073d7",
             "chaincode":
                 "5539e4558060a1800f04ea58670f2dc10b5d9ae0bcd636764a086aff9152a2f3",
-            "index": 4
-          }
-        ]
+            "index": 4,
+          },
+        ],
       },
       {
         "public":
@@ -2152,7 +2152,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "dc9fb826",
             "chaincode":
                 "70199e92e367e0919f15d53041abffa6e50fe7c54cdd1345afa4a95034edb187",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -2162,7 +2162,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "3336250f",
             "chaincode":
                 "b41da50ac8d2032a2ae4a91d67339d46e4fce2499a21de1c38dc55605632b8a9",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -2172,7 +2172,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "33abff33",
             "chaincode":
                 "c4e5ca56b04ae3f6651229aa8f4f4eadcb51c28982e737ad8ab314040430c511",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -2182,7 +2182,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "2d8da48e",
             "chaincode":
                 "1f9ef83cc2c9ea1601216f84c7e7634b3eeefb3f2fb4b9dd561484d8955b83fb",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -2192,9 +2192,9 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "eb9f19ff",
             "chaincode":
                 "227a45ab37952d91350ad21883c8f22a8628118ee574c9053d22727eab8af1b0",
-            "index": 4
-          }
-        ]
+            "index": 4,
+          },
+        ],
       },
       {
         "public":
@@ -2214,7 +2214,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "b07b885e",
             "chaincode":
                 "d163e01600cabebaa5a47a742f8d00fecfc9eda4a520963ef58762493184ae37",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -2224,7 +2224,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "edc32404",
             "chaincode":
                 "3cf7ef34f6073aa0ad16aeefa3ffd87a034a26f200cd8a7706b174bf02d2471c",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -2234,7 +2234,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "e973e196",
             "chaincode":
                 "9bc55f741d0a817a33c2006cf0b6704d75a6307fd7b753c06e4299a90743bdcc",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -2244,7 +2244,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "ff2bf744",
             "chaincode":
                 "ddedd61b3f5826f80af6b2adee3f908bdc80d079bba1c1064dc4d32c086e73fc",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -2254,11 +2254,11 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "ecae5a61",
             "chaincode":
                 "3bf02a64732d2589324e588de124820d4114bb8e95957acb9425641e301db9a1",
-            "index": 4
-          }
-        ]
-      }
-    ]
+            "index": 4,
+          },
+        ],
+      },
+    ],
   },
   {
     "seed": "0cccb71dae334031be56a0e77e020b50acf8679639fdc8be8b948b87cceaf91a",
@@ -2289,7 +2289,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "a9decc8e",
             "chaincode":
                 "24f4b1568b052e7a4cad9d4acb8b0157b3452f97edb8abe43ce05feb090ff55d",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -2299,7 +2299,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "7159b7ac",
             "chaincode":
                 "9fc8757c98f9f7e9947ad1fa7469f46565c179296e7f319ca80994dc67125b9c",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -2309,7 +2309,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "7ca174a3",
             "chaincode":
                 "754f579bd6bbd3d4a55361cc8fd4d98aa7ba30559bfe68670249d0cdbe7a059b",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -2319,7 +2319,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "843a86ad",
             "chaincode":
                 "c489dcf540510a60c426e316ccd88ca14049018058284555e1321130434a1f71",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -2329,9 +2329,9 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "ed9a6b3e",
             "chaincode":
                 "8d1b1bb1e90fb93c280438bbf6db1caaf7823b2591d4abe22c88929a55e6d126",
-            "index": 4
-          }
-        ]
+            "index": 4,
+          },
+        ],
       },
       {
         "public":
@@ -2351,7 +2351,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "3bfacd90",
             "chaincode":
                 "6f4d74e2062c456eb0519ad8fb21e52fbc9a7a4b158bfe243bf993a93a9147f3",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -2361,7 +2361,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "6b304259",
             "chaincode":
                 "03e555df54d5fb65f4f1ee0fa397146622478fb5e3c012fd57ac097ab82ec7e8",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -2371,7 +2371,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "14ddca80",
             "chaincode":
                 "244775d351ed394e448cc0af51c6c09eb420292930c05a0066af136f3c1004f3",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -2381,7 +2381,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "846020eb",
             "chaincode":
                 "493bae714e5d9fcf19c9921a9e278f2c74f71b821e35eb4d4255ff2276a3b712",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -2391,9 +2391,9 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "961ed5a0",
             "chaincode":
                 "bb92b798ab6c0e4fd49878d72a5094123f52a399289958bbafb448fd42f24cb8",
-            "index": 4
-          }
-        ]
+            "index": 4,
+          },
+        ],
       },
       {
         "public":
@@ -2413,7 +2413,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "24a4eea9",
             "chaincode":
                 "bcbe3ca71fab56e5362e33d13cfb290b9ae4127a5510ac8380aa1b2c354c6022",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -2423,7 +2423,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "61206d86",
             "chaincode":
                 "5e0d97cb614e055f82ae13c448b8f9ea492f6a7cf2288aa80d516ada347dab78",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -2433,7 +2433,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "0db34e39",
             "chaincode":
                 "bcb5b22f5a58e8ee0d86afc884feac3dba04f705246cbc8df4e0299f680cfacb",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -2443,7 +2443,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "5f51bdb6",
             "chaincode":
                 "313b63a5a64fd55b19b8054abf784f173a1752a46900250ac28bc91d9e95d474",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -2453,9 +2453,9 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "2f28df41",
             "chaincode":
                 "5b12039912e15bef176a66924fe09062a8728db4bd5e789c074768c796ca06e4",
-            "index": 4
-          }
-        ]
+            "index": 4,
+          },
+        ],
       },
       {
         "public":
@@ -2475,7 +2475,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "acc63c75",
             "chaincode":
                 "e342563fd9bb5cb9e48eb7d33bc407bc372fe63d3f1019035033ecd0121ad130",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -2485,7 +2485,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "ec5e339a",
             "chaincode":
                 "67e7bdfa78e63768826f085f6d2531b3191738d558c40ac5d27bd8612f0bc854",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -2495,7 +2495,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "6bb70939",
             "chaincode":
                 "2aebc94b5f4dfdac6208ddf823cfeb2f675310c906174bf0bd3eb7a1c8c1b75e",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -2505,7 +2505,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "591fdc87",
             "chaincode":
                 "3df0f2e9ae0e544d19899174fd56e59338136a52b68067b8f7637ea82ae36449",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -2515,9 +2515,9 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "639e38df",
             "chaincode":
                 "20488320f909dff90e3367efafce81eab8b09eb0bccb48b7e9a4657a985f5323",
-            "index": 4
-          }
-        ]
+            "index": 4,
+          },
+        ],
       },
       {
         "public":
@@ -2537,7 +2537,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "b72382f3",
             "chaincode":
                 "30156af72bc98a805f71577b471bad5c944a236650dcd4b268a486aa218382fa",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -2547,7 +2547,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "38f1eefa",
             "chaincode":
                 "7cdcde79bcda1ff0ab1e962b839b12cf8b85a47f28459fd758a3015d55f46e01",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -2557,7 +2557,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "bca2224a",
             "chaincode":
                 "fdf634a67f5ba72ee10967c832e9bd6a9a071bc92a256e3814e8ea5fd9c299c4",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -2567,7 +2567,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "071f19ce",
             "chaincode":
                 "39d8569c554bdddaf20f97f64ec337e8de028d5ebe77d79e13c9d5dac8e72335",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -2577,11 +2577,11 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "91a73fbf",
             "chaincode":
                 "96945f13a539ca5fe3fd1a1f6c615dc19a5a01d7a5d19d423e31e0190e9fd002",
-            "index": 4
-          }
-        ]
-      }
-    ]
+            "index": 4,
+          },
+        ],
+      },
+    ],
   },
   {
     "seed": "a9d64951590b3ba9f0b373680099d7350500d8cb0e31603e33979d5cc7f86573",
@@ -2612,7 +2612,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "a5011aca",
             "chaincode":
                 "712ac3877febe15634f38af022ab381c2d990229c0429dcce84d6b7057ef8524",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -2622,7 +2622,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "4e6c0829",
             "chaincode":
                 "386319356565026d2bc003d7f40eab50bb6d1a76e295d896140275d5da9e9a39",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -2632,7 +2632,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "631c40f9",
             "chaincode":
                 "fc5b69fa7e55a09946a6c89bc8d21c54b1681cec476af1eccc977b975a9d839c",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -2642,7 +2642,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "f32369be",
             "chaincode":
                 "cef07f5f36cfc3adafaa72d06fdd05f08f2b45780bb3baa20d5393677a473730",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -2652,9 +2652,9 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "61dbe567",
             "chaincode":
                 "959187e5356a56e35ca672563f8f99db16cecc4812016af85ff7195546b08db8",
-            "index": 4
-          }
-        ]
+            "index": 4,
+          },
+        ],
       },
       {
         "public":
@@ -2674,7 +2674,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "86fccdcc",
             "chaincode":
                 "663bca48cd0932a8114a60fa34a5f8ce33dbb39889cfd51e389f67991479af30",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -2684,7 +2684,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "e4ae6782",
             "chaincode":
                 "b6dbf0f9343381910f2416168986efffb69e1c6b58c7469cfb2b5af98d443d0f",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -2694,7 +2694,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "c1bc9f5b",
             "chaincode":
                 "3f985b7919fb317aac1b11363624626b5f1636274b64dcee843596c39fa661fa",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -2704,7 +2704,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "7ffcb409",
             "chaincode":
                 "36e1a547a97ab70a7e3cc7829cbf0ab87056668533323513cd89b220898980aa",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -2714,9 +2714,9 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "a6e46a22",
             "chaincode":
                 "d4c69187c59aed7444e5885a82b1deef2663acc486cfa33fb01a8bfd3aaf5c5e",
-            "index": 4
-          }
-        ]
+            "index": 4,
+          },
+        ],
       },
       {
         "public":
@@ -2736,7 +2736,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "5de9deda",
             "chaincode":
                 "8fc93ddadff5d80bf729dbd09687034d81d361054648fe1082e34b383cd842f9",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -2746,7 +2746,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "906daa31",
             "chaincode":
                 "be5a239e70fa381a811bd2f6bb944b674491297c687ff4aa4859b8cbf27f6535",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -2756,7 +2756,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "12962bbb",
             "chaincode":
                 "fe9f0902c4ae6d9029375e0cfaa7394ac23d4920a2eefc2e09e98fb3d0d387fd",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -2766,7 +2766,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "ff7ae172",
             "chaincode":
                 "355bd11b7cd40e04dd3bf7124eccdbe7aa585645c5b8f5da2f82c4c02c25dbdd",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -2776,9 +2776,9 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "5c8198ca",
             "chaincode":
                 "cd6884bfc659c3fceb5bde05c7337e75b15003f0ead768857b20397b4981f0a7",
-            "index": 4
-          }
-        ]
+            "index": 4,
+          },
+        ],
       },
       {
         "public":
@@ -2798,7 +2798,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "552399d3",
             "chaincode":
                 "e7de356fab14ebbeac7df3fec8436ec7679a77c35bd8ce12fce795e13b04e1db",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -2808,7 +2808,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "bd6c1f31",
             "chaincode":
                 "10eed999d85557acc8bce2099f70c4a277ad4ea8a964f1a87a2df20c6fc45c6b",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -2818,7 +2818,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "16c892c2",
             "chaincode":
                 "1b79549c6f95a861d79a7b51dcdac212b56f3b55023df2f7fc85c52e138ed42d",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -2828,7 +2828,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "635fb2bb",
             "chaincode":
                 "38b850873072ed927fd87b0718f74b2fedd2f5e77dda22dba56d8900d04917d3",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -2838,9 +2838,9 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "88ab243f",
             "chaincode":
                 "5600cc057dc1ac40f61b320f3f66ecdd9ac5f8be003f7917827e5d46d060bf0e",
-            "index": 4
-          }
-        ]
+            "index": 4,
+          },
+        ],
       },
       {
         "public":
@@ -2860,7 +2860,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "799c0ba4",
             "chaincode":
                 "4514af052ed2f489a81e9fa6e0c8c8c01b1e15c2a6053ec53797997322f72c18",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -2870,7 +2870,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "ae056f10",
             "chaincode":
                 "6da31aec6f7df724808b30ce74ff76f4ed08ab62aaf24bcf7bd965b0ecd12374",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -2880,7 +2880,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "cb274f10",
             "chaincode":
                 "259784d719339cb5924a13d68407618dc0d391b1c7845c5e70fb64e01248533f",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -2890,7 +2890,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "a5be09a8",
             "chaincode":
                 "6a775d293e9f44e08b51e0b0ea8e10752073105548e8097e508e99d3cc9a3478",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -2900,11 +2900,11 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "52cdbe21",
             "chaincode":
                 "0ac0475dcab90e100e1864f1d1e9f8bdb5a21bea8b695bbf97bb254f30d3107f",
-            "index": 4
-          }
-        ]
-      }
-    ]
+            "index": 4,
+          },
+        ],
+      },
+    ],
   },
   {
     "seed": "29c6df1a5a3aff4c4cc4984c21d005add6f9e4c922ed4219d9d026c5f9ba519f",
@@ -2935,7 +2935,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "b9b583bc",
             "chaincode":
                 "1f4e89ffa9d0ea5b46a0a52d9e6bb5371d72d58f4bd58c4583d7c7831f540d2f",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -2945,7 +2945,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "b99ca75e",
             "chaincode":
                 "b95ad52a07e870feff39f0689cf4377610e9e9ee6698d7a22249e8cb04171b74",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -2955,7 +2955,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "799cef53",
             "chaincode":
                 "ae26ace06a16a611b174c4a3fe03989cafeba4815e896ac61c1a665d7c348d8b",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -2965,7 +2965,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "72d0e152",
             "chaincode":
                 "914f35f9ad6b8663edb273cd8e91e740fa37b5386e28fe5a8acd05fbccbb9472",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -2975,9 +2975,9 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "6c4d9ce3",
             "chaincode":
                 "20ca035607b7da0d752f37d824a515f7f3882cc9c607e0c35f7f09cf21694792",
-            "index": 4
-          }
-        ]
+            "index": 4,
+          },
+        ],
       },
       {
         "public":
@@ -2997,7 +2997,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "718f22b3",
             "chaincode":
                 "1a679e3f4c47a4149a0bd9e859682b0efbfb13709dc8da0dca307032348fdad6",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -3007,7 +3007,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "ec3ff192",
             "chaincode":
                 "31bc8c152ef3659173ecad790200edb0137788c5d0369c29f6c199b0b73b1750",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -3017,7 +3017,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "5728fe5c",
             "chaincode":
                 "5e5dbc2cf0ae175a76a07d7f5506443005d2bc08c95ca07d35a38fc69b79590f",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -3027,7 +3027,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "64bb0b4f",
             "chaincode":
                 "a0cfe0e9ca1953cc6e8ecb5f28f89509c721ae37ef44d76f49fabb19fe0d49f8",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -3037,9 +3037,9 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "5617ed82",
             "chaincode":
                 "e7686d1212834e075e55ae13369535a96fcbb2a88566e268438d4456e1e0c568",
-            "index": 4
-          }
-        ]
+            "index": 4,
+          },
+        ],
       },
       {
         "public":
@@ -3059,7 +3059,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "ece4d8f2",
             "chaincode":
                 "f04d011706e5f24a59e18e55636e29f92e8edded711604cbb1e99e5f0241ea87",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -3069,7 +3069,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "594c4786",
             "chaincode":
                 "b1de389a3b0586ac268149c339d7f9a2c596c7499eba91af5eb57b8a46829220",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -3079,7 +3079,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "af7a2ef6",
             "chaincode":
                 "a75017f72c1d2edcf4ce5c212e3475c051cf4e4a693a7320dd53dd33d9d0eb63",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -3089,7 +3089,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "82934091",
             "chaincode":
                 "892862fc477970dd7f64b19f95f4db9870143922840d57669c23c9996cbd3b4a",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -3099,9 +3099,9 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "f6c21c43",
             "chaincode":
                 "ef22544e21510bd5437ad5c2573a5f1e0ead225a0f1077898d6c7e42028d10c5",
-            "index": 4
-          }
-        ]
+            "index": 4,
+          },
+        ],
       },
       {
         "public":
@@ -3121,7 +3121,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "bf18a5a4",
             "chaincode":
                 "e5a9ea6d73481f367b077330f6683acfe178e189641aacf4335b819b3c79ae57",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -3131,7 +3131,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "cfe79cbc",
             "chaincode":
                 "e5b7422e9da67201662709114f353531580d7ee600c19bc4c2738ea5e6c8d373",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -3141,7 +3141,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "68bb1761",
             "chaincode":
                 "4188cd3d556dc0a292db46fde810d61679ed4c4157c584f6b73fd653cf1d6b1c",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -3151,7 +3151,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "87d6b263",
             "chaincode":
                 "cd150f24c291922d08cb1e31862828f24e86147218a24c47919fe276a9298855",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -3161,9 +3161,9 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "e8faf860",
             "chaincode":
                 "e37e1b82dc00c5e8c74c45f7194b144cc6eb9036454cb81d859264e872c62142",
-            "index": 4
-          }
-        ]
+            "index": 4,
+          },
+        ],
       },
       {
         "public":
@@ -3183,7 +3183,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "465f2acd",
             "chaincode":
                 "4479057a703bdb3b11ae81333b8c4c45f44a8ab52f06ec1918072d6912812e45",
-            "index": 0
+            "index": 0,
           },
           {
             "public":
@@ -3193,7 +3193,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "3e2cc339",
             "chaincode":
                 "ccf1c1537a07747af3ea80eb32c024606ba9b82e07b198c994f3c6eb67a36c07",
-            "index": 1
+            "index": 1,
           },
           {
             "public":
@@ -3203,7 +3203,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "b48a3a9b",
             "chaincode":
                 "506b4c49316ce3b9b0ac96a39668848fa0de31a5d484a2c9b567df09d9dc43c2",
-            "index": 2
+            "index": 2,
           },
           {
             "public":
@@ -3213,7 +3213,7 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "ecab91bf",
             "chaincode":
                 "3a3e6ea5b56fa0cc7351e7d9a22ddde4b3c0eb336c3b529dc31bf9b7d1e6db64",
-            "index": 3
+            "index": 3,
           },
           {
             "public":
@@ -3223,10 +3223,10 @@ final List<Map<String, dynamic>> icarusTestVector = [
             "finger_print": "374ebe03",
             "chaincode":
                 "8f134462d43911fce334a6733feb3e16e71a87c8dabc0c029c8a654df2f88898",
-            "index": 4
-          }
-        ]
-      }
-    ]
-  }
+            "index": 4,
+          },
+        ],
+      },
+    ],
+  },
 ];

@@ -50,4 +50,7 @@ export 'utils/compare/compare.dart';
 export 'layout/layout.dart';
 
 export 'helper/helper.dart';
+
 export 'service/service.dart';
+
+export 'protobuf/protobuf.dart';

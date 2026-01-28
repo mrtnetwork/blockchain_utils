@@ -7,12 +7,12 @@ class RPCError extends BlockchainUtilsException {
   /// The [errorCode] parameter represents the error code associated with the RPC error.
   /// The [message] parameter provides a human-readable description of the error.
   /// The optional [request] parameter holds the details of the RPC request that resulted in the error.
-  const RPCError(
-      {required String message,
-      this.errorCode,
-      this.request,
-      Map<String, dynamic>? details})
-      : super(message, details: details);
+  const RPCError({
+    required String message,
+    this.errorCode,
+    this.request,
+    Map<String, dynamic>? details,
+  }) : super(message, details: details);
 
   /// The error code associated with the RPC error.
   final int? errorCode;
@@ -25,7 +25,8 @@ class RPCError extends BlockchainUtilsException {
   @override
   String toString() {
     final infos = Map<String, dynamic>.fromEntries(
-        details?.entries.where((element) => element.value != null) ?? []);
+      details?.entries.where((element) => element.value != null) ?? [],
+    );
     if (infos.isEmpty) {
       if (errorCode == null) {
         return 'RPCError: $message';

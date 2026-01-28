@@ -10,37 +10,37 @@ final List<Map<String, String>> testVectBtc = [
   {
     "raw": "73696d706c792061206c6f6e6720737472696e67",
     "encode": "2cFupjhnEsSn59qHXstmK2ffpLv2",
-    "check_encode": "BXF1HuEUCqeVzZdrKeJjG74rjeXxqJ7dW"
+    "check_encode": "BXF1HuEUCqeVzZdrKeJjG74rjeXxqJ7dW",
   },
   {
     "raw": "00eb15231dfceb60925886b67d065299925915aeb172c06647",
     "encode": "1NS17iag9jJgTHD1VXjvLCEnZuQ3rJDE9L",
-    "check_encode": "13REmUhe2ckUKy1FvM7AMCdtyYq831yxM3QeyEu4"
+    "check_encode": "13REmUhe2ckUKy1FvM7AMCdtyYq831yxM3QeyEu4",
   },
   {"raw": "516b6fcd0f", "encode": "ABnLTmg", "check_encode": "237LSrY9NUUas"},
   {
     "raw": "bf4f89001e670274dd",
     "encode": "3SEo3LWLoPntC",
-    "check_encode": "GwDDDeduj1jpykc27e"
+    "check_encode": "GwDDDeduj1jpykc27e",
   },
   {"raw": "572e4794", "encode": "3EFU7m", "check_encode": "FamExfqCeza"},
   {
     "raw": "ecac89cad93923c02321",
     "encode": "EJDM8drfXA6uyA",
-    "check_encode": "2W1Yd5Zu6WGyKVtHGMrH"
+    "check_encode": "2W1Yd5Zu6WGyKVtHGMrH",
   },
   {"raw": "10c8511e", "encode": "Rt5zm", "check_encode": "3op3iuGMmhs"},
   {
     "raw": "00000000000000000000",
     "encode": "1111111111",
-    "check_encode": "111111111146Momb"
+    "check_encode": "111111111146Momb",
   },
   {
     "raw":
         "000111d38e5fc9071ffcd20b4a763cc9ae4f252bb4e48fd66a835e252ada93ff480d6dd43dc62a641155a5",
     "encode": "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz",
     "check_encode":
-        "17mxz9b2TuLnDf6XyQrHjAc3UvMoEg7YzRsJkBd4VwNpFh8a1StKmCe5WtAW27Y"
+        "17mxz9b2TuLnDf6XyQrHjAc3UvMoEg7YzRsJkBd4VwNpFh8a1StKmCe5WtAW27Y",
   },
   {
     "raw":
@@ -48,8 +48,8 @@ final List<Map<String, String>> testVectBtc = [
     "encode":
         "1cWB5HCBdLjAuqGGReWE3R3CguuwSjw6RHn39s2yuDRTS5NsBgNiFpWgAnEx6VQi8csexkgYw3mdYrMHr8x9i7aEwP8kZ7vccXWqKDvGv3u1GxFKPuAkn8JCPPGDMf3vMMnbzm6Nh9zh1gcNsMvH3ZNLmP5fSG6DGbbi2tuwMWPthr4boWwCxf7ewSgNQeacyozhKDDQQ1qL5fQFUW52QKUZDZ5fw3KXNQJMcNTcaB723LchjeKun7MuGW5qyCBZYzA1KjofN1gYBV3NqyhQJ3Ns746GNuf9N2pQPmHz4xpnSrrfCvy6TVVz5d4PdrjeshsWQwpZsZGzvbdAdN8MKV5QsBDY",
     "check_encode":
-        "151KWPPBRzdWPr1ASeu172gVgLf1YfUp6VJyk6K9t4cLqYtFHcMa2iX8S3NJEprUcW7W5LvaPRpz7UG7puBj5STE3nKhCGt5eckYq7mMn5nT7oTTic2BAX6zDdqrmGCnkszQkzkz8e5QLGDjf7KeQgtEDm4UER6DMSdBjFQVa6cHrrJn9myVyyhUrsVnfUk2WmNFZvkWv3Tnvzo2cJ1xW62XDfUgYz1pd97eUGGPuXvDFfLsBVd1dfdUhPwxW7pMPgdWHTmg5uqKGFF6vE4xXpAqZTbTxRZjCDdTn68c2wrcxApm8hq3JX65Hix7VtcD13FF8b7BzBtwjXq1ze6NMjKgUcqpGV5XA5"
-  }
+        "151KWPPBRzdWPr1ASeu172gVgLf1YfUp6VJyk6K9t4cLqYtFHcMa2iX8S3NJEprUcW7W5LvaPRpz7UG7puBj5STE3nKhCGt5eckYq7mMn5nT7oTTic2BAX6zDdqrmGCnkszQkzkz8e5QLGDjf7KeQgtEDm4UER6DMSdBjFQVa6cHrrJn9myVyyhUrsVnfUk2WmNFZvkWv3Tnvzo2cJ1xW62XDfUgYz1pd97eUGGPuXvDFfLsBVd1dfdUhPwxW7pMPgdWHTmg5uqKGFF6vE4xXpAqZTbTxRZjCDdTn68c2wrcxApm8hq3JX65Hix7VtcD13FF8b7BzBtwjXq1ze6NMjKgUcqpGV5XA5",
+  },
 ];
 
 var testVectXrp = [
@@ -60,37 +60,37 @@ var testVectXrp = [
   {
     "raw": "73696d706c792061206c6f6e6720737472696e67",
     "encode": "pcEuFj68N1S8n9qHX1tmKpCCFLvp",
-    "check_encode": "BXErHuN7UqeVzZdiKeJjGfhijeXxqJfdW"
+    "check_encode": "BXErHuN7UqeVzZdiKeJjGfhijeXxqJfdW",
   },
   {
     "raw": "00eb15231dfceb60925886b67d065299925915aeb172c06647",
     "encode": "r4Srf52g9jJgTHDrVXjvLUN8ZuQsiJDN9L",
-    "check_encode": "rsRNm76epck7KyrEvMfwMUdtyYq3sryxMsQeyNuh"
+    "check_encode": "rsRNm76epck7KyrEvMfwMUdtyYq3sryxMsQeyNuh",
   },
   {"raw": "516b6fcd0f", "encode": "wB8LTmg", "check_encode": "psfLSiY947721"},
   {
     "raw": "bf4f89001e670274dd",
     "encode": "sSNosLWLoP8tU",
-    "check_encode": "GADDDedujrjFykcpfe"
+    "check_encode": "GADDDedujrjFykcpfe",
   },
   {"raw": "572e4794", "encode": "sNE7fm", "check_encode": "E2mNxCqUez2"},
   {
     "raw": "ecac89cad93923c02321",
     "encode": "NJDM3diCXwauyw",
-    "check_encode": "pWrYdnZuaWGyKVtHGMiH"
+    "check_encode": "pWrYdnZuaWGyKVtHGMiH",
   },
   {"raw": "10c8511e", "encode": "Rtnzm", "check_encode": "soFs5uGMm61"},
   {
     "raw": "00000000000000000000",
     "encode": "rrrrrrrrrr",
-    "check_encode": "rrrrrrrrrrhaMomb"
+    "check_encode": "rrrrrrrrrrhaMomb",
   },
   {
     "raw":
         "000111d38e5fc9071ffcd20b4a763cc9ae4f252bb4e48fd66a835e252ada93ff480d6dd43dc62a641155a5",
     "encode": "rpshnaf39wBUDNEGHJKLM4PQRST7VWXYZ2bcdeCg65jkm8oFqi1tuvAxyz",
     "check_encode":
-        "rfmxz9bpTuL8DCaXyQiHjwcs7vMoNgfYzR1JkBdhVA4FE632rStKmUenWtwWpfY"
+        "rfmxz9bpTuL8DCaXyQiHjwcs7vMoNgfYzR1JkBdhVA4FE632rStKmUenWtwWpfY",
   },
   {
     "raw":
@@ -98,15 +98,14 @@ var testVectXrp = [
     "encode":
         "rcWBnHUBdLjwuqGGReWNsRsUguuASjAaRH8s91pyuDRTSn41Bg45EFWgw8NxaVQ53c1exkgYAsmdYiMHi3x95f2NAP3kZfvccXWqKDvGvsurGxEKPuwk83JUPPGDMCsvMM8bzma469z6rgc41MvHsZ4LmPnCSGaDGbb5ptuAMWPt6ihboWAUxCfeASg4Qe2cyoz6KDDQQrqLnCQE7WnpQK7ZDZnCAsKX4QJMc4Tc2BfpsLc6jeKu8fMuGWnqyUBZYzwrKjoC4rgYBVs4qy6QJs41fhaG4uC94pFQPmHzhxF8SiiCUvyaTVVzndhPdije161WQAFZ1ZGzvbdwd43MKVnQ1BDY",
     "check_encode":
-        "rnrKWPPBRzdWPirwSeurfpgVgLCrYC7FaVJykaK9thcLqYtEHcM2p5X3Ss4JNFi7cWfWnLv2PRFzf7GfFuBjnSTNs8K6UGtneckYqfmM8n8TfoTT5cpBwXazDdqimGU8k1zQkzkz3enQLGDjCfKeQgtNDmh7NRaDMSdBjEQV2acHiiJ89myVyy67i1V8C7kpWm4EZvkWvsT8vzopcJrxWapXDC7gYzrFd9fe7GGPuXvDECL1BVdrdCd76PAxWfFMPgdWHTmgnuqKGEEavNhxXFwqZTbTxRZjUDdT8a3cpAicxwFm36qsJXanH5xfVtcDrsEE3bfBzBtAjXqrzea4MjKg7cqFGVnXwn"
-  }
+        "rnrKWPPBRzdWPirwSeurfpgVgLCrYC7FaVJykaK9thcLqYtEHcM2p5X3Ss4JNFi7cWfWnLv2PRFzf7GfFuBjnSTNs8K6UGtneckYqfmM8n8TfoTT5cpBwXazDdqimGU8k1zQkzkz3enQLGDjCfKeQgtNDmh7NRaDMSdBjEQV2acHiiJ89myVyy67i1V8C7kpWm4EZvkWvsT8vzopcJrxWapXDC7gYzrFd9fe7GGPuXvDECL1BVdrdCd76PAxWfFMPgdWHTmgnuqKGEEavNhxXFwqZTbTxRZjUDdT8a3cpAicxwFm36qsJXanH5xfVtcDrsEE3bfBzBtAjXqrzea4MjKg7cqFGVnXwn",
+  },
 ];
 
 void main() {
   test("decode btc base58", () {
     for (final i in testVectBtc) {
       final decode = Base58Decoder.decode(i["encode"]!);
-
       expect(BytesUtils.toHexString(decode), i["raw"]);
       final decodeCheck = Base58Decoder.checkDecode(i["check_encode"]!);
       expect(BytesUtils.toHexString(decodeCheck), i["raw"]);
@@ -116,8 +115,9 @@ void main() {
     for (final i in testVectBtc) {
       final encode = Base58Encoder.encode(BytesUtils.fromHexString(i["raw"]!));
       expect(i["encode"], encode);
-      final encodeCheck =
-          Base58Encoder.checkEncode(BytesUtils.fromHexString(i["raw"]!));
+      final encodeCheck = Base58Encoder.checkEncode(
+        BytesUtils.fromHexString(i["raw"]!),
+      );
       expect(i["check_encode"], encodeCheck);
     }
   });
@@ -125,18 +125,24 @@ void main() {
     for (final i in testVectXrp) {
       final decode = Base58Decoder.decode(i["encode"]!, Base58Alphabets.ripple);
       expect(BytesUtils.toHexString(decode), i["raw"]);
-      final decodeCheck =
-          Base58Decoder.checkDecode(i["check_encode"]!, Base58Alphabets.ripple);
+      final decodeCheck = Base58Decoder.checkDecode(
+        i["check_encode"]!,
+        Base58Alphabets.ripple,
+      );
       expect(BytesUtils.toHexString(decodeCheck), i["raw"]);
     }
   });
   test("encode xrp base58", () {
     for (final i in testVectXrp) {
       final encode = Base58Encoder.encode(
-          BytesUtils.fromHexString(i["raw"]!), Base58Alphabets.ripple);
+        BytesUtils.fromHexString(i["raw"]!),
+        Base58Alphabets.ripple,
+      );
       expect(i["encode"], encode);
       final encodeCheck = Base58Encoder.checkEncode(
-          BytesUtils.fromHexString(i["raw"]!), Base58Alphabets.ripple);
+        BytesUtils.fromHexString(i["raw"]!),
+        Base58Alphabets.ripple,
+      );
       expect(i["check_encode"], encodeCheck);
     }
   });

@@ -13,7 +13,7 @@ export 'blockcipher/blockcipher.dart';
 
 /// Export statement for the 'cdsa' library, which provides tools and components for
 /// working with cryptographic algorithms, elliptic curve cryptography, and related functionality.
-export 'cdsa/cdsa.dart';
+export 'ec/cdsa.dart';
 
 /// Export statement for the ChaCha stream cipher and its variations.
 export 'chacha/chacha.dart';
@@ -50,6 +50,8 @@ export 'poly1305/poly1305.dart';
 /// Export statement for the Fortuna cryptographic pseudorandom number generator (PRNG).
 export 'prng/fortuna.dart';
 export 'prng/gamma.dart';
+export 'prng/rng.dart';
+export 'prng/chacha20.dart';
 
 /// Export statement for the 'schnorrkel' library, which provides tools for working with the
 /// Schnorrkel digital signature scheme, including key management, cryptographic functions,
@@ -69,3 +71,8 @@ export 'exception/exception.dart';
 export 'x25519/x25519.dart';
 export 'hkdf/hkdf.dart';
 export 'jwt/jwt.dart';
+
+export 'cbc/cbc.dart';
+
+/// ZCash related crypto
+export 'zcrypto/zcrypto.dart';

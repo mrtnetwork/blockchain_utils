@@ -2,12 +2,9 @@ import 'package:blockchain_utils/layout/byte/byte_handler.dart';
 import 'package:blockchain_utils/layout/core/core/core.dart';
 
 /// Represents a layout with no data.
-class NoneLayout extends Layout {
+class NoneLayout<T> extends Layout<T?> {
   const NoneLayout({String? property}) : super(0, property: property);
 
-  /// Constructs a [NoneLayout] layout.
-  ///
-  /// - [property] (optional): The property identifier.
   @override
   Layout clone({String? newProperty}) {
     return NoneLayout(property: newProperty);
@@ -20,6 +17,11 @@ class NoneLayout extends Layout {
 
   @override
   int encode(source, LayoutByteWriter writer, {int offset = 0}) {
+    return 0;
+  }
+
+  @override
+  int getSpan() {
     return 0;
   }
 }

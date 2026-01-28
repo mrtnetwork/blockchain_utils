@@ -55,20 +55,21 @@
 import 'package:blockchain_utils/bip/ecc/keys/ed25519_keys.dart';
 import 'package:blockchain_utils/bip/ecc/keys/i_keys.dart';
 import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
-import 'package:blockchain_utils/crypto/crypto/cdsa/curve/curves.dart';
-import 'package:blockchain_utils/crypto/crypto/cdsa/eddsa/keys/privatekey.dart';
-import 'package:blockchain_utils/crypto/crypto/cdsa/eddsa/keys/publickey.dart';
-import 'package:blockchain_utils/crypto/crypto/cdsa/point/edwards.dart';
+import 'package:blockchain_utils/crypto/crypto/ec/curve/curves.dart';
+import 'package:blockchain_utils/crypto/crypto/ec/eddsa/keys/privatekey.dart';
+import 'package:blockchain_utils/crypto/crypto/ec/eddsa/keys/publickey.dart';
+import 'package:blockchain_utils/crypto/crypto/ec/extended/native/edwards.dart';
 import 'package:blockchain_utils/exception/exceptions.dart';
-import 'package:blockchain_utils/utils/utils.dart';
+import 'package:blockchain_utils/utils/binary/utils.dart';
+import 'package:blockchain_utils/utils/equatable/equatable.dart';
 
 /// Represents an Ed25519 public key with Blake2b hashing, implementing the IPublicKey interface.
-class Ed25519Blake2bPublicKey implements IPublicKey {
+class Ed25519Blake2bPublicKey with Equality implements IPublicKey {
   /// EDDSA public key
-  final EDDSAPublicKey _publicKey;
+  final EDDSAPublicKey publicKey;
 
   /// Private constructor to create an Ed25519Blake2bPublicKey instance from an EDDSAPublicKey.
-  Ed25519Blake2bPublicKey._(this._publicKey);
+  Ed25519Blake2bPublicKey._(this.publicKey);
 
   /// Factory constructor to create an Ed25519Blake2bPublicKey from raw key bytes.
   factory Ed25519Blake2bPublicKey.fromBytes(List<int> keyBytes) {
@@ -79,7 +80,8 @@ class Ed25519Blake2bPublicKey implements IPublicKey {
       keyBytes = keyBytes.sublist(1);
     }
     return Ed25519Blake2bPublicKey._(
-        EDDSAPublicKey(Curves.generatorED25519, keyBytes));
+      EDDSAPublicKey(Curves.generatorED25519, keyBytes),
+    );
   }
 
   /// curve type
@@ -114,14 +116,13 @@ class Ed25519Blake2bPublicKey implements IPublicKey {
   /// edwards point of public key
   @override
   EDPoint get point {
-    return _publicKey.point;
+    return publicKey.point;
   }
 
   /// compressed bytes of public key
   @override
   List<int> get compressed {
-    return List<int>.from(
-        [...Ed25519KeysConst.pubKeyPrefix, ..._publicKey.point.toBytes()]);
+    return [...Ed25519KeysConst.pubKeyPrefix, ...publicKey.point.toBytes()];
   }
 
   /// uncompressed bytes of public key
@@ -131,9 +132,12 @@ class Ed25519Blake2bPublicKey implements IPublicKey {
   }
 
   @override
-  String toHex(
-      {bool withPrefix = true, bool lowerCase = true, String? prefix = ""}) {
-    List<int> key = _publicKey.point.toBytes();
+  String toHex({
+    bool withPrefix = true,
+    bool lowerCase = true,
+    String? prefix = "",
+  }) {
+    List<int> key = publicKey.point.toBytes();
     if (withPrefix) {
       key = compressed;
     }
@@ -141,47 +145,31 @@ class Ed25519Blake2bPublicKey implements IPublicKey {
   }
 
   @override
-  operator ==(other) {
-    if (other is! Ed25519Blake2bPublicKey) return false;
-    if (identical(this, other)) return true;
-    return _publicKey == other._publicKey && curve == other.curve;
-  }
-
-  @override
-  int get hashCode => HashCodeGenerator.generateHashCode([_publicKey, curve]);
+  List<dynamic> get variables => [publicKey];
 }
 
 /// Represents an Ed25519 private key with Blake2b hashing, implementing the IPrivateKey interface.
-class Ed25519Blake2bPrivateKey implements IPrivateKey {
+class Ed25519Blake2bPrivateKey with Equality implements IPrivateKey {
   /// Private constructor for creating an Ed25519Blake2bPrivateKey instance from an EDDSAPrivateKey.
-  Ed25519Blake2bPrivateKey._(this._privateKey);
+  Ed25519Blake2bPrivateKey._(this.privateKey);
 
-  final EDDSAPrivateKey _privateKey;
-
-  /// Factory method for creating an Ed25519Blake2bPrivateKey from a byte array.
-  /// It checks the length of the provided keyBytes to ensure it matches the expected length.
-  /// Then, it initializes an EdDSA private key using the Edward generator and BLAKE2b hash function.
-  // factory Ed25519Blake2bPrivateKey.fromBytes(List<int> keyBytes) {
-  //   if (keyBytes.length != Ed25519KeysConst.privKeyByteLen) {
-  //     throw const ArgumentException("invalid private key length");
-  //   }
-  //   final edwardGenerator = Curves.generatorED25519;
-  //   final eddsaPrivateKey = EDDSAPrivateKey.fromBytes(
-  //       generator: edwardGenerator,
-  //       privateKey: keyBytes,
-  //       hashMethod: () => BLAKE2b());
-  //   return Ed25519Blake2bPrivateKey._(eddsaPrivateKey);
-  // }
+  final EDDSAPrivateKey privateKey;
 
   factory Ed25519Blake2bPrivateKey.fromBytes(List<int> keyBytes) {
     if (keyBytes.length != Ed25519KeysConst.privKeyByteLen) {
-      throw const ArgumentException("invalid private key length");
+      throw ArgumentException.invalidOperationArguments(
+        "Ed25519Blake2bPrivateKey",
+        name: "keyBytes",
+        reason: "Invalid secret key bytes length.",
+        expecteLen: Ed25519KeysConst.privKeyByteLen,
+      );
     }
     final edwardGenerator = Curves.generatorED25519;
     final eddsaPrivateKey = EDDSAPrivateKey(
-        generator: edwardGenerator,
-        privateKey: keyBytes,
-        type: EllipticCurveTypes.ed25519Blake2b);
+      generator: edwardGenerator,
+      secretKey: keyBytes,
+      type: EllipticCurveTypes.ed25519Blake2b,
+    );
     return Ed25519Blake2bPrivateKey._(eddsaPrivateKey);
   }
 
@@ -210,13 +198,13 @@ class Ed25519Blake2bPrivateKey implements IPrivateKey {
   /// access to public key
   @override
   IPublicKey get publicKey {
-    return Ed25519Blake2bPublicKey._(_privateKey.publicKey);
+    return Ed25519Blake2bPublicKey._(privateKey.publicKey);
   }
 
   /// private key raw bytes
   @override
   List<int> get raw {
-    return _privateKey.privateKey;
+    return privateKey.privateKey;
   }
 
   @override
@@ -225,12 +213,5 @@ class Ed25519Blake2bPrivateKey implements IPrivateKey {
   }
 
   @override
-  operator ==(other) {
-    if (other is! Ed25519Blake2bPrivateKey) return false;
-    if (identical(this, other)) return true;
-    return _privateKey == other._privateKey && curve == other.curve;
-  }
-
-  @override
-  int get hashCode => HashCodeGenerator.generateHashCode([_privateKey, curve]);
+  List<dynamic> get variables => [privateKey];
 }

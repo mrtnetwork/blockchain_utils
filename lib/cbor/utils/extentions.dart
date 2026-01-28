@@ -8,8 +8,7 @@ extension RFC3339 on DateTime {
     final String hour = this.hour.toString().padLeft(2, '0');
     final String minute = this.minute.toString().padLeft(2, '0');
     final String second = this.second.toString().padLeft(2, '0');
-    final String millisecond = this
-        .millisecond
+    final String millisecond = this.millisecond
         .toString()
         .padLeft(3, '0')
         .replaceAll(RegExp(r'0*$'), '');
@@ -20,9 +19,10 @@ extension RFC3339 on DateTime {
     final int timeZoneOffsetHours = timeZoneOffset.inHours.abs();
     final int timeZoneOffsetMinutes = timeZoneOffset.inMinutes.abs() % 60;
 
-    final String timeZoneOffsetFormatted = isUtc
-        ? "Z"
-        : '$timeZoneOffsetSign${timeZoneOffsetHours.toString().padLeft(2, '0')}:${timeZoneOffsetMinutes.toString().padLeft(2, '0')}';
+    final String timeZoneOffsetFormatted =
+        isUtc
+            ? "Z"
+            : '$timeZoneOffsetSign${timeZoneOffsetHours.toString().padLeft(2, '0')}:${timeZoneOffsetMinutes.toString().padLeft(2, '0')}';
 
     return '$year-$month-${day}T$hour:$minute:$second.$millisecond$timeZoneOffsetFormatted';
   }

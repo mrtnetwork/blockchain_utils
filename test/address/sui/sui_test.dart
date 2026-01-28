@@ -28,20 +28,26 @@ void main() {
   });
   test("sui multisig address", () {
     for (final i in multisig) {
-      final publicKey = (i["publicKeys"] as List).map((e) {
-        final IPublicKey key = switch (e["type"]) {
-          "secp256r1" =>
-            Nist256p1PublicKey.fromBytes(BytesUtils.fromHexString(e["key"])),
-          "secp256k1" =>
-            Secp256k1PublicKey.fromBytes(BytesUtils.fromHexString(e["key"])),
-          "Ed25519" =>
-            Ed25519PublicKey.fromBytes(BytesUtils.fromHexString(e["key"])),
-          _ => throw UnimplementedError()
-        };
-        return SuiPublicKeyAndWeight(publicKey: key, weight: e["weight"]);
-      }).toList();
-      final address = SuiAddrEncoder()
-          .encodeMultisigKey(pubKey: publicKey, threshold: i["threshold"]);
+      final publicKey =
+          (i["publicKeys"] as List).map((e) {
+            final IPublicKey key = switch (e["type"]) {
+              "secp256r1" => Nist256p1PublicKey.fromBytes(
+                BytesUtils.fromHexString(e["key"]),
+              ),
+              "secp256k1" => Secp256k1PublicKey.fromBytes(
+                BytesUtils.fromHexString(e["key"]),
+              ),
+              "Ed25519" => Ed25519PublicKey.fromBytes(
+                BytesUtils.fromHexString(e["key"]),
+              ),
+              _ => throw UnimplementedError(),
+            };
+            return SuiPublicKeyAndWeight(publicKey: key, weight: e["weight"]);
+          }).toList();
+      final address = SuiAddrEncoder().encodeMultisigKey(
+        pubKey: publicKey,
+        threshold: i["threshold"],
+      );
       expect(address, i["address"]);
     }
   });
@@ -51,26 +57,36 @@ void main() {
     final key2 = _generateRandomKey(EllipticCurveTypes.secp256k1);
     final key3 = _generateRandomKey(EllipticCurveTypes.ed25519Monero);
     expect(
-        () => SuiAddrEncoder().encodeMultisigKey(pubKey: [
-              SuiPublicKeyAndWeight(publicKey: key1, weight: 1),
-              SuiPublicKeyAndWeight(publicKey: key2, weight: 2),
-            ], threshold: 5),
-        throwsA(TypeMatcher<AddressConverterException>()));
+      () => SuiAddrEncoder().encodeMultisigKey(
+        pubKey: [
+          SuiPublicKeyAndWeight(publicKey: key1, weight: 1),
+          SuiPublicKeyAndWeight(publicKey: key2, weight: 2),
+        ],
+        threshold: 5,
+      ),
+      throwsA(TypeMatcher<AddressConverterException>()),
+    );
     expect(
-        () => SuiAddrEncoder().encodeMultisigKey(pubKey: [
-              SuiPublicKeyAndWeight(publicKey: key1, weight: -1),
-              SuiPublicKeyAndWeight(publicKey: key2, weight: 1),
-              SuiPublicKeyAndWeight(publicKey: key3, weight: 1),
-            ], threshold: 5),
-        throwsA(TypeMatcher<AddressConverterException>()));
+      () => SuiAddrEncoder().encodeMultisigKey(
+        pubKey: [
+          SuiPublicKeyAndWeight(publicKey: key1, weight: -1),
+          SuiPublicKeyAndWeight(publicKey: key2, weight: 1),
+          SuiPublicKeyAndWeight(publicKey: key3, weight: 1),
+        ],
+        threshold: 5,
+      ),
+      throwsA(TypeMatcher<AddressConverterException>()),
+    );
   });
 }
 
 IPublicKey _generateRandomKey(EllipticCurveTypes type) {
   while (true) {
     try {
-      return IPrivateKey.fromBytes(QuickCrypto.generateRandom(32), type)
-          .publicKey;
+      return IPrivateKey.fromBytes(
+        QuickCrypto.generateRandom(32),
+        type,
+      ).publicKey;
     } catch (_) {}
   }
 }

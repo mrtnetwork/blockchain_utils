@@ -1,60 +1,30 @@
-/*
-  The MIT License (MIT)
-  
-  Copyright (c) 2021 Emanuele Bellocchia
+// The MIT License (MIT)
 
-  Permission is hereby granted, free of charge, to any person obtaining a copy
-  of this software and associated documentation files (the "Software"), to deal
-  in the Software without restriction, including without limitation the rights
-  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
-  of the Software, and to permit persons to whom the Software is furnished to do so,
-  subject to the following conditions:
+// Copyright (c) 2021 Emanuele Bellocchia
+// Copyright (c) 2023 Mohsen Haydari (MRTNETWORK)
 
-  The above copyright notice and this permission notice shall be included in all
-  copies or substantial portions of the Software.
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+// of the Software, and to permit persons to whom the Software is furnished to do so,
+// subject to the following conditions:
 
-  THE SOFTWARE IS PROVIDED "AS IS," WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
-  INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
-  PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE
-  FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-  ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-  
-  Note: This code has been adapted from its original Python version to Dart.
-*/
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
 
-/*
-  The 3-Clause BSD License
-  
-  Copyright (c) 2023 Mohsen Haydari (MRTNETWORK)
-  All rights reserved.
-  
-  Redistribution and use in source and binary forms, with or without
-  modification, are permitted provided that the following conditions are met:
-  
-  1. Redistributions of source code must retain the above copyright notice, this
-     list of conditions, and the following disclaimer.
-  2. Redistributions in binary form must reproduce the above copyright notice, this
-     list of conditions, and the following disclaimer in the documentation and/or
-     other materials provided with the distribution.
-  3. Neither the name of the [organization] nor the names of its contributors may be
-     used to endorse or promote products derived from this software without
-     specific prior written permission.
-  
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
-  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
-  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
-  BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
-  LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
-  OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
-  OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+// THE SOFTWARE IS PROVIDED "AS IS," WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+// INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+// PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE
+// FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+// ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+// Note: This code has been adapted from its original Python version to Dart.
 
 import 'package:blockchain_utils/helper/helper.dart';
-import 'package:blockchain_utils/utils/utils.dart';
+
 import 'package:blockchain_utils/exception/exceptions.dart';
+import 'package:blockchain_utils/utils/binary/binary_operation.dart';
+import 'package:blockchain_utils/utils/string/string.dart';
 
 /// Constants and data structures used for Base32 encoding and decoding.
 class _Base32Const {
@@ -63,12 +33,6 @@ class _Base32Const {
 
   /// Padding character used for Base32 encoding.
   static const String paddingChar = '=';
-
-  /// Internal data structures used for Base32 encoding and decoding.
-  // static final Map<String, dynamic> _b32tab2 = {};
-
-  /// Reverse mapping for Base32 decoding.
-  static final Map<String, Map<String, int>> _b32rev = {}; // (private)
 }
 
 class _Base32Utils {
@@ -84,7 +48,10 @@ class _Base32Utils {
 
   /// Translate the standard Base32 alphabet to a custom one.
   static String translateAlphabet(
-      String data, String fromAlphabet, String toAlphabet) {
+    String data,
+    String fromAlphabet,
+    String toAlphabet,
+  ) {
     final translationMap = Map<String, String>.fromIterable(
       fromAlphabet.codeUnits,
       key: (unit) => String.fromCharCode(unit),
@@ -94,22 +61,20 @@ class _Base32Utils {
       },
     );
 
-    final translatedData = data.split('').map((char) {
-      return translationMap[char] ?? char;
-    }).join('');
+    final translatedData = data
+        .split('')
+        .map((char) {
+          return translationMap[char] ?? char;
+        })
+        .join('');
 
     return translatedData;
   }
 
-  static List<int> _b32decode(
-    String alphabet,
-    String base32,
-  ) {
-    if (!_Base32Const._b32rev.containsKey(alphabet)) {
-      _Base32Const._b32rev[alphabet] = {};
-      for (var i = 0; i < alphabet.length; i++) {
-        _Base32Const._b32rev[alphabet]![alphabet[i]] = i;
-      }
+  static List<int> _b32decode(String alphabet, String base32) {
+    Map<String, int> rev = {};
+    for (var i = 0; i < alphabet.length; i++) {
+      rev[alphabet[i]] = i;
     }
     int shift = 8;
     int carry = 0;
@@ -118,14 +83,14 @@ class _Base32Utils {
       if (char == '=') {
         return;
       }
-      final symbol = (_Base32Const._b32rev[alphabet]![char] ?? 0) & mask8;
+      final symbol = (rev[char] ?? 0) & BinaryOps.mask8;
       shift -= 5;
       if (shift > 0) {
-        carry |= (symbol << shift) & mask8;
+        carry |= (symbol << shift) & BinaryOps.mask8;
       } else if (shift < 0) {
         decoded.add(carry | (symbol >> -shift));
         shift += 8;
-        carry = (symbol << shift) & mask8;
+        carry = (symbol << shift) & BinaryOps.mask8;
       } else {
         decoded.add(carry | symbol);
         shift = 8;
@@ -144,8 +109,7 @@ class _Base32Utils {
   static List<int> _b32encode(String alphabet, List<int> s) {
     final leftover = s.length % 5;
     if (leftover != 0) {
-      final padding = List.filled(5 - leftover, 0);
-      s = List<int>.from([...s, ...padding]);
+      s = [...s, ...List.filled(5 - leftover, 0)];
     }
     int shift = 3;
     int carry = 0;
@@ -176,7 +140,7 @@ class _Base32Utils {
     } else if (leftover == 4) {
       encoded.setAll(encoded.length - 1, [0x3d]);
     }
-    return List<int>.from(encoded);
+    return encoded;
   }
 }
 
@@ -192,17 +156,21 @@ class Base32Decoder {
       /// If a custom alphabet is specified, translate the input data to the standard Base32 alphabet.
       if (customAlphabet != null) {
         data = _Base32Utils.translateAlphabet(
-            data, customAlphabet, _Base32Const.alphabet);
+          data,
+          customAlphabet,
+          _Base32Const.alphabet,
+        );
       }
 
       /// Decode the Base32 string and obtain the decoded bytes.
-      final decodedBytes = _Base32Utils._b32decode(_Base32Const.alphabet, data);
-
-      /// Return the decoded bytes as a List.
-      return List<int>.from(decodedBytes);
-    } catch (ex) {
+      return _Base32Utils._b32decode(_Base32Const.alphabet, data);
+    } catch (_) {
       /// Handle exceptions by throwing an error for invalid Base32 strings.
-      throw const ArgumentException('Invalid Base32 string');
+      throw ArgumentException.invalidOperationArguments(
+        "decode",
+        name: "data",
+        reason: 'Invalid Base32 string',
+      );
     }
   }
 }
@@ -213,13 +181,17 @@ class Base32Encoder {
   /// Optionally, you can specify a custom alphabet for encoding.
   static String encode(String data, [String? customAlphabet]) {
     /// Convert the input string to UTF-8 encoded bytes and then encode it in Base32.
-    String encoded = StringUtils.decode(_Base32Utils._b32encode(
-        _Base32Const.alphabet, StringUtils.encode(data)));
+    String encoded = StringUtils.decode(
+      _Base32Utils._b32encode(_Base32Const.alphabet, StringUtils.encode(data)),
+    );
 
     /// If a custom alphabet is specified, translate the encoded string to the custom alphabet.
     if (customAlphabet != null) {
       encoded = _Base32Utils.translateAlphabet(
-          encoded, _Base32Const.alphabet, customAlphabet);
+        encoded,
+        _Base32Const.alphabet,
+        customAlphabet,
+      );
     }
 
     /// Return the Base32 encoded string.
@@ -233,12 +205,16 @@ class Base32Encoder {
 
     /// Encode the input bytes in Base32.
     String encoded = StringUtils.decode(
-        _Base32Utils._b32encode(_Base32Const.alphabet, data));
+      _Base32Utils._b32encode(_Base32Const.alphabet, data),
+    );
 
     /// If a custom alphabet is specified, translate the encoded string to the custom alphabet.
     if (customAlphabet != null) {
       encoded = _Base32Utils.translateAlphabet(
-          encoded, _Base32Const.alphabet, customAlphabet);
+        encoded,
+        _Base32Const.alphabet,
+        customAlphabet,
+      );
     }
 
     /// Return the Base32 encoded string.
@@ -249,15 +225,19 @@ class Base32Encoder {
   /// Optionally, you can specify a custom alphabet for encoding.
   static String encodeNoPadding(String data, [String? customAlphabet]) {
     // Encode the input data and then remove any padding characters.
-    return encode(data, customAlphabet)
-        .replaceAll(_Base32Const.paddingChar, '');
+    return encode(
+      data,
+      customAlphabet,
+    ).replaceAll(_Base32Const.paddingChar, '');
   }
 
   /// Encode the provided List of bytes into a Base32 encoded string without padding characters.
   /// Optionally, you can specify a custom alphabet for encoding.
   static String encodeNoPaddingBytes(List<int> data, [String? customAlphabet]) {
     /// Encode the input bytes and then remove any padding characters.
-    return encodeBytes(data, customAlphabet)
-        .replaceAll(_Base32Const.paddingChar, '');
+    return encodeBytes(
+      data,
+      customAlphabet,
+    ).replaceAll(_Base32Const.paddingChar, '');
   }
 }

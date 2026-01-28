@@ -16,9 +16,12 @@
 library;
 
 import 'package:blockchain_utils/crypto/crypto/exception/exception.dart';
+import 'package:blockchain_utils/exception/exception/exception.dart';
 import 'package:blockchain_utils/helper/helper.dart';
-import 'package:blockchain_utils/utils/utils.dart';
+
 import 'dart:math' as math;
+
+import 'package:blockchain_utils/utils/binary/binary_operation.dart';
 
 /// Export statement for the 'sha224' part, providing the SHA-224 hash algorithm.
 part 'sha224/sha224.dart';
@@ -39,7 +42,7 @@ part 'sha512_256/sh512256.dart';
 part 'sha1/sha1.dart';
 
 /// Export statement for the 'blake2b' part, offering the Blake2b hash algorithm.
-part 'black2b/black2b.dart';
+part 'blake2/black2b.dart';
 
 /// Export statement for the 'ridemp' part, providing the RIdEMP hash algorithm.
 part 'ridemp/ridemp.dart';
@@ -55,7 +58,9 @@ part 'keccack/sha3.dart';
 
 part 'xxhash64/xxhash64.dart';
 
-typedef HashFunc = SerializableHash Function();
+part 'blake2/blake2s.dart';
+
+typedef HashFunc<T extends HashState> = SerializableHash<T> Function();
 
 /// The `Hash` abstract class defines the basic operations for hash algorithms.
 ///
@@ -90,7 +95,7 @@ abstract class Hash {
 /// It's useful for hash algorithms that require intermediate state management.
 abstract class SerializableHash<T extends HashState> extends Hash {
   /// Saves the current hash state.
-  HashState saveState();
+  T saveState();
 
   /// Restores the hash state from a saved state.
   SerializableHash restoreState(T savedState);

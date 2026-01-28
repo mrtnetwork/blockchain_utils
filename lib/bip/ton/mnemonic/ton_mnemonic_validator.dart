@@ -1,5 +1,5 @@
 import 'package:blockchain_utils/bip/mnemonic/mnemonic.dart';
-import 'package:blockchain_utils/bip/mnemonic/mnemonic_ex.dart';
+import 'package:blockchain_utils/exception/exception/exception.dart';
 import 'ton_entropy_generator.dart';
 import 'ton_mnemonic_generator.dart';
 
@@ -15,14 +15,22 @@ class TomMnemonicValidator {
     /// Checks if the mnemonic requires a passphrase but one is not provided.
     if (password.isNotEmpty &&
         !TonEntropyGeneratorUtils.isPasswordNeed(mnemonic)) {
-      throw const MnemonicException("Invalid Ton mnemonic. is Basic seed.");
+      throw ArgumentException.invalidOperationArguments(
+        "validate",
+        name: "mnemonic",
+        reason: "Invalid ton mnemonic.",
+      );
     }
 
     /// Generates entropy from the mnemonic and passphrase, then checks if it is a basic seed.
     if (!TonEntropyGeneratorUtils.isBasicSeed(
-        TonEntropyGeneratorUtils.generateEnteropy(mnemonic,
-            password: password))) {
-      throw const MnemonicException("Invalid Ton mnemonic.");
+      TonEntropyGeneratorUtils.generateEnteropy(mnemonic, password: password),
+    )) {
+      throw ArgumentException.invalidOperationArguments(
+        "validate",
+        name: "mnemonic",
+        reason: "Invalid ton mnemonic.",
+      );
     }
   }
 

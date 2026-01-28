@@ -32,18 +32,25 @@ void main() {
     test('Bitcoin conversions', () {
       // toAmount
       expect(AmountConverter.btc.toAmount(BigInt.parse("100000000")), '1');
-      expect(AmountConverter.btc.toAmount(BigInt.parse("123456789")),
-          '1.23456789');
+      expect(
+        AmountConverter.btc.toAmount(BigInt.parse("123456789")),
+        '1.23456789',
+      );
 
       expect(
-          AmountConverter(decimals: 8, displayPrecision: 2)
-              .toAmount(BigInt.parse("123456789")),
-          '1.23');
+        AmountConverter(
+          decimals: 8,
+          displayPrecision: 2,
+        ).toAmount(BigInt.parse("123456789")),
+        '1.23',
+      );
 
       // toUnit
       expect(AmountConverter.btc.toUnit('1'), BigInt.parse('100000000'));
       expect(
-          AmountConverter.btc.toUnit('1.23456789'), BigInt.parse('123456789'));
+        AmountConverter.btc.toUnit('1.23456789'),
+        BigInt.parse('123456789'),
+      );
 
       // edge cases
       expect(AmountConverter.btc.toUnit('0'), BigInt.zero);
@@ -51,17 +58,25 @@ void main() {
     });
     test('No Decimals', () {
       expect(
-          AmountConverter(decimals: 0)
-              .toAmount(BigInt.parse('1000000000000000000')),
-          '1000000000000000000');
-      expect(AmountConverter(decimals: 0).toUnit('1000000'),
-          BigInt.parse('1000000'));
+        AmountConverter(
+          decimals: 0,
+        ).toAmount(BigInt.parse('1000000000000000000')),
+        '1000000000000000000',
+      );
+      expect(
+        AmountConverter(decimals: 0).toUnit('1000000'),
+        BigInt.parse('1000000'),
+      );
     });
     test('Ethereum conversions', () {
-      expect(AmountConverter.eth.toAmount(BigInt.parse('1000000000000000000')),
-          '1');
-      expect(AmountConverter.eth.toUnit('1.5'),
-          BigInt.parse('1500000000000000000'));
+      expect(
+        AmountConverter.eth.toAmount(BigInt.parse('1000000000000000000')),
+        '1',
+      );
+      expect(
+        AmountConverter.eth.toUnit('1.5'),
+        BigInt.parse('1500000000000000000'),
+      );
     });
 
     test('Tron conversions', () {
@@ -71,16 +86,24 @@ void main() {
 
     test('Polkadot conversions', () {
       expect(
-          AmountConverter.polkadot.toAmount(BigInt.parse('10000000000')), '1');
-      expect(AmountConverter.polkadot.toUnit('1.2345678901'),
-          BigInt.parse('12345678901'));
+        AmountConverter.polkadot.toAmount(BigInt.parse('10000000000')),
+        '1',
+      );
+      expect(
+        AmountConverter.polkadot.toUnit('1.2345678901'),
+        BigInt.parse('12345678901'),
+      );
     });
 
     test('Kusama conversions', () {
       expect(
-          AmountConverter.kusama.toAmount(BigInt.parse('1000000000000')), '1');
-      expect(AmountConverter.kusama.toUnit('1.123456789012'),
-          BigInt.parse('1123456789012'));
+        AmountConverter.kusama.toAmount(BigInt.parse('1000000000000')),
+        '1',
+      );
+      expect(
+        AmountConverter.kusama.toUnit('1.123456789012'),
+        BigInt.parse('1123456789012'),
+      );
     });
 
     test('To many decimals', () {
@@ -101,8 +124,9 @@ void main() {
         throwsA(isA<AmountConverterException>()),
       );
       expect(
-          AmountConverter.btc.toUnit('1.123456789', enforceMaxDecimals: false),
-          BigInt.from(112345678));
+        AmountConverter.btc.toUnit('1.123456789', enforceMaxDecimals: false),
+        BigInt.from(112345678),
+      );
     });
 
     test('Parsing invalid string throws', () {

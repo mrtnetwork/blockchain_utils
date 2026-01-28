@@ -1,6 +1,6 @@
 import 'package:blockchain_utils/bip/bip/bip39/bip39_mnemonic.dart';
 import 'package:blockchain_utils/bip/mnemonic/mnemonic.dart';
-import 'package:blockchain_utils/bip/mnemonic/mnemonic_ex.dart';
+import 'package:blockchain_utils/exception/exception/exception.dart';
 import 'ton_entropy_generator.dart';
 import 'ton_mnemonic_encoder.dart';
 import 'ton_mnemonic_language.dart';
@@ -12,8 +12,11 @@ class TonMnemonicGeneratorUtils {
   /// Validates that the number of mnemonic words is within the acceptable range (8 to 48).
   static void validateWordsNum(int wordsNum) {
     if (wordsNum < 8 || wordsNum > 48) {
-      throw const MnemonicException(
-          "Invalid mnemonic words count. Words number must be between 8 and 48");
+      throw ArgumentException.invalidOperationArguments(
+        "validateWordsNum",
+        name: "wordsNum",
+        reason: "Invalid mnemonic length.",
+      );
     }
   }
 
@@ -31,9 +34,9 @@ class TonMnemonicGenerator {
 
   /// Constructor initializes the mnemonic encoder with the specified language.
   /// Defaults to English if no language is specified.
-  TonMnemonicGenerator(
-      [TonMnemonicLanguages language = TonMnemonicLanguages.english])
-      : _mnemonicEncoder = TonMnemonicEncoder(language);
+  TonMnemonicGenerator([
+    TonMnemonicLanguages language = TonMnemonicLanguages.english,
+  ]) : _mnemonicEncoder = TonMnemonicEncoder(language);
 
   /// Generates a mnemonic phrase from a specified number of words, ensuring it is valid
   /// according to the TOM mnemonic validator.

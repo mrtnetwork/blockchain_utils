@@ -1,7 +1,9 @@
-import 'package:blockchain_utils/utils/utils.dart';
+import 'package:blockchain_utils/cbor/utils/cbor_utils.dart';
+
 import 'package:blockchain_utils/cbor/utils/dynamic_bytes.dart';
 import 'package:blockchain_utils/cbor/core/tags.dart';
 import 'package:blockchain_utils/cbor/core/cbor.dart';
+import 'package:blockchain_utils/utils/binary/utils.dart';
 
 /// A class representing a CBOR (Concise Binary Object Representation) boolean value.
 class CborBoleanValue extends CborObject<bool> {
@@ -9,12 +11,18 @@ class CborBoleanValue extends CborObject<bool> {
   /// It accepts the boolean value.
   const CborBoleanValue(super.value);
 
+  factory CborBoleanValue.decode(List<int> bytes) {
+    return CborUtils.decodeCbor(bytes);
+  }
+
   /// Encode the value into CBOR bytes
   @override
   List<int> encode() {
     final bytes = CborBytesTracker();
-    bytes.pushInt(MajorTags.simpleOrFloat,
-        value ? SimpleTags.simpleTrue : SimpleTags.simpleFalse);
+    bytes.pushInt(
+      MajorTags.simpleOrFloat,
+      value ? SimpleTags.simpleTrue : SimpleTags.simpleFalse,
+    );
     return bytes.toBytes();
   }
 
@@ -29,16 +37,4 @@ class CborBoleanValue extends CborObject<bool> {
   String toString() {
     return value.toString();
   }
-
-  /// overide equal operation
-  @override
-  operator ==(other) {
-    if (other is! CborBoleanValue) return false;
-
-    return value == other.value;
-  }
-
-  /// ovveride hash code
-  @override
-  int get hashCode => value.hashCode;
 }

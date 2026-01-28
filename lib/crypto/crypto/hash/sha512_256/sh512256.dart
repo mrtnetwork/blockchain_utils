@@ -1,29 +1,13 @@
 part of 'package:blockchain_utils/crypto/crypto/hash/hash.dart';
 
-/// The `SHA512256` class extends the SHA-512 hash function, specifically
+/// The [SHA512256] class extends the SHA-512 hash function, specifically
 /// truncating its output to 256 bits (32 bytes). It inherits the implementation
 /// of the SHA-512 hash algorithm
-///
-/// Example usage:
-/// ```dart
-/// final data = List<int>.from([0, 1, 2, 3, 4, 5]);
-/// final sha512256Hash = SHA512256().update(data).digest();
-/// ```
-///
-/// This class allows you to compute a SHA-512/256 hash, which is a widely-used
-/// cryptographic hash function known for its security and is often used in
-/// various security and data integrity applications
 class SHA512256 extends SHA512 {
-  /// digest length
-  static const int digestLength = 32;
-
-  /// block size
-  static const int blockSize = 128;
-
   @override
-  int get getDigestLength => SHA512256.digestLength;
+  int get getDigestLength => 32;
   @override
-  int get getBlockSize => SHA512256.blockSize;
+  int get getBlockSize => 128;
 
   @override
   void _initState() {

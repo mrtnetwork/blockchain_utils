@@ -79,7 +79,7 @@ class Bip32Path {
   /// [elems] is an optional list of key indices in the path.
   /// [isAbsolute] specifies if the path is absolute (default: true).
   Bip32Path({List<Bip32KeyIndex> elems = const [], this.isAbsolute = true})
-      : elems = elems.immutable;
+    : elems = elems.immutable;
 
   /// Adds a key index element to the path and returns a new Bip32Path.
   Bip32Path addElem(Bip32KeyIndex elem) {
@@ -99,6 +99,10 @@ class Bip32Path {
   /// override toString for return absolute path
   @override
   String toString() {
+    return toPath();
+  }
+
+  String toPath() {
     var pathStr = isAbsolute ? "${Bip32PathConst.masterChar}/" : "";
     for (final elem in elems) {
       if (!elem.isHardened) {
@@ -122,7 +126,8 @@ class Bip32PathParser {
     }
 
     return _parseElements(
-        path.split("/").where((elem) => elem.isNotEmpty).toList());
+      path.split("/").where((elem) => elem.isNotEmpty).toList(),
+    );
   }
 
   /// Parses individual elements of a BIP32 path and constructs a Bip32Path object.
@@ -145,16 +150,20 @@ class Bip32PathParser {
   /// [pathElem] is the path element to be parsed.
   static Bip32KeyIndex _parseElem(String pathElem) {
     pathElem = pathElem.trim();
-    final bool isHardened = Bip32PathConst.hardenedChars
-        .where((element) => pathElem.endsWith(element))
-        .isNotEmpty;
+    final bool isHardened =
+        Bip32PathConst.hardenedChars
+            .where((element) => pathElem.endsWith(element))
+            .isNotEmpty;
 
     if (isHardened) {
       pathElem = pathElem.substring(0, pathElem.length - 1);
     }
     final bool isNumeric = int.tryParse(pathElem) != null;
     if (!isNumeric) {
-      throw Bip32PathError("Invalid path element ($pathElem)");
+      throw Bip32PathError(
+        "Invalid path element.",
+        details: {"path": pathElem},
+      );
     }
     return isHardened
         ? Bip32KeyIndex.hardenIndex(int.parse(pathElem))

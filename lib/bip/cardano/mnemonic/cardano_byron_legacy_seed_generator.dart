@@ -56,6 +56,7 @@ import 'package:blockchain_utils/bip/bip/bip39/bip39_mnemonic.dart';
 import 'package:blockchain_utils/bip/bip/bip39/bip39_mnemonic_decoder.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
 import 'package:blockchain_utils/cbor/types/bytes.dart';
+import 'package:blockchain_utils/helper/extensions/extensions.dart';
 
 /// A class responsible for generating Cardano Byron Legacy seeds from mnemonics.
 class CardanoByronLegacySeedGenerator {
@@ -68,10 +69,7 @@ class CardanoByronLegacySeedGenerator {
   /// Parameters:
   /// - `mnemonic`: The mnemonic string used to generate the seed.
   /// - `language`: An optional parameter to specify the language used in the mnemonic.
-  CardanoByronLegacySeedGenerator(
-    String mnemonic, {
-    Bip39Languages? language,
-  }) {
+  CardanoByronLegacySeedGenerator(String mnemonic, {Bip39Languages? language}) {
     final decodedMnemonic = Bip39MnemonicDecoder(language).decode(mnemonic);
     final cborData = CborBytesValue(decodedMnemonic).encode();
     _seedBytes = QuickCrypto.blake2b256Hash(cborData);
@@ -79,6 +77,6 @@ class CardanoByronLegacySeedGenerator {
 
   /// Generates and returns the Cardano Byron Legacy seed as a `List<int>`.
   List<int> generate() {
-    return List<int>.from(_seedBytes);
+    return _seedBytes.clone();
   }
 }

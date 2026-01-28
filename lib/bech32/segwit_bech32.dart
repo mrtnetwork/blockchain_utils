@@ -1,5 +1,5 @@
+import 'package:blockchain_utils/bech32/bech32_ex.dart';
 import 'package:blockchain_utils/exception/exceptions.dart';
-import 'package:blockchain_utils/utils/utils.dart';
 
 import 'bech32_base.dart';
 import 'bech32_utils.dart';
@@ -42,10 +42,11 @@ class SegwitBech32Encoder extends Bech32EncoderBase {
   /// Returns the Bech32-encoded SegWit address.
   static String encode(String hrp, int witVer, List<int> witProg) {
     return Bech32EncoderBase.encodeBech32(
-        hrp,
-        List<int>.from([witVer, ...Bech32BaseUtils.convertToBase32(witProg)]),
-        SegwitBech32Const.separator,
-        _computeChecksum);
+      hrp,
+      [witVer, ...Bech32BaseUtils.convertToBase32(witProg)],
+      SegwitBech32Const.separator,
+      _computeChecksum,
+    );
   }
 
   /// Computes the checksum for SegWit Bech32 encoding.
@@ -60,9 +61,10 @@ class SegwitBech32Encoder extends Bech32EncoderBase {
   ///
   /// Returns the computed checksum as a list of integers.
   static List<int> _computeChecksum(String hrp, List<int> data) {
-    final encoding = data[0] == SegwitBech32Const.witnessVerBech32
-        ? Bech32Encodings.bech32
-        : Bech32Encodings.bech32m;
+    final encoding =
+        data[0] == SegwitBech32Const.witnessVerBech32
+            ? Bech32Encodings.bech32
+            : Bech32Encodings.bech32m;
     return Bech32Utils.computeChecksum(hrp, data, encoding);
   }
 }
@@ -79,19 +81,22 @@ class SegwitBech32Decoder extends Bech32DecoderBase {
   ///
   /// Returns a tuple containing the SegWit version (witness version) and the
   /// decoded witness program as a List.
-  static Tuple<int, List<int>> decode(String? hrp, String addr) {
+  static (int, List<int>) decode(String? hrp, String addr) {
     final decoded = Bech32DecoderBase.decodeBech32(
-        addr,
-        SegwitBech32Const.separator,
-        SegwitBech32Const.checksumStrLen,
-        _verifyChecksum);
-    final hrpGot = decoded.item1;
-    final data = decoded.item2;
+      addr,
+      SegwitBech32Const.separator,
+      SegwitBech32Const.checksumStrLen,
+      _verifyChecksum,
+    );
+    final hrpGot = decoded.$1;
+    final data = decoded.$2;
 
     // Check HRP
     if (hrp != null && hrp != hrpGot) {
-      throw ArgumentException(
-          'Invalid format (HRP not valid, expected $hrp, got $hrpGot)');
+      throw Bech32Error(
+        "Incorrect bech32 hrp.",
+        details: {"expected": hrp, "hrp": hrpGot},
+      );
     }
 
     // Convert back from base32 (remove witness version)
@@ -100,31 +105,39 @@ class SegwitBech32Decoder extends Bech32DecoderBase {
     // Check data length
     if (convData.length < SegwitBech32Const.witnessProgMinByteLen ||
         convData.length > SegwitBech32Const.witnessProgMaxByteLen) {
-      throw ArgumentException(
-          'Invalid format (witness program length not valid: ${convData.length})');
+      throw ArgumentException.invalidOperationArguments(
+        "decode",
+        reason: 'Invalid bech32 format.',
+      );
     }
 
     // Check witness version
     final witVer = data[0];
     if (witVer > SegwitBech32Const.witnessVerMaxVal) {
-      throw ArgumentException(
-          'Invalid format (witness version not valid: $witVer)');
+      throw ArgumentException.invalidOperationArguments(
+        "decode",
+        reason: 'Invalid bech32 format.',
+      );
     }
 
     if (witVer == 0 &&
-        !SegwitBech32Const.witnessVerZeroDataByteLen
-            .contains(convData.length)) {
-      throw ArgumentException(
-          'Invalid format (length not valid: ${convData.length})');
+        !SegwitBech32Const.witnessVerZeroDataByteLen.contains(
+          convData.length,
+        )) {
+      throw ArgumentException.invalidOperationArguments(
+        "decode",
+        reason: 'Invalid bech32 format.',
+      );
     }
 
-    return Tuple(witVer, convData);
+    return (witVer, convData);
   }
 
   static bool _verifyChecksum(String hrp, List<int> data) {
-    final encoding = (data[0] == SegwitBech32Const.witnessVerBech32
-        ? Bech32Encodings.bech32
-        : Bech32Encodings.bech32m);
+    final encoding =
+        (data[0] == SegwitBech32Const.witnessVerBech32
+            ? Bech32Encodings.bech32
+            : Bech32Encodings.bech32m);
 
     return Bech32Utils.verifyChecksum(hrp, data, encoding);
   }

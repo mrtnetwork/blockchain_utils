@@ -1,3 +1,4 @@
+import 'package:blockchain_utils/bech32/bech32_ex.dart';
 import 'package:blockchain_utils/blockchain_utils.dart';
 import 'package:test/test.dart';
 
@@ -33,28 +34,34 @@ void main() {
     for (final i in _testVect) {
       final hrp = i["encode"]!.substring(0, i["encode"]!.indexOf(":"));
       final decode = BchBech32Decoder.decode(hrp, i["encode"]!);
-      expect(BytesUtils.toHexString(decode.item2), i["raw"]);
+      expect(BytesUtils.toHexString(decode.$2), i["raw"]);
       expect(
-          BytesUtils.bytesEqual(
-              decode.item1, CoinsConf.bitcoinCashMainNet.params.p2pkhStdNetVer),
-          true);
+        BytesUtils.bytesEqual(
+          decode.$1,
+          CoinsConf.bitcoinCashMainNet.params.p2pkhStdNetVer,
+        ),
+        true,
+      );
     }
   });
   test("bach32 encode", () {
     for (final i in _testVect) {
       final hrp = i["encode"]!.substring(0, i["encode"]!.indexOf(":"));
       final decode = BchBech32Encoder.encode(
-          hrp,
-          CoinsConf.bitcoinCashMainNet.params.p2pkhStdNetVer!,
-          BytesUtils.fromHexString(i["raw"]!));
+        hrp,
+        CoinsConf.bitcoinCashMainNet.params.p2pkhStdNetVer!,
+        BytesUtils.fromHexString(i["raw"]!),
+      );
       expect(decode, i["encode"]);
     }
   });
 
   test("invalid decode", () {
     expect(() {
-      BchBech32Decoder.decode("bitcoincash",
-          "bitciincash:qq54jk3u0pmql6g0azpmjghn2wm8gswj35853zv6sr");
-    }, throwsA(isA<ArgumentException>()));
+      BchBech32Decoder.decode(
+        "bitcoincash",
+        "bitciincash:qq54jk3u0pmql6g0azpmjghn2wm8gswj35853zv6sr",
+      );
+    }, throwsA(isA<Bech32Error>()));
   });
 }

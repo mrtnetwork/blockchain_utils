@@ -1,7 +1,8 @@
 import 'package:blockchain_utils/cbor/core/cbor.dart';
 import 'package:blockchain_utils/cbor/core/tags.dart';
+import 'package:blockchain_utils/cbor/utils/cbor_utils.dart';
 import 'package:blockchain_utils/cbor/utils/dynamic_bytes.dart';
-import 'package:blockchain_utils/utils/utils.dart';
+import 'package:blockchain_utils/utils/binary/utils.dart';
 
 /// A class representing a CBOR (Concise Binary Object Representation) Map value.
 class CborMapValue<K extends CborObject, V extends CborObject>
@@ -14,6 +15,10 @@ class CborMapValue<K extends CborObject, V extends CborObject>
   /// It accepts the Map with all cbor encodable key and value.
   /// this method encode values with indefinite tag.
   CborMapValue.inDefinite(super.value) : definite = false;
+
+  factory CborMapValue.decode(List<int> bytes) {
+    return CborUtils.decodeCbor(bytes);
+  }
 
   final bool definite;
 
@@ -60,7 +65,7 @@ class CborMapValue<K extends CborObject, V extends CborObject>
   @override
   Object getValue() {
     return {
-      for (final i in value.entries) i.key.getValue(): i.value.getValue()
+      for (final i in value.entries) i.key.getValue(): i.value.getValue(),
     };
   }
 }

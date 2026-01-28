@@ -12,40 +12,54 @@ class Bip86Const {
   static final Bip32KeyIndex purpose = Bip32KeyIndex.hardenIndex(86);
 }
 
-class Bip86 extends Bip44Base {
+class Bip86 extends Bip44Base<Bip86> {
   /// private constructor
   Bip86._(super.bip32Obj, super.coinConf);
 
   /// Constructor for creating a [Bip86] object from a seed and coin.
   Bip86.fromSeed(List<int> seedBytes, Bip86Coins coinType)
-      : super.fromSeed(seedBytes, coinType.conf);
+    : super.fromSeed(seedBytes, coinType.conf);
 
   /// Constructor for creating a [Bip86] object from a extended key and coin.
   Bip86.fromExtendedKey(String extendedKey, Bip86Coins coinType)
-      : super.fromExtendedKey(extendedKey, coinType.conf);
+    : super.fromExtendedKey(extendedKey, coinType.conf);
 
   /// Constructor for creating a [Bip86] object from a private key and coin.
-  Bip86.fromPrivateKey(List<int> privateKeyBytes, Bip86Coins coinType,
-      {Bip32KeyData? keyData})
-      : super.fromPrivateKey(privateKeyBytes, coinType.conf,
-            keyData: keyData ?? Bip32KeyData());
+  Bip86.fromPrivateKey(
+    List<int> privateKeyBytes,
+    Bip86Coins coinType, {
+    Bip32KeyData? keyData,
+  }) : super.fromPrivateKey(
+         privateKeyBytes,
+         coinType.conf,
+         keyData: keyData ?? Bip32KeyData(),
+       );
 
   /// Constructor for creating a [Bip86] object from a public key and coin.
-  Bip86.fromPublicKey(List<int> pubkeyBytes, Bip86Coins coinType,
-      {Bip32KeyData? keyData})
-      : super.fromPublicKey(pubkeyBytes, coinType.conf,
-            keyData: keyData ??
-                Bip32KeyData(depth: Bip32Depth(Bip44Levels.account.value)));
+  Bip86.fromPublicKey(
+    List<int> pubkeyBytes,
+    Bip86Coins coinType, {
+    Bip32KeyData? keyData,
+  }) : super.fromPublicKey(
+         pubkeyBytes,
+         coinType.conf,
+         keyData:
+             keyData ??
+             Bip32KeyData(depth: Bip32Depth(Bip44Levels.account.value)),
+       );
 
   /// derive purpose
   @override
-  Bip44Base get purpose {
+  Bip86 get purpose {
     if (!isLevel(Bip44Levels.master)) {
       throw Bip44DepthError(
-          "Current depth (${bip32.depth.toInt()}) is not suitable for deriving purpose");
+        "Current depth (${bip32.depth.toInt()}) is not suitable for deriving purpose",
+      );
     }
     return Bip86._(
-        bip32.childKey(coinConf.purpose ?? Bip86Const.purpose), coinConf);
+      bip32.childKey(coinConf.purpose ?? Bip86Const.purpose),
+      coinConf,
+    );
   }
 
   /// derive coin
@@ -53,11 +67,14 @@ class Bip86 extends Bip44Base {
   Bip86 get coin {
     if (!isLevel(Bip44Levels.purpose)) {
       throw Bip44DepthError(
-          "Current depth (${bip32.depth.toInt()}) is not suitable for deriving coin");
+        "Current depth (${bip32.depth.toInt()}) is not suitable for deriving coin",
+      );
     }
     final coinIndex = coinConf.coinIdx;
     return Bip86._(
-        bip32.childKey(Bip32KeyIndex.hardenIndex(coinIndex)), coinConf);
+      bip32.childKey(Bip32KeyIndex.hardenIndex(coinIndex)),
+      coinConf,
+    );
   }
 
   /// derive account with index
@@ -65,10 +82,13 @@ class Bip86 extends Bip44Base {
   Bip86 account(int accIndex) {
     if (!isLevel(Bip44Levels.coin)) {
       throw Bip44DepthError(
-          "Current depth (${bip32.depth.toInt()}) is not suitable for deriving account");
+        "Current depth (${bip32.depth.toInt()}) is not suitable for deriving account",
+      );
     }
     return Bip86._(
-        bip32.childKey(Bip32KeyIndex.hardenIndex(accIndex)), coinConf);
+      bip32.childKey(Bip32KeyIndex.hardenIndex(accIndex)),
+      coinConf,
+    );
   }
 
   /// derive change with change type [Bip44Changes] internal or external
@@ -76,7 +96,8 @@ class Bip86 extends Bip44Base {
   Bip86 change(Bip44Changes changeType) {
     if (!isLevel(Bip44Levels.account)) {
       throw Bip44DepthError(
-          "Current depth (${bip32.depth.toInt()}) is not suitable for deriving change");
+        "Current depth (${bip32.depth.toInt()}) is not suitable for deriving change",
+      );
     }
     Bip32KeyIndex changeIndex = Bip32KeyIndex(changeType.value);
     if (!bip32Object.isPublicDerivationSupported) {
@@ -90,7 +111,8 @@ class Bip86 extends Bip44Base {
   Bip86 addressIndex(int addressIndex) {
     if (!isLevel(Bip44Levels.change)) {
       throw Bip44DepthError(
-          "Current depth (${bip32.depth.toInt()}) is not suitable for deriving address");
+        "Current depth (${bip32.depth.toInt()}) is not suitable for deriving address",
+      );
     }
     Bip32KeyIndex changeIndex = Bip32KeyIndex(addressIndex);
     if (!bip32Object.isPublicDerivationSupported) {

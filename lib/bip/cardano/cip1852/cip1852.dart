@@ -66,7 +66,7 @@ class Cip1852Const {
   static final Bip32KeyIndex purpose = Bip32KeyIndex.hardenIndex(1852);
 }
 
-class Cip1852 extends Bip44Base {
+class Cip1852 extends Bip44Base<Cip1852> {
   /// private constractor
   Cip1852._(super.bip32Obj, super.coinConf);
 
@@ -75,31 +75,43 @@ class Cip1852 extends Bip44Base {
 
   /// Constructor for creating a [Cip1852] object from a seed and coin.
   Cip1852.fromSeed(List<int> seedBytes, Cip1852Coins coinType)
-      : super.fromSeed(seedBytes, coinType.conf);
+    : super.fromSeed(seedBytes, coinType.conf);
 
   /// Constructor for creating a [Cip1852] object from a extended key and coin.
   Cip1852.fromExtendedKey(String extendedKey, Cip1852Coins coinType)
-      : super.fromExtendedKey(extendedKey, coinType.conf);
+    : super.fromExtendedKey(extendedKey, coinType.conf);
 
   /// Constructor for creating a [Cip1852] object from a private key and coin.
-  Cip1852.fromPrivateKey(List<int> privateKeyBytes, Cip1852Coins coinType,
-      {Bip32KeyData? keyData})
-      : super.fromPrivateKey(privateKeyBytes, coinType.conf,
-            keyData: keyData ?? Bip32KeyData());
+  Cip1852.fromPrivateKey(
+    List<int> privateKeyBytes,
+    Cip1852Coins coinType, {
+    Bip32KeyData? keyData,
+  }) : super.fromPrivateKey(
+         privateKeyBytes,
+         coinType.conf,
+         keyData: keyData ?? Bip32KeyData(),
+       );
 
   /// Constructor for creating a [Cip1852] object from a public key and coin.
-  Cip1852.fromPublicKey(List<int> pubkeyBytes, Cip1852Coins coinType,
-      {Bip32KeyData? keyData})
-      : super.fromPublicKey(pubkeyBytes, coinType.conf,
-            keyData: keyData ??
-                Bip32KeyData(depth: Bip32Depth(Bip44Levels.account.value)));
+  Cip1852.fromPublicKey(
+    List<int> pubkeyBytes,
+    Cip1852Coins coinType, {
+    Bip32KeyData? keyData,
+  }) : super.fromPublicKey(
+         pubkeyBytes,
+         coinType.conf,
+         keyData:
+             keyData ??
+             Bip32KeyData(depth: Bip32Depth(Bip44Levels.account.value)),
+       );
 
   /// derive purpose
   @override
   Cip1852 get purpose {
     if (!isLevel(Bip44Levels.master)) {
       throw Bip44DepthError(
-          "Current depth (${bip32.depth.toInt()}) is not suitable for deriving purpose");
+        "Current depth (${bip32.depth.toInt()}) is not suitable for deriving purpose",
+      );
     }
     return Cip1852._(bip32.childKey(Cip1852Const.purpose), coinConf);
   }
@@ -109,11 +121,14 @@ class Cip1852 extends Bip44Base {
   Cip1852 get coin {
     if (!isLevel(Bip44Levels.purpose)) {
       throw Bip44DepthError(
-          "Current depth (${bip32.depth.toInt()}) is not suitable for deriving coin");
+        "Current depth (${bip32.depth.toInt()}) is not suitable for deriving coin",
+      );
     }
     final coinIndex = coinConf.coinIdx;
     return Cip1852._(
-        bip32.childKey(Bip32KeyIndex.hardenIndex(coinIndex)), coinConf);
+      bip32.childKey(Bip32KeyIndex.hardenIndex(coinIndex)),
+      coinConf,
+    );
   }
 
   /// derive account with index
@@ -121,10 +136,13 @@ class Cip1852 extends Bip44Base {
   Cip1852 account(int accIndex) {
     if (!isLevel(Bip44Levels.coin)) {
       throw Bip44DepthError(
-          "Current depth (${bip32.depth.toInt()}) is not suitable for deriving account");
+        "Current depth (${bip32.depth.toInt()}) is not suitable for deriving account",
+      );
     }
     return Cip1852._(
-        bip32.childKey(Bip32KeyIndex.hardenIndex(accIndex)), coinConf);
+      bip32.childKey(Bip32KeyIndex.hardenIndex(accIndex)),
+      coinConf,
+    );
   }
 
   /// derive change with change type [Bip44Changes] internal or external
@@ -132,7 +150,8 @@ class Cip1852 extends Bip44Base {
   Cip1852 change(Bip44Changes changeType) {
     if (!isLevel(Bip44Levels.account)) {
       throw Bip44DepthError(
-          "Current depth (${bip32.depth.toInt()}) is not suitable for deriving change");
+        "Current depth (${bip32.depth.toInt()}) is not suitable for deriving change",
+      );
     }
     Bip32KeyIndex changeIndex = Bip32KeyIndex(changeType.value);
     if (!bip32Object.isPublicDerivationSupported) {
@@ -146,7 +165,8 @@ class Cip1852 extends Bip44Base {
   Cip1852 addressIndex(int addressIndex) {
     if (!isLevel(Bip44Levels.change)) {
       throw Bip44DepthError(
-          "Current depth (${bip32.depth.toInt()}) is not suitable for deriving address");
+        "Current depth (${bip32.depth.toInt()}) is not suitable for deriving address",
+      );
     }
     Bip32KeyIndex changeIndex = Bip32KeyIndex(addressIndex);
     if (!bip32Object.isPublicDerivationSupported) {
@@ -160,7 +180,9 @@ class Cip1852 extends Bip44Base {
   Cip1852 get deriveDefaultPath {
     final Bip44Base bipObj = purpose.coin;
     return Cip1852._(
-        bipObj.bip32.derivePath(bipObj.coinConf.defPath), coinConf);
+      bipObj.bip32.derivePath(bipObj.coinConf.defPath),
+      coinConf,
+    );
   }
 
   /// Specification name

@@ -1,41 +1,41 @@
 import 'package:blockchain_utils/bip/bip/conf/bip/bip_coins.dart';
 import 'package:blockchain_utils/bip/bip/conf/bip49/bip49_conf.dart';
 import 'package:blockchain_utils/bip/bip/conf/config/bip_coin_conf.dart';
-import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
+import 'package:blockchain_utils/bip/bip/conf/core/coins.dart';
+import 'package:blockchain_utils/helper/extensions/extensions.dart';
 
 /// An enumeration of supported cryptocurrencies for BIP49. It includes both main
 /// networks and test networks of various cryptocurrencies.
-class Bip49Coins extends BipCoins {
-  static const Bip49Coins bitcoin = Bip49Coins._('bitcoin');
-  static const Bip49Coins bitcoinCash = Bip49Coins._('bitcoinCash');
-  static const Bip49Coins bitcoinCashSlp = Bip49Coins._('bitcoinCashSlp');
-  static const Bip49Coins bitcoinSv = Bip49Coins._('bitcoinSv');
-  static const Bip49Coins dash = Bip49Coins._('dash');
-  static const Bip49Coins dogecoin = Bip49Coins._('dogecoin');
-  static const Bip49Coins ecash = Bip49Coins._('ecash');
-  static const Bip49Coins litecoin = Bip49Coins._('litecoin');
-  static const Bip49Coins zcash = Bip49Coins._('zcash');
-  static const Bip49Coins pepecoin = Bip49Coins._('pepecoin');
-  static const Bip49Coins electraProtocol = Bip49Coins._('electraProtocol');
+enum Bip49Coins implements BipCoins {
+  // Mainnets
+  bitcoin('bitcoin'),
+  bitcoinCash('bitcoinCash'),
+  bitcoinCashSlp('bitcoinCashSlp'),
+  bitcoinSv('bitcoinSv'),
+  dash('dash'),
+  dogecoin('dogecoin'),
+  ecash('ecash'),
+  litecoin('litecoin'),
+  zcash('zcash'),
+  pepecoin('pepecoin'),
+  electraProtocol('electraProtocol'),
 
-  // Test nets
-  static const Bip49Coins bitcoinCashTestnet =
-      Bip49Coins._('bitcoinCashTestnet');
-  static const Bip49Coins bitcoinCashSlpTestnet =
-      Bip49Coins._('bitcoinCashSlpTestnet');
-  static const Bip49Coins bitcoinSvTestnet = Bip49Coins._('bitcoinSvTestnet');
-  static const Bip49Coins bitcoinTestnet = Bip49Coins._('bitcoinTestnet');
-  static const Bip49Coins dashTestnet = Bip49Coins._('dashTestnet');
-  static const Bip49Coins dogecoinTestnet = Bip49Coins._('dogecoinTestnet');
-  static const Bip49Coins ecashTestnet = Bip49Coins._('ecashTestnet');
-  static const Bip49Coins litecoinTestnet = Bip49Coins._('litecoinTestnet');
-  static const Bip49Coins zcashTestnet = Bip49Coins._('zcashTestnet');
-  static const Bip49Coins pepecoinTestnet = Bip49Coins._('pepecoinTestnet');
-  static const Bip49Coins electraProtocolTestnet =
-      Bip49Coins._('electraProtocolTestnet');
+  // Testnets
+  bitcoinCashTestnet('bitcoinCashTestnet'),
+  bitcoinCashSlpTestnet('bitcoinCashSlpTestnet'),
+  bitcoinSvTestnet('bitcoinSvTestnet'),
+  bitcoinTestnet('bitcoinTestnet'),
+  dashTestnet('dashTestnet'),
+  dogecoinTestnet('dogecoinTestnet'),
+  ecashTestnet('ecashTestnet'),
+  litecoinTestnet('litecoinTestnet'),
+  zcashTestnet('zcashTestnet'),
+  pepecoinTestnet('pepecoinTestnet'),
+  electraProtocolTestnet('electraProtocolTestnet');
+
   final String name;
 
-  const Bip49Coins._(this.name);
+  const Bip49Coins(this.name);
 
   @override
   Bip49Coins get value => this;
@@ -44,52 +44,38 @@ class Bip49Coins extends BipCoins {
   String get coinName => name;
 
   @override
-  BipCoinConfig get conf => _coinToConf[this]!;
+  BaseBipCoinConfig get conf {
+    final config = Bip49Conf();
+    return switch (this) {
+      bitcoin => config.bitcoinMainNet,
+      bitcoinTestnet => config.bitcoinTestNet,
+      bitcoinCash => config.bitcoinCashMainNet,
+      bitcoinCashTestnet => config.bitcoinCashTestNet,
+      bitcoinCashSlp => config.bitcoinCashSlpMainNet,
+      bitcoinCashSlpTestnet => config.bitcoinCashSlpTestNet,
+      bitcoinSv => config.bitcoinSvMainNet,
+      bitcoinSvTestnet => config.bitcoinSvTestNet,
+      dash => config.dashMainNet,
+      dashTestnet => config.dashTestNet,
+      dogecoin => config.dogecoinMainNet,
+      dogecoinTestnet => config.dogecoinTestNet,
+      ecash => config.ecashMainNet,
+      ecashTestnet => config.ecashTestNet,
+      litecoin => config.litecoinMainNet,
+      litecoinTestnet => config.litecoinTestNet,
+      zcash => config.zcashMainNet,
+      zcashTestnet => config.zcashTestNet,
+      pepecoin => config.pepeMainnet,
+      pepecoinTestnet => config.pepeTestnet,
+      electraProtocol => config.electraProtocolMainNet,
+      electraProtocolTestnet => config.electraProtocolTestNet,
+    };
+  }
 
   static Bip49Coins? fromName(String name) {
-    try {
-      return _coinToConf.keys.firstWhere((element) => element.name == name);
-    } on StateError {
-      return null;
-    }
+    return values.firstWhereNullable((element) => element.name == name);
   }
-
-  static List<Bip49Coins> fromCurve(EllipticCurveTypes type) {
-    return _coinToConf.entries
-        .where((element) => element.value.type == type)
-        .map((e) => e.key)
-        .toList();
-  }
-
-  static List<Bip49Coins> get values => _coinToConf.keys.toList();
-
-  /// A mapping that associates each BIP49Coin (enum) with its corresponding
-  /// BipCoinConfig configuration.
-  static final Map<Bip49Coins, BipCoinConfig> _coinToConf = {
-    Bip49Coins.bitcoin: Bip49Conf.bitcoinMainNet,
-    Bip49Coins.bitcoinTestnet: Bip49Conf.bitcoinTestNet,
-    Bip49Coins.bitcoinCash: Bip49Conf.bitcoinCashMainNet,
-    Bip49Coins.bitcoinCashTestnet: Bip49Conf.bitcoinCashTestNet,
-    Bip49Coins.bitcoinCashSlp: Bip49Conf.bitcoinCashSlpMainNet,
-    Bip49Coins.bitcoinCashSlpTestnet: Bip49Conf.bitcoinCashSlpTestNet,
-    Bip49Coins.bitcoinSv: Bip49Conf.bitcoinSvMainNet,
-    Bip49Coins.bitcoinSvTestnet: Bip49Conf.bitcoinSvTestNet,
-    Bip49Coins.dash: Bip49Conf.dashMainNet,
-    Bip49Coins.dashTestnet: Bip49Conf.dashTestNet,
-    Bip49Coins.dogecoin: Bip49Conf.dogecoinMainNet,
-    Bip49Coins.dogecoinTestnet: Bip49Conf.dogecoinTestNet,
-    Bip49Coins.ecash: Bip49Conf.ecashMainNet,
-    Bip49Coins.ecashTestnet: Bip49Conf.ecashTestNet,
-    Bip49Coins.litecoin: Bip49Conf.litecoinMainNet,
-    Bip49Coins.litecoinTestnet: Bip49Conf.litecoinTestNet,
-    Bip49Coins.zcash: Bip49Conf.zcashMainNet,
-    Bip49Coins.zcashTestnet: Bip49Conf.zcashTestNet,
-    Bip49Coins.pepecoin: Bip49Conf.pepeMainnet,
-    Bip49Coins.pepecoinTestnet: Bip49Conf.pepeTestnet,
-    Bip49Coins.electraProtocol: Bip49Conf.electraProtocolMainNet,
-    Bip49Coins.electraProtocolTestnet: Bip49Conf.electraProtocolTestNet,
-  };
 
   @override
-  BipProposal get proposal => BipProposal.bip49;
+  CoinProposal get proposal => CoinProposal.bip49;
 }

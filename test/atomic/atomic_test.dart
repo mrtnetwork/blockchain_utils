@@ -52,16 +52,18 @@ void main() {
       final results = <String>[];
 
       // First task throws
-      lock.run(() async {
-        Future<void> err() async {
-          results.add('error-start');
-          await Future.delayed(const Duration(milliseconds: 50));
-          throw Exception('Boom');
-        }
+      lock
+          .run(() async {
+            Future<void> err() async {
+              results.add('error-start');
+              await Future.delayed(const Duration(milliseconds: 50));
+              throw Exception('Boom');
+            }
 
-        await err();
-        return null;
-      }, lockId: LockId.one).catchError((_) => null);
+            await err();
+            return null;
+          }, lockId: LockId.one)
+          .catchError((_) => null);
 
       // Next task should still run
       lock.run(() async {

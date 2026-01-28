@@ -1,9 +1,10 @@
 import 'package:blockchain_utils/cbor/core/cbor.dart';
 import 'package:blockchain_utils/cbor/core/tags.dart';
 import 'package:blockchain_utils/cbor/types/bigint.dart';
+import 'package:blockchain_utils/cbor/utils/cbor_utils.dart';
 import 'package:blockchain_utils/cbor/utils/dynamic_bytes.dart';
 import 'package:blockchain_utils/helper/extensions/extensions.dart';
-import 'package:blockchain_utils/utils/utils.dart';
+import 'package:blockchain_utils/utils/binary/utils.dart';
 
 import 'int64.dart';
 
@@ -12,13 +13,21 @@ class CborBigFloatValue extends CborObject<List<BigInt>> {
   /// Constructor for creating a CborBigFloatValue instance with the provided parameters.
   /// It accepts the Bigint exponent and mantissa.
   CborBigFloatValue(this.exponent, this.mantissa)
-      : super([exponent, mantissa].immutable);
+    : super([exponent, mantissa].immutable);
 
   /// Create a CborBigFloatValue from two CborNumeric values representing the exponent and mantissa.
   factory CborBigFloatValue.fromCborNumeric(
-      CborNumeric exponent, CborNumeric mantissa) {
-    return CborBigFloatValue(CborNumeric.getCborNumericValue(exponent),
-        CborNumeric.getCborNumericValue(mantissa));
+    CborNumeric exponent,
+    CborNumeric mantissa,
+  ) {
+    return CborBigFloatValue(
+      CborNumeric.getCborNumericValue(exponent),
+      CborNumeric.getCborNumericValue(mantissa),
+    );
+  }
+
+  factory CborBigFloatValue.decode(List<int> bytes) {
+    return CborUtils.decodeCbor(bytes);
   }
 
   /// exponent value
@@ -61,15 +70,6 @@ class CborBigFloatValue extends CborObject<List<BigInt>> {
     return "$exponent, $mantissa";
   }
 
-  /// overide equal operation
   @override
-  operator ==(other) {
-    if (other is! CborBigFloatValue) return false;
-
-    return CompareUtils.iterableIsEqual(value, other.value);
-  }
-
-  /// ovveride hash code
-  @override
-  int get hashCode => value.hashCode;
+  List<dynamic> get variables => value;
 }

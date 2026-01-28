@@ -1,4 +1,4 @@
-import 'package:blockchain_utils/utils/utils.dart';
+import 'package:blockchain_utils/utils/binary/binary_operation.dart';
 
 class Crc16 {
   static const int _poly = 0x1021;
@@ -16,12 +16,12 @@ class Crc16 {
           reg += 1;
         }
         mask >>= 1;
-        if (reg > mask16) {
-          reg &= mask16;
+        if (reg > BinaryOps.mask16) {
+          reg &= BinaryOps.mask16;
           reg ^= _poly;
         }
       }
     }
-    return List<int>.from([reg >> 8, reg & mask8]);
+    return [reg >> 8, reg & BinaryOps.mask8];
   }
 }

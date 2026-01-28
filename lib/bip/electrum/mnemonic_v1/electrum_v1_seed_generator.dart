@@ -2,8 +2,11 @@ import 'dart:core';
 
 import 'package:blockchain_utils/bip/electrum/mnemonic_v1/electrum_v1_mnemonic.dart';
 import 'package:blockchain_utils/bip/electrum/mnemonic_v1/electrum_v1_mnemonic_decoder.dart';
-import 'package:blockchain_utils/utils/utils.dart';
+import 'package:blockchain_utils/helper/extensions/extensions.dart';
+
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
+import 'package:blockchain_utils/utils/binary/utils.dart';
+import 'package:blockchain_utils/utils/string/string.dart';
 
 /// Constants related to the generation of Electrum V1 seeds.
 class ElectrumV1SeedGeneratorConst {
@@ -22,16 +25,18 @@ class ElectrumV1SeedGenerator {
   ///
   /// [mnemonic]: The Electrum V1 mnemonic used to generate the seed.
   /// [language]: The language used for mnemonic decoding (default: English).
-  ElectrumV1SeedGenerator(String mnemonic,
-      [ElectrumV1Languages? language = ElectrumV1Languages.english])
-      : _seed =
-            _generateSeed(ElectrumV1MnemonicDecoder(language).decode(mnemonic));
+  ElectrumV1SeedGenerator(
+    String mnemonic, [
+    ElectrumV1Languages? language = ElectrumV1Languages.english,
+  ]) : _seed = _generateSeed(
+         ElectrumV1MnemonicDecoder(language).decode(mnemonic),
+       );
 
   /// Generates the Electrum V1 seed.
   ///
   /// Returns the generated Electrum V1 seed as a `List<int>`.
   List<int> generate() {
-    return List<int>.from(_seed);
+    return _seed.clone();
   }
 
   /// Generates an Electrum V1 seed from entropy bytes using a specified number of hash iterations.
@@ -41,7 +46,7 @@ class ElectrumV1SeedGenerator {
     final entropy = StringUtils.encode(BytesUtils.toHexString(entropyBytes));
     List<int> h = entropy;
     for (int i = 0; i < ElectrumV1SeedGeneratorConst.hashIterationNum; i++) {
-      h = QuickCrypto.sha256Hash(List<int>.from([...h, ...entropy]));
+      h = QuickCrypto.sha256Hash([...h, ...entropy]);
     }
     return h;
   }

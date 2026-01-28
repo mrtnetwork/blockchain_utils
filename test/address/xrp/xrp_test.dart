@@ -8,11 +8,11 @@ import 'test_vector.dart' show testVector;
 void main() {
   test("xrp address", () {
     for (final i in testVector) {
-      final params = Map<String, dynamic>.from(i["params"]);
-      final z = XrpAddrEncoder()
-          .encodeKey(BytesUtils.fromHexString(i["public"]), params);
+      final z = XrpAddrEncoder().encodeKey(
+        BytesUtils.fromHexString(i["public"]),
+      );
       expect(z, i["address"]);
-      final decode = XrpAddrDecoder().decodeAddr(z, params);
+      final decode = XrpAddrDecoder().decodeAddr(z);
       expect(decode.toHex(), i["decode"]);
     }
   });

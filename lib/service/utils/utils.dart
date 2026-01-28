@@ -1,6 +1,8 @@
 import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/service/models/params.dart';
-import 'package:blockchain_utils/utils/utils.dart';
+import 'package:blockchain_utils/utils/numbers/utils/bigint_utils.dart';
+import 'package:blockchain_utils/utils/numbers/utils/int_utils.dart';
+import 'package:blockchain_utils/utils/string/string.dart';
 
 /// A utility class providing helper methods for handling HTTP responses,
 /// building JSON-RPC requests, and parsing responses in a service-oriented architecture.
@@ -10,8 +12,11 @@ class ServiceProviderUtils {
   /// If the status code is `401` or `403` and the object is a list of bytes or a string,
   /// it attempts to decode the error message.
   /// Returns: A decoded error message if applicable, otherwise `null`.
-  static String? findError(
-      {Object? object, required int statusCode, List<int>? allowStatusCode}) {
+  static String? findError({
+    Object? object,
+    required int statusCode,
+    List<int>? allowStatusCode,
+  }) {
     String? error;
     if (object is List<int>) {
       error = StringUtils.tryDecode(object);
@@ -31,8 +36,11 @@ class ServiceProviderUtils {
   /// Similar to [findError], but includes additional details such as JSON parsing.
   ///
   /// Returns: A map containing the status code and an error message (if any).
-  static Map<String, dynamic> findErrorDetails(
-      {Object? object, required int statusCode, List<int>? errorStatusCodes}) {
+  static Map<String, dynamic> findErrorDetails({
+    Object? object,
+    required int statusCode,
+    List<int>? errorStatusCodes,
+  }) {
     String? error;
     if ((errorStatusCodes != null && errorStatusCodes.contains(statusCode)) &&
             statusCode == 401 ||
@@ -64,7 +72,7 @@ class ServiceProviderUtils {
       "jsonrpc": "2.0",
       "method": method,
       "params": params,
-      "id": requestId
+      "id": requestId,
     };
   }
 
@@ -73,8 +81,10 @@ class ServiceProviderUtils {
   /// - [statusCode]: The HTTP status code to check.
   ///
   /// Returns: `true` if the status code is in the range 200–299, otherwise `false`.
-  static bool isSuccessStatusCode(int statusCode,
-      {List<int>? allowSuccessStatusCodes}) {
+  static bool isSuccessStatusCode(
+    int statusCode, {
+    List<int>? allowSuccessStatusCodes,
+  }) {
     if (allowSuccessStatusCodes != null) {
       return allowSuccessStatusCodes.contains(statusCode);
     }
@@ -119,9 +129,10 @@ class ServiceProviderUtils {
       return StringUtils.toJson(resultString);
     }
     if (<Map<String, dynamic>>[] is T) {
-      return StringUtils.toJson<List>(resultString)
-          .map((e) => (e as Map).cast<String, dynamic>())
-          .toList() as T;
+      return StringUtils.toJson<List>(
+            resultString,
+          ).map((e) => (e as Map).cast<String, dynamic>()).toList()
+          as T;
     }
     return resultString as T;
   }
@@ -134,8 +145,10 @@ class ServiceProviderUtils {
   /// Throws: [RPCError] if parsing fails.
   ///
   /// Returns: The parsed response as an object of type `T`.
-  static T parseResponse<T>(
-      {required Object? object, required BaseServiceRequestParams params}) {
+  static T parseResponse<T>({
+    required Object? object,
+    required BaseServiceRequestParams params,
+  }) {
     try {
       if (object is T) return object;
       if (object == null && null is T) {
@@ -152,13 +165,15 @@ class ServiceProviderUtils {
       }
       if (<Map<String, dynamic>>[] is T) {
         if (object is String) {
-          return StringUtils.toJson<List>(object)
-              .map((e) => (e as Map).cast<String, dynamic>())
-              .toList() as T;
+          return StringUtils.toJson<List>(
+                object,
+              ).map((e) => (e as Map).cast<String, dynamic>()).toList()
+              as T;
         }
         return (object as List)
-            .map((e) => (e as Map).cast<String, dynamic>())
-            .toList() as T;
+                .map((e) => (e as Map).cast<String, dynamic>())
+                .toList()
+            as T;
       }
       if (<int>[] is T) {
         if (object is List<int>) {
@@ -169,9 +184,10 @@ class ServiceProviderUtils {
       return object as T;
     } catch (e) {
       throw RPCError(
-          message: "Parsing response failed.",
-          request: params.toJson(),
-          details: {"error": e.toString(), "excepted": "$T"});
+        message: "Parsing response failed.",
+        request: params.toJson(),
+        details: {"error": e.toString(), "excepted": "$T"},
+      );
     }
   }
 }

@@ -1,5 +1,9 @@
 import 'package:blockchain_utils/helper/extensions/extensions.dart';
-import 'package:blockchain_utils/utils/utils.dart';
+import 'package:blockchain_utils/utils/binary/utils.dart';
+import 'package:blockchain_utils/utils/json/exception/exception.dart';
+import 'package:blockchain_utils/utils/numbers/utils/bigint_utils.dart';
+import 'package:blockchain_utils/utils/numbers/utils/int_utils.dart';
+import 'package:blockchain_utils/utils/string/string.dart';
 
 class JsonParser {
   static bool _isNull<T extends Object?>() {
@@ -92,8 +96,10 @@ class JsonParser {
     return <String>{} is T;
   }
 
-  static T valueAsBigInt<T extends BigInt?>(Object? value,
-      {bool allowHex = false}) {
+  static T valueAsBigInt<T extends BigInt?>(
+    Object? value, {
+    bool allowHex = false,
+  }) {
     if (value is T) return value;
     if (value == null && _isNull<T>()) return null as T;
     final toBigint = BigintUtils.tryParse(value, allowHex: allowHex);
@@ -103,8 +109,11 @@ class JsonParser {
     return toBigint as T;
   }
 
-  static T valueAsInt<T extends int?>(Object? value,
-      {bool allowHex = false, bool allowDouble = false}) {
+  static T valueAsInt<T extends int?>(
+    Object? value, {
+    bool allowHex = false,
+    bool allowDouble = false,
+  }) {
     if (value is T) return value;
     if (value == null && _isNull<T>()) return null as T;
 
@@ -132,8 +141,10 @@ class JsonParser {
 
     final toInt = IntUtils.tryParse(value, allowHex: allowHex);
     if (toInt == null) {
-      throw JSONHelperException("Failed to parse value as int.",
-          details: {"value": value});
+      throw JSONHelperException(
+        "Failed to parse value as int.",
+        details: {"value": value},
+      );
     }
     return toInt as T;
   }
@@ -155,7 +166,12 @@ class JsonParser {
   static T valueAsString<T extends String?>(Object? value) {
     if (value is T) return value;
     if (value == null && _isNull<T>()) return null as T;
-
+    if (value is List<int>) {
+      final decode = StringUtils.tryDecode(value, type: StringEncoding.utf8);
+      if (decode != null) {
+        return decode as T;
+      }
+    }
     if (value is! String) {
       throw JSONHelperException("Failed to parse value as string.");
     }
@@ -176,8 +192,11 @@ class JsonParser {
     throw JSONHelperException("Failed to parse value as boolean.");
   }
 
-  static T valueAsBytes<T extends List<int>?>(Object? value,
-      {bool allowHex = true, StringEncoding? encoding}) {
+  static T valueAsBytes<T extends List<int>?>(
+    Object? value, {
+    bool allowHex = true,
+    StringEncoding? encoding,
+  }) {
     if (value == null && _isNull<T>()) return null as T;
     if (value is List) {
       try {
@@ -299,6 +318,7 @@ class JsonParser {
               .toList()
               .cast<T>();
         }
+        return value.map((e) => valueAs<T>(e)).toList();
       }
       return List<T>.from(value);
     } catch (_) {
@@ -315,10 +335,16 @@ class JsonParser {
     }
   }
 
-  static T valueAs<T extends Object?>(Object? value,
-      {bool? allowHex, StringEncoding? encoding, bool asBytes = false}) {
-    assert((allowHex == null && encoding == null) || asBytes,
-        "allowHex and encoding must be use with asBytes");
+  static T valueAs<T extends Object?>(
+    Object? value, {
+    bool? allowHex,
+    StringEncoding? encoding,
+    bool asBytes = false,
+  }) {
+    assert(
+      (allowHex == null && encoding == null) || asBytes,
+      "allowHex and encoding must be use with asBytes",
+    );
     if (value is T) {
       return value;
     }
@@ -354,8 +380,12 @@ class JsonParser {
       return valueAsList<List<String>>(value) as T;
     } else if (_isListInt<T>()) {
       if (asBytes) {
-        return valueAsBytes<List<int>>(value,
-            allowHex: allowHex ?? true, encoding: encoding) as T;
+        return valueAsBytes<List<int>>(
+              value,
+              allowHex: allowHex ?? true,
+              encoding: encoding,
+            )
+            as T;
       }
       return valueAsList<List<int>>(value) as T;
     } else if (_isListBigInt<T>()) {
@@ -375,18 +405,23 @@ class JsonParser {
     throw JSONHelperException("Failed to parse object as $T");
   }
 
-  static T valueTo<T extends Object?, VV extends Object?>(
-      {required Object? value,
-      required T Function(VV v) parse,
-      bool? allowHex,
-      StringEncoding? encoding,
-      bool asBytes = false}) {
+  static T valueTo<T extends Object?, VV extends Object?>({
+    required Object? value,
+    required T Function(VV v) parse,
+    bool? allowHex,
+    StringEncoding? encoding,
+    bool asBytes = false,
+  }) {
     if (value == null) {
       if (_isNull<VV>()) return parse(null as VV);
       if (_isNull<T>()) return null as T;
     }
-    final VV r = valueAs<VV>(value,
-        allowHex: allowHex, encoding: encoding, asBytes: asBytes);
+    final VV r = valueAs<VV>(
+      value,
+      allowHex: allowHex,
+      encoding: encoding,
+      asBytes: asBytes,
+    );
     return parse(r);
   }
 }
@@ -405,18 +440,29 @@ extension JSONHelper<K, V> on Map<K, V> {
     throw JSONHelperException("Missing key: '$key'.");
   }
 
+  bool hasValue(K key) {
+    final value = this[key];
+    return value != null;
+  }
+
   T valueAsBigInt<T extends BigInt?>(K key, {bool allowHex = false}) {
     final value = _checkItem<T>(key);
     if (value == null) return value as T;
     return JsonParser.valueAsBigInt<T>(value, allowHex: allowHex);
   }
 
-  T valueAsInt<T extends int?>(K key,
-      {bool allowHex = false, bool allowDouble = false}) {
+  T valueAsInt<T extends int?>(
+    K key, {
+    bool allowHex = false,
+    bool allowDouble = false,
+  }) {
     final value = _checkItem<T>(key);
     if (value == null) return value as T;
-    return JsonParser.valueAsInt<T>(value,
-        allowDouble: allowDouble, allowHex: allowHex);
+    return JsonParser.valueAsInt<T>(
+      value,
+      allowDouble: allowDouble,
+      allowHex: allowHex,
+    );
   }
 
   T valueAsDouble<T extends double?>(K key) {
@@ -437,12 +483,18 @@ extension JSONHelper<K, V> on Map<K, V> {
     return JsonParser.valueAsBool<T>(value);
   }
 
-  T valueAsBytes<T extends List<int>?>(K key,
-      {bool allowHex = true, StringEncoding? encoding}) {
+  T valueAsBytes<T extends List<int>?>(
+    K key, {
+    bool allowHex = true,
+    StringEncoding? encoding,
+  }) {
     final value = _checkItem<T>(key);
     if (value == null) return value as T;
-    return JsonParser.valueAsBytes<T>(value,
-        allowHex: allowHex, encoding: encoding);
+    return JsonParser.valueAsBytes<T>(
+      value,
+      allowHex: allowHex,
+      encoding: encoding,
+    );
   }
 
   T valueAsMap<T extends Map?>(K key) {
@@ -478,22 +530,33 @@ extension JSONHelper<K, V> on Map<K, V> {
     return JsonParser.valueEnsureAsSet<T>(value);
   }
 
-  T valueAs<T extends Object?>(K key,
-      {bool? allowHex, StringEncoding? encoding, bool asBytes = false}) {
-    assert((allowHex == null && encoding == null) || asBytes,
-        "allowHex and encoding must be use with asBytes");
+  T valueAs<T extends Object?>(
+    K key, {
+    bool? allowHex,
+    StringEncoding? encoding,
+    bool asBytes = false,
+  }) {
+    assert(
+      (allowHex == null && encoding == null) || asBytes,
+      "allowHex and encoding must be use with asBytes",
+    );
     final value = _checkItem<T>(key);
     if (value == null) return null as T;
-    return JsonParser.valueAs(value,
-        allowHex: allowHex, asBytes: asBytes, encoding: encoding);
+    return JsonParser.valueAs(
+      value,
+      allowHex: allowHex,
+      asBytes: asBytes,
+      encoding: encoding,
+    );
   }
 
-  T valueTo<T extends Object?, VV extends Object?>(
-      {required K key,
-      required T Function(VV v) parse,
-      bool? allowHex,
-      StringEncoding? encoding,
-      bool asBytes = false}) {
+  T valueTo<T extends Object?, VV extends Object?>({
+    required K key,
+    required T Function(VV v) parse,
+    bool? allowHex,
+    StringEncoding? encoding,
+    bool asBytes = false,
+  }) {
     final value = this[key];
     if (value == null) {
       if (JsonParser._isNull<VV>()) return parse(null as VV);
@@ -501,10 +564,11 @@ extension JSONHelper<K, V> on Map<K, V> {
     }
     ensureKeyExists(key);
     return JsonParser.valueTo(
-        value: value,
-        parse: parse,
-        allowHex: allowHex,
-        asBytes: asBytes,
-        encoding: encoding);
+      value: value,
+      parse: parse,
+      allowHex: allowHex,
+      asBytes: asBytes,
+      encoding: encoding,
+    );
   }
 }

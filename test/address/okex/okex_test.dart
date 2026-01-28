@@ -8,11 +8,11 @@ import 'test_vector.dart' show testVector;
 void main() {
   test("okex address test", () {
     for (final i in testVector) {
-      final params = Map<String, dynamic>.from(i["params"]);
-      final z = OkexAddrEncoder()
-          .encodeKey(BytesUtils.fromHexString(i["public"]), params);
+      final z = OkexAddrEncoder().encodeKey(
+        BytesUtils.fromHexString(i["public"]),
+      );
       expect(z, i["address"]);
-      final decode = OkexAddrDecoder().decodeAddr(z, params);
+      final decode = OkexAddrDecoder().decodeAddr(z);
       expect(decode.toHex(), i["decode"]);
     }
   });

@@ -9,12 +9,13 @@ import 'derive_public_vector.dart';
 void main() {
   test("shnorrkel public derive", () {
     for (final i in derivePublicTestVector) {
-      SchnorrkelPublicKey publicKey =
-          SchnorrkelPublicKey(BytesUtils.fromHexString(i["public_key"]));
+      SchnorrkelPublicKey publicKey = SchnorrkelPublicKey(
+        BytesUtils.fromHexString(i["public_key"]),
+      );
       final child = List.from(i["child"]);
       for (int c = 0; c < child.length; c++) {
         final chainCode = BytesUtils.fromHexString(child[c]["chain_code"]);
-        publicKey = publicKey.derive(chainCode).item1;
+        publicKey = publicKey.derive(chainCode).$1;
         expect(publicKey.toBytes().toHex(), child[c]["public_key"]);
       }
     }
@@ -32,17 +33,18 @@ void main() {
         final chainCode = BytesUtils.fromHexString(child[c]["chain_code"]);
         if (isHard) {
           final deriveHard = secretKey.hardDerive(chainCode);
-          secretKey = deriveHard.item1;
+          secretKey = deriveHard.$1;
         } else {
           final deriveSoft = secretKey.softDerive(chainCode);
-          secretKey = deriveSoft.item1;
+          secretKey = deriveSoft.$1;
         }
         expect(secretKey.publicKey().toBytes().toHex(), child[c]["public_key"]);
         if (isHard) {
           expect(secretKey.toBytes().toHex(), child[c]["private_key"]);
         } else {
           final keyBytes = SchnorrkelSecretKey.fromBytes(
-              BytesUtils.fromHexString(child[c]["private_key"]));
+            BytesUtils.fromHexString(child[c]["private_key"]),
+          );
           expect(secretKey.key().toHex(), keyBytes.key().toHex());
         }
       }

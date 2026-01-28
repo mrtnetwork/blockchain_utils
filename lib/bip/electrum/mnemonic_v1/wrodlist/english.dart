@@ -1627,5 +1627,5 @@ const List<String> _english = [
   "total",
   "unseen",
   "weapon",
-  "weary"
+  "weary",
 ];

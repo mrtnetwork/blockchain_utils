@@ -1,5 +1,5 @@
 /* Fixed test cases for field inverses: pairs of (x, 1/x) mod p. */
-import 'package:blockchain_utils/crypto/crypto/cdsa/secp256k1/secp256k1.dart';
+import 'package:blockchain_utils/crypto/crypto/ec/projective/secp256k1/secp256k1.dart';
 import 'package:blockchain_utils/helper/extensions/extensions.dart';
 
 Secp256k1Fe _toFe(
@@ -24,282 +24,971 @@ Secp256k1Fe _toFe(
   );
 }
 
-List<List<Secp256k1Fe>> feCases = [
-  /* 0 */
-  [_toFe(0, 0, 0, 0, 0, 0, 0, 0), _toFe(0, 0, 0, 0, 0, 0, 0, 0)],
-  /* 1 */
-  [_toFe(0, 0, 0, 0, 0, 0, 0, 1), _toFe(0, 0, 0, 0, 0, 0, 0, 1)],
-  /* -1 */
-  [
-    _toFe(0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff,
-        0xffffffff, 0xfffffffe, 0xfffffc2e),
-    _toFe(0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff,
-        0xffffffff, 0xfffffffe, 0xfffffc2e)
-  ],
-  /* 2 */
-  [
-    _toFe(0, 0, 0, 0, 0, 0, 0, 2),
-    _toFe(0x7fffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff,
-        0xffffffff, 0xffffffff, 0x7ffffe18)
-  ],
-  /* 2**128 */
-  [
-    _toFe(0, 0, 0, 1, 0, 0, 0, 0),
-    _toFe(0xbcb223fe, 0xdc24a059, 0xd838091d, 0xd2253530, 0xffffffff,
-        0xffffffff, 0xffffffff, 0x434dd931)
-  ],
-  /* Input known to need 637 divsteps */
-  [
-    _toFe(0xe34e9c95, 0x6bee8a84, 0x0dcb632a, 0xdb8a1320, 0x66885408,
-        0x06f3f996, 0x7c11ca84, 0x19199ec3),
-    _toFe(0xbd2cbd8f, 0x1c536828, 0x9bccda44, 0x2582ac0c, 0x870152b0,
-        0x8a3f09fb, 0x1aaadf92, 0x19b618e5)
-  ],
-  /* Input known to need 567 divsteps starting with delta=1/2. */
-  [
-    _toFe(0xf6bc3ba3, 0x636451c4, 0x3e46357d, 0x2c21d619, 0x0988e234,
-        0x15985661, 0x6672982b, 0xa7549bfc),
-    _toFe(0xb024fdc7, 0x5547451e, 0x426c585f, 0xbd481425, 0x73df6b75,
-        0xeef6d9d0, 0x389d87d4, 0xfbb440ba)
-  ],
-  /* Input known to need 566 divsteps starting with delta=1/2. */
-  [
-    _toFe(0xb595d81b, 0x2e3c1e2f, 0x482dbc65, 0xe4865af7, 0x9a0a50aa,
-        0x29f9e618, 0x6f87d7a5, 0x8d1063ae),
-    _toFe(0xc983337c, 0x5d5c74e1, 0x49918330, 0x0b53afb5, 0xa0428a0b,
-        0xce6eef86, 0x059bd8ef, 0xe5b908de)
-  ],
-  /* Set of 10 inputs accessing all 128 entries in the modinv32 divsteps_var table */
-  [
-    _toFe(0x00000000, 0x00000000, 0xe0ff1f80, 0x1f000000, 0x00000000,
-        0x00000000, 0xfeff0100, 0x00000000),
-    _toFe(0x9faf9316, 0x77e5049d, 0x0b5e7a1b, 0xef70b893, 0x18c9e30c,
-        0x045e7fd7, 0x29eddf8c, 0xd62e9e3d)
-  ],
-  [
-    _toFe(0x621a538d, 0x511b2780, 0x35688252, 0x53f889a4, 0x6317c3ac,
-        0x32ba0a46, 0x6277c0d1, 0xccd31192),
-    _toFe(0x38513b0c, 0x5eba856f, 0xe29e882e, 0x9b394d8c, 0x34bda011,
-        0xeaa66943, 0x6a841a4c, 0x6ae8bcff)
-  ],
-  [
-    _toFe(0x00000200, 0xf0ffff1f, 0x00000000, 0x0000e0ff, 0xffffffff,
-        0xfffcffff, 0xffffffff, 0xffff0100),
-    _toFe(0x5da42a52, 0x3640de9e, 0x13e64343, 0x0c7591b7, 0x6c1e3519,
-        0xf048c5b6, 0x0484217c, 0xedbf8b2f)
-  ],
-  [
-    _toFe(0xd1343ef9, 0x4b952621, 0x7c52a2ee, 0x4ea1281b, 0x4ab46410,
-        0x9f26998d, 0xa686a8ff, 0x9f2103e8),
-    _toFe(0x84044385, 0x9a4619bf, 0x74e35b6d, 0xa47e0c46, 0x6b7fb47d,
-        0x9ffab128, 0xb0775aa3, 0xcb318bd1)
-  ],
-  [
-    _toFe(0xb27235d2, 0xc56a52be, 0x210db37a, 0xd50d23a4, 0xbe621bdd,
-        0x5df22c6a, 0xe926ba62, 0xd2e4e440),
-    _toFe(0x67a26e54, 0x483a9d3c, 0xa568469e, 0xd258ab3d, 0xb9ec9981,
-        0xdca9b1bd, 0x8d2775fe, 0x53ae429b)
-  ],
-  [
-    _toFe(0x00000000, 0x00000000, 0x00e0ffff, 0xffffff83, 0xffffffff,
-        0x3f00f00f, 0x000000e0, 0xffffffff),
-    _toFe(0x310e10f8, 0x23bbfab0, 0xac94907d, 0x076c9a45, 0x8d357d7f,
-        0xc763bcee, 0x00d0e615, 0x5a6acef6)
-  ],
-  [
-    _toFe(0xfeff0300, 0x001c0000, 0xf80700c0, 0x0ff0ffff, 0xffffffff,
-        0x0fffffff, 0xffff0100, 0x7f0000fe),
-    _toFe(0x28e2fdb4, 0x0709168b, 0x86f598b0, 0x3453a370, 0x530cf21f,
-        0x32f978d5, 0x1d527a71, 0x59269b0c)
-  ],
-  [
-    _toFe(0xc2591afa, 0x7bb98ef7, 0x090bb273, 0x85c14f87, 0xbb0b28e0,
-        0x54d3c453, 0x85c66753, 0xd5574d2f),
-    _toFe(0xfdca70a2, 0x70ce627c, 0x95e66fae, 0x848a6dbb, 0x07ffb15c,
-        0x5f63a058, 0xba4140ed, 0x6113b503)
-  ],
-  [
-    _toFe(0xf5475db3, 0xedc7b5a3, 0x411c047e, 0xeaeb452f, 0xc625828e,
-        0x1cf5ad27, 0x8eec1060, 0xc7d3e690),
-    _toFe(0x5eb756c0, 0xf963f4b9, 0xdc6a215e, 0xec8cc2d8, 0x2e9dec01,
-        0xde5eb88d, 0x6aba7164, 0xaecb2c5a)
-  ],
-  [
-    _toFe(0x00000000, 0x00f8ffff, 0xffffffff, 0x01000000, 0xe0ff1f00,
-        0x00000000, 0xffffff7f, 0x00000000),
-    _toFe(0xe0d2e3d8, 0x49b6157d, 0xe54e88c2, 0x1a7f02ca, 0x7dd28167,
-        0xf1125d81, 0x7bfa444e, 0xbe110037)
-  ],
-  /* Selection of randomly generated inputs that reach high/low d/e values in various configurations. */
-  [
-    _toFe(0x13cc08a4, 0xd8c41f0f, 0x179c3e67, 0x54c46c67, 0xc4109221,
-        0x09ab3b13, 0xe24d9be1, 0xffffe950),
-    _toFe(0xb80c8006, 0xd16abaa7, 0xcabd71e5, 0xcf6714f4, 0x966dd3d0,
-        0x64767a2d, 0xe92c4441, 0x51008cd1)
-  ],
-  [
-    _toFe(0xaa6db990, 0x95efbca1, 0x3cc6ff71, 0x0602e24a, 0xf49ff938,
-        0x99fffc16, 0x46f40993, 0xc6e72057),
-    _toFe(0xd5d3dd69, 0xb0c195e5, 0x285f1d49, 0xe639e48c, 0x9223f8a9,
-        0xca1d731d, 0x9ca482f9, 0xa5b93e06)
-  ],
-  [
-    _toFe(0x1c680eac, 0xaeabffd8, 0x9bdc4aee, 0x1781e3de, 0xa3b08108,
-        0x0015f2e0, 0x94449e1b, 0x2f67a058),
-    _toFe(0x7f083f8d, 0x31254f29, 0x6510f475, 0x245c373d, 0xc5622590,
-        0x4b323393, 0x32ed1719, 0xc127444b)
-  ],
-  [
-    _toFe(0x147d44b3, 0x012d83f8, 0xc160d386, 0x1a44a870, 0x9ba6be96,
-        0x8b962707, 0x267cbc1a, 0xb65b2f0a),
-    _toFe(0x555554ff, 0x170aef1e, 0x50a43002, 0xe51fbd36, 0xafadb458,
-        0x7a8aded1, 0x0ca6cd33, 0x6ed9087c)
-  ],
-  [
-    _toFe(0x12423796, 0x22f0fe61, 0xf9ca017c, 0x5384d107, 0xa1fbf3b2,
-        0x3b018013, 0x916a3c37, 0x4000b98c),
-    _toFe(0x20257700, 0x08668f94, 0x1177e306, 0x136c01f5, 0x8ed1fbd2,
-        0x95ec4589, 0xae38edb9, 0xfd19b6d7)
-  ],
-  [
-    _toFe(0xdcf2d030, 0x9ab42cb4, 0x93ffa181, 0xdcd23619, 0x39699b52,
-        0x08909a20, 0xb5a17695, 0x3a9dcf21),
-    _toFe(0x1f701dea, 0xe211fb1f, 0x4f37180d, 0x63a0f51c, 0x29fe1e40,
-        0xa40b6142, 0x2e7b12eb, 0x982b06b6)
-  ],
-  [
-    _toFe(0x79a851f6, 0xa6314ed3, 0xb35a55e6, 0xca1c7d7f, 0xe32369ea,
-        0xf902432e, 0x375308c5, 0xdfd5b600),
-    _toFe(0xcaae00c5, 0xe6b43851, 0x9dabb737, 0x38cba42c, 0xa02c8549,
-        0x7895dcbf, 0xbd183d71, 0xafe4476a)
-  ],
-  [
-    _toFe(0xede78fdd, 0xcfc92bf1, 0x4fec6c6c, 0xdb8d37e2, 0xfb66bc7b,
-        0x28701870, 0x7fa27c9a, 0x307196ec),
-    _toFe(0x68193a6c, 0x9a8b87a7, 0x2a760c64, 0x13e473f6, 0x23ae7bed,
-        0x1de05422, 0x88865427, 0xa3418265)
-  ],
-  [
-    _toFe(0xa40b2079, 0xb8f88e89, 0xa7617997, 0x89baf5ae, 0x174df343,
-        0x75138eae, 0x2711595d, 0x3fc3e66c),
-    _toFe(0x9f99c6a5, 0x6d685267, 0xd4b87c37, 0x9d9c4576, 0x358c692b,
-        0x6bbae0ed, 0x3389c93d, 0x7fdd2655)
-  ],
-  [
-    _toFe(0x7c74c6b6, 0xe98d9151, 0x72645cf1, 0x7f06e321, 0xcefee074,
-        0x15b2113a, 0x10a9be07, 0x08a45696),
-    _toFe(0x8c919a88, 0x898bc1e0, 0x77f26f97, 0x12e655b7, 0x9ba0ac40,
-        0xe15bb19e, 0x8364cc3b, 0xe227a8ee)
-  ],
-  [
-    _toFe(0x109ba1ce, 0xdafa6d4a, 0xa1cec2b2, 0xeb1069f4, 0xb7a79e5b,
-        0xec6eb99b, 0xaec5f643, 0xee0e723e),
-    _toFe(0x93d13eb8, 0x4bb0bcf9, 0xe64f5a71, 0xdbe9f359, 0x7191401c,
-        0x6f057a4a, 0xa407fe1b, 0x7ecb65cc)
-  ],
-  [
-    _toFe(0x3db076cd, 0xec74a5c9, 0xf61dd138, 0x90e23e06, 0xeeedd2d0,
-        0x74cbc4e0, 0x3dbe1e91, 0xded36a78),
-    _toFe(0x3f07f966, 0x8e2a1e09, 0x706c71df, 0x02b5e9d5, 0xcb92ddbf,
-        0xcdd53010, 0x16545564, 0xe660b107)
-  ],
-  [
-    _toFe(0xe31c73ed, 0xb4c4b82c, 0x02ae35f7, 0x4cdec153, 0x98b522fd,
-        0xf7d2460c, 0x6bf7c0f8, 0x4cf67b0d),
-    _toFe(0x4b8f1faf, 0x94e8b070, 0x19af0ff6, 0xa319cd31, 0xdf0a7ffb,
-        0xefaba629, 0x59c50666, 0x1fe5b843)
-  ],
-  [
-    _toFe(0x4c8b0e6e, 0x83392ab6, 0xc0e3e9f1, 0xbbd85497, 0x16698897,
-        0xf552d50d, 0x79652ddb, 0x12f99870),
-    _toFe(0x56d5101f, 0xd23b7949, 0x17dc38d6, 0xf24022ef, 0xcf18e70a,
-        0x5cc34424, 0x438544c3, 0x62da4bca)
-  ],
-  [
-    _toFe(0xb0e040e2, 0x40cc35da, 0x7dd5c611, 0x7fccb178, 0x28888137,
-        0xbc930358, 0xea2cbc90, 0x775417dc),
-    _toFe(0xca37f0d4, 0x016dd7c8, 0xab3ae576, 0x96e08d69, 0x68ed9155,
-        0xa9b44270, 0x900ae35d, 0x7c7800cd)
-  ],
-  [
-    _toFe(0x8a32ea49, 0x7fbb0bae, 0x69724a9d, 0x8e2105b2, 0xbdf69178,
-        0x862577ef, 0x35055590, 0x667ddaef),
-    _toFe(0xd02d7ead, 0xc5e190f0, 0x559c9d72, 0xdaef1ffc, 0x64f9f425,
-        0xf43645ea, 0x7341e08d, 0x11768e96)
-  ],
-  [
-    _toFe(0xa3592d98, 0x9abe289d, 0x579ebea6, 0xbb0857a8, 0xe242ab73,
-        0x85f9a2ce, 0xb6998f0f, 0xbfffbfc6),
-    _toFe(0x093c1533, 0x32032efa, 0x6aa46070, 0x0039599e, 0x589c35f4,
-        0xff525430, 0x7fe3777a, 0x44b43ddc)
-  ],
-  [
-    _toFe(0x647178a3, 0x229e607b, 0xcc98521a, 0xcce3fdd9, 0x1e1bc9c9,
-        0x97fb7c6a, 0x61b961e0, 0x99b10709),
-    _toFe(0x98217c13, 0xd51ddf78, 0x96310e77, 0xdaebd908, 0x602ca683,
-        0xcb46d07a, 0xa1fcf17e, 0xc8e2feb3)
-  ],
-  [
-    _toFe(0x7334627c, 0x73f98968, 0x99464b4b, 0xf5964958, 0x1b95870d,
-        0xc658227e, 0x5e3235d8, 0xdcab5787),
-    _toFe(0x000006fd, 0xc7e9dd94, 0x40ae367a, 0xe51d495c, 0x07603b9b,
-        0x2d088418, 0x6cc5c74c, 0x98514307)
-  ],
-  [
-    _toFe(0x82e83876, 0x96c28938, 0xa50dd1c5, 0x605c3ad1, 0xc048637d,
-        0x7a50825f, 0x335ed01a, 0x00005760),
-    _toFe(0xb0393f9f, 0x9f2aa55e, 0xf5607e2e, 0x5287d961, 0x60b3e704,
-        0xf3e16e80, 0xb4f9a3ea, 0xfec7f02d)
-  ],
-  [
-    _toFe(0xc97b6cec, 0x3ee6b8dc, 0x98d24b58, 0x3c1970a1, 0xfe06297a,
-        0xae813529, 0xe76bb6bd, 0x771ae51d),
-    _toFe(0x0507c702, 0xd407d097, 0x47ddeb06, 0xf6625419, 0x79f48f79,
-        0x7bf80d0b, 0xfc34b364, 0x253a5db1)
-  ],
-  [
-    _toFe(0xd559af63, 0x77ea9bc4, 0x3cf1ad14, 0x5c7a4bbb, 0x10e7d18b,
-        0x7ce0dfac, 0x380bb19d, 0x0bb99bd3),
-    _toFe(0x00196119, 0xb9b00d92, 0x34edfdb5, 0xbbdc42fc, 0xd2daa33a,
-        0x163356ca, 0xaa8754c8, 0xb0ec8b0b)
-  ],
-  [
-    _toFe(0x8ddfa3dc, 0x52918da0, 0x640519dc, 0x0af8512a, 0xca2d33b2,
-        0xbde52514, 0xda9c0afc, 0xcb29fce4),
-    _toFe(0xb3e4878d, 0x5cb69148, 0xcd54388b, 0xc23acce0, 0x62518ba8,
-        0xf09def92, 0x7b31e6aa, 0x6ba35b02)
-  ],
-  [
-    _toFe(0xf8207492, 0xe3049f0a, 0x65285f2b, 0x0bfff996, 0x00ca112e,
-        0xc05da837, 0x546d41f9, 0x5194fb91),
-    _toFe(0x7b7ee50b, 0xa8ed4bbd, 0xf6469930, 0x81419a5c, 0x071441c7,
-        0x290d046e, 0x3b82ea41, 0x611c5f95)
-  ],
-  [
-    _toFe(0x050f7c80, 0x5bcd3c6b, 0x823cb724, 0x5ce74db7, 0xa4e39f5c,
-        0xbd8828d7, 0xfd4d3e07, 0x3ec2926a),
-    _toFe(0x000d6730, 0xb0171314, 0x4764053d, 0xee157117, 0x48fd61da,
-        0xdea0b9db, 0x1d5e91c6, 0xbdc3f59e)
-  ],
-  [
-    _toFe(0x3e3ea8eb, 0x05d760cf, 0x23009263, 0xb3cb3ac9, 0x088f6f0d,
-        0x3fc182a3, 0xbd57087c, 0xe67c62f9),
-    _toFe(0xbe988716, 0xa29c1bf6, 0x4456aed6, 0xab1e4720, 0x49929305,
-        0x51043bf4, 0xebd833dd, 0xdd511e8b)
-  ],
-  [
-    _toFe(0x6964d2a9, 0xa7fa6501, 0xa5959249, 0x142f4029, 0xea0c1b5f,
-        0x2f487ef6, 0x301ac80a, 0x768be5cd),
-    _toFe(0x3918ffe4, 0x07492543, 0xed24d0b7, 0x3df95f8f, 0xaffd7cb4,
-        0x0de2191c, 0x9ec2f2ad, 0x2c0cb3c6)
-  ],
-  [
-    _toFe(0x37c93520, 0xf6ddca57, 0x2b42fd5e, 0xb5c7e4de, 0x11b5b81c,
-        0xb95e91f3, 0x95c4d156, 0x39877ccb),
-    _toFe(0x9a94b9b5, 0x57eb71ee, 0x4c975b8b, 0xac5262a8, 0x077b0595,
-        0xe12a6b1f, 0xd728edef, 0x1a6bf956)
-  ]
-].map((e) => e.immutable).toImutableList;
+List<List<Secp256k1Fe>> feCases =
+    [
+      /* 0 */
+      [_toFe(0, 0, 0, 0, 0, 0, 0, 0), _toFe(0, 0, 0, 0, 0, 0, 0, 0)],
+      /* 1 */
+      [_toFe(0, 0, 0, 0, 0, 0, 0, 1), _toFe(0, 0, 0, 0, 0, 0, 0, 1)],
+      /* -1 */
+      [
+        _toFe(
+          0xffffffff,
+          0xffffffff,
+          0xffffffff,
+          0xffffffff,
+          0xffffffff,
+          0xffffffff,
+          0xfffffffe,
+          0xfffffc2e,
+        ),
+        _toFe(
+          0xffffffff,
+          0xffffffff,
+          0xffffffff,
+          0xffffffff,
+          0xffffffff,
+          0xffffffff,
+          0xfffffffe,
+          0xfffffc2e,
+        ),
+      ],
+      /* 2 */
+      [
+        _toFe(0, 0, 0, 0, 0, 0, 0, 2),
+        _toFe(
+          0x7fffffff,
+          0xffffffff,
+          0xffffffff,
+          0xffffffff,
+          0xffffffff,
+          0xffffffff,
+          0xffffffff,
+          0x7ffffe18,
+        ),
+      ],
+      /* 2**128 */
+      [
+        _toFe(0, 0, 0, 1, 0, 0, 0, 0),
+        _toFe(
+          0xbcb223fe,
+          0xdc24a059,
+          0xd838091d,
+          0xd2253530,
+          0xffffffff,
+          0xffffffff,
+          0xffffffff,
+          0x434dd931,
+        ),
+      ],
+      /* Input known to need 637 divsteps */
+      [
+        _toFe(
+          0xe34e9c95,
+          0x6bee8a84,
+          0x0dcb632a,
+          0xdb8a1320,
+          0x66885408,
+          0x06f3f996,
+          0x7c11ca84,
+          0x19199ec3,
+        ),
+        _toFe(
+          0xbd2cbd8f,
+          0x1c536828,
+          0x9bccda44,
+          0x2582ac0c,
+          0x870152b0,
+          0x8a3f09fb,
+          0x1aaadf92,
+          0x19b618e5,
+        ),
+      ],
+      /* Input known to need 567 divsteps starting with delta=1/2. */
+      [
+        _toFe(
+          0xf6bc3ba3,
+          0x636451c4,
+          0x3e46357d,
+          0x2c21d619,
+          0x0988e234,
+          0x15985661,
+          0x6672982b,
+          0xa7549bfc,
+        ),
+        _toFe(
+          0xb024fdc7,
+          0x5547451e,
+          0x426c585f,
+          0xbd481425,
+          0x73df6b75,
+          0xeef6d9d0,
+          0x389d87d4,
+          0xfbb440ba,
+        ),
+      ],
+      /* Input known to need 566 divsteps starting with delta=1/2. */
+      [
+        _toFe(
+          0xb595d81b,
+          0x2e3c1e2f,
+          0x482dbc65,
+          0xe4865af7,
+          0x9a0a50aa,
+          0x29f9e618,
+          0x6f87d7a5,
+          0x8d1063ae,
+        ),
+        _toFe(
+          0xc983337c,
+          0x5d5c74e1,
+          0x49918330,
+          0x0b53afb5,
+          0xa0428a0b,
+          0xce6eef86,
+          0x059bd8ef,
+          0xe5b908de,
+        ),
+      ],
+      /* Set of 10 inputs accessing all 128 entries in the modinv32 divsteps_var table */
+      [
+        _toFe(
+          0x00000000,
+          0x00000000,
+          0xe0ff1f80,
+          0x1f000000,
+          0x00000000,
+          0x00000000,
+          0xfeff0100,
+          0x00000000,
+        ),
+        _toFe(
+          0x9faf9316,
+          0x77e5049d,
+          0x0b5e7a1b,
+          0xef70b893,
+          0x18c9e30c,
+          0x045e7fd7,
+          0x29eddf8c,
+          0xd62e9e3d,
+        ),
+      ],
+      [
+        _toFe(
+          0x621a538d,
+          0x511b2780,
+          0x35688252,
+          0x53f889a4,
+          0x6317c3ac,
+          0x32ba0a46,
+          0x6277c0d1,
+          0xccd31192,
+        ),
+        _toFe(
+          0x38513b0c,
+          0x5eba856f,
+          0xe29e882e,
+          0x9b394d8c,
+          0x34bda011,
+          0xeaa66943,
+          0x6a841a4c,
+          0x6ae8bcff,
+        ),
+      ],
+      [
+        _toFe(
+          0x00000200,
+          0xf0ffff1f,
+          0x00000000,
+          0x0000e0ff,
+          0xffffffff,
+          0xfffcffff,
+          0xffffffff,
+          0xffff0100,
+        ),
+        _toFe(
+          0x5da42a52,
+          0x3640de9e,
+          0x13e64343,
+          0x0c7591b7,
+          0x6c1e3519,
+          0xf048c5b6,
+          0x0484217c,
+          0xedbf8b2f,
+        ),
+      ],
+      [
+        _toFe(
+          0xd1343ef9,
+          0x4b952621,
+          0x7c52a2ee,
+          0x4ea1281b,
+          0x4ab46410,
+          0x9f26998d,
+          0xa686a8ff,
+          0x9f2103e8,
+        ),
+        _toFe(
+          0x84044385,
+          0x9a4619bf,
+          0x74e35b6d,
+          0xa47e0c46,
+          0x6b7fb47d,
+          0x9ffab128,
+          0xb0775aa3,
+          0xcb318bd1,
+        ),
+      ],
+      [
+        _toFe(
+          0xb27235d2,
+          0xc56a52be,
+          0x210db37a,
+          0xd50d23a4,
+          0xbe621bdd,
+          0x5df22c6a,
+          0xe926ba62,
+          0xd2e4e440,
+        ),
+        _toFe(
+          0x67a26e54,
+          0x483a9d3c,
+          0xa568469e,
+          0xd258ab3d,
+          0xb9ec9981,
+          0xdca9b1bd,
+          0x8d2775fe,
+          0x53ae429b,
+        ),
+      ],
+      [
+        _toFe(
+          0x00000000,
+          0x00000000,
+          0x00e0ffff,
+          0xffffff83,
+          0xffffffff,
+          0x3f00f00f,
+          0x000000e0,
+          0xffffffff,
+        ),
+        _toFe(
+          0x310e10f8,
+          0x23bbfab0,
+          0xac94907d,
+          0x076c9a45,
+          0x8d357d7f,
+          0xc763bcee,
+          0x00d0e615,
+          0x5a6acef6,
+        ),
+      ],
+      [
+        _toFe(
+          0xfeff0300,
+          0x001c0000,
+          0xf80700c0,
+          0x0ff0ffff,
+          0xffffffff,
+          0x0fffffff,
+          0xffff0100,
+          0x7f0000fe,
+        ),
+        _toFe(
+          0x28e2fdb4,
+          0x0709168b,
+          0x86f598b0,
+          0x3453a370,
+          0x530cf21f,
+          0x32f978d5,
+          0x1d527a71,
+          0x59269b0c,
+        ),
+      ],
+      [
+        _toFe(
+          0xc2591afa,
+          0x7bb98ef7,
+          0x090bb273,
+          0x85c14f87,
+          0xbb0b28e0,
+          0x54d3c453,
+          0x85c66753,
+          0xd5574d2f,
+        ),
+        _toFe(
+          0xfdca70a2,
+          0x70ce627c,
+          0x95e66fae,
+          0x848a6dbb,
+          0x07ffb15c,
+          0x5f63a058,
+          0xba4140ed,
+          0x6113b503,
+        ),
+      ],
+      [
+        _toFe(
+          0xf5475db3,
+          0xedc7b5a3,
+          0x411c047e,
+          0xeaeb452f,
+          0xc625828e,
+          0x1cf5ad27,
+          0x8eec1060,
+          0xc7d3e690,
+        ),
+        _toFe(
+          0x5eb756c0,
+          0xf963f4b9,
+          0xdc6a215e,
+          0xec8cc2d8,
+          0x2e9dec01,
+          0xde5eb88d,
+          0x6aba7164,
+          0xaecb2c5a,
+        ),
+      ],
+      [
+        _toFe(
+          0x00000000,
+          0x00f8ffff,
+          0xffffffff,
+          0x01000000,
+          0xe0ff1f00,
+          0x00000000,
+          0xffffff7f,
+          0x00000000,
+        ),
+        _toFe(
+          0xe0d2e3d8,
+          0x49b6157d,
+          0xe54e88c2,
+          0x1a7f02ca,
+          0x7dd28167,
+          0xf1125d81,
+          0x7bfa444e,
+          0xbe110037,
+        ),
+      ],
+      /* Selection of randomly generated inputs that reach high/low d/e values in various configurations. */
+      [
+        _toFe(
+          0x13cc08a4,
+          0xd8c41f0f,
+          0x179c3e67,
+          0x54c46c67,
+          0xc4109221,
+          0x09ab3b13,
+          0xe24d9be1,
+          0xffffe950,
+        ),
+        _toFe(
+          0xb80c8006,
+          0xd16abaa7,
+          0xcabd71e5,
+          0xcf6714f4,
+          0x966dd3d0,
+          0x64767a2d,
+          0xe92c4441,
+          0x51008cd1,
+        ),
+      ],
+      [
+        _toFe(
+          0xaa6db990,
+          0x95efbca1,
+          0x3cc6ff71,
+          0x0602e24a,
+          0xf49ff938,
+          0x99fffc16,
+          0x46f40993,
+          0xc6e72057,
+        ),
+        _toFe(
+          0xd5d3dd69,
+          0xb0c195e5,
+          0x285f1d49,
+          0xe639e48c,
+          0x9223f8a9,
+          0xca1d731d,
+          0x9ca482f9,
+          0xa5b93e06,
+        ),
+      ],
+      [
+        _toFe(
+          0x1c680eac,
+          0xaeabffd8,
+          0x9bdc4aee,
+          0x1781e3de,
+          0xa3b08108,
+          0x0015f2e0,
+          0x94449e1b,
+          0x2f67a058,
+        ),
+        _toFe(
+          0x7f083f8d,
+          0x31254f29,
+          0x6510f475,
+          0x245c373d,
+          0xc5622590,
+          0x4b323393,
+          0x32ed1719,
+          0xc127444b,
+        ),
+      ],
+      [
+        _toFe(
+          0x147d44b3,
+          0x012d83f8,
+          0xc160d386,
+          0x1a44a870,
+          0x9ba6be96,
+          0x8b962707,
+          0x267cbc1a,
+          0xb65b2f0a,
+        ),
+        _toFe(
+          0x555554ff,
+          0x170aef1e,
+          0x50a43002,
+          0xe51fbd36,
+          0xafadb458,
+          0x7a8aded1,
+          0x0ca6cd33,
+          0x6ed9087c,
+        ),
+      ],
+      [
+        _toFe(
+          0x12423796,
+          0x22f0fe61,
+          0xf9ca017c,
+          0x5384d107,
+          0xa1fbf3b2,
+          0x3b018013,
+          0x916a3c37,
+          0x4000b98c,
+        ),
+        _toFe(
+          0x20257700,
+          0x08668f94,
+          0x1177e306,
+          0x136c01f5,
+          0x8ed1fbd2,
+          0x95ec4589,
+          0xae38edb9,
+          0xfd19b6d7,
+        ),
+      ],
+      [
+        _toFe(
+          0xdcf2d030,
+          0x9ab42cb4,
+          0x93ffa181,
+          0xdcd23619,
+          0x39699b52,
+          0x08909a20,
+          0xb5a17695,
+          0x3a9dcf21,
+        ),
+        _toFe(
+          0x1f701dea,
+          0xe211fb1f,
+          0x4f37180d,
+          0x63a0f51c,
+          0x29fe1e40,
+          0xa40b6142,
+          0x2e7b12eb,
+          0x982b06b6,
+        ),
+      ],
+      [
+        _toFe(
+          0x79a851f6,
+          0xa6314ed3,
+          0xb35a55e6,
+          0xca1c7d7f,
+          0xe32369ea,
+          0xf902432e,
+          0x375308c5,
+          0xdfd5b600,
+        ),
+        _toFe(
+          0xcaae00c5,
+          0xe6b43851,
+          0x9dabb737,
+          0x38cba42c,
+          0xa02c8549,
+          0x7895dcbf,
+          0xbd183d71,
+          0xafe4476a,
+        ),
+      ],
+      [
+        _toFe(
+          0xede78fdd,
+          0xcfc92bf1,
+          0x4fec6c6c,
+          0xdb8d37e2,
+          0xfb66bc7b,
+          0x28701870,
+          0x7fa27c9a,
+          0x307196ec,
+        ),
+        _toFe(
+          0x68193a6c,
+          0x9a8b87a7,
+          0x2a760c64,
+          0x13e473f6,
+          0x23ae7bed,
+          0x1de05422,
+          0x88865427,
+          0xa3418265,
+        ),
+      ],
+      [
+        _toFe(
+          0xa40b2079,
+          0xb8f88e89,
+          0xa7617997,
+          0x89baf5ae,
+          0x174df343,
+          0x75138eae,
+          0x2711595d,
+          0x3fc3e66c,
+        ),
+        _toFe(
+          0x9f99c6a5,
+          0x6d685267,
+          0xd4b87c37,
+          0x9d9c4576,
+          0x358c692b,
+          0x6bbae0ed,
+          0x3389c93d,
+          0x7fdd2655,
+        ),
+      ],
+      [
+        _toFe(
+          0x7c74c6b6,
+          0xe98d9151,
+          0x72645cf1,
+          0x7f06e321,
+          0xcefee074,
+          0x15b2113a,
+          0x10a9be07,
+          0x08a45696,
+        ),
+        _toFe(
+          0x8c919a88,
+          0x898bc1e0,
+          0x77f26f97,
+          0x12e655b7,
+          0x9ba0ac40,
+          0xe15bb19e,
+          0x8364cc3b,
+          0xe227a8ee,
+        ),
+      ],
+      [
+        _toFe(
+          0x109ba1ce,
+          0xdafa6d4a,
+          0xa1cec2b2,
+          0xeb1069f4,
+          0xb7a79e5b,
+          0xec6eb99b,
+          0xaec5f643,
+          0xee0e723e,
+        ),
+        _toFe(
+          0x93d13eb8,
+          0x4bb0bcf9,
+          0xe64f5a71,
+          0xdbe9f359,
+          0x7191401c,
+          0x6f057a4a,
+          0xa407fe1b,
+          0x7ecb65cc,
+        ),
+      ],
+      [
+        _toFe(
+          0x3db076cd,
+          0xec74a5c9,
+          0xf61dd138,
+          0x90e23e06,
+          0xeeedd2d0,
+          0x74cbc4e0,
+          0x3dbe1e91,
+          0xded36a78,
+        ),
+        _toFe(
+          0x3f07f966,
+          0x8e2a1e09,
+          0x706c71df,
+          0x02b5e9d5,
+          0xcb92ddbf,
+          0xcdd53010,
+          0x16545564,
+          0xe660b107,
+        ),
+      ],
+      [
+        _toFe(
+          0xe31c73ed,
+          0xb4c4b82c,
+          0x02ae35f7,
+          0x4cdec153,
+          0x98b522fd,
+          0xf7d2460c,
+          0x6bf7c0f8,
+          0x4cf67b0d,
+        ),
+        _toFe(
+          0x4b8f1faf,
+          0x94e8b070,
+          0x19af0ff6,
+          0xa319cd31,
+          0xdf0a7ffb,
+          0xefaba629,
+          0x59c50666,
+          0x1fe5b843,
+        ),
+      ],
+      [
+        _toFe(
+          0x4c8b0e6e,
+          0x83392ab6,
+          0xc0e3e9f1,
+          0xbbd85497,
+          0x16698897,
+          0xf552d50d,
+          0x79652ddb,
+          0x12f99870,
+        ),
+        _toFe(
+          0x56d5101f,
+          0xd23b7949,
+          0x17dc38d6,
+          0xf24022ef,
+          0xcf18e70a,
+          0x5cc34424,
+          0x438544c3,
+          0x62da4bca,
+        ),
+      ],
+      [
+        _toFe(
+          0xb0e040e2,
+          0x40cc35da,
+          0x7dd5c611,
+          0x7fccb178,
+          0x28888137,
+          0xbc930358,
+          0xea2cbc90,
+          0x775417dc,
+        ),
+        _toFe(
+          0xca37f0d4,
+          0x016dd7c8,
+          0xab3ae576,
+          0x96e08d69,
+          0x68ed9155,
+          0xa9b44270,
+          0x900ae35d,
+          0x7c7800cd,
+        ),
+      ],
+      [
+        _toFe(
+          0x8a32ea49,
+          0x7fbb0bae,
+          0x69724a9d,
+          0x8e2105b2,
+          0xbdf69178,
+          0x862577ef,
+          0x35055590,
+          0x667ddaef,
+        ),
+        _toFe(
+          0xd02d7ead,
+          0xc5e190f0,
+          0x559c9d72,
+          0xdaef1ffc,
+          0x64f9f425,
+          0xf43645ea,
+          0x7341e08d,
+          0x11768e96,
+        ),
+      ],
+      [
+        _toFe(
+          0xa3592d98,
+          0x9abe289d,
+          0x579ebea6,
+          0xbb0857a8,
+          0xe242ab73,
+          0x85f9a2ce,
+          0xb6998f0f,
+          0xbfffbfc6,
+        ),
+        _toFe(
+          0x093c1533,
+          0x32032efa,
+          0x6aa46070,
+          0x0039599e,
+          0x589c35f4,
+          0xff525430,
+          0x7fe3777a,
+          0x44b43ddc,
+        ),
+      ],
+      [
+        _toFe(
+          0x647178a3,
+          0x229e607b,
+          0xcc98521a,
+          0xcce3fdd9,
+          0x1e1bc9c9,
+          0x97fb7c6a,
+          0x61b961e0,
+          0x99b10709,
+        ),
+        _toFe(
+          0x98217c13,
+          0xd51ddf78,
+          0x96310e77,
+          0xdaebd908,
+          0x602ca683,
+          0xcb46d07a,
+          0xa1fcf17e,
+          0xc8e2feb3,
+        ),
+      ],
+      [
+        _toFe(
+          0x7334627c,
+          0x73f98968,
+          0x99464b4b,
+          0xf5964958,
+          0x1b95870d,
+          0xc658227e,
+          0x5e3235d8,
+          0xdcab5787,
+        ),
+        _toFe(
+          0x000006fd,
+          0xc7e9dd94,
+          0x40ae367a,
+          0xe51d495c,
+          0x07603b9b,
+          0x2d088418,
+          0x6cc5c74c,
+          0x98514307,
+        ),
+      ],
+      [
+        _toFe(
+          0x82e83876,
+          0x96c28938,
+          0xa50dd1c5,
+          0x605c3ad1,
+          0xc048637d,
+          0x7a50825f,
+          0x335ed01a,
+          0x00005760,
+        ),
+        _toFe(
+          0xb0393f9f,
+          0x9f2aa55e,
+          0xf5607e2e,
+          0x5287d961,
+          0x60b3e704,
+          0xf3e16e80,
+          0xb4f9a3ea,
+          0xfec7f02d,
+        ),
+      ],
+      [
+        _toFe(
+          0xc97b6cec,
+          0x3ee6b8dc,
+          0x98d24b58,
+          0x3c1970a1,
+          0xfe06297a,
+          0xae813529,
+          0xe76bb6bd,
+          0x771ae51d,
+        ),
+        _toFe(
+          0x0507c702,
+          0xd407d097,
+          0x47ddeb06,
+          0xf6625419,
+          0x79f48f79,
+          0x7bf80d0b,
+          0xfc34b364,
+          0x253a5db1,
+        ),
+      ],
+      [
+        _toFe(
+          0xd559af63,
+          0x77ea9bc4,
+          0x3cf1ad14,
+          0x5c7a4bbb,
+          0x10e7d18b,
+          0x7ce0dfac,
+          0x380bb19d,
+          0x0bb99bd3,
+        ),
+        _toFe(
+          0x00196119,
+          0xb9b00d92,
+          0x34edfdb5,
+          0xbbdc42fc,
+          0xd2daa33a,
+          0x163356ca,
+          0xaa8754c8,
+          0xb0ec8b0b,
+        ),
+      ],
+      [
+        _toFe(
+          0x8ddfa3dc,
+          0x52918da0,
+          0x640519dc,
+          0x0af8512a,
+          0xca2d33b2,
+          0xbde52514,
+          0xda9c0afc,
+          0xcb29fce4,
+        ),
+        _toFe(
+          0xb3e4878d,
+          0x5cb69148,
+          0xcd54388b,
+          0xc23acce0,
+          0x62518ba8,
+          0xf09def92,
+          0x7b31e6aa,
+          0x6ba35b02,
+        ),
+      ],
+      [
+        _toFe(
+          0xf8207492,
+          0xe3049f0a,
+          0x65285f2b,
+          0x0bfff996,
+          0x00ca112e,
+          0xc05da837,
+          0x546d41f9,
+          0x5194fb91,
+        ),
+        _toFe(
+          0x7b7ee50b,
+          0xa8ed4bbd,
+          0xf6469930,
+          0x81419a5c,
+          0x071441c7,
+          0x290d046e,
+          0x3b82ea41,
+          0x611c5f95,
+        ),
+      ],
+      [
+        _toFe(
+          0x050f7c80,
+          0x5bcd3c6b,
+          0x823cb724,
+          0x5ce74db7,
+          0xa4e39f5c,
+          0xbd8828d7,
+          0xfd4d3e07,
+          0x3ec2926a,
+        ),
+        _toFe(
+          0x000d6730,
+          0xb0171314,
+          0x4764053d,
+          0xee157117,
+          0x48fd61da,
+          0xdea0b9db,
+          0x1d5e91c6,
+          0xbdc3f59e,
+        ),
+      ],
+      [
+        _toFe(
+          0x3e3ea8eb,
+          0x05d760cf,
+          0x23009263,
+          0xb3cb3ac9,
+          0x088f6f0d,
+          0x3fc182a3,
+          0xbd57087c,
+          0xe67c62f9,
+        ),
+        _toFe(
+          0xbe988716,
+          0xa29c1bf6,
+          0x4456aed6,
+          0xab1e4720,
+          0x49929305,
+          0x51043bf4,
+          0xebd833dd,
+          0xdd511e8b,
+        ),
+      ],
+      [
+        _toFe(
+          0x6964d2a9,
+          0xa7fa6501,
+          0xa5959249,
+          0x142f4029,
+          0xea0c1b5f,
+          0x2f487ef6,
+          0x301ac80a,
+          0x768be5cd,
+        ),
+        _toFe(
+          0x3918ffe4,
+          0x07492543,
+          0xed24d0b7,
+          0x3df95f8f,
+          0xaffd7cb4,
+          0x0de2191c,
+          0x9ec2f2ad,
+          0x2c0cb3c6,
+        ),
+      ],
+      [
+        _toFe(
+          0x37c93520,
+          0xf6ddca57,
+          0x2b42fd5e,
+          0xb5c7e4de,
+          0x11b5b81c,
+          0xb95e91f3,
+          0x95c4d156,
+          0x39877ccb,
+        ),
+        _toFe(
+          0x9a94b9b5,
+          0x57eb71ee,
+          0x4c975b8b,
+          0xac5262a8,
+          0x077b0595,
+          0xe12a6b1f,
+          0xd728edef,
+          0x1a6bf956,
+        ),
+      ],
+    ].map((e) => e.immutable).toImutableList;
 
 Secp256k1Scalar _toScalar(
   int d7,
@@ -312,238 +1001,784 @@ Secp256k1Scalar _toScalar(
   int d0,
 ) {
   return Secp256k1Scalar.constants(
-      BigInt.from(d7),
-      BigInt.from(d6),
-      BigInt.from(d5),
-      BigInt.from(d4),
-      BigInt.from(d3),
-      BigInt.from(d2),
-      BigInt.from(d1),
-      BigInt.from(d0));
+    BigInt.from(d7),
+    BigInt.from(d6),
+    BigInt.from(d5),
+    BigInt.from(d4),
+    BigInt.from(d3),
+    BigInt.from(d2),
+    BigInt.from(d1),
+    BigInt.from(d0),
+  );
 }
 
 /* Fixed test cases for scalar inverses: pairs of (x, 1/x) mod n. */
-final List<List<Secp256k1Scalar>> scalarCases = [
-  /* 0 */
-  [_toScalar(0, 0, 0, 0, 0, 0, 0, 0), _toScalar(0, 0, 0, 0, 0, 0, 0, 0)],
-  /* 1 */
-  [_toScalar(0, 0, 0, 0, 0, 0, 0, 1), _toScalar(0, 0, 0, 0, 0, 0, 0, 1)],
-  /* -1 */
-  [
-    _toScalar(0xffffffff, 0xffffffff, 0xffffffff, 0xfffffffe, 0xbaaedce6,
-        0xaf48a03b, 0xbfd25e8c, 0xd0364140),
-    _toScalar(0xffffffff, 0xffffffff, 0xffffffff, 0xfffffffe, 0xbaaedce6,
-        0xaf48a03b, 0xbfd25e8c, 0xd0364140)
-  ],
-  /* 2 */
-  [
-    _toScalar(0, 0, 0, 0, 0, 0, 0, 2),
-    _toScalar(0x7fffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0x5d576e73,
-        0x57a4501d, 0xdfe92f46, 0x681b20a1)
-  ],
-  /* 2**128 */
-  [
-    _toScalar(0, 0, 0, 1, 0, 0, 0, 0),
-    _toScalar(0x50a51ac8, 0x34b9ec24, 0x4b0dff66, 0x5588b13e, 0x9984d5b3,
-        0xcf80ef0f, 0xd6a23766, 0xa3ee9f22)
-  ],
-  /* Input known to need 635 divsteps */
-  [
-    _toScalar(0xcb9f1d35, 0xdd4416c2, 0xcd71bf3f, 0x6365da66, 0x3c9b3376,
-        0x8feb7ae9, 0x32a5ef60, 0x19199ec3),
-    _toScalar(0x1d7c7bba, 0xf1893d53, 0xb834bd09, 0x36b411dc, 0x42c2e42f,
-        0xec72c428, 0x5e189791, 0x8e9bc708)
-  ],
-  /* Input known to need 566 divsteps starting with delta=1/2. */
-  [
-    _toScalar(0x7e3c993d, 0xa4272488, 0xbc015b49, 0x2db54174, 0xd382083a,
-        0xebe6db35, 0x80f82eff, 0xcd132c72),
-    _toScalar(0x086f34a0, 0x3e631f76, 0x77418f28, 0xcc84ac95, 0x6304439d,
-        0x365db268, 0x312c6ded, 0xd0b934f8)
-  ],
-  /* Input known to need 565 divsteps starting with delta=1/2. */
-  [
-    _toScalar(0xbad7e587, 0x3f307859, 0x60d93147, 0x8a18491e, 0xb38a9fd5,
-        0x254350d3, 0x4b1f0e4b, 0x7dd6edc4),
-    _toScalar(0x89f2df26, 0x39e2b041, 0xf19bd876, 0xd039c8ac, 0xc2223add,
-        0x29c4943e, 0x6632d908, 0x515f467b)
-  ],
-  /* Selection of randomly generated inputs that reach low/high d/e values in various configurations. */
-  [
-    _toScalar(0x1950d757, 0xb37a5809, 0x435059bb, 0x0bb8997e, 0x07e1e3c8,
-        0x5e5d7d2c, 0x6a0ed8e3, 0xdbde180e),
-    _toScalar(0xbf72af9b, 0x750309e2, 0x8dda230b, 0xfe432b93, 0x7e25e475,
-        0x4388251e, 0x633d894b, 0x3bcb6f8c)
-  ],
-  [
-    _toScalar(0x9bccf4e7, 0xc5a515e3, 0x50637aa9, 0xbb65a13f, 0x391749a1,
-        0x62de7d4e, 0xf6d7eabb, 0x3cd10ce0),
-    _toScalar(0xaf2d5623, 0xb6385a33, 0xcd0365be, 0x5e92a70d, 0x7f09179c,
-        0x3baaf30f, 0x8f9cc83b, 0x20092f67)
-  ],
-  [
-    _toScalar(0x73a57111, 0xb242952a, 0x5c5dee59, 0xf3be2ace, 0xa30a7659,
-        0xa46e5f47, 0xd21267b1, 0x39e642c9),
-    _toScalar(0xa711df07, 0xcbcf13ef, 0xd61cc6be, 0xbcd058ce, 0xb02cf157,
-        0x272d4a18, 0x86d0feb3, 0xcd5fa004)
-  ],
-  [
-    _toScalar(0x04884963, 0xce0580b1, 0xba547030, 0x3c691db3, 0x9cd2c84f,
-        0x24c7cebd, 0x97ebfdba, 0x3e785ec2),
-    _toScalar(0xaaaaaf14, 0xd7c99ba7, 0x517ce2c1, 0x78a28b4c, 0x3769a851,
-        0xe5c5a03d, 0x4cc28f33, 0x0ec4dc5d)
-  ],
-  [
-    _toScalar(0x1679ed49, 0x21f537b1, 0x815cb8ae, 0x9efc511c, 0x5b9fa037,
-        0x0b0f275e, 0x6c985281, 0x6c4a9905),
-    _toScalar(0xb14ac3d5, 0x62b52999, 0xef34ead1, 0xffca4998, 0x0294341a,
-        0x1f8172aa, 0xea1624f9, 0x302eea62)
-  ],
-  [
-    _toScalar(0x626b37c0, 0xf0057c35, 0xee982f83, 0x452a1fd3, 0xea826506,
-        0x48b08a9d, 0x1d2c4799, 0x4ad5f6ec),
-    _toScalar(0xe38643b7, 0x567bfc2f, 0x5d2f1c15, 0xe327239c, 0x07112443,
-        0x69509283, 0xfd98e77a, 0xdb71c1e8)
-  ],
-  [
-    _toScalar(0x1850a3a7, 0x759efc56, 0x54f287b2, 0x14d1234b, 0xe263bbc9,
-        0xcf4d8927, 0xd5f85f27, 0x965bd816),
-    _toScalar(0x3b071831, 0xcac9619a, 0xcceb0596, 0xf614d63b, 0x95d0db2f,
-        0xc6a00901, 0x8eaa2621, 0xabfa0009)
-  ],
-  [
-    _toScalar(0x94ae5d06, 0xa27dc400, 0x487d72be, 0xaa51ebed, 0xe475b5c0,
-        0xea675ffc, 0xf4df627a, 0xdca4222f),
-    _toScalar(0x01b412ed, 0xd7830956, 0x1532537e, 0xe5e3dc99, 0x8fd3930a,
-        0x54f8d067, 0x32ef5760, 0x594438a5)
-  ],
-  [
-    _toScalar(0x1f24278a, 0xb5bfe374, 0xa328dbbc, 0xebe35f48, 0x6620e009,
-        0xd58bb1b4, 0xb5a6bf84, 0x8815f63a),
-    _toScalar(0xfe928416, 0xca5ba2d3, 0xfde513da, 0x903a60c7, 0x9e58ad8a,
-        0x8783bee4, 0x083a3843, 0xa608c914)
-  ],
-  [
-    _toScalar(0xdc107d58, 0x274f6330, 0x67dba8bc, 0x26093111, 0x5201dfb8,
-        0x968ce3f5, 0xf34d1bd4, 0xf2146504),
-    _toScalar(0x660cfa90, 0x13c3d93e, 0x7023b1e5, 0xedd09e71, 0x6d9c9d10,
-        0x7a3d2cdb, 0xdd08edc3, 0xaa78fcfb)
-  ],
-  [
-    _toScalar(0x7cd1e905, 0xc6f02776, 0x2f551cc7, 0x5da61cff, 0x7da05389,
-        0x1119d5a4, 0x631c7442, 0x894fd4f7),
-    _toScalar(0xff20862a, 0x9d3b1a37, 0x1628803b, 0x3004ccae, 0xaa23282a,
-        0xa89a1109, 0xd94ece5e, 0x181bdc46)
-  ],
-  [
-    _toScalar(0x5b9dade8, 0x23d26c58, 0xcd12d818, 0x25b8ae97, 0x3dea04af,
-        0xf482c96b, 0xa062f254, 0x9e453640),
-    _toScalar(0x50c38800, 0x15fa53f4, 0xbe1e5392, 0x5c9b120a, 0x262c22c7,
-        0x18fa0816, 0x5f2baab4, 0x8cb5db46)
-  ],
-  [
-    _toScalar(0x11cdaeda, 0x969c464b, 0xef1f4ab0, 0x5b01d22e, 0x656fd098,
-        0x882bea84, 0x65cdbe7a, 0x0c19ff03),
-    _toScalar(0x1968d0fa, 0xac46f103, 0xb55f1f72, 0xb3820bed, 0xec6b359a,
-        0x4b1ae0ad, 0x7e38e1fb, 0x295ccdfb)
-  ],
-  [
-    _toScalar(0x2c351aa1, 0x26e91589, 0x194f8a1e, 0x06561f66, 0x0cb97b7f,
-        0x10914454, 0x134d1c03, 0x157266b4),
-    _toScalar(0xbe49ada6, 0x92bd8711, 0x41b176c4, 0xa478ba95, 0x14883434,
-        0x9d1cd6f3, 0xcc4b847d, 0x22af80f5)
-  ],
-  [
-    _toScalar(0x6ba07c6e, 0x13a60edb, 0x6247f5c3, 0x84b5fa56, 0x76fe3ec5,
-        0x80426395, 0xf65ec2ae, 0x623ba730),
-    _toScalar(0x25ac23f7, 0x418cd747, 0x98376f9d, 0x4a11c7bf, 0x24c8ebfe,
-        0x4c8a8655, 0x345f4f52, 0x1c515595)
-  ],
-  [
-    _toScalar(0x9397a712, 0x8abb6951, 0x2d4a3d54, 0x703b1c2a, 0x0661dca8,
-        0xd75c9b31, 0xaed4d24b, 0xd2ab2948),
-    _toScalar(0xc52e8bef, 0xd55ce3eb, 0x1c897739, 0xeb9fb606, 0x36b9cd57,
-        0x18c51cc2, 0x6a87489e, 0xffd0dcf3)
-  ],
-  [
-    _toScalar(0xe6a808cc, 0xeb437888, 0xe97798df, 0x4e224e44, 0x7e3b380a,
-        0x207c1653, 0x889f3212, 0xc6738b6f),
-    _toScalar(0x31f9ae13, 0xd1e08b20, 0x757a2e5e, 0x5243a0eb, 0x8ae35f73,
-        0x19bb6122, 0xb910f26b, 0xda70aa55)
-  ],
-  [
-    _toScalar(0xd0320548, 0xab0effe7, 0xa70779e0, 0x61a347a6, 0xb8c1e010,
-        0x9d5281f8, 0x2ee588a6, 0x80000000),
-    _toScalar(0x1541897e, 0x78195c90, 0x7583dd9e, 0x728b6100, 0xbce8bc6d,
-        0x7a53b471, 0x5dcd9e45, 0x4425fcaf)
-  ],
-  [
-    _toScalar(0x93d623f1, 0xd45b50b0, 0x796e9186, 0x9eac9407, 0xd30edc20,
-        0xef6304cf, 0x250494e7, 0xba503de9),
-    _toScalar(0x7026d638, 0x1178b548, 0x92043952, 0x3c7fb47c, 0xcd3ea236,
-        0x31d82b01, 0x612fc387, 0x80b9b957)
-  ],
-  [
-    _toScalar(0xf860ab39, 0x55f5d412, 0xa4d73bcc, 0x3b48bd90, 0xc248ffd3,
-        0x13ca10be, 0x8fba84cc, 0xdd28d6a3),
-    _toScalar(0x5c32fc70, 0xe0b15d67, 0x76694700, 0xfe62be4d, 0xeacdb229,
-        0x7a4433d9, 0x52155cd0, 0x7649ab59)
-  ],
-  [
-    _toScalar(0x4e41311c, 0x0800af58, 0x7a690a8e, 0xe175c9ba, 0x6981ab73,
-        0xac532ea8, 0x5c1f5e63, 0x6ac1f189),
-    _toScalar(0xfffffff9, 0xd075982c, 0x7fbd3825, 0xc05038a2, 0x4533b91f,
-        0x94ec5f45, 0xb280b28f, 0x842324dc)
-  ],
-  [
-    _toScalar(0x48e473bf, 0x3555eade, 0xad5d7089, 0x2424c4e4, 0x0a99397c,
-        0x2dc796d8, 0xb7a43a69, 0xd0364141),
-    _toScalar(0x634976b2, 0xa0e47895, 0x1ec38593, 0x266d6fd0, 0x6f602644,
-        0x9bb762f1, 0x7180c704, 0xe23a4daa)
-  ],
-  [
-    _toScalar(0xbe83878d, 0x3292fc54, 0x26e71c62, 0x556ccedc, 0x7cbb8810,
-        0x4032a720, 0x34ead589, 0xe4d6bd13),
-    _toScalar(0x6cd150ad, 0x25e59d0f, 0x74cbae3d, 0x6377534a, 0x1e6562e8,
-        0xb71b9d18, 0xe1e5d712, 0x8480abb3)
-  ],
-  [
-    _toScalar(0xcdddf2e5, 0xefc15f88, 0xc9ee06de, 0x8a846ca9, 0x28561581,
-        0x68daa5fb, 0xd1cf3451, 0xeb1782d0),
-    _toScalar(0xffffffd9, 0xed8d2af4, 0x993c865a, 0x23e9681a, 0x3ca3a3dc,
-        0xe6d5a46e, 0xbd86bd87, 0x61b55c70)
-  ],
-  [
-    _toScalar(0xb6a18f1f, 0x04872df9, 0x08165ec4, 0x319ca19c, 0x6c0359ab,
-        0x1f7118fb, 0xc2ef8082, 0xca8b7785),
-    _toScalar(0xff55b19b, 0x0f1ac78c, 0x0f0c88c2, 0x2358d5ad, 0x5f455e4e,
-        0x3330b72f, 0x274dc153, 0xffbf272b)
-  ],
-  [
-    _toScalar(0xea4898e5, 0x30eba3e8, 0xcf0e5c3d, 0x06ec6844, 0x01e26fb6,
-        0x75636225, 0xc5d08f4c, 0x1decafa0),
-    _toScalar(0xe5a014a8, 0xe3c4ec1e, 0xea4f9b32, 0xcfc7b386, 0x00630806,
-        0x12c08d02, 0x6407ccc2, 0xb067d90e)
-  ],
-  [
-    _toScalar(0x70e9aea9, 0x7e933af0, 0x8a23bfab, 0x23e4b772, 0xff951863,
-        0x5ffcf47d, 0x6bebc918, 0x2ca58265),
-    _toScalar(0xf4e00006, 0x81bc6441, 0x4eb6ec02, 0xc194a859, 0x80ad7c48,
-        0xba4e9afb, 0x8b6bdbe0, 0x989d8f77)
-  ],
-  [
-    _toScalar(0x3c56c774, 0x46efe6f0, 0xe93618b8, 0xf9b5a846, 0xd247df61,
-        0x83b1e215, 0x06dc8bcc, 0xeefc1bf5),
-    _toScalar(0xfff8937a, 0x2cd9586b, 0x43c25e57, 0xd1cefa7a, 0x9fb91ed3,
-        0x95b6533d, 0x8ad0de5b, 0xafb93f00)
-  ],
-  [
-    _toScalar(0xfb5c2772, 0x5cb30e83, 0xe38264df, 0xe4e3ebf3, 0x392aa92e,
-        0xa68756a1, 0x51279ac5, 0xb50711a8),
-    _toScalar(0x000013af, 0x1105bfe7, 0xa6bbd7fb, 0x3d638f99, 0x3b266b02,
-        0x072fb8bc, 0x39251130, 0x2e0fd0ea)
-  ]
-].map((e) => e.immutable).toImutableList;
+final List<List<Secp256k1Scalar>> scalarCases =
+    [
+      /* 0 */
+      [_toScalar(0, 0, 0, 0, 0, 0, 0, 0), _toScalar(0, 0, 0, 0, 0, 0, 0, 0)],
+      /* 1 */
+      [_toScalar(0, 0, 0, 0, 0, 0, 0, 1), _toScalar(0, 0, 0, 0, 0, 0, 0, 1)],
+      /* -1 */
+      [
+        _toScalar(
+          0xffffffff,
+          0xffffffff,
+          0xffffffff,
+          0xfffffffe,
+          0xbaaedce6,
+          0xaf48a03b,
+          0xbfd25e8c,
+          0xd0364140,
+        ),
+        _toScalar(
+          0xffffffff,
+          0xffffffff,
+          0xffffffff,
+          0xfffffffe,
+          0xbaaedce6,
+          0xaf48a03b,
+          0xbfd25e8c,
+          0xd0364140,
+        ),
+      ],
+      /* 2 */
+      [
+        _toScalar(0, 0, 0, 0, 0, 0, 0, 2),
+        _toScalar(
+          0x7fffffff,
+          0xffffffff,
+          0xffffffff,
+          0xffffffff,
+          0x5d576e73,
+          0x57a4501d,
+          0xdfe92f46,
+          0x681b20a1,
+        ),
+      ],
+      /* 2**128 */
+      [
+        _toScalar(0, 0, 0, 1, 0, 0, 0, 0),
+        _toScalar(
+          0x50a51ac8,
+          0x34b9ec24,
+          0x4b0dff66,
+          0x5588b13e,
+          0x9984d5b3,
+          0xcf80ef0f,
+          0xd6a23766,
+          0xa3ee9f22,
+        ),
+      ],
+      /* Input known to need 635 divsteps */
+      [
+        _toScalar(
+          0xcb9f1d35,
+          0xdd4416c2,
+          0xcd71bf3f,
+          0x6365da66,
+          0x3c9b3376,
+          0x8feb7ae9,
+          0x32a5ef60,
+          0x19199ec3,
+        ),
+        _toScalar(
+          0x1d7c7bba,
+          0xf1893d53,
+          0xb834bd09,
+          0x36b411dc,
+          0x42c2e42f,
+          0xec72c428,
+          0x5e189791,
+          0x8e9bc708,
+        ),
+      ],
+      /* Input known to need 566 divsteps starting with delta=1/2. */
+      [
+        _toScalar(
+          0x7e3c993d,
+          0xa4272488,
+          0xbc015b49,
+          0x2db54174,
+          0xd382083a,
+          0xebe6db35,
+          0x80f82eff,
+          0xcd132c72,
+        ),
+        _toScalar(
+          0x086f34a0,
+          0x3e631f76,
+          0x77418f28,
+          0xcc84ac95,
+          0x6304439d,
+          0x365db268,
+          0x312c6ded,
+          0xd0b934f8,
+        ),
+      ],
+      /* Input known to need 565 divsteps starting with delta=1/2. */
+      [
+        _toScalar(
+          0xbad7e587,
+          0x3f307859,
+          0x60d93147,
+          0x8a18491e,
+          0xb38a9fd5,
+          0x254350d3,
+          0x4b1f0e4b,
+          0x7dd6edc4,
+        ),
+        _toScalar(
+          0x89f2df26,
+          0x39e2b041,
+          0xf19bd876,
+          0xd039c8ac,
+          0xc2223add,
+          0x29c4943e,
+          0x6632d908,
+          0x515f467b,
+        ),
+      ],
+      /* Selection of randomly generated inputs that reach low/high d/e values in various configurations. */
+      [
+        _toScalar(
+          0x1950d757,
+          0xb37a5809,
+          0x435059bb,
+          0x0bb8997e,
+          0x07e1e3c8,
+          0x5e5d7d2c,
+          0x6a0ed8e3,
+          0xdbde180e,
+        ),
+        _toScalar(
+          0xbf72af9b,
+          0x750309e2,
+          0x8dda230b,
+          0xfe432b93,
+          0x7e25e475,
+          0x4388251e,
+          0x633d894b,
+          0x3bcb6f8c,
+        ),
+      ],
+      [
+        _toScalar(
+          0x9bccf4e7,
+          0xc5a515e3,
+          0x50637aa9,
+          0xbb65a13f,
+          0x391749a1,
+          0x62de7d4e,
+          0xf6d7eabb,
+          0x3cd10ce0,
+        ),
+        _toScalar(
+          0xaf2d5623,
+          0xb6385a33,
+          0xcd0365be,
+          0x5e92a70d,
+          0x7f09179c,
+          0x3baaf30f,
+          0x8f9cc83b,
+          0x20092f67,
+        ),
+      ],
+      [
+        _toScalar(
+          0x73a57111,
+          0xb242952a,
+          0x5c5dee59,
+          0xf3be2ace,
+          0xa30a7659,
+          0xa46e5f47,
+          0xd21267b1,
+          0x39e642c9,
+        ),
+        _toScalar(
+          0xa711df07,
+          0xcbcf13ef,
+          0xd61cc6be,
+          0xbcd058ce,
+          0xb02cf157,
+          0x272d4a18,
+          0x86d0feb3,
+          0xcd5fa004,
+        ),
+      ],
+      [
+        _toScalar(
+          0x04884963,
+          0xce0580b1,
+          0xba547030,
+          0x3c691db3,
+          0x9cd2c84f,
+          0x24c7cebd,
+          0x97ebfdba,
+          0x3e785ec2,
+        ),
+        _toScalar(
+          0xaaaaaf14,
+          0xd7c99ba7,
+          0x517ce2c1,
+          0x78a28b4c,
+          0x3769a851,
+          0xe5c5a03d,
+          0x4cc28f33,
+          0x0ec4dc5d,
+        ),
+      ],
+      [
+        _toScalar(
+          0x1679ed49,
+          0x21f537b1,
+          0x815cb8ae,
+          0x9efc511c,
+          0x5b9fa037,
+          0x0b0f275e,
+          0x6c985281,
+          0x6c4a9905,
+        ),
+        _toScalar(
+          0xb14ac3d5,
+          0x62b52999,
+          0xef34ead1,
+          0xffca4998,
+          0x0294341a,
+          0x1f8172aa,
+          0xea1624f9,
+          0x302eea62,
+        ),
+      ],
+      [
+        _toScalar(
+          0x626b37c0,
+          0xf0057c35,
+          0xee982f83,
+          0x452a1fd3,
+          0xea826506,
+          0x48b08a9d,
+          0x1d2c4799,
+          0x4ad5f6ec,
+        ),
+        _toScalar(
+          0xe38643b7,
+          0x567bfc2f,
+          0x5d2f1c15,
+          0xe327239c,
+          0x07112443,
+          0x69509283,
+          0xfd98e77a,
+          0xdb71c1e8,
+        ),
+      ],
+      [
+        _toScalar(
+          0x1850a3a7,
+          0x759efc56,
+          0x54f287b2,
+          0x14d1234b,
+          0xe263bbc9,
+          0xcf4d8927,
+          0xd5f85f27,
+          0x965bd816,
+        ),
+        _toScalar(
+          0x3b071831,
+          0xcac9619a,
+          0xcceb0596,
+          0xf614d63b,
+          0x95d0db2f,
+          0xc6a00901,
+          0x8eaa2621,
+          0xabfa0009,
+        ),
+      ],
+      [
+        _toScalar(
+          0x94ae5d06,
+          0xa27dc400,
+          0x487d72be,
+          0xaa51ebed,
+          0xe475b5c0,
+          0xea675ffc,
+          0xf4df627a,
+          0xdca4222f,
+        ),
+        _toScalar(
+          0x01b412ed,
+          0xd7830956,
+          0x1532537e,
+          0xe5e3dc99,
+          0x8fd3930a,
+          0x54f8d067,
+          0x32ef5760,
+          0x594438a5,
+        ),
+      ],
+      [
+        _toScalar(
+          0x1f24278a,
+          0xb5bfe374,
+          0xa328dbbc,
+          0xebe35f48,
+          0x6620e009,
+          0xd58bb1b4,
+          0xb5a6bf84,
+          0x8815f63a,
+        ),
+        _toScalar(
+          0xfe928416,
+          0xca5ba2d3,
+          0xfde513da,
+          0x903a60c7,
+          0x9e58ad8a,
+          0x8783bee4,
+          0x083a3843,
+          0xa608c914,
+        ),
+      ],
+      [
+        _toScalar(
+          0xdc107d58,
+          0x274f6330,
+          0x67dba8bc,
+          0x26093111,
+          0x5201dfb8,
+          0x968ce3f5,
+          0xf34d1bd4,
+          0xf2146504,
+        ),
+        _toScalar(
+          0x660cfa90,
+          0x13c3d93e,
+          0x7023b1e5,
+          0xedd09e71,
+          0x6d9c9d10,
+          0x7a3d2cdb,
+          0xdd08edc3,
+          0xaa78fcfb,
+        ),
+      ],
+      [
+        _toScalar(
+          0x7cd1e905,
+          0xc6f02776,
+          0x2f551cc7,
+          0x5da61cff,
+          0x7da05389,
+          0x1119d5a4,
+          0x631c7442,
+          0x894fd4f7,
+        ),
+        _toScalar(
+          0xff20862a,
+          0x9d3b1a37,
+          0x1628803b,
+          0x3004ccae,
+          0xaa23282a,
+          0xa89a1109,
+          0xd94ece5e,
+          0x181bdc46,
+        ),
+      ],
+      [
+        _toScalar(
+          0x5b9dade8,
+          0x23d26c58,
+          0xcd12d818,
+          0x25b8ae97,
+          0x3dea04af,
+          0xf482c96b,
+          0xa062f254,
+          0x9e453640,
+        ),
+        _toScalar(
+          0x50c38800,
+          0x15fa53f4,
+          0xbe1e5392,
+          0x5c9b120a,
+          0x262c22c7,
+          0x18fa0816,
+          0x5f2baab4,
+          0x8cb5db46,
+        ),
+      ],
+      [
+        _toScalar(
+          0x11cdaeda,
+          0x969c464b,
+          0xef1f4ab0,
+          0x5b01d22e,
+          0x656fd098,
+          0x882bea84,
+          0x65cdbe7a,
+          0x0c19ff03,
+        ),
+        _toScalar(
+          0x1968d0fa,
+          0xac46f103,
+          0xb55f1f72,
+          0xb3820bed,
+          0xec6b359a,
+          0x4b1ae0ad,
+          0x7e38e1fb,
+          0x295ccdfb,
+        ),
+      ],
+      [
+        _toScalar(
+          0x2c351aa1,
+          0x26e91589,
+          0x194f8a1e,
+          0x06561f66,
+          0x0cb97b7f,
+          0x10914454,
+          0x134d1c03,
+          0x157266b4,
+        ),
+        _toScalar(
+          0xbe49ada6,
+          0x92bd8711,
+          0x41b176c4,
+          0xa478ba95,
+          0x14883434,
+          0x9d1cd6f3,
+          0xcc4b847d,
+          0x22af80f5,
+        ),
+      ],
+      [
+        _toScalar(
+          0x6ba07c6e,
+          0x13a60edb,
+          0x6247f5c3,
+          0x84b5fa56,
+          0x76fe3ec5,
+          0x80426395,
+          0xf65ec2ae,
+          0x623ba730,
+        ),
+        _toScalar(
+          0x25ac23f7,
+          0x418cd747,
+          0x98376f9d,
+          0x4a11c7bf,
+          0x24c8ebfe,
+          0x4c8a8655,
+          0x345f4f52,
+          0x1c515595,
+        ),
+      ],
+      [
+        _toScalar(
+          0x9397a712,
+          0x8abb6951,
+          0x2d4a3d54,
+          0x703b1c2a,
+          0x0661dca8,
+          0xd75c9b31,
+          0xaed4d24b,
+          0xd2ab2948,
+        ),
+        _toScalar(
+          0xc52e8bef,
+          0xd55ce3eb,
+          0x1c897739,
+          0xeb9fb606,
+          0x36b9cd57,
+          0x18c51cc2,
+          0x6a87489e,
+          0xffd0dcf3,
+        ),
+      ],
+      [
+        _toScalar(
+          0xe6a808cc,
+          0xeb437888,
+          0xe97798df,
+          0x4e224e44,
+          0x7e3b380a,
+          0x207c1653,
+          0x889f3212,
+          0xc6738b6f,
+        ),
+        _toScalar(
+          0x31f9ae13,
+          0xd1e08b20,
+          0x757a2e5e,
+          0x5243a0eb,
+          0x8ae35f73,
+          0x19bb6122,
+          0xb910f26b,
+          0xda70aa55,
+        ),
+      ],
+      [
+        _toScalar(
+          0xd0320548,
+          0xab0effe7,
+          0xa70779e0,
+          0x61a347a6,
+          0xb8c1e010,
+          0x9d5281f8,
+          0x2ee588a6,
+          0x80000000,
+        ),
+        _toScalar(
+          0x1541897e,
+          0x78195c90,
+          0x7583dd9e,
+          0x728b6100,
+          0xbce8bc6d,
+          0x7a53b471,
+          0x5dcd9e45,
+          0x4425fcaf,
+        ),
+      ],
+      [
+        _toScalar(
+          0x93d623f1,
+          0xd45b50b0,
+          0x796e9186,
+          0x9eac9407,
+          0xd30edc20,
+          0xef6304cf,
+          0x250494e7,
+          0xba503de9,
+        ),
+        _toScalar(
+          0x7026d638,
+          0x1178b548,
+          0x92043952,
+          0x3c7fb47c,
+          0xcd3ea236,
+          0x31d82b01,
+          0x612fc387,
+          0x80b9b957,
+        ),
+      ],
+      [
+        _toScalar(
+          0xf860ab39,
+          0x55f5d412,
+          0xa4d73bcc,
+          0x3b48bd90,
+          0xc248ffd3,
+          0x13ca10be,
+          0x8fba84cc,
+          0xdd28d6a3,
+        ),
+        _toScalar(
+          0x5c32fc70,
+          0xe0b15d67,
+          0x76694700,
+          0xfe62be4d,
+          0xeacdb229,
+          0x7a4433d9,
+          0x52155cd0,
+          0x7649ab59,
+        ),
+      ],
+      [
+        _toScalar(
+          0x4e41311c,
+          0x0800af58,
+          0x7a690a8e,
+          0xe175c9ba,
+          0x6981ab73,
+          0xac532ea8,
+          0x5c1f5e63,
+          0x6ac1f189,
+        ),
+        _toScalar(
+          0xfffffff9,
+          0xd075982c,
+          0x7fbd3825,
+          0xc05038a2,
+          0x4533b91f,
+          0x94ec5f45,
+          0xb280b28f,
+          0x842324dc,
+        ),
+      ],
+      [
+        _toScalar(
+          0x48e473bf,
+          0x3555eade,
+          0xad5d7089,
+          0x2424c4e4,
+          0x0a99397c,
+          0x2dc796d8,
+          0xb7a43a69,
+          0xd0364141,
+        ),
+        _toScalar(
+          0x634976b2,
+          0xa0e47895,
+          0x1ec38593,
+          0x266d6fd0,
+          0x6f602644,
+          0x9bb762f1,
+          0x7180c704,
+          0xe23a4daa,
+        ),
+      ],
+      [
+        _toScalar(
+          0xbe83878d,
+          0x3292fc54,
+          0x26e71c62,
+          0x556ccedc,
+          0x7cbb8810,
+          0x4032a720,
+          0x34ead589,
+          0xe4d6bd13,
+        ),
+        _toScalar(
+          0x6cd150ad,
+          0x25e59d0f,
+          0x74cbae3d,
+          0x6377534a,
+          0x1e6562e8,
+          0xb71b9d18,
+          0xe1e5d712,
+          0x8480abb3,
+        ),
+      ],
+      [
+        _toScalar(
+          0xcdddf2e5,
+          0xefc15f88,
+          0xc9ee06de,
+          0x8a846ca9,
+          0x28561581,
+          0x68daa5fb,
+          0xd1cf3451,
+          0xeb1782d0,
+        ),
+        _toScalar(
+          0xffffffd9,
+          0xed8d2af4,
+          0x993c865a,
+          0x23e9681a,
+          0x3ca3a3dc,
+          0xe6d5a46e,
+          0xbd86bd87,
+          0x61b55c70,
+        ),
+      ],
+      [
+        _toScalar(
+          0xb6a18f1f,
+          0x04872df9,
+          0x08165ec4,
+          0x319ca19c,
+          0x6c0359ab,
+          0x1f7118fb,
+          0xc2ef8082,
+          0xca8b7785,
+        ),
+        _toScalar(
+          0xff55b19b,
+          0x0f1ac78c,
+          0x0f0c88c2,
+          0x2358d5ad,
+          0x5f455e4e,
+          0x3330b72f,
+          0x274dc153,
+          0xffbf272b,
+        ),
+      ],
+      [
+        _toScalar(
+          0xea4898e5,
+          0x30eba3e8,
+          0xcf0e5c3d,
+          0x06ec6844,
+          0x01e26fb6,
+          0x75636225,
+          0xc5d08f4c,
+          0x1decafa0,
+        ),
+        _toScalar(
+          0xe5a014a8,
+          0xe3c4ec1e,
+          0xea4f9b32,
+          0xcfc7b386,
+          0x00630806,
+          0x12c08d02,
+          0x6407ccc2,
+          0xb067d90e,
+        ),
+      ],
+      [
+        _toScalar(
+          0x70e9aea9,
+          0x7e933af0,
+          0x8a23bfab,
+          0x23e4b772,
+          0xff951863,
+          0x5ffcf47d,
+          0x6bebc918,
+          0x2ca58265,
+        ),
+        _toScalar(
+          0xf4e00006,
+          0x81bc6441,
+          0x4eb6ec02,
+          0xc194a859,
+          0x80ad7c48,
+          0xba4e9afb,
+          0x8b6bdbe0,
+          0x989d8f77,
+        ),
+      ],
+      [
+        _toScalar(
+          0x3c56c774,
+          0x46efe6f0,
+          0xe93618b8,
+          0xf9b5a846,
+          0xd247df61,
+          0x83b1e215,
+          0x06dc8bcc,
+          0xeefc1bf5,
+        ),
+        _toScalar(
+          0xfff8937a,
+          0x2cd9586b,
+          0x43c25e57,
+          0xd1cefa7a,
+          0x9fb91ed3,
+          0x95b6533d,
+          0x8ad0de5b,
+          0xafb93f00,
+        ),
+      ],
+      [
+        _toScalar(
+          0xfb5c2772,
+          0x5cb30e83,
+          0xe38264df,
+          0xe4e3ebf3,
+          0x392aa92e,
+          0xa68756a1,
+          0x51279ac5,
+          0xb50711a8,
+        ),
+        _toScalar(
+          0x000013af,
+          0x1105bfe7,
+          0xa6bbd7fb,
+          0x3d638f99,
+          0x3b266b02,
+          0x072fb8bc,
+          0x39251130,
+          0x2e0fd0ea,
+        ),
+      ],
+    ].map((e) => e.immutable).toImutableList;
 
 const List<List<List<int>>> cases = [
   /* Test cases triggering edge cases in divsteps */
@@ -566,7 +1801,7 @@ const List<List<List<int>>> cases = [
       0x6506,
       0xa95c,
       0x91f3,
-      0xfb5e
+      0xfb5e,
     ],
     [
       0x2bdd,
@@ -584,7 +1819,7 @@ const List<List<List<int>>> cases = [
       0xb2a4,
       0xa2d1,
       0x3ff1,
-      0xfd4b
+      0xfd4b,
     ],
     [
       0xffd8,
@@ -602,8 +1837,8 @@ const List<List<List<int>>> cases = [
       0x3e32,
       0xc179,
       0x2486,
-      0xb86b
-    ]
+      0xb86b,
+    ],
   ],
   /* Test case known to need 589 divsteps, reaching delta=-140 and
            delta=141. */
@@ -624,7 +1859,7 @@ const List<List<List<int>>> cases = [
       0x165e,
       0x3d61,
       0xee1e,
-      0x456c
+      0x456c,
     ],
     [
       0x9295,
@@ -642,7 +1877,7 @@ const List<List<List<int>>> cases = [
       0x69fb,
       0x52d9,
       0x0a86,
-      0xb4a3
+      0xb4a3,
     ],
     [
       0x3d30,
@@ -660,8 +1895,8 @@ const List<List<List<int>>> cases = [
       0xebfa,
       0xf920,
       0x304e,
-      0x1419
-    ]
+      0x1419,
+    ],
   ],
   /* Test case known to need 650 divsteps, and doing 65 consecutive (f,g/2) steps. */
   [
@@ -681,7 +1916,7 @@ const List<List<List<int>>> cases = [
       0x5b8a,
       0x2214,
       0xe9d6,
-      0xa040
+      0xa040,
     ],
     [
       0x7531,
@@ -699,7 +1934,7 @@ const List<List<List<int>>> cases = [
       0xb9d8,
       0x1fbe,
       0xc241,
-      0xd4a3
+      0xd4a3,
     ],
     [
       0xcdb4,
@@ -717,8 +1952,8 @@ const List<List<List<int>>> cases = [
       0x2654,
       0x8f6e,
       0x070f,
-      0xb347
-    ]
+      0xb347,
+    ],
   ],
   /* example needing 713 divsteps; delta=-2..3 */
   [
@@ -738,7 +1973,7 @@ const List<List<List<int>>> cases = [
       0xae4b,
       0xfd9d,
       0xb35b,
-      0xda9d
+      0xda9d,
     ],
     [
       0x36e7,
@@ -756,7 +1991,7 @@ const List<List<List<int>>> cases = [
       0x788c,
       0x6f22,
       0xd909,
-      0xf298
+      0xf298,
     ],
     [
       0xd8c6,
@@ -774,8 +2009,8 @@ const List<List<List<int>>> cases = [
       0xabee,
       0xe465,
       0x8170,
-      0x85ac
-    ]
+      0x85ac,
+    ],
   ],
   /* example needing 713 divsteps; delta=-2..3 */
   [
@@ -795,7 +2030,7 @@ const List<List<List<int>>> cases = [
       0xbb39,
       0xb7fa,
       0xd904,
-      0xef78
+      0xef78,
     ],
     [
       0x6279,
@@ -813,7 +2048,7 @@ const List<List<List<int>>> cases = [
       0x1109,
       0x5751,
       0x7714,
-      0xfcf2
+      0xfcf2,
     ],
     [
       0xdb13,
@@ -831,8 +2066,8 @@ const List<List<List<int>>> cases = [
       0x8325,
       0x5683,
       0xe21b,
-      0xda88
-    ]
+      0xda88,
+    ],
   ],
   /* example needing 713 divsteps; delta=-2..3 */
   [
@@ -852,7 +2087,7 @@ const List<List<List<int>>> cases = [
       0x5c75,
       0xbb66,
       0x9125,
-      0xeccc
+      0xeccc,
     ],
     [
       0x2941,
@@ -870,7 +2105,7 @@ const List<List<List<int>>> cases = [
       0x618d,
       0xa9d7,
       0x5018,
-      0xfb29
+      0xfb29,
     ],
     [
       0x437c,
@@ -888,8 +2123,8 @@ const List<List<List<int>>> cases = [
       0x661c,
       0x1380,
       0xed2d,
-      0x85c1
-    ]
+      0x85c1,
+    ],
   ],
   /* example reaching delta=-64..65; 661 divsteps */
   [
@@ -909,7 +2144,7 @@ const List<List<List<int>>> cases = [
       0xa321,
       0xcda0,
       0x172e,
-      0xe530
+      0xe530,
     ],
     [
       0xd9e3,
@@ -927,7 +2162,7 @@ const List<List<List<int>>> cases = [
       0x6c5e,
       0x8982,
       0x13b6,
-      0xe598
+      0xe598,
     ],
     [
       0xe675,
@@ -945,8 +2180,8 @@ const List<List<List<int>>> cases = [
       0x08fa,
       0xa78d,
       0xc675,
-      0x8bae
-    ]
+      0x8bae,
+    ],
   ],
   /* example reaching delta=-64..65; 661 divsteps */
   [
@@ -966,7 +2201,7 @@ const List<List<List<int>>> cases = [
       0x5dff,
       0xe533,
       0xb369,
-      0xd28a
+      0xd28a,
     ],
     [
       0x9f6b,
@@ -984,7 +2219,7 @@ const List<List<List<int>>> cases = [
       0xb64f,
       0x9720,
       0xba74,
-      0xe108
+      0xe108,
     ],
     [
       0xa5ab,
@@ -1002,8 +2237,8 @@ const List<List<List<int>>> cases = [
       0x538f,
       0xdd70,
       0xc781,
-      0xb67d
-    ]
+      0xb67d,
+    ],
   ],
   /* example reaching delta=-64..65; 661 divsteps */
   [
@@ -1023,7 +2258,7 @@ const List<List<List<int>>> cases = [
       0xbf4c,
       0x8821,
       0x91ad,
-      0xb31a
+      0xb31a,
     ],
     [
       0x5c0b,
@@ -1041,7 +2276,7 @@ const List<List<List<int>>> cases = [
       0xe04e,
       0x307e,
       0xd1d5,
-      0xe230
+      0xe230,
     ],
     [
       0xda15,
@@ -1059,8 +2294,8 @@ const List<List<List<int>>> cases = [
       0xda34,
       0xa7f6,
       0x9636,
-      0x6273
-    ]
+      0x6273,
+    ],
   ],
   /* example doing 123 consecutive (f,g/2) steps; 615 divsteps */
   [
@@ -1080,7 +2315,7 @@ const List<List<List<int>>> cases = [
       0x9e46,
       0x2437,
       0x18d0,
-      0xd9cc
+      0xd9cc,
     ],
     [
       0x5c83,
@@ -1098,7 +2333,7 @@ const List<List<List<int>>> cases = [
       0xe2b2,
       0xe3ae,
       0xfb96,
-      0xdf67
+      0xdf67,
     ],
     [
       0x3105,
@@ -1116,8 +2351,8 @@ const List<List<List<int>>> cases = [
       0x9555,
       0x4c26,
       0x1fef,
-      0x997c
-    ]
+      0x997c,
+    ],
   ],
   /* example doing 123 consecutive (f,g/2) steps; 614 divsteps */
   [
@@ -1137,7 +2372,7 @@ const List<List<List<int>>> cases = [
       0xafaf,
       0x5f41,
       0x47e2,
-      0xc89d
+      0xc89d,
     ],
     [
       0x8607,
@@ -1155,7 +2390,7 @@ const List<List<List<int>>> cases = [
       0xccee,
       0x22ae,
       0x91e0,
-      0xcfd5
+      0xcfd5,
     ],
     [
       0x831c,
@@ -1173,8 +2408,8 @@ const List<List<List<int>>> cases = [
       0xf2ad,
       0xae0d,
       0x349b,
-      0x17d1
-    ]
+      0x17d1,
+    ],
   ],
   /* example doing 123 consecutive (f,g/2) steps; 614 divsteps */
   [
@@ -1194,7 +2429,7 @@ const List<List<List<int>>> cases = [
       0x5b5e,
       0xad1d,
       0x6d57,
-      0x3d50
+      0x3d50,
     ],
     [
       0x3ad9,
@@ -1212,7 +2447,7 @@ const List<List<List<int>>> cases = [
       0x65fb,
       0x3fa6,
       0xa6bc,
-      0xeb24
+      0xeb24,
     ],
     [
       0xf96c,
@@ -1230,8 +2465,8 @@ const List<List<List<int>>> cases = [
       0x6b00,
       0x44ec,
       0xca6a,
-      0x1745
-    ]
+      0x1745,
+    ],
   ],
   /* example doing 446 (f,g/2) steps; 523 divsteps */
   [
@@ -1251,7 +2486,7 @@ const List<List<List<int>>> cases = [
       0x6074,
       0x4f68,
       0x2f5a,
-      0xbb8a
+      0xbb8a,
     ],
     [
       0x4beb,
@@ -1269,7 +2504,7 @@ const List<List<List<int>>> cases = [
       0x1746,
       0x1706,
       0xbcda,
-      0xdf32
+      0xdf32,
     ],
     [
       0x762a,
@@ -1287,8 +2522,8 @@ const List<List<List<int>>> cases = [
       0xcb85,
       0x24d5,
       0xc29c,
-      0x61f6
-    ]
+      0x61f6,
+    ],
   ],
   /* example doing 446 (f,g/2) steps; 523 divsteps */
   [
@@ -1308,7 +2543,7 @@ const List<List<List<int>>> cases = [
       0x1e69,
       0x7c49,
       0x7d51,
-      0xb6e7
+      0xb6e7,
     ],
     [
       0x3f27,
@@ -1326,7 +2561,7 @@ const List<List<List<int>>> cases = [
       0xd705,
       0x5598,
       0x8ba1,
-      0xe087
+      0xe087,
     ],
     [
       0x6a22,
@@ -1344,8 +2579,8 @@ const List<List<List<int>>> cases = [
       0xfe77,
       0x46d2,
       0x179b,
-      0xbf3e
-    ]
+      0xbf3e,
+    ],
   ],
   /* example doing 336 (f,(f+g)/2) steps; 693 divsteps */
   [
@@ -1365,7 +2600,7 @@ const List<List<List<int>>> cases = [
       0xbbd0,
       0x74ce,
       0x0169,
-      0x7ab5
+      0x7ab5,
     ],
     [
       0x4023,
@@ -1383,7 +2618,7 @@ const List<List<List<int>>> cases = [
       0x7157,
       0x6456,
       0xdd7d,
-      0xf14b
+      0xf14b,
     ],
     [
       0xb6fb,
@@ -1401,8 +2636,8 @@ const List<List<List<int>>> cases = [
       0xe6b5,
       0xf2e0,
       0x0a28,
-      0x5b74
-    ]
+      0x5b74,
+    ],
   ],
   /* example doing 336 (f,(f+g)/2) steps; 687 divsteps */
   [
@@ -1422,7 +2657,7 @@ const List<List<List<int>>> cases = [
       0xa189,
       0xb15d,
       0xa4b8,
-      0xc24c
+      0xc24c,
     ],
     [
       0xb0b7,
@@ -1440,7 +2675,7 @@ const List<List<List<int>>> cases = [
       0xd73d,
       0x13ff,
       0x0c3d,
-      0xcd62
+      0xcd62,
     ],
     [
       0x48ca,
@@ -1458,8 +2693,8 @@ const List<List<List<int>>> cases = [
       0x994f,
       0xd025,
       0x2187,
-      0x5866
-    ]
+      0x5866,
+    ],
   ],
   /* example doing 267 (g,(g-f)/2) steps; 678 divsteps */
   [
@@ -1479,7 +2714,7 @@ const List<List<List<int>>> cases = [
       0x6084,
       0x47a4,
       0x23fe,
-      0xddd5
+      0xddd5,
     ],
     [
       0x8e1b,
@@ -1497,7 +2732,7 @@ const List<List<List<int>>> cases = [
       0x134d,
       0x2ebb,
       0x5ec0,
-      0xe032
+      0xe032,
     ],
     [
       0x1cb6,
@@ -1515,8 +2750,8 @@ const List<List<List<int>>> cases = [
       0x336c,
       0x45e6,
       0x4361,
-      0xbadc
-    ]
+      0xbadc,
+    ],
   ],
   /* example doing 267 (g,(g-f)/2) steps; 676 divsteps */
   [
@@ -1536,7 +2771,7 @@ const List<List<List<int>>> cases = [
       0xaf9c,
       0x34e7,
       0xa38f,
-      0xbe9f
+      0xbe9f,
     ],
     [
       0x5fb9,
@@ -1554,7 +2789,7 @@ const List<List<List<int>>> cases = [
       0x722a,
       0xf116,
       0x64a9,
-      0xcf0b
+      0xcf0b,
     ],
     [
       0xf4d7,
@@ -1572,8 +2807,8 @@ const List<List<List<int>>> cases = [
       0x750c,
       0x3de7,
       0x8b4a,
-      0x19aa
-    ]
+      0x19aa,
+    ],
   ],
 
   /* Test cases triggering edge cases in divsteps variant starting with delta=1/2 */
@@ -1596,7 +2831,7 @@ const List<List<List<int>>> cases = [
       0xfd05,
       0x3cc0,
       0x453a,
-      0xfb7e
+      0xfb7e,
     ],
     [
       0x6983,
@@ -1614,7 +2849,7 @@ const List<List<List<int>>> cases = [
       0xd305,
       0x3895,
       0x2da5,
-      0xfdf8
+      0xfdf8,
     ],
     [
       0xcec1,
@@ -1632,8 +2867,8 @@ const List<List<List<int>>> cases = [
       0xa611,
       0x84aa,
       0x3493,
-      0xbf54
-    ]
+      0xbf54,
+    ],
   ],
   /* example needing 590 divsteps; delta=-3/2..5/2 */
   [
@@ -1653,7 +2888,7 @@ const List<List<List<int>>> cases = [
       0x789e,
       0x353d,
       0x9766,
-      0xea9d
+      0xea9d,
     ],
     [
       0x6fa1,
@@ -1671,7 +2906,7 @@ const List<List<List<int>>> cases = [
       0x4b15,
       0x8411,
       0x2ab2,
-      0xf3e7
+      0xf3e7,
     ],
     [
       0xf12c,
@@ -1689,8 +2924,8 @@ const List<List<List<int>>> cases = [
       0x6e0e,
       0x5b68,
       0xde55,
-      0x9927
-    ]
+      0x9927,
+    ],
   ],
   /* example needing 590 divsteps; delta=-3/2..5/2 */
   [
@@ -1710,7 +2945,7 @@ const List<List<List<int>>> cases = [
       0x11d2,
       0xa50b,
       0x350d,
-      0xeb40
+      0xeb40,
     ],
     [
       0x3157,
@@ -1728,7 +2963,7 @@ const List<List<List<int>>> cases = [
       0x85d2,
       0x77a8,
       0xf805,
-      0xeec9
+      0xeec9,
     ],
     [
       0x6f4e,
@@ -1746,8 +2981,8 @@ const List<List<List<int>>> cases = [
       0x72c6,
       0xaf2f,
       0x85d2,
-      0x6cd3
-    ]
+      0x6cd3,
+    ],
   ],
   /* example needing 590 divsteps; delta=-5/2..7/2 */
   [
@@ -1767,7 +3002,7 @@ const List<List<List<int>>> cases = [
       0x8e1d,
       0x97b8,
       0xc0bf,
-      0xf2a1
+      0xf2a1,
     ],
     [
       0xbd3d,
@@ -1785,7 +3020,7 @@ const List<List<List<int>>> cases = [
       0x7d5d,
       0x10df,
       0x3efe,
-      0xfbe5
+      0xfbe5,
     ],
     [
       0xa9dd,
@@ -1803,8 +3038,8 @@ const List<List<List<int>>> cases = [
       0x7e35,
       0xc47c,
       0x857f,
-      0x32c5
-    ]
+      0x32c5,
+    ],
   ],
   /* example needing 590 divsteps; delta=-3/2..5/2 */
   [
@@ -1824,7 +3059,7 @@ const List<List<List<int>>> cases = [
       0xa8df,
       0x9061,
       0x9e31,
-      0xee82
+      0xee82,
     ],
     [
       0xd3a9,
@@ -1842,7 +3077,7 @@ const List<List<List<int>>> cases = [
       0x03bb,
       0xfb54,
       0x7575,
-      0xfe89
+      0xfe89,
     ],
     [
       0x8246,
@@ -1860,8 +3095,8 @@ const List<List<List<int>>> cases = [
       0x30e1,
       0x55fc,
       0x6a01,
-      0x3724
-    ]
+      0x3724,
+    ],
   ],
   /* example reaching delta=-127/2..129/2; 571 divsteps */
   [
@@ -1881,7 +3116,7 @@ const List<List<List<int>>> cases = [
       0x62b0,
       0xa032,
       0xba9c,
-      0xbe56
+      0xbe56,
     ],
     [
       0xb8f9,
@@ -1899,7 +3134,7 @@ const List<List<List<int>>> cases = [
       0xf54d,
       0x1d19,
       0x6ac7,
-      0xff6f
+      0xff6f,
     ],
     [
       0xf1d7,
@@ -1917,8 +3152,8 @@ const List<List<List<int>>> cases = [
       0xc27e,
       0xd3c6,
       0xdf42,
-      0xd306
-    ]
+      0xd306,
+    ],
   ],
   /* example reaching delta=-127/2..129/2; 571 divsteps */
   [
@@ -1938,7 +3173,7 @@ const List<List<List<int>>> cases = [
       0x714a,
       0xb9c5,
       0x4d58,
-      0xad6c
+      0xad6c,
     ],
     [
       0x9cf9,
@@ -1956,7 +3191,7 @@ const List<List<List<int>>> cases = [
       0xe986,
       0xae02,
       0xe89b,
-      0xea36
+      0xea36,
     ],
     [
       0x1fb4,
@@ -1974,8 +3209,8 @@ const List<List<List<int>>> cases = [
       0x81b3,
       0xc16d,
       0x54d3,
-      0x9be3
-    ]
+      0x9be3,
+    ],
   ],
   /* example reaching delta=-127/2..129/2; 571 divsteps */
   [
@@ -1995,7 +3230,7 @@ const List<List<List<int>>> cases = [
       0x62af,
       0xa032,
       0xba9c,
-      0xbe56
+      0xbe56,
     ],
     [
       0xb1f1,
@@ -2013,7 +3248,7 @@ const List<List<List<int>>> cases = [
       0xf545,
       0x1d19,
       0x6ac7,
-      0xff6f
+      0xff6f,
     ],
     [
       0xa834,
@@ -2031,8 +3266,8 @@ const List<List<List<int>>> cases = [
       0x2b2e,
       0x231b,
       0x082a,
-      0x796e
-    ]
+      0x796e,
+    ],
   ],
   /* example doing 123 consecutive (f,g/2) steps; 554 divsteps */
   [
@@ -2052,7 +3287,7 @@ const List<List<List<int>>> cases = [
       0x2894,
       0xe3c5,
       0xa008,
-      0xcc14
+      0xcc14,
     ],
     [
       0xc75f,
@@ -2070,7 +3305,7 @@ const List<List<List<int>>> cases = [
       0x2c22,
       0xf56c,
       0x5381,
-      0xe943
+      0xe943,
     ],
     [
       0xcd80,
@@ -2088,8 +3323,8 @@ const List<List<List<int>>> cases = [
       0x0425,
       0xa333,
       0x7056,
-      0xc9c5
-    ]
+      0xc9c5,
+    ],
   ],
   /* example doing 123 consecutive (f,g/2) steps; 554 divsteps */
   [
@@ -2109,7 +3344,7 @@ const List<List<List<int>>> cases = [
       0xb0ea,
       0x640a,
       0x62d9,
-      0xd5f4
+      0xd5f4,
     ],
     [
       0xdc75,
@@ -2127,7 +3362,7 @@ const List<List<List<int>>> cases = [
       0x3384,
       0x74b0,
       0x947d,
-      0xf2c4
+      0xf2c4,
     ],
     [
       0x0a82,
@@ -2145,8 +3380,8 @@ const List<List<List<int>>> cases = [
       0x0fca,
       0x35e1,
       0xd6f6,
-      0x81ee
-    ]
+      0x81ee,
+    ],
   ],
   /* example doing 123 consecutive (f,g/2) steps; 554 divsteps */
   [
@@ -2166,7 +3401,7 @@ const List<List<List<int>>> cases = [
       0x2bd7,
       0xe3c5,
       0xa008,
-      0xcc14
+      0xcc14,
     ],
     [
       0x4b5f,
@@ -2184,7 +3419,7 @@ const List<List<List<int>>> cases = [
       0x1dd5,
       0xf56c,
       0x5381,
-      0xe943
+      0xe943,
     ],
     [
       0xaa3d,
@@ -2202,8 +3437,8 @@ const List<List<List<int>>> cases = [
       0x34a7,
       0x6b00,
       0x6998,
-      0x589a
-    ]
+      0x589a,
+    ],
   ],
   /* example doing 453 (f,g/2) steps; 514 divsteps */
   [
@@ -2223,7 +3458,7 @@ const List<List<List<int>>> cases = [
       0xe213,
       0x443e,
       0x4427,
-      0x2448
+      0x2448,
     ],
     [
       0x258f,
@@ -2241,7 +3476,7 @@ const List<List<List<int>>> cases = [
       0x198a,
       0x981d,
       0x0627,
-      0xedb7
+      0xedb7,
     ],
     [
       0x595a,
@@ -2259,8 +3494,8 @@ const List<List<List<int>>> cases = [
       0x2f51,
       0xae54,
       0x5785,
-      0xb411
-    ]
+      0xb411,
+    ],
   ],
   /* example doing 453 (f,g/2) steps; 514 divsteps */
   [
@@ -2280,7 +3515,7 @@ const List<List<List<int>>> cases = [
       0x8718,
       0xda27,
       0x1683,
-      0x1de2
+      0x1de2,
     ],
     [
       0x168f,
@@ -2298,7 +3533,7 @@ const List<List<List<int>>> cases = [
       0xa9f0,
       0x78e1,
       0xdfef,
-      0xe823
+      0xe823,
     ],
     [
       0x5f55,
@@ -2316,8 +3551,8 @@ const List<List<List<int>>> cases = [
       0xd5de,
       0x34f0,
       0x5311,
-      0x4c54
-    ]
+      0x4c54,
+    ],
   ],
   /* example doing 510 (f,(f+g)/2) steps; 512 divsteps */
   [
@@ -2337,7 +3572,7 @@ const List<List<List<int>>> cases = [
       0xa73b,
       0xcfa2,
       0x82f7,
-      0x9e19
+      0x9e19,
     ],
     [
       0xc08d,
@@ -2355,7 +3590,7 @@ const List<List<List<int>>> cases = [
       0xd91a,
       0xa2c7,
       0xfff1,
-      0xc7b9
+      0xc7b9,
     ],
     [
       0x1e1f,
@@ -2373,8 +3608,8 @@ const List<List<List<int>>> cases = [
       0x4cd7,
       0xd13a,
       0x4395,
-      0x63e1
-    ]
+      0x63e1,
+    ],
   ],
   /* example doing 510 (f,(f+g)/2) steps; 512 divsteps */
   [
@@ -2394,7 +3629,7 @@ const List<List<List<int>>> cases = [
       0xc85a,
       0x1910,
       0x75bf,
-      0x960b
+      0x960b,
     ],
     [
       0xfe53,
@@ -2412,7 +3647,7 @@ const List<List<List<int>>> cases = [
       0xa388,
       0x957f,
       0x99ca,
-      0x9abf
+      0x9abf,
     ],
     [
       0xe530,
@@ -2430,8 +3665,8 @@ const List<List<List<int>>> cases = [
       0x6068,
       0x90c7,
       0x1ddf,
-      0x488d
-    ]
+      0x488d,
+    ],
   ],
   /* example doing 228 (g,(g-f)/2) steps; 538 divsteps */
   [
@@ -2451,7 +3686,7 @@ const List<List<List<int>>> cases = [
       0x9ad2,
       0xa596,
       0xb3ac,
-      0xdf42
+      0xdf42,
     ],
     [
       0xe31f,
@@ -2469,7 +3704,7 @@ const List<List<List<int>>> cases = [
       0xa2c6,
       0xb306,
       0x8120,
-      0xe305
+      0xe305,
     ],
     [
       0xa56e,
@@ -2487,8 +3722,8 @@ const List<List<List<int>>> cases = [
       0xc74c,
       0x5175,
       0xa65d,
-      0x605e
-    ]
+      0x605e,
+    ],
   ],
   /* example doing 228 (g,(g-f)/2) steps; 537 divsteps */
   [
@@ -2508,7 +3743,7 @@ const List<List<List<int>>> cases = [
       0xe15c,
       0x51e7,
       0xbad8,
-      0x6359
+      0x6359,
     ],
     [
       0x3b75,
@@ -2526,7 +3761,7 @@ const List<List<List<int>>> cases = [
       0xe662,
       0x4950,
       0x0265,
-      0xf76f
+      0xf76f,
     ],
     [
       0x09ed,
@@ -2544,8 +3779,8 @@ const List<List<List<int>>> cases = [
       0x482d,
       0x7d63,
       0xb44f,
-      0xcc09
-    ]
+      0xcc09,
+    ],
   ],
 
   /* Test cases with the group order as modulus. */
@@ -2568,7 +3803,7 @@ const List<List<List<int>>> cases = [
       0x9af6,
       0x30bf,
       0xf0ed,
-      0x1686
+      0x1686,
     ],
     [
       0x4141,
@@ -2586,7 +3821,7 @@ const List<List<List<int>>> cases = [
       0xffff,
       0xffff,
       0xffff,
-      0xffff
+      0xffff,
     ],
     [
       0x1631,
@@ -2604,8 +3839,8 @@ const List<List<List<int>>> cases = [
       0xd932,
       0xc8f4,
       0x0d0d,
-      0x01a1
-    ]
+      0x01a1,
+    ],
   ],
   /* example with group size as modulus needing 631 divsteps */
   [
@@ -2625,7 +3860,7 @@ const List<List<List<int>>> cases = [
       0x1135,
       0xa186,
       0xc424,
-      0xc68b
+      0xc68b,
     ],
     [
       0x4141,
@@ -2643,7 +3878,7 @@ const List<List<List<int>>> cases = [
       0xffff,
       0xffff,
       0xffff,
-      0xffff
+      0xffff,
     ],
     [
       0x8479,
@@ -2661,8 +3896,8 @@ const List<List<List<int>>> cases = [
       0xe694,
       0xc760,
       0xd3cb,
-      0x2811
-    ]
+      0x2811,
+    ],
   ],
   /* example with group size as modulus needing 565 divsteps starting at delta=1/2 */
   [
@@ -2682,7 +3917,7 @@ const List<List<List<int>>> cases = [
       0xc8e7,
       0x39f8,
       0x7e96,
-      0xebbf
+      0xebbf,
     ],
     [
       0x4141,
@@ -2700,7 +3935,7 @@ const List<List<List<int>>> cases = [
       0xffff,
       0xffff,
       0xffff,
-      0xffff
+      0xffff,
     ],
     [
       0x257e,
@@ -2718,8 +3953,8 @@ const List<List<List<int>>> cases = [
       0x3f2f,
       0x9716,
       0x6046,
-      0xcaa3
-    ]
+      0xcaa3,
+    ],
   ],
   /* Test case with the group size as modulus, needing 981 divsteps with
            broken eta handling. */
@@ -2740,7 +3975,7 @@ const List<List<List<int>>> cases = [
       0xbf32,
       0x3ad8,
       0xe11c,
-      0x5ca2
+      0x5ca2,
     ],
     [
       0x4141,
@@ -2758,7 +3993,7 @@ const List<List<List<int>>> cases = [
       0xffff,
       0xffff,
       0xffff,
-      0xffff
+      0xffff,
     ],
     [
       0x0f12,
@@ -2776,8 +4011,8 @@ const List<List<List<int>>> cases = [
       0x1f99,
       0xf4fd,
       0xda4d,
-      0x42ce
-    ]
+      0x42ce,
+    ],
   ],
   /* Test case with the group size as modulus, input = 0. */
   [
@@ -2797,7 +4032,7 @@ const List<List<List<int>>> cases = [
       0x0000,
       0x0000,
       0x0000,
-      0x0000
+      0x0000,
     ],
     [
       0x4141,
@@ -2815,7 +4050,7 @@ const List<List<List<int>>> cases = [
       0xffff,
       0xffff,
       0xffff,
-      0xffff
+      0xffff,
     ],
     [
       0x0000,
@@ -2833,8 +4068,8 @@ const List<List<List<int>>> cases = [
       0x0000,
       0x0000,
       0x0000,
-      0x0000
-    ]
+      0x0000,
+    ],
   ],
   /* Test case with the group size as modulus, input = 1. */
   [
@@ -2854,7 +4089,7 @@ const List<List<List<int>>> cases = [
       0x0000,
       0x0000,
       0x0000,
-      0x0000
+      0x0000,
     ],
     [
       0x4141,
@@ -2872,7 +4107,7 @@ const List<List<List<int>>> cases = [
       0xffff,
       0xffff,
       0xffff,
-      0xffff
+      0xffff,
     ],
     [
       0x0001,
@@ -2890,8 +4125,8 @@ const List<List<List<int>>> cases = [
       0x0000,
       0x0000,
       0x0000,
-      0x0000
-    ]
+      0x0000,
+    ],
   ],
   /* Test case with the group size as modulus, input = 2. */
   [
@@ -2911,7 +4146,7 @@ const List<List<List<int>>> cases = [
       0x0000,
       0x0000,
       0x0000,
-      0x0000
+      0x0000,
     ],
     [
       0x4141,
@@ -2929,7 +4164,7 @@ const List<List<List<int>>> cases = [
       0xffff,
       0xffff,
       0xffff,
-      0xffff
+      0xffff,
     ],
     [
       0x20a1,
@@ -2947,8 +4182,8 @@ const List<List<List<int>>> cases = [
       0xffff,
       0xffff,
       0xffff,
-      0x7fff
-    ]
+      0x7fff,
+    ],
   ],
   /* Test case with the group size as modulus, input = group - 1. */
   [
@@ -2968,7 +4203,7 @@ const List<List<List<int>>> cases = [
       0xffff,
       0xffff,
       0xffff,
-      0xffff
+      0xffff,
     ],
     [
       0x4141,
@@ -2986,7 +4221,7 @@ const List<List<List<int>>> cases = [
       0xffff,
       0xffff,
       0xffff,
-      0xffff
+      0xffff,
     ],
     [
       0x4140,
@@ -3004,8 +4239,8 @@ const List<List<List<int>>> cases = [
       0xffff,
       0xffff,
       0xffff,
-      0xffff
-    ]
+      0xffff,
+    ],
   ],
 
   /* Test cases with the field size as modulus. */
@@ -3028,7 +4263,7 @@ const List<List<List<int>>> cases = [
       0x8a84,
       0x6bee,
       0x9c95,
-      0xe34e
+      0xe34e,
     ],
     [
       0xfc2f,
@@ -3046,7 +4281,7 @@ const List<List<List<int>>> cases = [
       0xffff,
       0xffff,
       0xffff,
-      0xffff
+      0xffff,
     ],
     [
       0x18e5,
@@ -3064,8 +4299,8 @@ const List<List<List<int>>> cases = [
       0x6828,
       0x1c53,
       0xbd8f,
-      0xbd2c
-    ]
+      0xbd2c,
+    ],
   ],
   /* example with field size as modulus needing 637 divsteps */
   [
@@ -3085,7 +4320,7 @@ const List<List<List<int>>> cases = [
       0xf86e,
       0x6057,
       0x9cbd,
-      0xf6d8
+      0xf6d8,
     ],
     [
       0xfc2f,
@@ -3103,7 +4338,7 @@ const List<List<List<int>>> cases = [
       0xffff,
       0xffff,
       0xffff,
-      0xffff
+      0xffff,
     ],
     [
       0x0310,
@@ -3121,8 +4356,8 @@ const List<List<List<int>>> cases = [
       0xdc85,
       0xf859,
       0x919e,
-      0x1d45
-    ]
+      0x1d45,
+    ],
   ],
   /* example with field size as modulus needing 564 divsteps starting at delta=1/2 */
   [
@@ -3142,7 +4377,7 @@ const List<List<List<int>>> cases = [
       0xcede,
       0xa070,
       0x36b4,
-      0x7f6f
+      0x7f6f,
     ],
     [
       0xfc2f,
@@ -3160,7 +4395,7 @@ const List<List<List<int>>> cases = [
       0xffff,
       0xffff,
       0xffff,
-      0xffff
+      0xffff,
     ],
     [
       0xfdc8,
@@ -3178,8 +4413,8 @@ const List<List<List<int>>> cases = [
       0x69b8,
       0xf7c4,
       0xee4b,
-      0xc7e6
-    ]
+      0xc7e6,
+    ],
   ],
   /* Test case with the field size as modulus, needing 935 divsteps with
            broken eta handling. */
@@ -3200,7 +4435,7 @@ const List<List<List<int>>> cases = [
       0x631d,
       0xe38f,
       0xd4f8,
-      0x5c93
+      0x5c93,
     ],
     [
       0xfc2f,
@@ -3218,7 +4453,7 @@ const List<List<List<int>>> cases = [
       0xffff,
       0xffff,
       0xffff,
-      0xffff
+      0xffff,
     ],
     [
       0x1622,
@@ -3236,8 +4471,8 @@ const List<List<List<int>>> cases = [
       0x7ccb,
       0x8ef7,
       0xa2ff,
-      0xe279
-    ]
+      0xe279,
+    ],
   ],
   /* Test case with the field size as modulus, input = 0. */
   [
@@ -3257,7 +4492,7 @@ const List<List<List<int>>> cases = [
       0x0000,
       0x0000,
       0x0000,
-      0x0000
+      0x0000,
     ],
     [
       0xfc2f,
@@ -3275,7 +4510,7 @@ const List<List<List<int>>> cases = [
       0xffff,
       0xffff,
       0xffff,
-      0xffff
+      0xffff,
     ],
     [
       0x0000,
@@ -3293,8 +4528,8 @@ const List<List<List<int>>> cases = [
       0x0000,
       0x0000,
       0x0000,
-      0x0000
-    ]
+      0x0000,
+    ],
   ],
   /* Test case with the field size as modulus, input = 1. */
   [
@@ -3314,7 +4549,7 @@ const List<List<List<int>>> cases = [
       0x0000,
       0x0000,
       0x0000,
-      0x0000
+      0x0000,
     ],
     [
       0xfc2f,
@@ -3332,7 +4567,7 @@ const List<List<List<int>>> cases = [
       0xffff,
       0xffff,
       0xffff,
-      0xffff
+      0xffff,
     ],
     [
       0x0001,
@@ -3350,8 +4585,8 @@ const List<List<List<int>>> cases = [
       0x0000,
       0x0000,
       0x0000,
-      0x0000
-    ]
+      0x0000,
+    ],
   ],
   /* Test case with the field size as modulus, input = 2. */
   [
@@ -3371,7 +4606,7 @@ const List<List<List<int>>> cases = [
       0x0000,
       0x0000,
       0x0000,
-      0x0000
+      0x0000,
     ],
     [
       0xfc2f,
@@ -3389,7 +4624,7 @@ const List<List<List<int>>> cases = [
       0xffff,
       0xffff,
       0xffff,
-      0xffff
+      0xffff,
     ],
     [
       0xfe18,
@@ -3407,8 +4642,8 @@ const List<List<List<int>>> cases = [
       0xffff,
       0xffff,
       0xffff,
-      0x7fff
-    ]
+      0x7fff,
+    ],
   ],
   /* Test case with the field size as modulus, input = field - 1. */
   [
@@ -3428,7 +4663,7 @@ const List<List<List<int>>> cases = [
       0xffff,
       0xffff,
       0xffff,
-      0xffff
+      0xffff,
     ],
     [
       0xfc2f,
@@ -3446,7 +4681,7 @@ const List<List<List<int>>> cases = [
       0xffff,
       0xffff,
       0xffff,
-      0xffff
+      0xffff,
     ],
     [
       0xfc2e,
@@ -3464,8 +4699,8 @@ const List<List<List<int>>> cases = [
       0xffff,
       0xffff,
       0xffff,
-      0xffff
-    ]
+      0xffff,
+    ],
   ],
 
   /* Selected from a large number of random inputs to reach small/large
@@ -3487,7 +4722,7 @@ const List<List<List<int>>> cases = [
       0xe847,
       0x8c5d,
       0x6322,
-      0xbd30
+      0xbd30,
     ],
     [
       0x8359,
@@ -3505,7 +4740,7 @@ const List<List<List<int>>> cases = [
       0x36ea,
       0xee17,
       0xe32c,
-      0xffff
+      0xffff,
     ],
     [
       0x1727,
@@ -3523,8 +4758,8 @@ const List<List<List<int>>> cases = [
       0x29b1,
       0x6ffd,
       0x9055,
-      0xc196
-    ]
+      0xc196,
+    ],
   ],
   [
     [
@@ -3543,7 +4778,7 @@ const List<List<List<int>>> cases = [
       0xe72f,
       0x4999,
       0x1148,
-      0xf65e
+      0xf65e,
     ],
     [
       0x5b41,
@@ -3561,7 +4796,7 @@ const List<List<List<int>>> cases = [
       0x5e70,
       0xd411,
       0x3005,
-      0xf8c6
+      0xf8c6,
     ],
     [
       0xc30e,
@@ -3579,8 +4814,8 @@ const List<List<List<int>>> cases = [
       0x2797,
       0x064c,
       0x5ca4,
-      0x90e3
-    ]
+      0x90e3,
+    ],
   ],
   [
     [
@@ -3599,7 +4834,7 @@ const List<List<List<int>>> cases = [
       0xd892,
       0xa05c,
       0x6ffd,
-      0x7eac
+      0x7eac,
     ],
     [
       0x2153,
@@ -3617,7 +4852,7 @@ const List<List<List<int>>> cases = [
       0xdcc2,
       0x71f4,
       0x6ae2,
-      0xceeb
+      0xceeb,
     ],
     [
       0x9b2e,
@@ -3635,8 +4870,8 @@ const List<List<List<int>>> cases = [
       0x8823,
       0x1ed0,
       0x34d0,
-      0xbfa3
-    ]
+      0xbfa3,
+    ],
   ],
   [
     [
@@ -3655,7 +4890,7 @@ const List<List<List<int>>> cases = [
       0x491c,
       0xb1eb,
       0x04c9,
-      0xb6c8
+      0xb6c8,
     ],
     [
       0xfcfd,
@@ -3673,7 +4908,7 @@ const List<List<List<int>>> cases = [
       0x2c5c,
       0x4e6e,
       0x4558,
-      0xfff2
+      0xfff2,
     ],
     [
       0xc50f,
@@ -3691,8 +4926,8 @@ const List<List<List<int>>> cases = [
       0x96ea,
       0xde4b,
       0xa88b,
-      0x5543
-    ]
+      0x5543,
+    ],
   ],
   [
     [
@@ -3711,7 +4946,7 @@ const List<List<List<int>>> cases = [
       0x9371,
       0xe8ea,
       0xc1cb,
-      0x75c4
+      0x75c4,
     ],
     [
       0xe3a3,
@@ -3729,7 +4964,7 @@ const List<List<List<int>>> cases = [
       0x5f1d,
       0x1abb,
       0xa764,
-      0xffff
+      0xffff,
     ],
     [
       0x45c6,
@@ -3747,8 +4982,8 @@ const List<List<List<int>>> cases = [
       0x647f,
       0xe1d7,
       0x78a2,
-      0x4cf4
-    ]
+      0x4cf4,
+    ],
   ],
   [
     [
@@ -3767,7 +5002,7 @@ const List<List<List<int>>> cases = [
       0xd242,
       0xa56d,
       0xf2c7,
-      0x5f97
+      0x5f97,
     ],
     [
       0x465b,
@@ -3785,7 +5020,7 @@ const List<List<List<int>>> cases = [
       0x959d,
       0x3f53,
       0x98f2,
-      0xf640
+      0xf640,
     ],
     [
       0xc0f2,
@@ -3803,8 +5038,8 @@ const List<List<List<int>>> cases = [
       0xd9f0,
       0xe68b,
       0xa72b,
-      0xd1b2
-    ]
+      0xd1b2,
+    ],
   ],
   [
     [
@@ -3823,7 +5058,7 @@ const List<List<List<int>>> cases = [
       0x932b,
       0x32c9,
       0xdf1d,
-      0xe576
+      0xe576,
     ],
     [
       0x8215,
@@ -3841,7 +5076,7 @@ const List<List<List<int>>> cases = [
       0x8065,
       0xc6a0,
       0x214b,
-      0xfc64
+      0xfc64,
     ],
     [
       0x04bf,
@@ -3859,8 +5094,8 @@ const List<List<List<int>>> cases = [
       0xcc7d,
       0x066b,
       0xd513,
-      0xc251
-    ]
+      0xc251,
+    ],
   ],
   [
     [
@@ -3879,7 +5114,7 @@ const List<List<List<int>>> cases = [
       0x5f16,
       0xcee4,
       0x925b,
-      0xe98e
+      0xe98e,
     ],
     [
       0x913f,
@@ -3897,7 +5132,7 @@ const List<List<List<int>>> cases = [
       0x6cb1,
       0xed64,
       0xc6f9,
-      0xffb5
+      0xffb5,
     ],
     [
       0x6ab1,
@@ -3915,8 +5150,8 @@ const List<List<List<int>>> cases = [
       0x10e1,
       0x7933,
       0xe195,
-      0xcf49
-    ]
+      0xcf49,
+    ],
   ],
   [
     [
@@ -3935,7 +5170,7 @@ const List<List<List<int>>> cases = [
       0x7487,
       0x92af,
       0xe516,
-      0x676c
+      0x676c,
     ],
     [
       0xd6e9,
@@ -3953,7 +5188,7 @@ const List<List<List<int>>> cases = [
       0xc78a,
       0xd0a3,
       0xadf4,
-      0xffff
+      0xffff,
     ],
     [
       0x01c2,
@@ -3971,8 +5206,8 @@ const List<List<List<int>>> cases = [
       0x55d3,
       0xd572,
       0x48de,
-      0x9219
-    ]
+      0x9219,
+    ],
   ],
   [
     [
@@ -3991,7 +5226,7 @@ const List<List<List<int>>> cases = [
       0xd6da,
       0x9156,
       0x8aeb,
-      0x875a
+      0x875a,
     ],
     [
       0xc1bf,
@@ -4009,7 +5244,7 @@ const List<List<List<int>>> cases = [
       0xce39,
       0x37f5,
       0x815d,
-      0xffff
+      0xffff,
     ],
     [
       0x48cc,
@@ -4027,8 +5262,8 @@ const List<List<List<int>>> cases = [
       0x3ce5,
       0xf717,
       0xc5af,
-      0xe185
-    ]
+      0xe185,
+    ],
   ],
   [
     [
@@ -4047,7 +5282,7 @@ const List<List<List<int>>> cases = [
       0xfa31,
       0x5096,
       0xf08c,
-      0x3fbe
+      0x3fbe,
     ],
     [
       0x8139,
@@ -4065,7 +5300,7 @@ const List<List<List<int>>> cases = [
       0x5274,
       0xb0a6,
       0xffff,
-      0xffff
+      0xffff,
     ],
     [
       0x22ca,
@@ -4083,8 +5318,8 @@ const List<List<List<int>>> cases = [
       0x66a6,
       0xba94,
       0x84c6,
-      0x8ee0
-    ]
+      0x8ee0,
+    ],
   ],
   [
     [
@@ -4103,7 +5338,7 @@ const List<List<List<int>>> cases = [
       0xb187,
       0xa5a5,
       0x38f1,
-      0xe49e
+      0xe49e,
     ],
     [
       0xfb19,
@@ -4121,7 +5356,7 @@ const List<List<List<int>>> cases = [
       0xe3d4,
       0x4269,
       0x0648,
-      0xfd77
+      0xfd77,
     ],
     [
       0xb4c8,
@@ -4139,8 +5374,8 @@ const List<List<List<int>>> cases = [
       0x58cf,
       0xac7f,
       0xd32b,
-      0x3018
-    ]
+      0x3018,
+    ],
   ],
   [
     [
@@ -4159,7 +5394,7 @@ const List<List<List<int>>> cases = [
       0x5b2b,
       0x0317,
       0x80ba,
-      0x376d
+      0x376d,
     ],
     [
       0xfe77,
@@ -4177,7 +5412,7 @@ const List<List<List<int>>> cases = [
       0x95d4,
       0xddc4,
       0xe805,
-      0xffff
+      0xffff,
     ],
     [
       0xb1ce,
@@ -4195,8 +5430,8 @@ const List<List<List<int>>> cases = [
       0x1824,
       0x93f6,
       0xd81f,
-      0x8f83
-    ]
+      0x8f83,
+    ],
   ],
   [
     [
@@ -4215,7 +5450,7 @@ const List<List<List<int>>> cases = [
       0xa267,
       0x002c,
       0xebb6,
-      0xc5f4
+      0xc5f4,
     ],
     [
       0x9cdd,
@@ -4233,7 +5468,7 @@ const List<List<List<int>>> cases = [
       0xe2d9,
       0x2e04,
       0xc62b,
-      0xffff
+      0xffff,
     ],
     [
       0xdc36,
@@ -4251,8 +5486,8 @@ const List<List<List<int>>> cases = [
       0xa387,
       0x1410,
       0xdbb1,
-      0x1b60
-    ]
+      0x1b60,
+    ],
   ],
   [
     [
@@ -4271,7 +5506,7 @@ const List<List<List<int>>> cases = [
       0x9985,
       0xed45,
       0x33b1,
-      0x53e8
+      0x53e8,
     ],
     [
       0x7913,
@@ -4289,7 +5524,7 @@ const List<List<List<int>>> cases = [
       0xb695,
       0xb899,
       0xc0f2,
-      0xffff
+      0xffff,
     ],
     [
       0x7f43,
@@ -4307,8 +5542,8 @@ const List<List<List<int>>> cases = [
       0xada8,
       0x39eb,
       0x5b4d,
-      0x96ca
-    ]
+      0x96ca,
+    ],
   ],
   [
     [
@@ -4327,7 +5562,7 @@ const List<List<List<int>>> cases = [
       0xb17e,
       0x9a5b,
       0x4c6d,
-      0x1914
+      0x1914,
     ],
     [
       0x4871,
@@ -4345,7 +5580,7 @@ const List<List<List<int>>> cases = [
       0x13df,
       0x76b0,
       0x8fb9,
-      0xffb3
+      0xffb3,
     ],
     [
       0x179e,
@@ -4363,8 +5598,8 @@ const List<List<List<int>>> cases = [
       0xf691,
       0x576c,
       0xa7d6,
-      0xce27
-    ]
+      0xce27,
+    ],
   ],
   [
     [
@@ -4383,7 +5618,7 @@ const List<List<List<int>>> cases = [
       0xb4e0,
       0x8b09,
       0xaca4,
-      0x7025
+      0x7025,
     ],
     [
       0x1025,
@@ -4401,7 +5636,7 @@ const List<List<List<int>>> cases = [
       0xf190,
       0xbe8c,
       0xdc5c,
-      0xfd93
+      0xfd93,
     ],
     [
       0x83a2,
@@ -4419,8 +5654,8 @@ const List<List<List<int>>> cases = [
       0x00cd,
       0xf573,
       0x2071,
-      0xccaa
-    ]
+      0xccaa,
+    ],
   ],
   [
     [
@@ -4439,7 +5674,7 @@ const List<List<List<int>>> cases = [
       0x4c38,
       0x43e1,
       0x381d,
-      0x7f94
+      0x7f94,
     ],
     [
       0xf61f,
@@ -4457,7 +5692,7 @@ const List<List<List<int>>> cases = [
       0x4fbf,
       0xb31a,
       0x38a7,
-      0xa29b
+      0xa29b,
     ],
     [
       0xe621,
@@ -4475,8 +5710,8 @@ const List<List<List<int>>> cases = [
       0xa629,
       0x8d73,
       0x699a,
-      0x6111
-    ]
+      0x6111,
+    ],
   ],
   [
     [
@@ -4495,7 +5730,7 @@ const List<List<List<int>>> cases = [
       0x98b4,
       0x1adc,
       0x225f,
-      0x777f
+      0x777f,
     ],
     [
       0xe649,
@@ -4513,7 +5748,7 @@ const List<List<List<int>>> cases = [
       0x6311,
       0xfe28,
       0x95fb,
-      0xed97
+      0xed97,
     ],
     [
       0xe9b6,
@@ -4531,8 +5766,8 @@ const List<List<List<int>>> cases = [
       0xded8,
       0x10f0,
       0x94d2,
-      0x81fb
-    ]
+      0x81fb,
+    ],
   ],
   [
     [
@@ -4551,7 +5786,7 @@ const List<List<List<int>>> cases = [
       0xe332,
       0x4276,
       0x68b4,
-      0xb166
+      0xb166,
     ],
     [
       0x596f,
@@ -4569,7 +5804,7 @@ const List<List<List<int>>> cases = [
       0x0638,
       0xf80e,
       0x9467,
-      0xc6aa
+      0xc6aa,
     ],
     [
       0xc7e7,
@@ -4587,8 +5822,8 @@ const List<List<List<int>>> cases = [
       0x8b17,
       0xf904,
       0x10b6,
-      0x9822
-    ]
+      0x9822,
+    ],
   ],
   [
     [
@@ -4607,7 +5842,7 @@ const List<List<List<int>>> cases = [
       0x2aa4,
       0x79e7,
       0xad28,
-      0xc3f1
+      0xc3f1,
     ],
     [
       0xe3bb,
@@ -4625,7 +5860,7 @@ const List<List<List<int>>> cases = [
       0x838e,
       0xbf43,
       0xe243,
-      0xfffb
+      0xfffb,
     ],
     [
       0x9cf2,
@@ -4643,8 +5878,8 @@ const List<List<List<int>>> cases = [
       0x890e,
       0xe36e,
       0xd552,
-      0xfffa
-    ]
+      0xfffa,
+    ],
   ],
   [
     [
@@ -4663,7 +5898,7 @@ const List<List<List<int>>> cases = [
       0xbaf2,
       0x2158,
       0x71eb,
-      0x08a3
+      0x08a3,
     ],
     [
       0x2f09,
@@ -4681,7 +5916,7 @@ const List<List<List<int>>> cases = [
       0x4f1b,
       0x18f8,
       0x7bd4,
-      0x0c4c
+      0x0c4c,
     ],
     [
       0xeb3d,
@@ -4699,8 +5934,8 @@ const List<List<List<int>>> cases = [
       0xae8e,
       0xc6af,
       0xd331,
-      0x0475
-    ]
+      0x0475,
+    ],
   ],
   [
     [
@@ -4719,7 +5954,7 @@ const List<List<List<int>>> cases = [
       0xf7af,
       0x8f8d,
       0x0bd6,
-      0x078d
+      0x078d,
     ],
     [
       0x4037,
@@ -4737,7 +5972,7 @@ const List<List<List<int>>> cases = [
       0x81f5,
       0x9415,
       0x0d6c,
-      0xf9fb
+      0xf9fb,
     ],
     [
       0xd205,
@@ -4755,8 +5990,8 @@ const List<List<List<int>>> cases = [
       0xfc95,
       0xfc4a,
       0xd41b,
-      0x3521
-    ]
+      0x3521,
+    ],
   ],
   [
     [
@@ -4775,7 +6010,7 @@ const List<List<List<int>>> cases = [
       0x63cc,
       0xb593,
       0xec6a,
-      0xc428
+      0xc428,
     ],
     [
       0x93a7,
@@ -4793,7 +6028,7 @@ const List<List<List<int>>> cases = [
       0x7470,
       0xa342,
       0x7c0f,
-      0xffff
+      0xffff,
     ],
     [
       0x315f,
@@ -4811,8 +6046,8 @@ const List<List<List<int>>> cases = [
       0x6301,
       0xd673,
       0x4ec4,
-      0xffff
-    ]
+      0xffff,
+    ],
   ],
   [
     [
@@ -4831,7 +6066,7 @@ const List<List<List<int>>> cases = [
       0xe8a5,
       0x09d6,
       0xe1d4,
-      0xe85d
+      0xe85d,
     ],
     [
       0xae09,
@@ -4849,7 +6084,7 @@ const List<List<List<int>>> cases = [
       0x5dfd,
       0x797a,
       0x7f1c,
-      0xf71a
+      0xf71a,
     ],
     [
       0x4064,
@@ -4867,8 +6102,8 @@ const List<List<List<int>>> cases = [
       0x4aaa,
       0xd2e4,
       0x1acd,
-      0x0562
-    ]
+      0x0562,
+    ],
   ],
   [
     [
@@ -4887,7 +6122,7 @@ const List<List<List<int>>> cases = [
       0xafda,
       0x0e62,
       0xae00,
-      0x0067
+      0x0067,
     ],
     [
       0x2cc7,
@@ -4905,7 +6140,7 @@ const List<List<List<int>>> cases = [
       0xee2b,
       0x5a4e,
       0x3289,
-      0x0185
+      0x0185,
     ],
     [
       0x4215,
@@ -4923,8 +6158,8 @@ const List<List<List<int>>> cases = [
       0x0826,
       0xfb8f,
       0x1b03,
-      0x0163
-    ]
+      0x0163,
+    ],
   ],
   [
     [
@@ -4943,7 +6178,7 @@ const List<List<List<int>>> cases = [
       0xd1e9,
       0x46fb,
       0x5691,
-      0x32a4
+      0x32a4,
     ],
     [
       0xd749,
@@ -4961,7 +6196,7 @@ const List<List<List<int>>> cases = [
       0x88cd,
       0xcf1e,
       0xb246,
-      0x7351
+      0x7351,
     ],
     [
       0xf729,
@@ -4979,8 +6214,8 @@ const List<List<List<int>>> cases = [
       0xa03f,
       0x8b7e,
       0x2c49,
-      0x0000
-    ]
+      0x0000,
+    ],
   ],
   [
     [
@@ -4999,7 +6234,7 @@ const List<List<List<int>>> cases = [
       0xac48,
       0x76ed,
       0xf23e,
-      0xda79
+      0xda79,
     ],
     [
       0x1103,
@@ -5017,7 +6252,7 @@ const List<List<List<int>>> cases = [
       0xda53,
       0x3847,
       0xd416,
-      0xe0d0
+      0xe0d0,
     ],
     [
       0xdd8e,
@@ -5035,8 +6270,8 @@ const List<List<List<int>>> cases = [
       0x7265,
       0xda9d,
       0xded6,
-      0x08f8
-    ]
+      0x08f8,
+    ],
   ],
   [
     [
@@ -5055,7 +6290,7 @@ const List<List<List<int>>> cases = [
       0xf7c4,
       0x51dd,
       0xaf5c,
-      0x0096
+      0x0096,
     ],
     [
       0x1739,
@@ -5073,7 +6308,7 @@ const List<List<List<int>>> cases = [
       0x8d4d,
       0x2c4b,
       0xb1b1,
-      0x0628
+      0x0628,
     ],
     [
       0x992d,
@@ -5091,8 +6326,8 @@ const List<List<List<int>>> cases = [
       0x5fe8,
       0x1b18,
       0x1774,
-      0x03a7
-    ]
+      0x03a7,
+    ],
   ],
   [
     [
@@ -5111,7 +6346,7 @@ const List<List<List<int>>> cases = [
       0xc2e8,
       0xef60,
       0xfc0e,
-      0xf3a4
+      0xf3a4,
     ],
     [
       0x9f49,
@@ -5129,7 +6364,7 @@ const List<List<List<int>>> cases = [
       0x3703,
       0xea30,
       0x73da,
-      0xffad
+      0xffad,
     ],
     [
       0x15ed,
@@ -5147,8 +6382,8 @@ const List<List<List<int>>> cases = [
       0xb06d,
       0xfadc,
       0x1b36,
-      0xffa8
-    ]
+      0xffa8,
+    ],
   ],
   [
     [
@@ -5167,7 +6402,7 @@ const List<List<List<int>>> cases = [
       0x4778,
       0x9281,
       0x0000,
-      0x0000
+      0x0000,
     ],
     [
       0x85e1,
@@ -5185,7 +6420,7 @@ const List<List<List<int>>> cases = [
       0x943c,
       0xbe6e,
       0x0002,
-      0x0000
+      0x0000,
     ],
     [
       0xf4f8,
@@ -5203,8 +6438,8 @@ const List<List<List<int>>> cases = [
       0x9ece,
       0x8f4a,
       0x0001,
-      0x0000
-    ]
+      0x0000,
+    ],
   ],
   [
     [
@@ -5223,7 +6458,7 @@ const List<List<List<int>>> cases = [
       0x5f42,
       0xab7c,
       0x2826,
-      0x526f
+      0x526f,
     ],
     [
       0xf407,
@@ -5241,7 +6476,7 @@ const List<List<List<int>>> cases = [
       0x8029,
       0x7ffc,
       0xbe31,
-      0x6cfb
+      0x6cfb,
     ],
     [
       0x8171,
@@ -5259,8 +6494,8 @@ const List<List<List<int>>> cases = [
       0xbfa3,
       0x4f11,
       0x96a2,
-      0x5a7d
-    ]
+      0x5a7d,
+    ],
   ],
   [
     [
@@ -5279,7 +6514,7 @@ const List<List<List<int>>> cases = [
       0xda1d,
       0xa742,
       0xbac5,
-      0x474c
+      0x474c,
     ],
     [
       0x7481,
@@ -5297,7 +6532,7 @@ const List<List<List<int>>> cases = [
       0x3552,
       0x8d9d,
       0xb9d7,
-      0x67eb
+      0x67eb,
     ],
     [
       0xcaab,
@@ -5315,8 +6550,8 @@ const List<List<List<int>>> cases = [
       0xec17,
       0x74e5,
       0x2ceb,
-      0x434e
-    ]
+      0x434e,
+    ],
   ],
   [
     [
@@ -5335,7 +6570,7 @@ const List<List<List<int>>> cases = [
       0xdb20,
       0x8b7c,
       0xd7d0,
-      0x8097
+      0x8097,
     ],
     [
       0xb127,
@@ -5353,7 +6588,7 @@ const List<List<List<int>>> cases = [
       0x0f51,
       0x4198,
       0x3887,
-      0xffd0
+      0xffd0,
     ],
     [
       0x0273,
@@ -5371,8 +6606,8 @@ const List<List<List<int>>> cases = [
       0x1a9a,
       0x1259,
       0x01d0,
-      0x0016
-    ]
+      0x0016,
+    ],
   ],
   [
     [
@@ -5391,7 +6626,7 @@ const List<List<List<int>>> cases = [
       0xeae9,
       0x2b83,
       0x1e2b,
-      0x8b14
+      0x8b14,
     ],
     [
       0x3885,
@@ -5409,7 +6644,7 @@ const List<List<List<int>>> cases = [
       0xbd3f,
       0x5180,
       0x9783,
-      0xff80
+      0xff80,
     ],
     [
       0xab36,
@@ -5427,50 +6662,211 @@ const List<List<List<int>>> cases = [
       0x03b2,
       0xecac,
       0x377d,
-      0xfef9
-    ]
-  ]
+      0xfef9,
+    ],
+  ],
 ];
 
-final List<Secp256k1Scalar> scalarsNearSplitBounds = [
-  _toScalar(0xd938a566, 0x7f479e3e, 0xb5b3c7fa, 0xefdb3749, 0x3aa0585c,
-      0xc5ea2367, 0xe1b660db, 0x0209e6fc),
-  _toScalar(0xd938a566, 0x7f479e3e, 0xb5b3c7fa, 0xefdb3749, 0x3aa0585c,
-      0xc5ea2367, 0xe1b660db, 0x0209e6fd),
-  _toScalar(0xd938a566, 0x7f479e3e, 0xb5b3c7fa, 0xefdb3749, 0x3aa0585c,
-      0xc5ea2367, 0xe1b660db, 0x0209e6fe),
-  _toScalar(0xd938a566, 0x7f479e3e, 0xb5b3c7fa, 0xefdb3749, 0x3aa0585c,
-      0xc5ea2367, 0xe1b660db, 0x0209e6ff),
-  _toScalar(0x2c9c52b3, 0x3fa3cf1f, 0x5ad9e3fd, 0x77ed9ba5, 0xb294b893,
-      0x3722e9a5, 0x00e698ca, 0x4cf7632d),
-  _toScalar(0x2c9c52b3, 0x3fa3cf1f, 0x5ad9e3fd, 0x77ed9ba5, 0xb294b893,
-      0x3722e9a5, 0x00e698ca, 0x4cf7632e),
-  _toScalar(0x2c9c52b3, 0x3fa3cf1f, 0x5ad9e3fd, 0x77ed9ba5, 0xb294b893,
-      0x3722e9a5, 0x00e698ca, 0x4cf7632f),
-  _toScalar(0x2c9c52b3, 0x3fa3cf1f, 0x5ad9e3fd, 0x77ed9ba5, 0xb294b893,
-      0x3722e9a5, 0x00e698ca, 0x4cf76330),
-  _toScalar(0x7fffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xd576e735,
-      0x57a4501d, 0xdfe92f46, 0x681b209f),
-  _toScalar(0x7fffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xd576e735,
-      0x57a4501d, 0xdfe92f46, 0x681b20a0),
-  _toScalar(0x7fffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xd576e735,
-      0x57a4501d, 0xdfe92f46, 0x681b20a1),
-  _toScalar(0x7fffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xd576e735,
-      0x57a4501d, 0xdfe92f46, 0x681b20a2),
-  _toScalar(0xd363ad4c, 0xc05c30e0, 0xa5261c02, 0x88126459, 0xf85915d7,
-      0x7825b696, 0xbeebc5c2, 0x833ede11),
-  _toScalar(0xd363ad4c, 0xc05c30e0, 0xa5261c02, 0x88126459, 0xf85915d7,
-      0x7825b696, 0xbeebc5c2, 0x833ede12),
-  _toScalar(0xd363ad4c, 0xc05c30e0, 0xa5261c02, 0x88126459, 0xf85915d7,
-      0x7825b696, 0xbeebc5c2, 0x833ede13),
-  _toScalar(0xd363ad4c, 0xc05c30e0, 0xa5261c02, 0x88126459, 0xf85915d7,
-      0x7825b696, 0xbeebc5c2, 0x833ede14),
-  _toScalar(0x26c75a99, 0x80b861c1, 0x4a4c3805, 0x1024c8b4, 0x704d760e,
-      0xe95e7cd3, 0xde1bfdb1, 0xce2c5a42),
-  _toScalar(0x26c75a99, 0x80b861c1, 0x4a4c3805, 0x1024c8b4, 0x704d760e,
-      0xe95e7cd3, 0xde1bfdb1, 0xce2c5a43),
-  _toScalar(0x26c75a99, 0x80b861c1, 0x4a4c3805, 0x1024c8b4, 0x704d760e,
-      0xe95e7cd3, 0xde1bfdb1, 0xce2c5a44),
-  _toScalar(0x26c75a99, 0x80b861c1, 0x4a4c3805, 0x1024c8b4, 0x704d760e,
-      0xe95e7cd3, 0xde1bfdb1, 0xce2c5a45)
-].immutable;
+final List<Secp256k1Scalar> scalarsNearSplitBounds =
+    [
+      _toScalar(
+        0xd938a566,
+        0x7f479e3e,
+        0xb5b3c7fa,
+        0xefdb3749,
+        0x3aa0585c,
+        0xc5ea2367,
+        0xe1b660db,
+        0x0209e6fc,
+      ),
+      _toScalar(
+        0xd938a566,
+        0x7f479e3e,
+        0xb5b3c7fa,
+        0xefdb3749,
+        0x3aa0585c,
+        0xc5ea2367,
+        0xe1b660db,
+        0x0209e6fd,
+      ),
+      _toScalar(
+        0xd938a566,
+        0x7f479e3e,
+        0xb5b3c7fa,
+        0xefdb3749,
+        0x3aa0585c,
+        0xc5ea2367,
+        0xe1b660db,
+        0x0209e6fe,
+      ),
+      _toScalar(
+        0xd938a566,
+        0x7f479e3e,
+        0xb5b3c7fa,
+        0xefdb3749,
+        0x3aa0585c,
+        0xc5ea2367,
+        0xe1b660db,
+        0x0209e6ff,
+      ),
+      _toScalar(
+        0x2c9c52b3,
+        0x3fa3cf1f,
+        0x5ad9e3fd,
+        0x77ed9ba5,
+        0xb294b893,
+        0x3722e9a5,
+        0x00e698ca,
+        0x4cf7632d,
+      ),
+      _toScalar(
+        0x2c9c52b3,
+        0x3fa3cf1f,
+        0x5ad9e3fd,
+        0x77ed9ba5,
+        0xb294b893,
+        0x3722e9a5,
+        0x00e698ca,
+        0x4cf7632e,
+      ),
+      _toScalar(
+        0x2c9c52b3,
+        0x3fa3cf1f,
+        0x5ad9e3fd,
+        0x77ed9ba5,
+        0xb294b893,
+        0x3722e9a5,
+        0x00e698ca,
+        0x4cf7632f,
+      ),
+      _toScalar(
+        0x2c9c52b3,
+        0x3fa3cf1f,
+        0x5ad9e3fd,
+        0x77ed9ba5,
+        0xb294b893,
+        0x3722e9a5,
+        0x00e698ca,
+        0x4cf76330,
+      ),
+      _toScalar(
+        0x7fffffff,
+        0xffffffff,
+        0xffffffff,
+        0xffffffff,
+        0xd576e735,
+        0x57a4501d,
+        0xdfe92f46,
+        0x681b209f,
+      ),
+      _toScalar(
+        0x7fffffff,
+        0xffffffff,
+        0xffffffff,
+        0xffffffff,
+        0xd576e735,
+        0x57a4501d,
+        0xdfe92f46,
+        0x681b20a0,
+      ),
+      _toScalar(
+        0x7fffffff,
+        0xffffffff,
+        0xffffffff,
+        0xffffffff,
+        0xd576e735,
+        0x57a4501d,
+        0xdfe92f46,
+        0x681b20a1,
+      ),
+      _toScalar(
+        0x7fffffff,
+        0xffffffff,
+        0xffffffff,
+        0xffffffff,
+        0xd576e735,
+        0x57a4501d,
+        0xdfe92f46,
+        0x681b20a2,
+      ),
+      _toScalar(
+        0xd363ad4c,
+        0xc05c30e0,
+        0xa5261c02,
+        0x88126459,
+        0xf85915d7,
+        0x7825b696,
+        0xbeebc5c2,
+        0x833ede11,
+      ),
+      _toScalar(
+        0xd363ad4c,
+        0xc05c30e0,
+        0xa5261c02,
+        0x88126459,
+        0xf85915d7,
+        0x7825b696,
+        0xbeebc5c2,
+        0x833ede12,
+      ),
+      _toScalar(
+        0xd363ad4c,
+        0xc05c30e0,
+        0xa5261c02,
+        0x88126459,
+        0xf85915d7,
+        0x7825b696,
+        0xbeebc5c2,
+        0x833ede13,
+      ),
+      _toScalar(
+        0xd363ad4c,
+        0xc05c30e0,
+        0xa5261c02,
+        0x88126459,
+        0xf85915d7,
+        0x7825b696,
+        0xbeebc5c2,
+        0x833ede14,
+      ),
+      _toScalar(
+        0x26c75a99,
+        0x80b861c1,
+        0x4a4c3805,
+        0x1024c8b4,
+        0x704d760e,
+        0xe95e7cd3,
+        0xde1bfdb1,
+        0xce2c5a42,
+      ),
+      _toScalar(
+        0x26c75a99,
+        0x80b861c1,
+        0x4a4c3805,
+        0x1024c8b4,
+        0x704d760e,
+        0xe95e7cd3,
+        0xde1bfdb1,
+        0xce2c5a43,
+      ),
+      _toScalar(
+        0x26c75a99,
+        0x80b861c1,
+        0x4a4c3805,
+        0x1024c8b4,
+        0x704d760e,
+        0xe95e7cd3,
+        0xde1bfdb1,
+        0xce2c5a44,
+      ),
+      _toScalar(
+        0x26c75a99,
+        0x80b861c1,
+        0x4a4c3805,
+        0x1024c8b4,
+        0x704d760e,
+        0xe95e7cd3,
+        0xde1bfdb1,
+        0xce2c5a45,
+      ),
+    ].immutable;

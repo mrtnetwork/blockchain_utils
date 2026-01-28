@@ -6,9 +6,9 @@ import 'test_vector.dart';
 
 void main() {
   test("crc test", () {
+    final crc = Crc32();
     for (final i in testVector) {
-      final result =
-          Crc32.quickIntDigest(BytesUtils.fromHexString(i["message"]));
+      final result = crc.quickIntDigest(BytesUtils.fromHexString(i["message"]));
       expect(result, i["crc32"]);
     }
   });

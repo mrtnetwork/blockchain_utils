@@ -1,3 +1,4 @@
+import 'package:blockchain_utils/bip/bip/hd_key/types.dart';
 import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/helper/helper.dart';
 
@@ -7,18 +8,26 @@ class Bip32KeyNetVersionsConst {
   static const int keyNetVersionByteLen = 4;
 }
 
-class Bip32KeyNetVersions {
-  late final List<int> _pubNetVer;
-  late final List<int> _privNetVer;
-  Bip32KeyNetVersions._(this._pubNetVer, this._privNetVer);
+class Bip32KeyNetVersions implements HDKeyNetVar {
+  final List<int> pubNetVer;
+  final List<int> privNetVer;
+  const Bip32KeyNetVersions.unsafe(this.pubNetVer, this.privNetVer);
+  Bip32KeyNetVersions._(List<int> pubNetVer, List<int> privNetVer)
+    : pubNetVer = pubNetVer.asImmutableBytes,
+      privNetVer = privNetVer.asImmutableBytes;
 
   /// constractur for Bip32KeyNetVersions
   factory Bip32KeyNetVersions(List<int> pubNetVer, List<int> privNetVer) {
     if (pubNetVer.length != length || privNetVer.length != length) {
-      throw const ArgumentException("Invalid key net version length");
+      throw ArgumentException.invalidOperationArguments(
+        "Bip32KeyNetVersions",
+        reason: "Invalid key net version length.",
+      );
     }
     return Bip32KeyNetVersions._(
-        pubNetVer.asImmutableBytes, privNetVer.asImmutableBytes);
+      pubNetVer.asImmutableBytes,
+      privNetVer.asImmutableBytes,
+    );
   }
 
   /// Get the key net version length.
@@ -28,11 +37,11 @@ class Bip32KeyNetVersions {
 
   /// Get public net version.
   List<int> get public {
-    return List<int>.from(_pubNetVer);
+    return pubNetVer.clone();
   }
 
   /// Get private net version.
   List<int> get private {
-    return List<int>.from(_privNetVer);
+    return privNetVer.clone();
   }
 }

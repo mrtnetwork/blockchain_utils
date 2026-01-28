@@ -1,4 +1,5 @@
 import 'package:blockchain_utils/crypto/crypto/crypto.dart';
+import 'package:blockchain_utils/exception/exception/exception.dart';
 import 'package:blockchain_utils/signer/exception/signing_exception.dart';
 import 'package:blockchain_utils/signer/substrate/core/signer.dart';
 import 'package:blockchain_utils/signer/substrate/core/verifier.dart';
@@ -17,7 +18,9 @@ class _SubstrateSr25519SignerUtils {
   }
 
   static MerlinTranscript substrateVrfSignScript(
-      List<int> message, List<int>? context) {
+    List<int> message,
+    List<int>? context,
+  ) {
     final signingScript = MerlinTranscript("SigningContext");
     signingScript.additionalData("".codeUnits, context ?? <int>[]);
     signingScript.additionalData("sign-bytes".codeUnits, message);
@@ -35,6 +38,8 @@ class _SubstrateSr25519SignerUtils {
 
 /// Class for signing Substrate transactions using either SR25519 algorithm.
 class SubstrateSr25519Signer implements BaseSubstrateSigner {
+  static const int vrfProofLength = 64;
+
   /// Constructs a new SubstrateED25519Signer instance with the provided signing keys.
   const SubstrateSr25519Signer._(this._signer);
 
@@ -47,10 +52,6 @@ class SubstrateSr25519Signer implements BaseSubstrateSigner {
   }
 
   /// Returns an SubstrateED25519Signer instance based on the available signing key type.
-  ///
-  /// This method constructs and returns an SubstrateED25519Verifier instance for signature verification.
-  ///
-  /// returns An SubstrateED25519Verifier instance based on the available signing key type.
   SubstrateSr25519Verifier toVerifyKey() {
     return SubstrateSr25519Verifier._(_signer.publicKey());
   }
@@ -60,8 +61,7 @@ class SubstrateSr25519Signer implements BaseSubstrateSigner {
     final verifier = toVerifyKey();
     final signature = _signer.sign(signingScript);
     if (!verifier.verifyScript(signature.toBytes(), cloneScript)) {
-      throw const CryptoSignException(
-          'The created signature does not pass verification.');
+      throw CryptoSignException.signatureVerificationFailed;
     }
     return signature.toBytes();
   }
@@ -73,28 +73,42 @@ class SubstrateSr25519Signer implements BaseSubstrateSigner {
 
   @override
   List<int> vrfSign(List<int> message, {List<int>? context, List<int>? extra}) {
-    final MerlinTranscript vrfScript =
-        _SubstrateSr25519SignerUtils.vrfScript(extra: extra);
+    final MerlinTranscript vrfScript = _SubstrateSr25519SignerUtils.vrfScript(
+      extra: extra,
+    );
     final MerlinTranscript script =
         _SubstrateSr25519SignerUtils.substrateVrfSignScript(message, context);
-    final sign =
-        _signer.vrfSign(script, kusamaVRF: true, verifyScript: vrfScript);
-    final List<int> vrfResult = [...sign.item1.output, ...sign.item2.toBytes()];
+    final sign = _signer.vrfSign(
+      script,
+      kusamaVRF: true,
+      verifyScript: vrfScript,
+    );
+    final List<int> vrfResult = [...sign.$1.output, ...sign.$2.toBytes()];
     final verifier = toVerifyKey();
-    if (!verifier.vrfVerify(message, List<int>.from(vrfResult),
-        context: context, extra: extra)) {
-      throw const CryptoSignException(
-          'The created vrfSign does not pass verification.');
+    if (!verifier.vrfVerify(
+      message,
+      List<int>.from(vrfResult),
+      context: context,
+      extra: extra,
+    )) {
+      throw CryptoSignException.signatureVerificationFailed;
     }
     return vrfResult;
   }
 
-  bool vrfVerify(List<int> message, List<int> vrfSign,
-      {List<int>? context, List<int>? extra}) {
+  bool vrfVerify(
+    List<int> message,
+    List<int> vrfSign, {
+    List<int>? context,
+    List<int>? extra,
+  }) {
     if (vrfSign.length != _SubstrateSr25519SignerConst.vrfResultLength &&
         vrfSign.length != SchnorrkelKeyCost.vrfProofLength) {
-      throw CryptoSignException(
-          "Invalid VrfSign bytes length. expected: ${_SubstrateSr25519SignerConst.vrfResultLength}, ${SchnorrkelKeyCost.vrfProofLength} got: ${vrfSign.length} ");
+      throw ArgumentException.invalidOperationArguments(
+        "vrfVerify",
+        name: "vrfSign",
+        reason: "Invalid vrf signature bytes length.",
+      );
     }
     final MerlinTranscript script =
         _SubstrateSr25519SignerUtils.substrateVrfSignScript(message, context);
@@ -106,13 +120,15 @@ class SubstrateSr25519Signer implements BaseSubstrateSigner {
     } else {
       output = VRFPreOut(vrfSign.sublist(0, SchnorrkelKeyCost.vrfPreOutLength));
       proof = VRFProof.fromBytes(
-          vrfSign.sublist(SchnorrkelKeyCost.vrfPreOutLength));
+        vrfSign.sublist(SchnorrkelKeyCost.vrfPreOutLength),
+      );
     }
     return _signer.publicKey().vrfVerify(
-        _SubstrateSr25519SignerUtils.substrateVrfSignScript(message, context),
-        output,
-        proof,
-        verifyScript: _SubstrateSr25519SignerUtils.vrfScript(extra: extra));
+      _SubstrateSr25519SignerUtils.substrateVrfSignScript(message, context),
+      output,
+      proof,
+      verifyScript: _SubstrateSr25519SignerUtils.vrfScript(extra: extra),
+    );
   }
 
   @override
@@ -121,8 +137,11 @@ class SubstrateSr25519Signer implements BaseSubstrateSigner {
   }
 
   @override
-  List<int> vrfSignConst(List<int> message,
-      {List<int>? context, List<int>? extra}) {
+  List<int> vrfSignConst(
+    List<int> message, {
+    List<int>? context,
+    List<int>? extra,
+  }) {
     return vrfSign(message, context: context, extra: extra);
   }
 }
@@ -141,37 +160,47 @@ class SubstrateSr25519Verifier implements BaseSubstrateVerifier {
   }
 
   /// Verifies the signature for the provided digest using the available key.
-  ///
-  /// This method verifies the signature of the provided script using either schnorrkel algorithms,
   bool verifyScript(List<int> signature, MerlinTranscript signingScript) {
     return _verifier.verify(
-        SchnorrkelSignature.fromBytes(signature), signingScript);
+      SchnorrkelSignature.fromBytes(signature),
+      signingScript,
+    );
   }
 
   /// Verifies the signature for the provided digest using the available key.
-  ///
-  /// This method verifies the signature of the provided message using either schnorrkel algorithms,
   @override
   bool verify(List<int> message, List<int> signature) {
     return verifyScript(
-        signature, _SubstrateSr25519SignerUtils.signingContext(message));
+      signature,
+      _SubstrateSr25519SignerUtils.signingContext(message),
+    );
   }
 
   @override
-  bool vrfVerify(List<int> message, List<int> vrfSign,
-      {List<int>? context, List<int>? extra}) {
+  bool vrfVerify(
+    List<int> message,
+    List<int> vrfSign, {
+    List<int>? context,
+    List<int>? extra,
+  }) {
     if (vrfSign.length != _SubstrateSr25519SignerConst.vrfResultLength) {
-      throw CryptoSignException(
-          "Invalid VrfSign bytes length. expected: ${_SubstrateSr25519SignerConst.vrfResultLength} got: ${vrfSign.length} ");
+      throw ArgumentException.invalidOperationArguments(
+        "vrfVerify",
+        name: "vrfSign",
+        reason: "Invalid vrf signature bytes length.",
+      );
     }
-    final MerlinTranscript vrfScript =
-        _SubstrateSr25519SignerUtils.vrfScript(extra: extra);
+    final MerlinTranscript vrfScript = _SubstrateSr25519SignerUtils.vrfScript(
+      extra: extra,
+    );
     final MerlinTranscript script =
         _SubstrateSr25519SignerUtils.substrateVrfSignScript(message, context);
-    final VRFPreOut output =
-        VRFPreOut(vrfSign.sublist(0, SchnorrkelKeyCost.vrfPreOutLength));
-    final VRFProof proof =
-        VRFProof.fromBytes(vrfSign.sublist(SchnorrkelKeyCost.vrfPreOutLength));
+    final VRFPreOut output = VRFPreOut(
+      vrfSign.sublist(0, SchnorrkelKeyCost.vrfPreOutLength),
+    );
+    final VRFProof proof = VRFProof.fromBytes(
+      vrfSign.sublist(SchnorrkelKeyCost.vrfPreOutLength),
+    );
     return _verifier.vrfVerify(script, output, proof, verifyScript: vrfScript);
   }
 }

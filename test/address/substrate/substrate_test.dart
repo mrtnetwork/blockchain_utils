@@ -10,10 +10,15 @@ void main() {
     for (final i in testVector) {
       final params = Map<String, dynamic>.from(i["params"]);
 
-      final z = SubstrateEd25519AddrEncoder()
-          .encodeKey(BytesUtils.fromHexString(i["public"]), params);
+      final z = SubstrateEd25519AddrEncoder().encodeKey(
+        BytesUtils.fromHexString(i["public"]),
+        ss58Format: params["ss58_format"],
+      );
       expect(z, i["address"]);
-      final decode = SubstrateEd25519AddrDecoder().decodeAddr(z, params);
+      final decode = SubstrateEd25519AddrDecoder().decodeAddr(
+        z,
+        ss58Format: params["ss58_format"],
+      );
       expect(decode.toHex(), i["decode"]);
     }
   });
@@ -21,10 +26,15 @@ void main() {
     for (final i in testVector) {
       final params = Map<String, dynamic>.from(i["params"]);
 
-      final z = SubstrateGenericAddrEncoder()
-          .encodeKey(BytesUtils.fromHexString(i["public"]), params);
+      final z = SubstrateGenericAddrEncoder().encodeKey(
+        BytesUtils.fromHexString(i["public"]),
+        ss58Format: params["ss58_format"],
+      );
       expect(z, i["address"]);
-      final decode = SubstrateGenericAddrDecoder().decodeAddr(z, params);
+      final decode = SubstrateGenericAddrDecoder().decodeAddr(
+        z,
+        ss58Format: params["ss58_format"],
+      );
       expect(decode.toHex(), i["decode"]);
     }
   });

@@ -1,6 +1,6 @@
 /// Constants related to ECDSA (Elliptic Curve Digital Signature Algorithm) keys.
 class EcdsaKeysConst {
-  /// AffinePointt coordinate length in bytes
+  /// AffinePoint coordinate length in bytes
   static const int pointCoordByteLen = 32;
 
   /// Private key length in bytes

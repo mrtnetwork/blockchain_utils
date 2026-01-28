@@ -54,7 +54,6 @@
 
 import 'package:blockchain_utils/bech32/bech32_ex.dart';
 import 'package:blockchain_utils/exception/exceptions.dart';
-import 'package:blockchain_utils/utils/utils.dart';
 
 /// A utility class containing constants for Bech32 encoding and decoding.
 class Bech32BaseConst {
@@ -77,8 +76,7 @@ class Bech32BaseUtils {
   static List<int> convertToBase32(List<int> data) {
     final List<int>? convData = _convertBits(data, 8, 5);
     if (convData == null) {
-      throw const ArgumentException(
-          'Invalid data, cannot perform conversion to base32');
+      throw const Bech32Error('Invalid bech32 data.');
     }
 
     return convData;
@@ -97,8 +95,7 @@ class Bech32BaseUtils {
   static List<int> convertFromBase32(List<int> data) {
     final List<int>? convData = _convertBits(data, 5, 8, pad: false);
     if (convData == null) {
-      throw const ArgumentException(
-          'Invalid data, cannot perform conversion from base32');
+      throw const Bech32Error('Invalid bech32 data.');
     }
 
     return convData;
@@ -142,7 +139,7 @@ class Bech32BaseUtils {
       return null;
     }
 
-    return List<int>.from(ret);
+    return ret;
   }
 }
 
@@ -158,11 +155,15 @@ abstract class Bech32EncoderBase {
   ///
   /// Returns:
   /// A Bech32-encoded string representing the provided data with a checksum.
-  static String encodeBech32(String hrp, List<int> data, String sep,
-      List<int> Function(String hrp, List<int> data) computeChecksum) {
+  static String encodeBech32(
+    String hrp,
+    List<int> data,
+    String sep,
+    List<int> Function(String hrp, List<int> data) computeChecksum,
+  ) {
     final checksum = computeChecksum(hrp, data);
 
-    data = List<int>.from([...data, ...checksum]);
+    data = [...data, ...checksum];
 
     final encodedData =
         hrp + sep + data.map((e) => Bech32BaseConst.charset[e]).join();
@@ -187,47 +188,62 @@ abstract class Bech32DecoderBase {
   /// Throws:
   /// - ArgumentException: If the input string is mixed case, lacks a separator, HRP is invalid, or the checksum is invalid.
   ///
-  static Tuple<String, List<int>> decodeBech32(
-      String bechStr,
-      String sep,
-      int checksumLen,
-      bool Function(String hrp, List<int> data) verifyChecksum) {
+  static (String, List<int>) decodeBech32(
+    String bechStr,
+    String sep,
+    int checksumLen,
+    bool Function(String hrp, List<int> data) verifyChecksum,
+  ) {
     if (_isStringMixed(bechStr)) {
-      throw const ArgumentException(
-          'Invalid bech32 format (string is mixed case)');
+      throw ArgumentException.invalidOperationArguments(
+        "decodeBech32",
+        name: "data",
+        reason: 'Invalid bech32 format.',
+      );
     }
 
     bechStr = bechStr.toLowerCase();
 
     final sepPos = bechStr.lastIndexOf(sep);
     if (sepPos == -1) {
-      throw const ArgumentException(
-          'Invalid bech32 format (no separator found)');
+      throw ArgumentException.invalidOperationArguments(
+        "decodeBech32",
+        name: "data",
+        reason: 'Invalid bech32 format.',
+      );
     }
 
     final hrp = bechStr.substring(0, sepPos);
     if (hrp.isEmpty || hrp.codeUnits.any((x) => x < 33 || x > 126)) {
-      throw ArgumentException('Invalid bech32 format (HRP not valid: $hrp)');
+      throw ArgumentException.invalidOperationArguments(
+        "decodeBech32",
+        name: "data",
+        reason: 'Invalid bech32 format.',
+      );
     }
 
     final dataPart = bechStr.substring(sepPos + 1);
 
     if (dataPart.length < checksumLen + 1 ||
         dataPart.codeUnits.any(
-            (x) => !Bech32BaseConst.charset.contains(String.fromCharCode(x)))) {
-      throw const ArgumentException(
-          'Invalid bech32 format (data part not valid)');
+          (x) => !Bech32BaseConst.charset.contains(String.fromCharCode(x)),
+        )) {
+      throw ArgumentException.invalidOperationArguments(
+        "decodeBech32",
+        name: "data",
+        reason: 'Invalid bech32 format.',
+      );
     }
 
-    final intData = dataPart.codeUnits
-        .map((x) => Bech32BaseConst.charset.indexOf(String.fromCharCode(x)))
-        .toList();
+    final intData =
+        dataPart.codeUnits
+            .map((x) => Bech32BaseConst.charset.indexOf(String.fromCharCode(x)))
+            .toList();
     if (!verifyChecksum(hrp, intData)) {
-      throw const Bech32ChecksumError('Invalid bech32 checksum');
+      throw const Bech32Error("Invalid checksum.");
     }
 
-    return Tuple(
-        hrp, List<int>.from(intData.sublist(0, intData.length - checksumLen)));
+    return (hrp, intData.sublist(0, intData.length - checksumLen));
   }
 
   static bool _isStringMixed(String str) {

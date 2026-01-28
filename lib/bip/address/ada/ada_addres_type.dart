@@ -30,8 +30,10 @@ class ADAAddressType {
       case 0x8:
         return ADAAddressType.byron;
     }
-    throw AddressConverterException("Invalid address header bytes.",
-        details: {"value": header});
+    throw AddressConverterException.addressKeyValidationFailed(
+      reason: "Invalid address prefix.",
+      details: {"value": header},
+    );
   }
 
   static const List<ADAAddressType> values = [
@@ -39,13 +41,16 @@ class ADAAddressType {
     reward,
     enterprise,
     pointer,
-    byron
+    byron,
   ];
   static ADAAddressType fromHeader(int? header) {
     return values.firstWhere(
       (element) => element.header == header,
-      orElse: () => throw const AddressConverterException(
-          "Invalid header value encountered."),
+      orElse:
+          () =>
+              throw const AddressConverterException(
+                "Invalid header value encountered.",
+              ),
     );
   }
 

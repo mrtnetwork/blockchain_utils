@@ -1,6 +1,7 @@
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
 import 'package:blockchain_utils/bip/mnemonic/mnemonic.dart';
-import 'package:blockchain_utils/utils/utils.dart';
+import 'package:blockchain_utils/utils/string/string.dart';
+
 import 'ton_entropy_generator.dart';
 import 'ton_mnemonic_validator.dart';
 
@@ -18,22 +19,26 @@ class TonSeedGenerator {
 
   /// Generates a seed from the mnemonic, with optional passphrase and salt.
   /// If validateTonMnemonic is true, it validates the mnemonic before generating the seed.
-  List<int> generate(
-      {String password = "",
-      String salt = _TonSeedGeneratorConst.defaultTonSalt,
-      bool validateTonMnemonic = false}) {
+  List<int> generate({
+    String password = "",
+    String salt = _TonSeedGeneratorConst.defaultTonSalt,
+    bool validateTonMnemonic = false,
+  }) {
     if (validateTonMnemonic) {
       TomMnemonicValidator().validate(mnemonic, password: password);
     }
 
     /// Generates entropy from the mnemonic and passphrase.
-    final hash =
-        TonEntropyGeneratorUtils.generateEnteropy(mnemonic, password: password);
+    final hash = TonEntropyGeneratorUtils.generateEnteropy(
+      mnemonic,
+      password: password,
+    );
 
     /// Derives a key using PBKDF2 with the generated hash, salt, and a specified number of iterations.
     return QuickCrypto.pbkdf2DeriveKey(
-        password: hash,
-        salt: StringUtils.encode(salt),
-        iterations: _TonSeedGeneratorConst.seedPbkdf2Rounds);
+      password: hash,
+      salt: StringUtils.encode(salt),
+      iterations: _TonSeedGeneratorConst.seedPbkdf2Rounds,
+    );
   }
 }

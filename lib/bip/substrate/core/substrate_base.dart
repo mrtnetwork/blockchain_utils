@@ -24,7 +24,7 @@ class SubstrateConst {
     72,
     68,
     75,
-    68
+    68,
   ];
   static const List<int> secp256k1HDKD = [
     52,
@@ -40,15 +40,17 @@ class SubstrateConst {
     72,
     68,
     75,
-    68
+    68,
   ];
 }
 
 class _SubstrateUtils {
   static List<int> getSecretKey(List<int> seedBytes, EllipticCurveTypes curve) {
     if (seedBytes.length < SubstrateConst.seedMinByteLen) {
-      throw const ArgumentException(
-        'Seed length is too small, it shall be at least ${SubstrateConst.seedMinByteLen} bytes',
+      throw ArgumentException.invalidOperationArguments(
+        "getSecretKey",
+        name: "seedBytes",
+        reason: "Invalid seed length.",
       );
     }
     final seed = seedBytes.sublist(0, SubstrateConst.seedMinByteLen);
@@ -82,25 +84,38 @@ class Substrate {
 
   /// Create a Substrate context from a seed and coin type.
   factory Substrate.fromSeed(List<int> seedBytes, SubstrateCoins coinType) {
-    final secretKey =
-        _SubstrateUtils.getSecretKey(seedBytes, coinType.conf.type);
+    final secretKey = _SubstrateUtils.getSecretKey(
+      seedBytes,
+      coinType.conf.type,
+    );
     final privateKey = SubstratePrvKey.fromBytes(secretKey, coinType.conf);
     return Substrate._(
-        privateKey, privateKey.publicKey, SubstratePath(), coinType.conf);
+      privateKey,
+      privateKey.publicKey,
+      SubstratePath(),
+      coinType.conf,
+    );
   }
 
   /// Create a Substrate context from a seed, path, and coin type.
   factory Substrate.fromSeedAndPath(
-      List<int> seedBytes, dynamic path, SubstrateCoins coinType) {
+    List<int> seedBytes,
+    dynamic path,
+    SubstrateCoins coinType,
+  ) {
     final substrateCtx = Substrate.fromSeed(seedBytes, coinType);
     return substrateCtx.derivePath(path);
   }
 
   /// Create a Substrate context from a private key and coin type.
   factory Substrate.fromPrivateKey(
-      List<int> privateKeyBytes, SubstrateCoins coinType) {
-    final privateKey =
-        SubstratePrvKey.fromBytes(privateKeyBytes, coinType.conf);
+    List<int> privateKeyBytes,
+    SubstrateCoins coinType,
+  ) {
+    final privateKey = SubstratePrvKey.fromBytes(
+      privateKeyBytes,
+      coinType.conf,
+    );
 
     return Substrate._(
       privateKey,
@@ -112,7 +127,9 @@ class Substrate {
 
   /// Create a Substrate context from a public key and coin type.
   factory Substrate.fromPublicKey(
-      List<int> publicKey, SubstrateCoins coinType) {
+    List<int> publicKey,
+    SubstrateCoins coinType,
+  ) {
     return Substrate._(
       null,
       SubstratePubKey.fromBytes(keyBytes: publicKey, coinConf: coinType.conf),
@@ -125,11 +142,13 @@ class Substrate {
   ///
   /// Throws a [SubstrateKeyError] if this context is public-only.
   SubstratePrvKey get priveKey {
-    if (isPublicOnly) {
+    final priv = _priveKey;
+    if (priv == null) {
       throw const SubstrateKeyError(
-          'Public-only deterministic keys have no private half');
+        'Public-only deterministic keys have no private half',
+      );
     }
-    return _priveKey!;
+    return priv;
   }
 
   /// Derive a new Substrate context from the current context using the provided path.
@@ -174,13 +193,17 @@ class Substrate {
     SchnorrkelSecretKey result;
 
     if (pathElem.isHard) {
-      result = secret.hardDerive(pathElem.chainCode).item1;
+      result = secret.hardDerive(pathElem.chainCode).$1;
     } else {
-      result = secret.softDerive(pathElem.chainCode).item1;
+      result = secret.softDerive(pathElem.chainCode).$1;
     }
     final privateKey = SubstratePrvKey.fromBytes(result.toBytes(), coinConf);
     return Substrate._(
-        privateKey, privateKey.publicKey, path.addElem(pathElem), coinConf);
+      privateKey,
+      privateKey.publicKey,
+      path.addElem(pathElem),
+      coinConf,
+    );
   }
 
   /// Perform private child key derivation for the current context.
@@ -189,9 +212,10 @@ class Substrate {
       return _ckdPrivSr25519(pathElem);
     }
 
-    final List<int> hdkd = publicKey.coinConf.type == EllipticCurveTypes.ed25519
-        ? SubstrateConst.hdkd
-        : SubstrateConst.secp256k1HDKD;
+    final List<int> hdkd =
+        publicKey.coinConf.type == EllipticCurveTypes.ed25519
+            ? SubstrateConst.hdkd
+            : SubstrateConst.secp256k1HDKD;
     final key = QuickCrypto.blake2b256Hash([
       ...hdkd,
       ..._priveKey!.raw,
@@ -209,11 +233,13 @@ class Substrate {
   Substrate _ckdPubSr25519(SubstratePathElem pathElem) {
     final SchnorrkelPublicKey key =
         (publicKey.pubKey as Sr25519PublicKey).publicKey;
-    final pubKeyBytes = key.derive(pathElem.chainCode).item1;
+    final pubKeyBytes = key.derive(pathElem.chainCode).$1;
     return Substrate._(
       null,
       SubstratePubKey.fromBytes(
-          keyBytes: pubKeyBytes.toBytes(), coinConf: coinConf),
+        keyBytes: pubKeyBytes.toBytes(),
+        coinConf: coinConf,
+      ),
       path.addElem(pathElem),
       coinConf,
     );
@@ -223,12 +249,12 @@ class Substrate {
   Substrate _ckdPub(SubstratePathElem pathElem) {
     if (pathElem.isHard) {
       throw const SubstrateKeyError(
-          'Public child derivation cannot be used to create a hardened child key');
+        "Public child derivation with hardened index is not supported.",
+      );
     }
     if (publicKey.coinConf.type == EllipticCurveTypes.sr25519) {
       return _ckdPubSr25519(pathElem);
     }
-    throw SubstrateKeyError(
-        "Public key drivation is not support in substrate ${publicKey.pubKey.curve.name}");
+    throw SubstrateKeyError("Public child derivation is not supported.");
   }
 }

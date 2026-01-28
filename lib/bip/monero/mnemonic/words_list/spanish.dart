@@ -1626,5 +1626,5 @@ const List<String> _spanish = [
   "riqueza",
   "risa",
   "ritmo",
-  "rito"
+  "rito",
 ];

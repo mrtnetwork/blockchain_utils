@@ -1626,5 +1626,5 @@ const List<String> _dutch = [
   "zwepen",
   "zwiep",
   "zwijmel",
-  "zworen"
+  "zworen",
 ];

@@ -1,7 +1,9 @@
 import 'package:blockchain_utils/cbor/core/cbor.dart';
 import 'package:blockchain_utils/cbor/core/tags.dart';
+import 'package:blockchain_utils/cbor/utils/cbor_utils.dart';
 import 'package:blockchain_utils/cbor/utils/dynamic_bytes.dart';
-import 'package:blockchain_utils/utils/utils.dart';
+import 'package:blockchain_utils/utils/binary/utils.dart';
+import 'package:blockchain_utils/utils/numbers/utils/bigint_utils.dart';
 
 /// A class representing a CBOR (Concise Binary Object Representation) Bigint value.
 class CborBigIntValue extends CborNumeric<BigInt> {
@@ -13,8 +15,14 @@ class CborBigIntValue extends CborNumeric<BigInt> {
 
   /// Constructor for creating a CborBigIntValue instance with the provided parameters.
   /// It accepts the bigint value.
-  const CborBigIntValue(super.value,
-      {this.encoding = CborLengthEncoding.canonical});
+  const CborBigIntValue(
+    super.value, {
+    this.encoding = CborLengthEncoding.canonical,
+  });
+
+  factory CborBigIntValue.decode(List<int> bytes) {
+    return CborUtils.decodeCbor(bytes);
+  }
 
   /// Encode the value into CBOR bytes
   @override
@@ -27,10 +35,14 @@ class CborBigIntValue extends CborNumeric<BigInt> {
     } else {
       bytes.pushTags(CborTags.posBigInt);
     }
-    final toBytes = BigintUtils.toBytes(v,
-        length: v == BigInt.zero && encoding == CborLengthEncoding.nonCanonical
-            ? 1
-            : BigintUtils.bitlengthInBytes(v));
+    List<int> toBytes = [];
+    if (v == BigInt.zero) {
+      if (encoding == CborLengthEncoding.nonCanonical) {
+        toBytes = [0];
+      }
+    } else {
+      toBytes = BigintUtils.toBytes(v);
+    }
     bytes.pushInt(MajorTags.byteString, toBytes.length);
     bytes.pushBytes(toBytes);
     return bytes.toBytes();
@@ -59,16 +71,4 @@ class CborBigIntValue extends CborNumeric<BigInt> {
   String toString() {
     return value.toString();
   }
-
-  /// overide equal operation
-  @override
-  operator ==(other) {
-    if (other is! CborBigIntValue) return false;
-
-    return value == other.value;
-  }
-
-  /// overide hash code
-  @override
-  int get hashCode => value.hashCode;
 }

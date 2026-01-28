@@ -1,10 +1,10 @@
 import 'dart:core';
 
 import 'package:blockchain_utils/bip/bip/bip39/bip39_mnemonic.dart';
+import 'package:blockchain_utils/bip/mnemonic/mnemonic_ex.dart';
 import 'package:blockchain_utils/bip/mnemonic/mnemonic_utils.dart';
 import 'wrodlist/languages.dart' as languages;
 
-/// An enumeration representing the number of words in an Electrum V1 mnemonic.
 /// An enumeration representing the number of words in an Electrum V1 mnemonic.
 class ElectrumV1WordsNum {
   /// Represents a 12-word Electrum V1 mnemonic
@@ -39,24 +39,16 @@ class ElectrumV1Languages implements MnemonicLanguages {
       case ElectrumV1Languages.english:
         return languages.elctrumMnemonicWordsList;
       default:
-        throw UnimplementedError(
-            "ElectrumV1Languages only support english word list");
+        throw MnemonicException("Unsuported mnemonic language.");
     }
   }
 
   /// Represents the available language values for Electrum V1 mnemonics.
-  static const List<ElectrumV1Languages> values = [
-    english,
-  ];
+  static const List<ElectrumV1Languages> values = [english];
 }
 
 /// Constants and class definitions related to Electrum V1 mnemonics.
 class ElectrumV1MnemonicConst {
-  /// List of supported word numbers for Electrum V1 mnemonics
-  static const List<ElectrumV1WordsNum> mnemonicWordNum = [
-    ElectrumV1WordsNum.wordsNum12
-  ];
-
   /// The number associated with the word list used for Electrum V1 mnemonics
   static const int wordsListNum = 1626;
 }

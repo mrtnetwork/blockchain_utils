@@ -1,6 +1,6 @@
 import 'dart:typed_data' show Endian;
 
-import 'package:blockchain_utils/crypto/crypto/cdsa/curve/curves.dart';
+import 'package:blockchain_utils/crypto/crypto/ec/curve/curves.dart';
 import 'package:blockchain_utils/signer/const/constants.dart';
 import 'package:blockchain_utils/utils/numbers/numbers.dart';
 
@@ -65,29 +65,21 @@ class CryptoSignatureUtils {
 
   /// Converts a list of BigInt values to DER-encoded bytes.
   ///
-  /// The [toDer] method takes a list of BigInt values [bigIntList] and encodes them in DER format.
-  /// It returns a list of bytes representing the DER-encoded sequence of integers.
-  ///
-  /// Example Usage:
-  /// ```dart
-  /// List<BigInt> values = [BigInt.from(123), BigInt.from(456)];
-  /// `List<int>` derBytes = DEREncoding.toDer(values);
-  /// ```
-  ///
   /// Parameters:
   /// - [bigIntList]: The list of BigInt values to be DER-encoded.
-  /// Returns: A list of bytes representing the DER-encoded sequence of integers.
+  /// .
   static List<int> toDer(List<BigInt> bigIntList) {
-    final List<List<int>> encodedIntegers = bigIntList.map((bi) {
-      final List<int> bytes = _encodeInteger(bi);
-      return bytes;
-    }).toList();
+    final List<List<int>> encodedIntegers =
+        bigIntList.map((bi) {
+          final List<int> bytes = _encodeInteger(bi);
+          return bytes;
+        }).toList();
     final content = encodedIntegers.expand((e) => e);
     final List<int> lengthBytes = _encodeLength(content.length);
     final derBytes = [
       0x30,
       ...lengthBytes,
-      ...encodedIntegers.expand((e) => e)
+      ...encodedIntegers.expand((e) => e),
     ];
 
     return derBytes;
@@ -95,36 +87,28 @@ class CryptoSignatureUtils {
 
   /// Encodes the length of DER content.
   ///
-  /// The [_encodeLength] method takes an integer [length] and returns a list of bytes
-  /// representing the DER-encoded length for the content.
-  ///
   /// Parameters:
   /// - [length]: The length of the DER content.
-  /// Returns: A list of bytes representing the DER-encoded length.
+  ///
   static List<int> _encodeLength(int length) {
     if (length < 128) {
       return [length];
     } else {
-      final encodeLen = IntUtils.toBytes(length,
-          length: IntUtils.bitlengthInBytes(length), byteOrder: Endian.little);
+      final encodeLen = IntUtils.toBytes(length, byteOrder: Endian.little);
       return [0x80 | encodeLen.length, ...encodeLen];
     }
   }
 
   /// Encodes a BigInt as a DER-encoded integer.
   ///
-  /// The [_encodeInteger] method takes a BigInt [r] and returns a list of bytes
-  /// representing the DER-encoded integer.
-  ///
   /// Parameters:
   /// - [r]: The BigInt value to be DER-encoded.
-  /// Returns: A list of bytes representing the DER-encoded integer.
+  ///
   static List<int> _encodeInteger(BigInt r) {
     /// can't support negative numbers yet
     assert(r >= BigInt.zero);
 
-    final len = BigintUtils.orderLen(r);
-    final List<int> s = BigintUtils.toBytes(r, length: len);
+    final List<int> s = BigintUtils.toBytes(r);
 
     final int num = s[0];
     if (num <= 0x7F) {

@@ -7,3 +7,4 @@ export 'core/cbor.dart';
 export 'types/types.dart';
 
 export 'exception/exception.dart';
+export 'serialization/serialization.dart';

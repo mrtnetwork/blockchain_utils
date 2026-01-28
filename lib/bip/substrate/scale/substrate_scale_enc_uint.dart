@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 import 'package:blockchain_utils/exception/exceptions.dart';
-import 'package:blockchain_utils/utils/utils.dart';
+import 'package:blockchain_utils/utils/numbers/utils/bigint_utils.dart';
+
 import 'substrate_scale_enc_base.dart';
 
 /// An abstract base class for encoding unsigned integers in Substrate SCALE format.
@@ -9,14 +10,21 @@ abstract class SubstrateScaleUintEncoder extends SubstrateScaleEncoderBase {
 
   /// Encode the provided [value] as a Substrate SCALE Uint with the specified byte length
   static List<int> _encodeWithBytesLength(String value, int bytesLen) {
-    final v = BigInt.parse(value);
+    final v = BigInt.tryParse(value);
     final maxVal = (BigInt.one << (bytesLen * 8)) - BigInt.one;
-    if (v < BigInt.zero || v > maxVal) {
-      throw ArgumentException('Invalid integer value ($value)');
+    if (v == null || v < BigInt.zero || v > maxVal) {
+      throw ArgumentException.invalidOperationArguments(
+        "SubstrateScaleUintEncoder",
+        name: "value",
+        reason: 'Invalid integer for scale encoding.',
+      );
     }
 
-    return BigintUtils.toBytes(v,
-        length: bytesLen, order: bytesLen >= 2 ? Endian.little : Endian.big);
+    return BigintUtils.toBytes(
+      v,
+      length: bytesLen,
+      order: bytesLen >= 2 ? Endian.little : Endian.big,
+    );
   }
 }
 

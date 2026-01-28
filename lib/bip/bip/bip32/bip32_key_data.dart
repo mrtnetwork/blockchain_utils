@@ -1,6 +1,12 @@
 import 'dart:typed_data';
-import 'package:blockchain_utils/utils/utils.dart';
+import 'package:blockchain_utils/bip/bip/hd_key/types.dart';
+import 'package:blockchain_utils/helper/extensions/extensions.dart';
+
 import 'package:blockchain_utils/exception/exceptions.dart';
+import 'package:blockchain_utils/utils/binary/bit_utils.dart';
+import 'package:blockchain_utils/utils/binary/utils.dart';
+import 'package:blockchain_utils/utils/equatable/equatable.dart';
+import 'package:blockchain_utils/utils/numbers/utils/int_utils.dart';
 
 /// Class container for BIP32 key data constants.
 class Bip32KeyDataConst {
@@ -24,42 +30,53 @@ class Bip32KeyDataConst {
 
 /// BIP32 chaincode class.
 /// It represents a BIP32 chaincode.
-class Bip32ChainCode {
+class Bip32ChainCode with Equality implements ChainCode {
   final List<int> _chainCode;
   Bip32ChainCode([List<int>? chaincode])
-      : _chainCode = chaincode ??
-            List<int>.filled(Bip32KeyDataConst.chaincodeByteLen, 0);
+    : _chainCode =
+          (chaincode ?? List<int>.filled(Bip32KeyDataConst.chaincodeByteLen, 0))
+              .asImmutableBytes;
 
   /// Get the fixed length in bytes.
   static int fixedLength() {
     return Bip32KeyDataConst.chaincodeByteLen;
   }
 
+  @override
   List<int> toBytes() {
-    return List<int>.from(_chainCode);
+    return _chainCode.clone();
   }
 
+  @override
   String toHex() {
     return BytesUtils.toHexString(_chainCode);
   }
+
+  @override
+  List<dynamic> get variables => [_chainCode];
 }
 
 /// BIP32 fingerprint class.
 /// It represents a BIP32 fingerprint.
-
-class Bip32FingerPrint {
+class Bip32FingerPrint with Equality implements KeyFingerPrint {
   final List<int> _fPrint;
   Bip32FingerPrint._(this._fPrint);
   factory Bip32FingerPrint([List<int>? fprint]) {
-    fprint ??= List<int>.from(Bip32KeyDataConst.fingerprintMasterKey);
+    if (fprint == null) {
+      return Bip32FingerPrint._(Bip32KeyDataConst.fingerprintMasterKey);
+    }
     if (fprint.length < fixedLength()) {
-      throw const ArgumentException("Invalid fingerprint length");
+      throw ArgumentException.invalidOperationArguments(
+        "Bip32FingerPrint",
+        reason: "Invalid fingerprint length",
+      );
     }
     fprint = fprint.sublist(0, fixedLength());
     return Bip32FingerPrint._(fprint);
   }
+  @override
   List<int> toBytes() {
-    return List<int>.from(_fPrint);
+    return _fPrint.clone();
   }
 
   String toHex() {
@@ -74,23 +91,31 @@ class Bip32FingerPrint {
   /// Get if the fingerprint corresponds to a master key.
   bool isMasterKey() {
     return BytesUtils.bytesEqual(
-        toBytes(), Bip32KeyDataConst.fingerprintMasterKey);
+      toBytes(),
+      Bip32KeyDataConst.fingerprintMasterKey,
+    );
   }
+
+  @override
+  List<dynamic> get variables => [_fPrint];
 }
 
 /// BIP32 depth class.
 /// It represents a BIP32 depth.
-class Bip32Depth {
-  late final int _depth;
-  int get depth => _depth;
-
-  Bip32Depth(int depth) {
-    /// Construct class.
-
-    if (depth < 0) {
-      throw ArgumentException("Invalid depth ($depth)");
+class Bip32Depth with Equality implements KeyDepth {
+  @override
+  final int depth;
+  const Bip32Depth._(this.depth);
+  factory Bip32Depth(int depth) {
+    try {
+      return Bip32Depth._(depth.asU8);
+    } catch (_) {
+      throw ArgumentException.invalidOperationArguments(
+        "Bip32Depth",
+        name: "depth",
+        reason: "Invalid depth",
+      );
     }
-    _depth = depth;
   }
 
   /// Get the fixed length in bytes.
@@ -104,6 +129,7 @@ class Bip32Depth {
   }
 
   /// Get the depth as bytes.
+  @override
   List<int> toBytes([Endian endian = Endian.big]) {
     return IntUtils.toBytes(depth, length: fixedLength(), byteOrder: endian);
   }
@@ -113,22 +139,13 @@ class Bip32Depth {
     return depth;
   }
 
-  /// Equality operator.
-  bool equals(dynamic other) {
-    if (other is! int && other is! Bip32Depth) {
-      return false;
-    }
-
-    if (other is int) {
-      return depth == other;
-    }
-    return depth == other.depth;
-  }
+  @override
+  List<dynamic> get variables => [depth];
 }
 
 /// BIP32 key index class.
 /// It represents a BIP32 key index.
-class Bip32KeyIndex {
+class Bip32KeyIndex with Equality implements HdKeyIndex {
   final int index;
 
   const Bip32KeyIndex._(this.index);
@@ -136,29 +153,40 @@ class Bip32KeyIndex {
   /// Harden the specified index and return it.
   factory Bip32KeyIndex.hardenIndex(int index) {
     return Bip32KeyIndex(
-        BitUtils.setBit(index, Bip32KeyDataConst.keyIndexHardenedBitNum));
+      BitUtils.setBit(index, Bip32KeyDataConst.keyIndexHardenedBitNum),
+    );
   }
 
   /// Unharden the specified index and return it.
   factory Bip32KeyIndex.unhardenIndex(int index) {
     return Bip32KeyIndex(
-        BitUtils.resetBit(index, Bip32KeyDataConst.keyIndexHardenedBitNum));
+      BitUtils.resetBit(index, Bip32KeyDataConst.keyIndexHardenedBitNum),
+    );
   }
 
   /// Get if the specified index is hardened.
   static bool isHardenedIndex(int index) {
     return BitUtils.intIsBitSet(
-        index, Bip32KeyDataConst.keyIndexHardenedBitNum);
+      index,
+      Bip32KeyDataConst.keyIndexHardenedBitNum,
+    );
   }
 
   factory Bip32KeyIndex(int index) {
     if (index < 0 || index > Bip32KeyDataConst.keyIndexMaxVal) {
-      throw ArgumentException("Invalid key index ($index)");
+      throw ArgumentException.invalidOperationArguments(
+        "Bip32KeyIndex",
+        name: "index",
+        reason: "Invalid key index.",
+      );
     }
     return Bip32KeyIndex._(index);
   }
-  factory Bip32KeyIndex.fromBytes(List<int> bytes) {
-    return Bip32KeyIndex(IntUtils.fromBytes(bytes, byteOrder: Endian.little));
+  factory Bip32KeyIndex.fromBytes(
+    List<int> bytes, {
+    Endian endian = Endian.little,
+  }) {
+    return Bip32KeyIndex(IntUtils.fromBytes(bytes, byteOrder: endian));
   }
 
   /// Get the fixed length in bytes.
@@ -182,6 +210,7 @@ class Bip32KeyIndex {
   }
 
   /// Get the key index as bytes.
+  @override
   List<int> toBytes([Endian endian = Endian.big]) {
     return IntUtils.toBytes(index, length: fixedLength(), byteOrder: endian);
   }
@@ -191,39 +220,45 @@ class Bip32KeyIndex {
     return index;
   }
 
-  bool equals(dynamic other) {
-    /// Equality operator.
-    if (other is! int && other is! Bip32KeyIndex) {
-      return false;
-    }
-
-    if (other is int) {
-      return index == other;
-    }
-    return index == other.index;
-  }
-
   @override
   String toString() {
     return "index: $index";
   }
+
+  @override
+  List<dynamic> get variables => [index];
 }
 
 /// BIP32 key data class.
 /// It contains all additional data related to a BIP32 key (e.g. depth, chain code, etc...).
-class Bip32KeyData {
+class Bip32KeyData
+    with Equality
+    implements
+        BaseCryptoKeyData<
+          Bip32ChainCode,
+          Bip32KeyIndex,
+          Bip32Depth,
+          Bip32FingerPrint
+        > {
+  @override
   final Bip32Depth depth;
+  @override
   final Bip32KeyIndex index;
+  @override
   final Bip32ChainCode chainCode;
-  final Bip32FingerPrint parentFingerPrint;
+  @override
+  final Bip32FingerPrint fingerPrint;
 
   Bip32KeyData({
     Bip32Depth? depth,
     Bip32KeyIndex? index,
     Bip32ChainCode? chainCode,
-    Bip32FingerPrint? parentFingerPrint,
-  })  : depth = depth ?? Bip32Depth(0),
-        index = index ?? Bip32KeyIndex(0),
-        chainCode = chainCode ?? Bip32ChainCode(),
-        parentFingerPrint = parentFingerPrint ?? Bip32FingerPrint();
+    Bip32FingerPrint? fingerPrint,
+  }) : depth = depth ?? Bip32Depth(0),
+       index = index ?? Bip32KeyIndex(0),
+       chainCode = chainCode ?? Bip32ChainCode(),
+       fingerPrint = fingerPrint ?? Bip32FingerPrint();
+
+  @override
+  List<dynamic> get variables => [depth, index, chainCode, fingerPrint];
 }

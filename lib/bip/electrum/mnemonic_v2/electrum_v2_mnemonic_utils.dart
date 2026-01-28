@@ -1,9 +1,11 @@
 import 'package:blockchain_utils/bip/bip/bip39/bip39_mnemonic_validator.dart';
 import 'package:blockchain_utils/bip/electrum/mnemonic_v1/electrum_v1_mnemonic_validator.dart';
 import 'package:blockchain_utils/bip/electrum/mnemonic_v2/electrum_v2_mnemonic.dart';
-import 'package:blockchain_utils/utils/utils.dart';
+
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
 import 'package:blockchain_utils/bip/mnemonic/mnemonic.dart';
+import 'package:blockchain_utils/utils/binary/utils.dart';
+import 'package:blockchain_utils/utils/string/string.dart';
 
 /// Constants related to Electrum V2 mnemonic utilities.
 class ElectrumV2MnemonicUtilsConst {
@@ -20,7 +22,7 @@ class ElectrumV2MnemonicUtilsConst {
     115,
     105,
     111,
-    110
+    110,
   ];
 }
 
@@ -30,12 +32,11 @@ class ElectrumV2MnemonicUtils {
   ///
   /// [mnemonic] The mnemonic to check.
   /// [mnemonicType] (Optional) The Electrum V2 mnemonic type to check against.
-  /// If not provided, any type of Electrum V2 mnemonic will be accepted.
   ///
-  /// Returns `true` if the mnemonic is valid for the specified type (or any type),
-  /// otherwise returns `false`.
-  static bool isValidMnemonic(Mnemonic mnemonic,
-      [ElectrumV2MnemonicTypes? mnemonicType]) {
+  static bool isValidMnemonic(
+    Mnemonic mnemonic, [
+    ElectrumV2MnemonicTypes? mnemonicType,
+  ]) {
     if (_isBip39OrV1Mnemonic(mnemonic)) {
       return false;
     }
@@ -52,9 +53,12 @@ class ElectrumV2MnemonicUtils {
 
   /// Checks if the mnemonic matches any type of Electrum V2 mnemonic.
   static bool _isAnyType(Mnemonic mnemonic) {
-    final h = BytesUtils.toHexString(QuickCrypto.hmacSha512Hash(
+    final h = BytesUtils.toHexString(
+      QuickCrypto.hmacSha512Hash(
         ElectrumV2MnemonicUtilsConst.hmacKey,
-        StringUtils.encode(mnemonic.toStr())));
+        StringUtils.encode(mnemonic.toStr()),
+      ),
+    );
     for (final mnemonicType in ElectrumV2MnemonicTypes.values) {
       if (h.startsWith(ElectrumV2MnemonicConst.typeToPrefix[mnemonicType]!)) {
         return true;
@@ -65,9 +69,12 @@ class ElectrumV2MnemonicUtils {
 
   /// Checks if the mnemonic matches a specific type of Electrum V2 mnemonic.
   static bool _isType(Mnemonic mnemonic, ElectrumV2MnemonicTypes mnemonicType) {
-    final h = BytesUtils.toHexString(QuickCrypto.hmacSha512Hash(
+    final h = BytesUtils.toHexString(
+      QuickCrypto.hmacSha512Hash(
         ElectrumV2MnemonicUtilsConst.hmacKey,
-        StringUtils.encode(mnemonic.toStr())));
+        StringUtils.encode(mnemonic.toStr()),
+      ),
+    );
 
     return h.startsWith(ElectrumV2MnemonicConst.typeToPrefix[mnemonicType]!);
   }

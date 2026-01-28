@@ -2,11 +2,15 @@ import 'package:blockchain_utils/base58/base58_ex.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
 import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/helper/helper.dart';
-import 'package:blockchain_utils/utils/utils.dart';
+import 'package:blockchain_utils/utils/binary/utils.dart';
+import 'package:blockchain_utils/utils/numbers/utils/bigint_utils.dart';
 
 enum Base58Alphabets {
-  bitcoin,
-  ripple,
+  bitcoin("123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"),
+  ripple("rpshnaf39wBUDNEGHJKLM4PQRST7VWXYZ2bcdeCg65jkm8oFqi1tuvAxyz");
+
+  final String alphabet;
+  const Base58Alphabets(this.alphabet);
 }
 
 /// Constants related to Base58 encoding.
@@ -16,14 +20,6 @@ class Base58Const {
 
   /// The length (in bytes) of the checksum used in Base58 encoding.
   static const int checksumByteLen = 4;
-
-  /// Mapping of Base58 alphabet types to their corresponding alphabets.
-  static const Map<Base58Alphabets, String> alphabets = {
-    Base58Alphabets.bitcoin:
-        "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz",
-    Base58Alphabets.ripple:
-        "rpshnaf39wBUDNEGHJKLM4PQRST7VWXYZ2bcdeCg65jkm8oFqi1tuvAxyz",
-  };
 }
 
 class Base58Utils {
@@ -52,9 +48,11 @@ class Base58Encoder {
   ///
   /// Returns:
   /// A Base58 encoded string of the input dataBytes.
-  static String encode(List<int> dataBytes,
-      [Base58Alphabets base58alphabets = Base58Alphabets.bitcoin]) {
-    final alphabet = Base58Const.alphabets[base58alphabets]!;
+  static String encode(
+    List<int> dataBytes, [
+    Base58Alphabets base58alphabets = Base58Alphabets.bitcoin,
+  ]) {
+    final alphabet = base58alphabets.alphabet;
 
     /// Convert the dataBytes into a BigInteger for encoding.
     BigInt val = BigintUtils.fromBytes(dataBytes);
@@ -62,8 +60,8 @@ class Base58Encoder {
     while (val > BigInt.zero) {
       /// Perform division by Base58 radix and get remainder for encoding.
       final result = BigintUtils.divmod(val, Base58Const.radix);
-      val = result.item1;
-      final mod = result.item2;
+      val = result.$1;
+      final mod = result.$2;
       enc = alphabet[mod.toInt()] + enc;
     }
 
@@ -92,12 +90,13 @@ class Base58Encoder {
   ///
   /// Returns:
   /// A Base58 encoded string of the input dataBytes with a checksum.
-  static String checkEncode(List<int> dataBytes,
-      [Base58Alphabets base58alphabets = Base58Alphabets.bitcoin]) {
+  static String checkEncode(
+    List<int> dataBytes, [
+    Base58Alphabets base58alphabets = Base58Alphabets.bitcoin,
+  ]) {
     dataBytes = dataBytes.asImmutableBytes;
     final checksum = Base58Utils.computeChecksum(dataBytes);
-    final dataWithChecksum = List<int>.from([...dataBytes, ...checksum]);
-    return encode(dataWithChecksum, base58alphabets);
+    return encode([...dataBytes, ...checksum], base58alphabets);
   }
 }
 
@@ -111,22 +110,29 @@ class Base58Decoder {
   ///
   /// Returns:
   /// A List containing the decoded data bytes.
-  static List<int> decode(String data,
-      [Base58Alphabets base58alphabets = Base58Alphabets.bitcoin]) {
-    final alphabet = Base58Const.alphabets[base58alphabets]!;
+  static List<int> decode(
+    String data, [
+    Base58Alphabets base58alphabets = Base58Alphabets.bitcoin,
+  ]) {
+    final alphabet = base58alphabets.alphabet;
     var val = BigInt.zero;
 
     for (int i = 0; i < data.length; i++) {
       final c = data[data.length - 1 - i];
       final charIndex = alphabet.indexOf(c);
       if (charIndex == -1) {
-        throw const MessageException("Invalid character in Base58 string");
+        throw ArgumentException.invalidOperationArguments(
+          "decode",
+          name: "data",
+          reason: "Invalid Base58 string.",
+        );
       }
       val += BigInt.from(charIndex) * BigInt.from(Base58Const.radix).pow(i);
     }
-
-    final bytes =
-        BigintUtils.toBytes(val, length: BigintUtils.bitlengthInBytes(val));
+    List<int> bytes = [];
+    if (val != BigInt.zero) {
+      bytes = BigintUtils.toBytes(val);
+    }
 
     // Remove leading zeros from bytes
     var padLen = 0;
@@ -138,7 +144,7 @@ class Base58Decoder {
       }
     }
 
-    return List<int>.from([...List<int>.filled(padLen, 0), ...bytes]);
+    return [...List<int>.filled(padLen, 0), ...bytes];
   }
 
   /// Decode and verify the provided Base58 encoded [data] into a List of data bytes using a specified Base58 alphabet.
@@ -154,19 +160,22 @@ class Base58Decoder {
   ///
   /// Throws:
   /// - Base58ChecksumError: If the checksum verification fails.
-  static List<int> checkDecode(String data,
-      [Base58Alphabets base58alphabets = Base58Alphabets.bitcoin]) {
+  static List<int> checkDecode(
+    String data, [
+    Base58Alphabets base58alphabets = Base58Alphabets.bitcoin,
+  ]) {
     final decodedBytes = decode(data, base58alphabets);
     final dataBytes = decodedBytes.sublist(
-        0, decodedBytes.length - Base58Const.checksumByteLen);
-    final checksumBytes =
-        decodedBytes.sublist(decodedBytes.length - Base58Const.checksumByteLen);
+      0,
+      decodedBytes.length - Base58Const.checksumByteLen,
+    );
+    final checksumBytes = decodedBytes.sublist(
+      decodedBytes.length - Base58Const.checksumByteLen,
+    );
 
     final computedChecksum = Base58Utils.computeChecksum(dataBytes);
     if (!BytesUtils.bytesEqual(checksumBytes, computedChecksum)) {
-      throw Base58ChecksumError(
-        "Invalid checksum (expected ${BytesUtils.toHexString(computedChecksum)}, got ${BytesUtils.toHexString(checksumBytes)})",
-      );
+      throw Base58ChecksumError();
     }
 
     return dataBytes;

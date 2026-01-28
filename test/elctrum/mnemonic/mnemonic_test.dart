@@ -16,23 +16,32 @@ import 'test_vector_v2.dart';
 void main() {
   test("electrum mnemonic v2", () {
     for (final i in testVectorV2) {
-      final type = ElectrumV2MnemonicTypes.values.firstWhere((element) =>
-          element.name.toLowerCase() ==
-          (i["type"] as String).replaceAll("_", "").toLowerCase());
-      final lang = ElectrumV2Languages.values.firstWhere((element) =>
-          element.name.toLowerCase() ==
-          (i["lang"] as String).replaceAll("_", "").toLowerCase());
+      final type = ElectrumV2MnemonicTypes.values.firstWhere(
+        (element) =>
+            element.name.toLowerCase() ==
+            (i["type"] as String).replaceAll("_", "").toLowerCase(),
+      );
+      final lang = ElectrumV2Languages.values.firstWhere(
+        (element) =>
+            element.name.toLowerCase() ==
+            (i["lang"] as String).replaceAll("_", "").toLowerCase(),
+      );
       final entropy = BytesUtils.fromHexString(i["entropy"]);
-      final mn = ElectrumV2MnemonicGenerator(type, language: lang)
-          .fromEntropy(entropy);
+      final mn = ElectrumV2MnemonicGenerator(
+        type,
+        language: lang,
+      ).fromEntropy(entropy);
       expect(mn.toStr(), i["mnemonic"]);
-      final decode =
-          ElectrumV2MnemonicDecoder(mnemonicType: type, language: lang)
-              .decode(mn.toStr());
+      final decode = ElectrumV2MnemonicDecoder(
+        mnemonicType: type,
+        language: lang,
+      ).decode(mn.toStr());
       expect(BytesUtils.bytesEqual(decode, entropy), true);
       final seed = ElectrumV2SeedGenerator(mn, lang).generate("MRT");
-      expect(BytesUtils.bytesEqual(seed, BytesUtils.fromHexString(i["seed"])),
-          true);
+      expect(
+        BytesUtils.bytesEqual(seed, BytesUtils.fromHexString(i["seed"])),
+        true,
+      );
       if (i["address"] != null) {
         String addr;
         if (type.name.startsWith("segwit")) {

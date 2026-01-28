@@ -9,9 +9,11 @@ void main() {
   test("monero account", () {
     for (final i in testVector) {
       final seed = BytesUtils.fromHexString(i["seed"]);
-      final coin = MoneroCoins.values.firstWhere((element) =>
-          element.name.toLowerCase() ==
-          (i["coin"] as String).replaceAll("_", "").toLowerCase());
+      final coin = MoneroCoins.values.firstWhere(
+        (element) =>
+            element.name.toLowerCase() ==
+            (i["coin"] as String).replaceAll("_", "").toLowerCase(),
+      );
       final w = MoneroAccount.fromSeed(seed, coinType: coin);
       expect(w.privateSpendKey.raw.toHex(), i["private_sky"]);
       expect(w.privateViewKey.raw.toHex(), i["private_vkey"]);

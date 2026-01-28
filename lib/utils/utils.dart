@@ -10,4 +10,6 @@ export 'equatable/equatable.dart';
 export 'json/json.dart';
 export 'numbers/numbers.dart';
 export 'string/string.dart';
-export 'tuple/tuple.dart';
+export 'types/result.dart';
+export 'types/either.dart';
+export 'types/range.dart';

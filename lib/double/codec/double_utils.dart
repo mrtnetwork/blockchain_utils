@@ -16,6 +16,7 @@ class DoubleCoder {
   ///
   /// - [bytes] : The bytes to decode.
   /// - [byteOrder] (optional): The byte order for decoding. Defaults to big endian.
+  ///
   static double fromBytes(List<int> bytes, {Endian byteOrder = Endian.big}) {
     final ByteData byteData = ByteData.sublistView(Uint8List.fromList(bytes));
     return byteData.getFloat64(0, byteOrder);

@@ -1,4 +1,5 @@
-import 'package:blockchain_utils/utils/utils.dart';
+import 'package:blockchain_utils/cbor/utils/cbor_utils.dart';
+
 import 'package:blockchain_utils/cbor/utils/dynamic_bytes.dart';
 import 'package:blockchain_utils/cbor/utils/extentions.dart';
 import 'package:blockchain_utils/cbor/core/tags.dart';
@@ -6,6 +7,7 @@ import 'package:blockchain_utils/cbor/core/cbor.dart';
 import 'package:blockchain_utils/cbor/types/double.dart';
 import 'package:blockchain_utils/cbor/types/int.dart';
 import 'package:blockchain_utils/cbor/types/string.dart';
+import 'package:blockchain_utils/utils/binary/utils.dart';
 
 /// A class representing a CBOR (Concise Binary Object Representation) DateTime value.
 abstract class _CborDate extends CborObject<DateTime> {
@@ -40,18 +42,6 @@ abstract class _CborDate extends CborObject<DateTime> {
   String toString() {
     return value.toIso8601String();
   }
-
-  /// overide equal operation
-  @override
-  operator ==(other) {
-    if (other is! _CborDate) return false;
-    if (other.runtimeType != runtimeType) return false;
-    return value.microsecondsSinceEpoch == other.value.microsecondsSinceEpoch;
-  }
-
-  /// ovveride hash code
-  @override
-  int get hashCode => value.hashCode;
 }
 
 /// A class representing a CBOR (Concise Binary Object Representation) String DateTime value.
@@ -59,6 +49,10 @@ class CborStringDateValue extends _CborDate {
   /// Constructor for creating a CborStringDateValue instance with the provided parameters.
   /// It accepts DateTime value.
   CborStringDateValue(super.value);
+
+  factory CborStringDateValue.decode(List<int> bytes) {
+    return CborUtils.decodeCbor(bytes);
+  }
 
   @override
   List<int> _encode() {
@@ -74,6 +68,10 @@ class CborEpochFloatValue extends _CborDate {
   /// It accepts DateTime value.
   CborEpochFloatValue(super.value);
 
+  factory CborEpochFloatValue.decode(List<int> bytes) {
+    return CborUtils.decodeCbor(bytes);
+  }
+
   @override
   List<int> _encode() {
     final toSecound = value.millisecondsSinceEpoch / 1000;
@@ -87,6 +85,10 @@ class CborEpochIntValue extends _CborDate {
   /// Constructor for creating a CborEpochIntValue instance with the provided parameters.
   /// It accepts DateTime value.
   CborEpochIntValue(super.value);
+
+  factory CborEpochIntValue.decode(List<int> bytes) {
+    return CborUtils.decodeCbor(bytes);
+  }
 
   @override
   List<int> _encode() {

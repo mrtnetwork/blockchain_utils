@@ -3,7 +3,9 @@ import 'package:blockchain_utils/bip/address/decoder.dart';
 import 'package:blockchain_utils/bip/coin_conf/constant/coins_conf.dart';
 import 'package:blockchain_utils/bip/ecc/keys/i_keys.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
-import 'package:blockchain_utils/utils/utils.dart';
+import 'package:blockchain_utils/utils/binary/utils.dart';
+import 'package:blockchain_utils/utils/string/string.dart';
+
 import 'addr_key_validator.dart';
 import 'encoder.dart';
 import 'exception/exception.dart';
@@ -23,27 +25,17 @@ class EthAddrConst {
 /// Utility class for Ethereum address-related operations.
 class EthAddrUtils {
   /// Encodes an Ethereum address with checksum.
-  ///
-  /// This method takes an Ethereum address as input and calculates its checksum.
-  /// The address is converted to lowercase, hashed using the Keccak256 algorithm,
-  /// and the resulting hash is used to determine the case of each character in
-  /// the address to create a checksum. The final Ethereum address with checksum
-  /// is returned as a string.
-  ///
-  /// Parameters:
-  ///   - addr: The Ethereum address to encode with checksum as a string.
-  ///
-  /// Returns:
-  ///   A string representing the Ethereum address with checksum.
   static String _checksumEncode(String addr) {
     final String addrHexDigest = BytesUtils.toHexString(
-        QuickCrypto.keccack256Hash(StringUtils.encode(addr.toLowerCase())));
-    final List<String> encAddr = addr.split("").asMap().entries.map((entry) {
-      final int i = entry.key;
-      final String c = entry.value;
-      final int charValue = int.parse(addrHexDigest[i], radix: 16);
-      return charValue >= 8 ? c.toUpperCase() : c.toLowerCase();
-    }).toList();
+      QuickCrypto.keccack256Hash(StringUtils.encode(addr.toLowerCase())),
+    );
+    final List<String> encAddr =
+        addr.split("").asMap().entries.map((entry) {
+          final int i = entry.key;
+          final String c = entry.value;
+          final int charValue = int.parse(addrHexDigest[i], radix: 16);
+          return charValue >= 8 ? c.toUpperCase() : c.toLowerCase();
+        }).toList();
 
     return encAddr.join();
   }
@@ -51,11 +43,15 @@ class EthAddrUtils {
   static String toChecksumAddress(String addr) {
     final String wihtoutPrefix = StringUtils.strip0x(addr);
     if (!StringUtils.isHexBytes(wihtoutPrefix)) {
-      throw AddressConverterException("Invalid Ethereum address.",
-          details: {"address": addr});
+      throw AddressConverterException.addressValidationFailed(
+        details: {"address": addr},
+      );
     }
     AddrDecUtils.validateLength(wihtoutPrefix, EthAddrConst.addrLen);
-    return CoinsConf.ethereum.params.addrPrefix! +
+    return AddrKeyValidator.getConfigArg(
+          CoinsConf.ethereum.params.addrPrefix,
+          "addrPrefix",
+        ) +
         _checksumEncode(wihtoutPrefix);
   }
 
@@ -66,34 +62,23 @@ class EthAddrUtils {
 }
 
 /// Implementation of the [BlockchainAddressDecoder] for Ethereum addresses.
-class EthAddrDecoder implements BlockchainAddressDecoder {
+class EthAddrDecoder implements BlockchainAddressDecoder<List<int>> {
   /// Decodes an Ethereum address from its string representation.
-  ///
-  /// This method takes a string representing an Ethereum address as input and
-  /// decodes it into its byte representation. It also provides an option to
-  /// skip checksum validation if specified.
-  ///
-  /// Parameters:
-  ///   - addr: The Ethereum address as a string to be decoded.
-  ///   - kwargs: Optional keyword arguments (e.g., skip_chksum_enc) for additional
-  ///             configuration.
-  ///
-  /// Returns:
-  ///   A `List<int>` representing the byte-encoded Ethereum address.
-  ///
-  /// Throws:
-  ///   - ArgumentException: If the address is not of the correct length or if checksum
-  ///                   validation fails (if not skipped).
   @override
-  List<int> decodeAddr(String addr, [Map<String, dynamic> kwargs = const {}]) {
-    final skipChecksum = kwargs["skip_chksum_enc"] ?? false;
-
+  List<int> decodeAddr(String addr, {bool skipChecksum = false}) {
     final String addrNoPrefix = AddrDecUtils.validateAndRemovePrefix(
-        addr, CoinsConf.ethereum.params.addrPrefix!);
+      addr,
+      AddrKeyValidator.getConfigArg(
+        CoinsConf.ethereum.params.addrPrefix,
+        "addrPrefix",
+      ),
+    );
     AddrDecUtils.validateLength(addrNoPrefix, EthAddrConst.addrLen);
     if (!skipChecksum &&
         addrNoPrefix != EthAddrUtils._checksumEncode(addrNoPrefix)) {
-      throw const AddressConverterException("Invalid checksum encoding");
+      throw AddressConverterException.addressKeyValidationFailed(
+        reason: "Invalid checksum encoding",
+      );
     }
     return BytesUtils.fromHexString(addrNoPrefix);
   }
@@ -102,30 +87,22 @@ class EthAddrDecoder implements BlockchainAddressDecoder {
 /// Implementation of the [BlockchainAddressEncoder] for Ethereum addresses.
 class EthAddrEncoder implements BlockchainAddressEncoder {
   /// Encodes a public key as an Ethereum address.
-  ///
-  /// This method takes a public key in the form of a `List<int>` and converts it
-  /// into an Ethereum address as a string. It includes an option to skip
-  /// checksum encoding if specified.
-  ///
-  /// Parameters:
-  ///   - pubKey: The public key in a `List<int>` format to be encoded.
-  ///   - kwargs: Optional keyword arguments (e.g., skip_chksum_enc) for additional
-  ///             configuration.
-  ///
-  /// Returns:
-  ///   A string representing the Ethereum address.
   @override
-  String encodeKey(List<int> pubKey, [Map<String, dynamic> kwargs = const {}]) {
-    final IPublicKey pubKeyObj =
-        AddrKeyValidator.validateAndGetSecp256k1Key(pubKey);
-    final skipChecksum = kwargs["skip_chksum_enc"] ?? false;
+  String encodeKey(List<int> pubKey, {bool skipChecksum = false}) {
+    final IPublicKey pubKeyObj = AddrKeyValidator.validateAndGetSecp256k1Key(
+      pubKey,
+    );
     final String kekkakHex = BytesUtils.toHexString(
-        QuickCrypto.keccack256Hash(pubKeyObj.uncompressed.sublist(1)));
+      QuickCrypto.keccack256Hash(pubKeyObj.uncompressed.sublist(1)),
+    );
     final String addr = kekkakHex.substring(EthAddrConst.startByte);
     if (skipChecksum) {
       return addr;
     }
-    return CoinsConf.ethereum.params.addrPrefix! +
+    return AddrKeyValidator.getConfigArg(
+          CoinsConf.ethereum.params.addrPrefix,
+          "addrPrefix",
+        ) +
         EthAddrUtils._checksumEncode(addr);
   }
 }

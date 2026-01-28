@@ -3,6 +3,7 @@ import 'package:blockchain_utils/bip/substrate/scale/substrate_scale_enc_base.da
 import 'package:blockchain_utils/bip/substrate/scale/substrate_scale_enc_bytes.dart';
 import 'package:blockchain_utils/bip/substrate/scale/substrate_scale_enc_uint.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
+import 'package:blockchain_utils/exception/exception/exception.dart';
 
 /// A constants class that provides predefined values and regular expressions related to Substrate paths
 /// and SCALE encoders for integers.
@@ -42,7 +43,11 @@ class SubstratePathElem {
   /// Creates a new instance of [SubstratePathElem] with the provided [element].
   SubstratePathElem(String element) {
     if (!isElemValid(element)) {
-      throw SubstratePathError("Invalid path element ($element)");
+      throw ArgumentException.invalidOperationArguments(
+        "SubstratePathElem",
+        name: "element",
+        reason: "Invalid substrate path element.",
+      );
     }
 
     elem = element.replaceAll("/", "");
@@ -61,9 +66,10 @@ class SubstratePathElem {
 
   /// Returns the string representation of the path element, including the appropriate prefix
   String toStr() {
-    final prefix = isHard
-        ? SubstratePathConst.hardPathPrefix
-        : SubstratePathConst.softPathPrefix;
+    final prefix =
+        isHard
+            ? SubstratePathConst.hardPathPrefix
+            : SubstratePathConst.softPathPrefix;
     return "$prefix$elem";
   }
 
@@ -86,7 +92,9 @@ class SubstratePathElem {
       }
 
       if (scaleEnc == null) {
-        throw SubstratePathError("Invalid integer bit length ($bitLen)");
+        throw SubstratePathError(
+          "Failed to find correct encoder for path element.",
+        );
       }
     } else {
       scaleEnc = const SubstrateScaleBytesEncoder();
@@ -97,8 +105,7 @@ class SubstratePathElem {
     if (encData.length > maxLen) {
       return QuickCrypto.blake2b256Hash(encData);
     } else {
-      return List<int>.from(
-          encData.toList() + List.filled(maxLen - encData.length, 0));
+      return encData.toList() + List.filled(maxLen - encData.length, 0);
     }
   }
 
@@ -153,14 +160,18 @@ class SubstratePathParser {
   /// Throws a [SubstratePathError] if the path is invalid.
   static SubstratePath parse(String path) {
     if (path.isNotEmpty && !path.startsWith('/')) {
-      throw SubstratePathError('Invalid path ($path)');
+      throw ArgumentException.invalidOperationArguments(
+        "SubstratePath",
+        name: "path",
+        reason: "Invalid substrate path.",
+      );
     }
 
     /// Extract path elements using a regular expression and create a SubstratePath object.
-    final paths = RegExp(SubstratePathConst.rePath)
-        .allMatches(path)
-        .map((match) => match.group(0)!)
-        .toList();
+    final paths =
+        RegExp(
+          SubstratePathConst.rePath,
+        ).allMatches(path).map((match) => match.group(0)!).toList();
     return SubstratePath(paths.map((e) => SubstratePathElem(e)).toList());
   }
 }

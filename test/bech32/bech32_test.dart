@@ -1,6 +1,6 @@
 import 'package:blockchain_utils/bech32/bech32_base.dart';
+import 'package:blockchain_utils/bech32/bech32_ex.dart';
 import 'package:blockchain_utils/utils/utils.dart';
-import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:test/test.dart';
 
 final List<Map<String, String>> _testVect = [
@@ -33,15 +33,19 @@ void main() {
   test("bach32 encode", () {
     for (final i in _testVect) {
       final hrp = i["encode"]!.substring(0, i["encode"]!.indexOf("1"));
-      final encode =
-          Bech32Encoder.encode(hrp, BytesUtils.fromHexString(i["raw"]!));
+      final encode = Bech32Encoder.encode(
+        hrp,
+        BytesUtils.fromHexString(i["raw"]!),
+      );
       expect(encode, i["encode"]);
     }
   });
   test("invalid decode", () {
     expect(() {
       Bech32Decoder.decode(
-          "cosmos", "cosmis1w508d6qejxtdg4y5r3zarvary0c5xw7khxen85");
-    }, throwsA(isA<ArgumentException>()));
+        "cosmos",
+        "cosmis1w508d6qejxtdg4y5r3zarvary0c5xw7khxen85",
+      );
+    }, throwsA(isA<Bech32Error>()));
   });
 }

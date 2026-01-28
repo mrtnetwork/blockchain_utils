@@ -22,7 +22,8 @@ void main() {
         expect(key.publicKeyHex(), i["publicKey"]);
         final publicKey2 = BytesUtils.fromHexString(i["publicKey2"]);
         final mult = BytesUtils.toHexString(
-            X25519.scalarMult(key.privateKey, publicKey2));
+          X25519.scalarMult(key.privateKey, publicKey2),
+        );
         expect(mult, i["sharedKey"]);
       }
     });

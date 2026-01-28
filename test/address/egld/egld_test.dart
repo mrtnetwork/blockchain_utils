@@ -8,12 +8,11 @@ import 'test_vector.dart' show testVector;
 void main() {
   test("egld address test", () {
     for (final i in testVector) {
-      final params = Map<String, dynamic>.from(i["params"]);
-
-      final z = EgldAddrEncoder()
-          .encodeKey(BytesUtils.fromHexString(i["public"]), params);
+      final z = EgldAddrEncoder().encodeKey(
+        BytesUtils.fromHexString(i["public"]),
+      );
       expect(z, i["address"]);
-      final decode = EgldAddrDecoder().decodeAddr(z, params);
+      final decode = EgldAddrDecoder().decodeAddr(z);
       expect(decode.toHex(), i["decode"]);
     }
   });

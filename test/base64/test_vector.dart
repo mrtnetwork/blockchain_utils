@@ -168,7 +168,7 @@ const Map<String, String> base64TestMap = {
   "N~1q|qxRHWI\"eI`'5PO?uIXXf}3AzkeC:=f}7|A\tvhNh9'01RT]Oht[!;j(xGz>#t~%'j(q\r~cwP'6ZkzeBGg+\rUJtB07@TJdT":
       "Tn4xcXxxeFJIV0kiZUlgJzVQTz91SVhYZn0zQXprZUM6PWZ9N3xBCXZoTmg5JzAxUlRdT2h0WyE7aih4R3o+I3R+JSdqKHENfmN3UCc2Wmt6ZUJHZysNVUp0QjA3QFRKZFQ=",
   "{} WApGW.;:Ge,X*#~5,FAc3iwBs'Te(38{g+7LF!@J!GI!U4v=Vt:tu\"gul Y!dur4Z\"hY57(6Fv-Ow.h{*.Qs-'x\\wN%B]5#H":
-      "e30gV0FwR1cuOzpHZSxYKiN+NSxGQWMzaXdCcydUZSgzOHtnKzdMRiFASiFHSSFVNHY9VnQ6dHUiZ3VsIFkhZHVyNFoiaFk1Nyg2RnYtT3cuaHsqLlFzLSd4XHdOJUJdNSNI"
+      "e30gV0FwR1cuOzpHZSxYKiN+NSxGQWMzaXdCcydUZSgzOHtnKzdMRiFASiFHSSFVNHY9VnQ6dHUiZ3VsIFkhZHVyNFoiaFk1Nyg2RnYtT3cuaHsqLlFzLSd4XHdOJUJdNSNI",
 };
 
 const Map<List<int>, String> specialBase64Map = {

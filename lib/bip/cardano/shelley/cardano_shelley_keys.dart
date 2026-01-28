@@ -1,12 +1,13 @@
 import 'package:blockchain_utils/bip/address/ada/ada_shelley_addr.dart';
+import 'package:blockchain_utils/bip/address/ada/network.dart';
 import 'package:blockchain_utils/bip/bip/bip32/bip32_keys.dart';
-import 'package:blockchain_utils/bip/bip/conf/config/bip_coin_conf.dart';
+import 'package:blockchain_utils/bip/bip/conf/bip_config.dart';
 
 /// A class that represents public keys associated with a Cardano Shelley wallet.
 class CardanoShelleyPublicKeys {
   final Bip32PublicKey pubAddrKey;
   final Bip32PublicKey pubSkKey;
-  final BipCoinConfig coinConf;
+  final BaseBipCoinConfig coinConf;
 
   /// Constructor to create a Cardano Shelley Public Keys instance.
   ///
@@ -14,10 +15,11 @@ class CardanoShelleyPublicKeys {
   /// - `pubAddrKey`: The public address key.
   /// - `pubSkKey`: The public spending key.
   /// - `coinConf`: The configuration for the associated coin.
-  CardanoShelleyPublicKeys(
-      {required this.pubAddrKey,
-      required this.pubSkKey,
-      required this.coinConf});
+  CardanoShelleyPublicKeys({
+    required this.pubAddrKey,
+    required this.pubSkKey,
+    required this.coinConf,
+  });
 
   /// Retrieves and returns the public key associated with the wallet's address.
   Bip32PublicKey get addressKey {
@@ -35,20 +37,33 @@ class CardanoShelleyPublicKeys {
   }
 
   /// Converts the public staking key to a reward address.
-  String get toRewardAddress {
-    return toStakingAddress;
+  String toRewardAddress({ADANetwork? network}) {
+    return toStakingAddress(network: network);
   }
 
   /// Converts the public staking key to a staking address.
-  String get toStakingAddress {
-    return AdaShelleyStakingAddrEncoder()
-        .encodeKey(pubSkKey.key.compressed, coinConf.addrParams);
+  String toStakingAddress({ADANetwork? network}) {
+    network ??= switch (coinConf.chainType) {
+      ChainType.mainnet => ADANetwork.mainnet,
+      ChainType.testnet => ADANetwork.testnetPreview,
+    };
+    return AdaShelleyStakingAddrEncoder().encodeKey(
+      pubSkKey.key.compressed,
+      network: network,
+    );
   }
 
   /// Converts the public address key to a Cardano Shelley address.
-  String get toAddress {
-    return AdaShelleyAddrEncoder().encodeKey(pubAddrKey.key.compressed,
-        {"pub_skey": pubSkKey.key.compressed, ...coinConf.addrParams});
+  String toAddress({ADANetwork? network}) {
+    network ??= switch (coinConf.chainType) {
+      ChainType.mainnet => ADANetwork.mainnet,
+      ChainType.testnet => ADANetwork.testnetPreview,
+    };
+    return AdaShelleyAddrEncoder().encodeKey(
+      pubAddrKey.key.compressed,
+      pubSkey: pubSkKey.key.compressed,
+      network: network,
+    );
   }
 }
 
@@ -56,7 +71,7 @@ class CardanoShelleyPublicKeys {
 class CardanoShelleyPrivateKeys {
   final Bip32PrivateKey privAddrKey;
   final Bip32PrivateKey privSkKey;
-  final BipCoinConfig coinConf;
+  final BaseBipCoinConfig coinConf;
 
   /// Constructor to create a Cardano Shelley Private Keys instance.
   ///
@@ -64,10 +79,11 @@ class CardanoShelleyPrivateKeys {
   /// - `privAddrKey`: The private address key.
   /// - `privSkKey`: The private spending key.
   /// - `coinConf`: The configuration for the associated coin.
-  CardanoShelleyPrivateKeys(
-      {required this.privAddrKey,
-      required this.privSkKey,
-      required this.coinConf});
+  CardanoShelleyPrivateKeys({
+    required this.privAddrKey,
+    required this.privSkKey,
+    required this.coinConf,
+  });
 
   /// Retrieves and returns the private key associated with the wallet's address.
   Bip32PrivateKey get addressKey {
@@ -87,8 +103,9 @@ class CardanoShelleyPrivateKeys {
   /// Retrieves and returns the corresponding public keys associated with the private keys.
   CardanoShelleyPublicKeys get publicKeys {
     return CardanoShelleyPublicKeys(
-        pubAddrKey: privAddrKey.publicKey,
-        pubSkKey: privSkKey.publicKey,
-        coinConf: coinConf);
+      pubAddrKey: privAddrKey.publicKey,
+      pubSkKey: privSkKey.publicKey,
+      coinConf: coinConf,
+    );
   }
 }

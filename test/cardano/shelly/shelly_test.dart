@@ -8,8 +8,10 @@ import 'test_vector.dart';
 void main() {
   test("cardano shelly", () {
     for (final i in testVector) {
-      final cip =
-          Cip1852.fromExtendedKey(i["private"], Cip1852Coins.cardanoLedger);
+      final cip = Cip1852.fromExtendedKey(
+        i["private"],
+        Cip1852Coins.cardanoLedger,
+      );
       final toShelly = CardanoShelley.fromCip1852Object(cip);
       expect(toShelly.privateKeys.addressKey.toExtended, i["account_private"]);
       expect(toShelly.publicKeys.addressKey.toExtended, i["account_public"]);
@@ -19,7 +21,7 @@ void main() {
       final addresses = (i["addresses"] as List);
       for (int b = 0; b < addresses.length; b++) {
         final addrIndex = change.addressIndex(b);
-        final addrAddress = addrIndex.publicKeys.toAddress;
+        final addrAddress = addrIndex.publicKeys.toAddress();
         final public = addrIndex.publicKeys.addressKey.toExtended;
         final private = addrIndex.privateKeys.addressKey.toExtended;
         expect(addresses[b]["address"], addrAddress);

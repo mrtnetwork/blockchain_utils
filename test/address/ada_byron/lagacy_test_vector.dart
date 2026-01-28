@@ -11,8 +11,8 @@ final List<Map<String, dynamic>> testVector = [
           "48c932406609d757c276c427cecf00a7db1705171d9deab7e89129d0964be097",
       "hd_path": "m/0'/11'",
       "hd_path_key":
-          "756aedcc43e5e6dacdf24b1c6ea89f38ce6cdbe03010d1f62546dd856752c66e"
-    }
+          "756aedcc43e5e6dacdf24b1c6ea89f38ce6cdbe03010d1f62546dd856752c66e",
+    },
   },
   {
     "public":
@@ -26,8 +26,8 @@ final List<Map<String, dynamic>> testVector = [
           "f0a94212a4bcdaade91793b6f23e2efd2b538e27d74ffc3e469eca77d4bab08e",
       "hd_path": "m/0'/11'",
       "hd_path_key":
-          "bba4447d0853882504f682664ff481a93796801b4f0d6efa2670a37bce574630"
-    }
+          "bba4447d0853882504f682664ff481a93796801b4f0d6efa2670a37bce574630",
+    },
   },
   {
     "public":
@@ -41,8 +41,8 @@ final List<Map<String, dynamic>> testVector = [
           "5e55f08486a473154820f6274a033af81368ff2eb5551aaa28b4a8f1d41ca4c2",
       "hd_path": "m/1'/1'",
       "hd_path_key":
-          "0e63602bc7e85d52a254cf4bd1c90b1a220ff356bb4ab6259a5a976010ca1bfd"
-    }
+          "0e63602bc7e85d52a254cf4bd1c90b1a220ff356bb4ab6259a5a976010ca1bfd",
+    },
   },
   {
     "public":
@@ -56,8 +56,8 @@ final List<Map<String, dynamic>> testVector = [
           "d0affc3a9bbc4b148e82d3d347c30befc669390be833ef4deaa75650b462c97f",
       "hd_path": "m/1'/1'",
       "hd_path_key":
-          "73bffcb793bcb7a1b1db56e28b9ce005371468851085a971566c1c6812280de9"
-    }
+          "73bffcb793bcb7a1b1db56e28b9ce005371468851085a971566c1c6812280de9",
+    },
   },
   {
     "public":
@@ -71,8 +71,8 @@ final List<Map<String, dynamic>> testVector = [
           "e4fb2dc087ac8424b838dc4f945913843193fc043998b6c4faf85d2773b8e0a8",
       "hd_path": "m/0'/11'",
       "hd_path_key":
-          "3b0adfa8f3b31417f983a68a01b0f8260f175e0375e3bca7a9ae2d755963b8c4"
-    }
+          "3b0adfa8f3b31417f983a68a01b0f8260f175e0375e3bca7a9ae2d755963b8c4",
+    },
   },
   {
     "public":
@@ -86,8 +86,8 @@ final List<Map<String, dynamic>> testVector = [
           "7a4304a087bffb979b128e7e5db91d9df138f2b6f60a461d9634efce9a5a97df",
       "hd_path": "m/0'/1'",
       "hd_path_key":
-          "c0ef8cb8b1a34ba31616c6a30a1193561b48ec63a1b064a59635c108eb3a6c22"
-    }
+          "c0ef8cb8b1a34ba31616c6a30a1193561b48ec63a1b064a59635c108eb3a6c22",
+    },
   },
   {
     "public":
@@ -101,8 +101,8 @@ final List<Map<String, dynamic>> testVector = [
           "9f160ec221b39e1715a5a045a3ebf7e4827f5cc030d1b0b53eaf005234be380a",
       "hd_path": "m/0'/2'",
       "hd_path_key":
-          "d06a976ab36a1ad387b1954a4a012b042491b63f691f0b3fa8b3b7b575c11e46"
-    }
+          "d06a976ab36a1ad387b1954a4a012b042491b63f691f0b3fa8b3b7b575c11e46",
+    },
   },
   {
     "public":
@@ -116,8 +116,8 @@ final List<Map<String, dynamic>> testVector = [
           "e30c5bbfa136f3daba55829e6deb9e3d83619d6362d40f539402d85e44410c73",
       "hd_path": "m/2'/1'",
       "hd_path_key":
-          "d3538db1fb02cb9d9cb5888ab6bcd38d3b2a8477abb13c4f0d30fc7232e898e8"
-    }
+          "d3538db1fb02cb9d9cb5888ab6bcd38d3b2a8477abb13c4f0d30fc7232e898e8",
+    },
   },
   {
     "public":
@@ -131,8 +131,8 @@ final List<Map<String, dynamic>> testVector = [
           "61125511f0b3e33395dcf5d4633485d04283bb592562756ac8e7905362b056ff",
       "hd_path": "m/0'/11'",
       "hd_path_key":
-          "a7dca4cf0c90614e47485372ddcbc0aabd272c619ee2211bbe697952d4bcdbd8"
-    }
+          "a7dca4cf0c90614e47485372ddcbc0aabd272c619ee2211bbe697952d4bcdbd8",
+    },
   },
   {
     "public":
@@ -146,8 +146,8 @@ final List<Map<String, dynamic>> testVector = [
           "2700d7880121e9ff795955eb0dc07ec22904cfe18e0b1e087c691ad17461dd70",
       "hd_path": "m/0'/11'",
       "hd_path_key":
-          "ca041e347f126d982f8d52e4054d530697dd11e2a351e8af2ad60161dadebb7f"
-    }
+          "ca041e347f126d982f8d52e4054d530697dd11e2a351e8af2ad60161dadebb7f",
+    },
   },
   {
     "public":
@@ -161,8 +161,8 @@ final List<Map<String, dynamic>> testVector = [
           "f769bd1d8cb065899c180dc5f86fac158c5a7944032e7f73c5bba3f463cc3bb1",
       "hd_path": "m/0'/11'",
       "hd_path_key":
-          "003c03f2326b91d90b8a88ba239b977037d832424753fe49442c927478d7af8a"
-    }
+          "003c03f2326b91d90b8a88ba239b977037d832424753fe49442c927478d7af8a",
+    },
   },
   {
     "public":
@@ -176,8 +176,8 @@ final List<Map<String, dynamic>> testVector = [
           "e2a6fae39b74d13f111e1de9c4fd72971a046fe9317849fb0fb0963ea85d9c4e",
       "hd_path": "m/1'/1'",
       "hd_path_key":
-          "aac05c6446a615be806f17b88ef661e83d41cead5177268c69de478be7adb439"
-    }
+          "aac05c6446a615be806f17b88ef661e83d41cead5177268c69de478be7adb439",
+    },
   },
   {
     "public":
@@ -191,8 +191,8 @@ final List<Map<String, dynamic>> testVector = [
           "f86368c224f8149adbc190cc4abe032af27bd6fd185a3fe98f547426237573ca",
       "hd_path": "m/0'/1'",
       "hd_path_key":
-          "bd1cc400fb5aab07b02717259b284d93e44e1f5f6a36ffb123103eefe5dd9839"
-    }
+          "bd1cc400fb5aab07b02717259b284d93e44e1f5f6a36ffb123103eefe5dd9839",
+    },
   },
   {
     "public":
@@ -206,8 +206,8 @@ final List<Map<String, dynamic>> testVector = [
           "9e1395f492ba5acac8689429ccc964aa089d398a72c749cdd8e51da8707deb0d",
       "hd_path": "m/0'/2'",
       "hd_path_key":
-          "b3a39781fca5b49411a2abba29221928bd4d9ff7312503ed456aaa94d2198cb8"
-    }
+          "b3a39781fca5b49411a2abba29221928bd4d9ff7312503ed456aaa94d2198cb8",
+    },
   },
   {
     "public":
@@ -221,8 +221,8 @@ final List<Map<String, dynamic>> testVector = [
           "73b9a8ca07cad75f334c51d28e335c4396284a1eda2f1e79b871262ef2aaaca8",
       "hd_path": "m/0'/0'",
       "hd_path_key":
-          "e0a1658f52f50aced2ae0769d6646c62c039fd2048d4908817386e34fb11a5cf"
-    }
+          "e0a1658f52f50aced2ae0769d6646c62c039fd2048d4908817386e34fb11a5cf",
+    },
   },
   {
     "public":
@@ -236,8 +236,8 @@ final List<Map<String, dynamic>> testVector = [
           "4e6cef80fa2dbfb38325b9ed89add322f928096b34a7660c8022a5909ab65af2",
       "hd_path": "m/1'/1'",
       "hd_path_key":
-          "4d1617b4020d13649216becbe7408e5acd172e3a37ad3e5eae4f019b239b7f54"
-    }
+          "4d1617b4020d13649216becbe7408e5acd172e3a37ad3e5eae4f019b239b7f54",
+    },
   },
   {
     "public":
@@ -251,8 +251,8 @@ final List<Map<String, dynamic>> testVector = [
           "e837d9e0a416424235959f17b517e5f6a38ef037f31b1dc1aef154f11fdb9cfd",
       "hd_path": "m/0'/2'",
       "hd_path_key":
-          "1a28686c3fe0ee17f57d27d5aac96af5fd68cf381a9288daf5efe85745f493de"
-    }
+          "1a28686c3fe0ee17f57d27d5aac96af5fd68cf381a9288daf5efe85745f493de",
+    },
   },
   {
     "public":
@@ -266,8 +266,8 @@ final List<Map<String, dynamic>> testVector = [
           "c21fa8bb17b9e04124c56dc297e4f3473eb4cf36fc75ce69a0bae3c2eda08b6a",
       "hd_path": "m/0'/1'",
       "hd_path_key":
-          "44575d4f180ca7e3a4c4d711033fc50af3cbea77c412415b8e4e31bf0a49764c"
-    }
+          "44575d4f180ca7e3a4c4d711033fc50af3cbea77c412415b8e4e31bf0a49764c",
+    },
   },
   {
     "public":
@@ -281,8 +281,8 @@ final List<Map<String, dynamic>> testVector = [
           "4e54f9e5e4cb25b3e079dbf4dc1b17746ae31885f7cbc1cf14d4f8e52615f62a",
       "hd_path": "m/0'/2'",
       "hd_path_key":
-          "3ad45fddc19285a5f9b3fe96d6707bd1bf26bde24e40a187357db8979aac7d82"
-    }
+          "3ad45fddc19285a5f9b3fe96d6707bd1bf26bde24e40a187357db8979aac7d82",
+    },
   },
   {
     "public":
@@ -296,8 +296,8 @@ final List<Map<String, dynamic>> testVector = [
           "fd3541ae2f3f46286623a86a95097941decfef1d06c63b9c31a00c4299487d99",
       "hd_path": "m/0'/2'",
       "hd_path_key":
-          "fd03a4eb6a29a73e9ed285e2c78acfb4db79a9d2225133b3bf731251ddea58ef"
-    }
+          "fd03a4eb6a29a73e9ed285e2c78acfb4db79a9d2225133b3bf731251ddea58ef",
+    },
   },
   {
     "public":
@@ -311,8 +311,8 @@ final List<Map<String, dynamic>> testVector = [
           "a287b81a94f1b6e979d84a69dcef736ee14e8777fd9945b441e76ac155911f25",
       "hd_path": "m/0'/0'",
       "hd_path_key":
-          "fbccfe5be23ae5446a8143aad3b582e1e24af26336b6a5f580b8f101ebcef5f3"
-    }
+          "fbccfe5be23ae5446a8143aad3b582e1e24af26336b6a5f580b8f101ebcef5f3",
+    },
   },
   {
     "public":
@@ -326,8 +326,8 @@ final List<Map<String, dynamic>> testVector = [
           "e865387bbf1d784e93a9aa435435e3445daa5e09b149f03d3d51fd8e6926deea",
       "hd_path": "m/1'/1'",
       "hd_path_key":
-          "fbfaf79dfb36162e058deb7671a42ceb17bdd00bdb5e2f336d76c42763d480a6"
-    }
+          "fbfaf79dfb36162e058deb7671a42ceb17bdd00bdb5e2f336d76c42763d480a6",
+    },
   },
   {
     "public":
@@ -341,8 +341,8 @@ final List<Map<String, dynamic>> testVector = [
           "8f8ecfc4cedafd008da7bc0ae3c9193241bb3468d2fb58113e6057d91cd01ccc",
       "hd_path": "m/0'/11'",
       "hd_path_key":
-          "725e013caee6b9862311deaeb6a15a87b4e848276836674fbce85da9a2fd7474"
-    }
+          "725e013caee6b9862311deaeb6a15a87b4e848276836674fbce85da9a2fd7474",
+    },
   },
   {
     "public":
@@ -356,8 +356,8 @@ final List<Map<String, dynamic>> testVector = [
           "effc7d3780e9297eefa45f1d6fc21b40bda601dc10d3703981b2ba5cb379265d",
       "hd_path": "m/2'/1'",
       "hd_path_key":
-          "3cd28ed664d0b51c7296f32ff52d4806092e824950f621aa07a6aa37c0d720a4"
-    }
+          "3cd28ed664d0b51c7296f32ff52d4806092e824950f621aa07a6aa37c0d720a4",
+    },
   },
   {
     "public":
@@ -371,8 +371,8 @@ final List<Map<String, dynamic>> testVector = [
           "b2a74ffe406a969fbdbb4809edab0268b9bd6794f94fb40dcab65fee0fc43030",
       "hd_path": "m/0'/0'",
       "hd_path_key":
-          "5acd08199a61e2310a4a2e74c14d363a034d0f010d6e70acfdfd2e419b85b51b"
-    }
+          "5acd08199a61e2310a4a2e74c14d363a034d0f010d6e70acfdfd2e419b85b51b",
+    },
   },
   {
     "public":
@@ -386,8 +386,8 @@ final List<Map<String, dynamic>> testVector = [
           "5b42af9e271cbb33e183b36b69e3d6ec8ebaf6247a3942ad1fb5a6296b7226b3",
       "hd_path": "m/0'/11'",
       "hd_path_key":
-          "0ff1f5877a7d87edbb673a81a74d4d29f31ddf31be700b61fd43b9533deca3da"
-    }
+          "0ff1f5877a7d87edbb673a81a74d4d29f31ddf31be700b61fd43b9533deca3da",
+    },
   },
   {
     "public":
@@ -401,8 +401,8 @@ final List<Map<String, dynamic>> testVector = [
           "a91f9e98fb9ceee04871070452ff43ffab5f753386ff8cbf79df8c9a7d9bf64a",
       "hd_path": "m/0'/2'",
       "hd_path_key":
-          "6ee6a823c9e377bddd0206eeccdf3c15f802588a45ec3f02ff6b0a81269c2c8c"
-    }
+          "6ee6a823c9e377bddd0206eeccdf3c15f802588a45ec3f02ff6b0a81269c2c8c",
+    },
   },
   {
     "public":
@@ -416,8 +416,8 @@ final List<Map<String, dynamic>> testVector = [
           "287dc109aea44788c0d01776f032293c29b3f9fc8a1a4664e2642f8448376ccf",
       "hd_path": "m/2'/1'",
       "hd_path_key":
-          "542a0b81000d938e1ee535af0d47af0c053cd6aa2dadefdda9f15039bef83086"
-    }
+          "542a0b81000d938e1ee535af0d47af0c053cd6aa2dadefdda9f15039bef83086",
+    },
   },
   {
     "public":
@@ -431,8 +431,8 @@ final List<Map<String, dynamic>> testVector = [
           "085f5a4c479db27b006bd117fc866f257f54f7e6755944bd32444ff4d2ac2b6a",
       "hd_path": "m/2'/1'",
       "hd_path_key":
-          "f5dd9ecd8d9a5b2b8e7c3d642f8ee462175f052b1522aa2210f3eda7eca249c1"
-    }
+          "f5dd9ecd8d9a5b2b8e7c3d642f8ee462175f052b1522aa2210f3eda7eca249c1",
+    },
   },
   {
     "public":
@@ -446,8 +446,8 @@ final List<Map<String, dynamic>> testVector = [
           "66e3e07d1510f1d39478304c6b2349b839c39c37a20da4d32cc976840a300d2f",
       "hd_path": "m/0'/2'",
       "hd_path_key":
-          "e67f36e40497e2eba2c64136a0e31ee31bacadc158ee1f79138c07455736a522"
-    }
+          "e67f36e40497e2eba2c64136a0e31ee31bacadc158ee1f79138c07455736a522",
+    },
   },
   {
     "public":
@@ -461,8 +461,8 @@ final List<Map<String, dynamic>> testVector = [
           "e2555f39f0cbd63badb39a3f1316cea271a94663bac04977646bcb7a6c5b8178",
       "hd_path": "m/0'/11'",
       "hd_path_key":
-          "142e186bade936bc033a115abefebefa48c63ee1ce80c3d858d804df6e599047"
-    }
+          "142e186bade936bc033a115abefebefa48c63ee1ce80c3d858d804df6e599047",
+    },
   },
   {
     "public":
@@ -476,8 +476,8 @@ final List<Map<String, dynamic>> testVector = [
           "c23bcc5a2364d3ae243ecfc64d8423e7c9a351a27b9a6fd9ad21f02daca54dd1",
       "hd_path": "m/0'/0'",
       "hd_path_key":
-          "b65d81c8ab2a20a56e2f4a7b5b656a9bcb2d6d241a99b591b2f9c7c30a0f6842"
-    }
+          "b65d81c8ab2a20a56e2f4a7b5b656a9bcb2d6d241a99b591b2f9c7c30a0f6842",
+    },
   },
   {
     "public":
@@ -491,8 +491,8 @@ final List<Map<String, dynamic>> testVector = [
           "b82a8872ea4643078b7a81b77783117c20b7e63acdea12aee7f9c238a2fc6f30",
       "hd_path": "m/1'/1'",
       "hd_path_key":
-          "32c087d483969a53731ea2db8d1b76e03685fc48fd929c53485a607ada023e45"
-    }
+          "32c087d483969a53731ea2db8d1b76e03685fc48fd929c53485a607ada023e45",
+    },
   },
   {
     "public":
@@ -506,8 +506,8 @@ final List<Map<String, dynamic>> testVector = [
           "c85e1e031cc1c8ef98d789a7d92a53d5c95a6082602fbd193b248e6ec2b60dd6",
       "hd_path": "m/2'/1'",
       "hd_path_key":
-          "5ef711903585b1533aa35e37147a640997368df5176a5632a5a56b6d00f6275f"
-    }
+          "5ef711903585b1533aa35e37147a640997368df5176a5632a5a56b6d00f6275f",
+    },
   },
   {
     "public":
@@ -521,8 +521,8 @@ final List<Map<String, dynamic>> testVector = [
           "a180d8eddb6699bca2b67b9f84a6977e890fb2683288d1e0cfd99bba5d75a2eb",
       "hd_path": "m/0'/0'",
       "hd_path_key":
-          "facd03873fe91bcfb44c74ef224d84e19e37057e997f5a421fefb8ec831b1536"
-    }
+          "facd03873fe91bcfb44c74ef224d84e19e37057e997f5a421fefb8ec831b1536",
+    },
   },
   {
     "public":
@@ -536,8 +536,8 @@ final List<Map<String, dynamic>> testVector = [
           "f76673e7554170c120d2bc20d17afd0b95b7400ff3319f49fc5fdb7b0069b5e3",
       "hd_path": "m/1'/1'",
       "hd_path_key":
-          "f529ec53382e48fe724ad0d7b7a69e6a7698a7838cc5569e36e57af2b2715876"
-    }
+          "f529ec53382e48fe724ad0d7b7a69e6a7698a7838cc5569e36e57af2b2715876",
+    },
   },
   {
     "public":
@@ -551,8 +551,8 @@ final List<Map<String, dynamic>> testVector = [
           "394fd785484205a0bcd35b8450dbe1088bcf57df3a360353b98bf7a535a770d5",
       "hd_path": "m/0'/2'",
       "hd_path_key":
-          "ba6ae1af5a7ed0e4d151cd9c976ac5d6998f41917ee9457ed170208166e9a05d"
-    }
+          "ba6ae1af5a7ed0e4d151cd9c976ac5d6998f41917ee9457ed170208166e9a05d",
+    },
   },
   {
     "public":
@@ -566,8 +566,8 @@ final List<Map<String, dynamic>> testVector = [
           "5640f11c330c653fa8baa939c852f939fcf16046dfe4704e0a0833681950d74e",
       "hd_path": "m/0'/0'",
       "hd_path_key":
-          "f9d3e43d1cb2f1a646077735630df9be4267303d0792cb148fa245a1ca8ba64b"
-    }
+          "f9d3e43d1cb2f1a646077735630df9be4267303d0792cb148fa245a1ca8ba64b",
+    },
   },
   {
     "public":
@@ -581,8 +581,8 @@ final List<Map<String, dynamic>> testVector = [
           "148dca6fbe7bf7b0c06a6afe442b035dd5c21abe649396e6d52d2e1873df4972",
       "hd_path": "m/2'/1'",
       "hd_path_key":
-          "2b9b8768a4e6ac2a9c92ffb58d36cb44ef2a384e0914c3eaae14d2fb55d4759e"
-    }
+          "2b9b8768a4e6ac2a9c92ffb58d36cb44ef2a384e0914c3eaae14d2fb55d4759e",
+    },
   },
   {
     "public":
@@ -596,8 +596,8 @@ final List<Map<String, dynamic>> testVector = [
           "f5e060265258224ae5ffff7ad784b110e52462427d2a36474938fc0fa74938ae",
       "hd_path": "m/0'/0'",
       "hd_path_key":
-          "4797ead8a9f13e5650a06bf2380fc74dacf99d83054522780876c01d4636994e"
-    }
+          "4797ead8a9f13e5650a06bf2380fc74dacf99d83054522780876c01d4636994e",
+    },
   },
   {
     "public":
@@ -611,8 +611,8 @@ final List<Map<String, dynamic>> testVector = [
           "0c8702598aa0f42c784afb8d15d4a38d7d7982374df254fcd2b582a1c6a41885",
       "hd_path": "m/2'/1'",
       "hd_path_key":
-          "ded88a94cb42d1a73366494c4372782cfc08f20a8ce118e96e0fe6ee672daba3"
-    }
+          "ded88a94cb42d1a73366494c4372782cfc08f20a8ce118e96e0fe6ee672daba3",
+    },
   },
   {
     "public":
@@ -626,8 +626,8 @@ final List<Map<String, dynamic>> testVector = [
           "660e501bfba8749e9e0dd0e45765ccc8d8bad1d0eb749669dfcdf7b77ca57740",
       "hd_path": "m/0'/1'",
       "hd_path_key":
-          "7c09517376d1c04c8b8f37c8643f38671212ed1c9e92622db719775f631c7ef0"
-    }
+          "7c09517376d1c04c8b8f37c8643f38671212ed1c9e92622db719775f631c7ef0",
+    },
   },
   {
     "public":
@@ -641,8 +641,8 @@ final List<Map<String, dynamic>> testVector = [
           "6d94be740793d2c602e1338351b105201a84abb8c6a5604c40cc60d77ffafb55",
       "hd_path": "m/0'/2'",
       "hd_path_key":
-          "f6ddcd9f40ebff1ab1feb2652b2ab56f1b19ab67eb34b78c3c56d221828e8e8b"
-    }
+          "f6ddcd9f40ebff1ab1feb2652b2ab56f1b19ab67eb34b78c3c56d221828e8e8b",
+    },
   },
   {
     "public":
@@ -656,8 +656,8 @@ final List<Map<String, dynamic>> testVector = [
           "01b972d87722adf9ca36ac4a90fd671f030ca2ac5e486c979212c66f548f1ce3",
       "hd_path": "m/2'/1'",
       "hd_path_key":
-          "5b3bd35cd1e691affe5a286e561bf0a3f1d69b389074795c4fb9f7673a8ed80a"
-    }
+          "5b3bd35cd1e691affe5a286e561bf0a3f1d69b389074795c4fb9f7673a8ed80a",
+    },
   },
   {
     "public":
@@ -671,8 +671,8 @@ final List<Map<String, dynamic>> testVector = [
           "c91a7c7756e8040ad5ab38792ca74e6e324b2ba377638671d9d8103b6f61e02b",
       "hd_path": "m/2'/1'",
       "hd_path_key":
-          "0bb24a0d91f5ecd7d43dee3ece03457510c99159348c29bcb634388e3a664e3b"
-    }
+          "0bb24a0d91f5ecd7d43dee3ece03457510c99159348c29bcb634388e3a664e3b",
+    },
   },
   {
     "public":
@@ -686,8 +686,8 @@ final List<Map<String, dynamic>> testVector = [
           "d6462f5e3f0b0e544df3941a8cf6a003d9e3c4db6cb0b57b4b187fd2f477f414",
       "hd_path": "m/1'/1'",
       "hd_path_key":
-          "1f15f33d1cce9d09675d65ca7e9cd86730a345620b1c8df3d4cb2141ff853fa5"
-    }
+          "1f15f33d1cce9d09675d65ca7e9cd86730a345620b1c8df3d4cb2141ff853fa5",
+    },
   },
   {
     "public":
@@ -701,8 +701,8 @@ final List<Map<String, dynamic>> testVector = [
           "e05145876af5252202950e50c3ff37fe87d0041d016ca8e26816c42a57772bd7",
       "hd_path": "m/0'/0'",
       "hd_path_key":
-          "87341ca500e8600bf13973e3275a370eb946584569f7f837943b543d0ce6b728"
-    }
+          "87341ca500e8600bf13973e3275a370eb946584569f7f837943b543d0ce6b728",
+    },
   },
   {
     "public":
@@ -716,8 +716,8 @@ final List<Map<String, dynamic>> testVector = [
           "6cfcb154da2766155b5c2c1b0c729ea58b8492b4d8adfcb59d144d61f3a2fb81",
       "hd_path": "m/1'/1'",
       "hd_path_key":
-          "020e957ad0c105f15796052a0c0ef098845a66d8fd2f26541993614cd62ad6d0"
-    }
+          "020e957ad0c105f15796052a0c0ef098845a66d8fd2f26541993614cd62ad6d0",
+    },
   },
   {
     "public":
@@ -731,8 +731,8 @@ final List<Map<String, dynamic>> testVector = [
           "ce74178ce4ea6f4732f27c6f6cfe4d44be7302a7d89baf4545e58d396a2c97de",
       "hd_path": "m/2'/1'",
       "hd_path_key":
-          "e5ad6e06ba6518a0a4f72a16296bb029fd798595a23dd25a3852f9bc6a2101f3"
-    }
+          "e5ad6e06ba6518a0a4f72a16296bb029fd798595a23dd25a3852f9bc6a2101f3",
+    },
   },
   {
     "public":
@@ -746,7 +746,7 @@ final List<Map<String, dynamic>> testVector = [
           "d35fa122057869ed6ba208e2136b23ea6a31ed8d59d9ddb84f43d3799865d9e7",
       "hd_path": "m/1'/1'",
       "hd_path_key":
-          "e4f32cdde26bff830942e7b55cd86f8c722ec5c0af43f3bb5d5f8977b3fd3b6b"
-    }
-  }
+          "e4f32cdde26bff830942e7b55cd86f8c722ec5c0af43f3bb5d5f8977b3fd3b6b",
+    },
+  },
 ];

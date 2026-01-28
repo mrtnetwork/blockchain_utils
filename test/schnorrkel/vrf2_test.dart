@@ -18,15 +18,18 @@ void main() {
       script.additionalData("".codeUnits, signingContext);
       script.additionalData("sign-bytes".codeUnits, message);
       final vrfout = secret.vrfSign(script);
-      final VRFProof vrproof = vrfout.item2;
+      final VRFProof vrproof = vrfout.$2;
       final verifyScript = MerlinTranscript("SigningContext");
       verifyScript.additionalData("".codeUnits, signingContext);
       verifyScript.additionalData("sign-bytes".codeUnits, message);
       expect(
-          secret
-              .publicKey()
-              .vrfVerify(verifyScript, vrfout.item1.toVRFPreOut(), vrproof),
-          true);
+        secret.publicKey().vrfVerify(
+          verifyScript,
+          vrfout.$1.toVRFPreOut(),
+          vrproof,
+        ),
+        true,
+      );
     }
   });
 
@@ -34,12 +37,13 @@ void main() {
     /// test vrf sign
     /// https://github.com/noot/schnorrkel/blob/master/src/vrf.rs#L922
     for (final i in testVrfSign) {
-      final keyPair =
-          SchnorrkelKeypair.fromBytes(BytesUtils.fromHexString(i["keypair"]));
+      final keyPair = SchnorrkelKeypair.fromBytes(
+        BytesUtils.fromHexString(i["keypair"]),
+      );
       final script = MerlinTranscript("SigningContext");
       script.additionalData("".codeUnits, "yo!".codeUnits);
       script.additionalData("sign-bytes".codeUnits, "meow".codeUnits);
-      final vrfout = keyPair.secretKey().vrfSign(script).item1;
+      final vrfout = keyPair.secretKey().vrfSign(script).$1;
       // return;
       expect(vrfout.input.toHex().toUpperCase(), i["input"]);
       expect(vrfout.output.toHex().toUpperCase(), i["output"]);
@@ -50,8 +54,9 @@ void main() {
     /// test vrf verify
     /// https://github.com/noot/schnorrkel/blob/master/src/vrf.rs#L922
     for (final i in testVector) {
-      final keyPair =
-          SchnorrkelKeypair.fromBytes(BytesUtils.fromHexString(i["keypair"]));
+      final keyPair = SchnorrkelKeypair.fromBytes(
+        BytesUtils.fromHexString(i["keypair"]),
+      );
       final public = keyPair.secretKey().publicKey();
       final output = VRFPreOut(BytesUtils.fromHexString(i["out"]));
       final proof = VRFProof.fromBytes(BytesUtils.fromHexString(i["proof"]));

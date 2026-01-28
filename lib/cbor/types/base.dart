@@ -1,7 +1,9 @@
-import 'package:blockchain_utils/utils/utils.dart';
+import 'package:blockchain_utils/cbor/utils/cbor_utils.dart';
+
 import 'package:blockchain_utils/cbor/utils/dynamic_bytes.dart';
 import 'package:blockchain_utils/cbor/core/tags.dart';
 import 'package:blockchain_utils/cbor/types/string.dart';
+import 'package:blockchain_utils/utils/binary/utils.dart';
 
 /// An enum representing different types of base64 encoding used in CBOR.
 class CborBase64Types {
@@ -9,20 +11,24 @@ class CborBase64Types {
   static const CborBase64Types base64 = CborBase64Types._(CborTags.base64);
 
   /// URL-safe base64 encoding
-  static const CborBase64Types base64Url =
-      CborBase64Types._(CborTags.base64Url);
+  static const CborBase64Types base64Url = CborBase64Types._(
+    CborTags.base64Url,
+  );
 
   /// Expected URL-safe base64 encoding
-  static const CborBase64Types base64UrlExpected =
-      CborBase64Types._(CborTags.base64UrlExpected);
+  static const CborBase64Types base64UrlExpected = CborBase64Types._(
+    CborTags.base64UrlExpected,
+  );
 
   /// Expected standard base64 encoding
-  static const CborBase64Types base64Expected =
-      CborBase64Types._(CborTags.base64Expected);
+  static const CborBase64Types base64Expected = CborBase64Types._(
+    CborTags.base64Expected,
+  );
 
   /// Expected base16 (hexadecimal) encoding
-  static const CborBase64Types base16Expected =
-      CborBase64Types._(CborTags.base16Expected);
+  static const CborBase64Types base16Expected = CborBase64Types._(
+    CborTags.base16Expected,
+  );
 
   /// This property allows retrieving the CBOR tag associated with each CborBase64Types enum value.
   final List<int> tag;
@@ -35,7 +41,7 @@ class CborBase64Types {
     base64Url,
     base64UrlExpected,
     base64Expected,
-    base16Expected
+    base16Expected,
   ];
 }
 
@@ -44,6 +50,10 @@ class CborBaseUrlValue extends CborString<String> {
   /// Constructor for creating a CborBaseUrlValue instance with the provided parameters.
   /// It accepts the URL value, type, and an optional list of CBOR tags.
   const CborBaseUrlValue(super.value, this.type);
+
+  factory CborBaseUrlValue.decode(List<int> bytes) {
+    return CborUtils.decodeCbor(bytes);
+  }
 
   /// The type of base64 encoding used in the URL value.
   final CborBase64Types type;
@@ -70,20 +80,11 @@ class CborBaseUrlValue extends CborString<String> {
     return value;
   }
 
-  /// overide equal operation
-  @override
-  operator ==(other) {
-    if (other is! CborBaseUrlValue) return false;
-
-    return value == other.value && type.tag == other.type.tag;
-  }
-
-  /// ovveride hash code
-  @override
-  int get hashCode => value.hashCode ^ type.tag.first.hashCode;
-
   @override
   String getValue() {
     return value;
   }
+
+  @override
+  List<dynamic> get variables => [value, type];
 }

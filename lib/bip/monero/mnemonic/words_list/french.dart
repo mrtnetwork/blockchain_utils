@@ -1626,5 +1626,5 @@ const List<String> _french = [
   "zeste",
   "zinc",
   "zone",
-  "zoom"
+  "zoom",
 ];

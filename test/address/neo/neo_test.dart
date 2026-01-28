@@ -9,11 +9,15 @@ void main() {
   test("neo address test", () {
     for (final i in testVecotr) {
       final params = Map<String, dynamic>.from(i["params"]);
-      params["ver"] = BytesUtils.fromHexString(params["ver"]);
-      final z = NeoAddrEncoder()
-          .encodeKey(BytesUtils.fromHexString(i["public"]), params);
+      final z = NeoAddrEncoder().encodeKey(
+        BytesUtils.fromHexString(i["public"]),
+        versionBytes: BytesUtils.fromHexString(params["ver"]),
+      );
       expect(z, i["address"]);
-      final decode = NeoAddrDecoder().decodeAddr(z, params);
+      final decode = NeoAddrDecoder().decodeAddr(
+        z,
+        versionBytes: BytesUtils.fromHexString(params["ver"]),
+      );
       expect(decode.toHex(), i["decode"]);
     }
   });

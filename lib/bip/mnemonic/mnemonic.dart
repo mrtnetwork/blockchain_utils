@@ -12,11 +12,11 @@ class Mnemonic {
   /// Creates a new Mnemonic instance from a mnemonic phrase provided as a string.
   /// The provided mnemonic string is normalized into a list of words.
   Mnemonic.fromString(String mnemonicStr)
-      : _mnemonicList = _normalize(mnemonicStr);
+    : _mnemonicList = _normalize(mnemonicStr);
 
   /// Creates a new Mnemonic instance from a list of mnemonic words.
   Mnemonic.fromList(List<String> mnemonicList)
-      : _mnemonicList = List<String>.unmodifiable(mnemonicList);
+    : _mnemonicList = List<String>.unmodifiable(mnemonicList);
 
   /// Returns the number of words in the mnemonic phrase.
   int wordsCount() {

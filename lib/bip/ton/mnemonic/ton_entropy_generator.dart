@@ -1,7 +1,8 @@
 import 'package:blockchain_utils/bip/mnemonic/entropy_generator.dart';
 import 'package:blockchain_utils/bip/mnemonic/mnemonic.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
-import 'package:blockchain_utils/utils/utils.dart';
+import 'package:blockchain_utils/exception/exception/exception.dart';
+import 'package:blockchain_utils/utils/string/string.dart';
 
 /// The TonEntropyGeneratorUtils class provides utility methods for handling entropy
 /// generation and validation related to the TON (The Open Network) blockchain. It
@@ -18,9 +19,10 @@ class TonEntropyGeneratorUtils {
   /// salt and iteration count. Returns true if the derived key's first byte is 0.
   static bool isBasicSeed(List<int> entropy) {
     final scrypt = QuickCrypto.pbkdf2DeriveKey(
-        password: entropy,
-        salt: seedVersionSalt.codeUnits,
-        iterations: basicSeedPbkdfIterations);
+      password: entropy,
+      salt: seedVersionSalt.codeUnits,
+      iterations: basicSeedPbkdfIterations,
+    );
     return scrypt[0] == 0;
   }
 
@@ -28,9 +30,10 @@ class TonEntropyGeneratorUtils {
   /// a predefined salt and a single iteration. Returns true if the derived key's first byte is 1.
   static bool isPasswordSeed(List<int> entropy) {
     final scrypt = QuickCrypto.pbkdf2DeriveKey(
-        password: entropy,
-        salt: seedFastVersionSalt.codeUnits,
-        iterations: passwordSeedPbkdfIterations);
+      password: entropy,
+      salt: seedFastVersionSalt.codeUnits,
+      iterations: passwordSeedPbkdfIterations,
+    );
     return scrypt[0] == 1;
   }
 
@@ -44,7 +47,9 @@ class TonEntropyGeneratorUtils {
   /// Generates entropy from a given mnemonic and optional passphrase using HMAC-SHA512.
   static List<int> generateEnteropy(Mnemonic mnemonic, {String password = ""}) {
     return QuickCrypto.hmacSha512Hash(
-        StringUtils.encode(mnemonic.toStr()), StringUtils.encode(password));
+      StringUtils.encode(mnemonic.toStr()),
+      StringUtils.encode(password),
+    );
   }
 }
 
@@ -52,7 +57,15 @@ class TonEntropyGeneratorUtils {
 /// entropy generation functionalities tailored for TON mnemonic phrases.
 class TonMnemonicEntropyGenerator extends EntropyGenerator {
   /// Constructor initializing the base EntropyGenerator with the given bit length.
-  TonMnemonicEntropyGenerator(super.bitLen);
+  TonMnemonicEntropyGenerator(int bitLen) : super(bitLen) {
+    if (!isValidEntropyBitLen(bitLen)) {
+      throw ArgumentException.invalidOperationArguments(
+        "TonMnemonicEntropyGenerator",
+        name: "bitlen",
+        reason: "Invalid mnemonic bit length.",
+      );
+    }
+  }
 
   /// Validates if the given bit length for entropy is within the acceptable range (88 to 528 bits).
   static bool isValidEntropyBitLen(int bitLen) {

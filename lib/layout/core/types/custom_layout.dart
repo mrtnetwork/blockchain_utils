@@ -8,17 +8,12 @@ typedef WrappedLayoutEncoder<T, D> = T Function(D source);
 
 class CustomLayout<T, D> extends Layout<D> {
   /// Constructs a [CustomLayout] with the specified layout, encoder, and decoder functions.
-  ///
-  /// - [layout] : The layout to be customized.
-  /// - [encoder] : The encoder function to convert the custom type [D] to [T].
-  /// - [decoder] : The decoder function to convert [T] to the custom type [D].
-  /// - [property] (optional): The property identifier.
-  CustomLayout(
-      {required this.layout,
-      required this.decoder,
-      required this.encoder,
-      String? property})
-      : super(layout.span, property: property);
+  CustomLayout({
+    required this.layout,
+    required this.decoder,
+    required this.encoder,
+    String? property,
+  }) : super(layout.span, property: property);
   final Layout<T> layout;
   final WrappedLayoutEncoder<T, D> encoder;
   final WrappedLayoutDecoder<T, D> decoder;
@@ -36,24 +31,17 @@ class CustomLayout<T, D> extends Layout<D> {
   }
 
   @override
-  int getSpan(LayoutByteReader? bytes, {int offset = 0, D? source}) {
-    final span = layout.getSpan(bytes,
-        offset: offset, source: source == null ? null : encoder(source));
-    assert(span >= 0, "span cannot be negative");
-    return span;
+  int getSpan() {
+    return layout.getSpan();
   }
 
   @override
   CustomLayout<T, D> clone({String? newProperty}) {
     return CustomLayout<T, D>(
-        layout: layout,
-        decoder: decoder,
-        encoder: encoder,
-        property: newProperty);
+      layout: layout,
+      decoder: decoder,
+      encoder: encoder,
+      property: newProperty,
+    );
   }
 }
-
-/// Represents a custom layout with customized encoding and decoding functions.
-typedef WrappedLayoutDecoder2<T, D, F> = F Function(T value);
-
-typedef WrappedLayoutEncoder2<T, D, F> = T Function(F source);

@@ -5,7 +5,7 @@
 // *******************************************************************************
 
 import 'package:blockchain_utils/utils/binary/utils.dart';
-import 'package:blockchain_utils/crypto/crypto/cdsa/secp256k1/secp256k1.dart';
+import 'package:blockchain_utils/crypto/crypto/ec/projective/secp256k1/secp256k1.dart';
 import 'package:test/test.dart';
 
 import 'test_constants.dart';
@@ -59,19 +59,22 @@ void _ge() {
     for (j = 0; j < 4; ++j) {
       for (k = 0; k < 4; ++k) {
         int exc = ((j >> 1) == (k >> 1)) ? 1 : 0;
-        expect(Secp256k1.secp256k1GeEqVar(ge[1 + j + 4 * i], ge[1 + k + 4 * i]),
-            exc);
         expect(
-            Secp256k1.secp256k1GejEqVar(gej[1 + j + 4 * i], gej[1 + k + 4 * i]),
-            exc);
+          Secp256k1.secp256k1GeEqVar(ge[1 + j + 4 * i], ge[1 + k + 4 * i]),
+          exc,
+        );
         expect(
-            Secp256k1.secp256k1GejEqGeVar(
-                gej[1 + j + 4 * i], ge[1 + k + 4 * i]),
-            exc);
+          Secp256k1.secp256k1GejEqVar(gej[1 + j + 4 * i], gej[1 + k + 4 * i]),
+          exc,
+        );
         expect(
-            Secp256k1.secp256k1GejEqGeVar(
-                gej[1 + k + 4 * i], ge[1 + j + 4 * i]),
-            exc);
+          Secp256k1.secp256k1GejEqGeVar(gej[1 + j + 4 * i], ge[1 + k + 4 * i]),
+          exc,
+        );
+        expect(
+          Secp256k1.secp256k1GejEqGeVar(gej[1 + k + 4 * i], ge[1 + j + 4 * i]),
+          exc,
+        );
       }
     }
   }
@@ -92,8 +95,12 @@ void _ge() {
       Secp256k1Gej refj = Secp256k1Gej(), resj = Secp256k1Gej();
       Secp256k1Ge ref = Secp256k1Ge();
       Secp256k1Fe zr = Secp256k1Fe();
-      Secp256k1.secp256k1GejAddVar(refj, gej[i1], gej[i2],
-          Secp256k1.secp256k1GejIsInfinity(gej[i1]) == 1 ? null : zr);
+      Secp256k1.secp256k1GejAddVar(
+        refj,
+        gej[i1],
+        gej[i2],
+        Secp256k1.secp256k1GejIsInfinity(gej[i1]) == 1 ? null : zr,
+      );
       /* Check Z ratio. */
       if (Secp256k1.secp256k1GejIsInfinity(gej[i1]) == 0 &&
           Secp256k1.secp256k1GejIsInfinity(refj) == 0) {
@@ -104,8 +111,12 @@ void _ge() {
       Secp256k1.secp256k1GeSetGejVar(ref, refj);
 
       /* Test gej + ge with Z ratio result (var). */
-      Secp256k1.secp256k1GejAddGeVar(resj, gej[i1], ge[i2],
-          Secp256k1.secp256k1GejIsInfinity(gej[i1]) == 1 ? null : zr);
+      Secp256k1.secp256k1GejAddGeVar(
+        resj,
+        gej[i1],
+        ge[i2],
+        Secp256k1.secp256k1GejIsInfinity(gej[i1]) == 1 ? null : zr,
+      );
       expect(Secp256k1.secp256k1GejEqGeVar(resj, ref), 1);
       if (Secp256k1.secp256k1GejIsInfinity(gej[i1]) == 0 &&
           Secp256k1.secp256k1GejIsInfinity(resj) == 0) {
@@ -116,8 +127,9 @@ void _ge() {
 
       /* Test gej + ge (var, with additional Z factor). */
       {
-        Secp256k1Ge ge2Zfi = ge[i2]
-            .clone(); /* the second term with x and y rescaled for z = 1/zf */
+        Secp256k1Ge ge2Zfi =
+            ge[i2]
+                .clone(); /* the second term with x and y rescaled for z = 1/zf */
         Secp256k1.secp256k1FeMul(ge2Zfi.x, ge2Zfi.x, zfi2);
         Secp256k1.secp256k1FeMul(ge2Zfi.y, ge2Zfi.y, zfi3);
         _randomGeXMagnitude(ge2Zfi);
@@ -175,8 +187,10 @@ void _ge() {
 
   {
     Secp256k1Gej sum = Secp256k1Gej.infinity();
-    List<Secp256k1Gej> gejShuffled =
-        List.generate(4 * runs + 1, (i) => Secp256k1Gej());
+    List<Secp256k1Gej> gejShuffled = List.generate(
+      4 * runs + 1,
+      (i) => Secp256k1Gej(),
+    );
     for (i = 0; i < 4 * runs + 1; i++) {
       gejShuffled[i] = gej[i];
     }
@@ -194,10 +208,14 @@ void _ge() {
     expect(Secp256k1.secp256k1GejIsInfinity(sum), 1);
   }
   {
-    List<Secp256k1Ge> geSetAllVar =
-        List.generate(4 * runs + 1, (_) => Secp256k1Ge());
-    List<Secp256k1Ge> geSetAll =
-        List.generate(4 * runs + 1, (_) => Secp256k1Ge());
+    List<Secp256k1Ge> geSetAllVar = List.generate(
+      4 * runs + 1,
+      (_) => Secp256k1Ge(),
+    );
+    List<Secp256k1Ge> geSetAll = List.generate(
+      4 * runs + 1,
+      (_) => Secp256k1Ge(),
+    );
     Secp256k1.secp256k1GeSetAllGejVar(geSetAllVar, gej, 4 * runs + 1);
 
     for (i = 0; i < 4 * runs + 1; i++) {
@@ -208,7 +226,10 @@ void _ge() {
     }
 
     Secp256k1.secp256k1GeSetAllGej(
-        geSetAll.sublist(1), gej.sublist(1), 4 * runs);
+      geSetAll.sublist(1),
+      gej.sublist(1),
+      4 * runs,
+    );
 
     for (i = 1; i < 4 * runs + 1; i++) {
       Secp256k1Fe s;
@@ -457,8 +478,11 @@ void _endomorphismTests() {
   Secp256k1.secp256k1ScalarNegate(s, Secp256k1Const.secp256k1ScalarOne);
   _scalarSplit(s);
   _scalarSplit(Secp256k1Const.secp256k1ConstLambda);
-  Secp256k1.secp256k1ScalarAdd(s, Secp256k1Const.secp256k1ConstLambda,
-      Secp256k1Const.secp256k1ScalarOne);
+  Secp256k1.secp256k1ScalarAdd(
+    s,
+    Secp256k1Const.secp256k1ConstLambda,
+    Secp256k1Const.secp256k1ScalarOne,
+  );
   _scalarSplit(s);
 
   for (i = 0; i < 100 * 16; ++i) {

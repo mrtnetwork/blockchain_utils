@@ -33,7 +33,9 @@ void main() {
   test("address hash", () {
     for (final i in _testVector) {
       final result = Bip38Addr.addressHash(
-          BytesUtils.fromHexString(i["pub_key"]), i["pub_key_mode"]);
+        BytesUtils.fromHexString(i["pub_key"]),
+        i["pub_key_mode"],
+      );
       expect(BytesUtils.toHexString(result), i["address_hash"]);
     }
   });

@@ -13,7 +13,8 @@ abstract class BlockchainUtilsException implements Exception {
   @override
   String toString() {
     final infos = Map<String, dynamic>.fromEntries(
-        details?.entries.where((element) => element.value != null) ?? []);
+      details?.entries.where((element) => element.value != null) ?? [],
+    );
     if (infos.isEmpty) return message;
     final String msg =
         "$message ${infos.entries.map((e) => "${e.key}: ${e.value}").join(", ")}";
@@ -23,39 +24,85 @@ abstract class BlockchainUtilsException implements Exception {
 
 /// A specific exception class 'ArgumentException' that extends 'BlockchainUtilsException'.
 /// This exception is used to represent errors related to invalid arguments in blockchain utility operations.
-class ArgumentException extends BlockchainUtilsException {
+class ArgumentException extends BlockchainUtilsException
+    implements ArgumentError {
   /// Constructor to initialize the exception with a specific message.
-  const ArgumentException(super.message, {super.details});
+  const ArgumentException._(
+    super.message, {
+    this.name,
+    this.stackTrace,
+    super.details,
+  });
+
+  static ArgumentException invalidOperationArguments(
+    String operation, {
+    String? name,
+    required String reason,
+    int? expecteLen,
+    Map<String, dynamic>? details,
+  }) => ArgumentException._(
+    "Invalid $name arguments.",
+    details: {"operation": operation, "reason": reason},
+    name: name,
+  );
+
+  @override
+  get invalidValue => null;
+
+  @override
+  final String? name;
+
+  @override
+  final StackTrace? stackTrace;
 }
 
-/// Another specific exception class 'MessageException' that extends 'BlockchainUtilsException'.
-/// This exception is used to represent errors related to messages in blockchain utility operations.
-class MessageException extends BlockchainUtilsException {
+class StateException extends BlockchainUtilsException implements StateError {
   /// Constructor to initialize the exception with a specific message.
-  const MessageException(super.message, {super.details});
+  const StateException._(super.message, {super.details});
+
+  static StateException badState(
+    String operation, {
+    String? name,
+    required String reason,
+    int? expecteLen,
+    Map<String, dynamic>? details,
+  }) => StateException._(
+    "$operation not allowed in current state.",
+    details: {"expected": operation, "reason": reason},
+  );
+
+  @override
+  final StackTrace? stackTrace = null;
 }
 
-class GenericException extends BlockchainUtilsException {
-  /// Constructor to initialize the exception with a specific message.
-  const GenericException(super.message, {super.details});
-}
-
-class ItemNotFoundException extends BlockchainUtilsException {
+class ItemNotFoundException extends ArgumentException {
   final Object? value;
 
   /// Constructor to initialize the exception with a specific message.
-  ItemNotFoundException(
-      {this.value, String? message, Map<String, dynamic>? details})
-      : super(message ?? "No matching item found for the given value.",
-            details: {"value": value});
+  ItemNotFoundException({
+    this.value,
+    String? message,
+    Map<String, dynamic>? details,
+    String? name,
+  }) : super._(
+         message ?? "No matching ${name ?? 'item'} found for the given value.",
+         details: {"value": value},
+       );
 }
 
 class CastFailedException<T> extends BlockchainUtilsException {
   final Object? value;
-  CastFailedException(
-      {this.value, String? message, Map<String, dynamic>? details})
-      : super(message ?? "Failed to cast value",
-            details: details ??
-                {"expected": T.toString(), "value": value?.runtimeType}
-                    .notNullValue);
+  CastFailedException({
+    this.value,
+    String? message,
+    Map<String, dynamic>? details,
+  }) : super(
+         message ?? "Failed to cast value",
+         details:
+             details ??
+             {
+               "expected": T.toString(),
+               "value": value?.runtimeType,
+             }.notNullValue,
+       );
 }

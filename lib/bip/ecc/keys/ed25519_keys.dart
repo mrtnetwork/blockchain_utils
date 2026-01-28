@@ -1,10 +1,11 @@
-import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
-import 'package:blockchain_utils/crypto/crypto/cdsa/curve/curves.dart';
-import 'package:blockchain_utils/crypto/crypto/cdsa/eddsa/keys/privatekey.dart';
-import 'package:blockchain_utils/crypto/crypto/cdsa/eddsa/keys/publickey.dart';
-import 'package:blockchain_utils/crypto/crypto/cdsa/point/edwards.dart';
+import 'package:blockchain_utils/crypto/crypto/ec/curve/curves.dart';
+import 'package:blockchain_utils/crypto/crypto/ec/eddsa/keys/privatekey.dart';
+import 'package:blockchain_utils/crypto/crypto/ec/eddsa/keys/publickey.dart';
+import 'package:blockchain_utils/crypto/crypto/ec/extended/native/edwards.dart';
 import 'package:blockchain_utils/exception/exceptions.dart';
+import 'package:blockchain_utils/utils/binary/utils.dart';
+import 'package:blockchain_utils/utils/equatable/equatable.dart';
 
 import 'i_keys.dart';
 
@@ -24,11 +25,11 @@ class Ed25519KeysConst {
 }
 
 /// A class representing an Ed25519 public key that implements the IPublicKey interface.
-class Ed25519PublicKey implements IPublicKey {
-  final EDDSAPublicKey _publicKey;
+class Ed25519PublicKey with Equality implements IPublicKey {
+  final EDDSAPublicKey publicKey;
 
   /// Private constructor for creating an Ed25519PublicKey instance from an EDDSAPublicKey.
-  Ed25519PublicKey._(this._publicKey);
+  Ed25519PublicKey._(this.publicKey);
 
   /// Factory method for creating an Ed25519PublicKey from a byte array.
   /// It checks the length and prefix of the provided keyBytes to ensure validity.
@@ -43,7 +44,8 @@ class Ed25519PublicKey implements IPublicKey {
       }
     }
     return Ed25519PublicKey._(
-        EDDSAPublicKey(Curves.generatorED25519, keyBytes));
+      EDDSAPublicKey(Curves.generatorED25519, keyBytes),
+    );
   }
 
   /// curve type
@@ -78,14 +80,13 @@ class Ed25519PublicKey implements IPublicKey {
   /// public key edwards point
   @override
   EDPoint get point {
-    return _publicKey.point;
+    return publicKey.point;
   }
 
   /// compressed bytes of public key
   @override
   List<int> get compressed {
-    return List<int>.from(
-        [...Ed25519KeysConst.pubKeyPrefix, ..._publicKey.point.toBytes()]);
+    return [...Ed25519KeysConst.pubKeyPrefix, ...publicKey.point.toBytes()];
   }
 
   /// uncompressed bytes of public key
@@ -95,9 +96,12 @@ class Ed25519PublicKey implements IPublicKey {
   }
 
   @override
-  String toHex(
-      {bool withPrefix = true, bool lowerCase = true, String? prefix = ""}) {
-    List<int> key = _publicKey.point.toBytes();
+  String toHex({
+    bool withPrefix = true,
+    bool lowerCase = true,
+    String? prefix = "",
+  }) {
+    List<int> key = publicKey.point.toBytes();
     if (withPrefix) {
       key = compressed;
     }
@@ -105,31 +109,30 @@ class Ed25519PublicKey implements IPublicKey {
   }
 
   @override
-  operator ==(other) {
-    if (other is! Ed25519PublicKey) return false;
-    if (identical(this, other)) return true;
-    return _publicKey == other._publicKey && curve == other.curve;
-  }
-
-  @override
-  int get hashCode => HashCodeGenerator.generateHashCode([_publicKey, curve]);
+  List<dynamic> get variables => [publicKey];
 }
 
 /// A class representing an Ed25519 private key that implements the IPrivateKey interface.
-class Ed25519PrivateKey implements IPrivateKey {
+class Ed25519PrivateKey with Equality implements IPrivateKey {
   /// Private constructor for creating an Ed25519PrivateKey instance from an EDDSAPrivateKey.
   Ed25519PrivateKey._(this._privateKey);
   final EDDSAPrivateKey _privateKey;
 
   factory Ed25519PrivateKey.fromBytes(List<int> keyBytes) {
     if (keyBytes.length != Ed25519KeysConst.privKeyByteLen) {
-      throw const ArgumentException("invalid private key length");
+      throw ArgumentException.invalidOperationArguments(
+        "Ed25519PrivateKey",
+        name: "keyBytes",
+        reason: "Invalid secret key bytes length.",
+        expecteLen: Ed25519KeysConst.privKeyByteLen,
+      );
     }
     final edwardGenerator = Curves.generatorED25519;
     final eddsaPrivateKey = EDDSAPrivateKey(
-        generator: edwardGenerator,
-        privateKey: keyBytes,
-        type: EllipticCurveTypes.ed25519);
+      generator: edwardGenerator,
+      secretKey: keyBytes,
+      type: EllipticCurveTypes.ed25519,
+    );
     return Ed25519PrivateKey._(eddsaPrivateKey);
   }
 
@@ -174,12 +177,5 @@ class Ed25519PrivateKey implements IPrivateKey {
   }
 
   @override
-  operator ==(other) {
-    if (other is! Ed25519PrivateKey) return false;
-    if (identical(this, other)) return true;
-    return _privateKey == other._privateKey && curve == other.curve;
-  }
-
-  @override
-  int get hashCode => HashCodeGenerator.generateHashCode([_privateKey, curve]);
+  List<dynamic> get variables => [_privateKey];
 }

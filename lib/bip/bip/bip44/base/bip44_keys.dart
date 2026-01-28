@@ -1,8 +1,6 @@
-import 'package:blockchain_utils/bip/address/encoder.dart';
-import 'package:blockchain_utils/bip/address/encoders.dart';
 import 'package:blockchain_utils/bip/bip/bip32/bip32_key_data.dart';
 import 'package:blockchain_utils/bip/bip/bip32/bip32_keys.dart';
-import 'package:blockchain_utils/bip/bip/conf/config/bip_coin_conf.dart';
+import 'package:blockchain_utils/bip/bip/conf/bip_config.dart';
 import 'package:blockchain_utils/bip/bip/types/types.dart';
 import 'package:blockchain_utils/bip/wif/wif.dart';
 import 'package:blockchain_utils/exception/exceptions.dart';
@@ -19,16 +17,17 @@ class Bip44PublicKey {
   final Bip32PublicKey pubKey;
 
   /// The coin configuration associated with this public key.
-  final BipCoinConfig coinConf;
+  final BaseBipCoinConfig coinConf;
 
   /// Factory constructor to create a [Bip44PublicKey] from a [Bip32PublicKey]
-  /// and a [BipCoinConfig]. It verifies that the elliptic curve type of the public
+  /// and a [BaseBipCoinConfig]. It verifies that the elliptic curve type of the public
   /// key matches the coin's configuration.
-  factory Bip44PublicKey(Bip32PublicKey pubKey, BipCoinConfig coinConf) {
+  factory Bip44PublicKey(Bip32PublicKey pubKey, BaseBipCoinConfig coinConf) {
     if (pubKey.curveType != coinConf.type) {
-      throw ArgumentException(
-        'The public key elliptic curve (${pubKey.curveType}) shall match '
-        'the coin configuration one (${coinConf.type})',
+      throw ArgumentException.invalidOperationArguments(
+        "Bip44PublicKey",
+        name: "pubKey",
+        reason: "Invalid public key.",
       );
     }
     return Bip44PublicKey._(pubKey, coinConf);
@@ -46,7 +45,7 @@ class Bip44PublicKey {
 
   /// Gets the chain code associated with the public key.
   Bip32ChainCode get chainCode {
-    return pubKey.chainCode;
+    return pubKey.keyData.chainCode;
   }
 
   /// Gets the compressed public key bytes.
@@ -65,22 +64,12 @@ class Bip44PublicKey {
   /// Shelley or Monero, which require using specific classes to generate
   /// addresses.
   String get toAddress {
-    final BlockchainAddressEncoder encoder = coinConf.encoder();
-    if (encoder is AdaShelleyAddrEncoder) {
-      throw const ArgumentException(
-          'Use the CardanoShelley class to get Cardano Shelley addresses');
-    }
-    // Exception for Monero
-    if (encoder is XmrAddrEncoder) {
-      throw const ArgumentException(
-          'Use the Monero class to get Monero addresses');
-    }
-    if (encoder is TonAddrEncoder) {
-      throw const ArgumentException(
-          'Ton Address must be generated with hash of contract state. use TonAddrEncoder to encode address.');
-    }
-    return encoder.encodeKey(
-        pubKey.pubKey.compressed, coinConf.getParams(pubKey));
+    return coinConf.encodeAddress(
+      EncodeAddressDefaultParams(
+        pubKey: pubKey.pubKey.compressed,
+        chainCode: pubKey.keyData.chainCode.toBytes(),
+      ),
+    );
   }
 }
 
@@ -96,15 +85,17 @@ class Bip44PrivateKey {
   final Bip32PrivateKey privKey;
 
   /// The coin configuration associated with this private key.
-  final BipCoinConfig coinConf;
+  final BaseBipCoinConfig coinConf;
 
   /// Factory constructor to create a [Bip44PrivateKey] from a [Bip32PrivateKey]
-  /// and a [BipCoinConfig]. It verifies that the elliptic curve type of the private
+  /// and a [BaseBipCoinConfig]. It verifies that the elliptic curve type of the private
   /// key matches the coin's configuration.
-  factory Bip44PrivateKey(Bip32PrivateKey privKey, BipCoinConfig coinConf) {
+  factory Bip44PrivateKey(Bip32PrivateKey privKey, BaseBipCoinConfig coinConf) {
     if (privKey.curveType != coinConf.type) {
-      throw ArgumentException(
-        'The private key elliptic curve (${privKey.curveType}) shall match the coin configuration one (${coinConf.type})',
+      throw ArgumentException.invalidOperationArguments(
+        "Bip44PrivateKey",
+        name: "privKey",
+        reason: "Invalid private key.",
       );
     }
     return Bip44PrivateKey._(privKey, coinConf);
@@ -122,7 +113,7 @@ class Bip44PrivateKey {
 
   /// Gets the chain code associated with the private key.
   Bip32ChainCode get chainCode {
-    return privKey.chainCode;
+    return privKey.keyData.chainCode;
   }
 
   /// Gets the raw private key bytes.
@@ -143,8 +134,11 @@ class Bip44PrivateKey {
     final wifNetVer = coinConf.wifNetVer;
 
     return wifNetVer != null
-        ? WifEncoder.encode(privKey.raw,
-            netVer: wifNetVer, pubKeyMode: pubKeyMode)
+        ? WifEncoder.encode(
+          privKey.raw,
+          netVer: wifNetVer,
+          pubKeyMode: pubKeyMode,
+        )
         : '';
   }
 }

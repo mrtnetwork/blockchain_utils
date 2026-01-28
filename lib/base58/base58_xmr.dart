@@ -58,7 +58,7 @@ import 'package:blockchain_utils/helper/helper.dart';
 /// Constants and data related to Base58 encoding used in Monero (XMR).
 class Base58XmrConst {
   /// Retrieve the Base58 alphabet specific to Monero (XMR).
-  static String get alphabet => Base58Const.alphabets[Base58Alphabets.bitcoin]!;
+  static String get alphabet => Base58Alphabets.bitcoin.alphabet;
 
   /// Maximum byte length for decoding blocks in Monero Base58 encoding.
   static const int blockDecMaxByteLen = 8;
@@ -88,15 +88,19 @@ class Base58XmrEncoder {
     /// Encode each single block and pad
     for (var i = 0; i < totBlockCnt; i++) {
       final blockEnc = Base58Encoder.encode(
-          dataBytes.sublist(i * blockDecLen, (i + 1) * blockDecLen));
+        dataBytes.sublist(i * blockDecLen, (i + 1) * blockDecLen),
+      );
       enc += _pad(blockEnc, Base58XmrConst.blockEncMaxByteLen);
     }
 
     /// Encode last block and pad
     if (lastBlockEncLen > 0) {
-      final blockEnc = Base58Encoder.encode(dataBytes.sublist(
+      final blockEnc = Base58Encoder.encode(
+        dataBytes.sublist(
           totBlockCnt * blockDecLen,
-          totBlockCnt * blockDecLen + lastBlockEncLen));
+          totBlockCnt * blockDecLen + lastBlockEncLen,
+        ),
+      );
       enc += _pad(blockEnc, Base58XmrConst.blockEncByteLens[lastBlockEncLen]);
     }
 
@@ -124,22 +128,27 @@ class Base58XmrDecoder {
     final lastBlockEncLen = dataLen % blockEncLen;
 
     /// Get last block decoded length
-    final lastBlockDecLen =
-        Base58XmrConst.blockEncByteLens.indexOf(lastBlockEncLen);
+    final lastBlockDecLen = Base58XmrConst.blockEncByteLens.indexOf(
+      lastBlockEncLen,
+    );
 
     /// Decode each single block and unpad
     for (var i = 0; i < totBlockCnt; i++) {
       final blockDec = Base58Decoder.decode(
-          dataStr.substring(i * blockEncLen, (i + 1) * blockEncLen));
-      dec = List<int>.from([...dec, ..._unPad(blockDec, blockDecLen)]);
+        dataStr.substring(i * blockEncLen, (i + 1) * blockEncLen),
+      );
+      dec = [...dec, ..._unPad(blockDec, blockDecLen)];
     }
 
     /// Decode last block and unpad
     if (lastBlockEncLen > 0) {
-      final blockDec = Base58Decoder.decode(dataStr.substring(
+      final blockDec = Base58Decoder.decode(
+        dataStr.substring(
           totBlockCnt * blockEncLen,
-          totBlockCnt * blockEncLen + lastBlockEncLen));
-      dec = List<int>.from([...dec, ..._unPad(blockDec, lastBlockDecLen)]);
+          totBlockCnt * blockEncLen + lastBlockEncLen,
+        ),
+      );
+      dec = [...dec, ..._unPad(blockDec, lastBlockDecLen)];
     }
 
     return dec;

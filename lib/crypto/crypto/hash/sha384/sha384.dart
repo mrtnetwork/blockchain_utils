@@ -2,21 +2,14 @@ part of 'package:blockchain_utils/crypto/crypto/hash/hash.dart';
 
 /// The `SHA384` class extends the SHA-512 hash algorithm to produce 384-bit digests.
 ///
-/// SHA-384 is a cryptographic hash function that produces a 384-bit (48-byte) hash
-/// value from an input message. It's a part of the SHA-2 family of hash functions.
-/// This class inherits from the `SHA512` class, and it sets the digest length and
-/// block size accordingly.
 class SHA384 extends SHA512 {
-  static const int digestLength = 48;
-  static const int blockSize = 128;
-
   /// digest length
   @override
-  int get getDigestLength => SHA384.digestLength;
+  int get getDigestLength => 48;
 
   /// block size
   @override
-  int get getBlockSize => SHA384.blockSize;
+  int get getBlockSize => 128;
 
   @override
   void _initState() {

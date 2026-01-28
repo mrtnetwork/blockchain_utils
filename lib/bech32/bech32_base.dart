@@ -1,7 +1,5 @@
-import 'package:blockchain_utils/utils/utils.dart';
-
+import 'package:blockchain_utils/bech32/bech32_ex.dart';
 import 'bech32_utils.dart';
-import 'package:blockchain_utils/exception/exceptions.dart';
 
 /// An enumeration representing different Bech32 encodings.
 enum Bech32Encodings {
@@ -37,7 +35,7 @@ class Bech32Utils {
       0x26508e6d,
       0x1ea119fa,
       0x3d4233dd,
-      0x2a1462b3
+      0x2a1462b3,
     ];
 
     // Compute modulus
@@ -68,21 +66,28 @@ class Bech32Utils {
   }
 
   /// Compute the checksum from the specified HRP and data.
-  static List<int> computeChecksum(String hrp, List<int> data,
-      [Bech32Encodings encoding = Bech32Encodings.bech32]) {
+  static List<int> computeChecksum(
+    String hrp,
+    List<int> data, [
+    Bech32Encodings encoding = Bech32Encodings.bech32,
+  ]) {
     final values = [...hrpExpand(hrp), ...data];
-    final polymod = (polyMod([...values, 0, 0, 0, 0, 0, 0]) ^
-        Bech32Const.encodingChecksumConst[encoding]!);
+    final polymod =
+        (polyMod([...values, 0, 0, 0, 0, 0, 0]) ^
+            Bech32Const.encodingChecksumConst[encoding]!);
 
-    return List<int>.from([
+    return [
       for (var i = 0; i < Bech32Const.checksumStrLen; i++)
-        (polymod >> (5 * (5 - i))) & 0x1f
-    ]);
+        (polymod >> (5 * (5 - i))) & 0x1f,
+    ];
   }
 
   /// Verify the checksum from the specified HRP and converted data characters.
-  static bool verifyChecksum(String hrp, List<int> data,
-      [Bech32Encodings encoding = Bech32Encodings.bech32]) {
+  static bool verifyChecksum(
+    String hrp,
+    List<int> data, [
+    Bech32Encodings encoding = Bech32Encodings.bech32,
+  ]) {
     final polymod = polyMod([...hrpExpand(hrp), ...data]);
     return polymod == Bech32Const.encodingChecksumConst[encoding];
   }
@@ -99,12 +104,17 @@ class Bech32Encoder extends Bech32EncoderBase {
   /// - [bytes]: The byte array to encode.
   ///
   /// Returns the encoded Bech32 string.
-  static String encode(String hrp, List<int> bytes) {
+  static String encode(
+    String hrp,
+    List<int> bytes, {
+    Bech32Encodings encoding = Bech32Encodings.bech32,
+  }) {
     return Bech32EncoderBase.encodeBech32(
-        hrp,
-        Bech32BaseUtils.convertToBase32(bytes),
-        Bech32Const.separator,
-        Bech32Utils.computeChecksum);
+      hrp,
+      Bech32BaseUtils.convertToBase32(bytes),
+      Bech32Const.separator,
+      (hrp, data) => Bech32Utils.computeChecksum(hrp, data, encoding),
+    );
   }
 }
 
@@ -121,29 +131,40 @@ class Bech32Decoder extends Bech32DecoderBase {
   /// Returns the decoded byte array.
   ///
   /// Throws an ArgumentException if the decoding fails or if the HRP doesn't match.
-  static List<int> decode(String? hrp, String address) {
+  static List<int> decode(
+    String? hrp,
+    String address, {
+    Bech32Encodings encoding = Bech32Encodings.bech32,
+  }) {
     final decode = Bech32DecoderBase.decodeBech32(
-        address,
-        Bech32Const.separator,
-        Bech32Const.checksumStrLen,
-        Bech32Utils.verifyChecksum);
-    if (hrp != decode.item1) {
-      throw ArgumentException(
-          "Invalid format (HRP not valid, expected {$hrp}, got {${decode.item1}})");
+      address,
+      Bech32Const.separator,
+      Bech32Const.checksumStrLen,
+      (hrp, data) => Bech32Utils.verifyChecksum(hrp, data, encoding),
+    );
+    if (hrp != decode.$1) {
+      throw Bech32Error(
+        "Incorrect bech32 hrp.",
+        details: {"expected": hrp, "hrp": decode.$1},
+      );
     }
-    final result = Bech32BaseUtils.convertFromBase32(decode.item2);
+    final result = Bech32BaseUtils.convertFromBase32(decode.$2);
     return result;
   }
 
-  static Tuple<String, List<int>> decodeWithoutHRP(String address) {
+  static (String, List<int>) decodeWithoutHRP(
+    String address, {
+    Bech32Encodings encoding = Bech32Encodings.bech32,
+  }) {
     final decode = Bech32DecoderBase.decodeBech32(
-        address,
-        Bech32Const.separator,
-        Bech32Const.checksumStrLen,
-        Bech32Utils.verifyChecksum);
+      address,
+      Bech32Const.separator,
+      Bech32Const.checksumStrLen,
+      (hrp, data) => Bech32Utils.verifyChecksum(hrp, data, encoding),
+    );
 
-    final result = Bech32BaseUtils.convertFromBase32(decode.item2);
+    final result = Bech32BaseUtils.convertFromBase32(decode.$2);
 
-    return Tuple(decode.item1, result);
+    return (decode.$1, result);
   }
 }

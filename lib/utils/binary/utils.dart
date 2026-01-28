@@ -1,3 +1,5 @@
+import 'dart:typed_data' show Endian;
+
 import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/hex/hex.dart' as hex;
 import 'package:blockchain_utils/utils/numbers/utils/bigint_utils.dart';
@@ -12,8 +14,10 @@ class BytesUtils {
   /// Takes two lists of bytes and returns a new list where each byte is the result
   /// of the XOR operation between the corresponding bytes in the input lists.
   static List<int> xor(List<int> dataBytes1, List<int> dataBytes2) {
-    return List<int>.from(List<int>.generate(
-        dataBytes1.length, (index) => dataBytes1[index] ^ dataBytes2[index]));
+    return List<int>.generate(
+      dataBytes1.length,
+      (index) => dataBytes1[index] ^ dataBytes2[index],
+    );
   }
 
   /// Converts a list of bytes to a binary string representation.
@@ -22,7 +26,9 @@ class BytesUtils {
   /// zeros to ensure a specific bit length.
   static String toBinary(List<int> dataBytes, {int zeroPadBitLen = 0}) {
     return BigintUtils.toBinary(
-        BigintUtils.fromBytes(dataBytes), zeroPadBitLen);
+      BigintUtils.fromBytes(dataBytes),
+      zeroPadBitLen: zeroPadBitLen,
+    );
   }
 
   /// Converts a binary string to a list of bytes.
@@ -31,8 +37,9 @@ class BytesUtils {
   /// parameter allows padding the result with zeros to achieve a specific byte length.
   static List<int> fromBinary(String data, {int zeroPadByteLen = 0}) {
     final BigInt intValue = BigInt.parse(data, radix: 2);
-    final String hexValue =
-        intValue.toRadixString(16).padLeft(zeroPadByteLen, '0');
+    final String hexValue = intValue
+        .toRadixString(16)
+        .padLeft(zeroPadByteLen, '0');
     return fromHexString(hexValue);
   }
 
@@ -53,8 +60,11 @@ class BytesUtils {
   /// Returns:
   /// - A hexadecimal string representation of [dataBytes].
   ///
-  static String toHexString(List<int> dataBytes,
-      {bool lowerCase = true, String? prefix}) {
+  static String toHexString(
+    List<int> dataBytes, {
+    bool lowerCase = true,
+    String? prefix,
+  }) {
     final String toHex = hex.hex.encode(dataBytes, lowerCase: lowerCase);
     return "${prefix ?? ''}$toHex";
   }
@@ -75,8 +85,11 @@ class BytesUtils {
   /// Returns:
   /// - A hexadecimal string representation of [dataBytes], or null if conversion fails.
   ///
-  static String? tryToHexString(List<int>? dataBytes,
-      {bool lowerCase = true, String? prefix}) {
+  static String? tryToHexString(
+    List<int>? dataBytes, {
+    bool lowerCase = true,
+    String? prefix,
+  }) {
     if (dataBytes == null) return null;
     try {
       return toHexString(dataBytes, lowerCase: lowerCase, prefix: prefix);
@@ -102,16 +115,20 @@ class BytesUtils {
   /// Throws:
   /// - [ArgumentException] if the input is not a valid hexadecimal string.
   ///
-  static List<int> fromHexString(String data, {bool paddingZero = false}) {
+  static List<int> fromHexString(String hexStr, {bool paddingZero = false}) {
     try {
-      String hexString = StringUtils.strip0x(data);
+      String hexString = StringUtils.strip0x(hexStr);
       if (hexString.isEmpty) return [];
       if (paddingZero && hexString.length.isOdd) {
         hexString = "0$hexString";
       }
       return hex.hex.decode(hexString);
     } catch (e) {
-      throw const ArgumentException("invalid hex bytes");
+      throw ArgumentException.invalidOperationArguments(
+        "fromHexString",
+        name: "hexStr",
+        reason: "invalid hex string.",
+      );
     }
   }
 
@@ -131,10 +148,10 @@ class BytesUtils {
 
   /// Ensures that each byte is properly represented as an 8-bit integer.
   ///
-  /// Performs a bitwise AND operation with a mask (`mask8`) to ensure that each byte in
+  /// Performs a bitwise AND operation with a mask (`BinaryOps.mask8`) to ensure that each byte in
   /// the input list is represented as an 8-bit integer.
   static List<int> toBytes(Iterable<int> bytes, {bool unmodifiable = false}) {
-    final toBytes = bytes.map((e) => e & mask8).toList();
+    final toBytes = bytes.map((e) => e & BinaryOps.mask8).toList();
     if (unmodifiable) {
       return List<int>.unmodifiable(toBytes);
     }
@@ -146,44 +163,31 @@ class BytesUtils {
     return toBytes(bytes, unmodifiable: unmodifiable);
   }
 
-  /// Validates a list of integers representing bytes.
-  ///
-  /// Ensures that each integer in the provided [bytes] list falls within the
-  /// valid byte range (0 to 255). If any byte is outside this range,
-  /// throws an [ArgumentException] with a descriptive error message.
-  ///
-  /// Parameters:
-  /// - [bytes]: A List of integers representing bytes to be validated.
-  ///
-  /// Throws:
-  /// - [ArgumentException] if any byte is outside the valid range.
-  ///
-  static void validateBytes(Iterable<int> bytes, {String? onError}) {
+  static bool areBytesValid(
+    Iterable<int> bytes, {
+    Object Function()? onValidationFailed,
+  }) {
     for (int i = 0; i < bytes.length; i++) {
       final int byte = bytes.elementAt(i);
-      if (byte < 0 || byte > mask8) {
-        throw ArgumentException(
-            "${onError ?? "Invalid bytes"} at index $i $byte");
+      if (byte < 0 || byte > BinaryOps.mask8) {
+        if (onValidationFailed != null) throw onValidationFailed();
+        return false;
       }
     }
+    return true;
   }
 
-  static void validateListOfBytes(List<int> bytes, {String? onError}) {
+  static bool areBytesValidConst(
+    List<int> bytes, {
+    Object Function()? onValidationFailed,
+  }) {
+    int invalid = 0;
     for (int i = 0; i < bytes.length; i++) {
-      final int byte = bytes[i];
-      if (byte < 0 || byte > mask8) {
-        throw ArgumentError("${onError ?? "Invalid bytes"} at index $i: $byte");
-      }
+      int b = bytes[i];
+      invalid |= (b >> 8);
     }
-  }
-
-  static bool isValidBytes(Iterable<int> bytes) {
-    try {
-      validateBytes(bytes);
-      return true;
-    } catch (e) {
-      return false;
-    }
+    if (invalid != 0 && onValidationFailed != null) throw onValidationFailed();
+    return invalid == 0;
   }
 
   /// Compare two Uint8Lists lexicographically.
@@ -212,6 +216,16 @@ class BytesUtils {
       if (bytesEqual(i, part)) return true;
     }
     return false;
+  }
+
+  static bool bytesEqualConst(List<int> a, List<int> b) {
+    if (a.length != b.length) return false;
+
+    int diff = 0;
+    for (int i = 0; i < a.length; i++) {
+      diff |= (a[i] ^ b[i]);
+    }
+    return diff == 0;
   }
 
   /// Compare two lists of bytes for equality.
@@ -280,8 +294,10 @@ class BytesUtils {
 
   static List<int> mulAddTruncated32(List<int> a, List<int> b, List<int> c) {
     if (a.length < 32 || b.length < 32 || c.length < 32) {
-      throw ArgumentException(
-          "All input lists must have at least 32 elements.");
+      throw ArgumentException.invalidOperationArguments(
+        "mulAddTruncated32",
+        reason: "All input lists must have 32 elements.",
+      );
     }
 
     assert(a.length == 32 && b.length == 32 && c.length == 32);
@@ -310,5 +326,28 @@ class BytesUtils {
     }
 
     return r;
+  }
+
+  static List<bool> bytesToBits(
+    List<int> bytes, {
+    Endian endian = Endian.little,
+  }) {
+    final bits = <bool>[];
+
+    for (final b in bytes) {
+      if (endian == Endian.little) {
+        // LSB first
+        for (int i = 0; i < 8; i++) {
+          bits.add(((b >> i) & 1) != 0);
+        }
+      } else {
+        // MSB first
+        for (int i = 7; i >= 0; i--) {
+          bits.add(((b >> i) & 1) != 0);
+        }
+      }
+    }
+
+    return bits;
   }
 }
