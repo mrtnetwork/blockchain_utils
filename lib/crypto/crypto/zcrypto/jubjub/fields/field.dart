@@ -46,6 +46,7 @@ abstract class JubJubScalar<F extends JubJubScalar<F>>
   }
 }
 
+/// Element of the JubJub scalar field Fr, internally represented as 4 64-bit limbs in Montgomery form.
 class JubJubFr extends JubJubScalar<JubJubFr> with ConstantEquality<JubJubFr> {
   final List<BigInt> limbs;
   JubJubFr(List<BigInt> limbs)

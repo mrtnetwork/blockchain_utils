@@ -1,5 +1,6 @@
 import 'package:blockchain_utils/blockchain_utils.dart';
 
+/// Abstract base for a RedDSA signing key.
 abstract class ReddsaSigningKey<
   SCALAR extends CryptoField<SCALAR>,
   P extends CryptoGroupElement<P, SCALAR>,
@@ -10,13 +11,24 @@ abstract class ReddsaSigningKey<
 >
     with Equality {
   const ReddsaSigningKey();
+
+  /// Converts to the corresponding verification key.
   V toVerificationKey();
+
+  /// Returns the group generator.
   P generator();
+
+  /// Serializes the key to bytes.
   List<int> toBytes();
+
+  /// Signs a message and returns a RedDSA signature.
   ReddsaSignature sign(List<int> message);
+
+  /// Returns a randomized version of this signing key.
   SK randomize(SCALAR randomizer);
 }
 
+/// Abstract base for a RedDSA verification key.
 abstract class VerificationKey<
   SCALAR extends CryptoField<SCALAR>,
   P extends CryptoGroupElement<P, SCALAR>,
@@ -24,13 +36,21 @@ abstract class VerificationKey<
 >
     with Equality {
   const VerificationKey();
+
+  /// Returns the group generator.
   P generator();
+
+  /// Serializes the verification key to bytes.
   List<int> toBytes();
+
+  /// Verifies a RedDSA signature for a message.
   bool verifySignature(
     ReddsaSignature signature,
     List<int> message, {
     bool hashMessage = true,
   });
+
+  /// Verifies a signature given as bytes.
   bool verifySignatureBytes(
     List<int> signatureBytes,
     List<int> message, {
@@ -40,10 +60,15 @@ abstract class VerificationKey<
     message,
     hashMessage: hashMessage,
   );
+
+  /// Converts to the corresponding group element.
   P toPoint();
+
+  /// Returns a randomized version of this verification key.
   V randomize(SCALAR randomizer);
 }
 
+/// Represents a RedDSA signature consisting of r and s components.
 class ReddsaSignature with LayoutSerializable, Equality {
   final List<int> rBytes;
   final List<int> sBytes;

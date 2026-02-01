@@ -11,7 +11,7 @@ abstract class Bip32KeyBase extends CryptoKeyBase<Bip32KeyData> {
   const Bip32KeyBase(super.keyData, this.curveType);
   final EllipticCurveTypes curveType;
   String get toExtended;
-  List<int> get toExtendedBytes;
+  List<int> toExtendedBytes({bool withPrefix = true});
 }
 
 /// Represents a BIP32 public key with associated data such as the elliptic curve type,
@@ -63,8 +63,13 @@ class Bip32PublicKey extends Bip32KeyBase {
   ChainCode get chainCode => keyData.chainCode;
 
   @override
-  List<int> get toExtendedBytes =>
-      Bip32PublicKeySerializer.serializeBytes(pubKey, keyData, keyNetVer);
+  List<int> toExtendedBytes({bool withPrefix = true}) =>
+      Bip32PublicKeySerializer.serializeBytes(
+        pubKey: pubKey,
+        keyData: keyData,
+        withPrefix: withPrefix,
+        keyNetVer: keyNetVer,
+      );
 
   /// Creates a [Bip32PublicKey] from a byte representation, key data, key network versions, and curve type.
   static Bip32PublicKey fromBytes(
@@ -126,8 +131,13 @@ class Bip32PrivateKey extends Bip32KeyBase {
   }
 
   @override
-  List<int> get toExtendedBytes =>
-      Bip32PrivateKeySerializer.serializeBytes(privKey, keyData, keyNetVer);
+  List<int> toExtendedBytes({bool withPrefix = true}) =>
+      Bip32PrivateKeySerializer.serializeBytes(
+        privKey: privKey,
+        keyData: keyData,
+        keyNetVer: keyNetVer,
+        withPrefix: withPrefix,
+      );
 
   /// Creates a Bip32PrivateKey from a byte representation, key data, key network versions, and curve type.
   static Bip32PrivateKey fromBytes(

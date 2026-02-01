@@ -8,14 +8,13 @@ class CryptoException extends BlockchainUtilsException {
     Map<String, dynamic>? details,
   }) {
     return CryptoException(
-      "Cryptographic failure during $operation",
+      "Crypto operation failed during $operation",
       details: {"reason": reason, ...details ?? {}},
     );
   }
 
-  static const CryptoException operationNotSupported = CryptoException(
-    "Current operation not supported.",
-  );
+  static CryptoException get operationNotSupported =>
+      CryptoException("Current operation not supported.");
 
   @override
   String toString() {

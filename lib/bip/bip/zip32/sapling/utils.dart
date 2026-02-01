@@ -6,6 +6,7 @@ import 'package:blockchain_utils/crypto/quick_crypto.dart';
 import 'package:blockchain_utils/helper/extensions/extensions.dart';
 
 class SaplingKeyUtils {
+  static const String saplingInternalPersonalization = "Zcash_SaplingInt";
   static JubJubNativeFr crhIvk({required List<int> ak, required List<int> nk}) {
     final List<int> zcashIvk = [90, 99, 97, 115, 104, 105, 118, 107];
     final hash = QuickCrypto.blake2s256Hash(
@@ -63,7 +64,7 @@ class SaplingKeyUtils {
         reason: "Invalid d bytes length.",
         length: 11,
       ),
-      personalization: keyDiversificationPersonalization,
+      personalization: "Zcash_gd".codeUnits,
     );
   }
 
@@ -163,17 +164,6 @@ class SaplingKeyUtils {
     100,
     102,
     48,
-  ];
-
-  static const List<int> keyDiversificationPersonalization = [
-    90,
-    99,
-    97,
-    115,
-    104,
-    95,
-    103,
-    100,
   ];
 
   static JubJubAffinePoint get spendAuthGenerator => JubJubAffinePoint(

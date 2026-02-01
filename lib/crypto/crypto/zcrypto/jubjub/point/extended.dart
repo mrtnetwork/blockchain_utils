@@ -74,7 +74,7 @@ class JubJubPoint extends BaseJubJubPoint<JubJubFr, JubJubPoint> {
         final b = (v + u) * point.vPlusU;
         final c = t1 * t2 * point.t2d;
         final d = (z * point.z).double();
-        return JubjubCompletedPoint(
+        return _JubjubCompletedPoint(
           u: b - a,
           v: b + a,
           z: d + c,
@@ -85,7 +85,7 @@ class JubJubPoint extends BaseJubJubPoint<JubJubFr, JubJubPoint> {
         final b = (v + u) * point.vPlusU;
         final c = t1 * t2 * point.t2d;
         final d = z.double();
-        return JubjubCompletedPoint(
+        return _JubjubCompletedPoint(
           u: b - a,
           v: b + a,
           z: d + c,
@@ -108,7 +108,7 @@ class JubJubPoint extends BaseJubJubPoint<JubJubFr, JubJubPoint> {
     final uv2 = (u + v).square();
     final vvPlus = vv + uu;
     final vvMinus = vv - uu;
-    return JubjubCompletedPoint(
+    return _JubjubCompletedPoint(
       u: uv2 - vvPlus,
       v: vvPlus,
       z: vvMinus,
@@ -139,7 +139,7 @@ class JubJubPoint extends BaseJubJubPoint<JubJubFr, JubJubPoint> {
         final b = (v + u) * point.vMinusU;
         final c = t1 * t2 * point.t2d;
         final d = (z * point.z).double();
-        return JubjubCompletedPoint(
+        return _JubjubCompletedPoint(
           u: b - a,
           v: b + a,
           z: d - c,
@@ -150,7 +150,7 @@ class JubJubPoint extends BaseJubJubPoint<JubJubFr, JubJubPoint> {
         final b = (v + u) * point.vMinusU;
         final c = t1 * t2 * point.t2d;
         final d = z.double();
-        return JubjubCompletedPoint(
+        return _JubjubCompletedPoint(
           u: b - a,
           v: b + a,
           z: d - c,
@@ -239,12 +239,12 @@ class JubJubPoint extends BaseJubJubPoint<JubJubFr, JubJubPoint> {
   }
 }
 
-class JubjubCompletedPoint {
+class _JubjubCompletedPoint {
   final JubJubFq u;
   final JubJubFq v;
   final JubJubFq z;
   final JubJubFq t;
-  const JubjubCompletedPoint({
+  const _JubjubCompletedPoint({
     required this.u,
     required this.v,
     required this.z,
@@ -516,7 +516,7 @@ class JubJubNativePoint
         final b = (v + u) * point.vPlusU;
         final c = t1 * t2 * point.t2d;
         final d = (z * point.z).double();
-        return JubjubCompletedNativePoint(
+        return _JubjubCompletedNativePoint(
           u: b - a,
           v: b + a,
           z: d + c,
@@ -527,7 +527,7 @@ class JubJubNativePoint
         final b = (v + u) * point.vPlusU;
         final c = t1 * t2 * point.t2d;
         final d = z.double();
-        return JubjubCompletedNativePoint(
+        return _JubjubCompletedNativePoint(
           u: b - a,
           v: b + a,
           z: d + c,
@@ -550,7 +550,7 @@ class JubJubNativePoint
     final uv2 = (u + v).square();
     final vvPlus = vv + uu;
     final vvMinus = vv - uu;
-    return JubjubCompletedNativePoint(
+    return _JubjubCompletedNativePoint(
       u: uv2 - vvPlus,
       v: vvPlus,
       z: vvMinus,
@@ -582,7 +582,7 @@ class JubJubNativePoint
         final b = (v + u) * point.vMinusU;
         final c = t1 * t2 * point.t2d;
         final d = (z * point.z).double();
-        return JubjubCompletedNativePoint(
+        return _JubjubCompletedNativePoint(
           u: b - a,
           v: b + a,
           z: d - c,
@@ -593,7 +593,7 @@ class JubJubNativePoint
         final b = (v + u) * point.vMinusU;
         final c = t1 * t2 * point.t2d;
         final d = z.double();
-        return JubjubCompletedNativePoint(
+        return _JubjubCompletedNativePoint(
           u: b - a,
           v: b + a,
           z: d - c,
@@ -682,12 +682,12 @@ class JubJubNativePoint
   }
 }
 
-class JubjubCompletedNativePoint {
+class _JubjubCompletedNativePoint {
   final JubJubNativeFq u;
   final JubJubNativeFq v;
   final JubJubNativeFq z;
   final JubJubNativeFq t;
-  const JubjubCompletedNativePoint({
+  const _JubjubCompletedNativePoint({
     required this.u,
     required this.v,
     required this.z,

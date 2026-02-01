@@ -11,6 +11,7 @@ import 'package:blockchain_utils/utils/compare/hash_code.dart';
 import 'package:blockchain_utils/utils/equatable/equatable.dart';
 import 'package:blockchain_utils/utils/numbers/utils/int_utils.dart';
 
+/// BLS12-381 G1 group in projective coordinates (x : y : z).
 class G1Projective extends Bls12Point<G1Projective> {
   final Bls12Fp x;
   final Bls12Fp y;
@@ -31,8 +32,11 @@ class G1Projective extends Bls12Point<G1Projective> {
     );
   }
 
+  /// identity point
   factory G1Projective.identity() =>
       G1Projective(x: Bls12Fp.zero(), y: Bls12Fp.one(), z: Bls12Fp.zero());
+
+  /// generator
   factory G1Projective.generator() => G1Projective(
     x: Bls12Fp([
       BigInt.parse('0x5cb38790fd530c16'),
@@ -64,14 +68,18 @@ class G1Projective extends Bls12Point<G1Projective> {
       ),
     );
   }
+
+  /// Creates a G1 point from bytes, validating that it is on-curve and in the correct subgroup.
   factory G1Projective.fromBytes(List<int> bytes) {
     return G1Projective.fromAffine(G1AffinePoint.fromBytes(bytes));
   }
+
+  /// Creates a G1 affine point from bytes without checking curve or subgroup validity.
   factory G1Projective.fromBytesUnchecked(List<int> bytes) {
     return G1Projective.fromAffine(G1AffinePoint.fromBytesUnchecked(bytes));
   }
 
-  G1Projective multiply(List<int> by) {
+  G1Projective _multiply(List<int> by) {
     assert(by.length == 32);
     G1Projective acc = G1Projective.identity();
     final bits = BytesUtils.bytesToBits(by); // length = 256
@@ -101,6 +109,7 @@ class G1Projective extends Bls12Point<G1Projective> {
     return -result;
   }
 
+  /// Clears the G1 cofactor by subtracting [mulByX] from the point.
   G1Projective clearCofactor() => this - mulByX();
 
   Bls12Fp mulBy3b(Bls12Fp a) {
@@ -132,9 +141,12 @@ class G1Projective extends Bls12Point<G1Projective> {
     return G1Projective(x: x3, y: y3, z: z3);
   }
 
+  /// operations
+  ///
+
   @override
   G1Projective operator *(JubJubFq rhs) {
-    return multiply(rhs.toBytes());
+    return _multiply(rhs.toBytes());
   }
 
   G1Projective operator -(Bls12Point<G1Projective> rhs) {
@@ -221,20 +233,23 @@ class G1Projective extends Bls12Point<G1Projective> {
   }
 
   @override
-  List<int> toBytes({PubKeyModes mode = PubKeyModes.compressed}) {
-    return toAffine().toBytes(mode: mode);
-  }
-
-  @override
   G1Projective operator -() {
     return G1Projective(x: x, y: -y, z: z);
   }
 
+  /// Serializes the point to bytes in either compressed or uncompressed form.
+  @override
+  List<int> toBytes({PubKeyModes mode = PubKeyModes.compressed}) {
+    return toAffine().toBytes(mode: mode);
+  }
+
+  /// check identity
   @override
   bool isIdentity() {
     return z.isZero();
   }
 
+  /// Checks whether the point satisfies the BLS12-381 curve equation in projective form.
   bool isOnCurve() {
     // Y^2 * Z = X^3 + b * Z^3
     return (y.square() * z) ==
@@ -242,6 +257,7 @@ class G1Projective extends Bls12Point<G1Projective> {
         z.isZero();
   }
 
+  /// convert point to affine
   G1AffinePoint toAffine() {
     final zinv = z.invert() ?? Bls12Fp.zero();
     final x = this.x * zinv;
@@ -272,6 +288,7 @@ class G1Projective extends Bls12Point<G1Projective> {
   int get hashCode => HashCodeGenerator.generateHashCode([x, y, z]);
 }
 
+/// BLS12-381 G1 group in projective coordinates (x : y : z).
 class G1AffinePoint extends Bls12AffinePoint<G1Projective> with Equality {
   final Bls12Fp x;
   final Bls12Fp y;
@@ -341,6 +358,8 @@ class G1AffinePoint extends Bls12AffinePoint<G1Projective> with Equality {
     }
     return G1AffinePoint(x: x, y: y, infinity: infinityFlagSet);
   }
+
+  /// Creates a G1 affine point from bytes without checking curve or subgroup validity.
   factory G1AffinePoint.fromBytesUnchecked(List<int> bytes) {
     if (bytes.length == 48) {
       return G1AffinePoint._fromCompressedBytes(bytes);
@@ -352,6 +371,8 @@ class G1AffinePoint extends Bls12AffinePoint<G1Projective> with Equality {
       reason: "Invalid point bytes length.",
     );
   }
+
+  /// Creates a G1 affine point from bytes, validating that it is on-curve and in the correct subgroup.
   factory G1AffinePoint.fromBytes(List<int> bytes) {
     final affine = G1AffinePoint.fromBytesUnchecked(bytes);
     if (affine.isOnCurve() && affine.isTorsionFree()) {
@@ -414,7 +435,7 @@ class G1AffinePoint extends Bls12AffinePoint<G1Projective> with Equality {
 
   @override
   G1Projective operator *(JubJubFq rhs) {
-    return toProjective().multiply(rhs.toBytes());
+    return toProjective()._multiply(rhs.toBytes());
   }
 
   G1Projective operator -(Bls12Point<G1Projective> rhs) {
@@ -436,24 +457,27 @@ class G1AffinePoint extends Bls12AffinePoint<G1Projective> with Equality {
     }
   }
 
-  G1AffinePoint endomorphism() {
+  G1AffinePoint _endomorphism() {
     return G1AffinePoint(x: x * Bls12Fp.beta(), y: y, infinity: infinity);
   }
 
+  /// Converts this affine point to its projective representation.
   G1Projective toProjective() => G1Projective.fromAffine(this);
 
+  /// Checks whether the point is in the correct G1 subgroup (torsion-free).
   bool isTorsionFree() {
     final minusX = -G1Projective.fromAffine(this).mulByX().mulByX();
-    final endomorphismP = endomorphism();
+    final endomorphismP = _endomorphism();
     return minusX == endomorphismP.toProjective();
   }
 
+  /// Checks whether the point satisfies the BLS12-381 curve equation in projective form.
   bool isOnCurve() {
     if (infinity) return true;
     return (y.square() - (x.square() * x)) == Bls12Fp.b();
   }
 
-  List<int> toCompressed() {
+  List<int> _toCompressed() {
     final res =
         Bls12Fp.conditionalSelect(x, Bls12Fp.zero(), infinity).toBytes();
     res[0] |= 1 << 7;
@@ -467,7 +491,7 @@ class G1AffinePoint extends Bls12AffinePoint<G1Projective> with Equality {
     return res;
   }
 
-  List<int> toUncompressed() {
+  List<int> _toUncompressed() {
     final res = [
       ...Bls12Fp.conditionalSelect(x, Bls12Fp.zero(), infinity).toBytes(),
       ...Bls12Fp.conditionalSelect(y, Bls12Fp.zero(), infinity).toBytes(),
@@ -476,14 +500,16 @@ class G1AffinePoint extends Bls12AffinePoint<G1Projective> with Equality {
     return res;
   }
 
+  /// Serializes the point to bytes in either compressed or uncompressed form.
   @override
   List<int> toBytes({PubKeyModes mode = PubKeyModes.compressed}) {
     return switch (mode) {
-      PubKeyModes.compressed => toCompressed(),
-      PubKeyModes.uncompressed => toUncompressed(),
+      PubKeyModes.compressed => _toCompressed(),
+      PubKeyModes.uncompressed => _toUncompressed(),
     };
   }
 
+  /// check identity
   @override
   bool isIdentity() {
     return infinity;
@@ -507,6 +533,7 @@ class G1AffinePoint extends Bls12AffinePoint<G1Projective> with Equality {
   }
 }
 
+/// BLS12-381 G1 group in projective coordinates (x : y : z).
 class G1NativeProjective extends Bls12NativePoint<G1NativeProjective> {
   final Bls12NativeFp x;
   final Bls12NativeFp y;
@@ -560,16 +587,20 @@ class G1NativeProjective extends Bls12NativePoint<G1NativeProjective> {
       ),
     );
   }
+
+  /// Creates a G1 affine point from bytes, validating that it is on-curve and in the correct subgroup.
   factory G1NativeProjective.fromBytes(List<int> bytes) {
     return G1NativeProjective.fromAffine(G1NativeAffinePoint.fromBytes(bytes));
   }
+
+  /// Creates a G1 point from bytes without checking curve or subgroup validity.
   factory G1NativeProjective.fromBytesUnchecked(List<int> bytes) {
     return G1NativeProjective.fromAffine(
       G1NativeAffinePoint.fromBytesUnchecked(bytes),
     );
   }
 
-  G1NativeProjective multiply(List<int> by) {
+  G1NativeProjective _multiply(List<int> by) {
     assert(by.length == 32);
     G1NativeProjective acc = G1NativeProjective.identity();
     final bits = BytesUtils.bytesToBits(by); // length = 256
@@ -599,6 +630,7 @@ class G1NativeProjective extends Bls12NativePoint<G1NativeProjective> {
     return -result;
   }
 
+  /// Clears the G1 cofactor by subtracting [mulByX] from the point.
   G1NativeProjective clearCofactor() => this - mulByX();
 
   Bls12NativeFp mulBy3b(Bls12NativeFp a) {
@@ -632,7 +664,7 @@ class G1NativeProjective extends Bls12NativePoint<G1NativeProjective> {
 
   @override
   G1NativeProjective operator *(JubJubNativeFq rhs) {
-    return multiply(rhs.toBytes());
+    return _multiply(rhs.toBytes());
   }
 
   G1NativeProjective operator -(Bls12NativePoint<G1NativeProjective> rhs) {
@@ -722,6 +754,7 @@ class G1NativeProjective extends Bls12NativePoint<G1NativeProjective> {
     throw CryptoException.operationNotSupported;
   }
 
+  /// Serializes the point to bytes in either compressed or uncompressed form.
   @override
   List<int> toBytes({PubKeyModes mode = PubKeyModes.compressed}) {
     return toAffine().toBytes(mode: mode);
@@ -732,11 +765,13 @@ class G1NativeProjective extends Bls12NativePoint<G1NativeProjective> {
     return G1NativeProjective(x: x, y: -y, z: z);
   }
 
+  /// check identity
   @override
   bool isIdentity() {
     return z.isZero();
   }
 
+  /// Checks whether the point satisfies the BLS12-381 curve equation in projective form.
   bool isOnCurve() {
     // Y^2 * Z = X^3 + b * Z^3
     return (y.square() * z) ==
@@ -774,6 +809,7 @@ class G1NativeProjective extends Bls12NativePoint<G1NativeProjective> {
   int get hashCode => HashCodeGenerator.generateHashCode([x, y, z]);
 }
 
+/// BLS12-381 G1 group in projective coordinates (x : y : z).
 class G1NativeAffinePoint extends Bls12NativeAffinePoint<G1NativeProjective>
     with Equality {
   final Bls12NativeFp x;
@@ -848,6 +884,8 @@ class G1NativeAffinePoint extends Bls12NativeAffinePoint<G1NativeProjective>
     }
     return G1NativeAffinePoint(x: x, y: y, infinity: infinityFlagSet);
   }
+
+  /// Creates a G1 affine point from bytes without checking curve or subgroup validity.
   factory G1NativeAffinePoint.fromBytesUnchecked(List<int> bytes) {
     if (bytes.length == 48) {
       return G1NativeAffinePoint._fromCompressedBytes(bytes);
@@ -859,6 +897,8 @@ class G1NativeAffinePoint extends Bls12NativeAffinePoint<G1NativeProjective>
       reason: "Invalid point bytes length.",
     );
   }
+
+  /// Creates a G1 affine point from bytes, validating that it is on-curve and in the correct subgroup.
   factory G1NativeAffinePoint.fromBytes(List<int> bytes, {bool check = true}) {
     final affine = G1NativeAffinePoint.fromBytesUnchecked(bytes);
     if (!check) return affine;
@@ -914,8 +954,17 @@ class G1NativeAffinePoint extends Bls12NativeAffinePoint<G1NativeProjective>
   }
 
   @override
+  G1NativeAffinePoint operator -() {
+    return G1NativeAffinePoint(
+      x: x,
+      y: Bls12NativeFp.conditionalSelect(-y, Bls12NativeFp.one(), infinity),
+      infinity: infinity,
+    );
+  }
+
+  @override
   G1NativeProjective operator *(JubJubNativeFq rhs) {
-    return toProjective().multiply(rhs.toBytes());
+    return toProjective()._multiply(rhs.toBytes());
   }
 
   G1NativeProjective operator -(Bls12NativePoint<G1NativeProjective> rhs) {
@@ -937,7 +986,7 @@ class G1NativeAffinePoint extends Bls12NativeAffinePoint<G1NativeProjective>
     }
   }
 
-  G1NativeAffinePoint endomorphism() {
+  G1NativeAffinePoint _endomorphism() {
     return G1NativeAffinePoint(
       x: x * Bls12NativeFp.beta(),
       y: y,
@@ -945,20 +994,23 @@ class G1NativeAffinePoint extends Bls12NativeAffinePoint<G1NativeProjective>
     );
   }
 
+  /// Converts this affine point to its projective representation.
   G1NativeProjective toProjective() => G1NativeProjective.fromAffine(this);
 
+  /// Checks whether the point is in the correct G1 subgroup (torsion-free).
   bool isTorsionFree() {
     final minusX = -G1NativeProjective.fromAffine(this).mulByX().mulByX();
-    final endomorphismP = endomorphism();
+    final endomorphismP = _endomorphism();
     return minusX == endomorphismP.toProjective();
   }
 
+  /// Checks whether the point satisfies the BLS12-381 curve equation in projective form.
   bool isOnCurve() {
     if (infinity) return true;
     return (y.square() - (x.square() * x)) == Bls12NativeFp.b();
   }
 
-  List<int> toCompressed() {
+  List<int> _toCompressed() {
     final res =
         Bls12NativeFp.conditionalSelect(
           x,
@@ -976,7 +1028,7 @@ class G1NativeAffinePoint extends Bls12NativeAffinePoint<G1NativeProjective>
     return res;
   }
 
-  List<int> toUncompressed() {
+  List<int> _toUncompressed() {
     final res = [
       ...Bls12NativeFp.conditionalSelect(
         x,
@@ -993,26 +1045,19 @@ class G1NativeAffinePoint extends Bls12NativeAffinePoint<G1NativeProjective>
     return res;
   }
 
+  /// Serializes the point to bytes in either compressed or uncompressed form.
   @override
   List<int> toBytes({PubKeyModes mode = PubKeyModes.compressed}) {
     return switch (mode) {
-      PubKeyModes.compressed => toCompressed(),
-      PubKeyModes.uncompressed => toUncompressed(),
+      PubKeyModes.compressed => _toCompressed(),
+      PubKeyModes.uncompressed => _toUncompressed(),
     };
   }
 
+  /// check identity
   @override
   bool isIdentity() {
     return infinity;
-  }
-
-  @override
-  G1NativeAffinePoint operator -() {
-    return G1NativeAffinePoint(
-      x: x,
-      y: Bls12NativeFp.conditionalSelect(-y, Bls12NativeFp.one(), infinity),
-      infinity: infinity,
-    );
   }
 
   @override

@@ -5,7 +5,7 @@ import 'package:test/test.dart';
 void main() {
   group("Sinsemilla", () {
     test("test vector", _testV);
-    test("Pad", _test);
+    test("SinsemillaPad", _test);
   });
 }
 
@@ -32,9 +32,9 @@ void _testV() {
 }
 
 void _test() {
-  Pad pad = Pad([]);
+  SinsemillaPad pad = SinsemillaPad([]);
   expect(pad.toList(), <bool>[]);
-  pad = Pad([true]);
+  pad = SinsemillaPad([true]);
   expect(pad.toList(), [
     true,
     false,
@@ -47,7 +47,7 @@ void _test() {
     false,
     false,
   ]);
-  pad = Pad([true, true]);
+  pad = SinsemillaPad([true, true]);
   expect(pad.toList(), [
     true,
     true,
@@ -60,7 +60,7 @@ void _test() {
     false,
     false,
   ]);
-  pad = Pad([true, true, true]);
+  pad = SinsemillaPad([true, true, true]);
   expect(pad.toList(), [
     true,
     true,
@@ -73,7 +73,18 @@ void _test() {
     false,
     false,
   ]);
-  pad = Pad([true, true, false, true, false, true, false, true, false, true]);
+  pad = SinsemillaPad([
+    true,
+    true,
+    false,
+    true,
+    false,
+    true,
+    false,
+    true,
+    false,
+    true,
+  ]);
   expect(pad.toList(), [
     true,
     true,
@@ -86,7 +97,7 @@ void _test() {
     false,
     true,
   ]);
-  pad = Pad([
+  pad = SinsemillaPad([
     true,
     true,
     false,

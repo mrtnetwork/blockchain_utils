@@ -14,12 +14,12 @@ class CborSerializableException extends BlockchainUtilsException {
     );
   }
 
-  static const CborSerializableException missingArguments =
+  static CborSerializableException get missingArguments =>
       CborSerializableException("Missing CBOR arguments.");
-  static const CborSerializableException incorrectTagValue =
+  static CborSerializableException get incorrectTagValue =>
       CborSerializableException("Incorrect cbor tag value.");
-  static const CborSerializableException invalidCborEncodingBytes =
+  static CborSerializableException get invalidCborEncodingBytes =>
       CborSerializableException("Invalid cbor encode bytes.");
-  static const CborSerializableException missingListElement =
+  static CborSerializableException get missingListElement =>
       CborSerializableException("Missing cobr element. index out of range.");
 }

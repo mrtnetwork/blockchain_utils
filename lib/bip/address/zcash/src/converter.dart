@@ -11,7 +11,7 @@ class ZCashAddrDecoder
   @override
   ZCashDecodedAddressResult decodeAddr(
     String addr, {
-    ZcashNetwork? network,
+    ZCashNetwork? network,
     ZCashAddressType? type,
   }) {
     final decode = ZCashAddressUtils.parseAddress(
@@ -30,10 +30,10 @@ class ZCashAddrEncoder implements BlockchainAddressEncoder {
   @override
   String encodeKey(
     List<int> keyBytes, {
-    ZcashNetwork? network,
+    ZCashNetwork? network,
     ZCashAddressType? addrType,
   }) {
-    network ??= ZcashNetwork.mainnet;
+    network ??= ZCashNetwork.mainnet;
     addrType ??= AddrKeyValidator.getAddrArg<ZCashAddressType>(
       addrType,
       "addrType",
@@ -49,9 +49,9 @@ class ZCashAddrEncoder implements BlockchainAddressEncoder {
 class ZCashUnifiedAddrEncoder implements BlockchainAddressEncoder {
   String encodeUnifiedReceivers(
     List<ZUnifiedReceiver> receivers, {
-    ZcashNetwork? network,
+    ZCashNetwork? network,
   }) {
-    network ??= ZcashNetwork.mainnet;
+    network ??= ZCashNetwork.mainnet;
     return ZCashAddressUtils.encodeAddress(
       bytes: const [],
       type: ZCashAddressType.unified,
@@ -61,8 +61,8 @@ class ZCashUnifiedAddrEncoder implements BlockchainAddressEncoder {
   }
 
   @override
-  String encodeKey(List<int> keyBytes, {ZcashNetwork? network}) {
-    network ??= ZcashNetwork.mainnet;
+  String encodeKey(List<int> keyBytes, {ZCashNetwork? network}) {
+    network ??= ZCashNetwork.mainnet;
     return ZCashAddressUtils.encodeAddress(
       bytes: keyBytes,
       type: ZCashAddressType.unified,

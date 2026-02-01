@@ -71,21 +71,16 @@ abstract class Bip32Base<BIP extends Bip32Base<BIP>>
     );
   }
 
-  /// Creates a BIP-32 key from an extended key string.
-  Bip32Base.fromExtendedKeyBytes(
+  /// Creates a BIP-32 key from an extended key bytese.
+  Bip32Base.fromExtendedPrivateKeyBytes(
     List<int> key, [
     Bip32KeyNetVersions? keyNetVer,
   ]) {
     keyNetVer ??= defaultKeyNetVersion;
-    final deserKey = Bip32KeyDeserializer.deserializeKeyBytes(
-      key,
-      keyNetVer: keyNetVer,
-    );
-
+    final deserKey = Bip32KeyDeserializer.deserializeKeyBytesWithoutPrefix(key);
     final keyBytes = deserKey.keyBytes;
     final Bip32KeyData keyData = deserKey.keyData;
-    final isPublic = deserKey.isPublic;
-
+    assert(!deserKey.isPublic);
     if (keyData.depth.depth == 0) {
       if (!keyData.fingerPrint.isMasterKey()) {
         throw Bip32KeyError('Invalid extended master fingerPrint.');
@@ -95,20 +90,55 @@ abstract class Bip32Base<BIP extends Bip32Base<BIP>>
       }
     }
     _privKey = _initializePrivateKey(
-      isPublic ? null : keyBytes,
-      isPublic ? keyBytes : null,
+      keyBytes,
+      null,
       keyData,
       keyNetVer,
       curveType,
     );
     _pubKey = _initializePublicKey(
-      isPublic ? null : keyBytes,
-      isPublic ? keyBytes : null,
+      keyBytes,
+      null,
       keyData,
       keyNetVer,
       curveType,
     );
   }
+
+  // /// Creates a BIP-32 key from an extended key bytese exclude prefix.
+  // Bip32Base.fromExtendedPrivateKeyBytes(List<int> key) {
+  //   final deserKey = Bip32KeyDeserializer.deserializeKeyBytes(
+  //     key,
+  //     keyNetVer: keyNetVer,
+  //   );
+
+  //   final keyBytes = deserKey.keyBytes;
+  //   final Bip32KeyData keyData = deserKey.keyData;
+  //   final isPublic = deserKey.isPublic;
+
+  //   if (keyData.depth.depth == 0) {
+  //     if (!keyData.fingerPrint.isMasterKey()) {
+  //       throw Bip32KeyError('Invalid extended master fingerPrint.');
+  //     }
+  //     if (keyData.index.index != 0) {
+  //       throw Bip32KeyError('Invalid extended master child index.');
+  //     }
+  //   }
+  //   _privKey = _initializePrivateKey(
+  //     isPublic ? null : keyBytes,
+  //     isPublic ? keyBytes : null,
+  //     keyData,
+  //     keyNetVer,
+  //     curveType,
+  //   );
+  //   _pubKey = _initializePublicKey(
+  //     isPublic ? null : keyBytes,
+  //     isPublic ? keyBytes : null,
+  //     keyData,
+  //     keyNetVer,
+  //     curveType,
+  //   );
+  // }
 
   /// Creates a BIP-32 key from a seed.
   ///

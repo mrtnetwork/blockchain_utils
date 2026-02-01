@@ -2,27 +2,6 @@ import 'package:blockchain_utils/crypto/quick_crypto.dart';
 import 'package:blockchain_utils/exception/exception/exception.dart';
 import 'package:blockchain_utils/utils/binary/utils.dart';
 
-class PrfExpandConst {
-  static const List<int> prfExpandPersonalization = [
-    90,
-    99,
-    97,
-    115,
-    104,
-    95,
-    69,
-    120,
-    112,
-    97,
-    110,
-    100,
-    83,
-    101,
-    101,
-    100,
-  ];
-}
-
 /// PRF domain identifiers and input shapes.
 enum PrfExpand {
   saplingAsk(0x00),
@@ -63,11 +42,8 @@ enum PrfExpand {
   saplingZip32ChildHardened(0x11, length: [96, 32, 4]),
   saplingZip32ChildNonHardened(0x12, length: [96, 32, 4]),
 
-  // (32, 4, 1, variable-length slice)
-  orchardZip32Child(
-    0x81,
-    length: [32, 4, 1],
-  ), // variable-length slice handled dynamically
+  // (32, 4, 1)
+  orchardZip32Child(0x81, length: [32, 4, 1]),
   adhocZip32Child(0xAB, length: [32, 4, 1]),
   registeredZip32Child(0xAC, length: [32, 4, 1]);
 
@@ -115,7 +91,7 @@ enum PrfExpand {
   List<int> _apply(List<int> sk, {List<List<int>> data = const []}) {
     return QuickCrypto.blake2b512Hash(
       sk,
-      personalization: PrfExpandConst.prfExpandPersonalization,
+      personalization: "Zcash_ExpandSeed".codeUnits,
       extraBlocks: [
         [domainSeparator],
         ...data,

@@ -183,7 +183,7 @@ class SaplingDiversifierKey with Equality {
   Diversifier diversifier(DiversifierIndex index) {
     final diversifier = _tryDiversifier(index);
     if (diversifier == null) {
-      throw SaplingKeyError.cryptoFailureWith(
+      throw SaplingKeyError.failed(
         "diversifier",
         reason: "Invalid sapling Diversifier index.",
       );
@@ -422,8 +422,7 @@ class SaplingDiversifiableFullViewingKey with Equality {
     final i = QuickCrypto.blake2b256Hash(
       fvk.toBytes(),
       extraBlocks: [dk.toBytes()],
-      personalization:
-          SaplingZip32MstKeyGeneratorConst.saplingInternalPersonalization,
+      personalization: SaplingKeyUtils.saplingInternalPersonalization.codeUnits,
     );
     final iNsk = JubJubNativeFr.fromBytes64(
       PrfExpand.saplingZip32InternalNsk.apply(i),
@@ -472,7 +471,7 @@ class SaplingDiversifiableFullViewingKey with Equality {
   (SaplingPaymentAddress, DiversifierIndex) defaultAddress() {
     final result = toExternalIvk().findAddress(DiversifierIndex.zero());
     if (result == null) {
-      throw SaplingKeyError.cryptoFailureWith(
+      throw SaplingKeyError.failed(
         "defaultAddress",
         reason: "Failed to find address from index 0.",
       );
@@ -529,9 +528,7 @@ class SaplingDiversifiedTransmissionKey extends DiversifiedTransmissionKey {
   const SaplingDiversifiedTransmissionKey._(this.inner);
   factory SaplingDiversifiedTransmissionKey(JubJubNativePoint point) {
     if (!point.isTorsionFree()) {
-      throw SaplingKeyError.cryptoFailureWith(
-        "SaplingDiversifiedTransmissionKey",
-      );
+      throw SaplingKeyError.failed("SaplingDiversifiedTransmissionKey");
     }
     return SaplingDiversifiedTransmissionKey._(point);
   }
@@ -555,7 +552,7 @@ class SaplingDiversifiedTransmissionKey extends DiversifiedTransmissionKey {
       fromBytes: JubJubNativePoint.fromBytes,
     );
     if (gd == null) {
-      throw SaplingKeyError.cryptoFailureWith("derive");
+      throw SaplingKeyError.failed("derive");
     }
     return SaplingDiversifiedTransmissionKey(gd * ivk);
   }
@@ -597,7 +594,7 @@ class SaplingPaymentAddress
       fromBytes: JubJubNativePoint.fromBytes,
     );
     if (gd == null) {
-      throw SaplingKeyError.cryptoFailureWith(
+      throw SaplingKeyError.failed(
         "derive",
         reason: "Failed to derive point from diversifier.",
       );

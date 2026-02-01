@@ -8,25 +8,51 @@ import 'package:blockchain_utils/utils/binary/bit_utils.dart';
 import 'package:blockchain_utils/utils/numbers/utils/bigint_utils.dart';
 import 'package:blockchain_utils/utils/numbers/utils/int_utils.dart';
 
+/// Encoding modes for FF1 format-preserving encryption.
 enum FF1Encoding { flexible, binary }
 
+/// Abstract interface representing a numeral string over some radix.
 abstract final class NumeralString<T extends NumeralString<T>> {
+  /// Splits the numeral string into individual digits.
   List<T> split();
+
+  /// Returns the number of numerals (digits) in the string.
   int numeralCount();
+
+  /// Checks whether all digits are valid for the given radix.
   bool isValid(int radix);
+
+  /// Concatenates two numeral strings.
   T concat(T a, T b);
+
+  /// Converts the numeral string to bytes for a given radix and block size.
   List<int> toBytesInternal(int radix, int b);
+
+  /// Adds another numeral string modulo m (radix-based).
   T addModExp(Iterable<int> other, int radix, int m);
+
+  /// Subtracts another numeral string modulo m (radix-based).
   T subModExp(Iterable<int> other, int radix, int m);
 }
 
+/// Represents an FF1 radix configuration, including its type and length constraints.
 final class FF1Radix {
+  /// The numerical base (radix) for this configuration.
   final int radix;
+
+  /// The encoding type: flexible or binary.
   final FF1Encoding type;
 
+  /// Minimum allowed numeral string length.
   final int minLen;
+
+  /// Maximum allowed numeral string length (32-bit mask).
   int get maxLen => BinaryOps.mask32;
+
+  /// True if radix is a power of two.
   final bool isPowerOfTwo;
+
+  /// Log base 2 of the radix if it is a power of two.
   final int? logRadix;
   const FF1Radix._({
     required this.radix,
@@ -92,6 +118,7 @@ final class FF1Radix {
   }
 }
 
+/// Numeral string representation for FF1 with flexible radix digits.
 final class FlexibleNumeralString
     implements NumeralString<FlexibleNumeralString> {
   final List<int> digits;
@@ -166,6 +193,7 @@ final class FlexibleNumeralString
   }
 }
 
+/// Numeral string representation for FF1 in binary form (radix = 2).
 final class BinaryNumeralString implements NumeralString<BinaryNumeralString> {
   final List<int> data;
   final int numBits;
@@ -188,25 +216,13 @@ final class BinaryNumeralString implements NumeralString<BinaryNumeralString> {
     final aSlice = data.sublist(0, aEnd);
     final bSlice = data.sublist(bStart);
 
-    late List<int> aProcessed;
-    late List<int> bProcessed;
+    late Iterable<int> aProcessed;
+    late Iterable<int> bProcessed;
 
     if (u % 8 == 0) {
-      // Simple case: just reverse bits in each byte and reverse the list
-      aProcessed =
-          aSlice
-              .map((b) => BitUtils.reverseBits8(b))
-              .toList()
-              .reversed
-              .toList();
-      bProcessed =
-          bSlice
-              .map((b) => BitUtils.reverseBits8(b))
-              .toList()
-              .reversed
-              .toList();
+      aProcessed = aSlice.map((b) => BitUtils.reverseBits8(b));
+      bProcessed = bSlice.map((b) => BitUtils.reverseBits8(b));
     } else {
-      // Complicated case: shift bits to align halves
       int carried = 0;
       aProcessed =
           aSlice.map((b) {
@@ -214,23 +230,16 @@ final class BinaryNumeralString implements NumeralString<BinaryNumeralString> {
             carried = b;
             return BitUtils.reverseBits8(shifted);
           }).toList();
-      aProcessed = aProcessed.reversed.toList();
-
-      bProcessed =
-          bSlice.indexed
-              .map((e) {
-                final i = e.$1;
-                final b = BitUtils.reverseBits8(e.$2);
-                return i == 0 ? (b & 0x0F) : b; // clear MS nibble of first byte
-              })
-              .toList()
-              .reversed
-              .toList();
+      bProcessed = bSlice.indexed.map((e) {
+        final i = e.$1;
+        final b = BitUtils.reverseBits8(e.$2);
+        return i == 0 ? (b & 0x0F) : b; // clear MS nibble of first byte
+      });
     }
 
     return [
-      BinaryNumeralString._(aProcessed, u),
-      BinaryNumeralString._(bProcessed, v),
+      BinaryNumeralString._(aProcessed.toList().reversed.toList(), u),
+      BinaryNumeralString._(bProcessed.toList().reversed.toList(), v),
     ];
   }
 

@@ -12,9 +12,8 @@ import 'package:blockchain_utils/helper/extensions/extensions.dart';
 import 'package:blockchain_utils/utils/binary/bit_utils.dart';
 import 'package:blockchain_utils/utils/string/string.dart';
 
-/// Pads the given iterator (which MUST have length $\leq K * C$) with zero-bits to a
-/// multiple of $K$ bits.
-class Pad implements Iterator<bool> {
+/// Pads the given iterator
+class SinsemillaPad implements Iterator<bool> {
   /// The iterator we are padding.
   final List<bool> inner;
   int _len = 0;
@@ -27,12 +26,11 @@ class Pad implements Iterator<bool> {
   /// The amount of padding that remains to be emitted.
   int? get paddingLeft => _paddingLeft;
 
-  Pad(List<bool> inner) : inner = inner.immutable;
+  SinsemillaPad(List<bool> inner) : inner = inner.immutable;
 
   @override
   bool get current => _current ?? false;
   int _index = -1;
-  // @override
   bool get _currentInner => inner[_index];
 
   bool _moveNextInner() {
@@ -70,7 +68,6 @@ class Pad implements Iterator<bool> {
           } else {
             _paddingLeft = 0;
           }
-          // Loop again — now paddingLeft != null so the next iteration emits padding
         }
       }
     }
@@ -85,56 +82,59 @@ class Pad implements Iterator<bool> {
   }
 }
 
-class IncompletePoint<
+class _IncompletePoint<
   SCALAR extends PastaFieldElement<SCALAR>,
   BASE extends PastaFieldElement<BASE>,
   P extends PastaPoint<SCALAR, BASE, P>
 > {
   final P? point;
 
-  const IncompletePoint(this.point);
+  const _IncompletePoint(this.point);
 
-  IncompletePoint<SCALAR, BASE, P> operator +(
-    IncompletePoint<SCALAR, BASE, P> rhs,
+  _IncompletePoint<SCALAR, BASE, P> operator +(
+    _IncompletePoint<SCALAR, BASE, P> rhs,
   ) {
     final p = point;
     if (p == null) {
-      return const IncompletePoint(null);
+      return const _IncompletePoint(null);
     }
     final q = rhs.point;
     if (q == null) {
-      return const IncompletePoint(null);
+      return const _IncompletePoint(null);
     }
     final valid = !(p.isIdentity() || q.isIdentity() || p == q || p == -q);
     final result = valid ? (p + q) : null;
-    return IncompletePoint(result);
+    return _IncompletePoint(result);
   }
 
-  IncompletePoint<SCALAR, BASE, P> addAffine(
+  _IncompletePoint<SCALAR, BASE, P> addAffine(
     PastaAffinePoint<SCALAR, BASE, P> rhs,
   ) {
     final p = point;
     if (p == null) {
-      return const IncompletePoint(null);
+      return const _IncompletePoint(null);
     }
     final q = rhs.toCurve();
 
     final valid = !(p.isIdentity() || q.isIdentity() || p == q || p == -q);
     final result = valid ? (p + rhs) : null;
-    return IncompletePoint(result);
+    return _IncompletePoint(result);
   }
 }
 
 class HashDomainConst {
+  /// SWU hash-to-curve personalization for Sinsemilla Q
   static const String qPersonalization = "z.cash:SinsemillaQ";
+
+  /// SWU hash-to-curve personalization for Sinsemilla S
   static const String sPersonalization = "z.cash:SinsemillaS";
+
+  /// Number of bits of each message piece
   static const int K = 10;
   static const int C = 253;
   static const int lOrchardMerkle = 255;
 }
 
-/// insemillaHash is an algebraic hash function with collision resistance (for fixed input length) derived from assumed
-/// hardness of the Discrete Logarithm Problem.
 abstract final class BaseHashDomain<
   SCALAR extends PastaFieldElement<SCALAR>,
   BASE extends PastaFieldElement<BASE>,
@@ -149,15 +149,15 @@ abstract final class BaseHashDomain<
   PastaAffinePoint<SCALAR, BASE, P> pointAtIndex(int index);
 
   /// - [hashToPoint]: https://zips.z.cash/protocol/nu5.pdf#concretesinsemillahash
-  IncompletePoint<SCALAR, BASE, P> _hashToPoint(List<bool> msg) {
-    final padded = Pad(msg).toList();
+  _IncompletePoint<SCALAR, BASE, P> _hashToPoint(List<bool> msg) {
+    final padded = SinsemillaPad(msg).toList();
     Iterable<List<T>> chunks<T>(List<T> list, int size) sync* {
       for (var i = 0; i < list.length; i += size) {
         yield list.sublist(i, (i + size).clamp(0, list.length));
       }
     }
 
-    return chunks(padded, HashDomainConst.K).fold(IncompletePoint(q), (
+    return chunks(padded, HashDomainConst.K).fold(_IncompletePoint(q), (
       acc,
       chunk,
     ) {
@@ -184,6 +184,8 @@ abstract class BaseCommitDomain<
 > {
   abstract final BaseHashDomain<SCALAR, BASE, P, AFFINE> context;
   abstract final WnafBase<SCALAR, P> r;
+
+  /// [concretesinsemillacommit]: https://zips.z.cash/protocol/nu5.pdf#concretesinsemillacommit
   P? commit({required List<bool> msg, required SCALAR r}) {
     final point = context.hashToPoint(msg);
     if (point == null) return null;
@@ -191,6 +193,7 @@ abstract class BaseCommitDomain<
     return result;
   }
 
+  /// [concretesinsemillacommit]: https://zips.z.cash/protocol/nu5.pdf#concretesinsemillacommit
   BASE? shortCommit({required List<bool> msg, required SCALAR r}) {
     final commit = this.commit(msg: msg, r: r);
     if (commit == null) return null;
@@ -308,12 +311,22 @@ class CommitDomain
   @override
   final WnafBase<VestaFq, PallasPoint> r;
   CommitDomain({required this.context, required this.r});
-  factory CommitDomain.create(String domain) {
+
+  /// Constructs a new [CommitDomainNative] with a specific prefix string.
+  /// [sinsemillaS] pre generated sinsemilaS
+  factory CommitDomain.create(
+    String domain, {
+    List<PallasAffinePoint>? sinsemillaS,
+  }) {
     return CommitDomain.withSeperateDomain(
       hashDomain: domain,
       blindDomain: domain,
+      sinsemillaS: sinsemillaS,
     );
   }
+
+  /// Constructs a new [CommitDomain] from different values for [hashDomain] and [blindDomain]
+  /// [sinsemillaS] pre generated sinsemilaS
   factory CommitDomain.withSeperateDomain({
     required String hashDomain,
     required String blindDomain,
@@ -343,6 +356,9 @@ class CommitDomainNative
   @override
   final WnafBase<VestaNativeFq, PallasNativePoint> r;
   CommitDomainNative({required this.context, required this.r});
+
+  /// Constructs a new [CommitDomainNative] with a specific prefix string.
+  /// [sinsemillaS] pre generated sinsemilaS
   factory CommitDomainNative.create(
     String domain, {
     List<PallasAffineNativePoint>? sinsemillaS,
@@ -353,6 +369,9 @@ class CommitDomainNative
       sinsemillaS: sinsemillaS,
     );
   }
+
+  /// Constructs a new [CommitDomainNative] from different values for [hashDomain] and [blindDomain]
+  /// [sinsemillaS] pre generated sinsemilaS
   factory CommitDomainNative.withSeperateDomain({
     required String hashDomain,
     required String blindDomain,

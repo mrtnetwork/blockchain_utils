@@ -8,7 +8,6 @@ import 'package:blockchain_utils/crypto/crypto/zcrypto/pasta/point/pallas_native
 import 'package:blockchain_utils/helper/extensions/extensions.dart';
 
 class OrchardKeyUtils {
-  static const String commitIvkDomainName = "z.cash:Orchard-CommitIvk";
   static PallasNativePoint diversifyHashNative(List<int> bytes) {
     const String keyDiversificationPersonalization = "z.cash:Orchard-gd";
     final point = PallasNativePoint.hashToCurve(
@@ -20,39 +19,27 @@ class OrchardKeyUtils {
       ),
     );
     if (point.isIdentity()) {
-      throw OrchardKeyError.cryptoFailureWith(
+      throw OrchardKeyError.failed(
         "Diversify Hash",
-        reason:
-            "Diversification failed: hash-to-curve returned the identity element",
+        reason: "Hash-to-curve returned the identity element",
       );
     }
     return point;
   }
 
-  static PallasNativePoint kaOrchardPreparedNative({
+  static PallasNativePoint kaOrchardNative({
     required PallasNativePoint base,
     required VestaNativeFq sk,
   }) {
     final PallasNativePoint p = base * sk;
     if (p.isIdentity()) {
-      throw OrchardKeyError.cryptoFailureWith(
-        "kaOrchardPrepared",
+      throw OrchardKeyError.failed(
+        "kaOrchard",
         reason: "Scalar multiplication resulted in the identity point.",
       );
     }
     return p;
   }
-
-  // static WnafBase<VestaFq, PallasPoint> generator() {
-  //   const String orchardSpendAuthSigBasepointMessagePrefix = "z.cash:Orchard";
-  //   const String orchardSpendAuthSigBasepointMessage = "G";
-  //   return WnafBase<VestaFq, PallasPoint>(
-  //     PallasPoint.hashToCurve(
-  //       domainPrefix: orchardSpendAuthSigBasepointMessagePrefix,
-  //       message: StringUtils.encode(orchardSpendAuthSigBasepointMessage),
-  //     ),
-  //   );
-  // }
 
   static PallasNativeFp prfNf({
     required PallasNativeFp nk,

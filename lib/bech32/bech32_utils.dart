@@ -131,7 +131,7 @@ class Bech32BaseUtils {
     }
     if (pad) {
       if (bits > 0) {
-        // Pad the value with zeros to reach toBits
+        // SinsemillaPad the value with zeros to reach toBits
         ret.add((acc << (toBits - bits)) & maxOutVal);
       }
     } else if (bits >= fromBits ||

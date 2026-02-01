@@ -107,7 +107,7 @@ class ZCashAddressUtils {
 
   static ZCashDecodedAddressResult? parseAddress(
     String address, {
-    ZcashNetwork? expectedNetwork,
+    ZCashNetwork? expectedNetwork,
     ZCashAddressType? exceptedType,
   }) {
     final decode = _parseAddress(address, exceptedType: exceptedType);
@@ -122,9 +122,9 @@ class ZCashAddressUtils {
   }
 
   static void _validate({
-    required ZcashNetwork network,
+    required ZCashNetwork network,
     required ZCashAddressType type,
-    ZcashNetwork? expectedNetwork,
+    ZCashNetwork? expectedNetwork,
     ZCashAddressType? exceptedType,
   }) {
     if (expectedNetwork != null && expectedNetwork != network) {
@@ -144,7 +144,7 @@ class ZCashAddressUtils {
   static String encodeAddress({
     required List<int> bytes,
     required ZCashAddressType type,
-    required ZcashNetwork network,
+    required ZCashNetwork network,
     List<ZUnifiedReceiver>? receivers,
   }) {
     final config = ZcashConf().fromNetwork(network);

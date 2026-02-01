@@ -3,6 +3,7 @@ import 'package:blockchain_utils/crypto/crypto/zcrypto/bls12_381/src/fp.dart';
 import 'package:blockchain_utils/crypto/crypto/zcrypto/pasta/utils/utils.dart';
 import 'package:blockchain_utils/utils/equatable/equatable.dart';
 
+/// Implements arithmetic over the quadratic extension field Fp2.
 class Bls12Fp2 with Equality implements CryptoField<Bls12Fp2> {
   final Bls12Fp c0;
   final Bls12Fp c1;
@@ -75,7 +76,6 @@ class Bls12Fp2 with Equality implements CryptoField<Bls12Fp2> {
   @override
   bool isZero() => c0.isZero() && c1.isZero();
 
-  /// Lexicographically largest
   bool lexicographicallyLargest() =>
       c1.lexicographicallyLargest() ||
       (c1.isZero() && c0.lexicographicallyLargest());
@@ -88,10 +88,9 @@ class Bls12Fp2 with Equality implements CryptoField<Bls12Fp2> {
     return Bls12Fp2(c0: c0 * t, c1: -c1 * t);
   }
 
-  /// Conjugate Frobenius map
+  /// Raises this element to p.
   Bls12Fp2 frobeniusMap() => conjugate();
 
-  /// Raise to exponent given as 6-limb BigInt array (u64)
   Bls12Fp2 powVarTime(List<BigInt> exponent) {
     var res = Bls12Fp2.one();
     for (var limb in exponent.reversed) {
@@ -163,6 +162,7 @@ class Bls12Fp2 with Equality implements CryptoField<Bls12Fp2> {
   }
 }
 
+/// Implements arithmetic over the quadratic extension field Fp2.
 class Bls12NativeFp2 with Equality implements CryptoField<Bls12NativeFp2> {
   final Bls12NativeFp c0;
   final Bls12NativeFp c1;
@@ -207,10 +207,8 @@ class Bls12NativeFp2 with Equality implements CryptoField<Bls12NativeFp2> {
   /// One element
   factory Bls12NativeFp2.one() => _one;
 
-  /// Conjugate: a + bu -> a - bu
   Bls12NativeFp2 conjugate() => Bls12NativeFp2(c0: c0, c1: -c1);
 
-  /// Negation: -(a + bu) = -a - bu
   @override
   Bls12NativeFp2 operator -() => Bls12NativeFp2(c0: -c0, c1: -c1);
 
@@ -227,7 +225,6 @@ class Bls12NativeFp2 with Equality implements CryptoField<Bls12NativeFp2> {
   /// Multiply two Fp2 elements
   @override
   Bls12NativeFp2 operator *(Bls12NativeFp2 rhs) {
-    // Karatsuba / schoolbook multiplication with beta = -1
     final t0 = c0 * rhs.c0;
     final t1 = c1 * rhs.c1;
     final c0Res = t0 - t1; // c0 = a0*b0 - a1*b1
@@ -251,7 +248,6 @@ class Bls12NativeFp2 with Equality implements CryptoField<Bls12NativeFp2> {
   @override
   bool isZero() => c0.isZero() && c1.isZero();
 
-  /// Lexicographically largest
   bool lexicographicallyLargest() =>
       c1.lexicographicallyLargest() ||
       (c1.isZero() && c0.lexicographicallyLargest());
@@ -264,7 +260,7 @@ class Bls12NativeFp2 with Equality implements CryptoField<Bls12NativeFp2> {
     return Bls12NativeFp2(c0: c0 * t, c1: -c1 * t);
   }
 
-  /// Conjugate Frobenius map
+  /// Raises this element to p.
   Bls12NativeFp2 frobeniusMap() => conjugate();
 
   /// Raise to exponent given as 6-limb BigInt array (u64)

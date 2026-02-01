@@ -23,10 +23,10 @@ class _Bip32KeySerializer {
   static List<int> serializeBytes(
     List<int> keyBytes,
     Bip32KeyData keyData,
-    List<int> keyNetVerBytes,
+    List<int>? keyNetVerBytes,
   ) {
     return [
-      ...keyNetVerBytes,
+      ...keyNetVerBytes ?? [],
       ...keyData.depth.toBytes(),
       ...keyData.fingerPrint.toBytes(),
       ...keyData.index.toBytes(),
@@ -64,16 +64,17 @@ class Bip32PrivateKeySerializer {
     );
   }
 
-  static List<int> serializeBytes(
-    IPrivateKey privKey,
-    Bip32KeyData keyData, [
+  static List<int> serializeBytes({
+    required IPrivateKey privKey,
+    required Bip32KeyData keyData,
     Bip32KeyNetVersions? keyNetVer,
-  ]) {
+    bool withPrefix = true,
+  }) {
     keyNetVer ??= Bip32Const.mainNetKeyNetVersions;
     return _Bip32KeySerializer.serializeBytes(
       [0x00, ...privKey.raw],
       keyData,
-      keyNetVer.private,
+      withPrefix ? keyNetVer.private : null,
     );
   }
 }
@@ -95,16 +96,17 @@ class Bip32PublicKeySerializer {
     );
   }
 
-  static List<int> serializeBytes(
-    IPublicKey pubKey,
-    Bip32KeyData keyData, [
-    Bip32KeyNetVersions? keyNetVer,
-  ]) {
+  static List<int> serializeBytes({
+    required IPublicKey pubKey,
+    required Bip32KeyData keyData,
+    required Bip32KeyNetVersions? keyNetVer,
+    bool withPrefix = true,
+  }) {
     keyNetVer ??= Bip32Const.mainNetKeyNetVersions;
     return _Bip32KeySerializer.serializeBytes(
       pubKey.compressed,
       keyData,
-      keyNetVer.private,
+      withPrefix ? keyNetVer.private : null,
     );
   }
 }
@@ -160,6 +162,30 @@ class Bip32KeyDeserializer {
     return Bip32DeserializedKey(keyParts.$1, keyParts.$2, isPublic);
   }
 
+  static Bip32DeserializedKey deserializeKeyBytesWithoutPrefix(
+    List<int> serKeyBytes, {
+    bool isPublic = false,
+  }) {
+    // Validate length
+    if (isPublic &&
+        serKeyBytes.length !=
+            (Bip32KeySerConst.serializedPubKeyByteLen -
+                Bip32KeyNetVersionsConst.keyNetVersionByteLen)) {
+      throw Bip32KeyError('Invalid extended public key.');
+    }
+    if (!isPublic &&
+        !Bip32KeySerConst.serializedPrivKeyByteLen.contains(
+          serKeyBytes.length + Bip32KeyNetVersionsConst.keyNetVersionByteLen,
+        )) {
+      throw Bip32KeyError('Invalid extended private key.');
+    }
+
+    // Get parts back
+    final keyParts = _getPartsFromBytes(serKeyBytes, isPublic, offset: 0);
+
+    return Bip32DeserializedKey(keyParts.$1, keyParts.$2, isPublic);
+  }
+
   /// Deserialize a key.
   static Bip32DeserializedKey deserializeKey(
     String serKeyStr, {
@@ -191,9 +217,10 @@ class Bip32KeyDeserializer {
   /// Get back key parts from serialized key bytes.
   static (List<int>, Bip32KeyData) _getPartsFromBytes(
     List<int> serKeyBytes,
-    bool isPublic,
-  ) {
-    final depthIdx = Bip32KeyNetVersions.length;
+    bool isPublic, {
+    int offset = Bip32KeyNetVersionsConst.keyNetVersionByteLen,
+  }) {
+    final depthIdx = offset;
     final fprintIdx = depthIdx + Bip32Depth.fixedLength();
     final keyIndexIdx = fprintIdx + Bip32FingerPrint.fixedLength();
     final chainCodeIdx = keyIndexIdx + Bip32KeyIndex.fixedLength();

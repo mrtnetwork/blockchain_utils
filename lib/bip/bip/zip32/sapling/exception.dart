@@ -2,13 +2,13 @@ import 'package:blockchain_utils/crypto/crypto/exception/exception.dart';
 
 class SaplingKeyError extends CryptoException {
   const SaplingKeyError(super.message, {super.details});
-  static SaplingKeyError cryptoFailureWith(
+  static SaplingKeyError failed(
     String operation, {
     String? reason,
     Map<String, dynamic>? details,
   }) {
     return SaplingKeyError(
-      "Cryptographic failure during $operation",
+      "Orchard key operation failed during $operation",
       details: details,
     );
   }

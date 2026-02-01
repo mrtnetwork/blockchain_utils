@@ -15,33 +15,47 @@ import 'package:blockchain_utils/bip/zcash/src/types.dart';
 import 'package:blockchain_utils/bip/zcash/src/ufvk.dart';
 import 'package:blockchain_utils/bip/zcash/src/uivk.dart';
 
+/// Represents a unified spending key (USK) containing transparent, Sapling, and Orchard components.
 class UnifiedSpendingKey {
-  final Zip32Sapling sapling;
-  final Zip32Orchard orchard;
+  /// Transparent BIP32/SLIP-10 secp256k1 spending key component.
   final Bip32Slip10Secp256k1 transparent;
+
+  /// Sapling ZIP32 spending key component.
+  final Zip32Sapling sapling;
+
+  /// Orchard ZIP32 spending key component.
+  final Zip32Orchard orchard;
+
+  /// ZIP32 coin configuration for key derivation.
   final ZIP32CoinConfig config;
-  const UnifiedSpendingKey._({
+  final ZCryptoContext context;
+  UnifiedFullViewingKey? _cachedFvk;
+  UnifiedSpendingKey._({
     required this.sapling,
     required this.orchard,
     required this.transparent,
     required this.config,
+    required this.context,
   });
-  factory UnifiedSpendingKey(
-    Zip32Sapling sapling,
-    Zip32Orchard orchard,
-    Bip32Slip10Secp256k1 transparent,
-    ZIP32CoinConfig config,
-  ) {
+  factory UnifiedSpendingKey({
+    required Zip32Sapling sapling,
+    required Zip32Orchard orchard,
+    required Bip32Slip10Secp256k1 transparent,
+    required ZIP32CoinConfig config,
+    required ZCryptoContext context,
+  }) {
     return UnifiedSpendingKey._(
       sapling: sapling,
       orchard: orchard,
       transparent: transparent,
+
       config: config,
+      context: context,
     );
   }
   factory UnifiedSpendingKey.fromSeed({
     required List<int> seedBytes,
-    required ZcashNetwork network,
+    required ZCashNetwork network,
     required ZCryptoContext context,
     Bip32KeyIndex? accountIndex,
   }) {
@@ -80,18 +94,20 @@ class UnifiedSpendingKey {
       sapling: sapling,
       orchard: orchard,
       transparent: transparent,
+      context: context,
       config: config,
     );
   }
   factory UnifiedSpendingKey.fromUnifiedSpendKeyBytes({
     required List<int> uskBytes,
-    required ZcashNetwork network,
+    required ZCashNetwork network,
     required ZCryptoContext context,
   }) {
     final decode = ZCashEncodingUtils.decodeUnifiedSpendKey(uskBytes);
     final config = ZcashConf().fromNetwork(network);
     return UnifiedSpendingKey._(
       config: config,
+      context: context,
       sapling: Zip32Sapling.fromExtendedSpendingKeyBytes(
         decode.firstWhere((e) => e.type == Typecode.sapling).data,
       ),
@@ -99,16 +115,17 @@ class UnifiedSpendingKey {
         context: context,
         sk: decode.firstWhere((e) => e.type == Typecode.orchard).data,
       ),
-      transparent: Bip32Slip10Secp256k1.fromExtendedKeyBytes(
+      transparent: Bip32Slip10Secp256k1.fromExtendedPrivateKeyBytes(
         decode.firstWhere((e) => e.type == Typecode.p2pkh).data,
       ),
     );
   }
 
+  /// Encodes this unified spending key (USK) into Zcash-compatible unified bytes.
   List<int> encodeUnifiedSpeningKeyBytes() {
     return ZCashEncodingUtils.encodeUnifiedSpendKey([
       ReceiverP2pkh(
-        data: transparent.privateKey.toExtendedBytes,
+        data: transparent.privateKey.toExtendedBytes(withPrefix: false),
         mode: UnifiedReceiverMode.sk,
       ),
       ReceiverSapling(
@@ -122,78 +139,108 @@ class UnifiedSpendingKey {
     ]);
   }
 
+  /// Converts this USK into its corresponding unified full viewing key (UFVK).
   UnifiedFullViewingKey toUnifiedFullViewingKey() {
-    final transparent = Bip32Slip10Secp256k1.fromPublicKey(
-      this.transparent.publicKey.compressed,
-      keyData: this.transparent.publicKey.keyData,
-      keyNetVer: this.transparent.keyNetVersions,
-    );
-    return UnifiedFullViewingKey(
-      network: config.network,
-      orchard: orchard.publicKey.fvk,
-      sapling: sapling.publicKey.toDiversifiableFullViewingKey(),
-      transparent: transparent,
-    );
+    return _cachedFvk ??= (() {
+      final transparent = Bip32Slip10Secp256k1.fromPublicKey(
+        this.transparent.publicKey.compressed,
+        keyData: this.transparent.publicKey.keyData,
+        keyNetVer: this.transparent.keyNetVersions,
+      );
+      return UnifiedFullViewingKey(
+        network: config.network,
+        orchard: orchard.publicKey.fvk,
+        sapling: sapling.publicKey.toDiversifiableFullViewingKey(),
+        transparent: transparent,
+      );
+    }());
   }
 
-  UnifiedDerivedAddress address({
-    required ZCryptoContext context,
+  UnifiedIncomingViewingKey toUnifiedIncomingViewingKey({
+    Bip44Changes scope = Bip44Changes.chainExt,
+  }) => toUnifiedFullViewingKey().toUnifiedIncomingViewingKey(
+    context,
+    scope: scope,
+  );
 
-    required DiversifierIndex index,
-    UnifiedAddressRequest request =
-        const UnifiedAddressRequest.defaultRequest(),
+  /// Returns the Sapling-derived address at the given diversifier index.
+  SaplingDerivedAddress saplingAddressAt(
+    DiversifierIndex index, {
+    Bip44Changes scope = Bip44Changes.chainExt,
+  }) => toUnifiedIncomingViewingKey(scope: scope).saplingAddressAt(index);
 
+  /// Finds the first Sapling-derived address starting from the given diversifier index within the specified scope.
+  SaplingDerivedAddress? findSaplingAddressFrom(
+    DiversifierIndex from, {
     Bip44Changes scope = Bip44Changes.chainExt,
   }) {
-    return toUnifiedFullViewingKey().address(
+    return toUnifiedIncomingViewingKey(
       scope: scope,
-      index: index,
-      request: request,
-      context: context,
-    );
+    ).findSaplingAddressFrom(from);
   }
 
-  UnifiedDerivedAddress findAddress({
-    required ZCryptoContext context,
-
-    required DiversifierIndex from,
-    UnifiedAddressRequest request =
-        const UnifiedAddressRequest.defaultRequest(),
-    Bip44Changes scope = Bip44Changes.chainExt,
-  }) {
-    return toUnifiedFullViewingKey().findAddress(
-      scope: scope,
-      from: from,
-      request: request,
-      context: context,
-    );
-  }
-
-  UnifiedDerivedAddress defaultAddress(
-    ZCryptoContext context, {
-    Bip44Changes scope = Bip44Changes.chainExt,
-    UnifiedAddressRequest request =
-        const UnifiedAddressRequest.defaultRequest(),
-  }) {
-    return toUnifiedFullViewingKey().defaultAddress(
-      scope: scope,
-      request: request,
-      context: context,
-    );
-  }
-
-  String defaultTransparentAddress(
-    ZCryptoContext context, {
+  /// Returns the transparent-derived address at the given index with specified pubkey mode and address type.
+  TransparentDerivedAddress transparentAddress(
+    DiversifierIndex index, {
     Bip44Changes scope = Bip44Changes.chainExt,
     PubKeyModes pubKeyMode = PubKeyModes.compressed,
     List<int>? transparentScriptHash,
     TransparentAddressRequestType transparentAddressType =
         TransparentAddressRequestType.p2pkh,
   }) {
-    return toUnifiedFullViewingKey().defaultTransparentAddress(
-      context,
+    return toUnifiedIncomingViewingKey(scope: scope).transparentAddress(
+      index,
       pubKeyMode: pubKeyMode,
+      transparentAddressType: transparentAddressType,
+      transparentScriptHash: transparentScriptHash,
+    );
+  }
+
+  /// Returns the unified address at the given index, using the specified address request configuration.
+  UnifiedDerivedAddress address({
+    required DiversifierIndex index,
+    UnifiedAddressRequest request =
+        const UnifiedAddressRequest.defaultRequest(),
+    Bip44Changes scope = Bip44Changes.chainExt,
+  }) {
+    return toUnifiedIncomingViewingKey(
       scope: scope,
+    ).address(index: index, request: request);
+  }
+
+  /// Finds the first unified address starting from the given index that matches the specified request.
+  UnifiedDerivedAddress findAddress({
+    required DiversifierIndex from,
+    Bip44Changes scope = Bip44Changes.chainExt,
+    UnifiedAddressRequest request =
+        const UnifiedAddressRequest.defaultRequest(),
+  }) {
+    return toUnifiedIncomingViewingKey(
+      scope: scope,
+    ).findAddress(from: from, request: request);
+  }
+
+  /// Returns the default unified address for this account using the specified request configuration.
+  UnifiedDerivedAddress defaultAddress({
+    UnifiedAddressRequest request =
+        const UnifiedAddressRequest.defaultRequest(),
+    Bip44Changes scope = Bip44Changes.chainExt,
+  }) {
+    return toUnifiedIncomingViewingKey(
+      scope: scope,
+    ).defaultAddress(request: request);
+  }
+
+  /// Returns the default transparent-derived address with the specified pubkey mode and address type.
+  TransparentDerivedAddress defaultTransparentAddress({
+    Bip44Changes scope = Bip44Changes.chainExt,
+    PubKeyModes pubKeyMode = PubKeyModes.compressed,
+    List<int>? transparentScriptHash,
+    TransparentAddressRequestType transparentAddressType =
+        TransparentAddressRequestType.p2pkh,
+  }) {
+    return toUnifiedIncomingViewingKey(scope: scope).defaultTransparentAddress(
+      pubKeyMode: pubKeyMode,
       transparentAddressType: transparentAddressType,
       transparentScriptHash: transparentScriptHash,
     );

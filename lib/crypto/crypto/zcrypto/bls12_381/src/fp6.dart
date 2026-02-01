@@ -2,6 +2,7 @@ import 'package:blockchain_utils/crypto/crypto/zcrypto/bls12_381/src/fp.dart';
 import 'package:blockchain_utils/crypto/crypto/zcrypto/bls12_381/src/fp2.dart';
 import 'package:blockchain_utils/utils/equatable/equatable.dart';
 
+/// Cubic extension field GF(p⁶) over GF(p²), represented as c0 + c1·v + c2·v² with v³ = u + 1.
 class Bls12Fp6 with Equality {
   final Bls12Fp2 c0;
   final Bls12Fp2 c1;
@@ -175,15 +176,11 @@ class Bls12Fp6 with Equality {
   List<dynamic> get variables => [c0, c1, c2];
 }
 
+/// Cubic extension field GF(p⁶) over GF(p²), represented as c0 + c1·v + c2·v² with v³ = u + 1.
 class Bls12NativeFp6 with Equality {
   final Bls12NativeFp2 c0;
   final Bls12NativeFp2 c1;
   final Bls12NativeFp2 c2;
-
-  @override
-  String toString() {
-    return "$c0 + $c1 + $c2";
-  }
 
   const Bls12NativeFp6({required this.c0, required this.c1, required this.c2});
   factory Bls12NativeFp6.conditionalSelect(
@@ -202,12 +199,16 @@ class Bls12NativeFp6 with Equality {
     c1: Bls12NativeFp2.zero(),
     c2: Bls12NativeFp2.zero(),
   );
+
+  /// zero element
   factory Bls12NativeFp6.zero() => _zero;
   static final _one = Bls12NativeFp6(
     c0: Bls12NativeFp2.one(),
     c1: Bls12NativeFp2.zero(),
     c2: Bls12NativeFp2.zero(),
   );
+
+  /// on element
   factory Bls12NativeFp6.one() => _one;
 
   factory Bls12NativeFp6.fromFp(Bls12NativeFp f) => Bls12NativeFp6(
@@ -221,6 +222,7 @@ class Bls12NativeFp6 with Equality {
     c2: Bls12NativeFp2.zero(),
   );
 
+  /// check zero
   bool isZero() => c0.isZero() && c1.isZero() && c2.isZero();
 
   /// Operator overrides
@@ -363,4 +365,8 @@ class Bls12NativeFp6 with Equality {
 
   @override
   List<dynamic> get variables => [c0, c1, c2];
+  @override
+  String toString() {
+    return "$c0 + $c1 + $c2";
+  }
 }

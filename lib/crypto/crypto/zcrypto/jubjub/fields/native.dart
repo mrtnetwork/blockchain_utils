@@ -46,18 +46,20 @@ abstract class JubJubNativeFieldElement<F extends JubJubNativeFieldElement<F>>
   }
 }
 
+/// Element of the JubJub field Fq.
 class JubJubNativeFq extends JubJubNativeFieldElement<JubJubNativeFq>
     with Equality
     implements JubJubField<JubJubNativeFq> {
   @override
   BigInt get p => JubJubNativeConst.qJ;
   JubJubNativeFq(BigInt v) : super(v % JubJubNativeConst.qJ);
+
+  /// Creates a field element assuming v is already in canonical form.
   JubJubNativeFq.nP(super.v) : assert(v < JubJubNativeConst.qJ);
   factory JubJubNativeFq.from(int v) {
     if (v.isNegative) return JubJubNativeFq(BigInt.from(v));
     return JubJubNativeFq.nP(BigInt.from(v));
   }
-  // bool isOdd() => v.isOdd;
   factory JubJubNativeFq.random() {
     return JubJubNativeFq.fromBytes64(QuickCrypto.generateRandom(64));
   }
@@ -222,9 +224,11 @@ class JubJubNativeFq extends JubJubNativeFieldElement<JubJubNativeFq>
   List<dynamic> get variables => [v, p];
 }
 
+/// Element of the JubJub scalar field Fr.
 class JubJubNativeFr extends JubJubNativeFieldElement<JubJubNativeFr>
     with Equality
     implements JubJubScalar<JubJubNativeFr> {
+  /// Creates a field element assuming v is already in canonical form.
   JubJubNativeFr.nP(super.v) : assert(v < JubJubNativeConst.rJ);
   @override
   BigInt get p => JubJubNativeConst.rJ;

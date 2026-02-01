@@ -298,7 +298,7 @@ class OrchardSpendValidatingKey with Equality {
   const OrchardSpendValidatingKey._(this.key);
   factory OrchardSpendValidatingKey(OrchardSpendVerificationKey pk) {
     if (pk.toBytes()[31] & 0x80 != 0) {
-      throw OrchardKeyError.cryptoFailureWith(
+      throw OrchardKeyError.failed(
         "OrchardSpendValidatingKey",
         reason: "Invalid spend verification key.",
       );
@@ -324,7 +324,7 @@ class OrchardCommitIvkRandomness {
   const OrchardCommitIvkRandomness._(this.inner);
   factory OrchardCommitIvkRandomness(VestaNativeFq inner) {
     if (inner.isZero()) {
-      throw OrchardKeyError.cryptoFailureWith("OrchardCommitIvkRandomness");
+      throw OrchardKeyError.failed("OrchardCommitIvkRandomness");
     }
     return OrchardCommitIvkRandomness._(inner);
   }
@@ -351,9 +351,7 @@ class OrchardKeyAgreementPrivateKey {
     required VestaNativeFq rivk,
     required ZCryptoContext context,
   }) {
-    final donmain = context.getCommitDomain(
-      OrchardKeyUtils.commitIvkDomainName,
-    );
+    final donmain = context.getCommitDomain("z.cash:Orchard-CommitIvk");
     final f = donmain.shortCommit(
       msg: [
         ...ak.toBits().sublist(0, PallasFPConst.numBits),
@@ -362,14 +360,14 @@ class OrchardKeyAgreementPrivateKey {
       r: rivk,
     );
     if (f == null) {
-      throw OrchardKeyError.cryptoFailureWith("commitIvk");
+      throw OrchardKeyError.failed("commitIvk");
     }
     return f;
   }
 
   factory OrchardKeyAgreementPrivateKey(VestaNativeFq scalar) {
     if (scalar.isZero()) {
-      throw OrchardKeyError.cryptoFailureWith(
+      throw OrchardKeyError.failed(
         "OrchardKeyAgreementPrivateKey",
         reason: "Invalid scalar. scalar must not be zero.",
       );
@@ -397,9 +395,9 @@ class OrchardKeyAgreementPrivateKey {
       context: context,
     );
     if (scalar.isZero()) {
-      throw OrchardKeyError.cryptoFailureWith(
+      throw OrchardKeyError.failed(
         "deriveInner",
-        reason: "Key derivation failed: commitIvk produced a zero scalar.",
+        reason: "commitIvk produced a zero scalar.",
       );
     }
     return scalar;
@@ -567,7 +565,7 @@ class OrchardDiversifiedTransmissionKey extends DiversifiedTransmissionKey {
   }) {
     final gd = OrchardKeyUtils.diversifyHashNative(d.inner);
     return OrchardDiversifiedTransmissionKey(
-      OrchardKeyUtils.kaOrchardPreparedNative(base: gd, sk: ivk),
+      OrchardKeyUtils.kaOrchardNative(base: gd, sk: ivk),
     );
   }
   factory OrchardDiversifiedTransmissionKey.fromBytes(List<int> bytes) {

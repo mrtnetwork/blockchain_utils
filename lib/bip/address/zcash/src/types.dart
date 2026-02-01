@@ -16,7 +16,7 @@ enum ZCashAddressType {
 class ZCashDecodedAddressResult {
   final List<ZUnifiedReceiver>? unifiedReceiver;
   final List<int> addressBytes;
-  final ZcashNetwork network;
+  final ZCashNetwork network;
   final ZCashAddressType type;
   ZCashDecodedAddressResult({
     this.unifiedReceiver,

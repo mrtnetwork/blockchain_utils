@@ -9,7 +9,21 @@ import 'package:blockchain_utils/utils/binary/utils.dart';
 import 'package:blockchain_utils/utils/equatable/equatable.dart';
 import 'package:blockchain_utils/utils/json/extension/json.dart';
 
-enum UnifiedReceiverMode { address, ivk, fvk, sk }
+enum UnifiedReceiverMode {
+  address,
+  ivk,
+  fvk,
+  sk;
+
+  String viewName() {
+    return switch (this) {
+      sk => "Spending key",
+      ivk => "Incomming view key",
+      fvk => "Full viewing key",
+      address => "address",
+    };
+  }
+}
 
 enum Typecode implements Comparable<Typecode> {
   p2pkh(code: 0x00, dataLength: 20, fvkLength: 65, ivkLength: 65, skLength: 74),
@@ -350,12 +364,12 @@ class ReceiverUnknown extends ZUnifiedReceiver {
   List<dynamic> get variables => [type, data, typeCode];
 }
 
-enum ZcashNetwork {
+enum ZCashNetwork {
   mainnet("Mainnet"),
   testnet("Testnet"),
   regtest("Regtest");
 
-  const ZcashNetwork(this.name);
+  const ZCashNetwork(this.name);
   final String name;
 
   ZIP32CoinConfig config() {

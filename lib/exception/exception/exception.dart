@@ -41,8 +41,8 @@ class ArgumentException extends BlockchainUtilsException
     int? expecteLen,
     Map<String, dynamic>? details,
   }) => ArgumentException._(
-    "Invalid $name arguments.",
-    details: {"operation": operation, "reason": reason},
+    "Invalid $operation arguments.",
+    details: {"reason": reason},
     name: name,
   );
 
@@ -78,7 +78,6 @@ class StateException extends BlockchainUtilsException implements StateError {
 class ItemNotFoundException extends ArgumentException {
   final Object? value;
 
-  /// Constructor to initialize the exception with a specific message.
   ItemNotFoundException({
     this.value,
     String? message,

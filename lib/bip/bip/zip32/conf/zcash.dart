@@ -20,7 +20,7 @@ class ZcashConf {
     type: EllipticCurveTypes.redJubJub,
     chainType: ChainType.mainnet,
     defPath: derPathHardenedShort,
-    network: ZcashNetwork.mainnet,
+    network: ZCashNetwork.mainnet,
     purpose: Bip32KeyIndex.hardenIndex(32),
     keyNetVer: Bip32Const.mainNetKeyNetVersions,
     addressEncoder:
@@ -49,7 +49,7 @@ class ZcashConf {
     defPath: derPathHardenedShort,
     purpose: Bip32KeyIndex.hardenIndex(32),
     type: EllipticCurveTypes.redJubJub,
-    network: ZcashNetwork.testnet,
+    network: ZCashNetwork.testnet,
     keyNetVer: Bip32Const.testNetKeyNetVersions,
     addressEncoder:
         (params, config) => ZCashAddrEncoder().encodeKey(
@@ -76,7 +76,7 @@ class ZcashConf {
     chainType: ChainType.testnet,
     type: EllipticCurveTypes.redJubJub,
     purpose: Bip32KeyIndex.hardenIndex(32),
-    network: ZcashNetwork.regtest,
+    network: ZCashNetwork.regtest,
     defPath: derPathHardenedShort,
     keyNetVer: Bip32Const.testNetKeyNetVersions,
     addressEncoder:
@@ -104,7 +104,7 @@ class ZcashConf {
     type: EllipticCurveTypes.redPallas,
     chainType: ChainType.mainnet,
     defPath: derPathHardenedShort,
-    network: ZcashNetwork.mainnet,
+    network: ZCashNetwork.mainnet,
     purpose: Bip32KeyIndex.hardenIndex(32),
     keyNetVer: Bip32Const.mainNetKeyNetVersions,
     addressEncoder:
@@ -133,7 +133,7 @@ class ZcashConf {
     defPath: derPathHardenedShort,
     purpose: Bip32KeyIndex.hardenIndex(32),
     type: EllipticCurveTypes.redPallas,
-    network: ZcashNetwork.testnet,
+    network: ZCashNetwork.testnet,
     keyNetVer: Bip32Const.testNetKeyNetVersions,
     addressEncoder:
         (params, config) => ZCashAddrEncoder().encodeKey(
@@ -160,7 +160,7 @@ class ZcashConf {
     chainType: ChainType.testnet,
     type: EllipticCurveTypes.redPallas,
     purpose: Bip32KeyIndex.hardenIndex(32),
-    network: ZcashNetwork.regtest,
+    network: ZCashNetwork.regtest,
     defPath: derPathHardenedShort,
     keyNetVer: Bip32Const.testNetKeyNetVersions,
     addressEncoder:
@@ -187,7 +187,7 @@ class ZcashConf {
     zCashRegtestOrchard,
     zCashTestnetSapling,
   ];
-  ZIP32CoinConfig fromNetwork(ZcashNetwork network) {
+  ZIP32CoinConfig fromNetwork(ZCashNetwork network) {
     return _configs.firstWhere(
       (e) => e.network == network,
       orElse: () => throw ItemNotFoundException(value: network.name),

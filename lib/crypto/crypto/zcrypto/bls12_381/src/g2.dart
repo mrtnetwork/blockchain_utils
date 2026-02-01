@@ -12,13 +12,13 @@ import 'package:blockchain_utils/utils/compare/hash_code.dart';
 import 'package:blockchain_utils/utils/equatable/equatable.dart';
 import 'package:blockchain_utils/utils/numbers/utils/int_utils.dart';
 
+/// BLS12-381 G2 group in projective coordinates (x : y : z) over GF(p²).
 class G2Projective extends Bls12Point<G2Projective> {
   final Bls12Fp2 x;
   final Bls12Fp2 y;
   final Bls12Fp2 z;
   G2Projective({required this.x, required this.y, required this.z});
 
-  ///
   factory G2Projective.conditionalSelect(
     G2Projective a,
     G2Projective b,
@@ -31,10 +31,11 @@ class G2Projective extends Bls12Point<G2Projective> {
     );
   }
 
+  /// identity element
   factory G2Projective.identity() =>
       G2Projective(x: Bls12Fp2.zero(), y: Bls12Fp2.one(), z: Bls12Fp2.zero());
 
-  ///
+  /// generator
   factory G2Projective.generator() => G2Projective(
     x: Bls12Fp2(
       c0: Bls12Fp([
@@ -86,14 +87,18 @@ class G2Projective extends Bls12Point<G2Projective> {
       ),
     );
   }
+
+  /// Creates a G2 point from bytes, validating that it is on-curve and in the correct subgroup.
   factory G2Projective.fromBytes(List<int> bytes) {
     return G2Projective.fromAffine(G2AffinePoint.fromBytes(bytes));
   }
+
+  /// Creates a G2 point from bytes without checking curve or subgroup validity.
   factory G2Projective.fromBytesUnchecked(List<int> bytes) {
     return G2Projective.fromAffine(G2AffinePoint.fromBytesUnchecked(bytes));
   }
 
-  ///
+  /// simple double-and-add implementation of point multiplication
   G2Projective multiply(List<int> by) {
     assert(by.length == 32);
     G2Projective acc = G2Projective.identity();
@@ -106,7 +111,7 @@ class G2Projective extends Bls12Point<G2Projective> {
     return acc;
   }
 
-  ///
+  /// Multiply by `BLS_X`, using double and add.
   G2Projective mulByX() {
     G2Projective result = G2Projective.identity();
 
@@ -180,19 +185,17 @@ class G2Projective extends Bls12Point<G2Projective> {
     return G2Projective(x: x * coeffX, y: -y, z: z);
   }
 
-  //
+  /// Clears the G2 cofactor.
   G2Projective clearCofactor() {
     final t1 = mulByX();
     final t2 = psi();
     return double().psi2() + (t1 + t2).mulByX() - t1 - t2 - this;
   }
 
-  ///
   Bls12Fp2 mulBy3b(Bls12Fp2 x) {
     return x * Bls12Fp2.b3();
   }
 
-  ///
   @override
   G2Projective double() {
     Bls12Fp2 t0 = y.square();
@@ -216,7 +219,6 @@ class G2Projective extends Bls12Point<G2Projective> {
     return G2Projective(x: x3, y: y3, z: z3);
   }
 
-  ///
   @override
   G2Projective operator *(JubJubFq rhs) {
     return multiply(rhs.toBytes());
@@ -233,7 +235,6 @@ class G2Projective extends Bls12Point<G2Projective> {
     }
   }
 
-  ///
   @override
   G2Projective operator +(Bls12Point<G2Projective> rhs) {
     switch (rhs) {
@@ -306,6 +307,7 @@ class G2Projective extends Bls12Point<G2Projective> {
     throw CryptoException.operationNotSupported;
   }
 
+  /// Serializes the point to bytes in either compressed or uncompressed form.
   @override
   List<int> toBytes({PubKeyModes mode = PubKeyModes.compressed}) {
     return toAffine().toBytes(mode: mode);
@@ -316,13 +318,13 @@ class G2Projective extends Bls12Point<G2Projective> {
     return G2Projective(x: x, y: -y, z: z);
   }
 
-  ///
+  /// check identity
   @override
   bool isIdentity() {
     return z.isZero();
   }
 
-  ///
+  /// Checks whether the point satisfies the BLS12-381 curve equation in projective form.
   bool isOnCurve() {
     // Y^2 * Z = X^3 + b * Z^3
     return (y.square() * z) ==
@@ -360,6 +362,7 @@ class G2Projective extends Bls12Point<G2Projective> {
   int get hashCode => HashCodeGenerator.generateHashCode([x, y, z]);
 }
 
+/// BLS12-381 G2 group afiine in projective coordinates (x : y : z) over GF(p²).
 class G2AffinePoint extends Bls12AffinePoint<G2Projective> with Equality {
   final Bls12Fp2 x;
   final Bls12Fp2 y;
@@ -481,6 +484,7 @@ class G2AffinePoint extends Bls12AffinePoint<G2Projective> with Equality {
     return G2AffinePoint(x: x, y: y, infinity: false);
   }
 
+  /// Creates a G2 affine point from bytes, validating that it is on-curve and in the correct subgroup.
   factory G2AffinePoint.fromBytes(List<int> bytes) {
     final affine = G2AffinePoint.fromBytesUnchecked(bytes);
     if (affine.isOnCurve() && affine.isTorsionFree()) {
@@ -491,6 +495,8 @@ class G2AffinePoint extends Bls12AffinePoint<G2Projective> with Equality {
       reason: "Invalid G2 encoding.",
     );
   }
+
+  /// Creates a G2 affine point from bytes without checking curve or subgroup validity.
   factory G2AffinePoint.fromBytesUnchecked(List<int> bytes) {
     if (bytes.length == 48) {
       return G2AffinePoint._fromCompressedBytes(bytes);
@@ -514,8 +520,12 @@ class G2AffinePoint extends Bls12AffinePoint<G2Projective> with Equality {
       infinity: IntUtils.ctSelectBool(a.infinity, b.infinity, choice),
     );
   }
+
+  /// identity element
   factory G2AffinePoint.identity() =>
       G2AffinePoint(x: Bls12Fp2.zero(), y: Bls12Fp2.one(), infinity: true);
+
+  /// generator
   factory G2AffinePoint.generator() => G2AffinePoint(
     x: Bls12Fp2(
       c0: Bls12Fp([
@@ -599,6 +609,7 @@ class G2AffinePoint extends Bls12AffinePoint<G2Projective> with Equality {
     return p.psi() == p.mulByX();
   }
 
+  /// Checks whether the point satisfies the BLS12-381 curve equation in projective form.
   bool isOnCurve() {
     if (infinity) return true;
     return (y.square() - (x.square() * x)) == Bls12Fp2.b();
@@ -681,6 +692,7 @@ class G2AffinePoint extends Bls12AffinePoint<G2Projective> with Equality {
     return res;
   }
 
+  /// Serializes the point to bytes in either compressed or uncompressed form.
   @override
   List<int> toBytes({PubKeyModes mode = PubKeyModes.compressed}) {
     return switch (mode) {
@@ -689,6 +701,7 @@ class G2AffinePoint extends Bls12AffinePoint<G2Projective> with Equality {
     };
   }
 
+  /// check identity
   @override
   bool isIdentity() {
     return infinity;
@@ -712,6 +725,7 @@ class G2AffinePoint extends Bls12AffinePoint<G2Projective> with Equality {
   }
 }
 
+/// BLS12-381 G2 group in projective coordinates (x : y : z) over GF(p²).
 class G2NativeProjective extends Bls12NativePoint<G2NativeProjective> {
   final Bls12NativeFp2 x;
   final Bls12NativeFp2 y;
@@ -726,7 +740,6 @@ class G2NativeProjective extends Bls12NativePoint<G2NativeProjective> {
     return G2NativeProjective(x: x ?? this.x, y: y ?? this.y, z: z ?? this.z);
   }
 
-  ///
   factory G2NativeProjective.conditionalSelect(
     G2NativeProjective a,
     G2NativeProjective b,
@@ -743,9 +756,11 @@ class G2NativeProjective extends Bls12NativePoint<G2NativeProjective> {
     y: Bls12NativeFp2.one(),
     z: Bls12NativeFp2.zero(),
   );
+
+  /// identity element
   factory G2NativeProjective.identity() => _identity;
 
-  ///
+  /// generator
   factory G2NativeProjective.generator() => G2NativeProjective(
     x: Bls12NativeFp2(
       c0: Bls12NativeFp.nP(
@@ -785,16 +800,20 @@ class G2NativeProjective extends Bls12NativePoint<G2NativeProjective> {
       ),
     );
   }
+
+  /// Creates a G2 point from bytes, validating that it is on-curve and in the correct subgroup.
   factory G2NativeProjective.fromBytes(List<int> bytes) {
     return G2NativeProjective.fromAffine(G2NativeAffinePoint.fromBytes(bytes));
   }
+
+  /// Creates a G2 point from bytes without checking curve or subgroup validity.
   factory G2NativeProjective.fromBytesUnchecked(List<int> bytes) {
     return G2NativeProjective.fromAffine(
       G2NativeAffinePoint.fromBytesUnchecked(bytes),
     );
   }
 
-  ///
+  /// simple double-and-add implementation of point multiplication
   G2NativeProjective multiply(List<int> by) {
     assert(by.length == 32);
     G2NativeProjective acc = G2NativeProjective.identity();
@@ -807,7 +826,7 @@ class G2NativeProjective extends Bls12NativePoint<G2NativeProjective> {
     return acc;
   }
 
-  ///
+  /// Multiply by `BLS_X`, using double and add.
   G2NativeProjective mulByX() {
     G2NativeProjective result = G2NativeProjective.identity();
 
@@ -869,19 +888,17 @@ class G2NativeProjective extends Bls12NativePoint<G2NativeProjective> {
     return G2NativeProjective(x: x * coeffX, y: -y, z: z);
   }
 
-  //
+  /// Clears the G2 cofactor.
   G2NativeProjective clearCofactor() {
     final t1 = mulByX();
     final t2 = psi();
     return double().psi2() + (t1 + t2).mulByX() - t1 - t2 - this;
   }
 
-  ///
   Bls12NativeFp2 mulBy3b(Bls12NativeFp2 x) {
     return x * Bls12NativeFp2.b3();
   }
 
-  ///
   @override
   G2NativeProjective double() {
     Bls12NativeFp2 t0 = y.square();
@@ -905,7 +922,6 @@ class G2NativeProjective extends Bls12NativePoint<G2NativeProjective> {
     return G2NativeProjective(x: x3, y: y3, z: z3);
   }
 
-  ///
   @override
   G2NativeProjective operator *(JubJubNativeFq rhs) {
     return multiply(rhs.toBytes());
@@ -922,7 +938,6 @@ class G2NativeProjective extends Bls12NativePoint<G2NativeProjective> {
     }
   }
 
-  ///
   @override
   G2NativeProjective operator +(Bls12NativePoint<G2NativeProjective> rhs) {
     switch (rhs) {
@@ -995,6 +1010,7 @@ class G2NativeProjective extends Bls12NativePoint<G2NativeProjective> {
     throw CryptoException.operationNotSupported;
   }
 
+  /// Serializes the point to bytes in either compressed or uncompressed form.
   @override
   List<int> toBytes({PubKeyModes mode = PubKeyModes.compressed}) {
     return toAffine().toBytes(mode: mode);
@@ -1005,13 +1021,13 @@ class G2NativeProjective extends Bls12NativePoint<G2NativeProjective> {
     return G2NativeProjective(x: x, y: -y, z: z);
   }
 
-  ///
+  /// check identity
   @override
   bool isIdentity() {
     return z.isZero();
   }
 
-  ///
+  /// Checks whether the point satisfies the BLS12-381 curve equation in projective form.
   bool isOnCurve() {
     // Y^2 * Z = X^3 + b * Z^3
     return (y.square() * z) ==
@@ -1049,6 +1065,7 @@ class G2NativeProjective extends Bls12NativePoint<G2NativeProjective> {
   int get hashCode => HashCodeGenerator.generateHashCode([x, y, z]);
 }
 
+/// BLS12-381 G2 group affine in projective coordinates (x : y : z) over GF(p²).
 class G2NativeAffinePoint extends Bls12NativeAffinePoint<G2NativeProjective>
     with Equality {
   final Bls12NativeFp2 x;
@@ -1175,6 +1192,7 @@ class G2NativeAffinePoint extends Bls12NativeAffinePoint<G2NativeProjective>
     return G2NativeAffinePoint(x: x, y: y, infinity: false);
   }
 
+  /// Creates a G2 point from bytes, validating that it is on-curve and in the correct subgroup.
   factory G2NativeAffinePoint.fromBytes(List<int> bytes, {bool check = true}) {
     final affine = G2NativeAffinePoint.fromBytesUnchecked(bytes);
     if (!check) return affine;
@@ -1186,6 +1204,8 @@ class G2NativeAffinePoint extends Bls12NativeAffinePoint<G2NativeProjective>
       reason: "Invalid G2 encoding.",
     );
   }
+
+  /// Creates a G2 affine point from bytes without checking curve or subgroup validity.
   factory G2NativeAffinePoint.fromBytesUnchecked(List<int> bytes) {
     if (bytes.length == 96) {
       return G2NativeAffinePoint._fromCompressedBytes(bytes);
@@ -1214,7 +1234,11 @@ class G2NativeAffinePoint extends Bls12NativeAffinePoint<G2NativeProjective>
     y: Bls12NativeFp2.one(),
     infinity: true,
   );
+
+  /// identity element
   factory G2NativeAffinePoint.identity() => _identity;
+
+  /// generator
   factory G2NativeAffinePoint.generator() => G2NativeAffinePoint(
     x: Bls12NativeFp2(
       c0: Bls12NativeFp.nP(
@@ -1286,6 +1310,7 @@ class G2NativeAffinePoint extends Bls12NativeAffinePoint<G2NativeProjective>
     return p.psi() == p.mulByX();
   }
 
+  /// Checks whether the point satisfies the BLS12-381 curve equation in projective form.
   bool isOnCurve() {
     if (infinity) return true;
     return (y.square() - (x.square() * x)) == Bls12NativeFp2.b();
@@ -1368,6 +1393,7 @@ class G2NativeAffinePoint extends Bls12NativeAffinePoint<G2NativeProjective>
     return res;
   }
 
+  /// Serializes the point to bytes in either compressed or uncompressed form.
   @override
   List<int> toBytes({PubKeyModes mode = PubKeyModes.compressed}) {
     return switch (mode) {
@@ -1376,6 +1402,7 @@ class G2NativeAffinePoint extends Bls12NativeAffinePoint<G2NativeProjective>
     };
   }
 
+  /// check identity
   @override
   bool isIdentity() {
     return infinity;

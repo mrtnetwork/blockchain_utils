@@ -20,7 +20,7 @@ class ZCashEncodingUtils {
   }) {
     final len = typecode.getLength(mode);
     if (len != null && data.length != len) {
-      throw ZCashKeyEncodingError.invalidUnifiedBytes(mode.name);
+      throw ZCashKeyEncodingError.invalidUnifiedBytes(mode);
     }
     switch (mode) {
       case UnifiedReceiverMode.address:
@@ -28,12 +28,12 @@ class ZCashEncodingUtils {
       case UnifiedReceiverMode.fvk:
       case UnifiedReceiverMode.ivk:
         if (typecode == Typecode.p2sh) {
-          throw ZCashKeyEncodingError.invalidUnifiedTypeCode(mode.name);
+          throw ZCashKeyEncodingError.invalidUnifiedTypeCode(mode);
         }
         return data;
       case UnifiedReceiverMode.sk:
         if (typecode == Typecode.p2sh || typecode == Typecode.unknown) {
-          throw ZCashKeyEncodingError.invalidUnifiedTypeCode(mode.name);
+          throw ZCashKeyEncodingError.invalidUnifiedTypeCode(mode);
         }
         return data;
     }
@@ -60,13 +60,13 @@ class ZCashEncodingUtils {
     const int paddingLen = unifiedAddressPaddingLength;
     if (hrpBytes.length > paddingLen) {
       throw ZCashKeyEncodingError.invalidUnifiedArguments(
-        mode.name,
+        mode,
         reason: "Invalid HRP.",
       );
     }
     if (addressBytes == null && receivers == null) {
       throw ZCashKeyEncodingError.invalidUnifiedArguments(
-        mode.name,
+        mode,
         reason: "Missing unified address receivers.",
       );
     }
@@ -90,7 +90,7 @@ class ZCashEncodingUtils {
       );
     } catch (_) {
       throw ZCashKeyEncodingError.invalidUnifiedBytes(
-        mode.name,
+        mode,
         reason: "Invalid unified address bytes.",
       );
     }
@@ -105,13 +105,13 @@ class ZCashEncodingUtils {
     const int paddingLen = unifiedAddressPaddingLength;
     if (hrpBytes.length > paddingLen) {
       throw ZCashKeyEncodingError.invalidUnifiedObject(
-        mode.name,
+        mode,
         reason: "Invalid hrp.",
       );
     }
     if (encoded.length < paddingLen) {
       throw ZCashKeyEncodingError.invalidUnifiedObject(
-        mode.name,
+        mode,
         reason: "Invalid checkshum.",
       );
     }
@@ -124,7 +124,7 @@ class ZCashEncodingUtils {
       return mainPart;
     }
     throw ZCashKeyEncodingError.invalidUnifiedObject(
-      mode.name,
+      mode,
       reason: "Invalid checkshum.",
     );
   }
@@ -151,7 +151,7 @@ class ZCashEncodingUtils {
       unjumbled = F4Jumble.applyInv(decode.$2);
     } catch (_) {
       throw ZCashKeyEncodingError.invalidUnifiedObject(
-        mode.name,
+        mode,
         reason: "Invalid checkshum.",
       );
     }
@@ -162,7 +162,7 @@ class ZCashEncodingUtils {
     );
     if (expectedHrp != null && expectedHrp != decode.$1) {
       throw ZCashKeyEncodingError.invalidUnifiedObject(
-        mode.name,
+        mode,
         reason: "Missmatch hrp.",
         details: {"expected": expectedHrp, "hrp": decode.$1},
       );
@@ -257,7 +257,10 @@ class ZCashEncodingUtils {
     required UnifiedReceiverMode mode,
   }) {
     if (receivers.isEmpty) {
-      throw ZcashKeyError("message");
+      throw ZCashKeyEncodingError.invalidUnifiedArguments(
+        mode,
+        reason: "Empty receivers.",
+      );
     }
     final types = receivers.map((e) => e.type).toList();
     List<Typecode> allowedTypeCode = [
@@ -271,18 +274,30 @@ class ZCashEncodingUtils {
       (e) =>
           !allowedTypeCode.contains(e) || receivers.any((e) => e.mode != mode),
     )) {
-      throw ZcashKeyError("message");
+      throw ZCashKeyEncodingError.invalidUnifiedArguments(
+        mode,
+        reason: "Receivers contains invalid type code.",
+      );
     }
     if (mode == UnifiedReceiverMode.sk &&
         receivers.length != allowedTypeCode.length) {
-      throw ZcashKeyError("message");
+      throw ZCashKeyEncodingError.invalidUnifiedArguments(
+        mode,
+        reason: "Missing some USK type code.",
+      );
     }
     if (receivers.toSet().length != receivers.length) {
-      throw ZcashKeyError("message");
+      throw ZCashKeyEncodingError.invalidUnifiedArguments(
+        mode,
+        reason: "Duplicate receivers.",
+      );
     }
     if (mode == UnifiedReceiverMode.address) {
       if (types.contains(Typecode.p2pkh) && types.contains(Typecode.p2sh)) {
-        throw ZcashKeyError("message");
+        throw ZCashKeyEncodingError.invalidUnifiedArguments(
+          mode,
+          reason: "Unified address contains both P2PKH and P2SH receivers.",
+        );
       }
     }
     return receivers.clone()..sort((a, b) => a.compareTo(b));
@@ -302,7 +317,12 @@ class ZCashEncodingUtils {
     final receiversJson = decode.valueEnsureAsList<Map<String, dynamic>>(
       "receivers",
     );
-    if (era != orchardEra) throw ZcashKeyError("message");
+    if (era != orchardEra) {
+      throw ZCashKeyEncodingError.invalidUnifiedBytes(
+        UnifiedReceiverMode.sk,
+        reason: "Duplicate receivers.",
+      );
+    }
     List<ZUnifiedReceiver> receivers =
         receiversJson
             .map(

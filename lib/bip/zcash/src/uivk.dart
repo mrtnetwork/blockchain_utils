@@ -1,6 +1,7 @@
 import 'package:blockchain_utils/bip/address/encoders.dart';
+import 'package:blockchain_utils/bip/bip/bip32/bip32_key_data.dart';
+import 'package:blockchain_utils/bip/bip/bip32/bip32_keys.dart';
 import 'package:blockchain_utils/bip/bip/bip32/slip10/bip32_slip10_secp256k1.dart';
-import 'package:blockchain_utils/bip/bip/bip44/base/bip44_base.dart';
 import 'package:blockchain_utils/bip/bip/types/types.dart';
 import 'package:blockchain_utils/bip/bip/zip32/conf/config.dart';
 import 'package:blockchain_utils/bip/bip/zip32/conf/zcash.dart';
@@ -15,14 +16,27 @@ import 'package:blockchain_utils/crypto/quick_crypto.dart';
 import 'package:blockchain_utils/exception/exception/exception.dart';
 import 'package:blockchain_utils/helper/extensions/extensions.dart';
 
+/// Types of transparent addresses (P2PKH or P2SH).
 enum TransparentAddressRequestType { p2pkh, p2sh }
 
+/// Represents a request for generating a unified address with optional transparent, Sapling, and Orchard components.
 class UnifiedAddressRequest {
+  /// Whether a transparent component is requested.
   final bool? transparent;
+
+  /// Whether a Sapling component is requested.
   final bool? sapling;
+
+  /// Whether an Orchard component is requested.
   final bool? orchard;
+
+  /// PubKey mode for the transparent component.
   final PubKeyModes transparentPubKeyMode;
+
+  /// Optional transparent script hash for P2SH addresses.
   final List<int>? transparentScriptHash;
+
+  /// Type of transparent address to generate.
   final TransparentAddressRequestType transparentAddressType;
 
   const UnifiedAddressRequest.defaultRequest()
@@ -95,10 +109,43 @@ class UnifiedAddressRequest {
   bool get transparentAllowed => transparent ?? true;
 }
 
+/// Represents a derived transparent address and associated keys.
+class TransparentDerivedAddress {
+  final String address;
+  final ZUnifiedReceiver receiver;
+  final TransparentAddressRequestType type;
+  final Bip32KeyIndex bip32Index;
+  final Bip32PublicKey publicKey;
+  final PubKeyModes pubKeyMode;
+  const TransparentDerivedAddress({
+    required this.address,
+    required this.type,
+    required this.bip32Index,
+    required this.receiver,
+    required this.publicKey,
+    required this.pubKeyMode,
+  });
+}
+
+/// Represents a derived Sapling address and associated payment info.
+class SaplingDerivedAddress {
+  final String address;
+  final ZUnifiedReceiver receiver;
+  final SaplingPaymentAddress paymentAddress;
+  final DiversifierIndex index;
+  const SaplingDerivedAddress({
+    required this.address,
+    required this.paymentAddress,
+    required this.index,
+    required this.receiver,
+  });
+}
+
+/// Represents a unified address combining optional Orchard, Sapling, and transparent components.
 class UnifiedDerivedAddress {
   final ReceiverOrchard? orchard;
   final ReceiverSapling? sapling;
-  final ZUnifiedReceiver? transparent;
+  final TransparentDerivedAddress? transparent;
   final DiversifierIndex index;
   final String address;
   const UnifiedDerivedAddress({
@@ -110,12 +157,23 @@ class UnifiedDerivedAddress {
   });
 }
 
+/// Represents the unified incoming viewing key (UIVK) for transparent, Sapling, and Orchard components.
 class UnifiedIncomingViewingKey {
+  /// Transparent component of the UIVK (BIP32/SLIP-10 secp256k1).
   final Bip32Slip10Secp256k1? transparent;
+
+  /// Sapling incoming viewing key component.
   final SaplingIncomingViewingKey? sapling;
+
+  /// Orchard incoming viewing key component.
   final OrchardIncomingViewingKey? orchard;
+
+  /// Unknown or unsupported component placeholder.
   final ReceiverUnknown? unknown;
+
+  /// ZIP32 coin configuration used for key derivation.
   final ZIP32CoinConfig config;
+
   const UnifiedIncomingViewingKey._({
     this.transparent,
     this.orchard,
@@ -125,7 +183,7 @@ class UnifiedIncomingViewingKey {
   });
   factory UnifiedIncomingViewingKey.fromUnifiedFullViewKey({
     required String ifvk,
-    required ZcashNetwork network,
+    required ZCashNetwork network,
   }) {
     final config = ZcashConf().fromNetwork(network);
     final key = ZCashEncodingUtils.decodeUnifiedObject(
@@ -169,7 +227,7 @@ class UnifiedIncomingViewingKey {
     SaplingIncomingViewingKey? sapling,
     OrchardIncomingViewingKey? orchard,
     ReceiverUnknown? unknown,
-    required ZcashNetwork network,
+    required ZCashNetwork network,
   }) {
     final config = ZcashConf().fromNetwork(network);
     return UnifiedIncomingViewingKey._(
@@ -180,6 +238,8 @@ class UnifiedIncomingViewingKey {
       unknown: unknown?.copyWith(mode: UnifiedReceiverMode.ivk),
     );
   }
+
+  /// Encodes this unified incoming viewing key (UIVK) into a Zcash-compatible unified string.
   String encode() {
     final sapling = this.sapling;
     final orchard = this.orchard;
@@ -209,189 +269,61 @@ class UnifiedIncomingViewingKey {
     );
   }
 
-  SaplingIncomingViewingKey _getSapling() {
-    final sapling = this.sapling;
-    if (sapling == null) throw ZcashKeyError("Missing Sapling key.");
-    return sapling;
-  }
-
-  Bip32Slip10Secp256k1 _getTransparent() {
-    final transparent = this.transparent;
-    if (transparent == null) throw ZcashKeyError("Missing transaparent key.");
-    return transparent;
-  }
-
-  String saplingAddressAt(DiversifierIndex index) {
+  /// Returns the Sapling-derived address at the given diversifier index.
+  SaplingDerivedAddress saplingAddressAt(DiversifierIndex index) {
     try {
-      final sapling = _getSapling();
+      final sapling = getSapling();
       final addressBytes = sapling.addressAt(index).toBytes();
-      return ZCashAddrEncoder().encodeKey(
-        addressBytes,
-        addrType: ZCashAddressType.sapling,
-        network: config.network,
+      return SaplingDerivedAddress(
+        address: ZCashAddrEncoder().encodeKey(
+          addressBytes,
+          addrType: ZCashAddressType.sapling,
+          network: config.network,
+        ),
+        paymentAddress: SaplingPaymentAddress.fromBytes(addressBytes),
+        index: index,
+        receiver: ReceiverSapling(
+          data: addressBytes,
+          mode: UnifiedReceiverMode.address,
+        ),
       );
+      // return ;
     } catch (_) {
-      throw ZcashKeyError("Invalid sapling Diversifier index.");
+      throw ZCashKeyError("Invalid sapling Diversifier index.");
     }
   }
 
-  (String, DiversifierIndex)? findSaplingAddressFrom(
-    DiversifierIndex from, {
-    Bip44Changes scope = Bip44Changes.chainExt,
-  }) {
-    final sapling = _getSapling();
+  /// Finds the first Sapling-derived address starting from the given diversifier index.
+  SaplingDerivedAddress? findSaplingAddressFrom(DiversifierIndex from) {
+    final sapling = getSapling();
     final addr = sapling.findAddress(from);
     if (addr == null) return null;
+    final addressBytes = addr.$1.toBytes();
     final addrString = ZCashAddrEncoder().encodeKey(
-      addr.$1.toBytes(),
+      addressBytes,
       addrType: ZCashAddressType.sapling,
       network: config.network,
     );
-    return (addrString, addr.$2);
-  }
-
-  ReceiverSapling? _getSaplingReceiver({
-    required DiversifierIndex index,
-    required UnifiedAddressRequest request,
-  }) {
-    if (!request.saplingAllowed) return null;
-
-    final sapling = this.sapling;
-    final saplingRequired = request.saplingRequired;
-    if (sapling == null && !saplingRequired) return null;
-    if (sapling == null) {
-      throw ZcashKeyError("Sapling key required but missing.");
-    }
-    try {
-      final addr = sapling.addressAt(index);
-      return ReceiverSapling(
-        data: addr.toBytes(),
-        mode: UnifiedReceiverMode.address,
-      );
-    } on SaplingKeyError {
-      rethrow;
-    } catch (_) {
-      if (!saplingRequired) return null;
-      throw ZcashKeyError("Invalid sapling Diversifier index.");
-    }
-  }
-
-  ReceiverOrchard? _getOrchardReceiver({
-    required DiversifierIndex index,
-    required UnifiedAddressRequest request,
-  }) {
-    if (!request.orchardAllowed) return null;
-
-    final orchard = this.orchard;
-    final orchardRequired = request.orchardRequired;
-    if (orchard == null && !orchardRequired) return null;
-    if (orchard == null) {
-      throw ZcashKeyError("Orchard key required but missing.");
-    }
-    final addr = orchard.addressAt(index);
-    return ReceiverOrchard(
-      data: addr.toBytes(),
-      mode: UnifiedReceiverMode.address,
-    );
-  }
-
-  ZUnifiedReceiver? _getTransparentReceiver({
-    required DiversifierIndex index,
-    required UnifiedAddressRequest request,
-  }) {
-    if (!request.transparentAllowed) return null;
-
-    final transparent = this.transparent;
-    final transparentRequired = request.transparentRequired;
-    if (transparent == null && !transparentRequired) return null;
-    if (transparent == null) {
-      throw ZcashKeyError("Transparent key required but missing.");
-    }
-    final bipIndex = index.toBip32Index();
-    if (bipIndex == null) {
-      if (!transparentRequired) return null;
-      throw ZcashKeyError("Invalid transparent child index.");
-    }
-    final child = transparent.childKey(bipIndex);
-    return switch (request.transparentAddressType) {
-      TransparentAddressRequestType.p2pkh => ReceiverP2pkh(
-        data: P2PKHAddrEncoder().validateAndHashKey(
-          child.publicKey.compressed,
-          pubKeyMode: request.transparentPubKeyMode,
-        ),
+    return SaplingDerivedAddress(
+      address: addrString,
+      paymentAddress: SaplingPaymentAddress.fromBytes(addressBytes),
+      index: addr.$2,
+      receiver: ReceiverSapling(
+        data: addressBytes,
         mode: UnifiedReceiverMode.address,
       ),
-      TransparentAddressRequestType.p2sh => ReceiverP2sh(
-        request.transparentScriptHash ??
-            P2SHAddrEncoder().validateAndHashKey(child.publicKey.compressed),
-      ),
-    };
-  }
-
-  void _validateUnifiedRequest(UnifiedAddressRequest request) {
-    final hasSapling = sapling != null;
-    final hasOrchard = orchard != null;
-    final hasTransparent = transparent != null;
-
-    // Must have at least one shielded key
-    if (!hasSapling && !hasOrchard) {
-      throw ZcashKeyError("Unified address requires Sapling or Orchard key.");
-    }
-
-    // Request must allow at least one shielded type
-    if (!request.orchardAllowed && !request.saplingAllowed) {
-      throw ZcashKeyError("Request disallows all shielded receivers.");
-    }
-
-    // Required receiver checks
-    if (request.saplingRequired && !hasSapling) {
-      throw ZcashKeyError("Sapling key required but missing.");
-    }
-
-    if (request.orchardRequired && !hasOrchard) {
-      throw ZcashKeyError("Orchard key required but missing.");
-    }
-
-    if (request.transparentRequired && !hasTransparent) {
-      throw ZcashKeyError("Transparent key required but missing.");
-    }
-  }
-
-  UnifiedDerivedAddress _address({
-    required DiversifierIndex index,
-    UnifiedAddressRequest request =
-        const UnifiedAddressRequest.defaultRequest(),
-  }) {
-    _validateUnifiedRequest(request);
-    final sapling = _getSaplingReceiver(index: index, request: request);
-    final orchard = _getOrchardReceiver(index: index, request: request);
-    final transparent = _getTransparentReceiver(index: index, request: request);
-    final addr = ZCashEncodingUtils.encodeUnifiedObject(
-      hrp: config.hrpUnifiedAddress,
-      mode: UnifiedReceiverMode.address,
-      receivers: [
-        if (sapling != null) sapling,
-        if (orchard != null) orchard,
-        if (transparent != null) transparent,
-      ],
-    );
-    return UnifiedDerivedAddress(
-      index: index,
-      address: addr,
-      orchard: orchard,
-      sapling: sapling,
-      transparent: transparent,
     );
   }
 
-  String transparentAddress(
+  /// Returns the transparent-derived address at the given index with specified pubkey mode and address type.
+  TransparentDerivedAddress transparentAddress(
     DiversifierIndex index, {
     PubKeyModes pubKeyMode = PubKeyModes.compressed,
     List<int>? transparentScriptHash,
     TransparentAddressRequestType transparentAddressType =
         TransparentAddressRequestType.p2pkh,
   }) {
-    final transparent = _getTransparent();
+    final transparent = getTransparent();
     switch (transparentAddressType) {
       case TransparentAddressRequestType.p2pkh:
         if (transparentScriptHash != null) {
@@ -414,16 +346,37 @@ class UnifiedIncomingViewingKey {
     }
     final bipIndex = index.toBip32Index();
     if (bipIndex == null) {
-      throw ZcashKeyError("Invalid transparent child index.");
+      throw ZCashKeyError("Invalid transparent child index.");
     }
     final child = transparent.childKey(bipIndex);
-    return P2PKHAddrEncoder().encodeKey(
-      child.publicKey.compressed,
+    final receiver = switch (transparentAddressType) {
+      TransparentAddressRequestType.p2pkh => ReceiverP2pkh(
+        data: P2PKHAddrEncoder().validateAndHashKey(
+          child.publicKey.compressed,
+          pubKeyMode: pubKeyMode,
+        ),
+        mode: UnifiedReceiverMode.address,
+      ),
+      TransparentAddressRequestType.p2sh => ReceiverP2sh(
+        transparentScriptHash ??
+            P2SHAddrEncoder().validateAndHashKey(child.publicKey.compressed),
+      ),
+    };
+    return TransparentDerivedAddress(
+      address: P2PKHAddrEncoder().encodeKey(
+        child.publicKey.compressed,
+        pubKeyMode: pubKeyMode,
+        netVersion: config.b58PubkeyAddressPrefix,
+      ),
+      type: transparentAddressType,
+      bip32Index: bipIndex,
       pubKeyMode: pubKeyMode,
-      netVersion: config.b58PubkeyAddressPrefix,
+      publicKey: child.publicKey,
+      receiver: receiver,
     );
   }
 
+  /// Returns the unified address at the given index, using the specified address request configuration.
   UnifiedDerivedAddress address({
     required DiversifierIndex index,
     UnifiedAddressRequest request =
@@ -432,10 +385,11 @@ class UnifiedIncomingViewingKey {
     try {
       return _address(index: index, request: request);
     } on SaplingKeyError {
-      throw ZcashKeyError("Invalid sapling Diversifier index.");
+      throw ZCashKeyError("Invalid sapling Diversifier index.");
     }
   }
 
+  /// Finds the first unified address starting from the given index that matches the specified request.
   UnifiedDerivedAddress findAddress({
     required DiversifierIndex from,
     UnifiedAddressRequest request =
@@ -449,9 +403,10 @@ class UnifiedIncomingViewingKey {
         j = j.tryIncrement();
       }
     }
-    throw ZcashKeyError("Diversifier index space exhausted.");
+    throw ZCashKeyError("Diversifier index space exhausted.");
   }
 
+  /// Returns the default unified address for this account using the specified request configuration.
   UnifiedDerivedAddress defaultAddress({
     UnifiedAddressRequest request =
         const UnifiedAddressRequest.defaultRequest(),
@@ -459,7 +414,8 @@ class UnifiedIncomingViewingKey {
     return findAddress(from: DiversifierIndex.zero(), request: request);
   }
 
-  String defaultTransparentAddress({
+  /// Returns the default transparent-derived address with the specified pubkey mode and address type.
+  TransparentDerivedAddress defaultTransparentAddress({
     PubKeyModes pubKeyMode = PubKeyModes.compressed,
     List<int>? transparentScriptHash,
     TransparentAddressRequestType transparentAddressType =
@@ -470,6 +426,178 @@ class UnifiedIncomingViewingKey {
       pubKeyMode: pubKeyMode,
       transparentAddressType: transparentAddressType,
       transparentScriptHash: transparentScriptHash,
+    );
+  }
+
+  /// Returns the transparent component of the UIVK, or throws if missing.
+  Bip32Slip10Secp256k1 getTransparent() {
+    final transparent = this.transparent;
+    if (transparent == null) {
+      throw ZCashKeyError("Transparent key missing.");
+    }
+    return transparent;
+  }
+
+  /// Returns the Sapling component of the UIVK, or throws if missing.
+  SaplingIncomingViewingKey getSapling() {
+    final sapling = this.sapling;
+    if (sapling == null) {
+      throw ZCashKeyError("Sapling key missing.");
+    }
+    return sapling;
+  }
+
+  /// Returns the Orchard component of the UIVK, or throws if missing.
+  OrchardIncomingViewingKey getOrchard() {
+    final orchard = this.orchard;
+    if (orchard == null) {
+      throw ZCashKeyError("Orchard key missing.");
+    }
+    return orchard;
+  }
+
+  ReceiverSapling? _getSaplingReceiver({
+    required DiversifierIndex index,
+    required UnifiedAddressRequest request,
+  }) {
+    if (!request.saplingAllowed) return null;
+
+    final sapling = this.sapling;
+    final saplingRequired = request.saplingRequired;
+    if (sapling == null && !saplingRequired) return null;
+    if (sapling == null) {
+      throw ZCashKeyError("Sapling key required but missing.");
+    }
+    try {
+      final addr = sapling.addressAt(index);
+      return ReceiverSapling(
+        data: addr.toBytes(),
+        mode: UnifiedReceiverMode.address,
+      );
+    } on SaplingKeyError {
+      rethrow;
+    } catch (_) {
+      if (!saplingRequired) return null;
+      throw ZCashKeyError("Invalid sapling Diversifier index.");
+    }
+  }
+
+  ReceiverOrchard? _getOrchardReceiver({
+    required DiversifierIndex index,
+    required UnifiedAddressRequest request,
+  }) {
+    if (!request.orchardAllowed) return null;
+
+    final orchard = this.orchard;
+    final orchardRequired = request.orchardRequired;
+    if (orchard == null && !orchardRequired) return null;
+    if (orchard == null) {
+      throw ZCashKeyError("Orchard key required but missing.");
+    }
+    final addr = orchard.addressAt(index);
+    return ReceiverOrchard(
+      data: addr.toBytes(),
+      mode: UnifiedReceiverMode.address,
+    );
+  }
+
+  TransparentDerivedAddress? _getTransparentReceiver({
+    required DiversifierIndex index,
+    required UnifiedAddressRequest request,
+  }) {
+    if (!request.transparentAllowed) return null;
+
+    final transparent = this.transparent;
+    final transparentRequired = request.transparentRequired;
+    if (transparent == null && !transparentRequired) return null;
+    if (transparent == null) {
+      throw ZCashKeyError("Transparent key required but missing.");
+    }
+    final bipIndex = index.toBip32Index();
+    if (bipIndex == null) {
+      if (!transparentRequired) return null;
+      throw ZCashKeyError("Invalid transparent child index.");
+    }
+    final child = transparent.childKey(bipIndex);
+    final receiver = switch (request.transparentAddressType) {
+      TransparentAddressRequestType.p2pkh => ReceiverP2pkh(
+        data: P2PKHAddrEncoder().validateAndHashKey(
+          child.publicKey.compressed,
+          pubKeyMode: request.transparentPubKeyMode,
+        ),
+        mode: UnifiedReceiverMode.address,
+      ),
+      TransparentAddressRequestType.p2sh => ReceiverP2sh(
+        request.transparentScriptHash ??
+            P2SHAddrEncoder().validateAndHashKey(child.publicKey.compressed),
+      ),
+    };
+    return TransparentDerivedAddress(
+      address: P2PKHAddrEncoder().encodeKey(
+        child.publicKey.compressed,
+        pubKeyMode: PubKeyModes.compressed,
+        netVersion: config.b58PubkeyAddressPrefix,
+      ),
+      pubKeyMode: PubKeyModes.compressed,
+      type: request.transparentAddressType,
+      bip32Index: bipIndex,
+      publicKey: child.publicKey,
+      receiver: receiver,
+    );
+  }
+
+  void _validateUnifiedRequest(UnifiedAddressRequest request) {
+    final hasSapling = sapling != null;
+    final hasOrchard = orchard != null;
+    final hasTransparent = transparent != null;
+
+    // Must have at least one shielded key
+    if (!hasSapling && !hasOrchard) {
+      throw ZCashKeyError("Unified address requires Sapling or Orchard key.");
+    }
+
+    // Request must allow at least one shielded type
+    if (!request.orchardAllowed && !request.saplingAllowed) {
+      throw ZCashKeyError("Request disallows all shielded receivers.");
+    }
+
+    // Required receiver checks
+    if (request.saplingRequired && !hasSapling) {
+      throw ZCashKeyError("Sapling key required but missing.");
+    }
+
+    if (request.orchardRequired && !hasOrchard) {
+      throw ZCashKeyError("Orchard key required but missing.");
+    }
+
+    if (request.transparentRequired && !hasTransparent) {
+      throw ZCashKeyError("Transparent key required but missing.");
+    }
+  }
+
+  UnifiedDerivedAddress _address({
+    required DiversifierIndex index,
+    required UnifiedAddressRequest request,
+  }) {
+    _validateUnifiedRequest(request);
+    final sapling = _getSaplingReceiver(index: index, request: request);
+    final orchard = _getOrchardReceiver(index: index, request: request);
+    final transparent = _getTransparentReceiver(index: index, request: request);
+    final addr = ZCashEncodingUtils.encodeUnifiedObject(
+      hrp: config.hrpUnifiedAddress,
+      mode: UnifiedReceiverMode.address,
+      receivers: [
+        if (sapling != null) sapling,
+        if (orchard != null) orchard,
+        if (transparent != null) transparent.receiver,
+      ],
+    );
+    return UnifiedDerivedAddress(
+      index: index,
+      address: addr,
+      orchard: orchard,
+      sapling: sapling,
+      transparent: transparent,
     );
   }
 }

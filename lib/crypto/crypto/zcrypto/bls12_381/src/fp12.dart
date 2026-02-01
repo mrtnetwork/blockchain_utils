@@ -3,6 +3,7 @@ import 'package:blockchain_utils/crypto/crypto/zcrypto/bls12_381/src/fp2.dart';
 import 'package:blockchain_utils/crypto/crypto/zcrypto/bls12_381/src/fp6.dart';
 import 'package:blockchain_utils/utils/equatable/equatable.dart';
 
+/// Quadratic extension field GF(p¹²) over GF(p⁶), represented as c0 + c1·w with w² = v.
 class Bls12Fp12 with Equality {
   final Bls12Fp6 c0;
   final Bls12Fp6 c1;
@@ -14,6 +15,8 @@ class Bls12Fp12 with Equality {
       c1: Bls12Fp6.conditionalSelect(a.c1, b.c1, choice),
     );
   }
+
+  /// zero element
   factory Bls12Fp12.zero() =>
       Bls12Fp12(c0: Bls12Fp6.zero(), c1: Bls12Fp6.zero());
   factory Bls12Fp12.one() => Bls12Fp12(c0: Bls12Fp6.one(), c1: Bls12Fp6.zero());
@@ -39,9 +42,7 @@ class Bls12Fp12 with Equality {
     return Bls12Fp12(c0: c0_, c1: c1_);
   }
 
-  // factory Bls12Fp12.fromBls12Fp2(Bls12Fp2 f) =>
-  //     Bls12Fp12(c0: f, c1: Bls12Fp2.zero(), c2: Bls12Fp2.zero());
-
+  /// check is zero
   bool isZero() => c0.isZero() && c1.isZero();
   Bls12Fp12 conjugate() => Bls12Fp12(c0: c0, c1: -c1);
 
@@ -77,6 +78,7 @@ class Bls12Fp12 with Equality {
     return Bls12Fp12(c0: c0, c1: c1);
   }
 
+  /// Operations
   Bls12Fp12 operator +(Bls12Fp12 rhs) =>
       Bls12Fp12(c0: c0 + rhs.c0, c1: c1 + rhs.c1);
 
@@ -123,14 +125,10 @@ class Bls12Fp12 with Equality {
   List<dynamic> get variables => [c0, c1];
 }
 
+/// Quadratic extension field GF(p¹²) over GF(p⁶), represented as c0 + c1·w with w² = v.
 class Bls12NativeFp12 with Equality {
   final Bls12NativeFp6 c0;
   final Bls12NativeFp6 c1;
-
-  @override
-  String toString() {
-    return "$c0 + $c1";
-  }
 
   const Bls12NativeFp12({required this.c0, required this.c1});
   factory Bls12NativeFp12.conditionalSelect(
@@ -151,7 +149,11 @@ class Bls12NativeFp12 with Equality {
     c0: Bls12NativeFp6.one(),
     c1: Bls12NativeFp6.zero(),
   );
+
+  /// zero element
   factory Bls12NativeFp12.zero() => _zero;
+
+  /// one element
   factory Bls12NativeFp12.one() => _one;
   Bls12NativeFp12 mulBy014(
     Bls12NativeFp2 c0,
@@ -179,6 +181,7 @@ class Bls12NativeFp12 with Equality {
     return Bls12NativeFp12(c0: c0_, c1: c1_);
   }
 
+  /// check is zero
   bool isZero() => c0.isZero() && c1.isZero();
   Bls12NativeFp12 conjugate() => Bls12NativeFp12(c0: c0, c1: -c1);
 
@@ -208,6 +211,7 @@ class Bls12NativeFp12 with Equality {
     return Bls12NativeFp12(c0: c0, c1: c1);
   }
 
+  /// operations
   Bls12NativeFp12 operator +(Bls12NativeFp12 rhs) =>
       Bls12NativeFp12(c0: c0 + rhs.c0, c1: c1 + rhs.c1);
 
@@ -252,4 +256,9 @@ class Bls12NativeFp12 with Equality {
 
   @override
   List<dynamic> get variables => [c0, c1];
+
+  @override
+  String toString() {
+    return "$c0 + $c1";
+  }
 }

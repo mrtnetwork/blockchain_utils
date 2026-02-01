@@ -39,9 +39,11 @@ class Bip32Slip10Secp256k1 extends Bip32Base<Bip32Slip10Secp256k1> {
   Bip32Slip10Secp256k1.fromExtendedKey(super.exKeyStr, [super.keyNetVer])
     : super.fromExtendedKey();
 
-  /// constructor for creating a key from an extended key string.
-  Bip32Slip10Secp256k1.fromExtendedKeyBytes(super.exKeyStr, [super.keyNetVer])
-    : super.fromExtendedKeyBytes();
+  /// constructor for creating a key from an extended key bytes exclude prefix.
+  Bip32Slip10Secp256k1.fromExtendedPrivateKeyBytes(
+    super.exKeyStr, [
+    super.keyNetVer,
+  ]) : super.fromExtendedPrivateKeyBytes();
 
   /// Returns the curve type, SECP256K1.
   @override

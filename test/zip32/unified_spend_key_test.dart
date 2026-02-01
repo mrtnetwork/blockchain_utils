@@ -4,7 +4,7 @@ import 'package:test/scaffolding.dart';
 
 void main() {
   test("ZCash UFVK/UFSK", () {
-    final network = ZcashNetwork.mainnet;
+    final network = ZCashNetwork.mainnet;
     final context = DefaultZCryptoContext();
     for (final t in _testVector) {
       final test = _TestVector.fromJson(t);
@@ -16,7 +16,14 @@ void main() {
       );
 
       final dIndex = DiversifierIndex.from(test.diversifierIndex);
-      final ufvk = usk.toUnifiedFullViewingKey();
+
+      final encodee = usk.encodeUnifiedSpeningKeyBytes();
+      final decode = UnifiedSpendingKey.fromUnifiedSpendKeyBytes(
+        uskBytes: encodee,
+        network: network,
+        context: context,
+      );
+      final ufvk = decode.toUnifiedFullViewingKey();
       UnifiedDerivedAddress addr;
       try {
         addr = ufvk.address(
@@ -42,7 +49,7 @@ void main() {
       }
       final p2pkh = test.p2pkhBytes;
       if (p2pkh != null) {
-        expect(p2pkh, addr.transparent?.data);
+        expect(p2pkh, addr.transparent?.receiver.data);
       }
       final orchardRawAddr = test.orchardRawAddr;
       if (orchardRawAddr != null) {
@@ -50,7 +57,7 @@ void main() {
       }
       final p2sh = test.p2shBytes;
       if (p2sh != null) {
-        expect(p2sh, addr.transparent?.data);
+        expect(p2sh, addr.transparent?.receiver.data);
       }
       if (test.unknownBytes != null) continue;
       expect(addr.address, test.unifiedAddr);

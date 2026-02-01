@@ -190,12 +190,6 @@ class JubJubNielsNativePoint extends BaseJubJubNielsPoint<JubJubNativeFr>
     bool choice,
   ) {
     return choice ? b : a;
-    // return JubJubNielsNativePoint(
-    //   vPlusU: JubJubNativeFq.conditionalSelect(a.vPlusU, b.vPlusU, choice),
-    //   vMinusU: JubJubNativeFq.conditionalSelect(a.vMinusU, b.vMinusU, choice),
-    //   z: JubJubNativeFq.conditionalSelect(a.z, b.z, choice),
-    //   t2d: JubJubNativeFq.conditionalSelect(a.t2d, b.t2d, choice),
-    // );
   }
   @override
   JubJubNativePoint operator *(JubJubNativeFr rhs) {

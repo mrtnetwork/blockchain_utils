@@ -3,7 +3,7 @@ import 'package:test/test.dart';
 
 void main() {
   test("ZCaash Unified address", () {
-    final network = ZcashNetwork.mainnet;
+    final network = ZCashNetwork.mainnet;
     for (final t in _testVector) {
       final test = _TestVector.fromJson(t);
       final addr = ZCashAddrDecoder().decodeAddr(test.unifiedAddr);

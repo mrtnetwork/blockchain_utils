@@ -13,53 +13,10 @@ import 'package:blockchain_utils/crypto/crypto/zcrypto/jubjub/fields/native.dart
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
 import 'package:blockchain_utils/utils/string/string.dart';
 
-class SaplingZip32MstKeyGeneratorConst {
-  static const List<int> saplingFvpPersonalization = [
-    90,
-    99,
-    97,
-    115,
-    104,
-    83,
-    97,
-    112,
-    108,
-    105,
-    110,
-    103,
-    70,
-    86,
-    70,
-    80,
-  ];
-
-  static const String masterKeyPersonalization = "ZcashIP32Sapling";
-  static const List<int> saplingInternalPersonalization = [
-    90,
-    99,
-    97,
-    115,
-    104,
-    95,
-    83,
-    97,
-    112,
-    108,
-    105,
-    110,
-    103,
-    73,
-    110,
-    116,
-  ];
-}
-
 class SaplingZip32MasterKeyGenerator implements IZip32MasterKeyGenerator {
   @override
   Bip32MasterKey generateFromSeed(List<int> seedBytes) {
-    final personalizationBytes = StringUtils.encode(
-      SaplingZip32MstKeyGeneratorConst.masterKeyPersonalization,
-    );
+    final personalizationBytes = StringUtils.encode("ZcashIP32Sapling");
     final hash = QuickCrypto.blake2b512Hash(
       seedBytes,
       personalization: personalizationBytes,
@@ -75,8 +32,7 @@ class SaplingZip32MasterKeyGenerator implements IZip32MasterKeyGenerator {
     final i = QuickCrypto.blake2b256Hash(
       fvk.toBytes(),
       extraBlocks: [master.keyData.dk.toBytes()],
-      personalization:
-          SaplingZip32MstKeyGeneratorConst.saplingInternalPersonalization,
+      personalization: SaplingKeyUtils.saplingInternalPersonalization.codeUnits,
     );
     final iNsk = JubJubFr.fromBytes64(
       PrfExpand.saplingZip32InternalNsk.apply(i),
@@ -109,8 +65,7 @@ class SaplingZip32MasterKeyGenerator implements IZip32MasterKeyGenerator {
     final i = QuickCrypto.blake2b256Hash(
       fvk.toBytes(),
       extraBlocks: [master.keyData.dk.toBytes()],
-      personalization:
-          SaplingZip32MstKeyGeneratorConst.saplingInternalPersonalization,
+      personalization: SaplingKeyUtils.saplingInternalPersonalization.codeUnits,
     );
     final iNsk = JubJubNativeFr.fromBytes64(
       PrfExpand.saplingZip32InternalNsk.apply(i),
@@ -216,8 +171,7 @@ class SaplingZip32ChildKeyDerivator
     final fvk = parent.sk.toFvk();
     final pfBytes = QuickCrypto.blake2b256Hash(
       fvk.toBytes(),
-      personalization:
-          SaplingZip32MstKeyGeneratorConst.saplingFvpPersonalization,
+      personalization: "ZcashSaplingFVFP".codeUnits,
     );
     return SaplingExtendedSpendingKey(
       sk: sk,

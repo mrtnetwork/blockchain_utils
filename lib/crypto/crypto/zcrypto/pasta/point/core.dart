@@ -12,6 +12,26 @@ import 'package:blockchain_utils/utils/compare/hash_code.dart';
 import 'package:blockchain_utils/utils/equatable/equatable.dart';
 import 'package:blockchain_utils/utils/binary/utils.dart';
 
+/// ---------------------------------------------------------------------------
+/// Native vs Non-Native representations
+///
+/// * Both native and non-native field implementations are backed by `BigInt`.
+///
+/// * Non-native types (e.g. `PallasFp`, `PastaPoint`) represent field elements as
+///   multiple fixed-size limbs (typically 6 `BigInt`s) and use algorithms written
+///   in a constant-time style. However, because they rely on `BigInt`, these
+///   implementations are **not guaranteed to be constant-time** at the machine
+///   level and should not be considered fully side-channel resistant. They are,
+///   however, safer than native representations.
+///
+/// * Native types (e.g. `PallasNativeFp`, `PastaNativePoint`) represent each field
+///   element as a single `BigInt` and use variable-time algorithms. These are not
+///   constant-time and are not intended to be safe against side-channel attacks.
+///
+/// Both representations share identical curve and algebraic semantics; the
+/// differences lie in representation, performance, and side-channel behavior.
+/// ---------------------------------------------------------------------------
+
 enum PastaCurveName {
   pallas("pallas"),
   vesta("vesta"),
@@ -32,7 +52,7 @@ class PastaCurveParams<F extends PastaFieldElement<F>> with Equality {
     required this.b,
     required this.name,
   });
-  static final PastaCurveParams<PallasFp> pallas = PastaCurveParams<PallasFp>(
+  static PastaCurveParams<PallasFp> get pallas => PastaCurveParams<PallasFp>(
     a: PallasFp.fromRaw([BigInt.zero, BigInt.zero, BigInt.zero, BigInt.zero]),
     b: PallasFp.fromRaw([
       BigInt.from(5),
@@ -42,27 +62,27 @@ class PastaCurveParams<F extends PastaFieldElement<F>> with Equality {
     ]),
     name: PastaCurveName.pallas,
   );
-  static final PastaCurveParams<PallasNativeFp> pallasNative =
+  static PastaCurveParams<PallasNativeFp> get pallasNative =>
       PastaCurveParams<PallasNativeFp>(
         a: PallasNativeFp(BigInt.zero),
         b: PallasNativeFp(BigInt.from(5)),
         name: PastaCurveName.pallas,
       );
 
-  static final PastaCurveParams<VestaFq> vesta = PastaCurveParams<VestaFq>(
+  static PastaCurveParams<VestaFq> get vesta => PastaCurveParams<VestaFq>(
     a: VestaFq.fromRaw([BigInt.zero, BigInt.zero, BigInt.zero, BigInt.zero]),
     b: VestaFq.fromRaw([BigInt.from(5), BigInt.zero, BigInt.zero, BigInt.zero]),
     name: PastaCurveName.vesta,
   );
-  static final PastaCurveParams<VestaNativeFq> vestaNative =
+  static PastaCurveParams<VestaNativeFq> get vestaNative =>
       PastaCurveParams<VestaNativeFq>(
         a: VestaNativeFq(BigInt.zero),
         b: VestaNativeFq(BigInt.from(5)),
         name: PastaCurveName.vesta,
       );
 
-  static final PastaCurveParams<PallasNativeFp>
-  isoPallasNative = PastaCurveParams<PallasNativeFp>(
+  static PastaCurveParams<PallasNativeFp>
+  get isoPallasNative => PastaCurveParams<PallasNativeFp>(
     a: PallasNativeFp(
       BigInt.parse(
         "10949663248450308183708987909873589833737836120165333298109615750520499732811",
@@ -72,8 +92,8 @@ class PastaCurveParams<F extends PastaFieldElement<F>> with Equality {
     name: PastaCurveName.isoPallas,
   );
 
-  static final PastaCurveParams<VestaNativeFq>
-  isoVestaNative = PastaCurveParams<VestaNativeFq>(
+  static PastaCurveParams<VestaNativeFq>
+  get isoVestaNative => PastaCurveParams<VestaNativeFq>(
     a: VestaNativeFq(
       BigInt.parse(
         "17413348858408915339762682399132325137863850198379221683097628341577494210225",
@@ -83,23 +103,22 @@ class PastaCurveParams<F extends PastaFieldElement<F>> with Equality {
     name: PastaCurveName.isoVesta,
   );
 
-  static final PastaCurveParams<PallasFp> isoPallas =
-      PastaCurveParams<PallasFp>(
-        a: PallasFp.fromRaw([
-          BigInt.parse("0x92bb4b0b657a014b"),
-          BigInt.parse("0xb74134581a27a59f"),
-          BigInt.parse("0x49be2d7258370742"),
-          BigInt.parse("0x18354a2eb0ea8c9c"),
-        ]),
-        b: PallasFp.fromRaw([
-          BigInt.from(1265),
-          BigInt.zero,
-          BigInt.zero,
-          BigInt.zero,
-        ]),
-        name: PastaCurveName.isoPallas,
-      );
-  static final PastaCurveParams<VestaFq> isoVesta = PastaCurveParams<VestaFq>(
+  static PastaCurveParams<PallasFp> get isoPallas => PastaCurveParams<PallasFp>(
+    a: PallasFp.fromRaw([
+      BigInt.parse("0x92bb4b0b657a014b"),
+      BigInt.parse("0xb74134581a27a59f"),
+      BigInt.parse("0x49be2d7258370742"),
+      BigInt.parse("0x18354a2eb0ea8c9c"),
+    ]),
+    b: PallasFp.fromRaw([
+      BigInt.from(1265),
+      BigInt.zero,
+      BigInt.zero,
+      BigInt.zero,
+    ]),
+    name: PastaCurveName.isoPallas,
+  );
+  static PastaCurveParams<VestaFq> get isoVesta => PastaCurveParams<VestaFq>(
     a: VestaFq.fromRaw([
       BigInt.parse("0xc515ad7242eaa6b1"),
       BigInt.parse("0x9673928c7d01b212"),

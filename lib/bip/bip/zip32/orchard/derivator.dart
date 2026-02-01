@@ -11,30 +11,11 @@ import 'package:blockchain_utils/bip/bip/zip32/utils/prf_expand.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
 
 class OrchardZip32MasterKeyGenerator implements IZip32MasterKeyGenerator {
-  static const List<int> orchardPersonalization = [
-    90,
-    99,
-    97,
-    115,
-    104,
-    73,
-    80,
-    51,
-    50,
-    79,
-    114,
-    99,
-    104,
-    97,
-    114,
-    100,
-  ];
-
   @override
   Bip32MasterKey generateFromSeed(List<int> seedBytes) {
     final key = QuickCrypto.blake2b512Hash(
       seedBytes,
-      personalization: orchardPersonalization,
+      personalization: "ZcashIP32Orchard".codeUnits,
     );
     return Bip32MasterKey(
       key: key.sublist(0, 32),
@@ -64,25 +45,6 @@ class OrchardZip32ChildKeyDerivator
           OrchardExtendedFullViewKey?,
           Bip32KeyIndex
         > {
-  static const List<int> orchardFvpPersonalization = [
-    90,
-    99,
-    97,
-    115,
-    104,
-    79,
-    114,
-    99,
-    104,
-    97,
-    114,
-    100,
-    70,
-    86,
-    70,
-    80,
-  ];
-
   @override
   Bip32ChildKey deriveFromPublic({
     required OrchardExtendedFullViewKey? parent,
@@ -115,7 +77,7 @@ class OrchardZip32ChildKeyDerivator
   List<int> deriveFingerPrint(OrchardFullViewingKey fvk) {
     return QuickCrypto.blake2b256Hash(
       fvk.toBytes(),
-      personalization: orchardFvpPersonalization,
+      personalization: "ZcashOrchardFVFP".codeUnits,
     );
   }
 

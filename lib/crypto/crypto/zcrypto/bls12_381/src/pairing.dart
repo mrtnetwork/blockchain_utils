@@ -11,8 +11,12 @@ import 'package:blockchain_utils/helper/helper.dart';
 import 'package:blockchain_utils/utils/binary/utils.dart';
 import 'package:blockchain_utils/utils/equatable/equatable.dart';
 
+/// Utilities for computing pairings and Miller loop operations on BLS12-381.
 class Bls12PairingUtils {
+  /// The BLS parameter x used in Miller loop.
   static BigInt get blsX => BigInt.parse("0xd201000000010000");
+
+  /// Performs the Miller loop using the given driver.
   static D millerLoop<D extends Object?>(MillerLoopDriver<D> deriver) {
     D f = deriver.one();
     final blsX = Bls12PairingUtils.blsX;
@@ -39,6 +43,7 @@ class Bls12PairingUtils {
     return f;
   }
 
+  /// Evaluates the line function in the Miller loop (ell function).
   static Bls12NativeFp12 ell(
     Bls12NativeFp12 f,
     (Bls12NativeFp2, Bls12NativeFp2, Bls12NativeFp2) coeffs,
@@ -51,6 +56,7 @@ class Bls12PairingUtils {
     return f.mulBy014(coeffs.$3, c1, c0);
   }
 
+  /// Performs a doubling step on a G2 point and returns the new point with line coefficients.
   static (G2NativeProjective, (Bls12NativeFp2, Bls12NativeFp2, Bls12NativeFp2))
   doublingStep(G2NativeProjective r) {
     Bls12NativeFp2 tmp0 = r.x.square();
@@ -81,6 +87,7 @@ class Bls12PairingUtils {
     return (r, (tmp0, tmp3, tmp6));
   }
 
+  /// Performs an addition step in the Miller loop and returns the new point with line coefficients.
   static (G2NativeProjective, (Bls12NativeFp2, Bls12NativeFp2, Bls12NativeFp2))
   additionStep(G2NativeProjective r, G2NativeAffinePoint q) {
     Bls12NativeFp2 zsquared = r.z.square();
@@ -112,6 +119,7 @@ class Bls12PairingUtils {
     return (r, (t10, t1, t9));
   }
 
+  /// Computes the optimal Ate pairing e(P, Q) ∈ GT for affine points P and Q.
   static GtNative pairing(G1NativeAffinePoint p, G2NativeAffinePoint q) {
     final identity = p.isIdentity() || q.isIdentity();
     final newP = G1NativeAffinePoint.conditionalSelect(
@@ -137,8 +145,11 @@ class Bls12PairingUtils {
   }
 }
 
+/// Precomputes Miller loop coefficients for a G2 point to speed up pairings.
 class G2NativePrepared {
   final List<(Bls12NativeFp2, Bls12NativeFp2, Bls12NativeFp2)> coeffs;
+
+  /// Whether the point is the point at infinity.
   final bool infinity;
   const G2NativePrepared({required this.coeffs, required this.infinity});
   factory G2NativePrepared.fromG2(G2NativeAffinePoint q) {
@@ -159,6 +170,7 @@ class G2NativePrepared {
   }
 }
 
+/// Interface for performing multi-Miller loop computations over multiple term pairs.
 abstract mixin class MultiMillerLoop<
   TERMS extends Object,
   RESULT extends Object
@@ -305,12 +317,14 @@ class MillerLoopResultBls12 {
   }
 }
 
+/// Computes a combined Miller loop over multiple G1/G2 pairs for BLS12-381.
 class MultiMillerLoopBls12
     with
         MultiMillerLoop<
           List<(G1NativeAffinePoint, G2NativePrepared)>,
           MillerLoopResultBls12
         > {
+  /// Executes the multi-Miller loop for the given list of term pairs.
   @override
   MillerLoopResultBls12 multiMillerLoop(
     List<(G1NativeAffinePoint, G2NativePrepared)> terms,
@@ -321,11 +335,21 @@ class MultiMillerLoopBls12
   }
 }
 
+/// Interface defining operations required to drive a Miller loop computation.
 abstract class MillerLoopDriver<O> {
+  /// Performs a doubling step on the accumulated value.
   O doublingStep(O acc);
+
+  /// Performs an addition step on the accumulated value.
   O additionStep(O acc);
+
+  /// Squares the accumulated output.
   O squareOutput(O acc);
+
+  /// Computes the conjugate of the accumulated value.
   O conjugate(O acc);
+
+  /// Returns the multiplicative identity element for the accumulation.
   O one();
 }
 
@@ -375,13 +399,13 @@ class MillerLoopDriverBls12 implements MillerLoopDriver<Bls12NativeFp12> {
   }
 }
 
+/// Element of GT, the BLS12-381 pairing target group, represented additively.
 class GtNative extends ECPoint<JubJubNativeFq, GtNative> with Equality {
   final Bls12NativeFp12 inner;
 
   const GtNative(this.inner);
   static final _identity = GtNative(Bls12NativeFp12.one());
 
-  /// Factory for identity element (equivalent of Fp12::one())
   factory GtNative.identity() {
     return _identity;
   }
@@ -547,17 +571,27 @@ class _G2AffineMillerLoopDriver implements MillerLoopDriver<void> {
   void squareOutput(void acc) {}
 }
 
+/// Implements the Miller loop driver for BLS12-381 pairings using affine G1 and projective G2 points.
 class MillerLoopDriverBls12Pairing
     implements MillerLoopDriver<Bls12NativeFp12> {
+  /// Current G2 point in projective coordinates.
   G2NativeProjective _cur;
+
+  /// Base G2 point in affine coordinates.
   final G2NativeAffinePoint base;
+
+  /// G1 affine point used in the pairing.
   final G1NativeAffinePoint p;
+
+  /// Accessor for the current projective point.
   G2NativeProjective get cur => _cur;
   MillerLoopDriverBls12Pairing({
     required G2NativeProjective cur,
     required this.base,
     required this.p,
   }) : _cur = cur;
+
+  /// Performs a doubling step and updates the current G2 point.
   @override
   Bls12NativeFp12 doublingStep(Bls12NativeFp12 acc) {
     final coeffs = Bls12PairingUtils.doublingStep(_cur);
@@ -566,6 +600,7 @@ class MillerLoopDriverBls12Pairing
     return e;
   }
 
+  /// Performs an addition step using the base G2 point and updates the current G2 point.
   @override
   Bls12NativeFp12 additionStep(Bls12NativeFp12 acc) {
     final coeffs = Bls12PairingUtils.additionStep(_cur, base);
@@ -573,16 +608,19 @@ class MillerLoopDriverBls12Pairing
     return Bls12PairingUtils.ell(acc, coeffs.$2, p);
   }
 
+  /// Conjugates the accumulated value.
   @override
   Bls12NativeFp12 conjugate(Bls12NativeFp12 acc) {
     return acc.conjugate();
   }
 
+  /// Returns the multiplicative identity in Fp¹².
   @override
   Bls12NativeFp12 one() {
     return Bls12NativeFp12.one();
   }
 
+  /// Squares the accumulated output.
   @override
   Bls12NativeFp12 squareOutput(Bls12NativeFp12 acc) {
     return acc.square();

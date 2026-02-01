@@ -31,7 +31,7 @@ class HMAC<T extends HashState> implements SerializableHash<T> {
     _inner = hash();
     _outer = hash();
 
-    // Pad temporary stores a key (or its hash) padded with zeroes.
+    // SinsemillaPad temporary stores a key (or its hash) padded with zeroes.
     final pad = List<int>.filled(getBlockSize, 0);
 
     if (key.length > getBlockSize) {

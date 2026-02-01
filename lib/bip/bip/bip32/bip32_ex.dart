@@ -7,13 +7,12 @@ import 'package:blockchain_utils/exception/exceptions.dart';
 /// property, if provided.
 class Bip32KeyError extends BlockchainUtilsException {
   const Bip32KeyError(super.message, {super.details});
-  static const notHardenedIndexNotSupported = Bip32KeyError(
+  static Bip32KeyError get notHardenedIndexNotSupported => Bip32KeyError(
     'Private child derivation with not-hardened index is not supported',
   );
-  static const publicDerivationNotSupported = Bip32KeyError(
-    'Public child derivation is not supported',
-  );
-  static const publicHardenedIndexNotSupported = Bip32KeyError(
+  static Bip32KeyError get publicDerivationNotSupported =>
+      Bip32KeyError('Public child derivation is not supported');
+  static Bip32KeyError get publicHardenedIndexNotSupported => Bip32KeyError(
     'Public child derivation with hardened index is not supported',
   );
 }

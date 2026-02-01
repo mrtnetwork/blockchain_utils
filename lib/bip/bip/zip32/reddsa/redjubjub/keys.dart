@@ -72,13 +72,6 @@ class RedJubJubPublicKey with Equality implements IPublicKey {
               .asImmutableBytes;
   factory RedJubJubPublicKey.fromBytes(List<int> bytes) {
     final point = JubJubNativePoint.fromBytes(bytes);
-    // if (point.isIdentity()) {
-    //   throw ArgumentException.invalidOperationArguments(
-    //     "RedJubJubPublicKey",
-    //     reason: "Identity point.",
-    //   );
-    // }
-
     return RedJubJubPublicKey(publicKey: bytes, point: point);
   }
 

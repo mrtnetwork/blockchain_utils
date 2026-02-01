@@ -1,3 +1,27 @@
+## 6.0.0
+- Added support for FF1.
+- Added support for f4jumble.
+- Added support for BLS12-381.
+- Added support for Jubjub.
+- Added support for Vesta–Pallas.
+- Added support for Sinsemilla.
+- Added support for Poseidon
+- Added support for ZIP-32 hierarchical key derivation
+- Added support for Zcash addresses:
+  - Unified Addresses (UA)
+  - Sapling
+  - Orchard
+  - Transparent (P2PKH, P2SH)
+- Added support for Zcash viewing and spending keys:
+  - USK
+  - UFVK
+  - UIVK
+- Added support for RedJubjub / RedDSA signatures
+- Minimum required Dart SDK version updated to 3.7.
+- Reduce static final variables.
+
+
+
 ## 5.4.0
 - Update dependecies.
 

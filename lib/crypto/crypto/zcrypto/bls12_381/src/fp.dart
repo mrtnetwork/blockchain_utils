@@ -7,8 +7,13 @@ import 'package:blockchain_utils/utils/compare/compare.dart';
 import 'package:blockchain_utils/utils/equatable/equatable.dart';
 import 'package:blockchain_utils/utils/numbers/utils/bigint_utils.dart';
 
+/// Constants for the BLS12-381 base field GF(p).
+/// All values are expressed using `BigInt`.
 class Bls12FpConst {
+  /// Montgomery inverse of the modulus modulo 2⁶⁴ (BigInt-backed).
   static BigInt get inv => BigInt.parse("0x89f3fffcfffcfffd");
+
+  /// Modulus represented as fixed-size limb elements.
   static final modulus = Bls12Fp([
     BigInt.parse('0xb9feffffffffaaab'),
     BigInt.parse('0x1eabfffeb153ffff'),
@@ -17,16 +22,21 @@ class Bls12FpConst {
     BigInt.parse('0x4b1ba7b6434bacd7'),
     BigInt.parse('0x1a0111ea397fe69a'),
   ]);
+
+  /// Prime modulus p of BLS12-381 as a single BigInt.
   static final p = BigInt.parse(
     "4002409555221667393417789825735904156556882819939007885332058136124031650490837864442687629129015664037894272559787",
   );
 }
 
+/// Implementation of the BLS12-381 base field GF(p).
 class Bls12Fp extends BlsField<Bls12Fp> with ConstantEquality<Bls12Fp> {
+  /// Fixed-size limb representation of the field element.
   final List<BigInt> limbs;
   Bls12Fp(List<BigInt> limbs)
     : limbs = limbs.exc(length: 6, operation: "Bls12Fp").immutable;
 
+  /// Montgomery reduction of a 12-limb intermediate into a BLS12-381 field element.
   factory Bls12Fp.montgomeryReduce(
     BigInt t0,
     BigInt t1,
@@ -226,9 +236,13 @@ class Bls12Fp extends BlsField<Bls12Fp> with ConstantEquality<Bls12Fp> {
     r11 = tmp[0];
 
     // Final reduce: subtract modulus
-    return Bls12Fp([r6, r7, r8, r9, r10, r11]).subtractP();
+    return Bls12Fp([r6, r7, r8, r9, r10, r11])._subtractP();
   }
+
+  /// Zero element of the BLS12-381 base field.
   factory Bls12Fp.zero() => Bls12Fp(List.filled(6, BigInt.zero));
+
+  /// Square root of the BLS12-381 base field modulus.
   factory Bls12Fp.r2() {
     return Bls12Fp([
       BigInt.parse('0xf4df1f341c341746'),
@@ -239,6 +253,8 @@ class Bls12Fp extends BlsField<Bls12Fp> with ConstantEquality<Bls12Fp> {
       BigInt.parse('0x11988fe592cae3aa'),
     ]);
   }
+
+  /// One element of the BLS12-381 base field.
   factory Bls12Fp.one() {
     return Bls12Fp([
       BigInt.parse('0x760900000002fffd'),
@@ -249,6 +265,7 @@ class Bls12Fp extends BlsField<Bls12Fp> with ConstantEquality<Bls12Fp> {
       BigInt.parse('0x15f65ec3fa80e493'),
     ]);
   }
+
   factory Bls12Fp.b() {
     return Bls12Fp([
       BigInt.parse('0xaa270000000cfff3'),
@@ -269,6 +286,8 @@ class Bls12Fp extends BlsField<Bls12Fp> with ConstantEquality<Bls12Fp> {
       BigInt.parse('0x051ba4ab241b6160'),
     ]);
   }
+
+  /// Creates a BLS12-381 field element from a byte array.
   factory Bls12Fp.fromBytes(List<int> bytes) {
     if (bytes.length != 48) {
       throw ArgumentException.invalidOperationArguments(
@@ -310,6 +329,7 @@ class Bls12Fp extends BlsField<Bls12Fp> with ConstantEquality<Bls12Fp> {
     }
     return tmp * Bls12Fp.r2();
   }
+
   factory Bls12Fp.sumOfProducts(List<Bls12Fp> a, List<Bls12Fp> b) {
     final int length = a.length;
     List<BigInt> u = List.filled(6, BigInt.zero);
@@ -390,7 +410,7 @@ class Bls12Fp extends BlsField<Bls12Fp> with ConstantEquality<Bls12Fp> {
       u = r;
     }
 
-    return Bls12Fp(u).subtractP();
+    return Bls12Fp(u)._subtractP();
   }
 
   factory Bls12Fp.conditionalSelect(Bls12Fp a, Bls12Fp b, bool choice) {
@@ -404,7 +424,7 @@ class Bls12Fp extends BlsField<Bls12Fp> with ConstantEquality<Bls12Fp> {
     ]);
   }
 
-  Bls12Fp subtractP() {
+  Bls12Fp _subtractP() {
     var tmp = BigintUtils.sbb(
       limbs[0],
       Bls12FpConst.modulus.limbs[0],
@@ -443,6 +463,7 @@ class Bls12Fp extends BlsField<Bls12Fp> with ConstantEquality<Bls12Fp> {
     return Bls12Fp([r0, r1, r2, r3, r4, r5]);
   }
 
+  /// Square
   @override
   Bls12Fp square() {
     var tmp = BigintUtils.mac(BigInt.zero, limbs[0], limbs[1], BigInt.zero);
@@ -584,15 +605,13 @@ class Bls12Fp extends BlsField<Bls12Fp> with ConstantEquality<Bls12Fp> {
     );
   }
 
-  Bls12Fp sub(Bls12Fp rhs) {
-    return rhs.neg().add(this);
+  Bls12Fp _sub(Bls12Fp rhs) {
+    return rhs._neg()._add(this);
   }
 
-  Bls12Fp mul(Bls12Fp rhs) {
-    // --- initialize t0..t11 --------------------------------------------------
+  Bls12Fp _mul(Bls12Fp rhs) {
     List<BigInt> t = List.filled(12, BigInt.zero);
 
-    // 1st row: self.limbs[0] * rhs.limbs[0..5]
     List<BigInt> tmp = BigintUtils.mac(
       BigInt.zero,
       limbs[0],
@@ -764,7 +783,7 @@ class Bls12Fp extends BlsField<Bls12Fp> with ConstantEquality<Bls12Fp> {
     );
   }
 
-  Bls12Fp add(Bls12Fp rhs) {
+  Bls12Fp _add(Bls12Fp rhs) {
     List<BigInt> d = List.filled(6, BigInt.zero);
     BigInt carry;
 
@@ -793,11 +812,10 @@ class Bls12Fp extends BlsField<Bls12Fp> with ConstantEquality<Bls12Fp> {
     // final carry ignored
 
     // Reduce modulo the field
-    return Bls12Fp(d).subtractP();
+    return Bls12Fp(d)._subtractP();
   }
 
-  Bls12Fp neg() {
-    // --- subtract each limb from the modulus ---------------------------------
+  Bls12Fp _neg() {
     List<BigInt> d = List.filled(6, BigInt.zero);
     BigInt borrow;
 
@@ -840,6 +858,7 @@ class Bls12Fp extends BlsField<Bls12Fp> with ConstantEquality<Bls12Fp> {
     return Bls12Fp(d);
   }
 
+  /// Invert null of field is zero
   @override
   Bls12Fp? invert() {
     final modulus = pow([
@@ -854,6 +873,7 @@ class Bls12Fp extends BlsField<Bls12Fp> with ConstantEquality<Bls12Fp> {
     return modulus;
   }
 
+  /// pow
   Bls12Fp pow(List<BigInt> by) {
     Bls12Fp res = Bls12Fp.one();
     for (BigInt e in by.reversed) {
@@ -868,6 +888,7 @@ class Bls12Fp extends BlsField<Bls12Fp> with ConstantEquality<Bls12Fp> {
     return res;
   }
 
+  /// sqrt
   @override
   FieldSqrtResult<Bls12Fp> sqrt() {
     final sqrt = pow([
@@ -882,22 +903,24 @@ class Bls12Fp extends BlsField<Bls12Fp> with ConstantEquality<Bls12Fp> {
     return FieldSqrtResult(sqrt, sqrt.square() == this);
   }
 
+  /// check zero
   @override
   bool isZero() {
     return this == Bls12Fp.zero();
   }
 
+  /// double field
   @override
-  Bls12Fp double() => add(this);
+  Bls12Fp double() => _add(this);
 
   @override
-  Bls12Fp operator +(Bls12Fp rhs) => add(rhs);
+  Bls12Fp operator +(Bls12Fp rhs) => _add(rhs);
   @override
-  Bls12Fp operator -(Bls12Fp rhs) => sub(rhs);
+  Bls12Fp operator -(Bls12Fp rhs) => _sub(rhs);
   @override
-  Bls12Fp operator *(Bls12Fp rhs) => mul(rhs);
+  Bls12Fp operator *(Bls12Fp rhs) => _mul(rhs);
   @override
-  Bls12Fp operator -() => neg();
+  Bls12Fp operator -() => _neg();
 
   @override
   bool lexicographicallyLargest() {
@@ -966,6 +989,7 @@ class Bls12Fp extends BlsField<Bls12Fp> with ConstantEquality<Bls12Fp> {
     return borrow == BigInt.zero;
   }
 
+  /// Serializes the field element to a 48-byte big-endian representation.
   @override
   List<int> toBytes() {
     final tmp = Bls12Fp.montgomeryReduce(
@@ -985,20 +1009,36 @@ class Bls12Fp extends BlsField<Bls12Fp> with ConstantEquality<Bls12Fp> {
     return tmp.limbs.reversed.expand((e) => e.toU64BeBytes()).toList();
   }
 
+  /// check equality
   @override
   bool constantEquality(Bls12Fp other) {
     return CompareUtils.constantTimeBigIntEquals(limbs, other.limbs);
   }
 }
 
+/// Native BLS12-381 base field element backed by a single BigInt.
 class Bls12NativeFp extends BlsField<Bls12NativeFp> with Equality {
+  /// Canonical field value in the range [0, p).
   final BigInt v;
+
+  /// Prime modulus p of the field.
   BigInt get p => Bls12FpConst.p;
+
+  /// Creates a field element reduced modulo p.
   Bls12NativeFp(BigInt v) : v = v % Bls12FpConst.p;
+
+  /// Creates a field element assuming v is already in canonical form.
   Bls12NativeFp.nP(this.v) : assert(!v.isNegative && v < Bls12FpConst.p);
+
+  /// Multiplicative identity.
   static final _one = Bls12NativeFp.nP(BigInt.one);
+
+  /// Additive identity.
   static final _zero = Bls12NativeFp.nP(BigInt.zero);
+
+  /// Returns the additive identity.
   factory Bls12NativeFp.zero() => _zero;
+
   factory Bls12NativeFp.r2() {
     return Bls12NativeFp(
       BigInt.parse(
@@ -1124,6 +1164,7 @@ class Bls12NativeFp extends BlsField<Bls12NativeFp> with Equality {
     return v > halfP;
   }
 
+  /// Serializes the field element to a 48-byte big-endian representation.
   @override
   List<int> toBytes() {
     return BigintUtils.toBytes(v, length: 48);
