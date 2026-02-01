@@ -121,7 +121,7 @@ class AmountConverter {
     decimals: 8,
     displayPrecision: 8,
   );
-
+  static AmountConverter get aptos => btc;
   static const AmountConverter eth = AmountConverter._(
     decimals: 18,
     displayPrecision: 18,
@@ -136,6 +136,7 @@ class AmountConverter {
     decimals: 10,
     displayPrecision: 10,
   );
+
   static const AmountConverter kusama = AmountConverter._(
     decimals: 12,
     displayPrecision: 12,
@@ -145,6 +146,7 @@ class AmountConverter {
     decimals: 9,
     displayPrecision: 9,
   );
+  static AmountConverter get sui => sol;
 
   static const AmountConverter xrp = AmountConverter._(
     decimals: 6,
