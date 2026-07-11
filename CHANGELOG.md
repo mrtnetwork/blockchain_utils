@@ -1,3 +1,8 @@
+## 7.0.0
+  - Added CBOR encoding and decoding support for all provider requests and exception payloads.
+  - Added support for the Poseidon hash function.
+
+  
 ## 6.0.0
 - Added support for FF1.
 - Added support for f4jumble.

@@ -274,8 +274,8 @@ extension ExtBigIntHelper on BigInt {
   List<int> toU256LeBytes() => asU256.toLeBytes(length: 32);
   List<int> toU256BeBytes() => asU256.toBeBytes(length: 32);
 
-  List<int> toI64LeBytes() => asI64.toLeBytes(length: 8);
-  List<int> toI64BeBytes() => asI64.toBeBytes(length: 8);
+  List<int> toI64LeBytes() => asI64.toLeBytes(length: 8, sign: true);
+  List<int> toI64BeBytes() => asI64.toBeBytes(length: 8, sign: true);
 
   List<int> toLeBytes({int? length, bool sign = false}) => BigintUtils.toBytes(
     this,
@@ -283,8 +283,12 @@ extension ExtBigIntHelper on BigInt {
     byteOrder: Endian.little,
     sign: sign,
   );
-  List<int> toBeBytes({int? length}) =>
-      BigintUtils.toBytes(this, length: length, byteOrder: Endian.big);
+  List<int> toBeBytes({int? length, bool sign = false}) => BigintUtils.toBytes(
+    this,
+    length: length,
+    byteOrder: Endian.big,
+    sign: sign,
+  );
   List<int> toBytes({
     int? length,
     Endian byteOrder = Endian.big,
