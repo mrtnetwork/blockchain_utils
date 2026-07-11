@@ -1,4 +1,3 @@
-import 'dart:typed_data';
 import 'package:blockchain_utils/base58/base58_base.dart';
 import 'package:blockchain_utils/bip/address/addr_dec_utils.dart';
 import 'package:blockchain_utils/bip/address/addr_key_validator.dart';
@@ -6,7 +5,6 @@ import 'package:blockchain_utils/bip/address/decoder.dart';
 import 'package:blockchain_utils/bip/address/encoder.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
 import 'package:blockchain_utils/utils/binary/utils.dart';
-import 'package:blockchain_utils/utils/numbers/utils/int_utils.dart';
 
 import 'exception/exception.dart';
 
@@ -36,12 +34,7 @@ class NeoAddrDecoder implements BlockchainAddressDecoder<List<int>> {
       QuickCrypto.hash160DigestSize + verBytes.length,
     );
 
-    /// Retrieve the version byte from the decoded address and compare it with the expected version.
-    final List<int> verGot = IntUtils.toBytes(
-      addrDecBytes[0],
-      byteOrder: Endian.little,
-    );
-    if (!BytesUtils.bytesEqual(verGot, verBytes)) {
+    if (!BytesUtils.bytesEqual([addrDecBytes[0]], verBytes)) {
       throw AddressConverterException.addressValidationFailed(
         reason: "Invalid address checksum.",
       );

@@ -63,6 +63,9 @@ class BinaryOps {
   /// A constant representing a 32-bit mask with all bits set to 1.
   static const mask32 = 0xFFFFFFFF;
 
+  /// A constant representing a 32-bit mask with all bits set to 1.
+  static const mask24 = 0xFFFFFF;
+
   /// A constant representing a 16-bit mask with all bits set to 1.
   static const mask16 = 0xFFFF;
 

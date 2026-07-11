@@ -12,12 +12,14 @@ import 'package:blockchain_utils/bip/bip/conf/bip84/bip84_coins.dart'
 import 'package:blockchain_utils/bip/bip/conf/bip86/bip86_coins.dart'
     show Bip86Coins;
 import 'package:blockchain_utils/bip/bip/zip32/conf/coins.dart';
+import 'package:blockchain_utils/bip/bip/zip32/zip32/zip32.dart';
 import 'package:blockchain_utils/bip/cardano/cip0019/conf/cip0019_coins.dart'
     show Cip0019Coins;
 import 'package:blockchain_utils/bip/cardano/cip1852/conf/cip1852_coins.dart';
 import 'package:blockchain_utils/bip/monero/conf/monero_coins.dart';
 import 'package:blockchain_utils/bip/substrate/conf/substrate_coins.dart';
-import 'package:blockchain_utils/exception/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
+import 'package:blockchain_utils/helper/helper.dart';
 import 'coin_conf.dart';
 
 /// An abstract class representing a collection of cryptocurrency coins.
@@ -33,6 +35,19 @@ abstract class CryptoCoins<T extends BaseCoinConfig> {
   String get coinName;
 
   T get conf;
+
+  int get identifier;
+  static const List<CryptoCoins> values = [
+    ...Bip44Coins.values,
+    ...Bip49Coins.values,
+    ...Bip84Coins.values,
+    ...Bip86Coins.values,
+    ...Cip0019Coins.values,
+    ...Cip1852Coins.values,
+    ...SubstrateCoins.values,
+    ...MoneroCoins.values,
+    ...ZIP32Coins.values,
+  ];
 
   static CryptoCoins? getCoin(String name, CoinProposal proposal) {
     switch (proposal) {
@@ -58,6 +73,12 @@ abstract class CryptoCoins<T extends BaseCoinConfig> {
   }
 
   CoinProposal get proposal;
+
+  static CryptoCoins? fromIdentifier(int identifier) {
+    return values.firstWhereNullable(
+      (element) => element.identifier == identifier,
+    );
+  }
 
   @override
   String toString() {
@@ -91,7 +112,7 @@ enum CoinProposal {
     );
   }
 
-  Bip32KeyIndex? get purpose {
+  Bip32KeyIndex get purpose {
     switch (this) {
       case CoinProposal.bip44:
         return Bip44Const.purpose;
@@ -101,8 +122,36 @@ enum CoinProposal {
         return Bip84Const.purpose;
       case CoinProposal.bip86:
         return Bip86Const.purpose;
+      case CoinProposal.zip32:
+        return Zip32Const.purpose;
       default:
-        return null;
+        return Bip44Const.purpose;
     }
+  }
+
+  bool get isBip {
+    switch (this) {
+      case CoinProposal.bip44:
+      case CoinProposal.bip49:
+      case CoinProposal.bip84:
+      case CoinProposal.bip86:
+      case CoinProposal.cip1852:
+      case CoinProposal.cip0019:
+        return true;
+      default:
+        return false;
+    }
+  }
+
+  bool get isZip {
+    return this == CoinProposal.zip32;
+  }
+
+  bool get isSubstrate {
+    return this == CoinProposal.substrate;
+  }
+
+  bool get isMonero {
+    return this == CoinProposal.monero;
   }
 }

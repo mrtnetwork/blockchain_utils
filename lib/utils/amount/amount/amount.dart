@@ -38,8 +38,8 @@ class AmountConverterUtils {
     required String amount,
     required int decimals,
   }) {
-    final BigRational? bPrice = BigRational.tryParseDecimaal(baseAmount);
-    final BigRational? aPrice = BigRational.tryParseDecimaal(amount);
+    final BigRational? bPrice = BigRational.tryParse(baseAmount);
+    final BigRational? aPrice = BigRational.tryParse(amount);
     if (bPrice == null || aPrice == null) {
       throw AmountConverterException(
         'Invalid amount format: cannot parse the input string.',
@@ -58,7 +58,7 @@ class AmountConverterUtils {
     required int decimals,
     bool enforceMaxDecimals = true,
   }) {
-    BigRational? dec = BigRational.tryParseDecimaal(amount);
+    BigRational? dec = BigRational.tryParse(amount);
     if (dec == null) {
       throw AmountConverterException(
         'Invalid amount format: cannot parse the input string.',
@@ -141,13 +141,16 @@ class AmountConverter {
     decimals: 12,
     displayPrecision: 12,
   );
-
+  static const AmountConverter monero = AmountConverter._(
+    decimals: 12,
+    displayPrecision: 12,
+  );
   static const AmountConverter sol = AmountConverter._(
     decimals: 9,
     displayPrecision: 9,
   );
   static AmountConverter get sui => sol;
-
+  static AmountConverter get gram => sol;
   static const AmountConverter xrp = AmountConverter._(
     decimals: 6,
     displayPrecision: 6,
@@ -156,6 +159,10 @@ class AmountConverter {
   static const AmountConverter ada = AmountConverter._(
     decimals: 6,
     displayPrecision: 6,
+  );
+  static const AmountConverter stellar = AmountConverter._(
+    decimals: 7,
+    displayPrecision: 7,
   );
 
   /// Creates a converter with the specified [decimals] and [displayPrecision].

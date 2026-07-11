@@ -1,6 +1,6 @@
 import 'package:blockchain_utils/bip/electrum/mnemonic_v2/electrum_v2_mnemonic.dart';
 import 'package:blockchain_utils/bip/electrum/mnemonic_v2/electrum_v2_mnemonic_decoder.dart';
-import 'package:blockchain_utils/bip/mnemonic/mnemonic_validator.dart';
+import 'package:blockchain_utils/bip/mnemonic/src/mnemonic_validator.dart';
 
 /// Validator class for Electrum V2 mnemonics.
 class ElectrumV2MnemonicValidator extends MnemonicValidator {

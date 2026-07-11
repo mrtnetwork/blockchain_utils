@@ -1,4 +1,4 @@
-import 'package:blockchain_utils/exception/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/helper/extensions/extensions.dart';
 import 'package:blockchain_utils/signer/const/constants.dart';
 import 'package:blockchain_utils/signer/exception/signing_exception.dart';
@@ -107,7 +107,10 @@ class SubstrateEcdsaSigner implements BaseSubstrateSigner {
     final prefix =
         CryptoSignerConst.ethPersonalSignPrefix +
         (payloadLength?.toString() ?? digest.length.toString());
-    final prefixBytes = StringUtils.encode(prefix, type: StringEncoding.ascii);
+    final prefixBytes = StringUtils.encode(
+      prefix,
+      encoding: StringEncoding.ascii,
+    );
     final signature = sign(<int>[...prefixBytes, ...digest]);
     signature.last += 27;
     return signature;
@@ -117,7 +120,10 @@ class SubstrateEcdsaSigner implements BaseSubstrateSigner {
     final prefix =
         CryptoSignerConst.ethPersonalSignPrefix +
         (payloadLength?.toString() ?? digest.length.toString());
-    final prefixBytes = StringUtils.encode(prefix, type: StringEncoding.ascii);
+    final prefixBytes = StringUtils.encode(
+      prefix,
+      encoding: StringEncoding.ascii,
+    );
     final signature = signConst(<int>[...prefixBytes, ...digest]);
     signature.last += 27;
     return signature;

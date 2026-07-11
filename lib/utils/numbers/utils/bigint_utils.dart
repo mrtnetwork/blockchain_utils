@@ -10,13 +10,22 @@ class BigintUtils {
     return a.compareTo(b) > 0 ? a : b;
   }
 
-  static int bitlengthInBytes(BigInt value) {
-    int bitlength = value.bitLength;
-    if (bitlength == 0) return 1;
-    if (value.isNegative) {
-      bitlength++;
+  /// Minimum number of bytes needed to represent [value].
+  /// Pass `sign: true` to reserve room for the sign bit (two's-complement
+  /// encoding) — required for negative values, and also affects positive
+  /// values whose top bit would otherwise be misread as a sign bit.
+  static int bitlengthInBytes(BigInt value, {bool sign = false}) {
+    if (value.isNegative && !sign) {
+      throw ArgumentException.invalidOperationArguments(
+        'bitlengthInBytes',
+        name: 'value',
+        reason: 'Negative value requires sign: true.',
+      );
     }
-    return (bitlength + 7) ~/ 8;
+    int bits = value.bitLength;
+    if (sign) bits += 1; // reserve the sign bit for positive and negative alike
+    if (bits == 0) return 1; // value == 0
+    return (bits + 7) ~/ 8;
   }
 
   /// Calculates the modular multiplicative inverse of 'a' modulo 'm'.
@@ -76,48 +85,138 @@ class BigintUtils {
     return (div, mod);
   }
 
-  /// Converts a BigInt to a list of bytes with the specified length and byte order.
+  /// Converts a BigInt to a byte list with the given length and byte order.
+  /// Pass [sign] = true to encode negative values as two's complement.
   static List<int> toBytes(
     BigInt val, {
     int? length,
-    Endian order = Endian.big,
+    Endian byteOrder = Endian.big,
+    bool sign = false,
   }) {
-    length ??= bitlengthInBytes(val);
-    if (val == BigInt.zero) {
-      return List.filled(length, 0, growable: true);
+    if (val.isNegative && !sign) {
+      throw ArgumentException.invalidOperationArguments(
+        'toBytes',
+        name: 'val',
+        reason: 'Negative value requires sign: true.',
+      );
     }
-    List<int> byteList = List<int>.filled(length, 0, growable: true);
+
+    // Size against the magnitude, but with the same `sign` convention
+    // that will actually be used to encode — this is the fix.
+    length ??= bitlengthInBytes(
+      val.isNegative ? (-val - BigInt.one) : val,
+      sign: sign,
+    );
+
+    BigInt unsigned = val;
+    if (val.isNegative) {
+      // Two's complement over `length` bytes: (2^(8*length) + val).
+      unsigned = (BigInt.one << (length * 8)) + val;
+    }
+
+    if (unsigned.bitLength > length * 8) {
+      throw ArgumentException.invalidOperationArguments(
+        'toBytes',
+        name: 'length',
+        reason: 'Value does not fit in $length byte(s).',
+      );
+    }
+
+    final byteList = List<int>.filled(length, 0);
     for (var i = 0; i < length; i++) {
-      byteList[length - i - 1] = (val & BinaryOps.maskBig8).toInt();
-      val = val >> 8;
+      byteList[length - i - 1] = (unsigned & BinaryOps.maskBig8).toInt();
+      unsigned >>= 8;
     }
 
-    if (order == Endian.little) {
-      byteList = byteList.reversed.toList();
-    }
-
-    return byteList;
+    return byteOrder == Endian.little ? byteList.reversed.toList() : byteList;
   }
 
-  /// Converts a list of bytes to a BigInt, considering the specified byte order.
+  /// Converts a list of bytes to a BigInt, considering byte order and sign.
   static BigInt fromBytes(
     List<int> bytes, {
     Endian byteOrder = Endian.big,
     bool sign = false,
   }) {
-    if (byteOrder == Endian.little) {
-      bytes = bytes.reversed.toList();
-    }
+    if (bytes.isEmpty) return BigInt.zero;
+    final BigInt byte256 = BigInt.from(256);
+
+    final ordered =
+        byteOrder == Endian.little ? bytes.reversed.toList() : bytes;
+
     BigInt result = BigInt.zero;
-    for (int i = 0; i < bytes.length; i++) {
-      result += BigInt.from(bytes[bytes.length - i - 1]) << (8 * i);
+    for (final b in ordered) {
+      result = result * byte256 + BigInt.from(b);
     }
-    if (result == BigInt.zero) return result;
-    if (sign && (bytes[0] & 0x80) != 0) {
-      return result.toSigned(bitlengthInBytes(result) * 8);
+
+    if (sign && (ordered[0] & 0x80) != 0) {
+      result -= BigInt.one << (ordered.length * 8);
     }
 
     return result;
+  }
+
+  static BigInt fromBytes8(
+    List<int> bytes, {
+    Endian byteOrder = Endian.big,
+    bool sign = false,
+  }) {
+    _checkLength(bytes, 1, 'fromBytes8');
+    return fromBytes(bytes, byteOrder: byteOrder, sign: sign);
+  }
+
+  static BigInt fromBytes16(
+    List<int> bytes, {
+    Endian byteOrder = Endian.big,
+    bool sign = false,
+  }) {
+    _checkLength(bytes, 2, 'fromBytes16');
+    return fromBytes(bytes, byteOrder: byteOrder, sign: sign);
+  }
+
+  static BigInt fromBytes32(
+    List<int> bytes, {
+    Endian byteOrder = Endian.big,
+    bool sign = false,
+  }) {
+    _checkLength(bytes, 4, 'fromBytes32');
+    return fromBytes(bytes, byteOrder: byteOrder, sign: sign);
+  }
+
+  static BigInt fromBytes64(
+    List<int> bytes, {
+    Endian byteOrder = Endian.big,
+    bool sign = false,
+  }) {
+    _checkLength(bytes, 8, 'fromBytes64');
+    return fromBytes(bytes, byteOrder: byteOrder, sign: sign);
+  }
+
+  static BigInt fromBytes128(
+    List<int> bytes, {
+    Endian byteOrder = Endian.big,
+    bool sign = false,
+  }) {
+    _checkLength(bytes, 16, 'fromBytes128');
+    return fromBytes(bytes, byteOrder: byteOrder, sign: sign);
+  }
+
+  static BigInt fromBytes256(
+    List<int> bytes, {
+    Endian byteOrder = Endian.big,
+    bool sign = false,
+  }) {
+    _checkLength(bytes, 32, 'fromBytes256');
+    return fromBytes(bytes, byteOrder: byteOrder, sign: sign);
+  }
+
+  static void _checkLength(List<int> bytes, int expected, String method) {
+    if (bytes.length != expected) {
+      throw ArgumentException.invalidOperationArguments(
+        method,
+        name: 'bytes',
+        reason: 'Expected exactly $expected byte(s), got ${bytes.length}.',
+      );
+    }
   }
 
   /// Parses a dynamic value [number] into a BigInt.

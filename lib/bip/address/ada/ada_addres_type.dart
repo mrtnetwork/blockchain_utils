@@ -1,16 +1,15 @@
 import 'package:blockchain_utils/bip/address/exception/exception.dart';
 
-class ADAAddressType {
+enum ADAAddressType {
+  base(0x00, "Base"),
+  reward(0x0E, "Reward"),
+  enterprise(0x06, "Enterprise"),
+  pointer(0x04, "Pointer"),
+  byron(0x8, "Byron");
+
   final int header;
   final String name;
-  const ADAAddressType._(this.header, this.name);
-
-  static const ADAAddressType base = ADAAddressType._(0x00, "Base");
-  static const ADAAddressType reward = ADAAddressType._(0x0E, "Reward");
-  static const ADAAddressType enterprise = ADAAddressType._(0x06, "Enterprise");
-  static const ADAAddressType pointer = ADAAddressType._(0x04, "Pointer");
-  static const ADAAddressType byron = ADAAddressType._(0x8, "Byron");
-
+  const ADAAddressType(this.header, this.name);
   static ADAAddressType decodeAddressType(int header) {
     switch ((header & 0xF0) >> 4) {
       case 0x00:
@@ -32,17 +31,10 @@ class ADAAddressType {
     }
     throw AddressConverterException.addressKeyValidationFailed(
       reason: "Invalid address prefix.",
-      details: {"value": header},
+      details: {"value": header.toString()},
     );
   }
 
-  static const List<ADAAddressType> values = [
-    base,
-    reward,
-    enterprise,
-    pointer,
-    byron,
-  ];
   static ADAAddressType fromHeader(int? header) {
     return values.firstWhere(
       (element) => element.header == header,
@@ -58,4 +50,6 @@ class ADAAddressType {
   String toString() {
     return "ADAAddressType.$name";
   }
+
+  bool get isShelly => this != byron;
 }

@@ -1,5 +1,6 @@
 import 'package:blockchain_utils/crypto/crypto/ec/curve/curve.dart';
-import 'package:blockchain_utils/exception/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
+import 'package:blockchain_utils/helper/helper.dart';
 import 'package:blockchain_utils/utils/binary/utils.dart';
 import 'package:blockchain_utils/utils/numbers/utils/bigint_utils.dart';
 
@@ -35,14 +36,8 @@ abstract class BaseProjectivePointNative
   @override
   List<int> toBytes([EncodeType encodeType = EncodeType.comprossed]) {
     List<int> encode() {
-      final xBytes = BigintUtils.toBytes(
-        x,
-        length: BigintUtils.bitlengthInBytes(curve.p),
-      );
-      final yBytes = BigintUtils.toBytes(
-        y,
-        length: BigintUtils.bitlengthInBytes(curve.p),
-      );
+      final xBytes = x.toBeBytes(length: BigintUtils.bitlengthInBytes(curve.p));
+      final yBytes = y.toBeBytes(length: BigintUtils.bitlengthInBytes(curve.p));
       return [...xBytes, ...yBytes];
     }
 
@@ -59,8 +54,7 @@ abstract class BaseProjectivePointNative
         }
         return [prefix, ...raw];
       default:
-        final List<int> xBytes = BigintUtils.toBytes(
-          x,
+        final List<int> xBytes = x.toBeBytes(
           length: BigintUtils.bitlengthInBytes(curve.p),
         );
         int prefix = 0x02;

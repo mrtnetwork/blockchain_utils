@@ -131,7 +131,7 @@ class Base58Decoder {
     }
     List<int> bytes = [];
     if (val != BigInt.zero) {
-      bytes = BigintUtils.toBytes(val);
+      bytes = val.toBeBytes();
     }
 
     // Remove leading zeros from bytes

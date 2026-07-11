@@ -1,6 +1,6 @@
-import 'package:blockchain_utils/bip/mnemonic/mnemonic.dart';
-import 'package:blockchain_utils/bip/mnemonic/mnemonic_utils.dart';
-import 'package:blockchain_utils/exception/exception/exception.dart';
+import 'package:blockchain_utils/bip/mnemonic/src/mnemonic.dart';
+import 'package:blockchain_utils/bip/mnemonic/src/mnemonic_utils.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 
 import 'words_list/languages.dart' as languages;
 
@@ -116,6 +116,11 @@ class MoneroLanguages implements MnemonicLanguages {
       (e) => e.name == value,
       orElse: () => throw ItemNotFoundException(value: value),
     );
+  }
+
+  @override
+  String toString() {
+    return "MoneroLanguages.$name";
   }
 }
 

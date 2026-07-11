@@ -2,8 +2,6 @@ import 'package:blockchain_utils/cbor/core/cbor.dart';
 import 'package:blockchain_utils/cbor/core/tags.dart';
 import 'package:blockchain_utils/helper/helper.dart';
 import 'package:blockchain_utils/utils/binary/binary_operation.dart';
-import 'package:blockchain_utils/utils/numbers/utils/bigint_utils.dart';
-import 'package:blockchain_utils/utils/numbers/utils/int_utils.dart';
 
 /// A class for tracking and building a sequence of bytes (`List<int>`) for CBOR encoding.
 class CborBytesTracker {
@@ -68,7 +66,7 @@ class CborBytesTracker {
     if (length == null) return;
     final int len = 1 << (length - 24);
     if (len <= 4) {
-      pushBytes(IntUtils.toBytes(value, length: len));
+      pushBytes(value.toBeBytes(length: len));
     } else {
       pushBigint(BigInt.from(value));
     }
@@ -93,6 +91,6 @@ class CborBytesTracker {
 
   /// Append a BigInt value with a specified major tag to the byte sequence in the buffer.
   void pushBigint(BigInt value) {
-    pushBytes(BigintUtils.toBytes(value, length: 8));
+    pushBytes(value.toBeBytes(length: 8));
   }
 }

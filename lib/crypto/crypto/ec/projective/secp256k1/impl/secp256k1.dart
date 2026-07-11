@@ -7,7 +7,7 @@
 import 'package:blockchain_utils/crypto/crypto/ec/projective/secp256k1/constants/constants.dart';
 import 'package:blockchain_utils/crypto/crypto/ec/projective/secp256k1/types/types.dart';
 import 'package:blockchain_utils/crypto/crypto/exception/exception.dart';
-import 'package:blockchain_utils/exception/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/helper/helper.dart';
 import 'package:blockchain_utils/utils/binary/binary_operation.dart';
 import 'package:blockchain_utils/utils/binary/utils.dart';
@@ -4110,7 +4110,6 @@ extension _BytesHelper on List<int> {
       throw ArgumentException.invalidOperationArguments(
         methodName,
         reason: "Incorrect bytes length.",
-        expecteLen: 32,
       );
     }
     BytesUtils.areBytesValidConst(

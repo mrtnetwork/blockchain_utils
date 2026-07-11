@@ -1,4 +1,5 @@
 import 'package:blockchain_utils/bech32/segwit_bech32.dart';
+import 'package:blockchain_utils/helper/helper.dart';
 import 'package:blockchain_utils/utils/binary/utils.dart';
 import 'package:blockchain_utils/utils/numbers/utils/bigint_utils.dart';
 import 'package:blockchain_utils/utils/numbers/utils/int_utils.dart';
@@ -56,7 +57,7 @@ class P2TRUtils {
     );
     return P2TRUtils.taggedHash(
       tapTweakSHA256,
-      BigintUtils.toBytes(pubPoint.x, length: Curves.curveSecp256k1.baselen),
+      pubPoint.x.toBeBytes(length: Curves.curveSecp256k1.baselen),
     );
   }
 
@@ -129,10 +130,7 @@ class P2TRUtils {
     ProjectiveECCPoint pubPoint, {
     List<dynamic>? script,
   }) {
-    final keyX = BigintUtils.toBytes(
-      pubPoint.x,
-      length: pubPoint.curve.baselen,
-    );
+    final keyX = pubPoint.x.toBeBytes(length: pubPoint.curve.baselen);
     if (script == null) {
       final tweek = taggedHash("TapTweak", keyX);
       return tweek;
@@ -193,12 +191,10 @@ class P2TRAddrEncoder implements BlockchainAddressEncoder {
 
     /// Validate and process the public key as a Secp256k1 key.
     final pubKeyObj = AddrKeyValidator.validateAndGetSecp256k1Key(pubKey);
+    final x = P2TRUtils.tweakPublicKey(pubKeyObj.point as ProjectiveECCPoint).x;
 
     /// Tweak the public key to create a P2TR address.
-    final tweakedPubKey = BigintUtils.toBytes(
-      P2TRUtils.tweakPublicKey(pubKeyObj.point as ProjectiveECCPoint).x,
-      length: Curves.curveSecp256k1.baselen,
-    );
+    final tweakedPubKey = x.toBeBytes(length: Curves.curveSecp256k1.baselen);
 
     /// Encode the tweaked public key as a P2TR address using Bech32.
     return SegwitBech32Encoder.encode(hrp, P2TRConst.witnessVer, tweakedPubKey);

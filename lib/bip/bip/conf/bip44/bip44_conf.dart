@@ -1,6 +1,4 @@
-import 'package:blockchain_utils/bip/address/atom_addr.dart';
 import 'package:blockchain_utils/bip/address/encoders.dart';
-import 'package:blockchain_utils/bip/address/exception/exception.dart';
 import 'package:blockchain_utils/bip/bip/bip32/bip32_const.dart';
 import 'package:blockchain_utils/bip/bip/bip32/bip32_key_data.dart';
 import 'package:blockchain_utils/bip/bip/bip32/bip32_key_net_ver.dart';
@@ -1546,6 +1544,22 @@ class Bip44Conf {
         (params, config) => P2PKHAddrEncoder().encodeKey(
           params.pubKey,
           netVersion: CoinsConf.zcashTransparentTestNet.params.p2pkhNetVer,
+        ),
+  );
+
+  /// Configuration for Zcash test net
+  final BipCoinConfig zcashRegtest = BipCoinConfig(
+    coinNames: CoinsConf.zcashTransparentRegtest.coinName,
+    coinIdx: Slip44.testnet,
+    chainType: ChainType.testnet,
+    defPath: derPathNonHardenedFull,
+    keyNetVer: bip44BtcKeyNetVerTest,
+    wifNetVer: CoinsConf.zcashTransparentRegtest.params.wifNetVer,
+    type: EllipticCurveTypes.secp256k1,
+    addressEncoder:
+        (params, config) => P2PKHAddrEncoder().encodeKey(
+          params.pubKey,
+          netVersion: CoinsConf.zcashTransparentRegtest.params.p2pkhNetVer,
         ),
   );
 

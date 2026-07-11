@@ -57,3 +57,5 @@ export 'bip32_key_ser.dart';
 export 'bip32_keys.dart';
 
 export 'bip32_key_data.dart';
+
+export 'bip32_ex.dart';

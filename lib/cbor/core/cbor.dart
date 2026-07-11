@@ -1,7 +1,7 @@
 import 'package:blockchain_utils/cbor/exception/exception.dart';
 import 'package:blockchain_utils/cbor/types/types.dart';
 import 'package:blockchain_utils/cbor/utils/cbor_utils.dart';
-import 'package:blockchain_utils/exception/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/utils/binary/utils.dart';
 import 'package:blockchain_utils/utils/equatable/equatable.dart';
 
@@ -14,8 +14,9 @@ abstract class CborObject<T extends Object?> with Equality {
   /// Encode the object's value to its CBOR representation and return it as a `List<int>`.
   List<int> encode();
 
-  /// Convert the object's CBOR representation to a hexadecimal string.
-  String toCborHex();
+  String toCborHex() {
+    return BytesUtils.toHexString(encode());
+  }
 
   /// An abstract property representing the dynamic value contained in the CBOR object.
   final T value;
@@ -31,7 +32,10 @@ abstract class CborObject<T extends Object?> with Equality {
   }
 
   /// Create a new CborObject from a dynamic value and an optional list of CBOR tags.
-  factory CborObject.fromDynamic(dynamic value) {
+  factory CborObject.fromDynamic(
+    dynamic value, {
+    CborObject Function(Object value)? unknownType,
+  }) {
     final cborObject = () {
       if (value is CborObject) {
         return value;
@@ -39,6 +43,10 @@ abstract class CborObject<T extends Object?> with Equality {
         return const CborNullValue();
       } else if (value is bool) {
         return CborBoleanValue(value);
+      } else if (value is String) {
+        return CborStringValue(value);
+      } else if (value is List<String>) {
+        return CborIndefiniteStringValue(value);
       } else if (value is int) {
         return CborIntValue(value);
       } else if (value is double) {
@@ -47,10 +55,6 @@ abstract class CborObject<T extends Object?> with Equality {
         return CborEpochFloatValue(value);
       } else if (value is BigInt) {
         return CborBigIntValue(value);
-      } else if (value is String) {
-        return CborStringValue(value);
-      } else if (value is List<String>) {
-        return CborIndefiniteStringValue(value);
       } else if (value is List<int> && BytesUtils.areBytesValid(value)) {
         return CborBytesValue(value);
       } else if (value is List<List<int>>) {
@@ -58,12 +62,20 @@ abstract class CborObject<T extends Object?> with Equality {
       } else if (value is Map) {
         return CborMapValue.definite({
           for (final i in value.entries)
-            CborObject.fromDynamic(i.key): CborObject.fromDynamic(i.value),
+            CborObject.fromDynamic(
+              i.key,
+              unknownType: unknownType,
+            ): CborObject.fromDynamic(i.value, unknownType: unknownType),
         });
       } else if (value is List) {
         return CborListValue.definite(
-          value.map((e) => CborObject.fromDynamic(e)).toList(),
+          value
+              .map((e) => CborObject.fromDynamic(e, unknownType: unknownType))
+              .toList(),
         );
+      }
+      if (unknownType != null) {
+        return unknownType(value);
       }
       throw CborException(
         "cbor encoder not found for type ${value.runtimeType}",
@@ -131,9 +143,9 @@ enum CborIterableEncodingType {
 }
 
 ///Iterable
-abstract class CborIterableObject<T extends Iterable> extends CborObject<T> {
+abstract class CborIterableObject<T extends Iterable<CborObject>>
+    extends CborObject<T> {
   const CborIterableObject(super.value);
-
   CborIterableEncodingType get encoding;
 }
 

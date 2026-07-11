@@ -22,3 +22,5 @@ export 'monero_base.dart';
 
 /// Export statement for Monero subaddress components.
 export 'monero_subaddr.dart';
+
+export 'monero_exc.dart';

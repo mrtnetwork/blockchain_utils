@@ -115,7 +115,6 @@ class Ed25519KholawPrivateKey with Equality implements IPrivateKey {
         "Ed25519KholawPrivateKey",
         name: "keyBytes",
         reason: "Invalid secret key bytes length.",
-        expecteLen: Ed25519KholawKeysConst.privKeyByteLen,
       );
     }
     final edwardGenerator = Curves.generatorED25519;

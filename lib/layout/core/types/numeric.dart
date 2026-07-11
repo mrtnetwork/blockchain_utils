@@ -1,7 +1,8 @@
 import 'dart:typed_data' show Endian;
 import 'package:blockchain_utils/double/codec/double_utils.dart';
 import 'package:blockchain_utils/double/codec/float_utils.dart';
-import 'package:blockchain_utils/exception/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
+import 'package:blockchain_utils/helper/extensions/extensions.dart';
 import 'package:blockchain_utils/layout/byte/byte_handler.dart';
 import 'package:blockchain_utils/layout/core/core/core.dart';
 import 'package:blockchain_utils/layout/core/types/padding_layout.dart';
@@ -96,12 +97,13 @@ class IntegerLayout extends BaseIntiger<int> {
   final bool sign;
   @override
   final Endian order;
+  final int bitlength;
   @override
   void validate(int value) {
-    if ((value.isNegative && !sign) || value.bitLength > span * 8) {
+    if ((value.isNegative && !sign) || value.bitLength > bitlength) {
       throw LayoutException(
         "Invalid ${value.bitLength}-bit ${sign ? 'signed' : 'unsigned'} integer.",
-        details: {"property": property, "value": value},
+        details: {"property": property, "value": value.toString()},
       );
     }
   }
@@ -111,9 +113,11 @@ class IntegerLayout extends BaseIntiger<int> {
     this.sign = false,
     this.order = Endian.little,
     String? property,
-  }) : super(span, property: property) {
+    int? bitlength,
+  }) : bitlength = bitlength ?? span * 8,
+       super(span, property: property) {
     assert(!span.isNegative, "Invalid integer layout span");
-    if (6 < this.span) {
+    if (this.span > 7 || (bitlength != null && bitlength > span * 8)) {
       throw ArgumentException.invalidOperationArguments(
         "IntegerLayout",
         name: "span",
@@ -137,14 +141,7 @@ class IntegerLayout extends BaseIntiger<int> {
   @override
   int encode(int source, LayoutByteWriter writer, {int offset = 0}) {
     validate(source);
-    final bytes =
-        span > 4
-            ? BigintUtils.toBytes(
-              BigInt.from(source),
-              length: span,
-              order: order,
-            )
-            : IntUtils.toBytes(source, length: span, byteOrder: order);
+    final bytes = source.toBytes(length: span, byteOrder: order, sign: sign);
     writer.setAll(offset, bytes);
     return span;
   }
@@ -177,7 +174,7 @@ class BigIntLayout extends BaseIntiger<BigInt> {
     if ((value.isNegative && !sign) || value.bitLength > bitlen) {
       throw LayoutException(
         "Invalid ${value.bitLength}-bit ${sign ? 'signed' : 'unsigned'} integer.",
-        details: {"property": property, "value": value},
+        details: {"property": property, "value": value.toString()},
       );
     }
   }
@@ -195,7 +192,7 @@ class BigIntLayout extends BaseIntiger<BigInt> {
   @override
   int encode(BigInt source, LayoutByteWriter writer, {int offset = 0}) {
     validate(source);
-    final toBytes = BigintUtils.toBytes(source, length: span, order: order);
+    final toBytes = source.toBytes(length: span, byteOrder: order, sign: sign);
     writer.setAll(offset, toBytes);
     return span;
   }

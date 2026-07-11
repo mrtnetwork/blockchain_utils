@@ -10,6 +10,7 @@ import 'package:blockchain_utils/bip/ecc/keys/ecdsa_keys.dart';
 import 'package:blockchain_utils/bip/ecc/keys/secp256k1_keys_ecdsa.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
 import 'package:blockchain_utils/crypto/crypto/ec/curve/curves.dart';
+import 'package:blockchain_utils/helper/helper.dart';
 import 'package:blockchain_utils/utils/numbers/utils/bigint_utils.dart';
 import 'package:blockchain_utils/utils/string/string.dart';
 
@@ -94,10 +95,7 @@ class ElectrumV1 {
     );
     final newPriveBig = BigintUtils.fromBytes(seqBytes, byteOrder: Endian.big);
     final p = (privBig + newPriveBig) % Curves.generatorSecp256k1.order!;
-    final toBytes = BigintUtils.toBytes(
-      p,
-      length: EcdsaKeysConst.privKeyByteLen,
-    );
+    final toBytes = p.toBeBytes(length: EcdsaKeysConst.privKeyByteLen);
     return Secp256k1PrivateKey.fromBytes(toBytes);
   }
 

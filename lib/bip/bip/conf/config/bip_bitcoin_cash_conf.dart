@@ -11,7 +11,6 @@ class BipBitcoinCashConf extends BaseBipCoinConfig<BipBitcoinCashConf> {
   final bool useLagacyAdder;
 
   /// Constructor for BipBitcoinCashConf.
-  @override
   const BipBitcoinCashConf({
     required super.coinNames,
     required super.coinIdx,
@@ -36,7 +35,7 @@ class BipBitcoinCashConf extends BaseBipCoinConfig<BipBitcoinCashConf> {
     Bip32KeyNetVersions? altKeyNetVer,
     List<int>? wifNetVer,
     EllipticCurveTypes? type,
-    ADDRENCODER<BipBitcoinCashConf>? addressEncoder,
+    CbAddrEncoder<BipBitcoinCashConf>? addressEncoder,
     bool? useLagacyAdder,
     Bip32KeyIndex? purpose,
   }) {

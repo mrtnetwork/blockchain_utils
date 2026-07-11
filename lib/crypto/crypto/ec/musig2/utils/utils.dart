@@ -5,11 +5,11 @@ import 'package:blockchain_utils/crypto/crypto/ec/musig2/types/types.dart';
 import 'package:blockchain_utils/crypto/crypto/ec/projective/native/native.dart';
 import 'package:blockchain_utils/crypto/crypto/ec/projective/secp256k1/secp256k1.dart';
 import 'package:blockchain_utils/crypto/crypto/ec/utils/secp256k1.dart';
-import 'package:blockchain_utils/exception/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
+import 'package:blockchain_utils/helper/helper.dart';
 import 'package:blockchain_utils/utils/binary/bytes_tracker.dart';
 import 'package:blockchain_utils/utils/binary/utils.dart';
 import 'package:blockchain_utils/utils/numbers/utils/bigint_utils.dart';
-import 'package:blockchain_utils/utils/numbers/utils/int_utils.dart';
 
 class MuSig2Utils {
   static List<int> zeroPk() =>
@@ -204,9 +204,9 @@ class MuSig2Utils {
       publicKey: tweak.publicKey,
       gacc: tweak.gacc,
       tacc: tweak.tacc,
-      b: BigintUtils.toBytes(b, length: MuSig2Constants.baselen),
+      b: b.toBeBytes(length: MuSig2Constants.baselen),
       r: r,
-      e: BigintUtils.toBytes(e, length: MuSig2Constants.baselen),
+      e: e.toBeBytes(length: MuSig2Constants.baselen),
     );
   }
 
@@ -246,8 +246,8 @@ class MuSig2Utils {
     final tacc = (t + g * context.taccAsInteger) % order;
     return MuSig2KeyAggContext(
       publicKey: q.cast(),
-      gacc: BigintUtils.toBytes(gacc, length: MuSig2Constants.baselen),
-      tacc: BigintUtils.toBytes(tacc, length: MuSig2Constants.baselen),
+      gacc: gacc.toBeBytes(length: MuSig2Constants.baselen),
+      tacc: tacc.toBeBytes(length: MuSig2Constants.baselen),
     );
   }
 
@@ -265,8 +265,8 @@ class MuSig2Utils {
     }
     return MuSig2KeyAggContext(
       publicKey: aggKey!,
-      gacc: BigintUtils.toBytes(BigInt.one, length: MuSig2Constants.baselen),
-      tacc: BigintUtils.toBytes(BigInt.zero, length: MuSig2Constants.baselen),
+      gacc: BigInt.one.toBeBytes(length: MuSig2Constants.baselen),
+      tacc: BigInt.zero.toBeBytes(length: MuSig2Constants.baselen),
     );
   }
 
@@ -297,9 +297,9 @@ class MuSig2Utils {
     bytes.add([aggPk.length]);
     bytes.add(aggPk);
     bytes.add(messagePrefix);
-    bytes.add(IntUtils.toBytes(extraIn.length, length: 4));
+    bytes.add(extraIn.length.toU32BeBytes());
     bytes.add(extraIn);
-    bytes.add(IntUtils.toBytes(i, length: 1));
+    bytes.add(i.toBeBytes(length: 1));
     return P2TRUtils.taggedHash(MuSig2Constants.nonceDomain, bytes.toBytes());
   }
 
@@ -314,9 +314,9 @@ class MuSig2Utils {
     bytes.add(sk);
     bytes.add(aggotherNonce);
     bytes.add(aggPk);
-    bytes.add(BigintUtils.toBytes(BigInt.from(msg.length), length: 8));
+    bytes.add(msg.length.toBeBytes(length: 8));
     bytes.add(msg);
-    bytes.add(IntUtils.toBytes(i, length: 1));
+    bytes.add(i.toBeBytes(length: 1));
     return P2TRUtils.taggedHash(
       MuSig2Constants.deterministicNonceDomain,
       bytes.toBytes(),

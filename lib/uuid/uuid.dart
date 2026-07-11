@@ -74,7 +74,6 @@ class UUID {
         "fromBuffer",
         name: "buffer",
         reason: "Invalid UUID V4 bytes length.",
-        expecteLen: 16,
       );
     }
 
@@ -84,6 +83,8 @@ class UUID {
     /// Insert dashes at appropriate positions to form a UUIDv4 string
     return '${hexBytes.sublist(0, 4).join('')}-${hexBytes.sublist(4, 6).join('')}-${hexBytes.sublist(6, 8).join('')}-${hexBytes.sublist(8, 10).join('')}-${hexBytes.sublist(10).join('')}';
   }
+
+  static String random() => fromBuffer(QuickCrypto.generateRandom(16));
 
   /// Validates whether a string is a valid UUIDv4.
   static bool isValidUUIDv4(String uuid) {

@@ -122,7 +122,6 @@ class EDPoint extends BaseExtendedPointNative {
         "EDPoint",
         name: "data",
         reason: "Incorrect bytes length.",
-        expecteLen: expLen,
       );
     }
 
@@ -558,7 +557,7 @@ class EDPoint extends BaseExtendedPointNative {
   List<int> toBytes() {
     scale();
     final encLen = (curve.p.bitLength + 1 + 7) ~/ 8;
-    final yStr = BigintUtils.toBytes(y, length: encLen, order: Endian.little);
+    final yStr = y.toLeBytes(length: encLen);
     if (x % BigInt.two == BigInt.one) {
       yStr[yStr.length - 1] |= 0x80;
     }

@@ -1,6 +1,6 @@
-import 'package:blockchain_utils/bip/mnemonic/mnemonic.dart';
-import 'package:blockchain_utils/bip/mnemonic/mnemonic_ex.dart';
-import 'package:blockchain_utils/bip/mnemonic/mnemonic_utils.dart';
+import 'package:blockchain_utils/bip/mnemonic/src/mnemonic.dart';
+import 'package:blockchain_utils/bip/mnemonic/src/mnemonic_ex.dart';
+import 'package:blockchain_utils/bip/mnemonic/src/mnemonic_utils.dart';
 import 'bip39_mnemonic.dart';
 
 /// Retrieves a list of BIP39 words based on the specified language.

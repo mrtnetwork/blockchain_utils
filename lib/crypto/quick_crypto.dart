@@ -27,7 +27,7 @@ class QuickCrypto {
     required List<int> password,
     required List<int> salt,
     required int iterations,
-    HashFunc? hash,
+    CbHashFunc? hash,
     int? dklen,
   }) {
     final hashing = (hash ?? () => SHA512());
@@ -453,7 +453,7 @@ class QuickCrypto {
 
   static Rng get prng => _prng;
 
-  static GenerateRandom _generateRandom = (length) {
+  static CbGenerateRandom _generateRandom = (length) {
     return prng.nextBytes(length);
   };
 
@@ -461,7 +461,7 @@ class QuickCrypto {
     _prng = prng;
   }
 
-  static void setupRandom(GenerateRandom? random) {
+  static void setupRandom(CbGenerateRandom? random) {
     if (random == null) {
       _generateRandom = (length) {
         return prng.nextBytes(length);
@@ -479,6 +479,18 @@ class QuickCrypto {
 
     /// Return the generated random bytes.
     return r;
+  }
+
+  static List<int> generateUniqueRandom({
+    int length = 32,
+    List<List<int>> existingKeys = const [],
+  }) {
+    List<int> rand = generateRandom(length);
+    if (existingKeys.isEmpty) return rand;
+    while (BytesUtils.isContains(existingKeys, rand)) {
+      rand = QuickCrypto.generateRandom(length);
+    }
+    return rand;
   }
 
   static int generateRandomInt(int max) {
@@ -501,6 +513,15 @@ class QuickCrypto {
     return BytesUtils.toHexString(generateRandom(size));
   }
 
+  static String generateUniqueRandomHex({
+    int length = 32,
+    List<List<int>> existingKeys = const [],
+  }) {
+    return BytesUtils.toHexString(
+      generateUniqueRandom(length: length, existingKeys: existingKeys),
+    );
+  }
+
   static List<int> processCtr({
     required List<int> key,
     required List<int> iv,
@@ -519,7 +540,7 @@ class QuickCrypto {
 
   static List<int> hdfkDerive({
     required List<int> ikm,
-    required HashFunc hash,
+    required CbHashFunc hash,
     int length = 32,
     List<int>? salt,
     List<int>? info,

@@ -1,4 +1,4 @@
-import 'package:blockchain_utils/exception/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 
 /// Enumeration representing different modes for public keys used in P2PKH addresses.
 ///

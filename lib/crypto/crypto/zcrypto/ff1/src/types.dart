@@ -1,7 +1,7 @@
 // import 'dart:math' as IntUtils;
 import 'dart:typed_data' show Endian;
 
-import 'package:blockchain_utils/exception/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/helper/extensions/extensions.dart';
 import 'package:blockchain_utils/utils/binary/binary_operation.dart';
 import 'package:blockchain_utils/utils/binary/bit_utils.dart';
@@ -181,7 +181,7 @@ final class FlexibleNumeralString
   @override
   List<int> toBytesInternal(int radix, int b) {
     final c = numRadix(radix);
-    return BigintUtils.toBytes(c, length: b);
+    return c.toBeBytes(length: b);
   }
 
   @override
@@ -286,7 +286,7 @@ final class BinaryNumeralString implements NumeralString<BinaryNumeralString> {
   }
 
   BinaryNumeralString strRadix(BigInt x) {
-    List<int> bytes = BigintUtils.toBytes(x, order: Endian.little);
+    List<int> bytes = x.toLeBytes();
     final data = this.data.clone();
     for (int i = 0; i < bytes.length; i++) {
       data[i] = bytes[i];
@@ -314,6 +314,6 @@ final class BinaryNumeralString implements NumeralString<BinaryNumeralString> {
   @override
   List<int> toBytesInternal(int radix, int b) {
     final c = numRadix(radix);
-    return BigintUtils.toBytes(c, length: b);
+    return c.toBeBytes(length: b);
   }
 }

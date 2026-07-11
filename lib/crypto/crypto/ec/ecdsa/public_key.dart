@@ -1,5 +1,5 @@
 import 'package:blockchain_utils/crypto/crypto/ec/core/point.dart';
-import 'package:blockchain_utils/exception/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 
 import 'package:blockchain_utils/crypto/crypto/ec/ecdsa/signature.dart';
 import 'package:blockchain_utils/crypto/crypto/ec/projective/native/native.dart';

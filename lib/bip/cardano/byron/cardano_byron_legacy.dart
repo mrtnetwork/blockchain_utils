@@ -76,7 +76,7 @@ class CardanoByronLegacyConst {
 
 /// A class that represents a Cardano Byron Legacy wallet.
 class CardanoByronLegacy {
-  final Bip32Base bip32;
+  final Bip32Base<dynamic> bip32;
 
   /// CardanoByronLegacy
 

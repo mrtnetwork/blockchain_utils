@@ -55,7 +55,7 @@ class UnifiedSpendingKey {
   }
   factory UnifiedSpendingKey.fromSeed({
     required List<int> seedBytes,
-    required ZCashNetwork network,
+    required ZcashNetwork network,
     required ZCryptoContext context,
     Bip32KeyIndex? accountIndex,
   }) {
@@ -86,10 +86,10 @@ class UnifiedSpendingKey {
     transparent = transparent.derivePath(tPath.toPath());
     Zip32Sapling sapling = Zip32Sapling.fromSeed(
       seedBytes,
-    ).derivePath(zip32Path, context);
+    ).derivePath(zip32Path, context: context);
     Zip32Orchard orchard = Zip32Orchard.fromSeed(
       seedBytes,
-    ).derivePath(zip32Path, context);
+    ).derivePath(zip32Path, context: context);
     return UnifiedSpendingKey._(
       sapling: sapling,
       orchard: orchard,
@@ -100,10 +100,10 @@ class UnifiedSpendingKey {
   }
   factory UnifiedSpendingKey.fromUnifiedSpendKeyBytes({
     required List<int> uskBytes,
-    required ZCashNetwork network,
+    required ZcashNetwork network,
     required ZCryptoContext context,
   }) {
-    final decode = ZCashEncodingUtils.decodeUnifiedSpendKey(uskBytes);
+    final decode = ZcashEncodingUtils.decodeUnifiedSpendKey(uskBytes);
     final config = ZcashConf().fromNetwork(network);
     return UnifiedSpendingKey._(
       config: config,
@@ -123,7 +123,7 @@ class UnifiedSpendingKey {
 
   /// Encodes this unified spending key (USK) into Zcash-compatible unified bytes.
   List<int> encodeUnifiedSpeningKeyBytes() {
-    return ZCashEncodingUtils.encodeUnifiedSpendKey([
+    return ZcashEncodingUtils.encodeUnifiedSpendKey([
       ReceiverP2pkh(
         data: transparent.privateKey.toExtendedBytes(withPrefix: false),
         mode: UnifiedReceiverMode.sk,

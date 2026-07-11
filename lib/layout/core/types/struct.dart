@@ -1,4 +1,4 @@
-import 'package:blockchain_utils/exception/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/layout/byte/byte_handler.dart';
 import 'package:blockchain_utils/layout/core/core/core.dart';
 import 'package:blockchain_utils/layout/core/types/padding_layout.dart';
@@ -98,7 +98,7 @@ class StructLayout extends Layout<Map<String, dynamic>> {
             "Struct Source not found.",
             details: {
               "key": field.property,
-              "source": source,
+              "source": source.toString(),
               "property": property,
             },
           );

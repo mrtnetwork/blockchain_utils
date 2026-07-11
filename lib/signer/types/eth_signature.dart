@@ -1,4 +1,5 @@
-import 'package:blockchain_utils/exception/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
+import 'package:blockchain_utils/helper/helper.dart';
 import 'package:blockchain_utils/signer/const/constants.dart';
 import 'package:blockchain_utils/signer/exception/signing_exception.dart';
 import 'package:blockchain_utils/utils/binary/utils.dart';
@@ -94,16 +95,14 @@ class ETHSignature {
   ///
   /// Returns:
   /// - A List of integers representing the byte representation of 'r'.
-  List<int> get rBytes =>
-      BigintUtils.toBytes(r, length: CryptoSignerConst.digestLength);
+  List<int> get rBytes => r.toBeBytes(length: CryptoSignerConst.digestLength);
 
   /// Gets the byte representation of the 's' component of an Ethereum signature.
   ///
   /// The 's' component represents the y-coordinate of the elliptic curve point
   /// generated during the signature process. The bytes are obtained by converting
   /// the 's' component BigInt to a byte list with a specified length.
-  List<int> get sBytes =>
-      BigintUtils.toBytes(s, length: CryptoSignerConst.digestLength);
+  List<int> get sBytes => s.toBeBytes(length: CryptoSignerConst.digestLength);
 
   /// Gets the byte representation of the 'r', 's', and 'v' components.
   ///

@@ -1,3 +1,5 @@
+import 'package:blockchain_utils/bip/address/ada/ada_byron_addr.dart';
+import 'package:blockchain_utils/bip/address/ada/network.dart';
 import 'package:blockchain_utils/bip/bip/bip32/bip32_const.dart';
 import 'package:blockchain_utils/bip/bip/conf/config/bip_coin_conf.dart';
 import 'package:blockchain_utils/bip/bip/conf/core/coin_conf.dart';
@@ -15,20 +17,29 @@ class Cip0019Conf {
     keyNetVer: Bip32Const.kholawKeyNetVersions,
     wifNetVer: null,
     type: EllipticCurveTypes.ed25519Kholaw,
-    //  addressEncoder: (params, config) => AdaByronLegacyAddrEncoder(),
-    addressEncoder: (params, config) => throw UnimplementedError(),
-    // addrParams: {"chain_code": true},
+    addressEncoder:
+        (params, config) => AdaByronLegacyAddrEncoder().encodeKey(
+          params.pubKey,
+          chainCode: params.chainCode,
+          hdPathKey: params.hdPathKey,
+          path: params.path,
+        ),
   );
   final BipCoinConfig byronLegacyTestnet = BipCoinConfig(
     coinNames: const CoinNames("Byron legacy testnet", "ADA"),
     coinIdx: Slip44.testnet,
     chainType: ChainType.testnet,
-    defPath: "",
+    defPath: "0/0",
     keyNetVer: Bip32Const.kholawKeyNetVersions,
     wifNetVer: null,
     type: EllipticCurveTypes.ed25519Kholaw,
-    // addressEncoder: ([dynamic kwargs]) => AdaByronLegacyAddrEncoder(),
-    addressEncoder: (params, config) => throw UnimplementedError(),
-    // addrParams: {"chain_code": true},
+    addressEncoder:
+        (params, config) => AdaByronLegacyAddrEncoder().encodeKey(
+          params.pubKey,
+          chainCode: params.chainCode,
+          hdPathKey: params.hdPathKey,
+          path: params.path,
+          network: ADANetwork.testnet,
+        ),
   );
 }

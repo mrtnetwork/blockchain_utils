@@ -3,7 +3,8 @@ import 'package:blockchain_utils/crypto/crypto/ec/cdsa.dart';
 import 'package:blockchain_utils/crypto/crypto/ec/projective/secp256k1/secp256k1.dart';
 import 'package:blockchain_utils/crypto/crypto/hash/hash.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
-import 'package:blockchain_utils/exception/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
+import 'package:blockchain_utils/helper/helper.dart';
 import 'package:blockchain_utils/signer/bitcoin/bitcoin_key_signer.dart';
 import 'package:blockchain_utils/signer/const/constants.dart';
 import 'package:blockchain_utils/signer/exception/signing_exception.dart';
@@ -76,7 +77,7 @@ class ECDSASigningKey {
   /// Uses RFC 6979 for 'k' value generation to mitigate certain vulnerabilities associated with random 'k' generation.
   ECDSASignature signDigestDeterminstic({
     required List<int> digest,
-    required HashFunc hashFunc,
+    required CbHashFunc hashFunc,
     List<int>? extraEntropy,
     bool truncate = false,
     int retry = 0,
@@ -551,13 +552,13 @@ class Secp256k1SigningKey extends ECDSASigningKey {
     }
 
     final t = BytesUtils.xor(
-      BigintUtils.toBytes(d, length: BitcoinSignerUtils.baselen),
+      d.toBeBytes(length: BitcoinSignerUtils.baselen),
       P2TRUtils.taggedHash("BIP0340/aux", aux),
     );
 
     final kHash = P2TRUtils.taggedHash("BIP0340/nonce", <int>[
       ...t,
-      ...BigintUtils.toBytes(P.x, length: BitcoinSignerUtils.baselen),
+      ...P.x.toBeBytes(length: BitcoinSignerUtils.baselen),
       ...digest,
     ]);
     final k0 = BigintUtils.fromBytes(kHash) % BitcoinSignerUtils.order;
@@ -584,7 +585,7 @@ class Secp256k1SigningKey extends ECDSASigningKey {
     final eKey = (k + e * d) % BitcoinSignerUtils.order;
     return [
       ...R.toXonly(),
-      ...BigintUtils.toBytes(eKey, length: BitcoinSignerUtils.baselen),
+      ...eKey.toBeBytes(length: BitcoinSignerUtils.baselen),
     ];
   }
 

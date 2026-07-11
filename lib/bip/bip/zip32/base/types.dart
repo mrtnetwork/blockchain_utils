@@ -103,8 +103,10 @@ abstract class Zip32Base<
   MASTERKEYGENERATOR get masterKeyGenerator;
 
   /// Derives a child key at the given [index].
-  KEY childKey(KEYINDEX index, ZCryptoContext context);
+  @override
+  KEY childKey(KEYINDEX index, {ZCryptoContext? context});
 
   /// Derives a key along a BIP32 path (e.g., "m/32'/0'/0'").
-  KEY derivePath(String path, ZCryptoContext context);
+  @override
+  KEY derivePath(String path, {ZCryptoContext? context});
 }

@@ -1,6 +1,5 @@
 import 'package:blockchain_utils/bip/address/decoder.dart';
 import 'package:blockchain_utils/bip/address/encoder.dart';
-import 'package:blockchain_utils/bip/address/exception/exception.dart';
 import 'package:blockchain_utils/bip/bip.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
 import 'package:blockchain_utils/layout/layout.dart';
@@ -87,8 +86,8 @@ class AptosAddressUtils {
       throw AddressConverterException.addressBytesValidationFailed(
         network: "Aptos",
         details: {
-          "expected": AptosAddrConst.addressBytesLength,
-          "length": bytes.length,
+          "expected": AptosAddrConst.addressBytesLength.toString(),
+          "length": bytes.length.toString(),
         },
       );
     }

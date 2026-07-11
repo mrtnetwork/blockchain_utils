@@ -2,7 +2,7 @@ import 'package:blockchain_utils/bip/address/exception/exception.dart';
 import 'package:blockchain_utils/bip/bip/zip32/conf/config.dart';
 import 'package:blockchain_utils/bip/bip/zip32/conf/zcash.dart';
 import 'package:blockchain_utils/bip/zcash/src/encoding/encoding.dart';
-import 'package:blockchain_utils/exception/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/helper/extensions/extensions.dart';
 import 'package:blockchain_utils/layout/layout.dart';
 import 'package:blockchain_utils/utils/binary/utils.dart';
@@ -59,7 +59,7 @@ enum Typecode implements Comparable<Typecode> {
 
   static Typecode fromTypecode(int code) {
     if (code >= Typecode.unknown.code &&
-        code <= ZCashEncodingUtils.maxTypeCodeValue) {
+        code <= ZcashEncodingUtils.maxTypeCodeValue) {
       return Typecode.unknown;
     }
     return values.firstWhere(
@@ -67,7 +67,7 @@ enum Typecode implements Comparable<Typecode> {
       orElse: () {
         throw AddressConverterException(
           "Ivalid zcash unified address typecode.",
-          details: {"typecode": code},
+          details: {"typecode": code.toString()},
         );
       },
     );
@@ -107,7 +107,7 @@ abstract class ZUnifiedReceiver extends VariantLayoutSerializable
     required this.mode,
     required List<int> data,
   }) : data =
-           ZCashEncodingUtils.validateReceiverEncoding(
+           ZcashEncodingUtils.validateReceiverEncoding(
              data: data,
              typecode: type,
              mode: mode,
@@ -314,7 +314,7 @@ class ReceiverUnknown extends ZUnifiedReceiver {
     required int typeCode,
     required UnifiedReceiverMode mode,
   }) {
-    if (typeCode > ZCashEncodingUtils.maxTypeCodeValue ||
+    if (typeCode > ZcashEncodingUtils.maxTypeCodeValue ||
         typeCode < Typecode.unknown.code) {
       throw AddressConverterException("Invalid zcash address typecode.");
     }
@@ -364,13 +364,20 @@ class ReceiverUnknown extends ZUnifiedReceiver {
   List<dynamic> get variables => [type, data, typeCode];
 }
 
-enum ZCashNetwork {
-  mainnet("Mainnet"),
-  testnet("Testnet"),
-  regtest("Regtest");
+enum ZcashNetwork {
+  mainnet("Mainnet", 1),
+  testnet("Testnet", 2),
+  regtest("Regtest", 3);
 
-  const ZCashNetwork(this.name);
+  const ZcashNetwork(this.name, this.value);
   final String name;
+  final int value;
+  static ZcashNetwork fromValue(int? value) {
+    return values.firstWhere(
+      (e) => e.value == value,
+      orElse: () => throw ItemNotFoundException(name: "ZcashNetwork"),
+    );
+  }
 
   ZIP32CoinConfig config() {
     final conf = ZcashConf();

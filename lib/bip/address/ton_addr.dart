@@ -21,15 +21,16 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
+import 'package:blockchain_utils/base64/base64.dart';
 import 'package:blockchain_utils/bip/address/addr_key_validator.dart';
 import 'package:blockchain_utils/bip/address/decoder.dart';
 import 'package:blockchain_utils/bip/address/encoder.dart';
 import 'package:blockchain_utils/crypto/crypto/crc16/crc16.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/helper/helper.dart';
 
 import 'exception/exception.dart';
 import 'package:blockchain_utils/utils/binary/utils.dart';
-import 'package:blockchain_utils/utils/string/string.dart';
 import 'package:blockchain_utils/utils/binary/binary_operation.dart';
 
 class DecodeAddressResult {
@@ -39,29 +40,31 @@ class DecodeAddressResult {
     required this.workchain,
     required this.hash,
     required List<FriendlyAddressFlags> flags,
-  }) : flags = List<FriendlyAddressFlags>.unmodifiable(flags);
+    this.isUrlSafe = false,
+    this.isPaded = true,
+  }) : flags = flags.immutable;
   final List<FriendlyAddressFlags> flags;
+  final bool isUrlSafe;
+  final bool isPaded;
   bool get isFriendly => flags.isNotEmpty;
   bool get isTestOnly => flags.contains(FriendlyAddressFlags.test);
   bool get isBounceable => flags.contains(FriendlyAddressFlags.bounceable);
 }
 
-class FriendlyAddressFlags {
+enum FriendlyAddressFlags {
+  bounceable("bounceable", 0x11),
+  nonBounceable("nonBounceable", 0x51),
+  test("nonBounceable", 0x80);
+
+  const FriendlyAddressFlags(this.name, this.flag);
   final String name;
   final int flag;
-  const FriendlyAddressFlags._(this.name, this.flag);
-  static const FriendlyAddressFlags bounceable = FriendlyAddressFlags._(
-    "bounceable",
-    0x11,
-  );
-  static const FriendlyAddressFlags nonBounceable = FriendlyAddressFlags._(
-    "nonBounceable",
-    0x51,
-  );
-  static const FriendlyAddressFlags test = FriendlyAddressFlags._(
-    "nonBounceable",
-    0x80,
-  );
+  static FriendlyAddressFlags fromFlag(int? flag) {
+    return values.firstWhere(
+      (e) => e.flag == flag,
+      orElse: () => throw ItemNotFoundException(name: "FriendlyAddressFlags"),
+    );
+  }
 }
 
 class _TonAddressConst {
@@ -81,26 +84,33 @@ class TonAddressUtils {
   }
 
   static bool isRaw(String source) {
-    final parts = source.split(':');
+    return tryRawAddress(source) != null;
+  }
+
+  static DecodeAddressResult? tryRawAddress(String address) {
     try {
-      int.parse(parts[0]);
-      final hashBytes = BytesUtils.fromHexString(parts[1]);
-      if (hashBytes.length == _TonAddressConst.addressHashLength) {
-        return true;
-      }
-      return false;
-    } catch (e) {
-      return false;
+      final parts = address.split(':');
+      final int? workChain = int.tryParse(parts[0]);
+      if (workChain == null) return null;
+      final hash = BytesUtils.fromHexString(parts[1]);
+      return DecodeAddressResult(hash: hash, workchain: workChain, flags: []);
+    } catch (_) {
+      return null;
     }
   }
 
   static DecodeAddressResult fromFriendlyAddress(String address) {
-    final data = StringUtils.encode(address, type: StringEncoding.base64);
+    final decode = B64Decoder.decodeWithInfo(
+      address,
+      urlSafe: true,
+      validatePadding: false,
+    );
+    final data = decode.data;
     // 1 byte tag + 1 byte workchain + 32 bytes hash + 2 byte crc
     if (data.length != _TonAddressConst.friendlyAddressBytesLength) {
       throw AddressConverterException.addressValidationFailed(
         reason: "Invalid address bytes.",
-        details: {"length": data.length},
+        details: {"length": data.length.toString()},
       );
     }
 
@@ -110,8 +120,8 @@ class TonAddressUtils {
     final calcedCrc = Crc16.quickIntDigest(addr);
     if (!BytesUtils.bytesEqual(crc, calcedCrc)) {
       throw AddressConverterException.addressValidationFailed(
-        reason: "Invalid checksum.",
-        details: {"expected": calcedCrc, "checksum": crc},
+        reason: "Invalid address checksum.",
+        details: {"expected": calcedCrc.toString(), "checksum": crc.toString()},
       );
     }
     final List<FriendlyAddressFlags> flags = [];
@@ -121,17 +131,15 @@ class TonAddressUtils {
       flags.add(FriendlyAddressFlags.test);
       tag ^= FriendlyAddressFlags.test.flag;
     }
-    if (tag != FriendlyAddressFlags.bounceable.flag &&
-        tag != FriendlyAddressFlags.nonBounceable.flag) {
-      throw AddressConverterException.addressValidationFailed(
-        reason: "Invalid checksum.",
-        details: {"tag": tag},
-      );
-    }
     if (tag == FriendlyAddressFlags.bounceable.flag) {
       flags.add(FriendlyAddressFlags.bounceable);
-    } else {
+    } else if (tag == FriendlyAddressFlags.nonBounceable.flag) {
       flags.add(FriendlyAddressFlags.nonBounceable);
+    } else {
+      throw AddressConverterException.addressValidationFailed(
+        reason: "Invalid friendly address flags.",
+        details: {"tag": tag.toString()},
+      );
     }
     int? workchain;
     if (addr[1] == BinaryOps.mask8) {
@@ -144,6 +152,8 @@ class TonAddressUtils {
       workchain: workchain,
       hash: hashPart,
       flags: flags,
+      isUrlSafe: decode.isUrlSafe,
+      isPaded: decode.isPaded,
     );
   }
 
@@ -166,7 +176,9 @@ class TonAddressUtils {
     bool bounceable = true,
     bool testOnly = false,
     bool urlSafe = false,
+    bool noPadding = false,
   }) {
+    hash = validateAddressHash(hash);
     int tag =
         bounceable
             ? FriendlyAddressFlags.bounceable.flag
@@ -180,19 +192,14 @@ class TonAddressUtils {
       ...hash,
     ]);
     final addrBytes = [...addr, ...Crc16.quickIntDigest(addr)];
-
-    final encode = StringUtils.decode(addrBytes, type: StringEncoding.base64);
-    if (urlSafe) {
-      return encode.replaceAll('+', '-').replaceAll('/', '_');
-    }
-    return encode;
+    return B64Encoder.encode(addrBytes, urlSafe: urlSafe, noPadding: noPadding);
   }
 
   static DecodeAddressResult decodeAddress(String address) {
     if (isFriendly(address)) {
       return fromFriendlyAddress(address);
-    } else if (isRaw(address)) {
-      return fromRawAddress(address);
+    } else if (tryRawAddress(address) case DecodeAddressResult result) {
+      return result;
     } else {
       throw AddressConverterException.addressValidationFailed(
         details: {"address": address},
@@ -205,12 +212,17 @@ class TonAddressUtils {
       throw AddressConverterException.addressBytesValidationFailed(
         reason: "Invalid address bytes.",
         details: {
-          "expected": _TonAddressConst.addressHashLength,
-          "length": bytes.length,
+          "expected": _TonAddressConst.addressHashLength.toString(),
+          "length": bytes.length.toString(),
         },
       );
     }
     return bytes.asImmutableBytes;
+  }
+
+  static String encodeRawAddress(int workchain, List<int> bytes) {
+    final data = validateAddressHash(bytes);
+    return BytesUtils.toHexString(data, prefix: '$workchain:');
   }
 }
 
@@ -222,7 +234,10 @@ class TonAddrDecoder implements BlockchainAddressDecoder<List<int>> {
       throw AddressConverterException.addressValidationFailed(
         reason: "Invalid address workchain.",
         network: "Ton",
-        details: {"expected": workChain, "workchain": decode.workchain},
+        details: {
+          "expected": workChain.toString(),
+          "workchain": decode.workchain.toString(),
+        },
       );
     }
     return decode.hash;
@@ -234,7 +249,10 @@ class TonAddrDecoder implements BlockchainAddressDecoder<List<int>> {
       throw AddressConverterException.addressValidationFailed(
         reason: "Invalid address workchain.",
         network: "Ton",
-        details: {"expected": workChain, "workchain": decode.workchain},
+        details: {
+          "expected": workChain.toString(),
+          "workchain": decode.workchain.toString(),
+        },
       );
     }
     return decode;
@@ -248,6 +266,8 @@ class TonAddrEncoder implements BlockchainAddressEncoder {
     int? workChain,
     bool bounceable = true,
     bool urlSafe = true,
+    bool noPadding = false,
+    bool testOnly = false,
   }) {
     workChain = AddrKeyValidator.getAddrArg<int>(workChain, "workChain");
     return TonAddressUtils.encodeAddress(
@@ -255,6 +275,8 @@ class TonAddrEncoder implements BlockchainAddressEncoder {
       workChain: workChain,
       bounceable: bounceable,
       urlSafe: urlSafe,
+      noPadding: noPadding,
+      testOnly: testOnly,
     );
   }
 }

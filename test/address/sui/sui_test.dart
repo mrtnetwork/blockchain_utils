@@ -1,4 +1,3 @@
-import 'package:blockchain_utils/bip/address/exception/exception.dart';
 import 'package:blockchain_utils/blockchain_utils.dart';
 import 'package:test/test.dart';
 

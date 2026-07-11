@@ -10,12 +10,11 @@ import 'package:blockchain_utils/crypto/crypto/ec/projective/secp256k1/impl/secp
 import 'package:blockchain_utils/crypto/crypto/ec/projective/secp256k1/types/types.dart';
 import 'package:blockchain_utils/crypto/crypto/ec/utils/secp256k1.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
-import 'package:blockchain_utils/exception/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/helper/extensions/extensions.dart';
 import 'package:blockchain_utils/signer/exception/signing_exception.dart';
 import 'package:blockchain_utils/utils/binary/bytes_tracker.dart';
 import 'package:blockchain_utils/utils/binary/utils.dart';
-import 'package:blockchain_utils/utils/numbers/utils/bigint_utils.dart';
 
 class Musig2Const extends Musig2Bsae {
   const Musig2Const();
@@ -165,11 +164,7 @@ class Musig2Const extends Musig2Bsae {
     if (msg == null) {
       msg = [0];
     } else {
-      msg = [
-        1,
-        ...BigintUtils.toBytes(BigInt.from(msg.length), length: 8),
-        ...msg,
-      ];
+      msg = [1, ...msg.length.toBeBytes(length: 8), ...msg];
     }
     extra ??= [];
     aggPubKey ??= [];
@@ -215,7 +210,6 @@ class Musig2Const extends Musig2Bsae {
         "sign",
         name: "secnonce",
         reason: "Invalid secret nonce bytes length.",
-        expecteLen: MuSig2Constants.secnoncelength,
       );
     }
     final values = MuSig2UtilsConst.decodeSessionConst(session);

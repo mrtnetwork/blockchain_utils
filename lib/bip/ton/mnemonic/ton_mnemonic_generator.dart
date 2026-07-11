@@ -1,6 +1,6 @@
 import 'package:blockchain_utils/bip/bip/bip39/bip39_mnemonic.dart';
-import 'package:blockchain_utils/bip/mnemonic/mnemonic.dart';
-import 'package:blockchain_utils/exception/exception/exception.dart';
+import 'package:blockchain_utils/bip/mnemonic/src/mnemonic.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 import 'ton_entropy_generator.dart';
 import 'ton_mnemonic_encoder.dart';
 import 'ton_mnemonic_language.dart';

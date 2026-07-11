@@ -1,10 +1,10 @@
 import 'dart:typed_data';
 
-import 'package:blockchain_utils/bip/mnemonic/mnemonic_ex.dart';
+import 'package:blockchain_utils/bip/mnemonic/src/mnemonic_ex.dart';
 import 'package:blockchain_utils/bip/monero/mnemonic/monero_mnemonic.dart';
 import 'package:blockchain_utils/bip/monero/mnemonic/monero_mnemonic_utils.dart';
-import 'package:blockchain_utils/bip/mnemonic/mnemonic_decoder_base.dart';
-import 'package:blockchain_utils/bip/mnemonic/mnemonic_utils.dart';
+import 'package:blockchain_utils/bip/mnemonic/src/mnemonic_decoder_base.dart';
+import 'package:blockchain_utils/bip/mnemonic/src/mnemonic_utils.dart';
 import 'package:blockchain_utils/exception/exceptions.dart';
 
 /// Decoder for Monero-style mnemonics with language support.
@@ -62,7 +62,7 @@ class MoneroMnemonicDecoder extends MnemonicDecoderBase<MoneroLanguages> {
   /// -[language]: The Monero language used in the mnemonic.
   ///
   void validateCheckSum(List<String> words, MoneroLanguages language) {
-    MoneroWordsNum.values.firstWhere(
+    final w = MoneroWordsNum.values.firstWhere(
       (element) => element.value == words.length,
       orElse:
           () =>
@@ -72,6 +72,7 @@ class MoneroMnemonicDecoder extends MnemonicDecoderBase<MoneroLanguages> {
                 reason: "Invalid mnemonic length.",
               ),
     );
+    if (!w.withChecksum) return;
     final checkSum = MoneroMnemonicUtils.computeChecksum(
       words.sublist(0, words.length - 1),
       language,

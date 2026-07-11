@@ -4,7 +4,7 @@ import 'package:test/scaffolding.dart';
 
 void main() {
   test("ZCash UFVK/UFSK", () {
-    final network = ZCashNetwork.mainnet;
+    final network = ZcashNetwork.mainnet;
     final context = DefaultZCryptoContext();
     for (final t in _testVector) {
       final test = _TestVector.fromJson(t);
@@ -24,6 +24,7 @@ void main() {
         context: context,
       );
       final ufvk = decode.toUnifiedFullViewingKey();
+
       UnifiedDerivedAddress addr;
       try {
         addr = ufvk.address(

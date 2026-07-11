@@ -76,4 +76,10 @@ abstract class HDKeyManager<
 > {
   abstract final PK publicKey;
   abstract final SK privateKey;
+
+  /// Derives a child key at the given [index].
+  KEY childKey(KEYINDEX index);
+
+  /// Derives a key along a BIP32 path (e.g., "m/32'/0'/0'").
+  KEY derivePath(String path);
 }

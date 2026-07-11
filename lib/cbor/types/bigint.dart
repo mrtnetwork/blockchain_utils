@@ -2,8 +2,7 @@ import 'package:blockchain_utils/cbor/core/cbor.dart';
 import 'package:blockchain_utils/cbor/core/tags.dart';
 import 'package:blockchain_utils/cbor/utils/cbor_utils.dart';
 import 'package:blockchain_utils/cbor/utils/dynamic_bytes.dart';
-import 'package:blockchain_utils/utils/binary/utils.dart';
-import 'package:blockchain_utils/utils/numbers/utils/bigint_utils.dart';
+import 'package:blockchain_utils/helper/helper.dart';
 
 /// A class representing a CBOR (Concise Binary Object Representation) Bigint value.
 class CborBigIntValue extends CborNumeric<BigInt> {
@@ -41,7 +40,7 @@ class CborBigIntValue extends CborNumeric<BigInt> {
         toBytes = [0];
       }
     } else {
-      toBytes = BigintUtils.toBytes(v);
+      toBytes = v.toBeBytes();
     }
     bytes.pushInt(MajorTags.byteString, toBytes.length);
     bytes.pushBytes(toBytes);
@@ -60,15 +59,8 @@ class CborBigIntValue extends CborNumeric<BigInt> {
     return value.toInt();
   }
 
-  /// Encode the value into CBOR bytes an then to hex
-  @override
-  String toCborHex() {
-    return BytesUtils.toHexString(encode());
-  }
-
-  /// Returns the string representation of the value.
   @override
   String toString() {
-    return value.toString();
+    return "CborBigIntValue($value)";
   }
 }

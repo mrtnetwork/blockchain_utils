@@ -3,19 +3,18 @@ import 'package:blockchain_utils/layout/byte/byte_handler.dart';
 import 'package:blockchain_utils/layout/core/core/core.dart';
 import 'package:blockchain_utils/layout/core/types/padding_layout.dart';
 import 'package:blockchain_utils/layout/exception/exception.dart';
-
 import 'numeric.dart';
 
-typedef ONGETENUMINDEX = int Function(Map<String, dynamic> source);
-typedef ONNORMALIZEDECODERESULT =
+typedef CbGetEnumIndex = int Function(Map<String, dynamic> source);
+typedef CbNormalizeLayoutResult =
     Map<String, dynamic> Function(Map<String, dynamic> result, int variant);
 
 class LazyVariantModel<T> {
-  final LayoutFunc<T> layout;
+  final CbLayoutFunc<T> layout;
   final String? property;
   final int? index;
-  final ONGETENUMINDEX? onRequestIndex;
-  final ONNORMALIZEDECODERESULT? onNormalizeDecodeResult;
+  final CbGetEnumIndex? onRequestIndex;
+  final CbNormalizeLayoutResult? onNormalizeDecodeResult;
   const LazyVariantModel({
     required this.layout,
     required this.property,
@@ -102,7 +101,7 @@ class LazyUnion extends Layout<Map<String, dynamic>> {
         details: {
           "property": property,
           "layout": discr.value,
-          "layouts": _registry.keys.toList(),
+          "layouts": _registry.keys.join(", "),
         },
       );
     }
@@ -127,7 +126,7 @@ class LazyUnion extends Layout<Map<String, dynamic>> {
     if (vlo == null) {
       throw LayoutException(
         "Failed to determine varinat layout.",
-        details: {"property": property, "source": source},
+        details: {"property": property, "source": source.toString()},
       );
     }
 
@@ -239,7 +238,6 @@ class LazyVariantLayout extends Layout<Map<String, dynamic>> {
         details: {"property": property},
       );
     }
-    // union.discriminator.encode(index, writer, offset: offset);
     int span = contentOffset;
 
     final layout = this.layout.layout(property: this.layout.property);

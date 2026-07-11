@@ -3,7 +3,8 @@ import 'package:blockchain_utils/crypto/crypto/ec/musig2/constants/const.dart';
 import 'package:blockchain_utils/crypto/crypto/ec/musig2/types/types.dart';
 import 'package:blockchain_utils/crypto/crypto/ec/musig2/utils/utils.dart';
 import 'package:blockchain_utils/crypto/crypto/ec/core/point.dart';
-import 'package:blockchain_utils/exception/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
+import 'package:blockchain_utils/helper/helper.dart';
 import 'package:blockchain_utils/utils/numbers/utils/bigint_utils.dart';
 
 abstract class Musig2Bsae {
@@ -40,7 +41,6 @@ abstract class Musig2Bsae {
         "partialSigVerify",
         name: "pubnonce",
         reason: "Invalid pubnonce bytes length.",
-        expecteLen: MuSig2Constants.pubnonceLength,
       );
     }
     final values = MuSig2Utils.decodeSession(session);
@@ -114,7 +114,7 @@ abstract class Musig2Bsae {
     s =
         (s + values.eAsInteger * g * values.taccAsInteger) %
         MuSig2Constants.order;
-    return [...values.r.toXonly(), ...BigintUtils.toBytes(s)];
+    return [...values.r.toXonly(), ...s.toBeBytes()];
   }
 
   MuSig2KeyAggContext keyAggAndTweak({

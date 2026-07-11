@@ -1,6 +1,6 @@
 import 'package:blockchain_utils/bip/algorand/mnemonic/algorand_mnemonic.dart';
 import 'package:blockchain_utils/bip/algorand/mnemonic/algorand_mnemonic_decoder.dart';
-import 'package:blockchain_utils/bip/mnemonic/mnemonic.dart';
+import 'package:blockchain_utils/bip/mnemonic/src/mnemonic.dart';
 
 /// Algorand seed generator class.
 class AlgorandSeedGenerator {

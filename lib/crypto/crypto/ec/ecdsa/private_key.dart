@@ -2,7 +2,8 @@ import 'dart:typed_data';
 import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
 import 'package:blockchain_utils/crypto/crypto/ec/curve/curves.dart';
 import 'package:blockchain_utils/crypto/crypto/ec/utils/secp256k1.dart';
-import 'package:blockchain_utils/exception/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
+import 'package:blockchain_utils/helper/helper.dart';
 import 'package:blockchain_utils/signer/exception/signing_exception.dart';
 
 import 'package:blockchain_utils/crypto/crypto/ec/ecdsa/signature.dart';
@@ -36,7 +37,6 @@ class ECDSAPrivateKey with ConstantEquality<ECDSAPrivateKey> {
         "ECDSAPrivateKey",
         name: "secrentKey",
         reason: "Invalid secret key bytes length.",
-        expecteLen: curve.curve.baselen,
       );
     }
     final secexp = BigintUtils.fromBytes(secrentKey, byteOrder: Endian.big);
@@ -68,7 +68,6 @@ class ECDSAPrivateKey with ConstantEquality<ECDSAPrivateKey> {
         "ECDSAPrivateKey",
         name: "secretKey",
         reason: "Invalid secret key bytes length.",
-        expecteLen: generator.curve.baselen,
       );
     }
     final pubkeyBytes = Secp256k1Utils.generatePublicKeyBlind(
@@ -137,11 +136,9 @@ class ECDSAPrivateKey with ConstantEquality<ECDSAPrivateKey> {
 
   /// Converts the private key to bytes.
   List<int> toBytes() {
-    final tob = BigintUtils.toBytes(
-      secretMultiplier,
+    return secretMultiplier.toBeBytes(
       length: publicKey.generator.curve.baselen,
     );
-    return tob;
   }
 
   @override

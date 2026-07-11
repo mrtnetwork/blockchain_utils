@@ -3,10 +3,10 @@ import 'package:blockchain_utils/crypto/crypto/aes/aes.dart';
 import 'package:blockchain_utils/crypto/crypto/ctr/ctr.dart';
 import 'package:blockchain_utils/crypto/crypto/hash/hash.dart';
 import 'package:blockchain_utils/crypto/crypto/prng/rng.dart';
-import 'package:blockchain_utils/exception/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 
-/// The `GenerateRandom` typedef defines a function signature for generating random data with a specified length.
-typedef GenerateRandom = List<int> Function(int length);
+/// The `CbGenerateRandom` typedef defines a function signature for generating random data with a specified length.
+typedef CbGenerateRandom = List<int> Function(int length);
 
 /// The [FortunaPRNG] class represents an implementation of the Fortuna pseudorandom number generator (PRNG) algorithm.
 class FortunaPRNG with Rng {

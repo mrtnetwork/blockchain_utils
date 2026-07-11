@@ -1,9 +1,6 @@
-import 'dart:typed_data' show Endian;
-
 import 'package:blockchain_utils/crypto/crypto/chacha/chacha.dart';
 import 'package:blockchain_utils/crypto/crypto/prng/rng.dart';
 import 'package:blockchain_utils/helper/extensions/extensions.dart';
-import 'package:blockchain_utils/utils/numbers/utils/int_utils.dart';
 
 class ChaCha20Rng with Rng {
   final int streamId;
@@ -20,10 +17,7 @@ class ChaCha20Rng with Rng {
   /// Internal refill of 4 ChaCha blocks (256 bytes)
   void _refill() {
     final out = List<int>.filled(256, 0);
-    final nonce = [
-      ...IntUtils.toBytes(_blockCounter, byteOrder: Endian.little, length: 8),
-      ...IntUtils.toBytes(streamId, byteOrder: Endian.little, length: 8),
-    ];
+    final nonce = [..._blockCounter.toU64LeBytes(), ...streamId.toU64LeBytes()];
     final zeros = List<int>.filled(256, 0);
     ChaCha20.streamXOR(_key, nonce, zeros, out, nonceInplaceCounterLength: 8);
 

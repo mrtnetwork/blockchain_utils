@@ -1,6 +1,6 @@
 import 'package:blockchain_utils/exception/exceptions.dart';
+import 'package:blockchain_utils/helper/helper.dart';
 import 'package:blockchain_utils/utils/equatable/equatable.dart';
-import 'package:blockchain_utils/utils/numbers/utils/bigint_utils.dart';
 
 class _BigRationalConst {
   static const int maxScale = 20;
@@ -19,8 +19,8 @@ class BigRational with Equality {
   static final _ten = BigInt.from(10);
   List<int> encodeRational() {
     // Convert numerator and denominator to bytes
-    final numeratorBytes = BigintUtils.toBytes(numerator, length: 2);
-    final denominatorBytes = BigintUtils.toBytes(denominator, length: 2);
+    final numeratorBytes = numerator.toBeBytes(length: 2);
+    final denominatorBytes = denominator.toBeBytes(length: 2);
 
     // Concatenate numerator and denominator bytes
     final bytes = List<int>.from(numeratorBytes)..addAll(denominatorBytes);
@@ -73,7 +73,7 @@ class BigRational with Equality {
     return (a * b) ~/ _gcd(a, b);
   }
 
-  static BigRational? tryParseDecimaal(String decimal) {
+  static BigRational? tryParse(String decimal) {
     try {
       return BigRational.parseDecimal(decimal);
     } catch (e) {

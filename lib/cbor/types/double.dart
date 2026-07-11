@@ -4,7 +4,6 @@ import 'package:blockchain_utils/cbor/utils/dynamic_bytes.dart';
 import 'package:blockchain_utils/cbor/utils/float_utils.dart';
 import 'package:blockchain_utils/cbor/core/tags.dart';
 import 'package:blockchain_utils/cbor/core/cbor.dart';
-import 'package:blockchain_utils/utils/binary/utils.dart';
 
 /// A class representing a CBOR (Concise Binary Object Representation) float value.
 class CborFloatValue extends CborObject<double> {
@@ -59,16 +58,9 @@ class CborFloatValue extends CborObject<double> {
     return bytes.toBytes();
   }
 
-  /// Encode the value into CBOR bytes an then to hex
-  @override
-  String toCborHex() {
-    return BytesUtils.toHexString(encode());
-  }
-
-  /// value as string
   @override
   String toString() {
-    return value.toString();
+    return "CborFloatValue($value)";
   }
 
   @override

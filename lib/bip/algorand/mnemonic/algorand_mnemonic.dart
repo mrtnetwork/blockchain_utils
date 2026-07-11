@@ -1,7 +1,7 @@
 import 'package:blockchain_utils/bip/algorand/mnemonic/algorand_entropy_generator.dart';
 import 'package:blockchain_utils/bip/bip/bip39/bip39_mnemonic.dart';
 import 'package:blockchain_utils/bip/bip/bip39/word_list/word_list.dart';
-import 'package:blockchain_utils/bip/mnemonic/mnemonic_utils.dart';
+import 'package:blockchain_utils/bip/mnemonic/src/mnemonic_utils.dart';
 
 /// Enum representing the number of words in an Algorand mnemonic phrase.
 class AlgorandWordsNum {

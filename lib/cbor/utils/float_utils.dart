@@ -20,17 +20,17 @@ import 'package:blockchain_utils/cbor/core/tags.dart';
 import 'package:blockchain_utils/cbor/exception/exception.dart';
 
 // Enum representing different floating-point formats and their characteristics.
-class FloatLength {
-  static const FloatLength bytes16 = FloatLength._(5, 10);
-  static const FloatLength bytes32 = FloatLength._(8, 23);
-  static const FloatLength bytes64 = FloatLength._(11, 52);
+enum FloatLength {
+  bytes16(5, 10),
+  bytes32(8, 23),
+  bytes64(11, 52);
 
   /// Number of bits reserved for the exponent and mantissa in each format.
   final int exponentBitLength;
   final int mantissaBitLength;
 
   /// Constructor that sets the bit lengths for exponent and mantissa.
-  const FloatLength._(this.exponentBitLength, this.mantissaBitLength);
+  const FloatLength(this.exponentBitLength, this.mantissaBitLength);
 
   /// Calculate the exponent bias for the format.
   int get exponentBias => (1 << (exponentBitLength - 1)) - 1;
@@ -46,9 +46,6 @@ class FloatLength {
         return NumBytes.two;
     }
   }
-
-  // Enum values as a list for iteration
-  static const List<FloatLength> values = [bytes16, bytes32, bytes64];
 
   // Enum value accessor by index
   static FloatLength getByIndex(int index) {

@@ -12,3 +12,5 @@ export 'bch_bech32.dart';
 
 /// Export statement for Segregated Witness (SegWit) Bech32 encoding.
 export 'segwit_bech32.dart';
+
+export 'bech32_ex.dart';

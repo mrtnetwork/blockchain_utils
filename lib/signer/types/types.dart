@@ -1,5 +1,6 @@
 import 'package:blockchain_utils/crypto/crypto/ec/ecdsa/signature.dart';
-import 'package:blockchain_utils/exception/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
+import 'package:blockchain_utils/helper/helper.dart';
 import 'package:blockchain_utils/signer/bitcoin/bitcoin_key_signer.dart';
 import 'package:blockchain_utils/signer/const/constants.dart';
 import 'package:blockchain_utils/signer/utils/utils.dart';
@@ -43,11 +44,11 @@ class BitcoinSchnorrSignature {
   }
 
   List<int> rBytes() {
-    return BigintUtils.toBytes(r, length: BitcoinSignerUtils.baselen);
+    return r.toBeBytes(length: BitcoinSignerUtils.baselen);
   }
 
   List<int> sBytes() {
-    return BigintUtils.toBytes(s, length: BitcoinSignerUtils.baselen);
+    return s.toBeBytes(length: BitcoinSignerUtils.baselen);
   }
 
   List<int> toBytes() {
@@ -135,11 +136,11 @@ class Secp256k1EcdsaSignature {
   }
 
   List<int> rBytes() {
-    return BigintUtils.toBytes(r, length: BitcoinSignerUtils.baselen);
+    return r.toBeBytes(length: BitcoinSignerUtils.baselen);
   }
 
   List<int> sBytes() {
-    return BigintUtils.toBytes(s, length: BitcoinSignerUtils.baselen);
+    return s.toBeBytes(length: BitcoinSignerUtils.baselen);
   }
 
   List<int> toBytes() {

@@ -7,15 +7,16 @@ import 'monero_conf.dart';
 /// networks and test networks of various cryptocurrencies.
 enum MoneroCoins implements CryptoCoins<MoneroCoinConf> {
   // Mainnet
-  moneroMainnet('moneroMainnet'),
+  moneroMainnet('moneroMainnet', 901),
 
   // Testnets
-  moneroStagenet('moneroStagenet'),
-  moneroTestnet('moneroTestnet');
+  moneroStagenet('moneroStagenet', 902),
+  moneroTestnet('moneroTestnet', 903);
 
   final String name;
-
-  const MoneroCoins(this.name);
+  @override
+  final int identifier;
+  const MoneroCoins(this.name, this.identifier);
   @override
   MoneroCoins get value {
     return this;

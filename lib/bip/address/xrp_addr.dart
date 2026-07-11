@@ -1,4 +1,6 @@
 import 'package:blockchain_utils/base58/base58.dart';
+import 'package:blockchain_utils/bip/bip/conf/core/coin_conf.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/helper/helper.dart';
 
 import 'package:blockchain_utils/bip/address/addr_dec_utils.dart';
@@ -18,25 +20,88 @@ class _XRPAddressConst {
   /// The length of the tag included in X-addresses.
   static const int xAddressTagLength = 9;
 
-  /// The prefix for mainnet X-addresses.
-  static const List<int> _xAddressPrefixMain = [0x05, 0x44];
-
-  /// The prefix for testnet X-addresses.
-  static const List<int> _xAddressPrefixTest = [0x04, 0x93];
-
   /// The length of the X-address prefix.
   static const int xAddressPrefixLength = 2;
+  static const int classAddressMaxLength = 35;
+
+  static const Map<ChainType, List<int>> prefixes = {
+    ChainType.testnet: [0x04, 0x93],
+    ChainType.mainnet: [0x05, 0x44],
+  };
 }
 
-class XRPXAddressDecodeResult {
-  final List<int> bytes;
+enum XRPAddressType {
+  classic(0),
+  xAddress(1);
+
+  final int value;
+  const XRPAddressType(this.value);
+  static XRPAddressType fromValue(int? value) {
+    return values.firstWhere(
+      (e) => e.value == value,
+      orElse: () => throw ItemNotFoundException(name: "XRPAddressType"),
+    );
+  }
+
+  bool get isXAddress => this == xAddress;
+}
+
+class XRPAddressDecodeResult {
+  final List<int> hash;
   final int? tag;
-  final bool isTestnet;
-  XRPXAddressDecodeResult({
+  final ChainType? chainType;
+  final String classicAddress;
+  factory XRPAddressDecodeResult.classic({
+    required List<int> hash,
+    required String address,
+  }) {
+    return XRPAddressDecodeResult._(bytes: hash, classicAddress: address);
+  }
+  factory XRPAddressDecodeResult.x({
+    required List<int> hash,
+    required ChainType chainType,
+    required String classicAddress,
+    int? tag,
+  }) {
+    return XRPAddressDecodeResult._(
+      bytes: hash,
+      chainType: chainType,
+      classicAddress: classicAddress,
+
+      tag: tag,
+    );
+  }
+  XRPAddressDecodeResult._({
     required List<int> bytes,
-    required this.tag,
-    required this.isTestnet,
-  }) : bytes = bytes.asImmutableBytes;
+    required this.classicAddress,
+    this.tag,
+    this.chainType,
+  }) : hash =
+           bytes
+               .exc(
+                 length: QuickCrypto.hash160DigestSize,
+                 operation: "XRPAddressDecodeResult",
+                 reason: "Invalid hash bytes length.",
+               )
+               .asImmutableBytes;
+
+  XRPAddressType get type =>
+      chainType != null ? XRPAddressType.xAddress : XRPAddressType.classic;
+}
+
+class XRPXAddressEncodeResult {
+  final List<int> hash;
+  final int? tag;
+  final ChainType chainType;
+  final String xAddress;
+  final String classicAddress;
+  const XRPXAddressEncodeResult({
+    required this.hash,
+    this.tag,
+    required this.chainType,
+    required this.xAddress,
+    required this.classicAddress,
+  });
 }
 
 class XRPAddressUtils {
@@ -57,24 +122,24 @@ class XRPAddressUtils {
     ], Base58Alphabets.ripple);
   }
 
-  /// Converts a public key represented as a list of bytes into an XRP (Ripple) address.
-  static String _toAddress(List<int> publicKeyBytes) {
-    final hash160 = QuickCrypto.hash160(publicKeyBytes);
-
-    return hashToAddress(hash160);
-  }
-
   /// Generates an XRP (Ripple) X-address from the provided address hash, X-Address prefix, and optional tag.
   static String hashToXAddress(
     List<int> addrHash,
-    List<int> xAddrPrefix,
+    ChainType chainType,
     int? tag,
   ) {
+    if (addrHash.length != QuickCrypto.hash160DigestSize) {
+      throw AddressConverterException.addressBytesValidationFailed(
+        reason: "Invalid address bytes.",
+      );
+    }
+
     if (tag != null && tag > BinaryOps.mask32) {
       throw AddressConverterException.addressBytesValidationFailed(
         reason: "Invalid address tag.",
       );
     }
+    final xAddrPrefix = _XRPAddressConst.prefixes[chainType]!;
     List<int> addrBytes = [...xAddrPrefix, ...addrHash];
     final List<int> tagBytes = BinaryOps.writeUint64LE(tag ?? 0);
     addrBytes = [...addrBytes, tag == null ? 0 : 1, ...tagBytes];
@@ -82,10 +147,7 @@ class XRPAddressUtils {
   }
 
   /// Decodes an X-Address and extracts the address hash and, if present, the tag.
-  static XRPXAddressDecodeResult decodeXAddress(
-    String addr,
-    List<int>? prefix,
-  ) {
+  static XRPAddressDecodeResult decodeXAddress(String addr) {
     final List<int> addrDecBytes = Base58Decoder.checkDecode(
       addr,
       Base58Alphabets.ripple,
@@ -102,27 +164,14 @@ class XRPAddressUtils {
       0,
       _XRPAddressConst.xAddressPrefixLength,
     );
-
-    if (prefix != null) {
-      if (!BytesUtils.bytesEqual(prefix, prefixBytes)) {
-        throw AddressConverterException.addressValidationFailed(
-          reason: "Invalid address checksum.",
-        );
-      }
-    } else {
-      if (!BytesUtils.bytesEqual(
-            prefixBytes,
-            _XRPAddressConst._xAddressPrefixMain,
-          ) &&
-          !BytesUtils.bytesEqual(
-            prefixBytes,
-            _XRPAddressConst._xAddressPrefixTest,
-          )) {
-        throw AddressConverterException.addressValidationFailed(
-          reason: "Invalid address prefix.",
-        );
-      }
-    }
+    final prefix = _XRPAddressConst.prefixes.entries.firstWhere(
+      (e) => BytesUtils.bytesEqual(e.value, prefixBytes),
+      orElse:
+          () =>
+              throw AddressConverterException.addressValidationFailed(
+                reason: "Invalid address prefix bytes.",
+              ),
+    );
 
     final List<int> addrHash = addrDecBytes.sublist(
       prefixBytes.length,
@@ -150,61 +199,59 @@ class XRPAddressUtils {
       tag = BinaryOps.readUint32LE(tagBytes);
     }
 
-    return XRPXAddressDecodeResult(
-      bytes: addrHash,
+    return XRPAddressDecodeResult.x(
+      hash: addrHash,
       tag: tag,
-      isTestnet: BytesUtils.bytesEqual(
-        prefixBytes,
-        _XRPAddressConst._xAddressPrefixTest,
-      ),
+      chainType: prefix.key,
+      classicAddress: hashToAddress(addrHash),
     );
   }
 
   /// Converts a classic XRP address to an X-Address.
   static String classicToXAddress(
     String addr,
-    List<int> xAddrPrefix, {
+    ChainType chainType, {
     int? tag,
   }) {
     final addrHash = XrpAddrDecoder().decodeAddr(addr);
-    return hashToXAddress(addrHash, xAddrPrefix, tag);
+    return hashToXAddress(addrHash, chainType, tag);
   }
 
   /// Converts an X-Address to a classic XRP address.
-  static String xAddressToClassic(String xAddrress, List<int> xAddrPrefix) {
+  static String xAddressToClassic(String xAddrress, {ChainType? chainType}) {
     final decode = XrpXAddrDecoder().decodeAddr(
       xAddrress,
-      addrPrefix: xAddrPrefix,
+      chainType: chainType,
     );
-
-    return Base58Encoder.checkEncode([
-      ...AddrKeyValidator.getConfigArg<List<int>>(
-        CoinsConf.ripple.params.p2pkhNetVer,
-        "p2pkhNetVer",
-      ),
-      ...decode,
-    ], Base58Alphabets.ripple);
+    return hashToAddress(decode);
   }
 
   /// Decodes the given address, whether it is an X-Address or a classic address, and returns the address bytes.
-  static List<int> decodeAddress(String address, {List<int>? xAddrPrefix}) {
+  static XRPAddressDecodeResult decodeAddress(
+    String address, {
+    ChainType? chainType,
+  }) {
     try {
-      try {
+      if (address.length <= _XRPAddressConst.classAddressMaxLength) {
         final decode = XrpAddrDecoder().decodeAddr(address);
-        return decode;
-      } catch (e) {
-        final xAddr = decodeXAddress(address, xAddrPrefix);
-        return xAddr.bytes;
+        return XRPAddressDecodeResult.classic(hash: decode, address: address);
       }
-    } catch (e) {
-      throw AddressConverterException.addressValidationFailed();
-    }
+      final decode = decodeXAddress(address);
+      if (chainType == null || chainType == decode.chainType) {
+        return decode;
+      }
+    } catch (_) {}
+    throw AddressConverterException.addressValidationFailed();
   }
 
   /// Checks whether the given address is an X-Address.
   static bool isXAddress(String? address) {
+    if (address == null ||
+        address.length <= _XRPAddressConst.classAddressMaxLength) {
+      return false;
+    }
     try {
-      decodeXAddress(address!, null);
+      decodeXAddress(address);
       return true;
     } catch (e) {
       return false;
@@ -213,8 +260,12 @@ class XRPAddressUtils {
 
   /// Checks whether the given address is a classic XRP address.
   static bool isClassicAddress(String? address) {
+    if (address == null ||
+        address.length > _XRPAddressConst.classAddressMaxLength) {
+      return false;
+    }
     try {
-      XrpAddrDecoder().decodeAddr(address!);
+      XrpAddrDecoder().decodeAddr(address);
       return true;
     } catch (e) {
       return false;
@@ -226,8 +277,40 @@ class XRPAddressUtils {
     if (isClassicAddress(address)) {
       return address;
     }
-    final addrHash = decodeXAddress(address, null).bytes;
+    final addrHash = decodeXAddress(address).hash;
     return hashToAddress(addrHash);
+  }
+
+  static List<int> keyToHash(List<int> publicKey, {EllipticCurveTypes? type}) {
+    List<int> pubkeyBytes = switch (type) {
+      EllipticCurveTypes.secp256k1 =>
+        AddrKeyValidator.validateAndGetSecp256k1Key(publicKey).compressed,
+      EllipticCurveTypes.ed25519 => [
+        ...Ed25519KeysConst.xrpPubKeyPrefix,
+        ...AddrKeyValidator.validateAndGetEd25519Key(
+          publicKey,
+        ).compressed.sublist(1),
+      ],
+      null => (() {
+        try {
+          return AddrKeyValidator.validateAndGetSecp256k1Key(
+            publicKey,
+          ).compressed;
+        } catch (e) {
+          return [
+            ...Ed25519KeysConst.xrpPubKeyPrefix,
+            ...AddrKeyValidator.validateAndGetEd25519Key(
+              publicKey,
+            ).compressed.sublist(1),
+          ];
+        }
+      }()),
+      _ =>
+        throw AddressConverterException.addressBytesValidationFailed(
+          reason: "Unsupported ${type.name} public key",
+        ),
+    };
+    return QuickCrypto.hash160(pubkeyBytes).asImmutableBytes;
   }
 }
 
@@ -250,58 +333,58 @@ class XrpAddrDecoder implements BlockchainAddressDecoder<List<int>> {
 
 /// Implementation of the [BlockchainAddressEncoder] for ripple (XRP) blockchain addresses.
 class XrpAddrEncoder implements BlockchainAddressEncoder {
+  String encodeHash(List<int> bytes) {
+    AddrDecUtils.validateBytesLength(bytes, QuickCrypto.hash160DigestSize);
+    return XRPAddressUtils.hashToAddress(bytes);
+  }
+
   /// Encodes a Ripple (XRP) public key as a blockchain address.
   @override
-  String encodeKey(
-    List<int> pubKey, {
-    EllipticCurveTypes pubKeyType = EllipticCurveTypes.secp256k1,
-  }) {
-    if ((pubKeyType != EllipticCurveTypes.secp256k1 &&
-        pubKeyType != EllipticCurveTypes.ed25519)) {
-      throw AddressConverterException.addressKeyValidationFailed(
-        reason: "Unsupported ${pubKeyType.name} public key.",
-      );
-    }
-    if (pubKeyType == EllipticCurveTypes.secp256k1) {
-      return P2PKHAddrEncoder().encodeKey(
-        pubKey,
-        alphabet: Base58Alphabets.ripple,
-        netVersion: AddrKeyValidator.getConfigArg<List<int>>(
-          CoinsConf.ripple.params.p2pkhNetVer,
-          "p2pkhNetVer",
-        ),
-      );
-    }
-    AddrKeyValidator.validateAndGetEd25519Key(pubKey);
-    return XRPAddressUtils._toAddress(pubKey);
+  String encodeKey(List<int> pubKey, {EllipticCurveTypes? pubKeyType}) {
+    final hash160 = XRPAddressUtils.keyToHash(pubKey, type: pubKeyType);
+    return XRPAddressUtils.hashToAddress(hash160);
   }
 }
 
 /// Implementation of the [BlockchainAddressEncoder] for ripple (XRP) blockchain addresses.
 class XrpXAddrEncoder implements BlockchainAddressEncoder {
+  String encodeHash(
+    List<int> bytes, {
+    int? tag,
+    ChainType chainType = ChainType.mainnet,
+  }) {
+    AddrDecUtils.validateBytesLength(bytes, QuickCrypto.hash160DigestSize);
+    return XRPAddressUtils.hashToXAddress(bytes, chainType, tag);
+  }
+
+  XRPXAddressEncodeResult encodeKeyWithClassicAddress(
+    List<int> pubKey, {
+    int? tag,
+    ChainType chainType = ChainType.mainnet,
+    EllipticCurveTypes? pubKeyType,
+  }) {
+    /// Calculate the hash160 of the public key.
+    final hash160 = XRPAddressUtils.keyToHash(pubKey, type: pubKeyType);
+    return XRPXAddressEncodeResult(
+      hash: hash160,
+      chainType: chainType,
+      xAddress: XRPAddressUtils.hashToXAddress(hash160, chainType, tag),
+      classicAddress: XRPAddressUtils.hashToAddress(hash160),
+    );
+  }
+
   /// Encodes the public key into a Ripple (XRP) X-Address.
   @override
-  String encodeKey(List<int> pubKey, {List<int>? addrPrefix, int? tag}) {
-    addrPrefix = AddrKeyValidator.getAddrArg<List<int>>(
-      addrPrefix,
-      "addrPrefix",
-    );
-
-    List<int> pubKeyBytes;
-
-    try {
-      /// Validate and process the public key as a Secp256k1 key.
-      pubKeyBytes =
-          AddrKeyValidator.validateAndGetSecp256k1Key(pubKey).compressed;
-    } catch (e) {
-      AddrKeyValidator.validateAndGetEd25519Key(pubKey);
-      pubKeyBytes = pubKey;
-    }
-
+  String encodeKey(
+    List<int> pubKey, {
+    int? tag,
+    ChainType chainType = ChainType.mainnet,
+    EllipticCurveTypes? pubKeyType,
+  }) {
     /// Calculate the hash160 of the public key.
-    final hash160 = QuickCrypto.hash160(pubKeyBytes);
+    final hash160 = XRPAddressUtils.keyToHash(pubKey, type: pubKeyType);
 
-    return XRPAddressUtils.hashToXAddress(hash160, addrPrefix, tag);
+    return XRPAddressUtils.hashToXAddress(hash160, chainType, tag);
   }
 }
 
@@ -309,11 +392,13 @@ class XrpXAddrEncoder implements BlockchainAddressEncoder {
 class XrpXAddrDecoder implements BlockchainAddressDecoder<List<int>> {
   /// Validates and decodes the given Ripple (XRP) X-address.
   @override
-  List<int> decodeAddr(String addr, {List<int>? addrPrefix}) {
-    addrPrefix = AddrKeyValidator.getAddrArg<List<int>>(
-      addrPrefix,
-      "addrPrefix",
-    );
-    return XRPAddressUtils.decodeXAddress(addr, addrPrefix).bytes;
+  List<int> decodeAddr(String addr, {ChainType? chainType}) {
+    final decode = XRPAddressUtils.decodeXAddress(addr);
+    if (chainType != null && decode.chainType != chainType) {
+      throw AddressConverterException.addressValidationFailed(
+        reason: "Mismatch chain type.",
+      );
+    }
+    return decode.hash;
   }
 }

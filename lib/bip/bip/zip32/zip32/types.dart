@@ -1,11 +1,43 @@
 import 'dart:typed_data';
 import 'package:blockchain_utils/bip/bip/bip32/bip32_key_data.dart';
+import 'package:blockchain_utils/bip/bip/bip44/base/bip44_base.dart';
+import 'package:blockchain_utils/bip/bip/zip32/base/context.dart';
 import 'package:blockchain_utils/bip/bip/zip32/exception/exception.dart';
-import 'package:blockchain_utils/exception/exception/exception.dart';
+import 'package:blockchain_utils/bip/bip/zip32/orchard/keys.dart'
+    show OrchardFullViewingKey;
+import 'package:blockchain_utils/bip/bip/zip32/sapling/keys.dart'
+    show SaplingDiversifiableFullViewingKey;
+import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/helper/extensions/extensions.dart';
 import 'package:blockchain_utils/utils/equatable/equatable.dart';
 import 'package:blockchain_utils/utils/numbers/utils/bigint_utils.dart';
 import 'package:blockchain_utils/utils/numbers/utils/int_utils.dart';
+
+enum ZcashProtocol {
+  orchard(1),
+  sapling(0),
+  transparent(2);
+
+  bool get sheilded => this != transparent;
+  bool get isOrchard => this == orchard;
+  bool get isSapling => this == sapling;
+  bool get isTransparent => this == transparent;
+  final int value;
+  const ZcashProtocol(this.value);
+  static ZcashProtocol fromValue(int? value) {
+    return values.firstWhere(
+      (e) => e.value == value,
+      orElse: () => throw ItemNotFoundException(name: "ZcashProtocol"),
+    );
+  }
+
+  static ZcashProtocol fromName(String? name) {
+    return values.firstWhere(
+      (e) => e.name == name,
+      orElse: () => throw ItemNotFoundException(name: "ZcashProtocol"),
+    );
+  }
+}
 
 abstract class DiversifiedTransmissionKey with Equality {
   const DiversifiedTransmissionKey();
@@ -13,8 +45,9 @@ abstract class DiversifiedTransmissionKey with Equality {
 }
 
 /// Represents an 11-byte Zcash Orchard diversifier index.
-class DiversifierIndex with Equality {
+class DiversifierIndex with Equality implements Comparable<DiversifierIndex> {
   final List<int> inner;
+  static BigInt get maxIndex => BigInt.parse("309485009821345068724781055");
   DiversifierIndex(List<int> inner)
     : inner =
           inner
@@ -38,17 +71,14 @@ class DiversifierIndex with Equality {
     final toBytes = BigintUtils.toBytes(
       value.asU128,
       length: 16,
-      order: Endian.little,
+      byteOrder: Endian.little,
     );
     return DiversifierIndex(toBytes.sublist(0, 11));
   }
   factory DiversifierIndex.from(int value) {
-    final toBytes = IntUtils.toBytes(
-      value.asU32,
-      length: 4,
-      byteOrder: Endian.little,
+    return DiversifierIndex(
+      List.filled(11, 0)..setAll(0, value.toU32LeBytes()),
     );
-    return DiversifierIndex(List.filled(11, 0)..setAll(0, toBytes));
   }
 
   /// Returns the underlying bytes of the index.
@@ -98,6 +128,11 @@ class DiversifierIndex with Equality {
 
   @override
   List<dynamic> get variables => [inner];
+
+  @override
+  int compareTo(DiversifierIndex other) {
+    return toU128().compareTo(other.toU128());
+  }
 }
 
 /// Represents a generic Shielded address with a transmission key and diversifier.
@@ -138,6 +173,8 @@ class Diversifier with Equality {
 
 /// Abstract base for an incoming viewing key that can derive shielded addresses.
 abstract class IncomingViewingKey<ADDR extends ShieldAddress> with Equality {
+  const IncomingViewingKey();
+
   /// Returns the address at a given diversifier index.
   ADDR addressAt(DiversifierIndex index);
 
@@ -152,4 +189,87 @@ abstract class IncomingViewingKey<ADDR extends ShieldAddress> with Equality {
 
   /// Serializes the viewing key to bytes.
   List<int> toBytes();
+
+  T cast<T extends IncomingViewingKey>() {
+    if (this is! T) {
+      throw CastFailedException<T>(value: this);
+    }
+    return this as T;
+  }
+
+  ZcashProtocol get protocol;
+}
+
+abstract class OutgoingViewingKey with Equality {
+  List<int> toBytes();
+}
+
+abstract class DiversifiableFullViewingKey<
+  ADDR extends ShieldAddress,
+  IVK extends IncomingViewingKey<ADDR>,
+  OVK extends OutgoingViewingKey,
+  K extends KeyAgreementPrivateKey
+>
+    with Equality {
+  const DiversifiableFullViewingKey();
+  factory DiversifiableFullViewingKey.fromBytes(List<int> bytes) {
+    const orchardFvkLengthInBytes = 96;
+    const saplingLengthInBytes = 128;
+    final length = bytes.length;
+    if (length == orchardFvkLengthInBytes) {
+      return OrchardFullViewingKey.fromBytesUnchecked(bytes).cast();
+    }
+    if (length == saplingLengthInBytes) {
+      return SaplingDiversifiableFullViewingKey.fromBytes(bytes).cast();
+    }
+    throw ArgumentException.invalidOperationArguments(
+      "DiversifiableFullViewingKey",
+      reason: "Invalid diversifiable full view key bytes length.",
+    );
+  }
+
+  IVK toIvk(Bip44Changes scope, {ZCryptoContext? context});
+  OVK toOvk(Bip44Changes scope);
+  K keyAgreement(Bip44Changes scope, {ZCryptoContext? context});
+
+  Bip44Changes? scopeForAddress({
+    required ADDR address,
+    ZCryptoContext? context,
+  });
+
+  (DiversifierIndex, Bip44Changes)? getScopeAndDiversifierIndex(
+    ADDR address, {
+    ZCryptoContext? context,
+  }) {
+    for (final i in Bip44Changes.values) {
+      final DiversifierIndex? index = toIvk(
+        i,
+        context: context,
+      ).diversifierIndex(address);
+      if (index != null) return (index, i);
+    }
+    return null;
+  }
+
+  List<int> toBytes();
+
+  ZcashProtocol get protocol;
+
+  T cast<
+    T extends DiversifiableFullViewingKey<
+      ShieldAddress,
+      IncomingViewingKey,
+      OutgoingViewingKey,
+      KeyAgreementPrivateKey
+    >
+  >() {
+    if (this is! T) {
+      throw CastFailedException<T>(value: this);
+    }
+    return this as T;
+  }
+}
+
+abstract class KeyAgreementPrivateKey with Equality {
+  const KeyAgreementPrivateKey();
 }

@@ -1,6 +1,6 @@
 import 'package:blockchain_utils/crypto/crypto/blockcipher/blockcipher.dart';
 import 'package:blockchain_utils/crypto/crypto/exception/exception.dart';
-import 'package:blockchain_utils/exception/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/utils/binary/binary_operation.dart';
 
 /// Counter (CTR) mode for block ciphers.
@@ -49,7 +49,6 @@ class CTR {
         "setCipher",
         name: "iv",
         reason: "Invalid iv bytes length.",
-        expecteLen: _counter.length,
       );
     }
     _cipher = cipher;

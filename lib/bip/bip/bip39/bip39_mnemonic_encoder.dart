@@ -4,7 +4,7 @@ import 'package:blockchain_utils/bip/bip/bip39/bip39_mnemonic_utils.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
 import 'package:blockchain_utils/helper/helper.dart';
 
-import 'package:blockchain_utils/bip/mnemonic/mnemonic_encoder_base.dart';
+import 'package:blockchain_utils/bip/mnemonic/src/mnemonic_encoder_base.dart';
 import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/utils/binary/utils.dart';
 

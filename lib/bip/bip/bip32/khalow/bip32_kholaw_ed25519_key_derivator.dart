@@ -9,6 +9,7 @@ import 'package:blockchain_utils/bip/bip/bip32/khalow/bip32_kholaw_key_derivator
 import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_getter.dart';
 import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
 import 'package:blockchain_utils/bip/ecc/keys/ed25519_kholaw_keys.dart';
+import 'package:blockchain_utils/helper/helper.dart';
 import 'package:blockchain_utils/utils/binary/utils.dart';
 import 'package:blockchain_utils/utils/numbers/utils/bigint_utils.dart';
 
@@ -46,9 +47,7 @@ class Bip32KholawEd25519KeyDerivator
     );
 
     final BigInt prvlInt = (zlInt * BigInt.from(8)) + klInt;
-    final tobytes = BigintUtils.toBytes(
-      prvlInt,
-      order: Endian.little,
+    final tobytes = prvlInt.toLeBytes(
       length: Ed25519KholawKeysConst.privKeyByteLen ~/ 2,
     );
     final sc = Ed25519Utils.scalarReduceConst(tobytes);
@@ -78,9 +77,7 @@ class Bip32KholawEd25519KeyDerivator
       byteOrder: Endian.little,
     );
     final BigInt krInt = (zrInt + kprInt) % (BigInt.one << 256);
-    final tobytes = BigintUtils.toBytes(
-      krInt,
-      order: Endian.little,
+    final tobytes = krInt.toLeBytes(
       length: Ed25519KholawKeysConst.privKeyByteLen ~/ 2,
     );
     return tobytes;

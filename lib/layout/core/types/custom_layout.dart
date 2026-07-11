@@ -2,9 +2,9 @@ import 'package:blockchain_utils/layout/byte/byte_handler.dart';
 import 'package:blockchain_utils/layout/core/core/core.dart';
 
 /// Represents a custom layout with customized encoding and decoding functions.
-typedef WrappedLayoutDecoder<T, D> = D Function(T value);
+typedef CbWrappedLayoutDecoder<T, D> = D Function(T value);
 
-typedef WrappedLayoutEncoder<T, D> = T Function(D source);
+typedef CbWrappedLayoutEncoder<T, D> = T Function(D source);
 
 class CustomLayout<T, D> extends Layout<D> {
   /// Constructs a [CustomLayout] with the specified layout, encoder, and decoder functions.
@@ -15,8 +15,8 @@ class CustomLayout<T, D> extends Layout<D> {
     String? property,
   }) : super(layout.span, property: property);
   final Layout<T> layout;
-  final WrappedLayoutEncoder<T, D> encoder;
-  final WrappedLayoutDecoder<T, D> decoder;
+  final CbWrappedLayoutEncoder<T, D> encoder;
+  final CbWrappedLayoutDecoder<T, D> decoder;
 
   @override
   LayoutDecodeResult<D> decode(LayoutByteReader bytes, {int offset = 0}) {

@@ -6,3 +6,5 @@ export 'base58_base.dart';
 
 /// Export statement for Base58 encoding with Monero (XMR) support.
 export 'base58_xmr.dart';
+
+export 'base58_ex.dart';

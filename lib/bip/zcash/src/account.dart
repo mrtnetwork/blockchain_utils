@@ -13,11 +13,11 @@ import 'package:blockchain_utils/bip/zcash/src/types.dart';
 import 'package:blockchain_utils/bip/zcash/src/ufsk.dart';
 import 'package:blockchain_utils/bip/zcash/src/ufvk.dart';
 import 'package:blockchain_utils/bip/zcash/src/uivk.dart';
-import 'package:blockchain_utils/exception/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/helper/extensions/extensions.dart';
 
 /// Configuration for a ZCash account, including enabled key types and network info.
-class ZCashAccountConfig {
+class ZcashAccountConfig {
   /// Whether Orchard keys are enabled/required.
   final bool? orchard;
 
@@ -29,43 +29,43 @@ class ZCashAccountConfig {
 
   /// Coin-specific configuration for ZIP32 derivation and HRPs.
   final ZIP32CoinConfig coinConfig;
-  const ZCashAccountConfig._({
+  const ZcashAccountConfig._({
     this.orchard,
     this.sapling,
     this.transparent,
     required this.coinConfig,
   });
-  factory ZCashAccountConfig({
+  factory ZcashAccountConfig({
     final bool? orchard,
     final bool? sapling,
     final bool? transparent,
-    required ZCashNetwork network,
+    required ZcashNetwork network,
   }) {
     if (orchard == false && sapling == false && transparent == false) {
       throw ArgumentException.invalidOperationArguments(
-        "ZCashAccountConfig",
+        "ZcashAccountConfig",
         reason:
             "Invalid account configuration: at least one key type must be enabled.",
       );
     }
     final conf = ZcashConf();
-    return ZCashAccountConfig._(
+    return ZcashAccountConfig._(
       coinConfig: conf.fromNetwork(network),
       orchard: orchard,
       sapling: sapling,
       transparent: transparent,
     );
   }
-  factory ZCashAccountConfig.shield(ZCashNetwork network) {
-    return ZCashAccountConfig(
+  factory ZcashAccountConfig.shield(ZcashNetwork network) {
+    return ZcashAccountConfig(
       network: network,
       orchard: true,
       sapling: true,
       transparent: false,
     );
   }
-  factory ZCashAccountConfig.transparent(ZCashNetwork network) {
-    return ZCashAccountConfig(
+  factory ZcashAccountConfig.transparent(ZcashNetwork network) {
+    return ZcashAccountConfig(
       network: network,
       orchard: false,
       sapling: false,
@@ -88,7 +88,7 @@ class ZCashAccountConfig {
 }
 
 /// Represents a ZCash account, optionally holding Sapling, Orchard, and Transparent keys.
-class ZCashAccount {
+class ZcashAccount {
   /// Sapling extended key.
   final Zip32Sapling? sapling;
 
@@ -99,28 +99,28 @@ class ZCashAccount {
   final Bip32Slip10Secp256k1? transparent;
 
   /// Configuration specifying which key types are enabled/required.
-  final ZCashAccountConfig config;
+  final ZcashAccountConfig config;
 
   /// Crypto context used for derivations and encoding.
   final ZCryptoContext context;
 
   /// Cached unified full viewing key.
   UnifiedFullViewingKey? _cachedFvk;
-  ZCashAccount._({
+  ZcashAccount._({
     required this.sapling,
     required this.orchard,
     required this.transparent,
     required this.config,
     required this.context,
   });
-  factory ZCashAccount({
+  factory ZcashAccount({
     final Zip32Sapling? sapling,
     final Zip32Orchard? orchard,
     final Bip32Slip10Secp256k1? transparent,
-    required ZCashAccountConfig config,
+    required ZcashAccountConfig config,
     required ZCryptoContext context,
   }) {
-    return ZCashAccount._(
+    return ZcashAccount._(
       sapling: sapling,
       orchard: orchard,
       transparent: transparent,
@@ -128,9 +128,9 @@ class ZCashAccount {
       context: context,
     );
   }
-  factory ZCashAccount.fromSeed({
+  factory ZcashAccount.fromSeed({
     required List<int> seedBytes,
-    required ZCashAccountConfig config,
+    required ZcashAccountConfig config,
     required ZCryptoContext context,
     Bip32KeyIndex? accountIndex,
   }) {
@@ -162,13 +162,17 @@ class ZCashAccount {
     }
     Zip32Sapling? sapling;
     if (config.saplingAllowed) {
-      sapling = Zip32Sapling.fromSeed(seedBytes).derivePath(zip32Path, context);
+      sapling = Zip32Sapling.fromSeed(
+        seedBytes,
+      ).derivePath(zip32Path, context: context);
     }
     Zip32Orchard? orchard;
     if (config.orchardAllowed) {
-      orchard = Zip32Orchard.fromSeed(seedBytes).derivePath(zip32Path, context);
+      orchard = Zip32Orchard.fromSeed(
+        seedBytes,
+      ).derivePath(zip32Path, context: context);
     }
-    return ZCashAccount._(
+    return ZcashAccount._(
       sapling: sapling,
       orchard: orchard,
       transparent: transparent,
@@ -176,13 +180,13 @@ class ZCashAccount {
       config: config,
     );
   }
-  factory ZCashAccount.fromUnifiedSpendKeyBytes({
+  factory ZcashAccount.fromUnifiedSpendKeyBytes({
     required List<int> uskBytes,
-    required ZCashAccountConfig config,
+    required ZcashAccountConfig config,
     required ZCryptoContext context,
   }) {
-    final decode = ZCashEncodingUtils.decodeUnifiedSpendKey(uskBytes);
-    return ZCashAccount._(
+    final decode = ZcashEncodingUtils.decodeUnifiedSpendKey(uskBytes);
+    return ZcashAccount._(
       config: config,
       context: context,
       sapling: Zip32Sapling.fromExtendedSpendingKeyBytes(
@@ -197,33 +201,33 @@ class ZCashAccount {
       ),
     );
   }
-  factory ZCashAccount.fromSaplingExtendedFullViewKey({
+  factory ZcashAccount.fromSaplingExtendedFullViewKey({
     required String uskBytes,
-    required ZCashAccountConfig config,
+    required ZcashAccountConfig config,
     required ZCryptoContext context,
   }) {
-    final key = ZCashEncodingUtils.decodeSaplingExtendedFullViewKey(
+    final key = ZcashEncodingUtils.decodeSaplingExtendedFullViewKey(
       uskBytes,
-      config.coinConfig.hrpSaplingExtendedSpendingKey,
+      hrp: config.coinConfig.hrpSaplingExtendedSpendingKey,
     );
-    return ZCashAccount._(
+    return ZcashAccount._(
       config: config,
       context: context,
-      sapling: Zip32Sapling.fromExtendedFullViewKey(key),
+      sapling: Zip32Sapling.fromExtendedFullViewKeyBytes(key),
       orchard: null,
       transparent: null,
     );
   }
-  factory ZCashAccount.fromSaplingExtendedSpendingKey({
+  factory ZcashAccount.fromSaplingExtendedSpendingKey({
     required String extendedKey,
-    required ZCashAccountConfig config,
+    required ZcashAccountConfig config,
     required ZCryptoContext context,
   }) {
-    final key = ZCashEncodingUtils.decodeSaplingExtendedSpendingKey(
+    final key = ZcashEncodingUtils.decodeSaplingExtendedSpendingKey(
       extendedKey,
       config.coinConfig.hrpSaplingExtendedSpendingKey,
     );
-    return ZCashAccount._(
+    return ZcashAccount._(
       config: config,
       context: context,
       sapling: Zip32Sapling.fromExtendedSpendingKeyBytes(key),
@@ -231,12 +235,12 @@ class ZCashAccount {
       transparent: null,
     );
   }
-  factory ZCashAccount.fromOrchardFullViewKey({
+  factory ZcashAccount.fromOrchardFullViewKey({
     required List<int> fullViewKeyBytes,
-    required ZCashAccountConfig config,
+    required ZcashAccountConfig config,
     required ZCryptoContext context,
   }) {
-    return ZCashAccount._(
+    return ZcashAccount._(
       config: config,
       sapling: null,
       context: context,
@@ -248,12 +252,12 @@ class ZCashAccount {
     );
   }
 
-  factory ZCashAccount.fromUnifiedFullViewKey({
+  factory ZcashAccount.fromUnifiedFullViewKey({
     required String ufvk,
-    required ZCashAccountConfig config,
+    required ZcashAccountConfig config,
     required ZCryptoContext context,
   }) {
-    final key = ZCashEncodingUtils.decodeUnifiedObject(
+    final key = ZcashEncodingUtils.decodeUnifiedObject(
       address: ufvk,
       mode: UnifiedReceiverMode.fvk,
       expectedHrp: config.coinConfig.hrpUnifiedFvk,
@@ -268,13 +272,13 @@ class ZCashAccount {
     final sapling = r.firstWhereNullable((e) => e.type == Typecode.sapling);
     final orchard = r.firstWhereNullable((e) => e.type == Typecode.orchard);
     final transparent = r.firstWhereNullable((e) => e.type == Typecode.p2pkh);
-    return ZCashAccount._(
+    return ZcashAccount._(
       config: config,
       context: context,
       sapling:
           sapling == null
               ? null
-              : Zip32Sapling.fromExtendedFullViewKey(sapling.data),
+              : Zip32Sapling.fromExtendedFullViewKeyBytes(sapling.data),
       orchard:
           orchard == null
               ? null
@@ -285,28 +289,28 @@ class ZCashAccount {
       transparent:
           transparent == null
               ? null
-              : ZCashEncodingUtils.decodeBip44Fvk(transparent.data),
+              : ZcashEncodingUtils.decodeBip44Fvk(transparent.data),
     );
   }
 
   /// Returns the Orchard ZIP32 component, or throws if missing.
   Zip32Orchard getOrchard() {
     final orchard = this.orchard;
-    if (orchard == null) throw ZCashKeyError("Missing Orchard key.");
+    if (orchard == null) throw ZcashKeyError("Missing Orchard key.");
     return orchard;
   }
 
   /// Returns the Sapling ZIP32 component, or throws if missing.
   Zip32Sapling getSapling() {
     final sapling = this.sapling;
-    if (sapling == null) throw ZCashKeyError("Missing Sapling key.");
+    if (sapling == null) throw ZcashKeyError("Missing Sapling key.");
     return sapling;
   }
 
   /// Returns the Transparent BIP32 component, or throws if missing.
   Bip32Base getTransparent() {
     final transparent = this.transparent;
-    if (transparent == null) throw ZCashKeyError("Missing transaparent key.");
+    if (transparent == null) throw ZcashKeyError("Missing transaparent key.");
     return transparent;
   }
 
@@ -319,7 +323,7 @@ class ZCashAccount {
   /// Encodes the Sapling extended spending key as a Bech32 string.
   String encodeSaplingExtendedSpendKey() {
     final sapling = getSapling();
-    return ZCashEncodingUtils.encodeBech32Address(
+    return ZcashEncodingUtils.encodeBech32Address(
       bytes: sapling.privateKey.toBytes(),
       encoding: Bech32Encodings.bech32,
       hrp: config.coinConfig.hrpSaplingExtendedSpendingKey,
@@ -329,7 +333,7 @@ class ZCashAccount {
   /// Encodes the Sapling extended full viewing key as a Bech32 string.
   String encodeSaplingExtendedFullViewKey() {
     final sapling = getSapling();
-    return ZCashEncodingUtils.encodeBech32Address(
+    return ZcashEncodingUtils.encodeBech32Address(
       bytes: sapling.publicKey.toBytes(),
       encoding: Bech32Encodings.bech32,
       hrp: config.coinConfig.hrpSaplingExtendedFullViewingKey,
@@ -347,7 +351,7 @@ class ZCashAccount {
     final sapling = getSapling();
     final orchard = getOrchard();
     final transparent = getTransparent();
-    return ZCashEncodingUtils.encodeUnifiedSpendKey([
+    return ZcashEncodingUtils.encodeUnifiedSpendKey([
       ReceiverP2pkh(
         data: transparent.privateKey.toExtendedBytes(withPrefix: false),
         mode: UnifiedReceiverMode.sk,
@@ -368,7 +372,7 @@ class ZCashAccount {
     final sapling = this.sapling;
     final orchard = this.orchard;
     final transparent = this.transparent;
-    return ZCashEncodingUtils.encodeUnifiedObject(
+    return ZcashEncodingUtils.encodeUnifiedObject(
       hrp: config.coinConfig.hrpUnifiedFvk,
       mode: UnifiedReceiverMode.fvk,
       receivers: [
@@ -384,7 +388,7 @@ class ZCashAccount {
           ),
         if (transparent != null)
           ReceiverP2pkh(
-            data: ZCashEncodingUtils.encodeBip44Fvk(transparent),
+            data: ZcashEncodingUtils.encodeBip44Fvk(transparent),
             mode: UnifiedReceiverMode.fvk,
           ),
       ],
@@ -396,7 +400,7 @@ class ZCashAccount {
     final sapling = this.sapling?.publicKey.incomingViewingKey(context);
     final orchard = this.orchard?.publicKey.incomingViewingKey(context);
     final transparent = this.transparent;
-    return ZCashEncodingUtils.encodeUnifiedObject(
+    return ZcashEncodingUtils.encodeUnifiedObject(
       hrp: config.coinConfig.hrpUnifiedIvk,
       mode: UnifiedReceiverMode.fvk,
       receivers: [
@@ -412,7 +416,7 @@ class ZCashAccount {
           ),
         if (transparent != null)
           ReceiverP2pkh(
-            data: ZCashEncodingUtils.encodeBip44Fvk(transparent),
+            data: ZcashEncodingUtils.encodeBip44Fvk(transparent),
             mode: UnifiedReceiverMode.ivk,
           ),
       ],
@@ -425,7 +429,7 @@ class ZCashAccount {
     final orchard = this.orchard;
     final transparent = this.transparent;
     if (sapling == null || orchard == null || transparent == null) {
-      throw ZCashKeyError(
+      throw ZcashKeyError(
         "Unified spending key is incomplete: Sapling, Orchard, and Transparent keys are required.",
       );
     }

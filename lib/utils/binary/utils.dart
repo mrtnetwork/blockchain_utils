@@ -167,27 +167,31 @@ class BytesUtils {
     Iterable<int> bytes, {
     Object Function()? onValidationFailed,
   }) {
-    for (int i = 0; i < bytes.length; i++) {
-      final int byte = bytes.elementAt(i);
-      if (byte < 0 || byte > BinaryOps.mask8) {
-        if (onValidationFailed != null) throw onValidationFailed();
-        return false;
-      }
+    final bool isBytes = BytesUtils.isBytes(bytes);
+    if (!isBytes && onValidationFailed != null) {
+      throw onValidationFailed();
     }
-    return true;
+    return isBytes;
+  }
+
+  static bool isBytes(Iterable<int> bytes) =>
+      bytes.every((e) => e >= 0 && e <= BinaryOps.mask8);
+  static bool isBytesConst(List<int> bytes) {
+    int invalid = 0;
+    for (int i = 0; i < bytes.length; i++) {
+      int b = bytes[i];
+      invalid |= (b >> 8);
+    }
+    return invalid == 0;
   }
 
   static bool areBytesValidConst(
     List<int> bytes, {
     Object Function()? onValidationFailed,
   }) {
-    int invalid = 0;
-    for (int i = 0; i < bytes.length; i++) {
-      int b = bytes[i];
-      invalid |= (b >> 8);
-    }
-    if (invalid != 0 && onValidationFailed != null) throw onValidationFailed();
-    return invalid == 0;
+    final bool isBytes = isBytesConst(bytes);
+    if (!isBytes && onValidationFailed != null) throw onValidationFailed();
+    return isBytes;
   }
 
   /// Compare two Uint8Lists lexicographically.
@@ -349,5 +353,24 @@ class BytesUtils {
     }
 
     return bits;
+  }
+
+  static List<int> trimLeadingZero(List<int> bytes) {
+    int offset = 0;
+    // List<int> data = bytes;
+    while (offset < bytes.length) {
+      if (bytes[offset] != 0) break;
+      offset++;
+    }
+    return bytes.sublist(offset);
+  }
+
+  static List<int> trimTrailingZero(List<int> bytes) {
+    int offset = bytes.length;
+    while (offset != 0) {
+      if (bytes[offset - 1] != 0) break;
+      offset--;
+    }
+    return bytes.sublist(0, offset);
   }
 }

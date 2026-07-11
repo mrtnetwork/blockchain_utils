@@ -1,6 +1,5 @@
 import 'package:blockchain_utils/bip/address/decoder.dart';
 import 'package:blockchain_utils/bip/address/encoder.dart';
-import 'package:blockchain_utils/bip/address/exception/exception.dart';
 import 'package:blockchain_utils/bip/bip.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
 import 'package:blockchain_utils/layout/layout.dart';
@@ -87,8 +86,8 @@ class SuiAddressUtils {
       throw AddressConverterException.addressBytesValidationFailed(
         reason: "Invalid bytes length.",
         details: {
-          "expected": SuiAddrConst.addressBytesLength,
-          "length": bytes.length,
+          "expected": SuiAddrConst.addressBytesLength.toString(),
+          "length": bytes.length.toString(),
         },
       );
     }
@@ -184,8 +183,8 @@ class SuiAddressUtils {
           reason:
               "Exceeded the maximum allowed public keys for a multisig account.",
           details: {
-            "maximum": SuiAddrConst.multisigAccountMaxPublicKey,
-            "length": publicKeys.length,
+            "maximum": SuiAddrConst.multisigAccountMaxPublicKey.toString(),
+            "length": publicKeys.length.toString(),
           },
         );
       }

@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 import 'package:blockchain_utils/crypto/crypto/zcrypto/bls12_381/src/core.dart';
 import 'package:blockchain_utils/crypto/crypto/zcrypto/pasta/utils/utils.dart';
-import 'package:blockchain_utils/exception/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/helper/extensions/extensions.dart';
 import 'package:blockchain_utils/utils/compare/compare.dart';
 import 'package:blockchain_utils/utils/equatable/equatable.dart';
@@ -1167,7 +1167,7 @@ class Bls12NativeFp extends BlsField<Bls12NativeFp> with Equality {
   /// Serializes the field element to a 48-byte big-endian representation.
   @override
   List<int> toBytes() {
-    return BigintUtils.toBytes(v, length: 48);
+    return v.toBeBytes(length: 48);
   }
 
   @override

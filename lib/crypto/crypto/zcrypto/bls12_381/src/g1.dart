@@ -4,7 +4,7 @@ import 'package:blockchain_utils/crypto/crypto/zcrypto/bls12_381/src/fp.dart';
 import 'package:blockchain_utils/crypto/crypto/zcrypto/jubjub/fields/field.dart';
 import 'package:blockchain_utils/crypto/crypto/zcrypto/jubjub/fields/native.dart';
 import 'package:blockchain_utils/crypto/crypto/exception/exception.dart';
-import 'package:blockchain_utils/exception/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/helper/extensions/extensions.dart';
 import 'package:blockchain_utils/utils/binary/utils.dart';
 import 'package:blockchain_utils/utils/compare/hash_code.dart';

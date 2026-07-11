@@ -1,7 +1,7 @@
 import 'package:blockchain_utils/bip/bip/bip39/bip39_entropy_generator.dart';
 import 'package:blockchain_utils/bip/bip/bip39/bip39_mnemonic.dart';
 import 'package:blockchain_utils/bip/bip/bip39/bip39_mnemonic_encoder.dart';
-import 'package:blockchain_utils/bip/mnemonic/mnemonic.dart';
+import 'package:blockchain_utils/bip/mnemonic/src/mnemonic.dart';
 
 /// BIP39 Mnemonic Generator for generating mnemonic phrases.
 class Bip39MnemonicGenerator {

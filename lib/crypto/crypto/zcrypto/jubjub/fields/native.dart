@@ -3,7 +3,7 @@ import 'package:blockchain_utils/crypto/crypto/ec/core/field.dart';
 import 'package:blockchain_utils/crypto/crypto/zcrypto/jubjub/fields/field.dart';
 import 'package:blockchain_utils/crypto/crypto/zcrypto/pasta/utils/utils.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
-import 'package:blockchain_utils/exception/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/helper/extensions/extensions.dart';
 import 'package:blockchain_utils/utils/equatable/equatable.dart';
 import 'package:blockchain_utils/utils/numbers/utils/bigint_utils.dart';

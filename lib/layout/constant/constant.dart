@@ -247,6 +247,9 @@ class LayoutConst {
   static BigIntLayout i128({String? property}) =>
       BigIntLayout(16, sign: true, property: property);
 
+  static BigIntLayout i256({String? property}) =>
+      BigIntLayout(32, sign: true, property: property);
+
   static BigIntLayout bigintLayout(
     int length, {
     String? property,
@@ -317,7 +320,7 @@ class LayoutConst {
         if (data != 0 && data != 1) {
           throw LayoutException(
             "Failed to decode data as boolean.",
-            details: {"value": data, "property": property},
+            details: {"value": data.toString(), "property": property},
           );
         }
         return data == 0 ? false : true;
@@ -809,6 +812,10 @@ class LayoutConst {
     return LEBIntegerLayout(u32(), property: property);
   }
 
+  static Layout<int> lebU48({String? property}) {
+    return LEBIntegerLayout(u48(), property: property);
+  }
+
   static Layout<BigInt> lebBigInteger(
     BigIntLayout validator, {
     String? property,
@@ -820,8 +827,16 @@ class LayoutConst {
     return LEBBigIntegerLayout(u64(), property: property);
   }
 
+  // static Layout<int> lebU53({String? property}) {
+  //   return LEBBigIntegerLayout(u64(), property: property);
+  // }
+
   static Layout<BigInt> lebI128({String? property}) {
     return LEBBigIntegerLayout(i128(), property: property);
+  }
+
+  static Layout<BigInt> lebI256({String? property}) {
+    return LEBBigIntegerLayout(i256(), property: property);
   }
 
   /// Serializes and deserializes raw bytes with a length prefix encoded as LEB128.

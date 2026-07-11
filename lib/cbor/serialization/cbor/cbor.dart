@@ -1,7 +1,8 @@
 import 'package:blockchain_utils/cbor/cbor.dart';
 import 'package:blockchain_utils/utils/binary/utils.dart';
+import 'package:blockchain_utils/utils/json/extension/json.dart';
 
-typedef CborKeyMapper<K> = K Function(CborObject);
+typedef CbCborKeyMapper<K> = K Function(CborObject);
 
 /// Mixin for classes that can be serialized to CBOR.
 abstract mixin class CborSerializable<T extends CborObject> {
@@ -9,9 +10,9 @@ abstract mixin class CborSerializable<T extends CborObject> {
   T toCbor();
 
   /// Convert a list of dynamic Dart values to a definite CBOR list.
-  static CborListValue listFromDynamic(List<dynamic> items) {
+  static CborListValue listFromObjects(List<CborObject?> items) {
     return CborListValue.definite(
-      items.map((e) => CborObject.fromDynamic(e)).toList(),
+      items.map((e) => e ?? CborNullValue()).toList(),
     );
   }
 
@@ -33,6 +34,7 @@ abstract mixin class CborSerializable<T extends CborObject> {
     CborObject? cborObject,
     String? cborHex,
     List<int>? tagIds,
+    bool Function(List<int> tags)? onValidateTags,
   }) {
     assert(
       cborBytes != null || cborObject != null || cborHex != null,
@@ -55,7 +57,10 @@ abstract mixin class CborSerializable<T extends CborObject> {
     try {
       final tag = cborObject.cast<CborTagValue>();
       if (tagIds != null && !BytesUtils.bytesEqual(tag.tags, tagIds)) {
-        throw CborSerializableException.incorrectTagValue;
+        throw CborSerializableException.incorrectTagValue(tag: tag.tags);
+      }
+      if (onValidateTags != null && !onValidateTags(tag.tags)) {
+        throw CborSerializableException.incorrectTagValue(tag: tag.tags);
       }
       return tag.asValue<T>();
     } on CborSerializableException {
@@ -102,39 +107,62 @@ abstract mixin class CborSerializable<T extends CborObject> {
   }
 }
 
-extension CborMapExtensions on CborMapValue {
+extension ExtCborMapExtensions on CborMapValue {
+  T getIntKeyAs<T extends CborObject?>(int key) {
+    final val = value[CborIntValue(key)];
+    if (val == null && null is T) return null as T;
+    if (null is T && val is CborNullValue) return null as T;
+    if (val is! T) {
+      throw CborSerializableException.castingFailed<T>(value);
+    }
+    return val;
+  }
+
   /// Convert this CBOR map to a Dart Map<[K], [V]> by mapping keys and values.
   ///
   /// [keyMapper]   → transforms each CBOR key to `K`
   /// [valueMapper] → transforms each CBOR value to `V`
   Map<K, V> toDartMap<K, V>(
-    CborKeyMapper<K> keyMapper,
-    CborKeyMapper<V> valueMapper,
+    CbCborKeyMapper<K> keyMapper,
+    CbCborKeyMapper<V> valueMapper,
   ) {
-    final entries = value.entries.map(
-      (e) => MapEntry<K, V>(keyMapper(e.key), valueMapper(e.value)),
-    );
+    final entries = value.entries.map((e) {
+      return MapEntry<K, V>(keyMapper(e.key), valueMapper(e.value));
+    });
     return Map<K, V>.fromEntries(entries);
+  }
+
+  Map<T, E> asMap<T extends CborObject, E extends CborObject>([String? name]) {
+    try {
+      return JsonParser.valueEnsureAsMap<T, E>(value);
+    } catch (_) {
+      throw CborSerializableException.castingFailed<Map<T, E>>(
+        value,
+        operation: name,
+      );
+    }
   }
 }
 
-extension CborListExtensions on CborListValue {
+extension ExtCborListExtensions on CborIterableObject {
   /// Checks whether the element at [index] is of type [T].
   bool isTypeAt<T extends CborObject>(int index) {
     if (index >= value.length) {
       return null is T;
     }
-    return value[index] is T;
+    return value.elementAt(index) is T;
   }
 
   /// Returns element at [index] as a list of [T].
   /// If [emptyOnNull] is true and index is out of bounds → returns `[]`.
-  List<T> listAt<T extends CborObject>(int index, {bool emptyOnNull = false}) {
-    if (emptyOnNull && index >= value.length) {
+  List<T> listAt<T extends CborObject?>(int index, {bool emptyOnNull = false}) {
+    if (emptyOnNull &&
+        (index >= value.length || value.elementAt(index) is CborNullValue)) {
       return <T>[];
     }
     try {
-      final CborListValue list = value[index] as CborListValue;
+      final list = value.elementAt(index).cast<CborListValue>();
+
       return list.value.cast<T>();
     } catch (_) {
       throw CborSerializableException.castingFailed<T>(
@@ -146,9 +174,35 @@ extension CborListExtensions on CborListValue {
   /// Returns element at [index] as a typed map.
   Map<K, V> mapAt<K extends CborObject, V extends CborObject>(int index) {
     try {
-      final CborMapValue mapValue = value[index] as CborMapValue;
+      final CborMapValue mapValue = value.elementAt(index) as CborMapValue;
       return mapValue.value.cast<K, V>();
     } catch (_) {
+      throw CborSerializableException.castingFailed<Map<K, V>>(
+        value.elementAtOrNull(index),
+      );
+    }
+  }
+
+  Map<K, V> rawMapAt<K, V>(int index) {
+    try {
+      final CborMapValue mapValue = objectAt(index);
+      return mapValue.toDartMap<K, V>(JsonParser.valueAs, JsonParser.valueAs);
+    } catch (e) {
+      throw CborSerializableException.castingFailed<Map<K, V>>(
+        value.elementAtOrNull(index),
+      );
+    }
+  }
+
+  Map<K, V>? maybeRawMapAt<K, V>(int index) {
+    try {
+      final CborMapValue? mapValue = objectAt(index);
+      if (mapValue == null) return null;
+      return mapValue.toDartMap<K, V>(
+        (e) => JsonParser.valueAs<K>(e.getValue()),
+        (e) => JsonParser.valueAs<V>(e.getValue()),
+      );
+    } catch (s) {
       throw CborSerializableException.castingFailed<Map<K, V>>(
         value.elementAtOrNull(index),
       );
@@ -165,11 +219,11 @@ extension CborListExtensions on CborListValue {
       throw CborSerializableException.missingListElement;
     }
     try {
-      final CborObject obj = value[index];
+      final CborObject obj = value.elementAt(index);
       if (null is T && obj == const CborNullValue()) {
         return null as T;
       }
-      return obj.value as T;
+      return JsonParser.valueAs<T>(obj.value);
     } catch (_) {
       throw CborSerializableException.castingFailed<T>(
         value.elementAtOrNull(index)?.value,
@@ -184,7 +238,7 @@ extension CborListExtensions on CborListValue {
       throw CborSerializableException.missingListElement;
     }
     try {
-      final CborObject obj = value[index];
+      final CborObject obj = value.elementAt(index);
       if (null is T && obj == const CborNullValue()) {
         return null as T;
       }
@@ -199,7 +253,7 @@ extension CborListExtensions on CborListValue {
   /// Attempt to transform the CBOR object at [index] using [mapper] if it's type [T], or return null.
   E? maybeObjectAt<E, T extends CborObject>(int index, E Function(T e) mapper) {
     if (!hasIndex(index)) return null;
-    final CborObject obj = value[index];
+    final CborObject obj = value.elementAt(index);
     if (obj == const CborNullValue()) return null;
     if (obj is T) return mapper(obj);
     throw CborSerializableException.castingFailed<T>(
@@ -211,7 +265,7 @@ extension CborListExtensions on CborListValue {
   E? maybeRawValueAt<E, T>(int index, E Function(T v) mapper) {
     if (!hasIndex(index)) return null;
     try {
-      final CborObject obj = value[index];
+      final CborObject obj = value.elementAt(index);
       if (obj == const CborNullValue()) return null;
       return mapper(obj.value as T);
     } catch (_) {
@@ -230,14 +284,53 @@ extension CborListExtensions on CborListValue {
   List<T> allObjectsAs<T extends CborObject>() => [
     for (var i = 0; i < value.length; i++) objectAt<T>(i),
   ];
+
+  CborListValue<T> sublist<T extends CborObject>(int start, [int? end]) {
+    if (start >= value.length || (end != null && end >= value.length)) {
+      throw CborSerializableException(
+        'Index out of bounds.',
+        details: {
+          'length': value.length.toString(),
+          'Start': start.toString(),
+          'End': end.toString(),
+        },
+      );
+    }
+    final values = allObjectsAs<T>();
+    return CborListValue.definite(values.sublist(start, end).toList());
+  }
 }
 
-extension CborTagExtensions on CborTagValue {
+extension ExtCborTagExtensions on CborTagValue {
   /// Extract the tag's inner CBOR value as type [T], or throw if mismatched.
-  T asValue<T extends CborObject>() {
+  T asValue<T extends CborObject>({String? operation}) {
     if (value is! T) {
-      throw CborSerializableException.castingFailed<T>(value);
+      throw CborSerializableException.castingFailed<T>(
+        value,
+        operation: operation,
+      );
     }
     return value as T;
+  }
+}
+
+extension ExtCborHelper on CborObject {
+  /// Checks whether the value stored in the [CborObject] has the specified type [T].
+  bool hasType<T>() {
+    return this is T;
+  }
+
+  T as<T extends CborObject>({String? operation}) {
+    if (this is! T) {
+      throw CborSerializableException.castingFailed<T>(
+        value,
+        operation: operation,
+      );
+    }
+    return this as T;
+  }
+
+  E objectTo<E, T extends CborObject>(E Function(T e) toe) {
+    return toe(as<T>());
   }
 }

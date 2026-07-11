@@ -1,6 +1,5 @@
-import 'dart:typed_data' show Endian;
-
 import 'package:blockchain_utils/crypto/crypto/ec/curve/curves.dart';
+import 'package:blockchain_utils/helper/helper.dart';
 import 'package:blockchain_utils/signer/const/constants.dart';
 import 'package:blockchain_utils/utils/numbers/numbers.dart';
 
@@ -94,7 +93,7 @@ class CryptoSignatureUtils {
     if (length < 128) {
       return [length];
     } else {
-      final encodeLen = IntUtils.toBytes(length, byteOrder: Endian.little);
+      final encodeLen = length.toLeBytes();
       return [0x80 | encodeLen.length, ...encodeLen];
     }
   }
@@ -108,7 +107,7 @@ class CryptoSignatureUtils {
     /// can't support negative numbers yet
     assert(r >= BigInt.zero);
 
-    final List<int> s = BigintUtils.toBytes(r);
+    final List<int> s = r.toBeBytes();
 
     final int num = s[0];
     if (num <= 0x7F) {

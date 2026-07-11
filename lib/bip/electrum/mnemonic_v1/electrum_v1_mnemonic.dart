@@ -1,8 +1,8 @@
 import 'dart:core';
 
 import 'package:blockchain_utils/bip/bip/bip39/bip39_mnemonic.dart';
-import 'package:blockchain_utils/bip/mnemonic/mnemonic_ex.dart';
-import 'package:blockchain_utils/bip/mnemonic/mnemonic_utils.dart';
+import 'package:blockchain_utils/bip/mnemonic/src/mnemonic_ex.dart';
+import 'package:blockchain_utils/bip/mnemonic/src/mnemonic_utils.dart';
 import 'wrodlist/languages.dart' as languages;
 
 /// An enumeration representing the number of words in an Electrum V1 mnemonic.
@@ -45,6 +45,11 @@ class ElectrumV1Languages implements MnemonicLanguages {
 
   /// Represents the available language values for Electrum V1 mnemonics.
   static const List<ElectrumV1Languages> values = [english];
+
+  @override
+  String toString() {
+    return "ElectrumV1Languages.$name";
+  }
 }
 
 /// Constants and class definitions related to Electrum V1 mnemonics.

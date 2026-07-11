@@ -5,7 +5,7 @@ class SaplingKeyError extends CryptoException {
   static SaplingKeyError failed(
     String operation, {
     String? reason,
-    Map<String, dynamic>? details,
+    Map<String, String?>? details,
   }) {
     return SaplingKeyError(
       "Orchard key operation failed during $operation",

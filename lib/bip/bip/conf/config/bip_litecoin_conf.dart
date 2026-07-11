@@ -44,7 +44,7 @@ class BipLitecoinConf extends BaseBipCoinConfig<BipLitecoinConf> {
     Bip32KeyNetVersions? altKeyNetVer,
     List<int>? wifNetVer,
     EllipticCurveTypes? type,
-    ADDRENCODER<BipLitecoinConf>? addressEncoder,
+    CbAddrEncoder<BipLitecoinConf>? addressEncoder,
     bool? useAltKeyNetVer,
     bool? useDeprAddress,
     Bip32KeyIndex? purpose,

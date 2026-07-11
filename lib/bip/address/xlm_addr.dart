@@ -11,38 +11,24 @@ import 'exception/exception.dart';
 import 'encoder.dart';
 
 /// Enum representing different types of Stellar (XLM) addresses.
-class XlmAddrTypes {
+enum XlmAddrTypes {
+  /// Contract key address type.
+  contract(value: 2 << 3, name: "Contract"),
+
+  /// Public key address type. (keyBytes must be a valid Ed25519 public key)
+  pubKey(name: "PublicKey", value: 6 << 3),
+
+  /// Private key address type. (keyBytes must be a valid Ed25519 private key)
+  privKey(name: "SecretKey", value: 18 << 3),
+
+  /// Muxed
+  muxed(value: 12 << 3, name: "Muxed");
+
   final int value;
   final String name;
 
-  /// Contract key address type.
-  static const XlmAddrTypes contract = XlmAddrTypes._(
-    value: 2 << 3,
-    name: "Contract",
-  );
-
-  /// Public key address type. (keyBytes must be a valid Ed25519 public key)
-  static const XlmAddrTypes pubKey = XlmAddrTypes._(
-    name: "PublicKey",
-    value: 6 << 3,
-  );
-
-  /// Private key address type. (keyBytes must be a valid Ed25519 private key)
-  static const XlmAddrTypes privKey = XlmAddrTypes._(
-    name: "SecretKey",
-    value: 18 << 3,
-  );
-
-  /// Muxed
-  static const XlmAddrTypes muxed = XlmAddrTypes._(
-    value: 12 << 3,
-    name: "Muxed",
-  );
-
-  static const List<XlmAddrTypes> values = [pubKey, privKey, contract, muxed];
-
   /// Constructor for XlmAddrTypes enum values.
-  const XlmAddrTypes._({required this.value, required this.name});
+  const XlmAddrTypes({required this.value, required this.name});
 
   static XlmAddrTypes fromTag(int? tag) {
     return values.firstWhere(
@@ -53,7 +39,7 @@ class XlmAddrTypes {
                 reason: "Invalid or unsuported xlm address type.",
                 details: {
                   "expected": values.map((e) => e.value).join(", "),
-                  "got": tag,
+                  "got": tag?.toString(),
                 },
               ),
     );
@@ -197,10 +183,7 @@ class XlmAddrEncoder implements BlockchainAddressEncoder {
           reason: "muxedId is required for a muxed address.",
         );
       }
-      final idBytes = BigintUtils.toBytes(
-        muxedId,
-        length: XlmAddrConst.muxedIdLength,
-      );
+      final idBytes = muxedId.toBeBytes(length: XlmAddrConst.muxedIdLength);
       pubKey = [...pubKey, ...idBytes];
     }
 

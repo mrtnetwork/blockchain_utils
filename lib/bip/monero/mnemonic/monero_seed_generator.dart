@@ -1,6 +1,6 @@
 import 'package:blockchain_utils/bip/monero/mnemonic/monero_mnemonic.dart';
 import 'package:blockchain_utils/bip/monero/mnemonic/monero_mnemonic_decoder.dart';
-import 'package:blockchain_utils/bip/mnemonic/mnemonic.dart';
+import 'package:blockchain_utils/bip/mnemonic/src/mnemonic.dart';
 import 'package:blockchain_utils/helper/extensions/extensions.dart';
 
 /// A class responsible for generating a seed from Monero mnemonic entropy.

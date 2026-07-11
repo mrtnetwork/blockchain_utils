@@ -1,6 +1,6 @@
 import 'package:blockchain_utils/bip/bip/bip39/word_list/word_list.dart';
-import 'package:blockchain_utils/bip/mnemonic/mnemonic.dart';
-import 'package:blockchain_utils/bip/mnemonic/mnemonic_utils.dart';
+import 'package:blockchain_utils/bip/mnemonic/src/mnemonic.dart';
+import 'package:blockchain_utils/bip/mnemonic/src/mnemonic_utils.dart';
 import 'package:blockchain_utils/helper/extensions/extensions.dart';
 
 /// Enumeration representing the number of words in a BIP-39 mnemonic phrase.
@@ -108,6 +108,11 @@ class Bip39Languages implements Bip39LanguagesBase {
     japanese,
     spanish,
   ];
+
+  @override
+  String toString() {
+    return "Bip39Languages.$name";
+  }
 }
 
 /// Constants related to BIP-39 mnemonics, including word counts and word list properties.

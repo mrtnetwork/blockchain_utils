@@ -1,4 +1,4 @@
-import 'package:blockchain_utils/bip/mnemonic/mnemonic.dart';
+import 'package:blockchain_utils/bip/mnemonic/src/mnemonic.dart';
 import 'monero_entropy_generator.dart';
 import 'monero_mnemonic.dart';
 import 'monero_mnemonic_encoder.dart';

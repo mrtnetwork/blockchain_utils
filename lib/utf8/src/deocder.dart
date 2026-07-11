@@ -1,4 +1,4 @@
-import 'package:blockchain_utils/exception/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 
 class UTF8Decoder {
   static String decode(List<int> bytes, {bool allowMalformed = false}) {

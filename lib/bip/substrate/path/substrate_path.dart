@@ -3,7 +3,7 @@ import 'package:blockchain_utils/bip/substrate/scale/substrate_scale_enc_base.da
 import 'package:blockchain_utils/bip/substrate/scale/substrate_scale_enc_bytes.dart';
 import 'package:blockchain_utils/bip/substrate/scale/substrate_scale_enc_uint.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
-import 'package:blockchain_utils/exception/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 
 /// A constants class that provides predefined values and regular expressions related to Substrate paths
 /// and SCALE encoders for integers.

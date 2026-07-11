@@ -6,7 +6,7 @@ import 'package:blockchain_utils/helper/helper.dart';
 import 'package:blockchain_utils/bip/address/xmr_addr.dart';
 import 'package:blockchain_utils/crypto/crypto/ec/utils/ed25519.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
-import 'package:blockchain_utils/utils/numbers/utils/int_utils.dart';
+import 'package:blockchain_utils/utils/binary/binary_operation.dart';
 
 /// A class containing constants related to Monero subaddresses.
 class MoneroSubaddressConst {
@@ -14,7 +14,7 @@ class MoneroSubaddressConst {
   static const subaddrPrefix = [83, 117, 98, 65, 100, 100, 114, 0];
 
   /// Maximum allowed index for a Monero subaddress.
-  static const subaddrMaxIdx = 4294967295;
+  static const subaddrMaxIdx = BinaryOps.maxUint32;
 
   /// Byte length of the index used for Monero subaddresses.
   static const subaddrIdxByteLen = 4;
@@ -80,13 +80,11 @@ class MoneroSubaddress {
       );
     }
 
-    final List<int> majorIdxBytes = IntUtils.toBytes(
-      majorIndex,
+    final List<int> majorIdxBytes = majorIndex.toBytes(
       length: MoneroSubaddressConst.subaddrIdxByteLen,
       byteOrder: Endian.little,
     );
-    final List<int> minorIdxBytes = IntUtils.toBytes(
-      minorIndex,
+    final List<int> minorIdxBytes = minorIndex.toBytes(
       length: MoneroSubaddressConst.subaddrIdxByteLen,
       byteOrder: Endian.little,
     );

@@ -23,7 +23,7 @@ abstract class SubstrateScaleUintEncoder extends SubstrateScaleEncoderBase {
     return BigintUtils.toBytes(
       v,
       length: bytesLen,
-      order: bytesLen >= 2 ? Endian.little : Endian.big,
+      byteOrder: bytesLen >= 2 ? Endian.little : Endian.big,
     );
   }
 }

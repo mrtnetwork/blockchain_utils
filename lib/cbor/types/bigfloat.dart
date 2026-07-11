@@ -4,7 +4,6 @@ import 'package:blockchain_utils/cbor/types/bigint.dart';
 import 'package:blockchain_utils/cbor/utils/cbor_utils.dart';
 import 'package:blockchain_utils/cbor/utils/dynamic_bytes.dart';
 import 'package:blockchain_utils/helper/extensions/extensions.dart';
-import 'package:blockchain_utils/utils/binary/utils.dart';
 
 import 'int64.dart';
 
@@ -58,16 +57,9 @@ class CborBigFloatValue extends CborObject<List<BigInt>> {
     return CborSafeIntValue(value).encode();
   }
 
-  /// Encode the value into CBOR bytes an then to hex
-  @override
-  String toCborHex() {
-    return BytesUtils.toHexString(encode());
-  }
-
-  /// value as string
   @override
   String toString() {
-    return "$exponent, $mantissa";
+    return "CborBigFloatValue({exponent:$exponent, mantissa:$mantissa})";
   }
 
   @override

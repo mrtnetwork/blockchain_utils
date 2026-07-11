@@ -1,10 +1,10 @@
 import 'package:blockchain_utils/bip/bip/bip39/bip39_mnemonic.dart';
 import 'package:blockchain_utils/bip/bip/bip39/bip39_mnemonic_utils.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
-import 'package:blockchain_utils/bip/mnemonic/mnemonic.dart';
-import 'package:blockchain_utils/bip/mnemonic/mnemonic_decoder_base.dart';
-import 'package:blockchain_utils/bip/mnemonic/mnemonic_ex.dart';
-import 'package:blockchain_utils/bip/mnemonic/mnemonic_utils.dart';
+import 'package:blockchain_utils/bip/mnemonic/src/mnemonic.dart';
+import 'package:blockchain_utils/bip/mnemonic/src/mnemonic_decoder_base.dart';
+import 'package:blockchain_utils/bip/mnemonic/src/mnemonic_ex.dart';
+import 'package:blockchain_utils/bip/mnemonic/src/mnemonic_utils.dart';
 import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/utils/binary/utils.dart';
 import 'package:blockchain_utils/utils/numbers/utils/bigint_utils.dart';

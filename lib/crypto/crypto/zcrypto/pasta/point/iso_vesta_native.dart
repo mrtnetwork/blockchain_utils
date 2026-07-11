@@ -2,7 +2,7 @@ import 'package:blockchain_utils/crypto/crypto/zcrypto/pasta/fields/native/fq.da
 import 'package:blockchain_utils/crypto/crypto/zcrypto/pasta/fields/native/fp.dart';
 import 'package:blockchain_utils/crypto/crypto/zcrypto/pasta/point/core.dart';
 import 'package:blockchain_utils/crypto/crypto/exception/exception.dart';
-import 'package:blockchain_utils/exception/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/helper/extensions/extensions.dart';
 
 class VestaIsoNativePoint
@@ -20,7 +20,6 @@ class VestaIsoNativePoint
     y: VestaNativeFq.zero(),
     z: VestaNativeFq.zero(),
   );
-  @override
   factory VestaIsoNativePoint.identity() {
     return _identity;
   }
@@ -89,7 +88,6 @@ class VestaIsoAffineNativePoint
         "VestaIsoAffineNativePoint",
         name: "bytes",
         reason: "Invalid point bytes length.",
-        expecteLen: 32,
       );
     }
     final tmp = bytes.clone();

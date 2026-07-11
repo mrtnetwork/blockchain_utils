@@ -14,6 +14,11 @@ import 'package:blockchain_utils/bip/bip/zip32/zip32/types.dart';
 import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
 import 'package:blockchain_utils/bip/zcash/src/types.dart';
 
+class Zip32Const {
+  /// The purpose index for BIP-86, derived as a hardened index (86').
+  static Bip32KeyIndex get purpose => Bip32KeyIndex.hardenIndex(32);
+}
+
 class Zip32 {
   final Zip32Base zip32;
   final ZIP32CoinConfig coinConf;
@@ -106,7 +111,7 @@ class Zip32 {
       );
     }
     return Zip32._(
-      zip32: zip32.childKey(coinConf.purpose, context) as Zip32Base,
+      zip32: zip32.childKey(coinConf.purpose, context: context) as Zip32Base,
       coinConf: coinConf,
       context: context,
     );
@@ -116,7 +121,7 @@ class Zip32 {
     final Zip32 bipObj = purpose.coin;
     return Zip32._(
       zip32:
-          bipObj.zip32.derivePath(bipObj.coinConf.defPath, context)
+          bipObj.zip32.derivePath(bipObj.coinConf.defPath, context: context)
               as Zip32Base,
       coinConf: coinConf,
       context: context,
@@ -132,7 +137,7 @@ class Zip32 {
     final coinIndex = coinConf.coinIdx;
     return Zip32._(
       zip32:
-          zip32.childKey(Bip32KeyIndex.hardenIndex(coinIndex), context)
+          zip32.childKey(Bip32KeyIndex.hardenIndex(coinIndex), context: context)
               as Zip32Base,
       coinConf: coinConf,
       context: context,
@@ -147,7 +152,7 @@ class Zip32 {
     }
     return Zip32._(
       zip32:
-          zip32.childKey(Bip32KeyIndex.hardenIndex(accIndex), context)
+          zip32.childKey(Bip32KeyIndex.hardenIndex(accIndex), context: context)
               as Zip32Base,
       coinConf: coinConf,
       context: context,
@@ -169,7 +174,7 @@ class Zip32 {
           EncodeAddressDefaultParams(pubKey: addressBytes),
         );
       default:
-        return ZCashUnifiedAddrEncoder().encodeUnifiedReceivers([
+        return ZcashUnifiedAddrEncoder().encodeUnifiedReceivers([
           ReceiverOrchard(
             data: addressBytes,
             mode: UnifiedReceiverMode.address,
@@ -204,7 +209,7 @@ class Zip32 {
           EncodeAddressDefaultParams(pubKey: addressBytes),
         );
       default:
-        return ZCashUnifiedAddrEncoder().encodeUnifiedReceivers([
+        return ZcashUnifiedAddrEncoder().encodeUnifiedReceivers([
           ReceiverOrchard(
             data: addressBytes,
             mode: UnifiedReceiverMode.address,

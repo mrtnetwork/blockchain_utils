@@ -8,34 +8,38 @@ import 'package:blockchain_utils/helper/extensions/extensions.dart';
 /// networks and test networks of various cryptocurrencies.
 enum Bip49Coins implements BipCoins {
   // Mainnets
-  bitcoin('bitcoin'),
-  bitcoinCash('bitcoinCash'),
-  bitcoinCashSlp('bitcoinCashSlp'),
-  bitcoinSv('bitcoinSv'),
-  dash('dash'),
-  dogecoin('dogecoin'),
-  ecash('ecash'),
-  litecoin('litecoin'),
-  zcash('zcash'),
-  pepecoin('pepecoin'),
-  electraProtocol('electraProtocol'),
+  bitcoin('bitcoin', 201),
+  bitcoinCash('bitcoinCash', 202),
+  bitcoinCashSlp('bitcoinCashSlp', 203),
+  bitcoinSv('bitcoinSv', 204),
+  dash('dash', 205),
+  dogecoin('dogecoin', 206),
+  ecash('ecash', 207),
+  litecoin('litecoin', 208),
+  zcash('zcash', 209),
+  pepecoin('pepecoin', 210),
+  electraProtocol('electraProtocol', 211),
 
   // Testnets
-  bitcoinCashTestnet('bitcoinCashTestnet'),
-  bitcoinCashSlpTestnet('bitcoinCashSlpTestnet'),
-  bitcoinSvTestnet('bitcoinSvTestnet'),
-  bitcoinTestnet('bitcoinTestnet'),
-  dashTestnet('dashTestnet'),
-  dogecoinTestnet('dogecoinTestnet'),
-  ecashTestnet('ecashTestnet'),
-  litecoinTestnet('litecoinTestnet'),
-  zcashTestnet('zcashTestnet'),
-  pepecoinTestnet('pepecoinTestnet'),
-  electraProtocolTestnet('electraProtocolTestnet');
+  bitcoinCashTestnet('bitcoinCashTestnet', 212),
+  bitcoinCashSlpTestnet('bitcoinCashSlpTestnet', 213),
+  bitcoinSvTestnet('bitcoinSvTestnet', 214),
+  bitcoinTestnet('bitcoinTestnet', 215),
+  dashTestnet('dashTestnet', 216),
+  dogecoinTestnet('dogecoinTestnet', 217),
+  ecashTestnet('ecashTestnet', 218),
+  litecoinTestnet('litecoinTestnet', 219),
+  zcashTestnet('zcashTestnet', 220),
+  zcashRegtest('zcashRegtest', 221),
+  pepecoinTestnet('pepecoinTestnet', 222),
+  electraProtocolTestnet('electraProtocolTestnet', 223);
 
   final String name;
 
-  const Bip49Coins(this.name);
+  @override
+  final int identifier;
+
+  const Bip49Coins(this.name, this.identifier);
 
   @override
   Bip49Coins get value => this;
@@ -65,6 +69,7 @@ enum Bip49Coins implements BipCoins {
       litecoinTestnet => config.litecoinTestNet,
       zcash => config.zcashMainNet,
       zcashTestnet => config.zcashTestNet,
+      zcashRegtest => config.zcashRegtest,
       pepecoin => config.pepeMainnet,
       pepecoinTestnet => config.pepeTestnet,
       electraProtocol => config.electraProtocolMainNet,

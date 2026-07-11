@@ -131,7 +131,7 @@ class Bip32Depth with Equality implements KeyDepth {
   /// Get the depth as bytes.
   @override
   List<int> toBytes([Endian endian = Endian.big]) {
-    return IntUtils.toBytes(depth, length: fixedLength(), byteOrder: endian);
+    return depth.toBytes(length: fixedLength(), byteOrder: endian);
   }
 
   /// Get the depth as an integer.
@@ -173,7 +173,7 @@ class Bip32KeyIndex with Equality implements HdKeyIndex {
   }
 
   factory Bip32KeyIndex(int index) {
-    if (index < 0 || index > Bip32KeyDataConst.keyIndexMaxVal) {
+    if (!isValidBip32Index(index)) {
       throw ArgumentException.invalidOperationArguments(
         "Bip32KeyIndex",
         name: "index",
@@ -187,6 +187,9 @@ class Bip32KeyIndex with Equality implements HdKeyIndex {
     Endian endian = Endian.little,
   }) {
     return Bip32KeyIndex(IntUtils.fromBytes(bytes, byteOrder: endian));
+  }
+  static bool isValidBip32Index(int index) {
+    return index >= 0 && index <= Bip32KeyDataConst.keyIndexMaxVal;
   }
 
   /// Get the fixed length in bytes.
@@ -212,7 +215,7 @@ class Bip32KeyIndex with Equality implements HdKeyIndex {
   /// Get the key index as bytes.
   @override
   List<int> toBytes([Endian endian = Endian.big]) {
-    return IntUtils.toBytes(index, length: fixedLength(), byteOrder: endian);
+    return index.toBytes(length: fixedLength(), byteOrder: endian);
   }
 
   /// Get the key index as an integer.

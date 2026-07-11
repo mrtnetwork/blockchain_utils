@@ -5,17 +5,19 @@ import 'package:blockchain_utils/helper/extensions/extensions.dart';
 
 enum ZIP32Coins implements CryptoCoins<ZIP32CoinConfig> {
   // Mainnet
-  zCashSapling('zCashSapling'),
-  zCashOrchard('zCashOrchard'),
+  zCashSapling('zCashSapling', 1001),
+  zCashOrchard('zCashOrchard', 1002),
   // Testnets
-  zCashTestnetSapling('zCashTestnetSapling'),
-  zCashRegtestSapling('zCashRegtestSapling'),
-  zCashTestnetOrchard('zCashTestnetOrchard'),
-  zCashRegtestOrchard('zCashRegtestOrchard');
+  zCashTestnetSapling('zCashTestnetSapling', 1003),
+  zCashRegtestSapling('zCashRegtestSapling', 1004),
+  zCashTestnetOrchard('zCashTestnetOrchard', 1005),
+  zCashRegtestOrchard('zCashRegtestOrchard', 1006);
 
+  @override
+  final int identifier;
   final String name;
 
-  const ZIP32Coins(this.name);
+  const ZIP32Coins(this.name, this.identifier);
   @override
   ZIP32Coins get value {
     return this;

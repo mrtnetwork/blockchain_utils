@@ -2,7 +2,7 @@ import 'package:blockchain_utils/crypto/crypto/zcrypto/pasta/fields/pallas_fp.da
 import 'package:blockchain_utils/crypto/crypto/zcrypto/pasta/fields/vesta_fq.dart';
 import 'package:blockchain_utils/crypto/crypto/zcrypto/pasta/point/core.dart';
 import 'package:blockchain_utils/crypto/crypto/exception/exception.dart';
-import 'package:blockchain_utils/exception/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/helper/extensions/extensions.dart';
 
 class VestaIsoPoint extends PastaPoint<PallasFp, VestaFq, VestaIsoPoint> {
@@ -14,7 +14,6 @@ class VestaIsoPoint extends PastaPoint<PallasFp, VestaFq, VestaIsoPoint> {
   factory VestaIsoPoint.fromBytes(List<int> bytes) {
     return VestaIsoAffinePoint.fromBytes(bytes).toCurve();
   }
-  @override
   factory VestaIsoPoint.identity() {
     return VestaIsoPoint(
       x: VestaFq.zero(),
@@ -90,7 +89,6 @@ class VestaIsoAffinePoint
         "VestaIsoAffinePoint",
         name: "bytes",
         reason: "Invalid point bytes length.",
-        expecteLen: 32,
       );
     }
     final tmp = bytes.clone();

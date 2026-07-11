@@ -1,7 +1,7 @@
 import 'package:blockchain_utils/bip/bip/bip39/bip39.dart';
 import 'package:blockchain_utils/bip/bip/bip39/word_list/word_list.dart';
-import 'package:blockchain_utils/bip/mnemonic/mnemonic_ex.dart';
-import 'package:blockchain_utils/bip/mnemonic/mnemonic_utils.dart';
+import 'package:blockchain_utils/bip/mnemonic/src/mnemonic_ex.dart';
+import 'package:blockchain_utils/bip/mnemonic/src/mnemonic_utils.dart';
 
 /// The TonMnemonicLanguages class implements the Bip39Languages interface to
 /// provide support for BIP-39 mnemonic languages, specifically tailored for TON (The Open Network).

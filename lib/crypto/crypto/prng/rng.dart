@@ -1,7 +1,7 @@
 import 'dart:math' show Random;
 import 'dart:typed_data';
 
-import 'package:blockchain_utils/exception/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/utils/numbers/utils/bigint_utils.dart';
 import 'package:blockchain_utils/utils/numbers/utils/int_utils.dart';
 

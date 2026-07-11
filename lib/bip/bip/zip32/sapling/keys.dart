@@ -1,15 +1,18 @@
 import 'dart:typed_data';
+import 'package:blockchain_utils/bech32/bech32_base.dart';
 import 'package:blockchain_utils/bip/bip/bip32/bip32_key_data.dart';
 import 'package:blockchain_utils/bip/bip/bip44/base/bip44_base.dart';
 import 'package:blockchain_utils/bip/bip/hd_key/types.dart';
 import 'package:blockchain_utils/bip/bip/zip32/base/context.dart';
 import 'package:blockchain_utils/bip/bip/zip32/base/types.dart';
+import 'package:blockchain_utils/bip/bip/zip32/conf/config.dart';
 import 'package:blockchain_utils/bip/bip/zip32/reddsa/reddsa/sapling.dart';
 import 'package:blockchain_utils/bip/bip/zip32/sapling/derivator.dart';
 import 'package:blockchain_utils/bip/bip/zip32/sapling/exception.dart';
 import 'package:blockchain_utils/bip/bip/zip32/sapling/utils.dart';
 import 'package:blockchain_utils/bip/bip/zip32/utils/prf_expand.dart';
 import 'package:blockchain_utils/bip/bip/zip32/zip32/types.dart';
+import 'package:blockchain_utils/bip/zcash/src/encoding/encoding.dart';
 import 'package:blockchain_utils/crypto/crypto/aes/aes.dart';
 import 'package:blockchain_utils/crypto/crypto/zcrypto/jubjub/jubjub.dart';
 import 'package:blockchain_utils/crypto/crypto/zcrypto/ff1/ff1.dart';
@@ -154,6 +157,15 @@ class SaplingExtendedFullViewKey
   }) {
     final d = toDiversifiableFullViewingKey();
     return d.toIvk(scope);
+  }
+
+  /// Encodes the Sapling extended full viewing key as a Bech32 string.
+  String encodeExtendedFullViewKey(ZIP32CoinConfig config) {
+    return ZcashEncodingUtils.encodeBech32Address(
+      bytes: toBytes(),
+      encoding: Bech32Encodings.bech32,
+      hrp: config.hrpSaplingExtendedFullViewingKey,
+    );
   }
 }
 
@@ -398,7 +410,14 @@ class SaplingFullViewingKey with Equality {
   List<dynamic> get variables => [ovk, vk];
 }
 
-class SaplingDiversifiableFullViewingKey with Equality {
+class SaplingDiversifiableFullViewingKey
+    extends
+        DiversifiableFullViewingKey<
+          SaplingPaymentAddress,
+          SaplingIncomingViewingKey,
+          SaplingOutgoingViewingKey,
+          SaplingIvk
+        > {
   final SaplingFullViewingKey fvk;
   final SaplingDiversifierKey dk;
   const SaplingDiversifiableFullViewingKey({
@@ -449,7 +468,11 @@ class SaplingDiversifiableFullViewingKey with Equality {
     Bip44Changes.chainExt => fvk.vk.nk,
     Bip44Changes.chainInt => deriveInternal().fvk.vk.nk,
   };
-  SaplingIncomingViewingKey toIvk(Bip44Changes scope) {
+  @override
+  SaplingIncomingViewingKey toIvk(
+    Bip44Changes scope, {
+    ZCryptoContext? context,
+  }) {
     final ivk = switch (scope) {
       Bip44Changes.chainExt => fvk.vk.ivk(),
       Bip44Changes.chainInt => deriveInternal().fvk.vk.ivk(),
@@ -457,6 +480,7 @@ class SaplingDiversifiableFullViewingKey with Equality {
     return SaplingIncomingViewingKey(dk: dk, ivk: ivk);
   }
 
+  @override
   SaplingOutgoingViewingKey toOvk(Bip44Changes scope) {
     return switch (scope) {
       Bip44Changes.chainExt => fvk.ovk,
@@ -466,6 +490,7 @@ class SaplingDiversifiableFullViewingKey with Equality {
 
   SaplingIncomingViewingKey toExternalIvk() => toIvk(Bip44Changes.chainExt);
 
+  @override
   List<int> toBytes() => [...fvk.toBytes(), ...dk.toBytes()];
 
   (SaplingPaymentAddress, DiversifierIndex) defaultAddress() {
@@ -488,10 +513,28 @@ class SaplingDiversifiableFullViewingKey with Equality {
   }
 
   @override
-  List<dynamic> get variables => [fvk, dk];
+  Bip44Changes? scopeForAddress({
+    required SaplingPaymentAddress address,
+    ZCryptoContext? context,
+  }) {
+    return Bip44Changes.values.firstWhereNullable(
+      (e) => toIvk(e, context: context).diversifierIndex(address) != null,
+    );
+  }
+
+  @override
+  List<dynamic> get variables => [protocol, fvk, dk];
+
+  @override
+  ZcashProtocol get protocol => ZcashProtocol.sapling;
+
+  @override
+  SaplingIvk keyAgreement(Bip44Changes scope, {ZCryptoContext? context}) {
+    return toIvk(scope, context: context).ivk;
+  }
 }
 
-class SaplingIvk with Equality {
+class SaplingIvk extends KeyAgreementPrivateKey {
   final JubJubNativeFr inner;
   const SaplingIvk(this.inner);
   factory SaplingIvk.fromBytes(List<int> bytes) {
@@ -524,24 +567,42 @@ class SaplingIvk with Equality {
 }
 
 class SaplingDiversifiedTransmissionKey extends DiversifiedTransmissionKey {
-  final JubJubNativePoint inner;
-  const SaplingDiversifiedTransmissionKey._(this.inner);
+  final List<int> inner;
+  JubJubNativePoint? _point;
+  JubJubNativePoint toPoint() {
+    JubJubNativePoint? point = _point;
+    if (point != null) return point;
+    point = JubJubNativePoint.fromBytes(inner);
+    if (!point.isTorsionFree()) {
+      throw SaplingKeyError.failed("toPoint");
+    }
+    _point = point;
+    return point;
+  }
+
+  SaplingDiversifiedTransmissionKey._(List<int> inner, JubJubNativePoint? point)
+    : _point = point,
+      inner = inner.exc(
+        operation: "SaplingDiversifiedTransmissionKey",
+        name: "bytes",
+        reason: "Invalid diversified transmission key bytes length.",
+        length: 32,
+      );
   factory SaplingDiversifiedTransmissionKey(JubJubNativePoint point) {
     if (!point.isTorsionFree()) {
       throw SaplingKeyError.failed("SaplingDiversifiedTransmissionKey");
     }
-    return SaplingDiversifiedTransmissionKey._(point);
+    return SaplingDiversifiedTransmissionKey._(point.toBytes(), point);
+  }
+  factory SaplingDiversifiedTransmissionKey.fromBytesUnchecked(
+    List<int> bytes,
+  ) {
+    return SaplingDiversifiedTransmissionKey._(bytes, null);
   }
   factory SaplingDiversifiedTransmissionKey.fromBytes(List<int> bytes) {
-    bytes = bytes.exc(
-      operation: "SaplingDiversifiedTransmissionKey",
-      name: "bytes",
-      reason: "Invalid diversified transmission key bytes length.",
-      length: 32,
-    );
-    return SaplingDiversifiedTransmissionKey(
-      JubJubNativePoint.fromBytes(bytes),
-    );
+    final key = SaplingDiversifiedTransmissionKey._(bytes, null);
+    key.toPoint();
+    return key;
   }
   factory SaplingDiversifiedTransmissionKey.derive({
     required Diversifier d,
@@ -557,7 +618,7 @@ class SaplingDiversifiedTransmissionKey extends DiversifiedTransmissionKey {
     return SaplingDiversifiedTransmissionKey(gd * ivk);
   }
   @override
-  List<int> toBytes() => inner.toBytes();
+  List<int> toBytes() => inner.clone();
 
   @override
   List<dynamic> get variables => [inner];
@@ -578,6 +639,20 @@ class SaplingPaymentAddress
     );
     return SaplingPaymentAddress(
       transmissionKey: SaplingDiversifiedTransmissionKey.fromBytes(
+        bytes.sublist(11),
+      ),
+      diversifier: Diversifier(bytes.sublist(0, 11)),
+    );
+  }
+  factory SaplingPaymentAddress.fromBytesUnchecked(List<int> bytes) {
+    bytes = bytes.exc(
+      operation: "SaplingPaymentAddress",
+      name: "bytes",
+      reason: "Invalid sapling address bytes length.",
+      length: 43,
+    );
+    return SaplingPaymentAddress(
+      transmissionKey: SaplingDiversifiedTransmissionKey.fromBytesUnchecked(
         bytes.sublist(11),
       ),
       diversifier: Diversifier(bytes.sublist(0, 11)),
@@ -604,7 +679,7 @@ class SaplingPaymentAddress
 }
 
 class SaplingIncomingViewingKey
-    implements IncomingViewingKey<SaplingPaymentAddress> {
+    extends IncomingViewingKey<SaplingPaymentAddress> {
   final SaplingDiversifierKey dk;
   final SaplingIvk ivk;
   const SaplingIncomingViewingKey({required this.dk, required this.ivk});
@@ -627,6 +702,15 @@ class SaplingIncomingViewingKey
   SaplingPaymentAddress addressAt(DiversifierIndex index) {
     final dJ = dk.diversifier(index);
     return ivk.toPaymentAddress(dJ);
+  }
+
+  SaplingPaymentAddress? tryAddressAt(DiversifierIndex index) {
+    try {
+      final dJ = dk.diversifier(index);
+      return ivk.toPaymentAddress(dJ);
+    } on SaplingKeyError {
+      return null;
+    }
   }
 
   @override
@@ -654,9 +738,12 @@ class SaplingIncomingViewingKey
 
   @override
   List<dynamic> get variables => [dk, ivk];
+
+  @override
+  ZcashProtocol get protocol => ZcashProtocol.sapling;
 }
 
-class SaplingOutgoingViewingKey with Equality {
+class SaplingOutgoingViewingKey extends OutgoingViewingKey {
   final List<int> inner;
   SaplingOutgoingViewingKey(List<int> inner)
     : inner =
@@ -671,4 +758,9 @@ class SaplingOutgoingViewingKey with Equality {
 
   @override
   List<dynamic> get variables => [inner];
+
+  @override
+  List<int> toBytes() {
+    return inner.clone();
+  }
 }

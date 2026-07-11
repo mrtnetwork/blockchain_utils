@@ -279,7 +279,6 @@ void _constants() {
       BigInt.parse('0x6185d06627c067cb'),
     ]).toBytes(),
   );
-  // print(JubJubFqConst.modulus.toHex());
   expect(
     (JubJubNativeFq.fromBytes(JubJubFq.from(BigInt.from(2)).toBytes()) *
             JubJubNativeFq.fromBytes(JubJubFq.twoInv().toBytes()))

@@ -2,7 +2,7 @@ import 'package:blockchain_utils/crypto/crypto/zcrypto/pasta/fields/native/fq.da
 import 'package:blockchain_utils/crypto/crypto/zcrypto/pasta/fields/native/fp.dart';
 import 'package:blockchain_utils/crypto/crypto/zcrypto/pasta/point/core.dart';
 import 'package:blockchain_utils/crypto/crypto/exception/exception.dart';
-import 'package:blockchain_utils/exception/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/helper/extensions/extensions.dart';
 
 class PallasIsoNativePoint
@@ -13,7 +13,6 @@ class PallasIsoNativePoint
     y: PallasNativeFp.zero(),
     z: PallasNativeFp.zero(),
   );
-  @override
   factory PallasIsoNativePoint.identity() {
     return _identity;
   }
@@ -88,7 +87,6 @@ class PallasIsoAffineNativePoint
         "PallasIsoAffineNativePoint",
         name: "bytes",
         reason: "Invalid point bytes length.",
-        expecteLen: 32,
       );
     }
     final tmp = bytes.clone();

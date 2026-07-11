@@ -92,10 +92,10 @@ class EthAddrEncoder implements BlockchainAddressEncoder {
     final IPublicKey pubKeyObj = AddrKeyValidator.validateAndGetSecp256k1Key(
       pubKey,
     );
-    final String kekkakHex = BytesUtils.toHexString(
+    final String hashKey = BytesUtils.toHexString(
       QuickCrypto.keccack256Hash(pubKeyObj.uncompressed.sublist(1)),
     );
-    final String addr = kekkakHex.substring(EthAddrConst.startByte);
+    final String addr = hashKey.substring(EthAddrConst.startByte);
     if (skipChecksum) {
       return addr;
     }

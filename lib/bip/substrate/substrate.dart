@@ -20,3 +20,5 @@ export 'keys/substrate_keys.dart';
 
 /// Export statement for Substrate path components.
 export 'path/substrate_path.dart';
+
+export 'exception/substrate_ex.dart';

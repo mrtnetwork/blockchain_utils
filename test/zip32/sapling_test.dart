@@ -12,12 +12,12 @@ void main() {
         "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f",
       ),
     );
-    final m1h = m.childKey(i1h, context);
+    final m1h = m.childKey(i1h, context: context);
     final m1h2h = m.derivePath(
       Bip32Path(elems: [i1h, i2h]).toString(),
-      context,
+      context: context,
     );
-    final m1h2h3h = m1h2h.childKey(i3h, context);
+    final m1h2h3h = m1h2h.childKey(i3h, context: context);
     final xfvks = [
       m.publicKey,
       m1h.publicKey,

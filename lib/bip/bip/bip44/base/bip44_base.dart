@@ -18,44 +18,49 @@ import 'bip44_keys.dart';
 /// Enumeration of BIP-44 changes (external and internal).
 enum Bip44Changes {
   /// External chain for receiving funds
-  chainExt(0),
+  chainExt(0, "External"),
 
   /// Internal chain for change addresses
-  chainInt(1);
-
-  /// Constructor to associate a value with each instance
-  final int value;
-  const Bip44Changes(this.value);
-}
-
-/// Enumeration of BIP-44 levels in hierarchical deterministic wallets.
-class Bip44Levels {
-  // Named constants representing each level
-
-  /// Master level
-  static const master = Bip44Levels._(0, "Master");
-
-  /// Purpose level
-  static const purpose = Bip44Levels._(1, "Purpose");
-
-  /// Coin level
-  static const coin = Bip44Levels._(2, "Coin");
-
-  /// Account level
-  static const account = Bip44Levels._(3, "Account");
-
-  /// Change level (external/internal)
-  static const change = Bip44Levels._(4, "Change");
-
-  /// Address index level
-  static const addressIndex = Bip44Levels._(5, "Address");
-
-  // The value associated with each instance
+  chainInt(1, "Internal");
 
   /// Constructor to associate a value with each instance
   final int value;
   final String name;
-  const Bip44Levels._(this.value, this.name);
+  const Bip44Changes(this.value, this.name);
+  static Bip44Changes fromValue(int? value) {
+    return values.firstWhere(
+      (e) => e.value == value,
+      orElse: () => throw ItemNotFoundException(name: "Bip44Changes"),
+    );
+  }
+}
+
+/// Enumeration of BIP-44 levels in hierarchical deterministic wallets.
+enum Bip44Levels {
+  // Named constants representing each level
+
+  /// Master level
+  master(0, "Master"),
+
+  /// Purpose level
+  purpose(1, "Purpose"),
+
+  /// Coin level
+  coin(2, "Coin"),
+
+  /// Account level
+  account(3, "Account"),
+
+  /// Change level (external/internal)
+  change(4, "Change"),
+
+  /// Address index level
+  addressIndex(5, "Address");
+
+  /// Constructor to associate a value with each instance
+  final int value;
+  final String name;
+  const Bip44Levels(this.value, this.name);
 
   /// Factory method to create a [Bip44Levels] instance from an integer.
 
@@ -72,15 +77,6 @@ class Bip44Levels {
     );
   }
 
-  // List of all instances of Bip44Levels
-  static const List<Bip44Levels> values = [
-    master,
-    purpose,
-    coin,
-    account,
-    change,
-    addressIndex,
-  ];
   @override
   String toString() {
     return "Bip44Levels.$name";

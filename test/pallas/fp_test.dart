@@ -104,10 +104,7 @@ void _isoMapIdentity() {
       BigInt.parse("0x3af37975b0933125"),
     ]),
   );
-  print("r ${r.toHex()}");
-  print("R mult ${(r * -VestaFq.one()).toHex()}");
   final e = (r * -VestaFq.one()) + r;
-  print("e ${e.toHex()}");
   expect(e.isOnCurve(), true);
   expect(e.isIdentity(), true);
   final p = PastaUtils.isoMap(

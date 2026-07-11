@@ -6,7 +6,6 @@ import 'package:blockchain_utils/cbor/utils/dynamic_bytes.dart';
 import 'package:blockchain_utils/cbor/core/tags.dart';
 import 'package:blockchain_utils/cbor/types/bigint.dart';
 import 'package:blockchain_utils/cbor/core/cbor.dart';
-import 'package:blockchain_utils/utils/binary/utils.dart';
 
 /// A class representing a CBOR (Concise Binary Object Representation) Dcecimal value.
 class CborDecimalFracValue extends CborObject<List<BigInt>> {
@@ -30,7 +29,7 @@ class CborDecimalFracValue extends CborObject<List<BigInt>> {
     );
   }
 
-  /// exponent value
+  /// exponent valuesz
   final BigInt exponent;
 
   /// mantissa value
@@ -54,15 +53,8 @@ class CborDecimalFracValue extends CborObject<List<BigInt>> {
     return CborSafeIntValue(value).encode();
   }
 
-  /// Encode the value into CBOR bytes an then to hex
-  @override
-  String toCborHex() {
-    return BytesUtils.toHexString(encode());
-  }
-
-  /// Returns the string representation of the value.
   @override
   String toString() {
-    return value.join(", ");
+    return "CborDecimalFracValue({exponent:$exponent, mantissa:$mantissa})";
   }
 }

@@ -1,9 +1,9 @@
 import 'package:blockchain_utils/bip/bip/bip39/bip39_mnemonic_utils.dart';
 import 'package:blockchain_utils/bip/electrum/mnemonic_v2/electrum_v2_mnemonic.dart';
 import 'package:blockchain_utils/bip/electrum/mnemonic_v2/electrum_v2_mnemonic_utils.dart';
-import 'package:blockchain_utils/bip/mnemonic/mnemonic_decoder_base.dart';
+import 'package:blockchain_utils/bip/mnemonic/src/mnemonic_decoder_base.dart';
 import 'package:blockchain_utils/exception/exceptions.dart';
-import 'package:blockchain_utils/utils/numbers/utils/bigint_utils.dart';
+import 'package:blockchain_utils/helper/helper.dart';
 
 /// A class for decoding Electrum V2 mnemonics, extending the MnemonicDecoderBase class.
 class ElectrumV2MnemonicDecoder
@@ -65,6 +65,6 @@ class ElectrumV2MnemonicDecoder
     }
 
     /// Convert the BigInt to bytes and return the result
-    return BigintUtils.toBytes(entropyInt);
+    return entropyInt.toBeBytes();
   }
 }

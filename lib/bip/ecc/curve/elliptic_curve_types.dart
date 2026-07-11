@@ -1,4 +1,4 @@
-import 'package:blockchain_utils/exception/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 
 /// An enumeration of common elliptic curve types used in cryptographic operations.
 enum EllipticCurveTypes {

@@ -1,9 +1,9 @@
 import 'dart:typed_data' show Endian;
 import 'package:blockchain_utils/bip/substrate/scale/substrate_scale_enc_cuint.dart';
+import 'package:blockchain_utils/helper/helper.dart';
 import 'package:blockchain_utils/layout/core/core/core.dart';
 import 'package:blockchain_utils/layout/exception/exception.dart';
 import 'package:blockchain_utils/utils/binary/binary_operation.dart';
-import 'package:blockchain_utils/utils/numbers/utils/bigint_utils.dart';
 
 class LayoutSerializationUtils {
   static List<int> encodeLength(String length) {
@@ -164,10 +164,7 @@ class LayoutSerializationUtils {
       BinaryOps.writeUint32LE(value.toInt(), bytes, 1);
       return bytes;
     }
-    return [
-      0xff,
-      ...BigintUtils.toBytes(value, length: 8, order: Endian.little),
-    ];
+    return [0xff, ...value.toLeBytes(length: 8)];
   }
 
   static BigInt fromBytes({
@@ -177,26 +174,29 @@ class LayoutSerializationUtils {
     Endian byteOrder = Endian.big,
     bool sign = false,
   }) {
+    final int length = end - offset;
+    if (length <= 0) return BigInt.zero;
+
     BigInt result = BigInt.zero;
+    bool negative;
+
     if (byteOrder == Endian.little) {
-      int j = 0;
-      for (int i = offset; i < end; i++) {
-        /// Add each byte to the result, considering its position and byte order.
-        result += BigInt.from(bytes[i]) << (8 * j++);
+      // Most significant byte is at `end - 1`; walk backwards so each
+      // subsequent byte is shifted further left.
+      for (int i = end - 1; i >= offset; i--) {
+        result = (result << 8) | BigInt.from(bytes[i] & 0xff);
       }
-      if (result == BigInt.zero) return result;
-      if (sign && (bytes[end - 1] & 0x80) != 0) {
-        return result.toSigned(BigintUtils.bitlengthInBytes(result) * 8);
-      }
+      negative = sign && (bytes[end - 1] & 0x80) != 0;
     } else {
-      int j = 0;
+      // Most significant byte is at `offset`.
       for (int i = offset; i < end; i++) {
-        result += BigInt.from(bytes[end - 1 - j]) << (8 * j++);
+        result = (result << 8) | BigInt.from(bytes[i] & 0xff);
       }
-      if (result == BigInt.zero) return result;
-      if (sign && (bytes[offset] & 0x80) != 0) {
-        return result.toSigned(BigintUtils.bitlengthInBytes(result) * 8);
-      }
+      negative = sign && (bytes[offset] & 0x80) != 0;
+    }
+
+    if (negative) {
+      result -= BigInt.one << (length * 8);
     }
 
     return result;

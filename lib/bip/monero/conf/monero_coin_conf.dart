@@ -4,6 +4,7 @@ import 'package:blockchain_utils/bip/bip/conf/core/coin_conf.dart';
 import 'package:blockchain_utils/bip/coin_conf/models/coin_conf.dart';
 import 'package:blockchain_utils/bip/coin_conf/models/coins_name.dart';
 import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 
 /// Configuration class for Monero-based cryptocurrencies, specifying various parameters
 /// such as network versions, address types, and coin names.
@@ -28,11 +29,20 @@ class MoneroCoinConf implements CoinConfig<MoneroCoinConf> {
     required CoinConf coinConf,
     required ChainType chainType,
   }) {
+    final addrNetVer = coinConf.params.addrNetVer;
+    final addrIntNetVer = coinConf.params.addrIntNetVer;
+    final subaddrNetVer = coinConf.params.subaddrNetVer;
+    if (addrNetVer == null || addrIntNetVer == null || subaddrNetVer == null) {
+      throw ArgumentException.invalidOperationArguments(
+        "fromCoinConf",
+        reason: "Missing coin net version.",
+      );
+    }
     return MoneroCoinConf._(
       coinConf.coinName,
-      coinConf.params.addrNetVer!,
-      coinConf.params.addrIntNetVer!,
-      coinConf.params.subaddrNetVer!,
+      addrNetVer,
+      addrIntNetVer,
+      subaddrNetVer,
       chainType,
     );
   }
@@ -56,7 +66,7 @@ class MoneroCoinConf implements CoinConfig<MoneroCoinConf> {
   final List<int>? wifNetVer = null;
 
   @override
-  ADDRENCODER<MoneroCoinConf> get addressEncoder =>
+  CbAddrEncoder<MoneroCoinConf> get addressEncoder =>
       (params, confing) => XmrAddrEncoder().encodeKey(params.pubKey);
 
   @override

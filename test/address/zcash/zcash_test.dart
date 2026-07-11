@@ -3,10 +3,10 @@ import 'package:test/test.dart';
 
 void main() {
   test("ZCaash Unified address", () {
-    final network = ZCashNetwork.mainnet;
+    final network = ZcashNetwork.mainnet;
     for (final t in _testVector) {
       final test = _TestVector.fromJson(t);
-      final addr = ZCashAddrDecoder().decodeAddr(test.unifiedAddr);
+      final addr = ZcashAddrDecoder().decodeAddr(test.unifiedAddr);
       expect(addr.network, network);
       if (test.p2pkhBytes != null) {
         expect(
@@ -57,13 +57,13 @@ void main() {
           test.unknownTypecode,
         );
       }
-      final encode = ZCashAddrEncoder().encodeKey(
+      final encode = ZcashAddrEncoder().encodeKey(
         addr.addressBytes,
-        addrType: ZCashAddressType.unified,
+        addrType: ZcashAddressType.unified,
         network: network,
       );
       expect(encode, test.unifiedAddr);
-      final encodeR = ZCashUnifiedAddrEncoder().encodeUnifiedReceivers(
+      final encodeR = ZcashUnifiedAddrEncoder().encodeUnifiedReceivers(
         addr.unifiedReceiver ?? [],
         network: network,
       );

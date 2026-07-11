@@ -3,7 +3,7 @@ import 'package:blockchain_utils/crypto/crypto/ec/core/field.dart';
 import 'package:blockchain_utils/crypto/crypto/zcrypto/jubjub/constants/constants.dart';
 import 'package:blockchain_utils/crypto/crypto/zcrypto/jubjub/fields/native.dart';
 import 'package:blockchain_utils/crypto/crypto/zcrypto/pasta/utils/utils.dart';
-import 'package:blockchain_utils/exception/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/helper/extensions/extensions.dart';
 import 'package:blockchain_utils/utils/compare/compare.dart';
 import 'package:blockchain_utils/utils/equatable/equatable.dart';
@@ -700,11 +700,7 @@ class JubJubFr extends JubJubScalar<JubJubFr> with ConstantEquality<JubJubFr> {
     );
     final res = List<int>.filled(32, 0);
     for (int i = 0; i < 4; i++) {
-      final limbBytes = BigintUtils.toBytes(
-        tmp.limbs[i],
-        length: 8,
-        order: Endian.little,
-      );
+      final limbBytes = tmp.limbs[i].toLeBytes(length: 8);
       res.setRange(i * 8, i * 8 + 8, limbBytes);
     }
     return res;
@@ -1004,11 +1000,7 @@ class JubJubFq extends JubJubField<JubJubFq> with ConstantEquality<JubJubFq> {
     );
     final res = List<int>.filled(32, 0);
     for (int i = 0; i < 4; i++) {
-      final limbBytes = BigintUtils.toBytes(
-        tmp.limbs[i],
-        length: 8,
-        order: Endian.little,
-      );
+      final limbBytes = tmp.limbs[i].toLeBytes(length: 8);
       res.setRange(i * 8, i * 8 + 8, limbBytes);
     }
     return res;

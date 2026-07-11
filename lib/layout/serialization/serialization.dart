@@ -24,7 +24,8 @@ abstract mixin class LayoutSerializable {
   /// Serializes the object to bytes using its layout.
   List<int> toSerializeBytes({String? property}) {
     final layout = toLayout(property: property);
-    return layout.serialize(toSerializeJson());
+    final json = toSerializeJson();
+    return layout.serialize(json);
   }
 }
 

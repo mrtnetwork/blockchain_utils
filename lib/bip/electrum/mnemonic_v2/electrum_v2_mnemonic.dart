@@ -1,7 +1,7 @@
 import 'package:blockchain_utils/bip/bip/bip39/bip39_mnemonic.dart';
 import 'package:blockchain_utils/bip/bip/bip39/word_list/word_list.dart';
-import 'package:blockchain_utils/bip/mnemonic/mnemonic_ex.dart';
-import 'package:blockchain_utils/bip/mnemonic/mnemonic_utils.dart';
+import 'package:blockchain_utils/bip/mnemonic/src/mnemonic_ex.dart';
+import 'package:blockchain_utils/bip/mnemonic/src/mnemonic_utils.dart';
 
 /// Enumeration of word counts for Electrum V2 mnemonics.
 /// An enumeration representing the number of words in an Electrum V2 mnemonic.

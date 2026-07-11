@@ -4,7 +4,7 @@ class OrchardKeyError extends CryptoException {
   const OrchardKeyError(super.message, {super.details});
   static OrchardKeyError failed(
     String operation, {
-    Map<String, dynamic>? details,
+    Map<String, String?>? details,
     String? reason,
   }) {
     return OrchardKeyError(

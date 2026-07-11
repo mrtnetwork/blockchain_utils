@@ -12,7 +12,7 @@ import 'package:blockchain_utils/utils/binary/utils.dart';
 import 'package:blockchain_utils/utils/json/extension/json.dart';
 import 'package:blockchain_utils/utils/string/string.dart';
 
-class ZCashEncodingUtils {
+class ZcashEncodingUtils {
   static List<int> validateReceiverEncoding({
     required List<int> data,
     required Typecode typecode,
@@ -20,7 +20,7 @@ class ZCashEncodingUtils {
   }) {
     final len = typecode.getLength(mode);
     if (len != null && data.length != len) {
-      throw ZCashKeyEncodingError.invalidUnifiedBytes(mode);
+      throw ZcashKeyEncodingError.invalidUnifiedBytes(mode);
     }
     switch (mode) {
       case UnifiedReceiverMode.address:
@@ -28,12 +28,12 @@ class ZCashEncodingUtils {
       case UnifiedReceiverMode.fvk:
       case UnifiedReceiverMode.ivk:
         if (typecode == Typecode.p2sh) {
-          throw ZCashKeyEncodingError.invalidUnifiedTypeCode(mode);
+          throw ZcashKeyEncodingError.invalidUnifiedTypeCode(mode);
         }
         return data;
       case UnifiedReceiverMode.sk:
         if (typecode == Typecode.p2sh || typecode == Typecode.unknown) {
-          throw ZCashKeyEncodingError.invalidUnifiedTypeCode(mode);
+          throw ZcashKeyEncodingError.invalidUnifiedTypeCode(mode);
         }
         return data;
     }
@@ -59,13 +59,13 @@ class ZCashEncodingUtils {
     final hrpBytes = StringUtils.encode(hrp);
     const int paddingLen = unifiedAddressPaddingLength;
     if (hrpBytes.length > paddingLen) {
-      throw ZCashKeyEncodingError.invalidUnifiedArguments(
+      throw ZcashKeyEncodingError.invalidUnifiedArguments(
         mode,
         reason: "Invalid HRP.",
       );
     }
     if (addressBytes == null && receivers == null) {
-      throw ZCashKeyEncodingError.invalidUnifiedArguments(
+      throw ZcashKeyEncodingError.invalidUnifiedArguments(
         mode,
         reason: "Missing unified address receivers.",
       );
@@ -89,7 +89,7 @@ class ZCashEncodingUtils {
         encoding: Bech32Encodings.bech32m,
       );
     } catch (_) {
-      throw ZCashKeyEncodingError.invalidUnifiedBytes(
+      throw ZcashKeyEncodingError.invalidUnifiedBytes(
         mode,
         reason: "Invalid unified address bytes.",
       );
@@ -104,13 +104,13 @@ class ZCashEncodingUtils {
     final hrpBytes = StringUtils.encode(hrp);
     const int paddingLen = unifiedAddressPaddingLength;
     if (hrpBytes.length > paddingLen) {
-      throw ZCashKeyEncodingError.invalidUnifiedObject(
+      throw ZcashKeyEncodingError.invalidUnifiedObject(
         mode,
         reason: "Invalid hrp.",
       );
     }
     if (encoded.length < paddingLen) {
-      throw ZCashKeyEncodingError.invalidUnifiedObject(
+      throw ZcashKeyEncodingError.invalidUnifiedObject(
         mode,
         reason: "Invalid checkshum.",
       );
@@ -123,7 +123,7 @@ class ZCashEncodingUtils {
     if (BytesUtils.bytesEqual(tail, expectedPadding)) {
       return mainPart;
     }
-    throw ZCashKeyEncodingError.invalidUnifiedObject(
+    throw ZcashKeyEncodingError.invalidUnifiedObject(
       mode,
       reason: "Invalid checkshum.",
     );
@@ -150,7 +150,7 @@ class ZCashEncodingUtils {
     try {
       unjumbled = F4Jumble.applyInv(decode.$2);
     } catch (_) {
-      throw ZCashKeyEncodingError.invalidUnifiedObject(
+      throw ZcashKeyEncodingError.invalidUnifiedObject(
         mode,
         reason: "Invalid checkshum.",
       );
@@ -161,7 +161,7 @@ class ZCashEncodingUtils {
       mode: mode,
     );
     if (expectedHrp != null && expectedHrp != decode.$1) {
-      throw ZCashKeyEncodingError.invalidUnifiedObject(
+      throw ZcashKeyEncodingError.invalidUnifiedObject(
         mode,
         reason: "Missmatch hrp.",
         details: {"expected": expectedHrp, "hrp": decode.$1},
@@ -223,32 +223,32 @@ class ZCashEncodingUtils {
     try {
       final decode = Bech32Decoder.decodeWithoutHRP(extendedKey);
       if (decode.$1 == hrp) return decode.$2;
-      throw ZCashKeyEncodingError.invalidKeyData(
+      throw ZcashKeyEncodingError.invalidKeyData(
         "Sapling spending",
         reason: "Missmatch network hrp.",
       );
-    } on ZCashKeyEncodingError {
+    } on ZcashKeyEncodingError {
       rethrow;
     } catch (_) {
-      throw ZCashKeyEncodingError.invalidKeyData("Sapling spending");
+      throw ZcashKeyEncodingError.invalidKeyData("Sapling spending");
     }
   }
 
   static List<int> decodeSaplingExtendedFullViewKey(
-    String extendedKey,
-    String hrp,
-  ) {
+    String extendedKey, {
+    String? hrp,
+  }) {
     try {
       final decode = Bech32Decoder.decodeWithoutHRP(extendedKey);
-      if (decode.$1 == hrp) return decode.$2;
-      throw ZCashKeyEncodingError.invalidKeyData(
+      if (hrp != null && decode.$1 == hrp) return decode.$2;
+      throw ZcashKeyEncodingError.invalidKeyData(
         "Sapling full view.",
         reason: "Missmatch network hrp.",
       );
-    } on ZCashKeyEncodingError {
+    } on ZcashKeyEncodingError {
       rethrow;
     } catch (_) {
-      throw ZCashKeyEncodingError.invalidKeyData("Sapling full view.");
+      throw ZcashKeyEncodingError.invalidKeyData("Sapling full view.");
     }
   }
 
@@ -257,7 +257,7 @@ class ZCashEncodingUtils {
     required UnifiedReceiverMode mode,
   }) {
     if (receivers.isEmpty) {
-      throw ZCashKeyEncodingError.invalidUnifiedArguments(
+      throw ZcashKeyEncodingError.invalidUnifiedArguments(
         mode,
         reason: "Empty receivers.",
       );
@@ -274,27 +274,27 @@ class ZCashEncodingUtils {
       (e) =>
           !allowedTypeCode.contains(e) || receivers.any((e) => e.mode != mode),
     )) {
-      throw ZCashKeyEncodingError.invalidUnifiedArguments(
+      throw ZcashKeyEncodingError.invalidUnifiedArguments(
         mode,
         reason: "Receivers contains invalid type code.",
       );
     }
     if (mode == UnifiedReceiverMode.sk &&
         receivers.length != allowedTypeCode.length) {
-      throw ZCashKeyEncodingError.invalidUnifiedArguments(
+      throw ZcashKeyEncodingError.invalidUnifiedArguments(
         mode,
         reason: "Missing some USK type code.",
       );
     }
     if (receivers.toSet().length != receivers.length) {
-      throw ZCashKeyEncodingError.invalidUnifiedArguments(
+      throw ZcashKeyEncodingError.invalidUnifiedArguments(
         mode,
         reason: "Duplicate receivers.",
       );
     }
     if (mode == UnifiedReceiverMode.address) {
       if (types.contains(Typecode.p2pkh) && types.contains(Typecode.p2sh)) {
-        throw ZCashKeyEncodingError.invalidUnifiedArguments(
+        throw ZcashKeyEncodingError.invalidUnifiedArguments(
           mode,
           reason: "Unified address contains both P2PKH and P2SH receivers.",
         );
@@ -318,7 +318,7 @@ class ZCashEncodingUtils {
       "receivers",
     );
     if (era != orchardEra) {
-      throw ZCashKeyEncodingError.invalidUnifiedBytes(
+      throw ZcashKeyEncodingError.invalidUnifiedBytes(
         UnifiedReceiverMode.sk,
         reason: "Duplicate receivers.",
       );
@@ -363,7 +363,7 @@ class ZCashEncodingUtils {
 
   static Bip32Slip10Secp256k1 decodeBip44Fvk(List<int> bytes) {
     if (bytes.length != 65) {
-      throw ZCashKeyEncodingError("Invalid transparent fvk bytes length.");
+      throw ZcashKeyEncodingError("Invalid transparent fvk bytes length.");
     }
     return Bip32Slip10Secp256k1.fromPublicKey(
       bytes.sublist(Bip32KeyDataConst.chaincodeByteLen),
@@ -380,7 +380,7 @@ class ZCashEncodingUtils {
 
   static Bip32PublicKey decodeBip32Fvk(List<int> bytes) {
     if (bytes.length != 65) {
-      throw ZCashKeyEncodingError("Invalid transparent fvk bytes length.");
+      throw ZcashKeyEncodingError("Invalid transparent fvk bytes length.");
     }
     return Bip32PublicKey.fromBytes(
       bytes.sublist(Bip32KeyDataConst.chaincodeByteLen),

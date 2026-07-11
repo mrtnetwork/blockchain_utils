@@ -7,94 +7,94 @@ import 'package:blockchain_utils/bip/zcash/src/encoding/encoding.dart';
 import 'package:blockchain_utils/bip/zcash/src/exception.dart';
 import 'package:blockchain_utils/bip/zcash/src/types.dart';
 
-class ZCashAddressUtils {
-  static (ZIP32CoinConfig, ZCashAddressType)? _findNetworkAndTypeFromB58Prefix(
+class ZcashAddressUtils {
+  static (ZIP32CoinConfig, ZcashAddressType)? _findNetworkAndTypeFromB58Prefix(
     List<int> prefix,
     ZcashConf config,
   ) {
     ZIP32CoinConfig? network = config.findFromP2shPrefix(prefix);
     if (network != null) {
-      return (network, ZCashAddressType.p2sh);
+      return (network, ZcashAddressType.p2sh);
     }
     network = config.findFromP2pkhPrefix(prefix);
     if (network != null) {
-      return (network, ZCashAddressType.p2pkh);
+      return (network, ZcashAddressType.p2pkh);
     }
     network = config.findFromSproutPrefix(prefix);
     if (network != null) {
-      return (network, ZCashAddressType.sprout);
+      return (network, ZcashAddressType.sprout);
     }
     return null;
   }
 
-  static ZCashDecodedAddressResult? _parseAddress(
+  static ZcashDecodedAddressResult? _parseAddress(
     String address, {
-    ZCashAddressType? exceptedType,
+    ZcashAddressType? exceptedType,
   }) {
     final configs = ZcashConf();
-    if (exceptedType == null || exceptedType == ZCashAddressType.unified) {
-      final unified = ZCashEncodingUtils.decodeUnifiedObject(
+    if (exceptedType == null || exceptedType == ZcashAddressType.unified) {
+      final unified = ZcashEncodingUtils.decodeUnifiedObject(
         address: address,
         mode: UnifiedReceiverMode.address,
       );
       if (unified != null) {
         final network = configs.findFromUnifiedAddressHrp(unified.$3)?.network;
         if (network == null) return null;
-        return ZCashDecodedAddressResult(
+        return ZcashDecodedAddressResult(
           network: network,
           unifiedReceiver: unified.$1,
           addressBytes: unified.$2,
-          type: ZCashAddressType.unified,
+          type: ZcashAddressType.unified,
         );
       }
     }
 
     if (exceptedType == null ||
-        exceptedType == ZCashAddressType.tex ||
-        exceptedType == ZCashAddressType.sapling) {
+        exceptedType == ZcashAddressType.tex ||
+        exceptedType == ZcashAddressType.sapling) {
       (List<int>, String)? b32;
-      if (exceptedType != ZCashAddressType.tex) {
-        (List<int>, String)? b32 = ZCashEncodingUtils.tryDecodeBech32(
+      if (exceptedType != ZcashAddressType.tex) {
+        (List<int>, String)? b32 = ZcashEncodingUtils.tryDecodeBech32(
           bech32: address,
           encoding: Bech32Encodings.bech32,
         );
         if (b32 != null) {
           final network = configs.findFromSaplingPaymentAddressHrp(b32.$2);
           if (network != null) {
-            return ZCashDecodedAddressResult(
+            return ZcashDecodedAddressResult(
               network: network.network,
               addressBytes: b32.$1,
-              type: ZCashAddressType.sapling,
+              type: ZcashAddressType.sapling,
             );
           }
         }
       }
-      if (exceptedType != ZCashAddressType.sapling) {
-        b32 = ZCashEncodingUtils.tryDecodeBech32(
+      if (exceptedType != ZcashAddressType.sapling) {
+        b32 = ZcashEncodingUtils.tryDecodeBech32(
           bech32: address,
           encoding: Bech32Encodings.bech32m,
         );
         if (b32 != null) {
           final network = configs.findFromTexHrp(b32.$2);
           if (network != null) {
-            return ZCashDecodedAddressResult(
+            return ZcashDecodedAddressResult(
               network: network.network,
               addressBytes: b32.$1,
-              type: ZCashAddressType.tex,
+              type: ZcashAddressType.tex,
             );
           }
         }
       }
     }
     if (exceptedType == null ||
-        exceptedType == ZCashAddressType.sprout ||
-        exceptedType == ZCashAddressType.p2pkh ||
-        exceptedType == ZCashAddressType.p2sh) {
-      final b58 = ZCashEncodingUtils.tryDecodeBase58WithCheck(address, 2);
+        exceptedType == ZcashAddressType.sprout ||
+        exceptedType == ZcashAddressType.p2pkh ||
+        exceptedType == ZcashAddressType.p2sh) {
+      final b58 = ZcashEncodingUtils.tryDecodeBase58WithCheck(address, 2);
       if (b58 != null) {
         final network = _findNetworkAndTypeFromB58Prefix(b58.$1, configs);
         if (network == null) return null;
-        return ZCashDecodedAddressResult(
+        return ZcashDecodedAddressResult(
           network: network.$1.network,
           addressBytes: b58.$2,
           type: network.$2,
@@ -105,10 +105,10 @@ class ZCashAddressUtils {
     return null;
   }
 
-  static ZCashDecodedAddressResult? parseAddress(
+  static ZcashDecodedAddressResult? parseAddress(
     String address, {
-    ZCashNetwork? expectedNetwork,
-    ZCashAddressType? exceptedType,
+    ZcashNetwork? expectedNetwork,
+    ZcashAddressType? exceptedType,
   }) {
     final decode = _parseAddress(address, exceptedType: exceptedType);
     if (decode == null) return null;
@@ -122,10 +122,10 @@ class ZCashAddressUtils {
   }
 
   static void _validate({
-    required ZCashNetwork network,
-    required ZCashAddressType type,
-    ZCashNetwork? expectedNetwork,
-    ZCashAddressType? exceptedType,
+    required ZcashNetwork network,
+    required ZcashAddressType type,
+    ZcashNetwork? expectedNetwork,
+    ZcashAddressType? exceptedType,
   }) {
     if (expectedNetwork != null && expectedNetwork != network) {
       throw AddressConverterException.addressValidationFailed(
@@ -143,45 +143,45 @@ class ZCashAddressUtils {
 
   static String encodeAddress({
     required List<int> bytes,
-    required ZCashAddressType type,
-    required ZCashNetwork network,
+    required ZcashAddressType type,
+    required ZcashNetwork network,
     List<ZUnifiedReceiver>? receivers,
   }) {
     final config = ZcashConf().fromNetwork(network);
     try {
       switch (type) {
-        case ZCashAddressType.p2sh:
+        case ZcashAddressType.p2sh:
           return encodeBase58Addresses(
             bytes: bytes,
             prefix: config.b58ScriptAddressPrefix,
             type: type,
           );
-        case ZCashAddressType.p2pkh:
+        case ZcashAddressType.p2pkh:
           return encodeBase58Addresses(
             bytes: bytes,
             prefix: config.b58PubkeyAddressPrefix,
             type: type,
           );
-        case ZCashAddressType.sprout:
+        case ZcashAddressType.sprout:
           return encodeBase58Addresses(
             bytes: bytes,
             prefix: config.b58SproutAddressPrefix,
             type: type,
           );
-        case ZCashAddressType.tex:
+        case ZcashAddressType.tex:
           return encodeBech32Address(
             bytes: bytes,
             hrp: config.hrpTexAddress,
             type: type,
           );
-        case ZCashAddressType.sapling:
+        case ZcashAddressType.sapling:
           return encodeBech32Address(
             bytes: bytes,
             hrp: config.hrpSaplingPaymentAddress,
             type: type,
           );
-        case ZCashAddressType.unified:
-          return ZCashEncodingUtils.encodeUnifiedObject(
+        case ZcashAddressType.unified:
+          return ZcashEncodingUtils.encodeUnifiedObject(
             addressBytes: bytes,
             hrp: config.hrpUnifiedAddress,
             receivers: receivers,
@@ -190,7 +190,7 @@ class ZCashAddressUtils {
       }
     } on AddressConverterException {
       rethrow;
-    } on ZCashKeyEncodingError catch (e) {
+    } on ZcashKeyEncodingError catch (e) {
       throw AddressConverterException.addressValidationFailed(
         details: e.details,
       );
@@ -204,13 +204,13 @@ class ZCashAddressUtils {
   static String encodeBase58Addresses({
     required List<int> bytes,
     required List<int> prefix,
-    required ZCashAddressType type,
+    required ZcashAddressType type,
   }) {
     assert(
       [
-        ZCashAddressType.p2pkh,
-        ZCashAddressType.p2sh,
-        ZCashAddressType.sprout,
+        ZcashAddressType.p2pkh,
+        ZcashAddressType.p2sh,
+        ZcashAddressType.sprout,
       ].contains(type),
     );
     assert(prefix.length == 2);
@@ -219,7 +219,7 @@ class ZCashAddressUtils {
         reason: "Invalid address bytes length.",
       );
     }
-    return ZCashEncodingUtils.encodeBase58WithCheck(
+    return ZcashEncodingUtils.encodeBase58WithCheck(
       bytes: bytes,
       prefix: prefix,
     );
@@ -228,19 +228,19 @@ class ZCashAddressUtils {
   static String encodeBech32Address({
     required List<int> bytes,
     required String hrp,
-    required ZCashAddressType type,
+    required ZcashAddressType type,
   }) {
-    assert([ZCashAddressType.sapling, ZCashAddressType.tex].contains(type));
+    assert([ZcashAddressType.sapling, ZcashAddressType.tex].contains(type));
     if (bytes.length != type.lengthInBytes) {
       throw AddressConverterException.addressBytesValidationFailed(
         reason: "Invalid address bytes length.",
       );
     }
-    return ZCashEncodingUtils.encodeBech32Address(
+    return ZcashEncodingUtils.encodeBech32Address(
       bytes: bytes,
       hrp: hrp,
       encoding:
-          type == ZCashAddressType.tex
+          type == ZcashAddressType.tex
               ? Bech32Encodings.bech32m
               : Bech32Encodings.bech32,
     );

@@ -1,10 +1,11 @@
-import 'package:blockchain_utils/bip/mnemonic/mnemonic_ex.dart';
+import 'package:blockchain_utils/bip/mnemonic/src/mnemonic_ex.dart';
 
 import 'package:blockchain_utils/bip/electrum/mnemonic_v2/electrum_v2_entropy_generator.dart';
 import 'package:blockchain_utils/bip/electrum/mnemonic_v2/electrum_v2_mnemonic.dart';
 import 'package:blockchain_utils/bip/electrum/mnemonic_v2/electrum_v2_mnemonic_encoder.dart';
-import 'package:blockchain_utils/bip/mnemonic/mnemonic.dart';
+import 'package:blockchain_utils/bip/mnemonic/src/mnemonic.dart';
 import 'package:blockchain_utils/exception/exceptions.dart';
+import 'package:blockchain_utils/helper/helper.dart';
 import 'package:blockchain_utils/utils/numbers/utils/bigint_utils.dart';
 
 /// Constants related to Electrum V2 mnemonic generation.
@@ -48,7 +49,7 @@ class ElectrumV2MnemonicGenerator {
     if (ElectrumV2EntropyGenerator.areEntropyBitsEnough(entropyInt)) {
       for (int i = 0; i < ElectrumV2MnemonicGeneratorConst.maxAttempts; i++) {
         final newEntropyInt = entropyInt + BigInt.from(i);
-        final toBytes = BigintUtils.toBytes(newEntropyInt);
+        final toBytes = newEntropyInt.toBeBytes();
 
         try {
           final encode = encoder.encode(toBytes);

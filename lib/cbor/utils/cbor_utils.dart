@@ -4,7 +4,7 @@ import 'package:blockchain_utils/cbor/exception/exception.dart';
 import 'package:blockchain_utils/cbor/types/types.dart';
 import 'package:blockchain_utils/cbor/utils/float_utils.dart';
 import 'package:blockchain_utils/cbor/core/tags.dart';
-import 'package:blockchain_utils/exception/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/utils/binary/utils.dart';
 import 'package:blockchain_utils/utils/numbers/utils/bigint_utils.dart';
 import 'package:blockchain_utils/utils/numbers/utils/int_utils.dart';
@@ -213,7 +213,7 @@ class CborUtils {
     if (value is! T) {
       throw CborException(
         "decode length casting faild.",
-        details: {"expected": "$T", "value": value.runtimeType},
+        details: {"expected": "$T", "value": value.runtimeType.toString()},
       );
     }
     return _DecodeCborResult(

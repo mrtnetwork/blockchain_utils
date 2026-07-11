@@ -1,4 +1,3 @@
-import 'dart:typed_data';
 import 'package:blockchain_utils/bip/bip/bip32/bip32_ex.dart';
 import 'package:blockchain_utils/crypto/crypto/ec/curve/curves.dart';
 import 'package:blockchain_utils/crypto/crypto/ec/projective/secp256k1/secp256k1.dart';
@@ -9,6 +8,7 @@ import 'package:blockchain_utils/bip/bip/bip32/bip32_keys.dart';
 import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_getter.dart';
 import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
+import 'package:blockchain_utils/helper/helper.dart';
 
 import 'package:blockchain_utils/utils/numbers/utils/bigint_utils.dart';
 
@@ -108,11 +108,7 @@ class Bip32Slip10EcdsaDerivator implements IBip32ChildKeyDerivator {
       newScalar: ilBytes,
       type: type,
     );
-    final newPrivKeyBytes = BigintUtils.toBytes(
-      scalar,
-      order: Endian.big,
-      length: parent.privKey.length,
-    );
+    final newPrivKeyBytes = scalar.toBeBytes(length: parent.privKey.length);
     return Bip32ChildKey(
       key: newPrivKeyBytes,
       chainCode: Bip32ChainCode(irBytes),

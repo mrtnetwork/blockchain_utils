@@ -1,5 +1,6 @@
 import 'package:blockchain_utils/crypto/crypto/ec/curve/curves.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
+import 'package:blockchain_utils/helper/helper.dart';
 import 'package:blockchain_utils/utils/numbers/utils/bigint_utils.dart';
 import 'package:test/test.dart';
 import 'package:blockchain_utils/crypto/crypto/ec/projective/secp256k1/secp256k1.dart';
@@ -139,7 +140,7 @@ void _scalarNegate() {
       Secp256k1.secp256k1ScalarGetB32(result, negate);
       BigInt scalarBig = BigintUtils.fromBytes(scalarBytes);
       scalarBig = _order - scalarBig % _order;
-      final toBytes = BigintUtils.toBytes(scalarBig, length: _curve.baselen);
+      final toBytes = scalarBig.toBeBytes(length: _curve.baselen);
       expect(toBytes, result);
       Secp256k1.secp256k1ScalarSetB32(r, toBytes);
       expect(negate, r);

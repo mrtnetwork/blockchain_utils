@@ -52,9 +52,8 @@
   OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-import 'dart:typed_data';
 import 'package:blockchain_utils/bech32/bech32_ex.dart';
-import 'package:blockchain_utils/utils/numbers/utils/int_utils.dart';
+import 'package:blockchain_utils/helper/helper.dart';
 
 import 'bech32_utils.dart';
 
@@ -155,14 +154,14 @@ class BchBech32Decoder extends Bech32DecoderBase {
   ///
   /// Throws:
   /// - ArgumentException: If the decoded HRP does not match the expected HRP.
-  static (List<int>, List<int>) decode(String hrp, String address) {
+  static (List<int>, List<int>) decode(String? hrp, String address) {
     final decode = Bech32DecoderBase.decodeBech32(
       address,
       BchBech32Const.separator,
       BchBech32Const.checksumStrLen,
       _BchBech32Utils.verifyChecksum,
     );
-    if (decode.$1 != hrp) {
+    if (hrp != null && decode.$1 != hrp) {
       throw Bech32Error(
         "Incorrect bech32 hrp.",
         details: {"expected": hrp, "hrp": decode.$1},
@@ -170,9 +169,6 @@ class BchBech32Decoder extends Bech32DecoderBase {
     }
     final convData = Bech32BaseUtils.convertFromBase32(decode.$2);
     final ver = convData[0];
-    return (
-      IntUtils.toBytes(ver, byteOrder: Endian.little),
-      convData.sublist(1),
-    );
+    return (ver.toLeBytes(), convData.sublist(1));
   }
 }

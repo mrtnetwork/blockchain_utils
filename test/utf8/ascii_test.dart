@@ -4,8 +4,6 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:blockchain_utils/blockchain_utils.dart';
-import 'package:blockchain_utils/utf8/src/deocder.dart';
-import 'package:blockchain_utils/utf8/src/encoder.dart';
 import 'package:test/test.dart';
 
 var _asciiStrings = [
@@ -54,7 +52,7 @@ void _testDirectConversions() {
 
   for (var nonAsciiString in _nonAsciiStrings) {
     expect(() {
-      print(ASCIIEncoder.encode(nonAsciiString));
+      final _ = ASCIIEncoder.encode(nonAsciiString);
     }, throwsException);
   }
 

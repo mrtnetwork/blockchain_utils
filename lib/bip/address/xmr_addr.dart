@@ -4,6 +4,7 @@ import 'package:blockchain_utils/bip/address/decoder.dart';
 import 'package:blockchain_utils/bip/address/encoder.dart';
 import 'package:blockchain_utils/bip/ecc/keys/ed25519_keys.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/helper/helper.dart';
 import 'package:blockchain_utils/utils/binary/utils.dart';
 
@@ -21,27 +22,19 @@ class XmrAddrConst {
   static const int prefixLength = 1;
 }
 
-class XmrAddressType {
+enum XmrAddressType {
+  primaryAddress(name: "Primary", prefixes: [0x12, 0x18, 0x35], value: 0),
+  integrated(name: "Integrated", prefixes: [0x19, 0x36, 0x13], value: 1),
+  subaddress(name: "Subaddress", prefixes: [0x24, 0x3F, 0x2A], value: 2);
+
+  final int value;
   final String name;
   final List<int> prefixes;
-  const XmrAddressType._({required this.name, required this.prefixes});
-  static const XmrAddressType primaryAddress = XmrAddressType._(
-    name: "Primary",
-    prefixes: [0x12, 0x18, 0x35],
-  );
-  static const XmrAddressType integrated = XmrAddressType._(
-    name: "Integrated",
-    prefixes: [0x19, 0x36, 0x13],
-  );
-  static const XmrAddressType subaddress = XmrAddressType._(
-    name: "Subaddress",
-    prefixes: [0x24, 0x3F, 0x2A],
-  );
-  static const List<XmrAddressType> values = [
-    primaryAddress,
-    integrated,
-    subaddress,
-  ];
+  const XmrAddressType({
+    required this.name,
+    required this.prefixes,
+    required this.value,
+  });
   static XmrAddressType fromPrefix(int? prefix) {
     return values.firstWhere(
       (e) => e.prefixes.contains(prefix),
@@ -49,8 +42,15 @@ class XmrAddressType {
           () =>
               throw AddressConverterException.addressValidationFailed(
                 reason: "Invalid monero address prefix.",
-                details: {"prefix": prefix},
+                details: {"prefix": prefix?.toString()},
               ),
+    );
+  }
+
+  static XmrAddressType fromValue(int? value) {
+    return values.firstWhere(
+      (e) => e.value == value,
+      orElse: () => throw ItemNotFoundException(name: "XmrAddressType"),
     );
   }
 
@@ -114,7 +114,10 @@ class _XmrAddrUtils {
           netVerBytes[0] != netVersion) {
         throw AddressConverterException.addressValidationFailed(
           reason: "Invalid address prefix.",
-          details: {"expected": netVersion, "network_version": netVersion},
+          details: {
+            "expected": netVersion.toString(),
+            "network_version": netVersion.toString(),
+          },
         );
       }
     }

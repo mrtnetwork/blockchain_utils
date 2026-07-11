@@ -1,11 +1,9 @@
-import 'dart:typed_data';
 import 'package:blockchain_utils/base58/base58_base.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
 
 import 'package:blockchain_utils/exception/exceptions.dart';
+import 'package:blockchain_utils/helper/helper.dart';
 import 'package:blockchain_utils/utils/binary/utils.dart';
-import 'package:blockchain_utils/utils/numbers/utils/int_utils.dart';
-
 import 'ss58_ex.dart';
 
 /// Constants used in the SS58 address encoding and decoding process.
@@ -65,7 +63,7 @@ class SS58Encoder {
     List<int> ss58FormatBytes;
 
     if (ss58Format <= _Ss58Const.simpleAccountFormatMaxVal) {
-      ss58FormatBytes = IntUtils.toBytes(ss58Format, byteOrder: Endian.little);
+      ss58FormatBytes = ss58Format.toLeBytes();
     } else {
       ss58FormatBytes = [
         ((ss58Format & 0x00FC) >> 2) | 0x0040,

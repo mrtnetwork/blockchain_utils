@@ -13,7 +13,7 @@ class COptionLayout<T> extends Layout<T?> {
     if (value != 0 && value != 1) {
       throw LayoutException(
         "Failed to decode data as boolean.",
-        details: {"property": property, "value": value},
+        details: {"property": property, "value": value.toString()},
       );
     }
   }

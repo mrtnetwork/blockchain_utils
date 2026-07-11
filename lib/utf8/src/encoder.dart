@@ -1,6 +1,42 @@
-import 'package:blockchain_utils/exception/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 
 class UTF8Encoder {
+  static int inBytesLength(String s) {
+    final int length = s.length;
+    int utf8Length = 0;
+    for (int i = 0; i < length; i++) {
+      int cu = s.codeUnitAt(i);
+
+      if (cu >= 0xD800 && cu <= 0xDBFF) {
+        if (i + 1 < length) {
+          int c2 = s.codeUnitAt(i + 1);
+          if (c2 >= 0xDC00 && c2 <= 0xDFFF) {
+            cu = 0x10000 + ((cu - 0xD800) << 10) + (c2 - 0xDC00);
+            i++;
+          } else {
+            cu = 0xFFFD; // replacement char
+          }
+        } else {
+          cu = 0xFFFD; // lone high surrogate
+        }
+      } else if (cu >= 0xDC00 && cu <= 0xDFFF) {
+        cu = 0xFFFD; // lone low surrogate
+      }
+
+      // Count UTF-8 bytes
+      if (cu <= 0x7F) {
+        utf8Length += 1;
+      } else if (cu <= 0x7FF) {
+        utf8Length += 2;
+      } else if (cu <= 0xFFFF) {
+        utf8Length += 3;
+      } else {
+        utf8Length += 4;
+      }
+    }
+    return utf8Length;
+  }
+
   static List<int> encode(String s) {
     final int length = s.length;
 

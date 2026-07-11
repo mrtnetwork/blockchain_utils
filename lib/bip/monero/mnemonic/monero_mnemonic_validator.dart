@@ -1,6 +1,6 @@
 import 'package:blockchain_utils/bip/monero/mnemonic/monero_mnemonic.dart';
 import 'package:blockchain_utils/bip/monero/mnemonic/monero_mnemonic_decoder.dart';
-import 'package:blockchain_utils/bip/mnemonic/mnemonic_validator.dart';
+import 'package:blockchain_utils/bip/mnemonic/src/mnemonic_validator.dart';
 
 /// A class for validating Monero mnemonics.
 class MoneroMnemonicValidator extends MnemonicValidator {

@@ -1,4 +1,4 @@
-import 'package:blockchain_utils/bip/mnemonic/entropy_generator.dart';
+import 'package:blockchain_utils/bip/mnemonic/src/entropy_generator.dart';
 
 class ElectrumV1EntropyBitLen {
   /// Bit length for 128 bits of entropy.

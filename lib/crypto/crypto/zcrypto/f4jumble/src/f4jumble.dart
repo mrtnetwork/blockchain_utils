@@ -1,11 +1,13 @@
 import 'package:blockchain_utils/crypto/crypto/hash/hash.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
-import 'package:blockchain_utils/exception/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/helper/extensions/extensions.dart';
 import 'package:blockchain_utils/utils/numbers/utils/int_utils.dart';
 
 /// Implements the F4Jumble transformation and its inverse.
 class F4Jumble {
+  static const int minValidLength = 48;
+
   /// Applies the forward F4Jumble transformation to the message.
   static List<int> apply(List<int> message) {
     if (!haveValidLength(message)) {
@@ -41,7 +43,6 @@ class F4Jumble {
   }
 
   static bool haveValidLength(List<int> message) {
-    const int minValidLength = 48;
     const int maxValidLength = 4194368;
     return message.length >= minValidLength && message.length <= maxValidLength;
   }

@@ -1,7 +1,7 @@
 import 'dart:typed_data' show Endian;
 import 'package:blockchain_utils/bip/bip.dart';
 import 'package:blockchain_utils/crypto/crypto/ec/cdsa.dart';
-import 'package:blockchain_utils/exception/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/helper/helper.dart';
 import 'package:blockchain_utils/utils/numbers/utils/bigint_utils.dart';
 
@@ -11,9 +11,7 @@ class Ed25519Utils {
   static List<int> scalarReduceVar(List<int> scalar) {
     final toint = BigintUtils.fromBytes(scalar, byteOrder: Endian.little);
     final reduce = toint % Curves.generatorED25519.order!;
-    final tobytes = BigintUtils.toBytes(
-      reduce,
-      order: Endian.little,
+    final tobytes = reduce.toLeBytes(
       length: BigintUtils.bitlengthInBytes(Curves.generatorED25519.order!),
     );
     return tobytes;
@@ -217,39 +215,39 @@ class Ed25519Utils {
     final a = BigintUtils.fromBytes(scalar, byteOrder: Endian.little);
     final b = BigintUtils.fromBytes(scalar2, byteOrder: Endian.little);
     final r = (b * a) % Curves.generatorED25519.order!;
-    return BigintUtils.toBytes(r, length: 32, order: Endian.little);
+    return r.toU256LeBytes();
   }
 
   static List<int> scMulVarBigInt(List<int> scalar, BigInt scalar2) {
     final a = BigintUtils.fromBytes(scalar, byteOrder: Endian.little);
     final r = (scalar2 * a) % Curves.generatorED25519.order!;
-    return BigintUtils.toBytes(r, length: 32, order: Endian.little);
+    return r.toU256LeBytes();
   }
 
   static List<int> scSubVar(List<int> scalar, List<int> scalar2) {
     final a = BigintUtils.fromBytes(scalar, byteOrder: Endian.little);
     final b = BigintUtils.fromBytes(scalar2, byteOrder: Endian.little);
     final r = (a - b) % Curves.generatorED25519.order!;
-    return BigintUtils.toBytes(r, length: 32, order: Endian.little);
+    return r.toU256LeBytes();
   }
 
   static List<int> scSubVarBigInt(List<int> scalar, BigInt scalar2) {
     final a = BigintUtils.fromBytes(scalar, byteOrder: Endian.little);
     final r = (a - scalar2) % Curves.generatorED25519.order!;
-    return BigintUtils.toBytes(r, length: 32, order: Endian.little);
+    return r.toU256LeBytes();
   }
 
   static List<int> scAddVar(List<int> scalar, List<int> scalar2) {
     final a = BigintUtils.fromBytes(scalar, byteOrder: Endian.little);
     final b = BigintUtils.fromBytes(scalar2, byteOrder: Endian.little);
     final r = (a + b) % Curves.generatorED25519.order!;
-    return BigintUtils.toBytes(r, length: 32, order: Endian.little);
+    return r.toU256LeBytes();
   }
 
   static List<int> scAddVarBig(List<int> scalar, BigInt scalar2) {
     final a = BigintUtils.fromBytes(scalar, byteOrder: Endian.little);
     final r = (a + scalar2) % Curves.generatorED25519.order!;
-    return BigintUtils.toBytes(r, length: 32, order: Endian.little);
+    return r.toU256LeBytes();
   }
 
   static BigInt scalarAsBig(List<int> scalar) {
@@ -265,7 +263,7 @@ class Ed25519Utils {
     final b = BigintUtils.fromBytes(scalar2, byteOrder: Endian.little);
     final c = BigintUtils.fromBytes(scalar3, byteOrder: Endian.little);
     final r = ((b * a) + c) % Curves.generatorED25519.order!;
-    return BigintUtils.toBytes(r, length: 32, order: Endian.little);
+    return r.toU256LeBytes();
   }
 
   static bool scCheckVar(List<int> scalar) {

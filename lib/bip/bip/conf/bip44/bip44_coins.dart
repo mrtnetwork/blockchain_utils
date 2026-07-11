@@ -60,230 +60,233 @@ import 'package:blockchain_utils/helper/extensions/extensions.dart';
 
 enum Bip44Coins implements BipCoins {
   // Akash Network
-  akashNetwork('akashNetwork'),
+  akashNetwork('akashNetwork', 1),
 
   // Algorand
-  algorand('algorand'),
+  algorand('algorand', 2),
 
   // Aptos
-  aptos('aptos'),
-  aptosEd25519SingleKey('aptosEd25519SingleKey'),
-  aptosSecp256k1SingleKey('aptosSecp256k1SingleKey'),
+  aptos('aptos', 3),
+  aptosEd25519SingleKey('aptosEd25519SingleKey', 4),
+  aptosSecp256k1SingleKey('aptosSecp256k1SingleKey', 5),
 
   // Sui
-  sui('sui'),
-  suiSecp256k1('suiSecp256k1'),
-  suiSecp256r1('suiSecp256r1'),
+  sui('sui', 6),
+  suiSecp256k1('suiSecp256k1', 7),
+  suiSecp256r1('suiSecp256r1', 8),
 
   // Avalanche
-  avaxCChain('avaxCChain'),
-  avaxPChain('avaxPChain'),
-  avaxXChain('avaxXChain'),
+  avaxCChain('avaxCChain', 9),
+  avaxPChain('avaxPChain', 10),
+  avaxXChain('avaxXChain', 11),
 
   // Axelar
-  axelar('axelar'),
+  axelar('axelar', 12),
 
   // Band Protocol
-  bandProtocol('bandProtocol'),
+  bandProtocol('bandProtocol', 13),
 
   // Binance
-  binanceChain('binanceChain'),
-  binanceSmartChain('binanceSmartChain'),
+  binanceChain('binanceChain', 14),
+  binanceSmartChain('binanceSmartChain', 15),
 
   // Bitcoin variants
-  bitcoin('bitcoin'),
-  bitcoinCash('bitcoinCash'),
-  bitcoinCashSlp('bitcoinCashSlp'),
-  bitcoinSv('bitcoinSv'),
+  bitcoin('bitcoin', 16),
+  bitcoinCash('bitcoinCash', 17),
+  bitcoinCashSlp('bitcoinCashSlp', 18),
+  bitcoinSv('bitcoinSv', 19),
 
   // Cardano
-  cardanoByronIcarus('cardanoByronIcarus'),
-  cardanoByronLedger('cardanoByronLedger'),
-  cardanoByronIcarusTestnet('cardanoByronIcarusTestnet'),
-  cardanoByronLedgerTestnet('cardanoByronLedgerTestnet'),
+  cardanoByronIcarus('cardanoByronIcarus', 20),
+  cardanoByronLedger('cardanoByronLedger', 21),
+  cardanoByronIcarusTestnet('cardanoByronIcarusTestnet', 22),
+  cardanoByronLedgerTestnet('cardanoByronLedgerTestnet', 23),
 
   // Celo
-  celo('celo'),
+  celo('celo', 24),
 
   // Certik
-  certik('certik'),
+  certik('certik', 25),
 
   // Chihuahua
-  chihuahua('chihuahua'),
+  chihuahua('chihuahua', 26),
 
   // Cosmos (various)
-  cosmos('cosmos'),
-  cosmosTestnet('cosmosTestnet'),
-  cosmosNist256p1('cosmosNist256p1'),
-  cosmosTestnetNist256p1('cosmosTestnetNist256p1'),
-  cosmosEd25519('cosmosEd25519'),
-  cosmosTestnetEd25519('cosmosTestnetEd25519'),
-  cosmosEthSecp256k1('cosmosEthSecp256k1'),
-  cosmosTestnetEthSecp256k1('cosmosTestnetEthSecp256k1'),
+  cosmos('cosmos', 27),
+  cosmosTestnet('cosmosTestnet', 28),
+  cosmosNist256p1('cosmosNist256p1', 29),
+  cosmosTestnetNist256p1('cosmosTestnetNist256p1', 30),
+  cosmosEd25519('cosmosEd25519', 31),
+  cosmosTestnetEd25519('cosmosTestnetEd25519', 32),
+  cosmosEthSecp256k1('cosmosEthSecp256k1', 33),
+  cosmosTestnetEthSecp256k1('cosmosTestnetEthSecp256k1', 34),
 
   // Dash
-  dash('dash'),
+  dash('dash', 35),
 
   // Dogecoin
-  dogecoin('dogecoin'),
+  dogecoin('dogecoin', 36),
 
   // Pepecoin
-  pepecoin('pepecoin'),
+  pepecoin('pepecoin', 37),
 
   // eCash
-  ecash('ecash'),
+  ecash('ecash', 38),
 
   // Elrond
-  elrond('elrond'),
+  elrond('elrond', 39),
 
   // EOS
-  eos('eos'),
+  eos('eos', 40),
 
   // Ergo
-  ergo('ergo'),
+  ergo('ergo', 41),
 
   // Ethereum
-  ethereum('ethereum'),
-  ethereumTestnet('ethereumTestnet'),
-  ethereumClassic('ethereumClassic'),
+  ethereum('ethereum', 42),
+  ethereumTestnet('ethereumTestnet', 43),
+  ethereumClassic('ethereumClassic', 44),
 
   // Fantom
-  fantomOpera('fantomOpera'),
+  fantomOpera('fantomOpera', 45),
 
   // Filecoin
-  filecoin('filecoin'),
+  filecoin('filecoin', 46),
 
   // Harmony
-  harmonyOneAtom('harmonyOneAtom'),
-  harmonyOneEth('harmonyOneEth'),
-  harmonyOneMetamask('harmonyOneMetamask'),
+  harmonyOneAtom('harmonyOneAtom', 47),
+  harmonyOneEth('harmonyOneEth', 48),
+  harmonyOneMetamask('harmonyOneMetamask', 49),
 
   // Huobi
-  huobiChain('huobiChain'),
+  huobiChain('huobiChain', 50),
 
   // ICON
-  icon('icon'),
+  icon('icon', 51),
 
   // Injective
-  injective('injective'),
+  injective('injective', 52),
 
   // IrisNet
-  irisNet('irisNet'),
+  irisNet('irisNet', 53),
 
   // Kava
-  kava('kava'),
+  kava('kava', 54),
 
   // Kusama
-  kusamaEd25519Slip('kusamaEd25519Slip'),
-  kusamaTestnetEd25519Slip('kusamaTestnetEd25519Slip'),
+  kusamaEd25519Slip('kusamaEd25519Slip', 55),
+  kusamaTestnetEd25519Slip('kusamaTestnetEd25519Slip', 56),
 
   // Litecoin
-  litecoin('litecoin'),
+  litecoin('litecoin', 57),
 
   // Monero
-  moneroEd25519Slip('moneroEd25519Slip'),
-  moneroSecp256k1('moneroSecp256k1'),
+  moneroEd25519Slip('moneroEd25519Slip', 58),
+  moneroSecp256k1('moneroSecp256k1', 59),
 
   // Nano
-  nano('nano'),
+  nano('nano', 60),
 
   // Near
-  nearProtocol('nearProtocol'),
+  nearProtocol('nearProtocol', 61),
 
   // NEO
-  neo('neo'),
+  neo('neo', 62),
 
   // Nine Chronicles
-  nineChroniclesGold('nineChroniclesGold'),
+  nineChroniclesGold('nineChroniclesGold', 63),
 
   // OKEx
-  okexChainAtom('okexChainAtom'),
-  okexChainAtomOld('okexChainAtomOld'),
-  okexChainEth('okexChainEth'),
+  okexChainAtom('okexChainAtom', 64),
+  okexChainAtomOld('okexChainAtomOld', 65),
+  okexChainEth('okexChainEth', 66),
 
   // Ontology
-  ontology('ontology'),
+  ontology('ontology', 67),
 
   // Osmosis
-  osmosis('osmosis'),
+  osmosis('osmosis', 68),
 
   // Pi Network
-  piNetwork('piNetwork'),
+  piNetwork('piNetwork', 69),
 
   // Polkadot
-  polkadotEd25519Slip('polkadotEd25519Slip'),
-  polkadotTestnetEd25519Slip('polkadotTestnetEd25519Slip'),
+  polkadotEd25519Slip('polkadotEd25519Slip', 70),
+  polkadotTestnetEd25519Slip('polkadotTestnetEd25519Slip', 71),
 
   // Polygon
-  polygon('polygon'),
+  polygon('polygon', 72),
 
   // Ripple
-  ripple('ripple'),
-  rippleTestnet('rippleTestnet'),
-  rippleEd25519('rippleED25519'),
-  rippleTestnetED25519('rippleTestnetED25519'),
+  ripple('ripple', 73),
+  rippleTestnet('rippleTestnet', 74),
+  rippleEd25519('rippleED25519', 75),
+  rippleTestnetED25519('rippleTestnetED25519', 76),
 
   // Secret Network
-  secretNetworkOld('secretNetworkOld'),
-  secretNetworkNew('secretNetworkNew'),
+  secretNetworkOld('secretNetworkOld', 77),
+  secretNetworkNew('secretNetworkNew', 78),
 
   // Solana
-  solana('solana'),
-  solanaTestnet('solanaTestnet'),
+  solana('solana', 79),
+  solanaTestnet('solanaTestnet', 80),
 
   // Stellar
-  stellar('stellar'),
-  stellarTestnet('stellarTestnet'),
+  stellar('stellar', 81),
+  stellarTestnet('stellarTestnet', 82),
 
   // Terra
-  terra('terra'),
+  terra('terra', 83),
 
   // Tezos
-  tezos('tezos'),
+  tezos('tezos', 84),
 
   // Theta
-  theta('theta'),
+  theta('theta', 85),
 
   // Tron
-  tron('tron'),
-  tronTestnet('tronTestnet'),
+  tron('tron', 86),
+  tronTestnet('tronTestnet', 87),
 
   // VeChain
-  vechain('vechain'),
+  vechain('vechain', 88),
 
   // Verge
-  verge('verge'),
+  verge('verge', 89),
 
   // Zcash
-  zcash('zcash'),
+  zcash('zcash', 90),
 
   // Zilliqa
-  zilliqa('zilliqa'),
+  zilliqa('zilliqa', 91),
 
   // Electra
-  electraProtocol('electraProtocol'),
+  electraProtocol('electraProtocol', 92),
 
   // -------- Testnets --------
-  bitcoinCashTestnet('bitcoinCashTestnet'),
-  bitcoinCashSlpTestnet('bitcoinCashSlpTestnet'),
-  bitcoinSvTestnet('bitcoinSvTestnet'),
-  bitcoinTestnet('bitcoinTestnet'),
-  dashTestnet('dashTestnet'),
-  dogecoinTestnet('dogecoinTestnet'),
-  pepecoinTestnet('pepecoinTestnet'),
-  ecashTestnet('ecashTestnet'),
-  ergoTestnet('ergoTestnet'),
-  litecoinTestnet('litecoinTestnet'),
-  zcashTestnet('zcashTestnet'),
+  bitcoinCashTestnet('bitcoinCashTestnet', 93),
+  bitcoinCashSlpTestnet('bitcoinCashSlpTestnet', 94),
+  bitcoinSvTestnet('bitcoinSvTestnet', 95),
+  bitcoinTestnet('bitcoinTestnet', 96),
+  dashTestnet('dashTestnet', 97),
+  dogecoinTestnet('dogecoinTestnet', 98),
+  pepecoinTestnet('pepecoinTestnet', 99),
+  ecashTestnet('ecashTestnet', 100),
+  ergoTestnet('ergoTestnet', 101),
+  litecoinTestnet('litecoinTestnet', 102),
+  zcashTestnet('zcashTestnet', 103),
+  zcashRegtest('zcashRegtest', 104),
 
-  tonTestnet('tonTestnet'),
-  tonMainnet('tonMainnet'),
+  tonTestnet('tonTestnet', 105),
+  tonMainnet('tonMainnet', 106),
 
-  electraProtocolTestnet('electraProtocolTestnet');
+  electraProtocolTestnet('electraProtocolTestnet', 107);
 
   final String name;
+  @override
+  final int identifier;
 
-  const Bip44Coins(this.name);
+  const Bip44Coins(this.name, this.identifier);
   @override
   Bip44Coins get value {
     return this;
@@ -400,6 +403,7 @@ enum Bip44Coins implements BipCoins {
       Bip44Coins.verge => config.verge,
       Bip44Coins.zcash => config.zcashMainNet,
       Bip44Coins.zcashTestnet => config.zcashTestNet,
+      Bip44Coins.zcashRegtest => config.zcashRegtest,
       Bip44Coins.zilliqa => config.zilliqa,
       Bip44Coins.tonTestnet => config.tonTestnet,
       Bip44Coins.tonMainnet => config.tonMainnet,

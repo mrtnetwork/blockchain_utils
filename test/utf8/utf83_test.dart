@@ -4,7 +4,6 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:blockchain_utils/blockchain_utils.dart';
-import 'package:blockchain_utils/utf8/src/deocder.dart';
 import 'package:test/test.dart';
 
 void main() {

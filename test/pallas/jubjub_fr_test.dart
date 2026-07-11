@@ -164,7 +164,6 @@ void _testMul() {
     // increment cur by LARGEST
     cur += largest;
   }
-  print("cur ${BytesUtils.toHexString(cur.toBytes())}");
 }
 
 void _subtraction() {

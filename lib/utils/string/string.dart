@@ -49,9 +49,33 @@ class StringUtils {
     return false;
   }
 
-  static bool isHexBytes(String v) {
-    final RegExp hexBytesRegex = RegExp(r'^(0x|0X)?([0-9A-Fa-f]{2})+$');
-    return hexBytesRegex.hasMatch(v);
+  static bool isHexBytes(String v, {int? lengthInBytes}) {
+    assert(lengthInBytes == null || lengthInBytes >= 0);
+    int start = 0;
+
+    if (v.startsWith('0x') || v.startsWith('0X')) {
+      start = 2;
+    }
+
+    final len = v.length - start;
+
+    if ((len & 1) != 0) return false;
+
+    if (lengthInBytes != null && len != lengthInBytes * 2) {
+      return false;
+    }
+
+    for (var i = start; i < v.length; i++) {
+      final c = v.codeUnitAt(i);
+
+      if (!((c >= 48 && c <= 57) ||
+          (c >= 65 && c <= 70) ||
+          (c >= 97 && c <= 102))) {
+        return false;
+      }
+    }
+
+    return true;
   }
 
   static bool ixHexaDecimalNumber(String v) {
@@ -102,13 +126,13 @@ class StringUtils {
   /// Returns a list of bytes representing the encoded string.
   static List<int> encode(
     String value, {
-    StringEncoding type = StringEncoding.utf8,
+    StringEncoding encoding = StringEncoding.utf8,
     bool validateB64Padding = true,
     bool allowUrlSafe = true,
     Base58Alphabets base58alphabets = Base58Alphabets.bitcoin,
   }) {
     try {
-      switch (type) {
+      switch (encoding) {
         case StringEncoding.utf8:
           final bytes = UTF8Encoder.encode(value);
           assert(BytesUtils.bytesEqual(bytes, utf8.encode(value)));
@@ -135,7 +159,7 @@ class StringUtils {
       throw ArgumentException.invalidOperationArguments(
         "encode",
         name: "value",
-        reason: "Failed to encode strong to ${type.name} bytes",
+        reason: "Failed to encode strong to ${encoding.name} bytes",
       );
     }
   }
@@ -183,7 +207,7 @@ class StringUtils {
   /// Returns a list of bytes representing the encoded string.
   static List<int>? tryEncode(
     String? value, {
-    StringEncoding type = StringEncoding.utf8,
+    StringEncoding encoding = StringEncoding.utf8,
     bool validateB64Padding = true,
     bool allowUrlSafe = true,
     Base58Alphabets base58alphabets = Base58Alphabets.bitcoin,
@@ -192,7 +216,7 @@ class StringUtils {
     try {
       return encode(
         value,
-        type: type,
+        encoding: encoding,
         allowUrlSafe: allowUrlSafe,
         validateB64Padding: validateB64Padding,
         base58alphabets: base58alphabets,
@@ -208,14 +232,14 @@ class StringUtils {
   /// Returns the decoded string.
   static String decode(
     List<int> value, {
-    StringEncoding type = StringEncoding.utf8,
+    StringEncoding encoding = StringEncoding.utf8,
     bool allowInvalidOrMalformed = false,
     bool b64NoPadding = false,
     Base58Alphabets base58alphabets = Base58Alphabets.bitcoin,
   }) {
     value = value.asBytes;
     try {
-      switch (type) {
+      switch (encoding) {
         case StringEncoding.utf8:
           final decode = UTF8Decoder.decode(
             value,
@@ -249,7 +273,7 @@ class StringUtils {
       throw ArgumentException.invalidOperationArguments(
         "decode",
         name: "value",
-        reason: "Failed to decode bytes as ${type.name}",
+        reason: "Failed to decode bytes as ${encoding.name}",
       );
     }
   }
@@ -279,7 +303,7 @@ class StringUtils {
   /// Returns the decoded string.
   static String? tryDecode(
     List<int>? value, {
-    StringEncoding type = StringEncoding.utf8,
+    StringEncoding encoding = StringEncoding.utf8,
     bool allowInvalidOrMalformed = false,
     bool b64NoPadding = false,
     Base58Alphabets base58alphabets = Base58Alphabets.bitcoin,
@@ -288,7 +312,7 @@ class StringUtils {
     try {
       return decode(
         value,
-        type: type,
+        encoding: encoding,
         allowInvalidOrMalformed: allowInvalidOrMalformed,
         b64NoPadding: b64NoPadding,
         base58alphabets: base58alphabets,
@@ -338,6 +362,8 @@ class StringUtils {
     final decode = jsonDecode(data, reviver: reviver);
     try {
       return JsonParser.valueAs<T>(decode);
+    } on JsonParserError {
+      rethrow;
     } catch (_) {
       throw ArgumentException.invalidOperationArguments(
         "toJson",
@@ -388,7 +414,13 @@ class StringUtils {
     return normalizeHex(a) == normalizeHex(b);
   }
 
-  static String normalizeHex(String hexString) {
+  static String _normalizeHex(String hexString, {bool with0x = false}) {
+    final hex = strip0x(hexString.toLowerCase());
+    if (with0x) return add0x(hex);
+    return hex;
+  }
+
+  static String normalizeHex(String hexString, {bool with0x = false}) {
     if (!isHexBytes(hexString)) {
       throw ArgumentException.invalidOperationArguments(
         "normalizeHex",
@@ -396,6 +428,81 @@ class StringUtils {
         reason: "Invalid hex string.",
       );
     }
-    return strip0x(hexString.toLowerCase());
+    return _normalizeHex(hexString, with0x: with0x);
   }
+
+  static String snakeToCamel(String input, {required bool capitalizeFirst}) {
+    if (input.isEmpty) return input;
+    final parts =
+        input.split(RegExp(r'[_\-]+')).where((p) => p.isNotEmpty).toList();
+    if (parts.isEmpty) return input;
+
+    final buf = StringBuffer();
+    for (var i = 0; i < parts.length; i++) {
+      final part = parts[i];
+      final shouldCapitalize = capitalizeFirst || i > 0;
+      buf.write(_capitalizeWord(part, capitalize: shouldCapitalize));
+    }
+    return buf.toString();
+  }
+
+  static String _capitalizeWord(String word, {required bool capitalize}) {
+    if (word.isEmpty) return word;
+
+    // Proto enum values are conventionally SCREAMING_SNAKE_CASE, so a
+    // word like "UNSPECIFIED" arrives here fully uppercase. If we only
+    // touched the first letter (as you'd do for a word that's *already*
+    // mixed-case, e.g. preserving a genuine acronym), every snake_case
+    // segment after the first would stay shouting - "UNSPECIFIED" not
+    // "Unspecified" - which breaks camelCase entirely.
+    //
+    // Heuristic: if the word is all-uppercase (and more than one letter,
+    // so single-letter words/initials aren't affected), lowercase the
+    // tail before re-capitalizing the first letter. Otherwise (already
+    // mixed-case, e.g. a deliberate acronym like "ID" mid-word in a
+    // genuinely camelCase source), leave the tail untouched.
+    final isShouting = word.length > 1 && word == word.toUpperCase();
+    final tail =
+        isShouting ? word.substring(1).toLowerCase() : word.substring(1);
+
+    final first = capitalize ? word[0].toUpperCase() : word[0].toLowerCase();
+    return '$first$tail';
+  }
+
+  static String camelToSnake(String input) {
+    if (input.isEmpty) return input;
+
+    final buf = StringBuffer();
+    for (var i = 0; i < input.length; i++) {
+      final char = input[i];
+
+      if (_isUpper(char) && i > 0) {
+        final prev = input[i - 1];
+        final next = i + 1 < input.length ? input[i + 1] : null;
+
+        // Boundary #1: a lower->upper (or digit->upper) transition, e.g.
+        // "userId" -> "user_Id", "item2Name" -> "item2_Name".
+        final afterLowerOrDigit = _isLower(prev) || _isDigit(prev);
+
+        // Boundary #2: the end of an acronym run followed by a lowercase
+        // letter, e.g. "HTTPServer" -> "HTTP_Server" (split before the "S",
+        // not before every capital in "HTTP"). Without this, "HTTPServer"
+        // would come out "h_t_t_p_server" instead of "http_server".
+        final endOfAcronym = _isUpper(prev) && next != null && _isLower(next);
+
+        if (afterLowerOrDigit || endOfAcronym) {
+          buf.write('_');
+        }
+      }
+
+      buf.write(char.toLowerCase());
+    }
+    return buf.toString();
+  }
+
+  static bool _isUpper(String ch) =>
+      ch != ch.toLowerCase() && ch == ch.toUpperCase();
+  static bool _isLower(String ch) =>
+      ch != ch.toUpperCase() && ch == ch.toLowerCase();
+  static bool _isDigit(String ch) => ch.codeUnitAt(0) ^ 0x30 <= 9; // '0'-'9'
 }

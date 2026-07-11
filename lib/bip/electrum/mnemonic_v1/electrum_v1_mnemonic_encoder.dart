@@ -3,9 +3,9 @@ import 'dart:typed_data';
 import 'package:blockchain_utils/bip/electrum/mnemonic_v1/electrum_v1_entropy_generator.dart';
 import 'package:blockchain_utils/bip/electrum/mnemonic_v1/electrum_v1_mnemonic.dart';
 import 'package:blockchain_utils/bip/electrum/mnemonic_v1/electrum_v1_mnemonic_utils.dart';
-import 'package:blockchain_utils/bip/mnemonic/mnemonic.dart';
-import 'package:blockchain_utils/bip/mnemonic/mnemonic_encoder_base.dart';
-import 'package:blockchain_utils/bip/mnemonic/mnemonic_utils.dart';
+import 'package:blockchain_utils/bip/mnemonic/src/mnemonic.dart';
+import 'package:blockchain_utils/bip/mnemonic/src/mnemonic_encoder_base.dart';
+import 'package:blockchain_utils/bip/mnemonic/src/mnemonic_utils.dart';
 import 'package:blockchain_utils/exception/exceptions.dart';
 
 /// A class for encoding data into Electrum V1 mnemonics, extending the MnemonicEncoderBase class.

@@ -15,11 +15,11 @@ void main() {
       expect(testVector.valueAsBigInt("bString"), BigInt.one);
       expect(
         () => testVector.valueAsBigInt("wBigInt"),
-        throwsA(isA<JSONHelperException>()),
+        throwsA(isA<JsonParserError>()),
       );
       expect(
         () => testVector.valueAsBigInt("bStringHex", allowHex: false),
-        throwsA(isA<JSONHelperException>()),
+        throwsA(isA<JsonParserError>()),
       );
     });
 
@@ -39,11 +39,11 @@ void main() {
       expect(testVector.valueAsInt("bString"), 1);
       expect(
         () => testVector.valueAsInt("wBigInt"),
-        throwsA(isA<JSONHelperException>()),
+        throwsA(isA<JsonParserError>()),
       );
       expect(
         () => testVector.valueAsInt("bStringHex", allowHex: false),
-        throwsA(isA<JSONHelperException>()),
+        throwsA(isA<JsonParserError>()),
       );
     });
 
@@ -56,12 +56,12 @@ void main() {
       );
       expect(
         () => testVector.valueAsBytes("bytesAsHex", allowHex: false),
-        throwsA(isA<JSONHelperException>()),
+        throwsA(isA<JsonParserError>()),
       );
 
       expect(
         () => testVector.valueAsBytes("wBytes"),
-        throwsA(isA<JSONHelperException>()),
+        throwsA(isA<JsonParserError>()),
       );
       expect(
         testVector.valueAsBytes(
@@ -70,7 +70,7 @@ void main() {
         ),
         StringUtils.encode(
           "2cFupjhnEsSn59qHXstmK2ffpLv2",
-          type: StringEncoding.base58,
+          encoding: StringEncoding.base58,
         ),
       );
       expect(
@@ -80,7 +80,7 @@ void main() {
         ),
         StringUtils.encode(
           "Mnh0LC54VShsSmdRQ08xVzU=",
-          type: StringEncoding.base64,
+          encoding: StringEncoding.base64,
         ),
       );
       expect(
@@ -88,11 +88,11 @@ void main() {
           "bytesAsBase64",
           encoding: StringEncoding.base58,
         ),
-        throwsA(isA<JSONHelperException>()),
+        throwsA(isA<JsonParserError>()),
       );
       expect(
         () => testVector.valueAsBytes("bytesAsBase64", encoding: null),
-        throwsA(isA<JSONHelperException>()),
+        throwsA(isA<JsonParserError>()),
       );
     });
 
@@ -115,7 +115,7 @@ void main() {
       );
       expect(
         () => testVector.valueAsMap<Map<int, dynamic>>("map"),
-        throwsA(isA<JSONHelperException>()),
+        throwsA(isA<JsonParserError>()),
       );
 
       ///
@@ -130,33 +130,54 @@ void main() {
       expect(testVector.valueEnsureAsMap<int, int>("mapInt"), {1: 1, 2: 2});
       expect(
         () => testVector.valueEnsureAsMap<int, int>("map"),
-        throwsA(isA<JSONHelperException>()),
+        throwsA(isA<JsonParserError>()),
       );
       expect(
         () => testVector.valueEnsureAsMap<int, int>("notexists"),
-        throwsA(isA<JSONHelperException>()),
+        throwsA(isA<JsonParserError>()),
       );
     });
 
     test("list", () {
       expect(testVector.valueAsList<List<dynamic>>("list"), ["a", "b"]);
+      expect(
+        testVector.valueAsList<List<Map<String, dynamic>>?>("List2"),
+        <Map<String, dynamic>>[
+          {"a": 1},
+        ],
+      );
+
+      expect(
+        testVector.valueAsList<List<Map<String, dynamic>>?>("List3"),
+        <Map<String, dynamic>>[
+          {"a": 1},
+        ],
+      );
       expect(testVector.valueAsList<List>("list"), ["a", "b"]);
       expect(testVector.valueAsList<List<String>>("list"), ["a", "b"]);
       expect(testVector.valueAsList<List<String>?>("notexists"), null);
       expect(testVector.valueAsList<List<Object>>("listDynamic"), ["a", 1]);
       expect(
         () => testVector.valueAsList<List<int>>("listDynamic2"),
-        throwsA(isA<JSONHelperException>()),
+        throwsA(isA<JsonParserError>()),
       );
 
       expect(testVector.valueEnsureAsList<String>("listDynamic2"), ["a", "a"]);
+      expect(
+        testVector.valueAs<List<List<List<int>>>?>("list4"),
+        <List<List<int>>>[
+          [
+            [1, 2, 3],
+          ],
+        ],
+      );
     });
     test("set", () {
       expect(testVector.valueAsSet<Set<String>>("setDynamic"), {"a", "b"});
       expect(testVector.valueAsSet<Set<String>?>("notexists"), null);
       expect(
         () => testVector.valueAsSet<Set<String>>("notexists"),
-        throwsA(isA<JSONHelperException>()),
+        throwsA(isA<JsonParserError>()),
       );
       expect(testVector.valueAsSet<Set<int>>("set"), {0, 1});
     });
@@ -195,7 +216,7 @@ void main() {
         ),
         StringUtils.encode(
           "2cFupjhnEsSn59qHXstmK2ffpLv2",
-          type: StringEncoding.base58,
+          encoding: StringEncoding.base58,
         ),
       );
 

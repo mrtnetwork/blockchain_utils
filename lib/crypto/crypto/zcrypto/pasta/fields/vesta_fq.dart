@@ -4,7 +4,7 @@ import 'package:blockchain_utils/crypto/crypto/zcrypto/pasta/constants/vesta.dar
 import 'package:blockchain_utils/crypto/crypto/zcrypto/pasta/fields/core.dart';
 import 'package:blockchain_utils/crypto/crypto/zcrypto/pasta/utils/utils.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
-import 'package:blockchain_utils/exception/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/helper/extensions/extensions.dart';
 import 'package:blockchain_utils/utils/binary/binary_operation.dart';
 import 'package:blockchain_utils/utils/compare/compare.dart';
@@ -239,11 +239,7 @@ class VestaFq extends PastaFieldElement<VestaFq>
     );
     final res = List<int>.filled(32, 0);
     for (int i = 0; i < 4; i++) {
-      final limbBytes = BigintUtils.toBytes(
-        tmp.limbs[i],
-        length: 8,
-        order: Endian.little,
-      );
+      final limbBytes = tmp.limbs[i].toLeBytes(length: 8);
       res.setRange(i * 8, i * 8 + 8, limbBytes);
     }
 
@@ -256,7 +252,6 @@ class VestaFq extends PastaFieldElement<VestaFq>
         "VestaFq",
         name: "bytes",
         reason: "Invalid field bytes length.",
-        expecteLen: 32,
       );
     }
     // Parse 4 limbs

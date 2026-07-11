@@ -4,7 +4,7 @@ import 'package:blockchain_utils/utils/binary/binary_operation.dart';
 ///
 /// Note: The `Crc32` class can be customized with different algorithms and options for specific use cases.
 class Crc32 {
-  final List<int> _crcTable = [
+  static const List<int> _crcTable = [
     0x00000000,
     0x77073096,
     0xee0e612c,

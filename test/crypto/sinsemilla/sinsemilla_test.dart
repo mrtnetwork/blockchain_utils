@@ -1,4 +1,3 @@
-import 'dart:typed_data';
 import 'package:blockchain_utils/blockchain_utils.dart';
 import 'package:test/test.dart';
 
@@ -139,7 +138,7 @@ List<PallasAffinePoint> _testSinseMilla() {
   for (int j = 0; j < _s.length; j++) {
     final hash = PallasPoint.hashToCurve(
       domainPrefix: "z.cash:SinsemillaS",
-      message: IntUtils.toBytes(j, length: 4, byteOrder: Endian.little),
+      message: j.toU32LeBytes(),
     );
     final s = PallasPoint.fromBytes(BytesUtils.fromHexString(_s[j]));
     sinsemillaS.add(hash.toAffine());
@@ -154,7 +153,7 @@ List<PallasAffineNativePoint> _testSinseMillaNative() {
   for (int j = 0; j < sl.length; j++) {
     final hash = PallasNativePoint.hashToCurve(
       domainPrefix: "z.cash:SinsemillaS",
-      message: IntUtils.toBytes(j, length: 4, byteOrder: Endian.little),
+      message: j.toU32LeBytes(),
     );
     final s = PallasNativePoint.fromBytes(BytesUtils.fromHexString(_s[j]));
     expect(s, hash);

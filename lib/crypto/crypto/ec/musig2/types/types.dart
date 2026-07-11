@@ -1,7 +1,7 @@
 import 'package:blockchain_utils/bip/ecc/keys/ecdsa_keys.dart';
 import 'package:blockchain_utils/crypto/crypto/ec/musig2/constants/const.dart';
 import 'package:blockchain_utils/crypto/crypto/crypto.dart';
-import 'package:blockchain_utils/exception/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/helper/extensions/extensions.dart';
 import 'package:blockchain_utils/utils/numbers/utils/bigint_utils.dart';
 
@@ -22,7 +22,6 @@ class MuSig2DeterministicSignature {
         "MuSig2DeterministicSignature",
         name: "pubnonce",
         reason: "Invalid pubnonce length.",
-        expecteLen: MuSig2Constants.pubnonceLength,
       );
     }
     return MuSig2DeterministicSignature._(
@@ -51,7 +50,6 @@ class MuSig2Nonce {
         "MuSig2Nonce",
         name: "pubnonce",
         reason: "Invalid pubnonce length.",
-        expecteLen: MuSig2Constants.pubnonceLength,
       );
     }
     if (secnonce.length != MuSig2Constants.secnoncelength) {
@@ -59,7 +57,6 @@ class MuSig2Nonce {
         "MuSig2Nonce",
         name: "secnonce",
         reason: "Invalid secret nonce length.",
-        expecteLen: MuSig2Constants.secnoncelength,
       );
     }
     ProjectiveECCPoint pubKey;

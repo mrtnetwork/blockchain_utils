@@ -1,4 +1,6 @@
-import 'package:blockchain_utils/exception/exception/exception.dart';
+import 'dart:async';
+
+import 'package:blockchain_utils/exception/exceptions.dart';
 
 /// A Rust-like Result type
 sealed class Result<T extends Object?, E extends Object?> {
@@ -17,7 +19,13 @@ sealed class Result<T extends Object?, E extends Object?> {
   Result<U, E> map<U>(U Function(T value) f);
   Result<T, F> mapErr<F>(F Function(E error) f);
 
+  FutureOr<Result<U, E>> mapAsync<U>(FutureOr<U> Function(T value) f);
+  FutureOr<Result<T, F>> mapErrAsync<F>(FutureOr<F> Function(E error) f);
   Result<U, E> andThen<U>(Result<U, E> Function(T value) f);
+  FutureOr<Result<U, E>> andThenAsync<U>(
+    FutureOr<Result<U, E>> Function(T value) f,
+  );
+
   R fold<R extends Object?>({
     R Function(T value)? onOk,
     R Function(E error)? onErr,
@@ -90,6 +98,24 @@ class Ok<T extends Object?, E extends Object?> extends Result<T, E> {
   R foldOne<R extends Object?>(R Function(T? value, E? error) f) {
     return f(value, null);
   }
+
+  @override
+  FutureOr<Result<U, E>> andThenAsync<U>(
+    FutureOr<Result<U, E>> Function(T value) f,
+  ) async {
+    return await f(value);
+  }
+
+  @override
+  FutureOr<Result<U, E>> mapAsync<U>(FutureOr<U> Function(T value) f) async {
+    final reslt = await f(value);
+    return Ok(reslt);
+  }
+
+  @override
+  FutureOr<Result<T, F>> mapErrAsync<F>(FutureOr<F> Function(E error) f) {
+    return Ok<T, F>(value);
+  }
 }
 
 class Err<T extends Object?, E extends Object?> extends Result<T, E> {
@@ -159,5 +185,23 @@ class Err<T extends Object?, E extends Object?> extends Result<T, E> {
   @override
   R foldOne<R extends Object?>(R Function(T? value, E? error) f) {
     return f(null, error);
+  }
+
+  @override
+  FutureOr<Result<U, E>> andThenAsync<U>(
+    FutureOr<Result<U, E>> Function(T value) f,
+  ) {
+    return Err<U, E>(error);
+  }
+
+  @override
+  FutureOr<Result<U, E>> mapAsync<U>(FutureOr<U> Function(T value) f) {
+    return Err<U, E>(error);
+  }
+
+  @override
+  FutureOr<Result<T, F>> mapErrAsync<F>(FutureOr<F> Function(E error) f) async {
+    final result = await f(error);
+    return Err(result);
   }
 }

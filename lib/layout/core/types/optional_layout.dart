@@ -1,4 +1,4 @@
-import 'package:blockchain_utils/exception/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/layout/byte/byte_handler.dart';
 import 'package:blockchain_utils/layout/core/core/core.dart';
 import 'package:blockchain_utils/layout/exception/exception.dart';
@@ -50,7 +50,7 @@ class OptionalLayout<T> extends Layout<T?> {
     if (value != 0 && value != 1) {
       throw LayoutException(
         "Failed to decode data as boolean.",
-        details: {"property": property, "value": value},
+        details: {"property": property, "value": value.toString()},
       );
     }
   }

@@ -2,7 +2,7 @@ import 'package:blockchain_utils/crypto/crypto/aes/aes.dart';
 import 'package:blockchain_utils/crypto/crypto/cbc/cbc.dart';
 import 'package:blockchain_utils/crypto/crypto/zcrypto/ff1/src/types.dart';
 import 'package:blockchain_utils/crypto/crypto/exception/exception.dart';
-import 'package:blockchain_utils/exception/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/helper/extensions/extensions.dart';
 import 'package:blockchain_utils/utils/binary/binary_operation.dart';
 import 'package:blockchain_utils/utils/numbers/utils/int_utils.dart';
@@ -104,7 +104,7 @@ abstract class FF1<T extends NumeralString<T>> {
       throw ArgumentException.invalidOperationArguments(
         "FF1.encrypt",
         reason: "Incorrect input for radix.",
-        details: {"radix": radix},
+        details: {"radix": radix.toString()},
       );
     }
     final n = x.numeralCount();
@@ -112,7 +112,7 @@ abstract class FF1<T extends NumeralString<T>> {
       throw ArgumentException.invalidOperationArguments(
         "FF1.encrypt",
         reason: "Incorrect input for radix.",
-        details: {"radix": radix},
+        details: {"radix": radix.toString()},
       );
     }
 
@@ -125,9 +125,9 @@ abstract class FF1<T extends NumeralString<T>> {
     final b = config.calculateB(v);
     final d = 4 * ((b + 3) ~/ 4) + 4;
     final p = [1, 2, 1, 0, 0, 0, 10, u, 0, 0, 0, 0, 0, 0, 0, 0];
-    p.setRange(3, 6, IntUtils.toBytes(radix, length: 4).sublist(1));
-    p.setRange(8, 12, IntUtils.toBytes(n, length: 4));
-    p.setRange(12, 16, IntUtils.toBytes(t, length: 4));
+    p.setRange(3, 6, radix.toU32BeBytes().sublist(1));
+    p.setRange(8, 12, n.toU32BeBytes());
+    p.setRange(12, 16, t.toU32BeBytes());
     final prf = _prf;
     prf.update(p);
     prf.update(tweak);
@@ -156,7 +156,7 @@ abstract class FF1<T extends NumeralString<T>> {
       throw ArgumentException.invalidOperationArguments(
         "FF1.decrypt",
         reason: "Incorrect input for radix.",
-        details: {"radix": radix},
+        details: {"radix": radix.toString()},
       );
     }
 
@@ -165,7 +165,7 @@ abstract class FF1<T extends NumeralString<T>> {
       throw ArgumentException.invalidOperationArguments(
         "FF1.decrypt",
         reason: "Incorrect input length for radix.",
-        details: {"radix": radix},
+        details: {"radix": radix.toString()},
       );
     }
 
@@ -179,9 +179,9 @@ abstract class FF1<T extends NumeralString<T>> {
     final d = 4 * ((b + 3) ~/ 4) + 4;
     final p = [1, 2, 1, 0, 0, 0, 10, u, 0, 0, 0, 0, 0, 0, 0, 0];
 
-    p.setRange(3, 6, IntUtils.toBytes(radix, length: 4).sublist(1));
-    p.setRange(8, 12, IntUtils.toBytes(n, length: 4));
-    p.setRange(12, 16, IntUtils.toBytes(t, length: 4));
+    p.setRange(3, 6, radix.toU32BeBytes().sublist(1));
+    p.setRange(8, 12, n.toU32BeBytes());
+    p.setRange(12, 16, t.toU32BeBytes());
     final prf = _prf;
     prf.update(p);
     prf.update(tweak);

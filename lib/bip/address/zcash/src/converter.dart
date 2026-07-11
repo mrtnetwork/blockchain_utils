@@ -6,15 +6,15 @@ import 'package:blockchain_utils/bip/address/zcash/src/types.dart';
 import 'package:blockchain_utils/bip/address/zcash/src/utils.dart';
 import 'package:blockchain_utils/bip/zcash/src/types.dart';
 
-class ZCashAddrDecoder
-    implements BlockchainAddressDecoder<ZCashDecodedAddressResult> {
+class ZcashAddrDecoder
+    implements BlockchainAddressDecoder<ZcashDecodedAddressResult> {
   @override
-  ZCashDecodedAddressResult decodeAddr(
+  ZcashDecodedAddressResult decodeAddr(
     String addr, {
-    ZCashNetwork? network,
-    ZCashAddressType? type,
+    ZcashNetwork? network,
+    ZcashAddressType? type,
   }) {
-    final decode = ZCashAddressUtils.parseAddress(
+    final decode = ZcashAddressUtils.parseAddress(
       addr,
       expectedNetwork: network,
       exceptedType: type,
@@ -26,19 +26,19 @@ class ZCashAddrDecoder
   }
 }
 
-class ZCashAddrEncoder implements BlockchainAddressEncoder {
+class ZcashAddrEncoder implements BlockchainAddressEncoder {
   @override
   String encodeKey(
     List<int> keyBytes, {
-    ZCashNetwork? network,
-    ZCashAddressType? addrType,
+    ZcashNetwork? network,
+    ZcashAddressType? addrType,
   }) {
-    network ??= ZCashNetwork.mainnet;
-    addrType ??= AddrKeyValidator.getAddrArg<ZCashAddressType>(
+    network ??= ZcashNetwork.mainnet;
+    addrType ??= AddrKeyValidator.getAddrArg<ZcashAddressType>(
       addrType,
       "addrType",
     );
-    return ZCashAddressUtils.encodeAddress(
+    return ZcashAddressUtils.encodeAddress(
       bytes: keyBytes,
       type: addrType,
       network: network,
@@ -46,26 +46,26 @@ class ZCashAddrEncoder implements BlockchainAddressEncoder {
   }
 }
 
-class ZCashUnifiedAddrEncoder implements BlockchainAddressEncoder {
+class ZcashUnifiedAddrEncoder implements BlockchainAddressEncoder {
   String encodeUnifiedReceivers(
     List<ZUnifiedReceiver> receivers, {
-    ZCashNetwork? network,
+    ZcashNetwork? network,
   }) {
-    network ??= ZCashNetwork.mainnet;
-    return ZCashAddressUtils.encodeAddress(
+    network ??= ZcashNetwork.mainnet;
+    return ZcashAddressUtils.encodeAddress(
       bytes: const [],
-      type: ZCashAddressType.unified,
+      type: ZcashAddressType.unified,
       network: network,
       receivers: receivers,
     );
   }
 
   @override
-  String encodeKey(List<int> keyBytes, {ZCashNetwork? network}) {
-    network ??= ZCashNetwork.mainnet;
-    return ZCashAddressUtils.encodeAddress(
+  String encodeKey(List<int> keyBytes, {ZcashNetwork? network}) {
+    network ??= ZcashNetwork.mainnet;
+    return ZcashAddressUtils.encodeAddress(
       bytes: keyBytes,
-      type: ZCashAddressType.unified,
+      type: ZcashAddressType.unified,
       network: network,
     );
   }

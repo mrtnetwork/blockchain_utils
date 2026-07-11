@@ -3,7 +3,7 @@ import 'dart:async';
 /// Unique IDs for different locks.
 enum LockId { one, two, three, four, five }
 
-typedef AsyncTask<T> = FutureOr<T> Function();
+typedef CbAsyncTask<T> = FutureOr<T> Function();
 
 /// A hybrid atomic lock — safe, fast, and error-proof.
 class SafeAtomicLock {
@@ -15,7 +15,7 @@ class SafeAtomicLock {
   /// - Different lock IDs run concurrently.
   /// - Exceptions never break the chain.
   /// - Cleans up automatically after each run.
-  Future<T> run<T>(AsyncTask<T> task, {LockId lockId = LockId.one}) {
+  Future<T> run<T>(CbAsyncTask<T> task, {LockId lockId = LockId.one}) {
     // Get the previous task or an empty one
     final previous = _locks[lockId] ?? Future.value();
 
@@ -25,7 +25,8 @@ class SafeAtomicLock {
     // Chain this task after the previous one
     final next = previous.then((_) async {
       try {
-        return await Future.sync(task);
+        final result = task();
+        return result is Future<T> ? await result : result;
       } finally {
         // Cleanup to avoid memory leaks
         if (identical(_locks[lockId], completer.future)) {

@@ -17,7 +17,7 @@ abstract class CborBytes<T> extends CborObject<T> {
   /// Returns the string representation of the value.
   @override
   String toString() {
-    return BytesUtils.toHexString(getValue());
+    return "CborBytes(${BytesUtils.toHexString(getValue())})";
   }
 }
 
@@ -38,12 +38,6 @@ class CborBytesValue extends CborBytes<List<int>> {
     bytes.pushInt(MajorTags.byteString, value.length);
     bytes.pushBytes(value);
     return bytes.buffer();
-  }
-
-  /// Encode the value into CBOR bytes an then to hex
-  @override
-  String toCborHex() {
-    return BytesUtils.toHexString(encode());
   }
 
   @override
@@ -74,12 +68,6 @@ class CborDynamicBytesValue extends CborBytes<List<List<int>>> {
     }
     bytes.breakDynamic();
     return bytes.buffer();
-  }
-
-  /// Encode the value into CBOR bytes an then to hex
-  @override
-  String toCborHex() {
-    return BytesUtils.toHexString(encode());
   }
 
   @override

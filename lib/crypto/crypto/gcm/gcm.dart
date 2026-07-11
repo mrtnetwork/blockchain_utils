@@ -3,7 +3,7 @@ import 'dart:math' as math;
 import 'package:blockchain_utils/crypto/crypto/aead/aead.dart';
 import 'package:blockchain_utils/crypto/crypto/blockcipher/blockcipher.dart';
 import 'package:blockchain_utils/crypto/crypto/ctr/ctr.dart';
-import 'package:blockchain_utils/exception/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/utils/binary/binary_operation.dart';
 import 'package:blockchain_utils/utils/binary/utils.dart';
 
@@ -30,7 +30,6 @@ class GCM implements AEAD {
         "GCM",
         name: "cipher",
         reason: "GCM supports only 16-byte block cipher.",
-        expecteLen: 16,
       );
     }
     _cipher = cipher;
@@ -60,7 +59,6 @@ class GCM implements AEAD {
         "encrypt",
         name: "nonce",
         reason: "Incorrect nonce length.",
-        expecteLen: nonceLength,
       );
     }
 
@@ -73,7 +71,6 @@ class GCM implements AEAD {
         "encrypt",
         name: "dst",
         reason: "Incorrect destination length.",
-        expecteLen: resultLength,
       );
     }
 
@@ -122,7 +119,6 @@ class GCM implements AEAD {
         "decrypt",
         name: "nonce",
         reason: "Incorrect nonce length.",
-        expecteLen: nonceLength,
       );
     }
 
@@ -164,7 +160,6 @@ class GCM implements AEAD {
         "decrypt",
         name: "dst",
         reason: "Incorrect destination length.",
-        expecteLen: resultLength,
       );
     }
     final ctr = CTR(_cipher, counter);

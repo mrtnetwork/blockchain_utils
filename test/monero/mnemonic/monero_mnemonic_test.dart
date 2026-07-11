@@ -1,8 +1,4 @@
-import 'package:blockchain_utils/bip/monero/mnemonic/monero_mnemonic.dart';
-import 'package:blockchain_utils/bip/monero/mnemonic/monero_mnemonic_decoder.dart';
-import 'package:blockchain_utils/bip/monero/mnemonic/monero_mnemonic_generator.dart';
-import 'package:blockchain_utils/bip/monero/mnemonic/monero_seed_generator.dart';
-import 'package:blockchain_utils/utils/utils.dart';
+import 'package:blockchain_utils/blockchain_utils.dart';
 import 'package:test/test.dart';
 import "test_vector.dart";
 

@@ -8,16 +8,17 @@ import 'package:blockchain_utils/helper/extensions/extensions.dart';
 /// networks and test networks of various cryptocurrencies.
 enum Cip1852Coins implements BipCoins {
   // Mainnets
-  cardanoIcarus('cardanoIcarus'),
-  cardanoLedger('cardanoLedger'),
+  cardanoIcarus('cardanoIcarus', 701),
+  cardanoLedger('cardanoLedger', 702),
 
   // Testnets
-  cardanoIcarusTestnet('cardanoIcarusTestnet'),
-  cardanoLedgerTestnet('cardanoLedgerTestnet');
+  cardanoIcarusTestnet('cardanoIcarusTestnet', 703),
+  cardanoLedgerTestnet('cardanoLedgerTestnet', 704);
 
   final String name;
-
-  const Cip1852Coins(this.name);
+  @override
+  final int identifier;
+  const Cip1852Coins(this.name, this.identifier);
 
   @override
   Cip1852Coins get value => this;

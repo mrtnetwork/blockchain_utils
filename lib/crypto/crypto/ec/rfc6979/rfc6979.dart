@@ -28,6 +28,7 @@ import 'package:blockchain_utils/crypto/crypto/ec/projective/secp256k1/secp256k1
 
 import 'package:blockchain_utils/crypto/crypto/hash/hash.dart';
 import 'package:blockchain_utils/crypto/crypto/hmac/hmac.dart';
+import 'package:blockchain_utils/helper/helper.dart';
 import 'package:blockchain_utils/utils/binary/utils.dart';
 import 'package:blockchain_utils/utils/numbers/utils/bigint_utils.dart';
 
@@ -84,7 +85,7 @@ class RFC6979 {
   static BigInt generateK({
     required BigInt order,
     required BigInt secexp,
-    required HashFunc hashFunc,
+    required CbHashFunc hashFunc,
     required List<int> data,
     int retryGn = 0,
     List<int>? extraEntropy,
@@ -95,7 +96,7 @@ class RFC6979 {
     final int rolen = (qlen + 7) ~/ 8;
 
     final List<List<int>> bx = [
-      BigintUtils.toBytes(secexp, length: BigintUtils.bitlengthInBytes(order)),
+      secexp.toBeBytes(length: BigintUtils.bitlengthInBytes(order)),
       bitsToOctetsWithOrderPadding(data, order),
       extraEntropy ?? [],
     ];
@@ -159,7 +160,7 @@ class RFC6979 {
 
   static List<int> generateSecp256k1KBytes({
     required List<int> secexp,
-    required HashFunc hashFunc,
+    required CbHashFunc hashFunc,
     required List<int> data,
     int retryGn = 0,
     List<int>? extraEntropy,

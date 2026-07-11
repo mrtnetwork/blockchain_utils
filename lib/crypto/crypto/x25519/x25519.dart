@@ -4,7 +4,7 @@ import 'package:blockchain_utils/bip/ecc/keys/ed25519_keys.dart';
 import 'package:blockchain_utils/crypto/crypto/ec/curve/curves.dart';
 import 'package:blockchain_utils/crypto/crypto/exception/exception.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
-import 'package:blockchain_utils/exception/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/helper/extensions/extensions.dart';
 import 'package:blockchain_utils/utils/binary/utils.dart';
 import 'package:blockchain_utils/utils/numbers/utils/bigint_utils.dart';
@@ -75,6 +75,10 @@ class X25519Keypair {
   /// If no seed is provided, uses cryptographically secure random bytes.
   factory X25519Keypair.generate({List<int>? seed}) {
     return X25519.scalarMultBase(seed ?? QuickCrypto.generateRandom());
+  }
+
+  List<int> operator *(List<int> uBytes) {
+    return X25519.scalarMult(privateKey, uBytes);
   }
 }
 
@@ -166,11 +170,7 @@ class X25519 {
     BigInt z2inv = _fieldInv(z2);
     BigInt xOut = _fieldMul(x2, z2inv);
 
-    return BigintUtils.toBytes(
-      xOut,
-      length: Ed25519KeysConst.pubKeyByteLen,
-      order: Endian.little,
-    );
+    return xOut.toLeBytes(length: Ed25519KeysConst.pubKeyByteLen);
   }
 
   /// Perform scalar multiplication with the base point (u = 9).

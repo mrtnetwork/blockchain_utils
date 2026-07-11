@@ -1,4 +1,3 @@
-import 'dart:typed_data';
 import 'package:blockchain_utils/bech32/bech32_base.dart';
 import 'package:blockchain_utils/helper/helper.dart';
 
@@ -10,7 +9,6 @@ import 'package:blockchain_utils/bip/address/exception/exception.dart';
 import 'package:blockchain_utils/bip/coin_conf/constant/coins_conf.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
 import 'package:blockchain_utils/utils/numbers/utils/bigint_utils.dart';
-import 'package:blockchain_utils/utils/numbers/utils/int_utils.dart';
 import 'ada_addres_type.dart';
 import 'network.dart';
 
@@ -73,8 +71,8 @@ class AdaStakeCredential {
       throw AddressConverterException.addressBytesValidationFailed(
         reason: "Invalid bytes length.",
         details: {
-          "Excepted": QuickCrypto.blake2b224DigestSize,
-          "length": hash.length,
+          "Excepted": QuickCrypto.blake2b224DigestSize.toString(),
+          "length": hash.length.toString(),
         },
       );
     }
@@ -125,7 +123,7 @@ class AdaShelleyAddrUtils {
     }
 
     hdr += network;
-    return IntUtils.toBytes(hdr, byteOrder: Endian.little);
+    return hdr.toLeBytes();
   }
 
   static int decodeNetworkTag(int header) {
@@ -164,7 +162,7 @@ class AdaShelleyAddrUtils {
 
   static String encodeBytes(List<int> addrBytes) {
     final int header = addrBytes[0];
-    final network = ADANetwork.fromTag(decodeNetworkTag(header));
+    final network = ADANetwork.fromTags(decodeNetworkTag(header)).first;
     final ADAAddressType addressType = ADAAddressType.decodeAddressType(header);
     if (addressType == ADAAddressType.reward) {
       return Bech32Encoder.encode(getRewardAddressHrp(network), addrBytes);

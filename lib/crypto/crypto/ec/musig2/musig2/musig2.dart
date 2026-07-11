@@ -7,7 +7,7 @@ import 'package:blockchain_utils/crypto/crypto/ec/musig2/types/types.dart';
 import 'package:blockchain_utils/crypto/crypto/ec/musig2/utils/utils.dart';
 import 'package:blockchain_utils/crypto/crypto/ec/core/point.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
-import 'package:blockchain_utils/exception/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/helper/helper.dart';
 import 'package:blockchain_utils/signer/exception/signing_exception.dart';
 import 'package:blockchain_utils/utils/binary/bytes_tracker.dart';
@@ -33,7 +33,6 @@ class MuSig2 extends Musig2Bsae {
           "nonceAgg",
           name: "pubnonces",
           reason: "Invalid public nonce length.",
-          expecteLen: MuSig2Constants.pubnonceLength,
         );
       }
     }
@@ -76,7 +75,6 @@ class MuSig2 extends Musig2Bsae {
         "nonceGenerate",
         name: "publicKey",
         reason: "Invalid public key bytes length.",
-        expecteLen: EcdsaKeysConst.pubKeyCompressedByteLen,
       );
     }
     rand ??= QuickCrypto.generateRandom();
@@ -89,11 +87,7 @@ class MuSig2 extends Musig2Bsae {
     if (msg == null) {
       msg = [0];
     } else {
-      msg = [
-        1,
-        ...BigintUtils.toBytes(BigInt.from(msg.length), length: 8),
-        ...msg,
-      ];
+      msg = [1, ...msg.length.toBeBytes(length: 8), ...msg];
     }
     extra ??= [];
     aggPubKey ??= [];
@@ -120,11 +114,7 @@ class MuSig2 extends Musig2Bsae {
     final rs1 = MuSig2Constants.generator * k1;
     final rs2 = MuSig2Constants.generator * k2;
     final pubNonce = [...rs1.toBytes(), ...rs2.toBytes()];
-    final secNonce = [
-      ...BigintUtils.toBytes(k1),
-      ...BigintUtils.toBytes(k2),
-      ...publicKey,
-    ];
+    final secNonce = [...k1.toBeBytes(), ...k2.toBeBytes(), ...publicKey];
     return MuSig2Nonce(secnonce: secNonce, pubnonce: pubNonce);
   }
 
@@ -146,7 +136,6 @@ class MuSig2 extends Musig2Bsae {
         "sign",
         name: "secnonce",
         reason: "Invalid secret nonce bytes length.",
-        expecteLen: MuSig2Constants.secnoncelength,
       );
     }
     final values = MuSig2Utils.decodeSession(session);
@@ -212,7 +201,7 @@ class MuSig2 extends Musig2Bsae {
     final s =
         (kE1 + values.bAsInteger * kE2 + values.eAsInteger * a * d) %
         MuSig2Constants.order;
-    final sig = BigintUtils.toBytes(s).toImutableBytes;
+    final sig = s.toBeBytes().immutable;
     final rS1 = MuSig2Constants.generator * k1;
     final rS2 = MuSig2Constants.generator * k2;
     final List<int> pubnonce = [...rS1.toBytes(), ...rS2.toBytes()];
@@ -277,12 +266,7 @@ class MuSig2 extends Musig2Bsae {
     final rs2 = MuSig2Constants.generator * k2;
     final pk = MuSig2Utils.generatePublicKey(sk);
     final pubnonce = [...rs1.toBytes(), ...rs2.toBytes()];
-    final secnonce =
-        [
-          ...BigintUtils.toBytes(k1),
-          ...BigintUtils.toBytes(k2),
-          ...pk,
-        ].asImmutableBytes;
+    final secnonce = [...k1.toBeBytes(), ...k2.toBeBytes(), ...pk].immutable;
     final aggnonce = nonceAgg([pubnonce, aggotherNonce]);
     final session = MuSig2Session(
       aggnonce: aggnonce,

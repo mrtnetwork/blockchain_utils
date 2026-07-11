@@ -91,22 +91,42 @@ class B64Decoder {
     bool validatePadding = true,
     bool urlSafe = true,
   }) {
-    if (validatePadding && data.length % 4 != 0) {
+    final decode = decodeWithInfo(
+      data,
+      validatePadding: validatePadding,
+      urlSafe: urlSafe,
+    );
+    return decode.data;
+  }
+
+  static B64DecodingInfo decodeWithInfo(
+    String data, {
+    bool validatePadding = true,
+    bool urlSafe = true,
+  }) {
+    bool isPaded = data.length % 4 == 0;
+    bool isUrlSafe = data.contains('-') || data.contains('_');
+    if (isUrlSafe && !urlSafe) {
+      throw B64ConverterException();
+    }
+    if (validatePadding && !isPaded) {
       throw B64ConverterException();
     } else if (!validatePadding) {
       while (data.length % 4 != 0) {
         data += '=';
       }
     }
-    if (urlSafe) {
+    if (isUrlSafe) {
       data = data.replaceAll('-', '+').replaceAll('_', '/');
-    } else if (data.contains('-') || data.contains('_')) {
-      throw B64ConverterException();
     }
     final encoder = _Base64StreamDecoder();
     try {
       encoder.add(data);
-      return encoder.finalize().clone();
+      return B64DecodingInfo(
+        isUrlSafe: isUrlSafe,
+        isPaded: isPaded,
+        data: encoder.finalize().clone(),
+      );
     } finally {
       encoder.clean();
     }
@@ -126,4 +146,15 @@ class B64Decoder {
       return null;
     }
   }
+}
+
+class B64DecodingInfo {
+  final bool isUrlSafe;
+  final bool isPaded;
+  final List<int> data;
+  const B64DecodingInfo({
+    required this.isUrlSafe,
+    required this.isPaded,
+    required this.data,
+  });
 }

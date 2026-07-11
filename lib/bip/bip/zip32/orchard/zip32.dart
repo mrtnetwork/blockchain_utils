@@ -6,7 +6,7 @@ import 'package:blockchain_utils/bip/bip/zip32/exception/exception.dart';
 import 'package:blockchain_utils/bip/bip/zip32/orchard/derivator.dart';
 import 'package:blockchain_utils/bip/bip/zip32/orchard/keys.dart';
 import 'package:blockchain_utils/bip/bip/zip32/reddsa/reddsa/orchard.dart';
-import 'package:blockchain_utils/exception/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 
 class Zip32Orchard
     implements
@@ -45,18 +45,22 @@ class Zip32Orchard
 
   factory Zip32Orchard.fromSpendKey({
     required List<int> sk,
-    required ZCryptoContext context,
+    ZCryptoContext? context,
     Bip32KeyData? keyData,
+    bool check = true,
   }) {
     keyData ??= Bip32KeyData();
     final spendKey = OrchardSpendingKey(sk);
-    OrchardSpendAuthorizingKey.fromSpendingKey(spendKey);
     final fvk = OrchardFullViewingKey.fromSpendKey(spendKey);
-    OrchardKeyAgreementPrivateKey.deriveInner(fvk: fvk, context: context);
-    OrchardKeyAgreementPrivateKey.deriveInner(
-      fvk: fvk.deriveInternal(),
-      context: context,
-    );
+    if (check) {
+      context ??= DefaultZCryptoContext();
+      OrchardSpendAuthorizingKey.fromSpendingKey(spendKey);
+      OrchardKeyAgreementPrivateKey.deriveInner(fvk: fvk, context: context);
+      OrchardKeyAgreementPrivateKey.deriveInner(
+        fvk: fvk.deriveInternal(),
+        context: context,
+      );
+    }
     final prvKey = OrchardExtendedSpendingKey(sk: spendKey, keyData: keyData);
     return Zip32Orchard._(
       privateKey: prvKey,
@@ -75,6 +79,16 @@ class Zip32Orchard
     );
     return Zip32Orchard._(privateKey: null, publicKey: pk);
   }
+  factory Zip32Orchard.fromFullViewKeyUnchecked({
+    required List<int> fvk,
+    Bip32KeyData? keyData,
+  }) {
+    final pk = OrchardExtendedFullViewKey.fromFullViewKeyUnchecked(
+      fvk,
+      keyData: keyData,
+    );
+    return Zip32Orchard._(privateKey: null, publicKey: pk);
+  }
   factory Zip32Orchard.fromSeed(List<int> seedBytes) {
     final generator = OrchardZip32MasterKeyGenerator();
     final extendedKey = generator.deriveExtendedKey(seedBytes);
@@ -88,7 +102,8 @@ class Zip32Orchard
   }
 
   @override
-  Zip32Orchard childKey(Bip32KeyIndex index, ZCryptoContext context) {
+  Zip32Orchard childKey(Bip32KeyIndex index, {ZCryptoContext? context}) {
+    context ??= DefaultZCryptoContext();
     final prvKey = _privateKey;
 
     if (prvKey == null) {
@@ -123,7 +138,8 @@ class Zip32Orchard
       OrchardZip32MasterKeyGenerator();
 
   @override
-  Zip32Orchard derivePath(String path, ZCryptoContext context) {
+  Zip32Orchard derivePath(String path, {ZCryptoContext? context}) {
+    context ??= DefaultZCryptoContext();
     final pathInstance = Bip32PathParser.parse(path);
 
     if (depth.depth > 0 && pathInstance.isAbsolute) {
@@ -137,7 +153,7 @@ class Zip32Orchard
     Zip32Orchard derivedObject = this;
 
     for (final pathElement in pathInstance.elems) {
-      derivedObject = derivedObject.childKey(pathElement, context);
+      derivedObject = derivedObject.childKey(pathElement, context: context);
     }
     return derivedObject;
   }

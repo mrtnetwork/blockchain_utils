@@ -2,7 +2,6 @@ import 'package:blockchain_utils/cbor/core/cbor.dart';
 import 'package:blockchain_utils/cbor/core/tags.dart';
 import 'package:blockchain_utils/cbor/utils/cbor_utils.dart';
 import 'package:blockchain_utils/cbor/utils/dynamic_bytes.dart';
-import 'package:blockchain_utils/utils/binary/utils.dart';
 
 /// A class representing a CBOR (Concise Binary Object Representation) Set value.
 class CborSetValue<T extends CborObject>
@@ -31,13 +30,7 @@ class CborSetValue<T extends CborObject>
   /// Returns the string representation of the value.
   @override
   String toString() {
-    return value.join(",");
-  }
-
-  /// Encode the value into CBOR bytes an then to hex
-  @override
-  String toCborHex() {
-    return BytesUtils.toHexString(encode());
+    return "CborSetValue({${value.join(", ")}})";
   }
 
   @override

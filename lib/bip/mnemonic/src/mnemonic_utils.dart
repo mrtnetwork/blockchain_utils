@@ -1,7 +1,8 @@
 import 'dart:typed_data' show Endian;
 
-import 'package:blockchain_utils/bip/mnemonic/mnemonic.dart';
-import 'package:blockchain_utils/bip/mnemonic/mnemonic_ex.dart';
+import 'package:blockchain_utils/bip/mnemonic/src/mnemonic.dart';
+import 'package:blockchain_utils/bip/mnemonic/src/mnemonic_ex.dart';
+import 'package:blockchain_utils/helper/extensions/extensions.dart';
 import 'package:blockchain_utils/utils/numbers/utils/int_utils.dart';
 
 /// An abstract class representing different languages for mnemonic phrases.
@@ -53,8 +54,7 @@ class MnemonicUtils {
         word1Idx +
         (n * ((word2Idx - word1Idx) % n)) +
         (n * n * ((word3Idx - word2Idx) % n));
-
-    return IntUtils.toBytes(intChunk, byteOrder: endian, length: 4);
+    return intChunk.toBytes(byteOrder: endian, length: 4);
   }
 }
 

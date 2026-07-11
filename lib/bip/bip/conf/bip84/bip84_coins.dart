@@ -62,18 +62,20 @@ import 'package:blockchain_utils/helper/extensions/extensions.dart';
 /// networks and test networks of various cryptocurrencies.
 enum Bip84Coins implements BipCoins {
   // Mainnets
-  bitcoin('bitcoin'),
-  litecoin('litecoin'),
-  electraProtocol('electraProtocol'),
+  bitcoin('bitcoin', 401),
+  litecoin('litecoin', 402),
+  electraProtocol('electraProtocol', 403),
 
   // Testnets
-  bitcoinTestnet('bitcoinTestnet'),
-  litecoinTestnet('litecoinTestnet'),
-  electraProtocolTestnet('electraProtocolTestnet');
+  bitcoinTestnet('bitcoinTestnet', 404),
+  litecoinTestnet('litecoinTestnet', 405),
+  electraProtocolTestnet('electraProtocolTestnet', 406);
 
   final String name;
+  @override
+  final int identifier;
 
-  const Bip84Coins(this.name);
+  const Bip84Coins(this.name, this.identifier);
 
   @override
   Bip84Coins get value => this;

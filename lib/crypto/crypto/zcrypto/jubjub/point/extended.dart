@@ -5,7 +5,7 @@ import 'package:blockchain_utils/crypto/crypto/zcrypto/jubjub/point/core.dart';
 import 'package:blockchain_utils/crypto/crypto/zcrypto/jubjub/point/niels.dart';
 import 'package:blockchain_utils/crypto/crypto/exception/exception.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
-import 'package:blockchain_utils/exception/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/helper/helper.dart';
 import 'package:blockchain_utils/utils/compare/hash_code.dart';
 import 'package:blockchain_utils/utils/equatable/equatable.dart';

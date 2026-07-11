@@ -270,7 +270,6 @@ class BLAKE2b implements SerializableHash<Blake2bState> {
           "Blake2bConfig",
           name: "salt",
           reason: "Incorrect salt length.",
-          expecteLen: _saltLength,
         );
       }
       if (salt.length != _saltLength) {
@@ -283,7 +282,6 @@ class BLAKE2b implements SerializableHash<Blake2bState> {
           "Blake2bConfig",
           name: "personalization",
           reason: "Incorrect personalization length.",
-          expecteLen: _personalizationLength,
         );
       }
       if (personalization.length != _personalizationLength) {

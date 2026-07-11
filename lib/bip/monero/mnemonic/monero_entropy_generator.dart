@@ -1,4 +1,4 @@
-import 'package:blockchain_utils/bip/mnemonic/entropy_generator.dart';
+import 'package:blockchain_utils/bip/mnemonic/src/entropy_generator.dart';
 import 'package:blockchain_utils/exception/exceptions.dart';
 
 /// Contains constants representing different bit lengths for generating entropy.

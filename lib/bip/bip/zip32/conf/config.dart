@@ -8,7 +8,7 @@ import 'package:blockchain_utils/bip/zcash/src/types.dart';
 /// A base class representing configuration parameters for a cryptocurrency coin.
 class ZIP32CoinConfig implements CoinConfig<ZIP32CoinConfig> {
   final Bip32KeyIndex purpose;
-  final ZCashNetwork network;
+  final ZcashNetwork network;
 
   /// Configuration properties.
   @override
@@ -23,7 +23,7 @@ class ZIP32CoinConfig implements CoinConfig<ZIP32CoinConfig> {
   @override
   final List<int>? wifNetVer = null;
   @override
-  final ADDRENCODER<ZIP32CoinConfig> addressEncoder;
+  final CbAddrEncoder<ZIP32CoinConfig> addressEncoder;
   @override
   final EllipticCurveTypes type;
 

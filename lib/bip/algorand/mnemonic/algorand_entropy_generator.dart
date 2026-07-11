@@ -1,4 +1,4 @@
-import 'package:blockchain_utils/bip/mnemonic/entropy_generator.dart';
+import 'package:blockchain_utils/bip/mnemonic/src/entropy_generator.dart';
 
 /// Enumerates different bit lengths for Algorand entropy generation.
 class AlgorandEntropyBitLen {

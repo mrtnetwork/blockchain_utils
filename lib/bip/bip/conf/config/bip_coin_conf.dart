@@ -73,7 +73,7 @@ abstract class BaseBipCoinConfig<CONFIG extends BaseCoinConfig>
   @override
   final List<int>? wifNetVer;
   @override
-  final ADDRENCODER<CONFIG> addressEncoder;
+  final CbAddrEncoder<CONFIG> addressEncoder;
 
   String encodeAddress(EncodeAddressDefaultParams params) {
     return addressEncoder(params, this as CONFIG);
@@ -105,7 +105,7 @@ abstract class BaseBipCoinConfig<CONFIG extends BaseCoinConfig>
     Bip32KeyNetVersions? keyNetVer,
     List<int>? wifNetVer,
     EllipticCurveTypes? type,
-    ADDRENCODER<CONFIG>? addressEncoder,
+    CbAddrEncoder<CONFIG>? addressEncoder,
     Bip32KeyIndex? purpose,
   });
 
@@ -128,7 +128,7 @@ class BipCoinConfig extends BaseBipCoinConfig<BipCoinConfig> {
     Bip32KeyNetVersions? keyNetVer,
     List<int>? wifNetVer,
     EllipticCurveTypes? type,
-    ADDRENCODER<BipCoinConfig>? addressEncoder,
+    CbAddrEncoder<BipCoinConfig>? addressEncoder,
     Bip32KeyIndex? purpose,
     DefaultHdKeyDerivator? defaultHdKeyDerivator,
   }) {

@@ -7,10 +7,9 @@ import 'package:blockchain_utils/crypto/crypto/ec/musig2/utils/utils.dart';
 import 'package:blockchain_utils/crypto/crypto/ec/projective/native/native.dart';
 import 'package:blockchain_utils/crypto/crypto/ec/projective/secp256k1/secp256k1.dart';
 import 'package:blockchain_utils/crypto/crypto/ec/utils/secp256k1.dart';
-import 'package:blockchain_utils/exception/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/helper/extensions/extensions.dart';
 import 'package:blockchain_utils/utils/binary/utils.dart';
-import 'package:blockchain_utils/utils/numbers/utils/bigint_utils.dart';
 
 class MuSig2UtilsConst {
   static bool _isSecondUniqueKey({
@@ -269,8 +268,8 @@ class MuSig2UtilsConst {
         curve: MuSig2Constants.curve,
         data: keyBytes,
       ),
-      gacc: BigintUtils.toBytes(BigInt.one, length: MuSig2Constants.baselen),
-      tacc: BigintUtils.toBytes(BigInt.zero, length: MuSig2Constants.baselen),
+      gacc: BigInt.one.toBeBytes(length: MuSig2Constants.baselen),
+      tacc: BigInt.zero.toBeBytes(length: MuSig2Constants.baselen),
     );
   }
 

@@ -46,7 +46,7 @@ class OrchardKeyUtils {
     required PallasNativeFp rho,
     required ZCryptoContext context,
   }) {
-    return context.getPoseidonHash().hash([nk, rho]);
+    return context.pseudoRando(nk: nk, rho: rho);
   }
 
   static PallasPoint get orchardSpendAuthSigBasepoint =>

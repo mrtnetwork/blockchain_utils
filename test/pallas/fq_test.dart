@@ -62,7 +62,6 @@ void _swu() {
     isogenyParams: PastaCurveParams.isoVesta,
     r: VestaFq.r(),
   );
-  // print("X ${p.x.toHex()}");
   expect(
     BytesUtils.toHexString(p.$1.toBytes().reversed.toList()),
     "2ccc4c6ec2660e5644305bc52527d904d408f92407f599df8f158d50646a2e78",

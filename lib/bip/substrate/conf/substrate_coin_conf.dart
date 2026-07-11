@@ -31,7 +31,7 @@ class SubstrateCoinConf implements CoinConfig<SubstrateCoinConf> {
   /// and SS58 address format information to create a `SubstrateCoinConf`.
   factory SubstrateCoinConf.fromCoinConf({
     required CoinConf coinConf,
-    required ADDRENCODER<SubstrateCoinConf> addressEncode,
+    required CbAddrEncoder<SubstrateCoinConf> addressEncode,
     required EllipticCurveTypes type,
     required ChainType chainType,
   }) {
@@ -62,7 +62,7 @@ class SubstrateCoinConf implements CoinConfig<SubstrateCoinConf> {
   final List<int>? wifNetVer = null;
 
   @override
-  final ADDRENCODER<SubstrateCoinConf> addressEncoder;
+  final CbAddrEncoder<SubstrateCoinConf> addressEncoder;
 
   @override
   DefaultHdKeyDerivator? get defaultHdKeyDerivator => null;

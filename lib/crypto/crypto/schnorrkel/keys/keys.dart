@@ -135,8 +135,8 @@ class VRFPreOut {
         "VRFPreOut",
         reason: "Incorrect vrf length.",
         details: {
-          "expected": SchnorrkelKeyCost.vrfPreOutLength,
-          "length": bytes.length,
+          "expected": SchnorrkelKeyCost.vrfPreOutLength.toString(),
+          "length": bytes.length.toString(),
         },
       );
     }
@@ -475,7 +475,7 @@ class SchnorrkelSecretKey with ConstantEquality<SchnorrkelSecretKey> {
   (SchnorrkelSecretKey, List<int>) softDerive(
     List<int> chainCode, {
     List<int>? message,
-    GenerateRandom? nonceGenerator,
+    CbGenerateRandom? nonceGenerator,
   }) {
     final derivePub = publicKey()._deriveScalarAndChainCode(chainCode, message);
     final nonce =
@@ -497,7 +497,7 @@ class SchnorrkelSecretKey with ConstantEquality<SchnorrkelSecretKey> {
   ///
   SchnorrkelSignature sign(
     MerlinTranscript signingContextScript, {
-    GenerateRandom? nonceGenerator,
+    CbGenerateRandom? nonceGenerator,
   }) {
     const int nonceLength = SchnorrkelKeyCost.nonceLength * 2;
     signingContextScript.additionalData(
@@ -534,7 +534,7 @@ class SchnorrkelSecretKey with ConstantEquality<SchnorrkelSecretKey> {
   ///
   (VRFInOut, VRFProof) vrfSign(
     MerlinTranscript script, {
-    GenerateRandom? nonceGenerator,
+    CbGenerateRandom? nonceGenerator,
     bool kusamaVRF = true,
     MerlinTranscript? verifyScript,
   }) {
@@ -584,7 +584,7 @@ class SchnorrkelSecretKey with ConstantEquality<SchnorrkelSecretKey> {
   VRFProof dleqProve(
     VRFInOut out, {
     bool kusamaVRF = true,
-    GenerateRandom? nonceGenerator,
+    CbGenerateRandom? nonceGenerator,
     MerlinTranscript? verifyScript,
   }) {
     const int nonceLength = SchnorrkelKeyCost.nonceLength * 2;

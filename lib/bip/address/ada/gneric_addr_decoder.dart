@@ -105,10 +105,6 @@ class AdaGenericAddrDecoder {
         }
 
         break;
-      default:
-        throw AddressConverterException.addressValidationFailed(
-          reason: "Invalid address prefix.",
-        );
     }
     if (addrDecBytes.$1 != hrp) {
       throw AddressConverterException.addressValidationFailed(

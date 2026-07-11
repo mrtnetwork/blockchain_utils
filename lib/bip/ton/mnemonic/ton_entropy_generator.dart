@@ -1,7 +1,7 @@
-import 'package:blockchain_utils/bip/mnemonic/entropy_generator.dart';
-import 'package:blockchain_utils/bip/mnemonic/mnemonic.dart';
+import 'package:blockchain_utils/bip/mnemonic/src/entropy_generator.dart';
+import 'package:blockchain_utils/bip/mnemonic/src/mnemonic.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
-import 'package:blockchain_utils/exception/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/utils/string/string.dart';
 
 /// The TonEntropyGeneratorUtils class provides utility methods for handling entropy

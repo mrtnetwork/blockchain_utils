@@ -70,7 +70,7 @@ class AtomAddressUtils {
         addrBytes.length != QuickCrypto.sha256DigestSize) {
       throw AddressConverterException.addressBytesValidationFailed(
         details: {
-          "length": addrBytes.length,
+          "length": addrBytes.length.toString(),
           "Excepted":
               "${QuickCrypto.hash160DigestSize} or ${QuickCrypto.sha256DigestSize}",
         },

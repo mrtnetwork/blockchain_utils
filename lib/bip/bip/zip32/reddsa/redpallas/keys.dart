@@ -4,7 +4,7 @@ import 'package:blockchain_utils/bip/ecc/keys/i_keys.dart';
 import 'package:blockchain_utils/crypto/crypto/zcrypto/pasta/fields/vesta_fq.dart';
 import 'package:blockchain_utils/crypto/crypto/zcrypto/pasta/point/pallas.dart';
 import 'package:blockchain_utils/crypto/crypto/zcrypto/pasta/point/pallas_native.dart';
-import 'package:blockchain_utils/exception/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/helper/extensions/extensions.dart';
 import 'package:blockchain_utils/utils/binary/utils.dart';
 import 'package:blockchain_utils/utils/equatable/equatable.dart';

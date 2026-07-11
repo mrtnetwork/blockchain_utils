@@ -1,6 +1,6 @@
 import 'dart:typed_data' show Endian;
 
-import 'package:blockchain_utils/exception/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 
 /// Class container for bit utility functions.
 class BitUtils {

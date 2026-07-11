@@ -2,7 +2,7 @@ import 'dart:typed_data';
 import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
 import 'package:blockchain_utils/crypto/crypto/ec/extended/crypto_ops/crypto_ops.dart';
 import 'package:blockchain_utils/crypto/crypto/ec/utils/ed25519.dart';
-import 'package:blockchain_utils/exception/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/helper/helper.dart';
 import 'package:blockchain_utils/crypto/crypto/ec/curve/curves.dart';
 import 'package:blockchain_utils/crypto/crypto/ec/eddsa/keys/publickey.dart';
@@ -112,7 +112,7 @@ class EDDSAPrivateKey with ConstantEquality<EDDSAPrivateKey> {
   factory EDDSAPrivateKey.fromBytes({
     required EDPoint generator,
     required List<int> secretKey,
-    required HashFunc hashMethod,
+    required CbHashFunc hashMethod,
   }) {
     // final baselen = (generator.curve.baselen + 1 + 7) ~/ 8;
     final int baselen = generator.curve.baselen;
@@ -192,7 +192,7 @@ class EDDSAPrivateKey with ConstantEquality<EDDSAPrivateKey> {
   }
 
   /// Signs the provided data using this private key.
-  List<int> sign(List<int> data, HashFunc hashMethod) {
+  List<int> sign(List<int> data, CbHashFunc hashMethod) {
     final order = generator.order;
     if (order == null) {
       throw ArgumentException.invalidOperationArguments(
@@ -221,27 +221,20 @@ class EDDSAPrivateKey with ConstantEquality<EDDSAPrivateKey> {
 
     k %= order;
     final s = (r + k * secret) % order;
-    final signature = [
-      ...R,
-      ...BigintUtils.toBytes(s, length: baselen, order: Endian.little),
-    ];
+    final signature = [...R, ...s.toLeBytes(length: baselen)];
     if (publicKey.verify(data, signature, hashMethod)) {
       return signature;
     }
     throw CryptoSignException.signatureVerificationFailed;
   }
 
-  List<int> signConst(List<int> data, HashFunc hashMethod) {
+  List<int> signConst(List<int> data, CbHashFunc hashMethod) {
     if (generator.curve != Curves.curveEd25519) {
       throw const CryptoSignException(
         "Constant-time signing is only supported for Ed25519.",
       );
     }
-    final secBytes = BigintUtils.toBytes(
-      secret,
-      length: generator.curve.baselen,
-      order: Endian.little,
-    );
+    final secBytes = secret.toLeBytes(length: generator.curve.baselen);
     final hash = hashMethod().update([...extendedKey, ...data]).digest();
     final rScalar = Ed25519Utils.scalarReduceConst(hash);
     final R = Ed25519Utils.scalarMultBase(rScalar);

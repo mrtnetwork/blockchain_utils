@@ -1,7 +1,7 @@
-import 'package:blockchain_utils/bip/mnemonic/mnemonic_ex.dart';
+import 'package:blockchain_utils/bip/mnemonic/src/mnemonic_ex.dart';
 import 'package:blockchain_utils/bip/monero/mnemonic/monero_mnemonic.dart';
-import 'package:blockchain_utils/bip/mnemonic/mnemonic.dart';
-import 'package:blockchain_utils/bip/mnemonic/mnemonic_utils.dart';
+import 'package:blockchain_utils/bip/mnemonic/src/mnemonic.dart';
+import 'package:blockchain_utils/bip/mnemonic/src/mnemonic_utils.dart';
 import 'package:blockchain_utils/crypto/crypto/crc32/crc32.dart';
 import 'package:blockchain_utils/utils/string/string.dart';
 

@@ -1,8 +1,8 @@
 import 'dart:core';
 import 'package:blockchain_utils/bip/electrum/mnemonic_v1/electrum_v1_mnemonic.dart';
 import 'package:blockchain_utils/bip/electrum/mnemonic_v1/electrum_v1_mnemonic_utils.dart';
-import 'package:blockchain_utils/bip/mnemonic/mnemonic_decoder_base.dart';
-import 'package:blockchain_utils/bip/mnemonic/mnemonic_utils.dart';
+import 'package:blockchain_utils/bip/mnemonic/src/mnemonic_decoder_base.dart';
+import 'package:blockchain_utils/bip/mnemonic/src/mnemonic_utils.dart';
 import 'package:blockchain_utils/exception/exceptions.dart';
 
 /// A class for decoding Electrum V1 mnemonics, extending the MnemonicDecoderBase class.

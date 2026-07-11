@@ -5,9 +5,10 @@ import 'package:test/test.dart';
 void main() {
   test("Orchard/ZIP-32", _zip32);
   test("Orchard/Diversifier", _diversifier);
+  test("Orchard/Diversifier", _diversifierCompare);
 }
 
-void _zip32() {
+void _zip32() async {
   final context = DefaultZCryptoContext();
   final i1h = Bip32KeyIndex.hardenIndex(1);
   final i2h = Bip32KeyIndex.hardenIndex(2);
@@ -17,9 +18,13 @@ void _zip32() {
       "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f",
     ),
   );
-  final mh1 = m.childKey(i1h, context);
-  final m1h2h = m.derivePath(Bip32Path(elems: [i1h, i2h]).toString(), context);
-  final m1h2h3h = m1h2h.childKey(i3h, context);
+
+  final mh1 = m.childKey(i1h, context: context);
+  final m1h2h = m.derivePath(
+    Bip32Path(elems: [i1h, i2h]).toString(),
+    context: context,
+  );
+  final m1h2h3h = m1h2h.childKey(i3h, context: context);
   final keys = [m, mh1, m1h2h, m1h2h3h];
   for (final i in keys.indexed) {
     final key = i.$2;
@@ -36,6 +41,24 @@ void _zip32() {
     );
   }
 }
+
+void _diversifierCompare() {
+  final i =
+      List.generate(
+        1000,
+        (i) => DiversifierIndex.from(QuickCrypto.nextU32()),
+      ).toList();
+  i.sort();
+  final ids = i.map((e) => e.toU32()).toList();
+  int latest = 0;
+  for (final i in ids) {
+    expect(i >= latest, true);
+    latest = i;
+  }
+}
+// 1114858840
+// 286111924
+// 2900752092
 
 void _diversifier() {
   final two = DiversifierIndex([

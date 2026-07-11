@@ -16,7 +16,7 @@
 library;
 
 import 'package:blockchain_utils/crypto/crypto/exception/exception.dart';
-import 'package:blockchain_utils/exception/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/helper/helper.dart';
 
 import 'dart:math' as math;
@@ -60,7 +60,7 @@ part 'xxhash64/xxhash64.dart';
 
 part 'blake2/blake2s.dart';
 
-typedef HashFunc<T extends HashState> = SerializableHash<T> Function();
+typedef CbHashFunc<T extends HashState> = SerializableHash<T> Function();
 
 /// The `Hash` abstract class defines the basic operations for hash algorithms.
 ///

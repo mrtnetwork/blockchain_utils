@@ -1,5 +1,5 @@
 import 'package:blockchain_utils/bip/electrum/mnemonic_v2/electrum_v2_mnemonic.dart';
-import 'package:blockchain_utils/bip/mnemonic/entropy_generator.dart';
+import 'package:blockchain_utils/bip/mnemonic/src/entropy_generator.dart';
 import 'package:blockchain_utils/exception/exceptions.dart';
 
 /// Constants representing bit lengths for Electrum V2 entropy.

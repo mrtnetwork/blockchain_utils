@@ -25,4 +25,15 @@ final Map<String, dynamic> testVector = {
   "mapDynamic": <dynamic, dynamic>{"a": "v"},
   "set": {0, 1},
   "setDynamic": <dynamic>{"a", "b"},
+  "List2": <dynamic>[
+    {"a": 1},
+  ],
+  "List3": <dynamic>[
+    <dynamic, dynamic>{"a": 1},
+  ],
+  "list4": <dynamic>[
+    <dynamic>[
+      [1, 2, 3],
+    ],
+  ],
 };

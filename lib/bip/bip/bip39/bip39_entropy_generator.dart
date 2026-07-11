@@ -1,4 +1,4 @@
-import 'package:blockchain_utils/bip/mnemonic/entropy_generator.dart';
+import 'package:blockchain_utils/bip/mnemonic/src/entropy_generator.dart';
 
 /// Enum representing the bit lengths for BIP39 entropy values.
 class Bip39EntropyBitLen {

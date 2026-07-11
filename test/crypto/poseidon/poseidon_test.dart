@@ -3,8 +3,6 @@
 import 'package:blockchain_utils/blockchain_utils.dart';
 import 'package:test/test.dart';
 
-import '../../log.dart';
-
 void main() {
   // return;
   group("poseidon", () {
@@ -25,7 +23,7 @@ void main() {
 }
 
 void _permuteNative() {
-  final spec = Logg.def(() => P128Pow5T3NativeFp(), "p");
+  final spec = P128Pow5T3NativeFp();
   for (final i in _poseidon) {
     final inputs = JsonParser.valueEnsureAsList<String>(i.elementAt(0));
     final outputs = JsonParser.valueEnsureAsList<String>(i.elementAt(1));

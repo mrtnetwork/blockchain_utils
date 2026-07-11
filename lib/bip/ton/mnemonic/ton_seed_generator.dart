@@ -1,5 +1,5 @@
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
-import 'package:blockchain_utils/bip/mnemonic/mnemonic.dart';
+import 'package:blockchain_utils/bip/mnemonic/src/mnemonic.dart';
 import 'package:blockchain_utils/utils/string/string.dart';
 
 import 'ton_entropy_generator.dart';

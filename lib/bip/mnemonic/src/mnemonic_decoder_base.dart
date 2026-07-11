@@ -1,5 +1,5 @@
-import 'package:blockchain_utils/bip/mnemonic/mnemonic.dart';
-import 'package:blockchain_utils/bip/mnemonic/mnemonic_utils.dart';
+import 'package:blockchain_utils/bip/mnemonic/src/mnemonic.dart';
+import 'package:blockchain_utils/bip/mnemonic/src/mnemonic_utils.dart';
 
 /// An abstract base class for mnemonic phrase decoding in various languages and word lists.
 abstract class MnemonicDecoderBase<LANG extends MnemonicLanguages> {

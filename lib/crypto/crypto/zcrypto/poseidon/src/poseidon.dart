@@ -5,7 +5,7 @@ import 'package:blockchain_utils/crypto/crypto/zcrypto/pasta/fields/native/fp.da
 import 'package:blockchain_utils/crypto/crypto/zcrypto/pasta/fields/pallas_fp.dart';
 import 'package:blockchain_utils/crypto/crypto/zcrypto/pasta/fields/vesta_fq.dart';
 import 'package:blockchain_utils/crypto/crypto/zcrypto/poseidon/src/exception.dart';
-import 'package:blockchain_utils/exception/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/helper/helper.dart';
 
 class MdsGenerateResult<F extends PastaFieldElement<F>> {

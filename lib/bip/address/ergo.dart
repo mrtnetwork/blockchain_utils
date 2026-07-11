@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-
 import 'package:blockchain_utils/base58/base58_base.dart';
 import 'package:blockchain_utils/bip/address/addr_dec_utils.dart';
 import 'package:blockchain_utils/bip/address/addr_key_validator.dart';
@@ -7,7 +5,7 @@ import 'package:blockchain_utils/bip/address/decoder.dart';
 import 'package:blockchain_utils/bip/address/encoder.dart';
 import 'package:blockchain_utils/bip/ecc/keys/ecdsa_keys.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
-import 'package:blockchain_utils/utils/numbers/utils/int_utils.dart';
+import 'package:blockchain_utils/helper/helper.dart';
 
 /// An enumeration representing different Ergo address types.
 class ErgoAddressTypes {
@@ -60,8 +58,7 @@ class _ErgoAddrUtils {
     ErgoNetworkTypes netType,
   ) {
     final prefixInt = addrType.value + netType.value;
-    final prefix = IntUtils.toBytes(prefixInt, byteOrder: Endian.little);
-    return prefix;
+    return prefixInt.toLeBytes();
   }
 }
 

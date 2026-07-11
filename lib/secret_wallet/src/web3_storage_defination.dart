@@ -1,7 +1,7 @@
 import 'package:blockchain_utils/cbor/cbor.dart';
 import 'package:blockchain_utils/crypto/crypto/crypto.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
-import 'package:blockchain_utils/exception/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/helper/helper.dart';
 import 'package:blockchain_utils/utils/binary/binary_operation.dart';
 import 'package:blockchain_utils/utils/binary/utils.dart';
@@ -73,13 +73,7 @@ abstract class KDFParam {
       case "pbkdf2":
         return KDF2.fromJson(params);
       default:
-        throw Web3SecretStorageDefinationV3Exception(
-          "Invalid kdf.",
-          details: {
-            "expected": ["scrypt", "pbkdf2"].join(", "),
-            "kdf": kdf,
-          },
-        );
+        throw Web3SecretStorageDefinationV3Exception.unsuportedBackupContent;
     }
   }
 }
@@ -105,9 +99,7 @@ class KDF2 extends KDFParam {
   factory KDF2.fromJson(Map<String, dynamic> json) {
     final String? prf = json.valueAs("prf");
     if (prf != _SecretStorageConst.prfAlgorithm) {
-      throw Web3SecretStorageDefinationV3Exception(
-        "Unsupported kdf2 prf algorithm.",
-      );
+      throw Web3SecretStorageDefinationV3Exception.unsuportedBackupContent;
     }
     return KDF2(
       iterations: json.valueAs("c"),
@@ -123,9 +115,7 @@ class KDF2 extends KDFParam {
   factory KDF2.fromCbor(CborListValue v) {
     final String? prf = v.rawValueAt(2);
     if (prf != _SecretStorageConst.prfAlgorithm) {
-      throw Web3SecretStorageDefinationV3Exception(
-        "Unsupported kdf2 prf algorithm.",
-      );
+      throw Web3SecretStorageDefinationV3Exception.unsuportedBackupContent;
     }
     final int c = v.rawValueAt(0);
     final int dklen = v.rawValueAt(1);
@@ -386,10 +376,10 @@ class Web3SecretStorageDefinationV3 {
       }
       return StringUtils.toJson(
         StringUtils.decode(
-          StringUtils.encode(encoded, type: StringEncoding.base64),
+          StringUtils.encode(encoded, encoding: StringEncoding.base64),
         ),
       );
-    } catch (e) {
+    } catch (_) {
       throw ArgumentException.invalidOperationArguments(
         "decode",
         name: "encoded",
@@ -414,15 +404,11 @@ class Web3SecretStorageDefinationV3 {
     final json = _toJsonEcoded(encoded, encoding: encoding);
     final version = json.valueAs("version");
     if (version != 3) {
-      throw const Web3SecretStorageDefinationV3Exception(
-        "Unsupported secret storage version.",
-      );
+      throw Web3SecretStorageDefinationV3Exception.unsuportedBackupContent;
     }
     final crypto = json['crypto'] ?? json['Crypto'];
     if (crypto["cipher"] != "aes-128-ctr") {
-      throw const Web3SecretStorageDefinationV3Exception(
-        "Unsupported cypher algorithm.",
-      );
+      throw Web3SecretStorageDefinationV3Exception.unsuportedBackupContent;
     }
     final KDFParam derivator = KDFParam.fromJson(crypto);
 
@@ -433,11 +419,7 @@ class Web3SecretStorageDefinationV3 {
     final encryptedPrivateKey = BytesUtils.fromHexString(crypto["ciphertext"]);
     final derivedMac = CryptoParam._mac(macBytes, encryptedPrivateKey);
     if (derivedMac != crypto["mac"]) {
-      throw ArgumentException.invalidOperationArguments(
-        "decode",
-        name: "encoded",
-        reason: "Wrong password or the data is corrupted",
-      );
+      throw Web3SecretStorageDefinationV3Exception.wrongBackupPassword;
     }
 
     final iv = BytesUtils.fromHexString(crypto['cipherparams']['iv']);
@@ -479,9 +461,7 @@ class Web3SecretStorageDefinationV3 {
       final cbor = cborTag.asValue<CborListValue>();
       final int version = cbor.rawValueAt(2);
       if (version != _SecretStorageConst.version) {
-        throw const Web3SecretStorageDefinationV3Exception(
-          "Unsupported secret storage version.",
-        );
+        throw Web3SecretStorageDefinationV3Exception.unsuportedBackupContent;
       }
       String uuid;
       if (cbor.isTypeAt<CborStringValue>(1)) {
@@ -492,9 +472,7 @@ class Web3SecretStorageDefinationV3 {
       final params = cbor.value[0] as CborListValue;
       final String cipher = params.rawValueAt(0);
       if (cipher != "aes-128-ctr") {
-        throw const Web3SecretStorageDefinationV3Exception(
-          "Unsupported cypher algorithm.",
-        );
+        throw Web3SecretStorageDefinationV3Exception.unsuportedBackupContent;
       }
       final List<int> iv = params.rawValueAt(1);
       final kdf = KDFParam.fromCbor(params.value[3]);
@@ -508,11 +486,7 @@ class Web3SecretStorageDefinationV3 {
       final aesKey = derivedKey.sublist(0, 16);
       final derivedMac = CryptoParam._mac(macBytes, ciphertext);
       if (derivedMac != mac) {
-        throw ArgumentException.invalidOperationArguments(
-          "decode",
-          name: "encoded",
-          reason: "Wrong password or the data is corrupted",
-        );
+        throw Web3SecretStorageDefinationV3Exception.wrongBackupPassword;
       }
       final List<int> data = QuickCrypto.processCtr(
         key: aesKey,
@@ -564,7 +538,7 @@ class Web3SecretStorageDefinationV3 {
     }
     return StringUtils.decode(
       StringUtils.encode(toString),
-      type: StringEncoding.base64,
+      encoding: StringEncoding.base64,
     );
   }
 

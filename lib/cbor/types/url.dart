@@ -3,7 +3,6 @@ import 'package:blockchain_utils/cbor/utils/cbor_utils.dart';
 import 'package:blockchain_utils/cbor/utils/dynamic_bytes.dart';
 import 'package:blockchain_utils/cbor/core/tags.dart';
 import 'package:blockchain_utils/cbor/types/string.dart';
-import 'package:blockchain_utils/utils/binary/utils.dart';
 
 /// A class representing a CBOR (Concise Binary Object Representation) uri value.
 class CborUriValue extends CborString<String> {
@@ -28,13 +27,7 @@ class CborUriValue extends CborString<String> {
   /// Returns the string representation of the value.
   @override
   String toString() {
-    return value;
-  }
-
-  /// Encode the value into CBOR bytes an then to hex
-  @override
-  String toCborHex() {
-    return BytesUtils.toHexString(encode());
+    return "CborUriValue($value)";
   }
 
   @override

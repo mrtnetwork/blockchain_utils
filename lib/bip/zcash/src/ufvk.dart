@@ -12,7 +12,7 @@ import 'package:blockchain_utils/bip/zcash/src/encoding/encoding.dart';
 import 'package:blockchain_utils/bip/zcash/src/exception.dart';
 import 'package:blockchain_utils/bip/zcash/src/types.dart';
 import 'package:blockchain_utils/bip/zcash/src/uivk.dart';
-import 'package:blockchain_utils/exception/exception/exception.dart'
+import 'package:blockchain_utils/exception/exception/blockchain_utils.dart'
     show ArgumentException;
 import 'package:blockchain_utils/helper/extensions/extensions.dart';
 
@@ -45,14 +45,14 @@ class UnifiedFullViewingKey {
 
   factory UnifiedFullViewingKey.fromSaplingExtendedFullViewKey({
     required String uskBytes,
-    required ZCashNetwork network,
+    required ZcashNetwork network,
   }) {
     final config = ZcashConf().fromNetwork(network);
-    final key = ZCashEncodingUtils.decodeSaplingExtendedFullViewKey(
+    final key = ZcashEncodingUtils.decodeSaplingExtendedFullViewKey(
       uskBytes,
-      config.hrpSaplingExtendedFullViewingKey,
+      hrp: config.hrpSaplingExtendedFullViewingKey,
     );
-    final zip32 = Zip32Sapling.fromExtendedFullViewKey(key);
+    final zip32 = Zip32Sapling.fromExtendedFullViewKeyBytes(key);
     return UnifiedFullViewingKey._(
       config: config,
       sapling: SaplingDiversifiableFullViewingKey(
@@ -68,7 +68,7 @@ class UnifiedFullViewingKey {
     SaplingDiversifiableFullViewingKey? sapling,
     OrchardFullViewingKey? orchard,
     ReceiverUnknown? unknown,
-    required ZCashNetwork network,
+    required ZcashNetwork network,
   }) {
     final config = ZcashConf().fromNetwork(network);
     return UnifiedFullViewingKey._(
@@ -81,11 +81,11 @@ class UnifiedFullViewingKey {
   }
   factory UnifiedFullViewingKey.fromUnifiedFullViewKey({
     required String ufvk,
-    required ZCashNetwork network,
+    required ZcashNetwork network,
     required ZCryptoContext context,
   }) {
     final config = ZcashConf().fromNetwork(network);
-    final key = ZCashEncodingUtils.decodeUnifiedObject(
+    final key = ZcashEncodingUtils.decodeUnifiedObject(
       address: ufvk,
       mode: UnifiedReceiverMode.fvk,
       expectedHrp: config.hrpUnifiedFvk,
@@ -117,7 +117,7 @@ class UnifiedFullViewingKey {
       transparent:
           transparent == null
               ? null
-              : ZCashEncodingUtils.decodeBip44Fvk(transparent.data),
+              : ZcashEncodingUtils.decodeBip44Fvk(transparent.data),
       unknown: unknown?.cast<ReceiverUnknown>().copyWith(
         mode: UnifiedReceiverMode.fvk,
       ),
@@ -130,7 +130,7 @@ class UnifiedFullViewingKey {
     final orchard = this.orchard;
     final transparent = this.transparent;
     final unknown = this.unknown;
-    return ZCashEncodingUtils.encodeUnifiedObject(
+    return ZcashEncodingUtils.encodeUnifiedObject(
       hrp: config.hrpUnifiedFvk,
       mode: UnifiedReceiverMode.fvk,
       receivers: [
@@ -146,7 +146,7 @@ class UnifiedFullViewingKey {
           ),
         if (transparent != null)
           ReceiverP2pkh(
-            data: ZCashEncodingUtils.encodeBip44Fvk(transparent),
+            data: ZcashEncodingUtils.encodeBip44Fvk(transparent),
             mode: UnifiedReceiverMode.fvk,
           ),
         if (unknown != null) unknown,
@@ -161,7 +161,7 @@ class UnifiedFullViewingKey {
   }) {
     return _cachedIvk[scope] ??= UnifiedIncomingViewingKey(
       network: config.network,
-      orchard: orchard?.toIvk(scope: scope, context: context),
+      orchard: orchard?.toIvk(scope, context: context),
       sapling: sapling?.toIvk(scope),
       transparent: transparent?.childKey(Bip32KeyIndex(scope.value)),
     );
@@ -231,7 +231,7 @@ class UnifiedFullViewingKey {
   Bip32Slip10Secp256k1 getTransparent() {
     final transparent = this.transparent;
     if (transparent == null) {
-      throw ZCashKeyError("Transparent key missing.");
+      throw ZcashKeyError("Transparent key missing.");
     }
     return transparent;
   }
@@ -240,7 +240,7 @@ class UnifiedFullViewingKey {
   SaplingDiversifiableFullViewingKey getSapling() {
     final sapling = this.sapling;
     if (sapling == null) {
-      throw ZCashKeyError("Sapling key missing.");
+      throw ZcashKeyError("Sapling key missing.");
     }
     return sapling;
   }
@@ -249,7 +249,7 @@ class UnifiedFullViewingKey {
   OrchardFullViewingKey getOrchard() {
     final orchard = this.orchard;
     if (orchard == null) {
-      throw ZCashKeyError("Orchard key missing.");
+      throw ZcashKeyError("Orchard key missing.");
     }
     return orchard;
   }

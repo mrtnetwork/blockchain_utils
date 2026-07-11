@@ -37,7 +37,7 @@ abstract mixin class Equality {
 
 abstract mixin class PartialEquality implements Equality {
   @override
-  List<dynamic> get variables;
+  List<dynamic> get variables => [];
   List<dynamic> get parts;
   @override
   bool operator ==(Object other) {

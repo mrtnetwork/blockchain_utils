@@ -1,7 +1,7 @@
 import 'package:blockchain_utils/bip/bip/bip39/bip39_mnemonic.dart';
 import 'package:blockchain_utils/bip/bip/bip39/bip39_mnemonic_decoder.dart';
-import 'package:blockchain_utils/bip/mnemonic/mnemonic.dart';
-import 'package:blockchain_utils/bip/mnemonic/mnemonic_validator.dart';
+import 'package:blockchain_utils/bip/mnemonic/src/mnemonic.dart';
+import 'package:blockchain_utils/bip/mnemonic/src/mnemonic_validator.dart';
 
 /// Validates BIP39 mnemonics based on a specified language.
 class Bip39MnemonicValidator extends MnemonicValidator<Bip39MnemonicDecoder> {

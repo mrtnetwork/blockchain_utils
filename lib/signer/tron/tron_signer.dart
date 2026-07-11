@@ -1,6 +1,6 @@
 import 'package:blockchain_utils/crypto/crypto/crypto.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
-import 'package:blockchain_utils/exception/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/signer/const/constants.dart';
 import 'package:blockchain_utils/signer/signing_key/ecdsa_signing_key.dart';
 import 'package:blockchain_utils/signer/types/eth_signature.dart';
@@ -76,7 +76,10 @@ class TronSigner {
             ? CryptoSignerConst.ethPersonalSignPrefix
             : CryptoSignerConst.tronSignMessagePrefix;
     prefix = prefix + (payloadLength?.toString() ?? digest.length.toString());
-    final prefixBytes = StringUtils.encode(prefix, type: StringEncoding.ascii);
+    final prefixBytes = StringUtils.encode(
+      prefix,
+      encoding: StringEncoding.ascii,
+    );
     return sign(
       QuickCrypto.keccack256Hash(<int>[...prefixBytes, ...digest]),
       hashMessage: false,
@@ -95,7 +98,10 @@ class TronSigner {
             ? CryptoSignerConst.ethPersonalSignPrefix
             : CryptoSignerConst.tronSignMessagePrefix;
     prefix = prefix + (payloadLength?.toString() ?? digest.length.toString());
-    final prefixBytes = StringUtils.encode(prefix, type: StringEncoding.ascii);
+    final prefixBytes = StringUtils.encode(
+      prefix,
+      encoding: StringEncoding.ascii,
+    );
     return signConst(
       QuickCrypto.keccack256Hash(<int>[...prefixBytes, ...digest]),
       hashMessage: false,
@@ -173,7 +179,7 @@ class TronVerifier {
           prefix + (payloadLength?.toString() ?? message.length.toString());
       final prefixBytes = StringUtils.encode(
         prefix,
-        type: StringEncoding.ascii,
+        encoding: StringEncoding.ascii,
       );
       message = QuickCrypto.keccack256Hash(<int>[...prefixBytes, ...message]);
     }
@@ -208,7 +214,7 @@ class TronVerifier {
           prefix + (payloadLength?.toString() ?? message.length.toString());
       final prefixBytes = StringUtils.encode(
         prefix,
-        type: StringEncoding.ascii,
+        encoding: StringEncoding.ascii,
       );
       message = QuickCrypto.keccack256Hash(<int>[...prefixBytes, ...message]);
     }

@@ -1,5 +1,4 @@
 import 'package:blockchain_utils/crypto/crypto/crypto.dart';
-import '../../log.dart';
 import '../../quick_hex.dart';
 import 'package:blockchain_utils/utils/utils.dart';
 import 'package:test/test.dart';
@@ -24,9 +23,10 @@ void main() {
       expect(result.toHex(), i["encrypt"]);
       expect(tag.toHex(), i["tag"]);
       final decryptor = ChaCha20Poly1305(key);
-      final decrypt = Logg.def(
-        () => decryptor.decrypt(nonce, encrypt, associatedData: assocData),
-        "dec",
+      final decrypt = decryptor.decrypt(
+        nonce,
+        encrypt,
+        associatedData: assocData,
       );
       expect(decrypt?.toHex(), i["plain_text"]);
     }

@@ -179,6 +179,22 @@ class Bip49Conf {
         ),
   );
 
+  /// Configuration for Zcash regtest
+  final BipCoinConfig zcashRegtest = BipCoinConfig(
+    coinNames: CoinsConf.zcashTransparentRegtest.coinName,
+    coinIdx: Slip44.testnet,
+    chainType: ChainType.testnet,
+    defPath: derPathNonHardenedFull,
+    keyNetVer: bip49BtcKeyNetVerTest,
+    wifNetVer: CoinsConf.zcashTransparentRegtest.params.wifNetVer,
+    type: EllipticCurveTypes.secp256k1,
+    addressEncoder:
+        (params, config) => P2SHAddrEncoder().encodeKey(
+          params.pubKey,
+          netVersion: CoinsConf.zcashTransparentRegtest.params.p2shNetVer,
+        ),
+  );
+
   /// Configuration for Bitcoin main net
   final BipCoinConfig bitcoinMainNet = BipCoinConfig(
     coinNames: CoinsConf.bitcoinMainNet.coinName,

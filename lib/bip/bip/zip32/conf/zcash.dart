@@ -9,7 +9,7 @@ import 'package:blockchain_utils/bip/coin_conf/constant/coins_conf.dart';
 import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
 import 'package:blockchain_utils/bip/slip/slip.dart';
 import 'package:blockchain_utils/bip/zcash/src/types.dart';
-import 'package:blockchain_utils/exception/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/helper/extensions/extensions.dart';
 import 'package:blockchain_utils/utils/binary/utils.dart';
 
@@ -20,13 +20,13 @@ class ZcashConf {
     type: EllipticCurveTypes.redJubJub,
     chainType: ChainType.mainnet,
     defPath: derPathHardenedShort,
-    network: ZCashNetwork.mainnet,
+    network: ZcashNetwork.mainnet,
     purpose: Bip32KeyIndex.hardenIndex(32),
     keyNetVer: Bip32Const.mainNetKeyNetVersions,
     addressEncoder:
-        (params, config) => ZCashAddrEncoder().encodeKey(
+        (params, config) => ZcashAddrEncoder().encodeKey(
           params.pubKey,
-          addrType: ZCashAddressType.sapling,
+          addrType: ZcashAddressType.sapling,
           network: config.network,
         ),
     hrpSaplingExtendedSpendingKey: "secret-extended-key-main",
@@ -49,12 +49,12 @@ class ZcashConf {
     defPath: derPathHardenedShort,
     purpose: Bip32KeyIndex.hardenIndex(32),
     type: EllipticCurveTypes.redJubJub,
-    network: ZCashNetwork.testnet,
+    network: ZcashNetwork.testnet,
     keyNetVer: Bip32Const.testNetKeyNetVersions,
     addressEncoder:
-        (params, config) => ZCashAddrEncoder().encodeKey(
+        (params, config) => ZcashAddrEncoder().encodeKey(
           params.pubKey,
-          addrType: ZCashAddressType.sapling,
+          addrType: ZcashAddressType.sapling,
           network: config.network,
         ),
     hrpSaplingExtendedSpendingKey: "secret-extended-key-test",
@@ -76,13 +76,13 @@ class ZcashConf {
     chainType: ChainType.testnet,
     type: EllipticCurveTypes.redJubJub,
     purpose: Bip32KeyIndex.hardenIndex(32),
-    network: ZCashNetwork.regtest,
+    network: ZcashNetwork.regtest,
     defPath: derPathHardenedShort,
     keyNetVer: Bip32Const.testNetKeyNetVersions,
     addressEncoder:
-        (params, config) => ZCashAddrEncoder().encodeKey(
+        (params, config) => ZcashAddrEncoder().encodeKey(
           params.pubKey,
-          addrType: ZCashAddressType.sapling,
+          addrType: ZcashAddressType.sapling,
           network: config.network,
         ),
     hrpSaplingExtendedSpendingKey: "secret-extended-key-regtest",
@@ -104,13 +104,13 @@ class ZcashConf {
     type: EllipticCurveTypes.redPallas,
     chainType: ChainType.mainnet,
     defPath: derPathHardenedShort,
-    network: ZCashNetwork.mainnet,
+    network: ZcashNetwork.mainnet,
     purpose: Bip32KeyIndex.hardenIndex(32),
     keyNetVer: Bip32Const.mainNetKeyNetVersions,
     addressEncoder:
-        (params, config) => ZCashAddrEncoder().encodeKey(
+        (params, config) => ZcashAddrEncoder().encodeKey(
           params.pubKey,
-          addrType: ZCashAddressType.unified,
+          addrType: ZcashAddressType.unified,
           network: config.network,
         ),
     hrpSaplingExtendedSpendingKey: "secret-extended-key-main",
@@ -133,12 +133,12 @@ class ZcashConf {
     defPath: derPathHardenedShort,
     purpose: Bip32KeyIndex.hardenIndex(32),
     type: EllipticCurveTypes.redPallas,
-    network: ZCashNetwork.testnet,
+    network: ZcashNetwork.testnet,
     keyNetVer: Bip32Const.testNetKeyNetVersions,
     addressEncoder:
-        (params, config) => ZCashAddrEncoder().encodeKey(
+        (params, config) => ZcashAddrEncoder().encodeKey(
           params.pubKey,
-          addrType: ZCashAddressType.unified,
+          addrType: ZcashAddressType.unified,
           network: config.network,
         ),
     hrpSaplingExtendedSpendingKey: "secret-extended-key-test",
@@ -160,13 +160,13 @@ class ZcashConf {
     chainType: ChainType.testnet,
     type: EllipticCurveTypes.redPallas,
     purpose: Bip32KeyIndex.hardenIndex(32),
-    network: ZCashNetwork.regtest,
+    network: ZcashNetwork.regtest,
     defPath: derPathHardenedShort,
     keyNetVer: Bip32Const.testNetKeyNetVersions,
     addressEncoder:
-        (params, config) => ZCashAddrEncoder().encodeKey(
+        (params, config) => ZcashAddrEncoder().encodeKey(
           params.pubKey,
-          addrType: ZCashAddressType.unified,
+          addrType: ZcashAddressType.unified,
           network: config.network,
         ),
     hrpSaplingExtendedSpendingKey: "secret-extended-key-regtest",
@@ -187,7 +187,7 @@ class ZcashConf {
     zCashRegtestOrchard,
     zCashTestnetSapling,
   ];
-  ZIP32CoinConfig fromNetwork(ZCashNetwork network) {
+  ZIP32CoinConfig fromNetwork(ZcashNetwork network) {
     return _configs.firstWhere(
       (e) => e.network == network,
       orElse: () => throw ItemNotFoundException(value: network.name),

@@ -1,4 +1,4 @@
-import 'package:blockchain_utils/bip/mnemonic/mnemonic_decoder_base.dart';
+import 'package:blockchain_utils/bip/mnemonic/src/mnemonic_decoder_base.dart';
 
 /// Utility class for validating and checking the validity of mnemonic phrases.
 class MnemonicValidator<T extends MnemonicDecoderBase> {

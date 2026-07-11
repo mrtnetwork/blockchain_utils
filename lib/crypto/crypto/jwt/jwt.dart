@@ -149,14 +149,14 @@ class Jwt {
       StringUtils.encode(
         parts[0],
         validateB64Padding: false,
-        type: StringEncoding.base64,
+        encoding: StringEncoding.base64,
       ),
     );
     final payload = StringUtils.decodeJson<Map<String, dynamic>>(
       StringUtils.encode(
         parts[1],
         validateB64Padding: false,
-        type: StringEncoding.base64,
+        encoding: StringEncoding.base64,
       ),
     );
     return Jwt(
@@ -171,12 +171,12 @@ class Jwt {
     final encodedHeader = StringUtils.decode(
       StringUtils.encodeJson(headerJson),
       b64NoPadding: true,
-      type: StringEncoding.base64UrlSafe,
+      encoding: StringEncoding.base64UrlSafe,
     );
     final encodedPayload = StringUtils.decode(
       StringUtils.encodeJson(payload.toJson()),
       b64NoPadding: true,
-      type: StringEncoding.base64UrlSafe,
+      encoding: StringEncoding.base64UrlSafe,
     );
     return '$encodedHeader.$encodedPayload';
   }
@@ -227,7 +227,7 @@ class Jwt {
     final encodedSignature = StringUtils.decode(
       signature,
       b64NoPadding: true,
-      type: StringEncoding.base64UrlSafe,
+      encoding: StringEncoding.base64UrlSafe,
     );
     return '$signingInput.$encodedSignature';
   }

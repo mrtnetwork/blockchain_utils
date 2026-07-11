@@ -1,5 +1,5 @@
 /// Extension on the DateTime class to format a DateTime object as an RFC3339 string
-extension RFC3339 on DateTime {
+extension ExtRFC3339 on DateTime {
   /// Convert the DateTime to an RFC3339 formatted string with time zone information.
   String toRFC3339WithTimeZone() {
     final String year = this.year.toString().padLeft(4, '0');

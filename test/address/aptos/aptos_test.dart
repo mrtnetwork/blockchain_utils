@@ -1,4 +1,3 @@
-import 'package:blockchain_utils/bip/address/exception/exception.dart';
 import 'package:blockchain_utils/bip/bip.dart';
 import '../../quick_hex.dart';
 import 'package:blockchain_utils/utils/utils.dart';

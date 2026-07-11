@@ -10,6 +10,7 @@ import 'package:blockchain_utils/crypto/quick_crypto.dart';
 import 'package:blockchain_utils/crypto/crypto/ec/curve/curves.dart';
 import 'package:blockchain_utils/crypto/crypto/scrypt/scrypt.dart';
 import 'package:blockchain_utils/exception/exceptions.dart';
+import 'package:blockchain_utils/helper/helper.dart';
 import 'package:blockchain_utils/utils/binary/bit_utils.dart';
 import 'package:blockchain_utils/utils/binary/utils.dart';
 import 'package:blockchain_utils/utils/numbers/utils/bigint_utils.dart';
@@ -100,11 +101,9 @@ class Bip38EcUtils {
       Bip38EcConst.ownerSaltWithLotSeqByteLen,
     );
 
-    final lotSequence = IntUtils.toBytes(
-      (lotNum * (Bip38EcConst.seqNumMaxVal + 1)) + sequenceNum,
-      length: 4,
-      byteOrder: Endian.little,
-    );
+    final lotSequence =
+        ((lotNum * (Bip38EcConst.seqNumMaxVal + 1)) + sequenceNum)
+            .toU32LeBytes();
     return [...ownerSalt, ...lotSequence];
   }
 
@@ -378,7 +377,7 @@ class Bip38EcKeysGenerator {
     if (BytesUtils.bytesEqual(magic, Bip38EcConst.intPassMagicWithLotSeq)) {
       flagbyteInt = BitUtils.setBit(flagbyteInt, Bip38EcConst.flagBitLotSeq);
     }
-    return IntUtils.toBytes(flagbyteInt, byteOrder: Endian.little);
+    return flagbyteInt.toBytes(byteOrder: Endian.little);
   }
 }
 
@@ -509,10 +508,7 @@ class Bip38EcDecrypter {
     final passfactorInt = BigintUtils.fromBytes(passfactor);
     final factorbInt = BigintUtils.fromBytes(factorb);
     final privKeyInt = (passfactorInt * factorbInt) % gm.order!;
-    return BigintUtils.toBytes(
-      privKeyInt,
-      length: EcdsaKeysConst.privKeyByteLen,
-    );
+    return privKeyInt.toBeBytes(length: EcdsaKeysConst.privKeyByteLen);
   }
 
   /// Extract flag options from the 'flagbyte' value.

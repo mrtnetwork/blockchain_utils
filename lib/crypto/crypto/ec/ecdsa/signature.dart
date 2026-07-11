@@ -1,7 +1,8 @@
 import 'package:blockchain_utils/crypto/crypto/ec/ecdsa/public_key.dart';
 import 'package:blockchain_utils/crypto/crypto/ec/projective/native/native.dart';
 import 'package:blockchain_utils/crypto/crypto/ec/utils/utils.dart';
-import 'package:blockchain_utils/exception/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
+import 'package:blockchain_utils/helper/helper.dart';
 import 'package:blockchain_utils/utils/numbers/utils/bigint_utils.dart';
 
 /// Represents an ECDSA (Elliptic Curve Digital Signature Algorithm) signature
@@ -16,7 +17,6 @@ class ECDSASignature {
         "ECDSASignature",
         name: "signature",
         reason: "Invalid signature bytes length.",
-        expecteLen: generator.curve.baselen * 2,
       );
     }
     final r = BigintUtils.fromBytes(
@@ -135,8 +135,8 @@ class ECDSASignature {
 
   /// convert signature to bytes.
   List<int> toBytes(int baselen) {
-    final sBytes = BigintUtils.toBytes(s, length: baselen);
-    final rBytes = BigintUtils.toBytes(r, length: baselen);
+    final sBytes = s.toBeBytes(length: baselen);
+    final rBytes = r.toBeBytes(length: baselen);
 
     return [...rBytes, ...sBytes];
   }

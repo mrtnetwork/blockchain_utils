@@ -3,7 +3,8 @@ import 'package:blockchain_utils/bip/ecc/keys/ecdsa_keys.dart';
 import 'package:blockchain_utils/crypto/crypto/ec/projective/secp256k1/secp256k1.dart';
 import 'package:blockchain_utils/crypto/crypto/crypto.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
-import 'package:blockchain_utils/exception/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
+import 'package:blockchain_utils/helper/helper.dart';
 import 'package:blockchain_utils/signer/signer.dart';
 import 'package:blockchain_utils/signer/types/types.dart';
 import 'package:blockchain_utils/utils/numbers/utils/bigint_utils.dart';
@@ -49,7 +50,7 @@ class BitcoinSignerUtils {
       negatedKey = order - negatedKey;
     }
     final tw = (negatedKey + tweakBig) % order;
-    return BigintUtils.toBytes(tw, length: baselen);
+    return tw.toBeBytes(length: baselen);
   }
 
   /// Adds a magic prefix to a message for Bitcoin signing.
@@ -242,10 +243,7 @@ class BitcoinKeySigner {
     while (lengthR == 33) {
       signature = _signingKey.signDer(
         digest: digest,
-        extraEntropy: [
-          ...extraEntropy ?? [],
-          ...BigintUtils.toBytes(attempt, length: 32),
-        ],
+        extraEntropy: [...extraEntropy ?? [], ...attempt.toBeBytes(length: 32)],
       );
       attempt += BigInt.one;
       lengthR = signature[3];
@@ -263,10 +261,7 @@ class BitcoinKeySigner {
     while (lengthR == 33) {
       signature = _signingKey.signConstDer(
         digest: digest,
-        extraEntropy: [
-          ...extraEntropy ?? [],
-          ...BigintUtils.toBytes(attempt, length: 32),
-        ],
+        extraEntropy: [...extraEntropy ?? [], ...attempt.toBeBytes(length: 32)],
       );
       attempt += BigInt.one;
       lengthR = signature[3];

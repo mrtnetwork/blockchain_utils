@@ -1,9 +1,6 @@
 // Export for cryptocurrency address encoding utilities.
 export 'address/encoders.dart';
 
-/// Export for cryptocurrency address decoding utilities.
-export 'address/decoders.dart';
-
 /// Export for Algorand blockchain-specific utilities.
 export 'algorand/algorand.dart';
 
@@ -31,12 +28,10 @@ export 'ecc/bip_ecc.dart';
 /// Exports utility functions related to TON mnemonic.
 export 'ton/ton.dart';
 
-/// Exports utility functions related to mnemonic.
-export 'mnemonic/mnemonic.dart';
-
 /// config of every bip coin
 export 'coin_conf/config.dart';
 
 export 'slip/slip.dart';
 
 export 'zcash/zcash.dart';
+export 'mnemonic/mnemonic.dart';

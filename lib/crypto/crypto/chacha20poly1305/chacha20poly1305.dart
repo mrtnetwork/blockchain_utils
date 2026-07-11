@@ -1,4 +1,4 @@
-import 'package:blockchain_utils/exception/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/helper/helper.dart';
 
 import 'package:blockchain_utils/crypto/crypto/aead/aead.dart';
@@ -28,7 +28,6 @@ class ChaCha20Poly1305 implements AEAD {
         "ChaCha20Poly1305",
         name: "key",
         reason: "Invalid key bytes length.",
-        expecteLen: _keyLength,
       );
     }
     _key = key.clone().asBytes;
@@ -78,7 +77,6 @@ class ChaCha20Poly1305 implements AEAD {
         "encrypt",
         name: "dst",
         reason: "Invalid destination bytes length.",
-        expecteLen: resultLength,
       );
     }
 
@@ -157,7 +155,6 @@ class ChaCha20Poly1305 implements AEAD {
         "decrypt",
         name: "dst",
         reason: "Invalid destination bytes length.",
-        expecteLen: resultLength,
       );
     }
 

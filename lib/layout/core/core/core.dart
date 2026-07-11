@@ -20,14 +20,14 @@
 import 'package:blockchain_utils/layout/byte/byte_handler.dart';
 import 'package:blockchain_utils/utils/binary/utils.dart';
 
-typedef LayoutFunc<T> = Layout<T> Function({String? property});
-typedef ONFINALIZEDECODE<T, R extends LayoutRepository> =
+typedef CbLayoutFunc<T> = Layout<T> Function({String? property});
+typedef CbOnFinalizeDecode<T, R extends LayoutRepository> =
     dynamic Function(
       T layoutResult,
       Map<String, dynamic> structResult,
       R? repository,
     );
-typedef ONFINALIZEENCODE<T, R extends LayoutRepository> =
+typedef CbOnFinalizeEncode<T, R extends LayoutRepository> =
     void Function(T source, Map<String, dynamic> structSource, R? repository);
 
 enum LayoutAction {
@@ -51,7 +51,7 @@ class RequestLayoutParams<R extends LayoutRepository> {
   });
 }
 
-typedef ConditionalLayoutFunc<T> =
+typedef CbConditionalLayoutFunc<T> =
     Layout<T> Function(String? property, RequestLayoutParams params);
 
 abstract class LayoutRepository {}
@@ -79,13 +79,13 @@ abstract class BaseLazyStructLayoutBuilder<T, R extends LayoutRepository> {
 
 class LazyStructLayoutBuilder<T, R extends LayoutRepository>
     extends BaseLazyStructLayoutBuilder<T, R> {
-  final ConditionalLayoutFunc<T> _layout;
-  final ONFINALIZEDECODE<T, R>? finalizeDecode;
-  final ONFINALIZEENCODE<T, R>? finalizeEncode;
+  final CbConditionalLayoutFunc<T> _layout;
+  final CbOnFinalizeDecode<T, R>? finalizeDecode;
+  final CbOnFinalizeEncode<T, R>? finalizeEncode;
   @override
   final String? property;
   LazyStructLayoutBuilder({
-    required ConditionalLayoutFunc<T> layout,
+    required CbConditionalLayoutFunc<T> layout,
     this.finalizeDecode,
     this.finalizeEncode,
     required this.property,
@@ -160,7 +160,7 @@ abstract class Layout<T> {
   }
 }
 
-typedef GetLayoutSpan = List<int> Function(int);
+typedef CbGetLayoutSpan = List<int> Function(int);
 
 class LayoutDecodeResult<T> {
   final int consumed;

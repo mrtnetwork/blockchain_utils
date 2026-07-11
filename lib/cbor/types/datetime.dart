@@ -7,7 +7,6 @@ import 'package:blockchain_utils/cbor/core/cbor.dart';
 import 'package:blockchain_utils/cbor/types/double.dart';
 import 'package:blockchain_utils/cbor/types/int.dart';
 import 'package:blockchain_utils/cbor/types/string.dart';
-import 'package:blockchain_utils/utils/binary/utils.dart';
 
 /// A class representing a CBOR (Concise Binary Object Representation) DateTime value.
 abstract class _CborDate extends CborObject<DateTime> {
@@ -18,12 +17,6 @@ abstract class _CborDate extends CborObject<DateTime> {
       return CborTags.dateString;
     }
     return CborTags.dateEpoch;
-  }
-
-  /// Encode the value into CBOR bytes an then to hex
-  @override
-  String toCborHex() {
-    return BytesUtils.toHexString(encode());
   }
 
   List<int> _encode();
@@ -60,6 +53,11 @@ class CborStringDateValue extends _CborDate {
     final toStringCbor = CborStringValue(toString);
     return toStringCbor.encode();
   }
+
+  @override
+  String toString() {
+    return "CborStringDateValue($value)";
+  }
 }
 
 /// A class representing a CBOR (Concise Binary Object Representation) epoch float DateTime value.
@@ -78,6 +76,11 @@ class CborEpochFloatValue extends _CborDate {
     final toFloatCbor = CborFloatValue(toSecound);
     return toFloatCbor.encode();
   }
+
+  @override
+  String toString() {
+    return "CborEpochFloatValue($value)";
+  }
 }
 
 /// A class representing a CBOR (Concise Binary Object Representation) epoch int DateTime value.
@@ -95,5 +98,10 @@ class CborEpochIntValue extends _CborDate {
     final toSecound = value.millisecondsSinceEpoch / 1000;
     final toFloatCbor = CborIntValue(toSecound.round());
     return toFloatCbor.encode();
+  }
+
+  @override
+  String toString() {
+    return "CborEpochIntValue($value)";
   }
 }

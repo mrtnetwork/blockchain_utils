@@ -25,7 +25,7 @@ class HMAC<T extends HashState> implements SerializableHash<T> {
   late final int? _blockSize;
 
   /// Creates an HMAC instance with the specified hash function and secret key.
-  HMAC(HashFunc<T> hash, List<int> key, [int? blockSize]) {
+  HMAC(CbHashFunc<T> hash, List<int> key, [int? blockSize]) {
     _blockSize = blockSize;
     // Initialize inner and outer hashes.
     _inner = hash();
@@ -173,7 +173,7 @@ class HMAC<T extends HashState> implements SerializableHash<T> {
   }
 
   /// Calculates an HMAC using a specified hash function, a secret key, and input data.
-  static List<int> hmac(HashFunc hash, List<int> key, List<int> data) {
+  static List<int> hmac(CbHashFunc hash, List<int> key, List<int> data) {
     final h = HMAC(hash, key);
     h.update(data);
     final digest = h.digest();

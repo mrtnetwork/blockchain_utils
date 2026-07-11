@@ -86,7 +86,7 @@ class OrchardExtendedFullViewKey
     ZCryptoContext context, {
     Bip44Changes scope = Bip44Changes.chainInt,
   }) {
-    return fvk.toIvk(scope: scope, context: context);
+    return fvk.toIvk(scope, context: context);
   }
 }
 
@@ -123,7 +123,14 @@ class OrchardSpendingKey with ConstantEquality<OrchardSpendingKey> {
   List<List<int>> get secretFields => [sk];
 }
 
-class OrchardFullViewingKey with Equality {
+class OrchardFullViewingKey
+    extends
+        DiversifiableFullViewingKey<
+          OrchardAddress,
+          OrchardIncomingViewingKey,
+          OrchardOutgoingViewingKey,
+          OrchardKeyAgreementPrivateKey
+        > {
   final OrchardSpendValidatingKey ak;
   final OrchardNullifierDerivingKey nk;
   final OrchardCommitIvkRandomness rivk;
@@ -208,13 +215,14 @@ class OrchardFullViewingKey with Equality {
     }.address(d);
   }
 
+  @override
   Bip44Changes? scopeForAddress({
     required OrchardAddress address,
-    required ZCryptoContext context,
+    ZCryptoContext? context,
+    Bip44Changes? tryFirst,
   }) {
     return Bip44Changes.values.firstWhereNullable(
-      (e) =>
-          toIvk(scope: e, context: context).diversifierIndex(address) != null,
+      (e) => toIvk(e, context: context).diversifierIndex(address) != null,
     );
   }
 
@@ -223,13 +231,15 @@ class OrchardFullViewingKey with Equality {
     required Bip44Changes scope,
     required ZCryptoContext context,
   }) {
-    return toIvk(scope: scope, context: context).addressAt(j);
+    return toIvk(scope, context: context).addressAt(j);
   }
 
-  OrchardIncomingViewingKey toIvk({
-    required Bip44Changes scope,
-    required ZCryptoContext context,
+  @override
+  OrchardIncomingViewingKey toIvk(
+    Bip44Changes scope, {
+    ZCryptoContext? context,
   }) {
+    context ??= DefaultZCryptoContext();
     return switch (scope) {
       Bip44Changes.chainInt => OrchardIncomingViewingKey.fromFvk(
         fvk: deriveInternal(),
@@ -242,6 +252,7 @@ class OrchardFullViewingKey with Equality {
     };
   }
 
+  @override
   OrchardOutgoingViewingKey toOvk(Bip44Changes scope) {
     return switch (scope) {
       Bip44Changes.chainInt => OrchardOutgoingViewingKey.fromFvk(
@@ -259,12 +270,24 @@ class OrchardFullViewingKey with Equality {
     );
   }
 
+  @override
   List<int> toBytes() {
     return [...ak.toBytes(), ...nk.toBytes(), ...rivk.toBytes()];
   }
 
   @override
-  List<dynamic> get variables => [ak, nk, rivk];
+  List<dynamic> get variables => [protocol, ak, nk, rivk];
+
+  @override
+  ZcashProtocol get protocol => ZcashProtocol.orchard;
+
+  @override
+  OrchardKeyAgreementPrivateKey keyAgreement(
+    Bip44Changes scope, {
+    ZCryptoContext? context,
+  }) {
+    return toIvk(scope, context: context).ivk;
+  }
 }
 
 class OrchardNullifierDerivingKey with Equality {
@@ -319,7 +342,7 @@ class OrchardSpendValidatingKey with Equality {
   Map<String, dynamic> toJson() => {"key": BytesUtils.toHexString(toBytes())};
 }
 
-class OrchardCommitIvkRandomness {
+class OrchardCommitIvkRandomness with Equality {
   final VestaNativeFq inner;
   const OrchardCommitIvkRandomness._(this.inner);
   factory OrchardCommitIvkRandomness(VestaNativeFq inner) {
@@ -340,9 +363,12 @@ class OrchardCommitIvkRandomness {
   List<int> toBytes() {
     return inner.toBytes();
   }
+
+  @override
+  List<dynamic> get variables => [inner];
 }
 
-class OrchardKeyAgreementPrivateKey {
+class OrchardKeyAgreementPrivateKey extends KeyAgreementPrivateKey {
   final VestaNativeFq scalar;
   const OrchardKeyAgreementPrivateKey._({required this.scalar});
   static PallasNativeFp commitIvk({
@@ -351,13 +377,13 @@ class OrchardKeyAgreementPrivateKey {
     required VestaNativeFq rivk,
     required ZCryptoContext context,
   }) {
-    final donmain = context.getCommitDomain("z.cash:Orchard-CommitIvk");
-    final f = donmain.shortCommit(
-      msg: [
+    final f = context.sinsemillaShortCommit(
+      r: rivk,
+      domain: "z.cash:Orchard-CommitIvk",
+      bits: [
         ...ak.toBits().sublist(0, PallasFPConst.numBits),
         ...nk.toBits().sublist(0, PallasFPConst.numBits),
       ],
-      r: rivk,
     );
     if (f == null) {
       throw OrchardKeyError.failed("commitIvk");
@@ -407,9 +433,12 @@ class OrchardKeyAgreementPrivateKey {
     final pkd = OrchardDiversifiedTransmissionKey.derive(d: d, ivk: scalar);
     return OrchardAddress(diversifier: d, transmissionKey: pkd);
   }
+
+  @override
+  List<dynamic> get variables => [scalar];
 }
 
-class OrchardDiversifierKey {
+class OrchardDiversifierKey with Equality {
   final List<int> key;
   OrchardDiversifierKey(List<int> key)
     : key =
@@ -437,9 +466,12 @@ class OrchardDiversifierKey {
   List<int> toBytes() {
     return key.clone();
   }
+
+  @override
+  List<dynamic> get variables => [key];
 }
 
-class OrchardIncomingViewingKey implements IncomingViewingKey<OrchardAddress> {
+class OrchardIncomingViewingKey extends IncomingViewingKey<OrchardAddress> {
   final OrchardDiversifierKey dk;
   final OrchardKeyAgreementPrivateKey ivk;
   const OrchardIncomingViewingKey({required this.dk, required this.ivk});
@@ -498,22 +530,33 @@ class OrchardIncomingViewingKey implements IncomingViewingKey<OrchardAddress> {
 
   @override
   List<dynamic> get variables => [dk, ivk];
+
+  @override
+  ZcashProtocol get protocol => ZcashProtocol.orchard;
 }
 
-class OrchardOutgoingViewingKey {
-  final List<int> key;
-  OrchardOutgoingViewingKey(List<int> key)
-    : key =
-          key
+class OrchardOutgoingViewingKey extends OutgoingViewingKey {
+  final List<int> inner;
+  OrchardOutgoingViewingKey(List<int> inner)
+    : inner =
+          inner
               .exc(
                 length: 32,
                 operation: "OrchardOutgoingViewingKey",
-                name: "key",
+                name: "inner",
                 reason: "Invalid outgoing view key bytes length.",
               )
               .asImmutableBytes;
   factory OrchardOutgoingViewingKey.fromFvk(OrchardFullViewingKey fvk) {
     return fvk.deriveDkOvk().$2;
+  }
+
+  @override
+  List<dynamic> get variables => [inner];
+
+  @override
+  List<int> toBytes() {
+    return inner.clone();
   }
 }
 
@@ -545,6 +588,20 @@ class OrchardAddress extends ShieldAddress<OrchardDiversifiedTransmissionKey> {
       ),
     );
   }
+  factory OrchardAddress.fromBytesUnckecked(List<int> bytes) {
+    bytes = bytes.exc(
+      operation: "OrchardAddress",
+      name: "bytes",
+      reason: "Invalid orchard address bytes length.",
+      length: 43,
+    );
+    return OrchardAddress(
+      diversifier: Diversifier(bytes.sublist(0, 11)),
+      transmissionKey: OrchardDiversifiedTransmissionKey.fromBytesUnchecked(
+        bytes.sublist(11),
+      ),
+    );
+  }
 
   @override
   List<int> toBytes() {
@@ -553,10 +610,18 @@ class OrchardAddress extends ShieldAddress<OrchardDiversifiedTransmissionKey> {
 }
 
 class OrchardDiversifiedTransmissionKey extends DiversifiedTransmissionKey {
-  final PallasNativePoint point;
-  const OrchardDiversifiedTransmissionKey._(this.point);
+  final List<int> inner;
+  OrchardDiversifiedTransmissionKey._(List<int> inner, PallasNativePoint? point)
+    : _point = point,
+      inner = inner.exc(
+        length: 32,
+        operation: "OrchardDiversifiedTransmissionKey",
+        reason: "Invalid TransmissionKey bytes length.",
+      );
+  PallasNativePoint? _point;
+  PallasNativePoint toPoint() => _point ??= PallasNativePoint.fromBytes(inner);
   factory OrchardDiversifiedTransmissionKey(PallasNativePoint point) {
-    return OrchardDiversifiedTransmissionKey._(point);
+    return OrchardDiversifiedTransmissionKey._(point.toBytes(), point);
   }
 
   factory OrchardDiversifiedTransmissionKey.derive({
@@ -573,12 +638,17 @@ class OrchardDiversifiedTransmissionKey extends DiversifiedTransmissionKey {
       PallasNativePoint.fromBytes(bytes),
     );
   }
-
-  @override
-  List<int> toBytes() {
-    return point.toBytes();
+  factory OrchardDiversifiedTransmissionKey.fromBytesUnchecked(
+    List<int> bytes,
+  ) {
+    return OrchardDiversifiedTransmissionKey._(bytes, null);
   }
 
   @override
-  List<dynamic> get variables => [point];
+  List<int> toBytes() {
+    return inner.clone();
+  }
+
+  @override
+  List<dynamic> get variables => [inner];
 }

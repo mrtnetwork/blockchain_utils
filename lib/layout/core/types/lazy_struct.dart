@@ -1,4 +1,4 @@
-import 'package:blockchain_utils/exception/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/helper/helper.dart';
 import 'package:blockchain_utils/layout/byte/byte_handler.dart';
 import 'package:blockchain_utils/layout/core/core/core.dart';
@@ -110,7 +110,7 @@ class LazyStructLayout<R extends LayoutRepository>
             "Struct Source not found.",
             details: {
               "key": field.property,
-              "source": source,
+              "source": source.toString(),
               "property": property,
             },
           );

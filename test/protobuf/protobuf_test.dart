@@ -1,5 +1,5 @@
-import 'package:blockchain_utils/exception/exception/exception.dart';
-import 'package:blockchain_utils/protobuf/protobuf.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
+import 'package:blockchain_utils/proto/proto.dart';
 import 'package:blockchain_utils/utils/utils.dart';
 import 'package:test/test.dart';
 
@@ -25,19 +25,18 @@ void _skip() {
     final c3 = ProtoFieldConfig.fixed32(3);
     final c4 = ProtoFieldConfig.fixed64(4);
     final encode = [
-      ...ProtocolBufferEncoder.encode(-1, c1),
-      ...ProtocolBufferEncoder.encode("hi", c2),
-      ...ProtocolBufferEncoder.encode(12, c3),
-      ...ProtocolBufferEncoder.encode(1, c4),
+      ...ProtoBufferEncoder.encodeField(-1, c1),
+      ...ProtoBufferEncoder.encodeField("hi", c2),
+      ...ProtoBufferEncoder.encodeField(12, c3),
+      ...ProtoBufferEncoder.encodeField(1, c4),
     ];
-    List<ProtocolBufferDecoderResult> decode = ProtocolBufferDecoder.decode(
-      encode,
-      [c4],
-    );
+    ProtoBufferDecoderResult decode = ProtoBufferDecoder.decodeFields(encode, [
+      c4,
+    ]);
     expect(decode.getBigInt(4), BigInt.from(1));
-    decode = ProtocolBufferDecoder.decode(encode, [c2]);
+    decode = ProtoBufferDecoder.decodeFields(encode, [c2]);
     expect(decode.getString(2), "hi");
-    decode = ProtocolBufferDecoder.decode(encode, [c2, c3]);
+    decode = ProtoBufferDecoder.decodeFields(encode, [c2, c3]);
     expect(decode.getInt(3), 12);
     expect(decode.getString(2), "hi");
   });
@@ -52,6 +51,7 @@ void _message() {
       final decode = _TestNestedMessage.deserialize(bytes);
       expect(decode, value);
     }
+
     {
       final value = _TestNestedMessage(i: null, b: "hi");
       final bytes = value.toBuffer();
@@ -59,6 +59,7 @@ void _message() {
       final decode = _TestNestedMessage.deserialize(bytes);
       expect(decode, value);
     }
+
     {
       final value = _TestNestedMessage(i: 5, b: "hi");
       final bytes = value.toBuffer();
@@ -98,6 +99,7 @@ void _message() {
       final decode = _TestMessage2.deserialize(r.toBuffer());
       expect(decode, r);
     }
+
     {
       final int int32Field = -123;
       final BigInt int64Field = BigInt.from(-123456789);
@@ -225,10 +227,10 @@ void _repeatedPacked() {
         elementType: ProtoFieldType.fixed32,
         encoding: ProtoRepeatedEncoding.packed,
       );
-      final bytes = ProtocolBufferEncoder.encode(value, config);
+      final bytes = ProtoBufferEncoder.encodeField(value, config);
       expect(bytes, [154, 1, 12, 1, 0, 0, 0, 2, 0, 0, 0, 3, 0, 0, 0]);
 
-      final decode = ProtocolBufferDecoder.decode(bytes, [
+      final decode = ProtoBufferDecoder.decodeFields(bytes, [
         config,
       ]).getList<int>(fieldNumber);
       expect(decode, value);
@@ -241,10 +243,10 @@ void _repeatedPacked() {
         elementType: ProtoFieldType.sint32,
         encoding: ProtoRepeatedEncoding.packed,
       );
-      final bytes = ProtocolBufferEncoder.encode(value, config);
+      final bytes = ProtoBufferEncoder.encodeField(value, config);
       expect(bytes, [146, 1, 3, 1, 4, 5]);
 
-      final decode = ProtocolBufferDecoder.decode(bytes, [
+      final decode = ProtoBufferDecoder.decodeFields(bytes, [
         config,
       ]).getList<int>(fieldNumber);
       expect(decode, value);
@@ -262,9 +264,9 @@ void _repeatedEnum() {
         elementType: ProtoFieldType.enumType,
         encoding: ProtoRepeatedEncoding.packed,
       );
-      final bytes = ProtocolBufferEncoder.encode(value, config);
+      final bytes = ProtoBufferEncoder.encodeField(value, config);
       expect(bytes, [170, 1, 7, 1, 254, 255, 255, 255, 15, 0]);
-      final decode = ProtocolBufferDecoder.decode(bytes, [
+      final decode = ProtoBufferDecoder.decodeFields(bytes, [
         config,
       ]).getReapeatedEnum(fieldNumber, MyTestEnum.values);
       expect(decode, value);
@@ -282,10 +284,10 @@ void _repeatUnpacked() {
         elementType: ProtoFieldType.int32,
         encoding: ProtoRepeatedEncoding.unpacked,
       );
-      final bytes = ProtocolBufferEncoder.encode(value, config);
+      final bytes = ProtoBufferEncoder.encodeField(value, config);
       expect(bytes, []);
 
-      final decode = ProtocolBufferDecoder.decode(bytes, [
+      final decode = ProtoBufferDecoder.decodeFields(bytes, [
         config,
       ]).getList<int>(fieldNumber, defaultValue: []);
       expect(decode, value);
@@ -298,10 +300,10 @@ void _repeatUnpacked() {
         elementType: ProtoFieldType.int32,
         encoding: ProtoRepeatedEncoding.unpacked,
       );
-      final bytes = ProtocolBufferEncoder.encode(value, config);
+      final bytes = ProtoBufferEncoder.encodeField(value, config);
       expect(bytes, [176, 1, 1, 176, 1, 2, 176, 1, 3]);
 
-      final decode = ProtocolBufferDecoder.decode(bytes, [
+      final decode = ProtoBufferDecoder.decodeFields(bytes, [
         config,
       ]).getList<int>(fieldNumber);
       expect(decode, value);
@@ -315,22 +317,22 @@ void _enum() {
       final int fieldNumber = 14;
       final value = MyTestEnum.a;
       final config = ProtoFieldConfig.enumType(fieldNumber);
-      final bytes = ProtocolBufferEncoder.encode(value, config);
+      final bytes = ProtoBufferEncoder.encodeField(value, config);
       expect(bytes, [112, 0]);
 
-      final decode = ProtocolBufferDecoder.decode(bytes, [
+      final decode = ProtoBufferDecoder.decodeFields(bytes, [
         config,
       ]).getInt(fieldNumber);
-      expect(decode, value.protoValue);
+      expect(decode, value.value);
     }
     {
       final int fieldNumber = 14;
       final value = MyTestEnum.a;
       final config = ProtoFieldConfig.enumType(fieldNumber);
-      final bytes = ProtocolBufferEncoder.encode(value, config);
+      final bytes = ProtoBufferEncoder.encodeField(value, config);
       expect(bytes, [112, 0]);
 
-      final decode = ProtocolBufferDecoder.decode(bytes, [
+      final decode = ProtoBufferDecoder.decodeFields(bytes, [
         config,
       ]).getEnum(fieldNumber, MyTestEnum.values);
       expect(decode, value);
@@ -339,10 +341,10 @@ void _enum() {
       final int fieldNumber = 14;
       final value = MyTestEnum.c;
       final config = ProtoFieldConfig.enumType(fieldNumber);
-      final bytes = ProtocolBufferEncoder.encode(value, config);
+      final bytes = ProtoBufferEncoder.encodeField(value, config);
       expect(bytes, [112, 254, 255, 255, 255, 15]);
 
-      final decode = ProtocolBufferDecoder.decode(bytes, [
+      final decode = ProtoBufferDecoder.decodeFields(bytes, [
         config,
       ]).getEnum(fieldNumber, MyTestEnum.values);
       expect(decode, value);
@@ -355,7 +357,7 @@ void _string() {
     {
       final config = ProtoFieldConfig.string(3);
       expect(
-        () => ProtocolBufferEncoder.encode([0xC3, 0x28], config),
+        () => ProtoBufferEncoder.encodeField([0xC3, 0x28], config),
         throwsA(isA<ArgumentException>()),
       );
     }
@@ -363,10 +365,10 @@ void _string() {
       final int fieldNumber = 15;
       final value = StringUtils.encode('hi');
       final config = ProtoFieldConfig.string(fieldNumber);
-      final bytes = ProtocolBufferEncoder.encode(value, config);
+      final bytes = ProtoBufferEncoder.encodeField(value, config);
       expect(bytes, [122, 2, 104, 105]);
 
-      final decode = ProtocolBufferDecoder.decode(bytes, [
+      final decode = ProtoBufferDecoder.decodeFields(bytes, [
         config,
       ]).getString(fieldNumber);
       expect(decode, "hi");
@@ -375,10 +377,10 @@ void _string() {
       final int fieldNumber = 15;
       final value = 'hi';
       final config = ProtoFieldConfig.string(fieldNumber);
-      final bytes = ProtocolBufferEncoder.encode(value, config);
+      final bytes = ProtoBufferEncoder.encodeField(value, config);
       expect(bytes, [122, 2, 104, 105]);
 
-      final decode = ProtocolBufferDecoder.decode(bytes, [
+      final decode = ProtoBufferDecoder.decodeFields(bytes, [
         config,
       ]).getString(fieldNumber);
       expect(decode, value);
@@ -392,10 +394,10 @@ void _bool() {
       final int fieldNumber = 13;
       final value = "true";
       final config = ProtoFieldConfig.bool(fieldNumber);
-      final bytes = ProtocolBufferEncoder.encode(value, config);
+      final bytes = ProtoBufferEncoder.encodeField(value, config);
       expect(bytes, [104, 1]);
 
-      final decode = ProtocolBufferDecoder.decode(bytes, [
+      final decode = ProtoBufferDecoder.decodeFields(bytes, [
         config,
       ]).getBool(fieldNumber);
       expect(decode, true);
@@ -404,10 +406,10 @@ void _bool() {
       final int fieldNumber = 13;
       final value = false;
       final config = ProtoFieldConfig.bool(fieldNumber);
-      final bytes = ProtocolBufferEncoder.encode(value, config);
+      final bytes = ProtoBufferEncoder.encodeField(value, config);
       expect(bytes, [104, 0]);
 
-      final decode = ProtocolBufferDecoder.decode(bytes, [
+      final decode = ProtoBufferDecoder.decodeFields(bytes, [
         config,
       ]).getBool(fieldNumber);
       expect(decode, value);
@@ -421,10 +423,10 @@ void _bytes() {
       final int fieldNumber = 16;
       final value = BytesUtils.toHexString([0, 1, 2]);
       final config = ProtoFieldConfig.bytes(fieldNumber);
-      final bytes = ProtocolBufferEncoder.encode(value, config);
+      final bytes = ProtoBufferEncoder.encodeField(value, config);
       expect(bytes, [130, 1, 3, 0, 1, 2]);
 
-      final List<int> decode = ProtocolBufferDecoder.decode(bytes, [
+      final List<int> decode = ProtoBufferDecoder.decodeFields(bytes, [
         config,
       ]).getBytes(fieldNumber);
       expect(BytesUtils.toHexString(decode), value);
@@ -433,10 +435,10 @@ void _bytes() {
       final int fieldNumber = 16;
       final value = [];
       final config = ProtoFieldConfig.bytes(fieldNumber);
-      final bytes = ProtocolBufferEncoder.encode(value, config);
+      final bytes = ProtoBufferEncoder.encodeField(value, config);
       expect(bytes, [130, 1, 0]);
 
-      final decode = ProtocolBufferDecoder.decode(bytes, [
+      final decode = ProtoBufferDecoder.decodeFields(bytes, [
         config,
       ]).getBytes(fieldNumber);
       expect(decode, value);
@@ -445,10 +447,10 @@ void _bytes() {
       final int fieldNumber = 16;
       final value = [0, 1, 2];
       final config = ProtoFieldConfig.bytes(fieldNumber);
-      final bytes = ProtocolBufferEncoder.encode(value, config);
+      final bytes = ProtoBufferEncoder.encodeField(value, config);
       expect(bytes, [130, 1, 3, 0, 1, 2]);
 
-      final decode = ProtocolBufferDecoder.decode(bytes, [
+      final decode = ProtoBufferDecoder.decodeFields(bytes, [
         config,
       ]).getBytes(fieldNumber);
       expect(decode, value);
@@ -461,7 +463,7 @@ void _numbers() {
     {
       final config = ProtoFieldConfig.float(3);
       expect(
-        () => ProtocolBufferEncoder.encode("", config),
+        () => ProtoBufferEncoder.encodeField("", config),
         throwsA(isA<ArgumentException>()),
       );
     }
@@ -469,10 +471,10 @@ void _numbers() {
       final int fieldNumber = 11;
       final value = "1230.123";
       final config = ProtoFieldConfig.float(fieldNumber);
-      final bytes = ProtocolBufferEncoder.encode(value, config);
+      final bytes = ProtoBufferEncoder.encodeField(value, config);
       expect(bytes, [93, 240, 195, 153, 68]);
 
-      final decode = ProtocolBufferDecoder.decode(bytes, [
+      final decode = ProtoBufferDecoder.decodeFields(bytes, [
         config,
       ]).getDouble(fieldNumber);
       expect("${decode?.toStringAsFixed(3)}", value);
@@ -481,10 +483,10 @@ void _numbers() {
       final int fieldNumber = 11;
       final value = 1230.123;
       final config = ProtoFieldConfig.float(fieldNumber);
-      final bytes = ProtocolBufferEncoder.encode(value, config);
+      final bytes = ProtoBufferEncoder.encodeField(value, config);
       expect(bytes, [93, 240, 195, 153, 68]);
 
-      final decode = ProtocolBufferDecoder.decode(bytes, [
+      final decode = ProtoBufferDecoder.decodeFields(bytes, [
         config,
       ]).getDouble(fieldNumber);
       expect("${decode?.toStringAsFixed(3)}", "$value");
@@ -496,10 +498,10 @@ void _numbers() {
       final int fieldNumber = 12;
       final value = 0.0;
       final config = ProtoFieldConfig.double(fieldNumber);
-      final bytes = ProtocolBufferEncoder.encode(value, config);
+      final bytes = ProtoBufferEncoder.encodeField(value, config);
       expect(bytes, [97, 0, 0, 0, 0, 0, 0, 0, 0]);
 
-      final decode = ProtocolBufferDecoder.decode(bytes, [
+      final decode = ProtoBufferDecoder.decodeFields(bytes, [
         config,
       ]).getDouble(fieldNumber);
       expect(decode, value);
@@ -508,10 +510,10 @@ void _numbers() {
       final int fieldNumber = 12;
       final value = -1.23;
       final config = ProtoFieldConfig.double(fieldNumber);
-      final bytes = ProtocolBufferEncoder.encode(value, config);
+      final bytes = ProtoBufferEncoder.encodeField(value, config);
       expect(bytes, [97, 174, 71, 225, 122, 20, 174, 243, 191]);
 
-      final decode = ProtocolBufferDecoder.decode(bytes, [
+      final decode = ProtoBufferDecoder.decodeFields(bytes, [
         config,
       ]).getDouble(fieldNumber);
       expect(decode, value);
@@ -520,13 +522,33 @@ void _numbers() {
 
   test("fixed32", () {
     {
+      final encoded = ProtoBufferEncoder.encodeField(
+        -1,
+        ProtoFieldConfig.int32(1),
+      );
+      final decode = ProtoBufferDecoder.decodeFields(encoded, [
+        ProtoFieldConfig.int32(1),
+      ]);
+      expect(decode.getInt(1), -1);
+    }
+    {
+      final encoded = ProtoBufferEncoder.encodeField(
+        -2147483648,
+        ProtoFieldConfig.int32(1),
+      );
+      final decode = ProtoBufferDecoder.decodeFields(encoded, [
+        ProtoFieldConfig.int32(1),
+      ]);
+      expect(decode.getInt(1), -2147483648);
+    }
+    {
       final config = ProtoFieldConfig.fixed32(3);
       expect(
-        () => ProtocolBufferEncoder.encode(-1, config),
+        () => ProtoBufferEncoder.encodeField(-1, config),
         throwsA(isA<ArgumentException>()),
       );
       expect(
-        () => ProtocolBufferEncoder.encode(BinaryOps.maxUint32 + 1, config),
+        () => ProtoBufferEncoder.encodeField(BinaryOps.maxUint32 + 1, config),
         throwsA(isA<ArgumentException>()),
       );
     }
@@ -534,10 +556,10 @@ void _numbers() {
       final int fieldNumber = 7;
       final value = BinaryOps.maxUint32;
       final config = ProtoFieldConfig.fixed32(fieldNumber);
-      final bytes = ProtocolBufferEncoder.encode(value, config);
+      final bytes = ProtoBufferEncoder.encodeField(value, config);
       expect(bytes, [61, 255, 255, 255, 255]);
 
-      final decode = ProtocolBufferDecoder.decode(bytes, [
+      final decode = ProtoBufferDecoder.decodeFields(bytes, [
         config,
       ]).getInt(fieldNumber);
       expect(decode, value);
@@ -546,10 +568,10 @@ void _numbers() {
       final int fieldNumber = 7;
       final value = 0;
       final config = ProtoFieldConfig.fixed32(fieldNumber);
-      final bytes = ProtocolBufferEncoder.encode(value, config);
+      final bytes = ProtoBufferEncoder.encodeField(value, config);
       expect(bytes, [61, 0, 0, 0, 0]);
 
-      final decode = ProtocolBufferDecoder.decode(bytes, [
+      final decode = ProtoBufferDecoder.decodeFields(bytes, [
         config,
       ]).getInt(fieldNumber);
       expect(decode, value);
@@ -559,11 +581,11 @@ void _numbers() {
     {
       final config = ProtoFieldConfig.fixed64(3);
       expect(
-        () => ProtocolBufferEncoder.encode(-BigInt.one, config),
+        () => ProtoBufferEncoder.encodeField(-BigInt.one, config),
         throwsA(isA<ArgumentException>()),
       );
       expect(
-        () => ProtocolBufferEncoder.encode(
+        () => ProtoBufferEncoder.encodeField(
           BinaryOps.maskBig64 + BigInt.one,
           config,
         ),
@@ -574,10 +596,10 @@ void _numbers() {
       final int fieldNumber = 8;
       final value = BigInt.zero;
       final config = ProtoFieldConfig.fixed64(fieldNumber);
-      final bytes = ProtocolBufferEncoder.encode(value, config);
+      final bytes = ProtoBufferEncoder.encodeField(value, config);
       expect(bytes, [65, 0, 0, 0, 0, 0, 0, 0, 0]);
 
-      final decode = ProtocolBufferDecoder.decode(bytes, [
+      final decode = ProtoBufferDecoder.decodeFields(bytes, [
         config,
       ]).getBigInt(fieldNumber);
       expect(decode, value);
@@ -586,10 +608,10 @@ void _numbers() {
       final int fieldNumber = 8;
       final value = BigInt.parse("9223372036854775807");
       final config = ProtoFieldConfig.fixed64(fieldNumber);
-      final bytes = ProtocolBufferEncoder.encode(value, config);
+      final bytes = ProtoBufferEncoder.encodeField(value, config);
       expect(bytes, [65, 255, 255, 255, 255, 255, 255, 255, 127]);
 
-      final decode = ProtocolBufferDecoder.decode(bytes, [
+      final decode = ProtoBufferDecoder.decodeFields(bytes, [
         config,
       ]).getBigInt(fieldNumber);
       expect(decode, value);
@@ -599,17 +621,17 @@ void _numbers() {
     final value = BinaryOps.maxI128;
     final config = ProtoFieldConfig.sint64(3);
     expect(
-      () => ProtocolBufferEncoder.encode(value, config),
+      () => ProtoBufferEncoder.encodeField(value, config),
       throwsA(isA<ArgumentException>()),
     );
     {
       final int fieldNumber = 6;
       final value = BigInt.parse("9223372036854775807");
       final config = ProtoFieldConfig.sint64(fieldNumber);
-      final bytes = ProtocolBufferEncoder.encode(value, config);
+      final bytes = ProtoBufferEncoder.encodeField(value, config);
       expect(bytes, [48, 254, 255, 255, 255, 255, 255, 255, 255, 255, 1]);
 
-      final decode = ProtocolBufferDecoder.decode(bytes, [
+      final decode = ProtoBufferDecoder.decodeFields(bytes, [
         config,
       ]).getBigInt(fieldNumber);
       expect(decode, value);
@@ -618,10 +640,10 @@ void _numbers() {
       final int fieldNumber = 6;
       final value = BigInt.parse("-1");
       final config = ProtoFieldConfig.sint64(fieldNumber);
-      final bytes = ProtocolBufferEncoder.encode(value, config);
+      final bytes = ProtoBufferEncoder.encodeField(value, config);
       expect(bytes, [48, 1]);
 
-      final decode = ProtocolBufferDecoder.decode(bytes, [
+      final decode = ProtoBufferDecoder.decodeFields(bytes, [
         config,
       ]).getBigInt(fieldNumber);
       expect(decode, value);
@@ -630,9 +652,9 @@ void _numbers() {
       final int fieldNumber = 6;
       final value = BigInt.parse("-9223372036854775808");
       final config = ProtoFieldConfig.sint64(fieldNumber);
-      final bytes = ProtocolBufferEncoder.encode(value, config);
+      final bytes = ProtoBufferEncoder.encodeField(value, config);
       expect(bytes, [48, 255, 255, 255, 255, 255, 255, 255, 255, 255, 1]);
-      final decode = ProtocolBufferDecoder.decode(bytes, [
+      final decode = ProtoBufferDecoder.decodeFields(bytes, [
         config,
       ]).getBigInt(fieldNumber);
       expect(decode, value);
@@ -643,7 +665,7 @@ void _numbers() {
       final value = -BinaryOps.maxUint32 - 2;
       final config = ProtoFieldConfig.sint32(3);
       expect(
-        () => ProtocolBufferEncoder.encode(value, config),
+        () => ProtoBufferEncoder.encodeField(value, config),
         throwsA(isA<ArgumentException>()),
       );
     }
@@ -651,9 +673,9 @@ void _numbers() {
       final int fieldNumber = 5;
       final value = BinaryOps.minInt32;
       final config = ProtoFieldConfig.sint32(fieldNumber);
-      final bytes = ProtocolBufferEncoder.encode(value, config);
+      final bytes = ProtoBufferEncoder.encodeField(value, config);
       expect(bytes, [40, 255, 255, 255, 255, 15]);
-      final decode = ProtocolBufferDecoder.decode(bytes, [
+      final decode = ProtoBufferDecoder.decodeFields(bytes, [
         config,
       ]).getInt(fieldNumber);
       expect(decode, value);
@@ -662,9 +684,9 @@ void _numbers() {
       final int fieldNumber = 5;
       final value = -1;
       final config = ProtoFieldConfig.sint32(fieldNumber);
-      final bytes = ProtocolBufferEncoder.encode(value, config);
+      final bytes = ProtoBufferEncoder.encodeField(value, config);
       expect(bytes, [40, 1]);
-      final decode = ProtocolBufferDecoder.decode(bytes, [
+      final decode = ProtoBufferDecoder.decodeFields(bytes, [
         config,
       ]).getInt(fieldNumber);
       expect(decode, value);
@@ -674,9 +696,9 @@ void _numbers() {
       final int fieldNumber = 5;
       final value = 1;
       final config = ProtoFieldConfig.sint32(fieldNumber);
-      final bytes = ProtocolBufferEncoder.encode(value, config);
+      final bytes = ProtoBufferEncoder.encodeField(value, config);
       expect(bytes, [40, 2]);
-      final decode = ProtocolBufferDecoder.decode(bytes, [
+      final decode = ProtoBufferDecoder.decodeFields(bytes, [
         config,
       ]).getInt(fieldNumber);
       expect(decode, value);
@@ -687,7 +709,7 @@ void _numbers() {
       final fieldNumber = 4;
       final config = ProtoFieldConfig.uint64(fieldNumber);
       expect(
-        () => ProtocolBufferEncoder.encode(-BigInt.one, config),
+        () => ProtoBufferEncoder.encodeField(-BigInt.one, config),
         throwsA(isA<ArgumentException>()),
       );
     }
@@ -695,9 +717,9 @@ void _numbers() {
       final value = BinaryOps.maxInt64;
       final fieldNumber = 4;
       final config = ProtoFieldConfig.int64(fieldNumber);
-      final bytes = ProtocolBufferEncoder.encode(value, config);
+      final bytes = ProtoBufferEncoder.encodeField(value, config);
       expect(bytes, [32, 255, 255, 255, 255, 255, 255, 255, 255, 127]);
-      final decode = ProtocolBufferDecoder.decode(bytes, [
+      final decode = ProtoBufferDecoder.decodeFields(bytes, [
         config,
       ]).getBigInt(fieldNumber);
       expect(decode, value);
@@ -706,9 +728,9 @@ void _numbers() {
       final value = BigInt.from(BinaryOps.maxUint32);
       final fieldNumber = 3;
       final config = ProtoFieldConfig.int64(fieldNumber);
-      final bytes = ProtocolBufferEncoder.encode(value, config);
+      final bytes = ProtoBufferEncoder.encodeField(value, config);
       expect(bytes, [24, 255, 255, 255, 255, 15]);
-      final decode = ProtocolBufferDecoder.decode(bytes, [
+      final decode = ProtoBufferDecoder.decodeFields(bytes, [
         config,
       ]).getBigInt(fieldNumber);
       expect(decode, value);
@@ -717,9 +739,9 @@ void _numbers() {
       final value = BigInt.zero;
       final fieldNumber = 4;
       final config = ProtoFieldConfig.int64(fieldNumber);
-      final bytes = ProtocolBufferEncoder.encode(value, config);
+      final bytes = ProtoBufferEncoder.encodeField(value, config);
       expect(bytes, [32, 0]);
-      final decode = ProtocolBufferDecoder.decode(bytes, [
+      final decode = ProtoBufferDecoder.decodeFields(bytes, [
         config,
       ]).getBigInt(fieldNumber);
       expect(decode, value);
@@ -730,63 +752,72 @@ void _numbers() {
       final value = -1;
       final config = ProtoFieldConfig.uint32(3);
       expect(
-        () => ProtocolBufferEncoder.encode(value, config),
+        () => ProtoBufferEncoder.encodeField(value, config),
         throwsA(isA<ArgumentException>()),
       );
     }
     {
       final value = BinaryOps.maxUint32;
       final config = ProtoFieldConfig.uint32(3);
-      final bytes = ProtocolBufferEncoder.encode(value, config);
+      final bytes = ProtoBufferEncoder.encodeField(value, config);
       expect(bytes, [24, 255, 255, 255, 255, 15]);
-      final decode = ProtocolBufferDecoder.decode(bytes, [config]).getInt(3);
+      final decode = ProtoBufferDecoder.decodeFields(bytes, [config]).getInt(3);
       expect(decode, value);
     }
     {
       final config = ProtoFieldConfig.int32(3);
-      final bytes = ProtocolBufferEncoder.encode(0, config);
+      final bytes = ProtoBufferEncoder.encodeField(0, config);
       expect(bytes, [24, 0]);
-      final decode = ProtocolBufferDecoder.decode(bytes, [config]).getInt(3);
+      final decode = ProtoBufferDecoder.decodeFields(bytes, [config]).getInt(3);
       expect(decode, 0);
     }
   });
 }
 
-enum MyTestEnum implements ProtobufEnumVariant {
-  a(0),
-  b(1),
-  c(-2);
+enum MyTestEnum implements ProtoEnumVariant {
+  a(0, "a"),
+  b(1, "b"),
+  c(-2, "c");
 
-  const MyTestEnum(this.protoValue);
+  const MyTestEnum(this.value, this.protoName);
   @override
-  final int protoValue;
+  final int value;
+
+  @override
+  final String protoName;
 }
 
-class _TestNestedMessage with ProtobufEncodableMessage, Equality {
+class _TestNestedMessage extends IProtoMessage with Equality {
   final int? i;
   final String? b;
   _TestNestedMessage({required this.i, required this.b});
   factory _TestNestedMessage.deserialize(List<int> bytes) {
-    final decode = ProtobufEncodableMessage.deserialize(bytes, _bufferFields);
+    final decode = IProtoMessage.deserialize(bytes, staticProtoConfig());
 
     return _TestNestedMessage(i: decode.getInt(1), b: decode.getString(2));
   }
 
-  static List<ProtoFieldConfig> get _bufferFields => [
-    ProtoFieldConfig.int32(1),
-    ProtoFieldConfig.string(2),
-  ];
   @override
   List<dynamic> get variables => [i, b];
 
   @override
-  List<ProtoFieldConfig> get bufferFields => _bufferFields;
+  List<Object?> get protoValues => [i, b];
+
+  static ProtoMessageConfig staticProtoConfig() {
+    return ProtoMessageConfig(
+      syntax: ProtoSyntax.v3,
+      options: const [],
+      fields: [ProtoFieldConfig.int32(1), ProtoFieldConfig.string(2)],
+    );
+  }
 
   @override
-  List<Object?> get bufferValues => [i, b];
+  ProtoMessageConfig protoConfig() {
+    return staticProtoConfig();
+  }
 }
 
-class _TestMessage2 with ProtobufEncodableMessage, Equality {
+class _TestMessage2 extends IProtoMessage with Equality {
   final int? nestedInt32;
   final String? nestedString;
   final List<int>? repeatedInt32;
@@ -809,7 +840,7 @@ class _TestMessage2 with ProtobufEncodableMessage, Equality {
     this.repeatedUnpackedSint64,
   });
   factory _TestMessage2.deserialize(List<int> bytes) {
-    final decode = ProtobufEncodableMessage.deserialize(bytes, _bufferFields);
+    final decode = IProtoMessage.deserialize(bytes, staticProtoConfig());
     return _TestMessage2(
       nestedInt32: decode.getInt(1),
       nestedString: decode.getString(2),
@@ -881,11 +912,22 @@ class _TestMessage2 with ProtobufEncodableMessage, Equality {
       encoding: ProtoRepeatedEncoding.unpacked,
     ),
   ];
-  @override
-  List<ProtoFieldConfig> get bufferFields => _bufferFields;
+
+  static ProtoMessageConfig staticProtoConfig() {
+    return ProtoMessageConfig(
+      syntax: ProtoSyntax.v3,
+      options: const [],
+      fields: _bufferFields,
+    );
+  }
 
   @override
-  List<Object?> get bufferValues => [
+  ProtoMessageConfig protoConfig() {
+    return staticProtoConfig();
+  }
+
+  @override
+  List<Object?> get protoValues => [
     nestedInt32,
     nestedString,
     repeatedInt32,
@@ -898,7 +940,7 @@ class _TestMessage2 with ProtobufEncodableMessage, Equality {
   ];
 }
 
-class _TestMessage with ProtobufEncodableMessage, Equality {
+class _TestMessage extends IProtoMessage with Equality {
   final int? int32Field;
   final BigInt? int64Field;
   final int? uin32Field;
@@ -954,7 +996,7 @@ class _TestMessage with ProtobufEncodableMessage, Equality {
     this.mapIntString,
   });
   factory _TestMessage.deserialize(List<int> bytes) {
-    final decode = ProtobufEncodableMessage.deserialize(bytes, _bufferFields);
+    final decode = IProtoMessage.deserialize(bytes, staticProtoConfig());
     return _TestMessage(
       int32Field: decode.getInt(1),
       int64Field: decode.getBigInt(2),
@@ -1034,7 +1076,7 @@ class _TestMessage with ProtobufEncodableMessage, Equality {
     ProtoFieldConfig.sFixed64(10),
     ProtoFieldConfig.float(11),
     ProtoFieldConfig.double(12),
-    ProtoFieldConfig.bool(13),
+    ProtoFieldConfig.bool(13, hasOptionalFlags: true),
     ProtoFieldConfig.enumType(14),
     ProtoFieldConfig.string(15),
     ProtoFieldConfig.bytes(16),
@@ -1090,11 +1132,9 @@ class _TestMessage with ProtobufEncodableMessage, Equality {
       valueType: ProtoFieldType.message,
     ),
   ];
-  @override
-  List<ProtoFieldConfig> get bufferFields => _bufferFields;
 
   @override
-  List<Object?> get bufferValues => [
+  List<Object?> get protoValues => [
     int32Field,
     int64Field,
     uin32Field,
@@ -1122,4 +1162,17 @@ class _TestMessage with ProtobufEncodableMessage, Equality {
     mapIntString,
     mapStringMessage,
   ];
+
+  static ProtoMessageConfig staticProtoConfig() {
+    return ProtoMessageConfig(
+      syntax: ProtoSyntax.v3,
+      options: const [],
+      fields: _bufferFields,
+    );
+  }
+
+  @override
+  ProtoMessageConfig protoConfig() {
+    return staticProtoConfig();
+  }
 }

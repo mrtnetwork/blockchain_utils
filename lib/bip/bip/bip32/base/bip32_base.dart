@@ -244,6 +244,7 @@ abstract class Bip32Base<BIP extends Bip32Base<BIP>>
   /// Derives a new BIP-32 key using a derivation path.
   ///
   /// The [path] parameter represents the derivation path, such as "m/0/1/2".
+  @override
   BIP derivePath(String path) {
     final pathInstance = Bip32PathParser.parse(path);
 
@@ -264,6 +265,7 @@ abstract class Bip32Base<BIP extends Bip32Base<BIP>>
   }
 
   /// Derives a child BIP-32 key from the current key.
+  @override
   BIP childKey(Bip32KeyIndex index);
 
   /// Converts this BIP-32 key to a public-only key.

@@ -1,11 +1,12 @@
 import 'dart:typed_data' show Endian;
 
 import 'package:blockchain_utils/crypto/crypto/exception/exception.dart';
-import 'package:blockchain_utils/exception/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 
 import 'package:blockchain_utils/crypto/crypto/ec/curve/curve.dart';
 import 'package:blockchain_utils/crypto/crypto/ec/curve/curves.dart';
 import 'package:blockchain_utils/crypto/crypto/ec/extended/native/edwards.dart';
+import 'package:blockchain_utils/helper/helper.dart';
 import 'package:blockchain_utils/utils/numbers/utils/bigint_utils.dart';
 
 /// A class representing a RistrettoPoint, a point on an elliptic curve
@@ -339,6 +340,6 @@ class RistrettoPoint extends EDPoint {
     if (isOdd(s, primeP)) {
       s = positiveMod(-s, primeP);
     }
-    return BigintUtils.toBytes(s, order: Endian.little, length: 32);
+    return s.toLeBytes(length: 32);
   }
 }

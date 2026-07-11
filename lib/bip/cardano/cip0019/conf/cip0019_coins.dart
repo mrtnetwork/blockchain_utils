@@ -8,14 +8,16 @@ import 'package:blockchain_utils/helper/extensions/extensions.dart';
 /// networks and test networks of various cryptocurrencies.
 enum Cip0019Coins implements BipCoins {
   // Mainnets
-  byronLegacy('byronLegacy'),
+  byronLegacy('byronLegacy', 601),
 
   /// Testnets
-  byronLegacyTestnet('byronLegacyTestnet');
+  byronLegacyTestnet('byronLegacyTestnet', 602);
 
   final String name;
+  @override
+  final int identifier;
 
-  const Cip0019Coins(this.name);
+  const Cip0019Coins(this.name, this.identifier);
 
   @override
   Cip0019Coins get value => this;

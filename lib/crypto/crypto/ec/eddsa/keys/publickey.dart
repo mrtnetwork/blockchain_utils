@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 import 'package:blockchain_utils/crypto/crypto/ec/utils/ed25519.dart';
-import 'package:blockchain_utils/exception/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/helper/helper.dart';
 import 'package:blockchain_utils/crypto/crypto/ec/curve/curves.dart';
 import 'package:blockchain_utils/crypto/crypto/ec/extended/native/edwards.dart';
@@ -91,7 +91,7 @@ class EDDSAPublicKey with Equality {
   ///   - [ArgumentException]: If the signature length is invalid or if the signature is
   ///     found to be invalid during the verification process.
   ///
-  bool verify(List<int> data, List<int> signature, HashFunc hashMethod) {
+  bool verify(List<int> data, List<int> signature, CbHashFunc hashMethod) {
     final n = generator.order;
     if (n == null) {
       throw ArgumentException.invalidOperationArguments(
@@ -105,7 +105,6 @@ class EDDSAPublicKey with Equality {
         "verify",
         name: "signature",
         reason: "Invalid signature bytes length.",
-        expecteLen: baselen * 2,
       );
     }
 

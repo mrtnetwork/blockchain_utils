@@ -1,5 +1,5 @@
 import 'package:blockchain_utils/crypto/crypto/blockcipher/blockcipher.dart';
-import 'package:blockchain_utils/exception/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/helper/helper.dart';
 
 /// Implements a block cipher using CBC mode.

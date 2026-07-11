@@ -3,7 +3,7 @@ import 'package:blockchain_utils/crypto/crypto/ec/extended/crypto_ops/models/mod
 import 'package:blockchain_utils/crypto/crypto/ec/extended/native/edwards.dart';
 import 'package:blockchain_utils/crypto/crypto/ec/utils/ed25519.dart';
 import 'package:blockchain_utils/crypto/crypto/exception/exception.dart';
-import 'package:blockchain_utils/exception/exception/exception.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/helper/extensions/extensions.dart';
 import 'package:blockchain_utils/utils/binary/utils.dart';
 
@@ -4993,7 +4993,6 @@ class CryptoOps {
     CryptoOps.slide(cslide, c);
 
     EDPoint? r;
-    // Logg.error("calll ?!");
     for (int i = 255; i >= 0; i--) {
       final aVal = aslide[i];
       final bVal = bslide[i];
@@ -5069,7 +5068,6 @@ class CryptoOps {
     final aI = geDsmPrecompVar(gA);
     final Map<int, String> res = {};
     EDPoint? r;
-    // Logg.error("calll ?!");
     for (int i = 255; i >= 0; i--) {
       final aVal = aslide[i];
       final bVal = bslide[i];

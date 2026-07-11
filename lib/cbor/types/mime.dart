@@ -4,7 +4,6 @@ import 'package:blockchain_utils/cbor/utils/dynamic_bytes.dart';
 import 'package:blockchain_utils/cbor/core/tags.dart';
 import 'package:blockchain_utils/cbor/core/cbor.dart';
 import 'package:blockchain_utils/cbor/types/string.dart';
-import 'package:blockchain_utils/utils/binary/utils.dart';
 
 /// A class representing a CBOR (Concise Binary Object Representation) mime value.
 class CborMimeValue extends CborObject<String> {
@@ -26,15 +25,9 @@ class CborMimeValue extends CborObject<String> {
     return bytes.toBytes();
   }
 
-  /// Encode the value into CBOR bytes an then to hex
-  @override
-  String toCborHex() {
-    return BytesUtils.toHexString(encode());
-  }
-
   /// Returns the string representation of the value.
   @override
   String toString() {
-    return value;
+    return "CborMimeValue($value)";
   }
 }

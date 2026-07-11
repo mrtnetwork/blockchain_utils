@@ -50,7 +50,10 @@ class ETHSigner {
     final prefix =
         CryptoSignerConst.ethPersonalSignPrefix +
         (payloadLength?.toString() ?? digest.length.toString());
-    final prefixBytes = StringUtils.encode(prefix, type: StringEncoding.ascii);
+    final prefixBytes = StringUtils.encode(
+      prefix,
+      encoding: StringEncoding.ascii,
+    );
     final signature = sign([
       ...prefixBytes,
       ...digest,
@@ -66,7 +69,10 @@ class ETHSigner {
     final prefix =
         CryptoSignerConst.ethPersonalSignPrefix +
         (payloadLength?.toString() ?? digest.length.toString());
-    final prefixBytes = StringUtils.encode(prefix, type: StringEncoding.ascii);
+    final prefixBytes = StringUtils.encode(
+      prefix,
+      encoding: StringEncoding.ascii,
+    );
     final sign = signConst([
       ...prefixBytes,
       ...digest,
@@ -167,7 +173,7 @@ class ETHVerifier {
           (payloadLength?.toString() ?? message.length.toString());
       final prefixBytes = StringUtils.encode(
         prefix,
-        type: StringEncoding.ascii,
+        encoding: StringEncoding.ascii,
       );
       return QuickCrypto.keccack256Hash(<int>[...prefixBytes, ...message]);
     }
