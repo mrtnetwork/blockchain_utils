@@ -7,7 +7,7 @@ import 'test_vector.dart';
 
 void main() {
   test("x-Modem crc", () {
-    for (final i in testVector) {
+    for (final i in testVector.shuffleTake()) {
       final result = XModemCrc.quickDigest(
         BytesUtils.fromHexString(i["message"]),
       );

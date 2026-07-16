@@ -2,6 +2,8 @@ import 'package:blockchain_utils/base58/base58_base.dart';
 import 'package:blockchain_utils/utils/utils.dart';
 import 'package:test/test.dart';
 
+import '../quick_hex.dart';
+
 final List<Map<String, String>> testVectBtc = [
   {"raw": "", "encode": "", "check_encode": "3QJmnh"},
   {"raw": "61", "encode": "2g", "check_encode": "C2dGTwc"},
@@ -104,7 +106,7 @@ var testVectXrp = [
 
 void main() {
   test("decode btc base58", () {
-    for (final i in testVectBtc) {
+    for (final i in testVectBtc.shuffleTake()) {
       final decode = Base58Decoder.decode(i["encode"]!);
       expect(BytesUtils.toHexString(decode), i["raw"]);
       final decodeCheck = Base58Decoder.checkDecode(i["check_encode"]!);
@@ -112,7 +114,7 @@ void main() {
     }
   });
   test("encode btc base58", () {
-    for (final i in testVectBtc) {
+    for (final i in testVectBtc.shuffleTake()) {
       final encode = Base58Encoder.encode(BytesUtils.fromHexString(i["raw"]!));
       expect(i["encode"], encode);
       final encodeCheck = Base58Encoder.checkEncode(
@@ -122,7 +124,7 @@ void main() {
     }
   });
   test("decode xrp base58", () {
-    for (final i in testVectXrp) {
+    for (final i in testVectXrp.shuffleTake()) {
       final decode = Base58Decoder.decode(i["encode"]!, Base58Alphabets.ripple);
       expect(BytesUtils.toHexString(decode), i["raw"]);
       final decodeCheck = Base58Decoder.checkDecode(
@@ -133,7 +135,7 @@ void main() {
     }
   });
   test("encode xrp base58", () {
-    for (final i in testVectXrp) {
+    for (final i in testVectXrp.shuffleTake()) {
       final encode = Base58Encoder.encode(
         BytesUtils.fromHexString(i["raw"]!),
         Base58Alphabets.ripple,

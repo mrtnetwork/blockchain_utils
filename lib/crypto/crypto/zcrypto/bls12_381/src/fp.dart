@@ -3,24 +3,23 @@ import 'package:blockchain_utils/crypto/crypto/zcrypto/bls12_381/src/core.dart';
 import 'package:blockchain_utils/crypto/crypto/zcrypto/pasta/utils/utils.dart';
 import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/helper/extensions/extensions.dart';
-import 'package:blockchain_utils/utils/compare/compare.dart';
+import 'package:blockchain_utils/numbers/src/u64.dart';
 import 'package:blockchain_utils/utils/equatable/equatable.dart';
 import 'package:blockchain_utils/utils/numbers/utils/bigint_utils.dart';
 
 /// Constants for the BLS12-381 base field GF(p).
 /// All values are expressed using `BigInt`.
 class Bls12FpConst {
-  /// Montgomery inverse of the modulus modulo 2⁶⁴ (BigInt-backed).
-  static BigInt get inv => BigInt.parse("0x89f3fffcfffcfffd");
+  static const Uint64 inv = Uint64.unsafe(2314469372, 4294770685);
 
   /// Modulus represented as fixed-size limb elements.
-  static final modulus = Bls12Fp([
-    BigInt.parse('0xb9feffffffffaaab'),
-    BigInt.parse('0x1eabfffeb153ffff'),
-    BigInt.parse('0x6730d2a0f6b0f624'),
-    BigInt.parse('0x64774b84f38512bf'),
-    BigInt.parse('0x4b1ba7b6434bacd7'),
-    BigInt.parse('0x1a0111ea397fe69a'),
+  static const modulus = Bls12Fp.unsafe([
+    Uint64.unsafe(3120496639, 4294945451),
+    Uint64.unsafe(514588670, 2975072255),
+    Uint64.unsafe(1731252896, 4138792484),
+    Uint64.unsafe(1685539716, 4085584575),
+    Uint64.unsafe(1260103606, 1129032919),
+    Uint64.unsafe(436277738, 964683418),
   ]);
 
   /// Prime modulus p of BLS12-381 as a single BigInt.
@@ -32,260 +31,249 @@ class Bls12FpConst {
 /// Implementation of the BLS12-381 base field GF(p).
 class Bls12Fp extends BlsField<Bls12Fp> with ConstantEquality<Bls12Fp> {
   /// Fixed-size limb representation of the field element.
-  final List<BigInt> limbs;
-  Bls12Fp(List<BigInt> limbs)
+  final List<Uint64> limbs;
+  const Bls12Fp.unsafe(this.limbs);
+  Bls12Fp(List<Uint64> limbs)
     : limbs = limbs.exc(length: 6, operation: "Bls12Fp").immutable;
 
   /// Montgomery reduction of a 12-limb intermediate into a BLS12-381 field element.
   factory Bls12Fp.montgomeryReduce(
-    BigInt t0,
-    BigInt t1,
-    BigInt t2,
-    BigInt t3,
-    BigInt t4,
-    BigInt t5,
-    BigInt t6,
-    BigInt t7,
-    BigInt t8,
-    BigInt t9,
-    BigInt t10,
-    BigInt t11,
+    Uint64 t0,
+    Uint64 t1,
+    Uint64 t2,
+    Uint64 t3,
+    Uint64 t4,
+    Uint64 t5,
+    Uint64 t6,
+    Uint64 t7,
+    Uint64 t8,
+    Uint64 t9,
+    Uint64 t10,
+    Uint64 t11,
   ) {
     final inv = Bls12FpConst.inv;
     // --- 1st iteration --------------------------------------------------------
-    BigInt k = (t0 * inv).toU64;
-    List<BigInt> tmp = BigintUtils.mac(
-      t0,
-      k,
-      Bls12FpConst.modulus.limbs[0],
-      BigInt.zero,
-    );
-    BigInt carry = tmp[1];
+    Uint64 k = t0 * inv;
+    var tmp = Uint64.mac(t0, k, Bls12FpConst.modulus.limbs[0], Uint64.zero);
+    Uint64 carry = tmp.$2;
 
-    tmp = BigintUtils.mac(t1, k, Bls12FpConst.modulus.limbs[1], carry);
-    BigInt r1 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(t1, k, Bls12FpConst.modulus.limbs[1], carry);
+    Uint64 r1 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(t2, k, Bls12FpConst.modulus.limbs[2], carry);
-    BigInt r2 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(t2, k, Bls12FpConst.modulus.limbs[2], carry);
+    Uint64 r2 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(t3, k, Bls12FpConst.modulus.limbs[3], carry);
-    BigInt r3 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(t3, k, Bls12FpConst.modulus.limbs[3], carry);
+    Uint64 r3 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(t4, k, Bls12FpConst.modulus.limbs[4], carry);
-    BigInt r4 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(t4, k, Bls12FpConst.modulus.limbs[4], carry);
+    Uint64 r4 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(t5, k, Bls12FpConst.modulus.limbs[5], carry);
-    BigInt r5 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(t5, k, Bls12FpConst.modulus.limbs[5], carry);
+    Uint64 r5 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.adc(t6, BigInt.zero, carry);
-    BigInt r6 = tmp[0];
-    BigInt r7 = tmp[1];
+    tmp = Uint64.adc(t6, Uint64.zero, carry);
+    Uint64 r6 = tmp.$1;
+    Uint64 r7 = tmp.$2;
 
     // --- 2nd iteration --------------------------------------------------------
-    k = (r1 * inv).toU64;
+    k = (r1 * inv);
 
-    tmp = BigintUtils.mac(r1, k, Bls12FpConst.modulus.limbs[0], BigInt.zero);
-    carry = tmp[1];
+    tmp = Uint64.mac(r1, k, Bls12FpConst.modulus.limbs[0], Uint64.zero);
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(r2, k, Bls12FpConst.modulus.limbs[1], carry);
-    r2 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(r2, k, Bls12FpConst.modulus.limbs[1], carry);
+    r2 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(r3, k, Bls12FpConst.modulus.limbs[2], carry);
-    r3 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(r3, k, Bls12FpConst.modulus.limbs[2], carry);
+    r3 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(r4, k, Bls12FpConst.modulus.limbs[3], carry);
-    r4 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(r4, k, Bls12FpConst.modulus.limbs[3], carry);
+    r4 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(r5, k, Bls12FpConst.modulus.limbs[4], carry);
-    r5 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(r5, k, Bls12FpConst.modulus.limbs[4], carry);
+    r5 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(r6, k, Bls12FpConst.modulus.limbs[5], carry);
-    r6 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(r6, k, Bls12FpConst.modulus.limbs[5], carry);
+    r6 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.adc(t7, r7, carry);
-    r7 = tmp[0];
-    BigInt r8 = tmp[1];
+    tmp = Uint64.adc(t7, r7, carry);
+    r7 = tmp.$1;
+    Uint64 r8 = tmp.$2;
 
     // --- 3rd iteration --------------------------------------------------------
-    k = (r2 * inv).toU64;
+    k = (r2 * inv);
 
-    tmp = BigintUtils.mac(r2, k, Bls12FpConst.modulus.limbs[0], BigInt.zero);
-    carry = tmp[1];
+    tmp = Uint64.mac(r2, k, Bls12FpConst.modulus.limbs[0], Uint64.zero);
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(r3, k, Bls12FpConst.modulus.limbs[1], carry);
-    r3 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(r3, k, Bls12FpConst.modulus.limbs[1], carry);
+    r3 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(r4, k, Bls12FpConst.modulus.limbs[2], carry);
-    r4 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(r4, k, Bls12FpConst.modulus.limbs[2], carry);
+    r4 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(r5, k, Bls12FpConst.modulus.limbs[3], carry);
-    r5 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(r5, k, Bls12FpConst.modulus.limbs[3], carry);
+    r5 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(r6, k, Bls12FpConst.modulus.limbs[4], carry);
-    r6 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(r6, k, Bls12FpConst.modulus.limbs[4], carry);
+    r6 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(r7, k, Bls12FpConst.modulus.limbs[5], carry);
-    r7 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(r7, k, Bls12FpConst.modulus.limbs[5], carry);
+    r7 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.adc(t8, r8, carry);
-    r8 = tmp[0];
-    BigInt r9 = tmp[1];
+    tmp = Uint64.adc(t8, r8, carry);
+    r8 = tmp.$1;
+    Uint64 r9 = tmp.$2;
 
     // --- 4th iteration --------------------------------------------------------
-    k = (r3 * inv).toU64;
+    k = (r3 * inv);
 
-    tmp = BigintUtils.mac(r3, k, Bls12FpConst.modulus.limbs[0], BigInt.zero);
-    carry = tmp[1];
+    tmp = Uint64.mac(r3, k, Bls12FpConst.modulus.limbs[0], Uint64.zero);
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(r4, k, Bls12FpConst.modulus.limbs[1], carry);
-    r4 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(r4, k, Bls12FpConst.modulus.limbs[1], carry);
+    r4 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(r5, k, Bls12FpConst.modulus.limbs[2], carry);
-    r5 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(r5, k, Bls12FpConst.modulus.limbs[2], carry);
+    r5 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(r6, k, Bls12FpConst.modulus.limbs[3], carry);
-    r6 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(r6, k, Bls12FpConst.modulus.limbs[3], carry);
+    r6 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(r7, k, Bls12FpConst.modulus.limbs[4], carry);
-    r7 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(r7, k, Bls12FpConst.modulus.limbs[4], carry);
+    r7 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(r8, k, Bls12FpConst.modulus.limbs[5], carry);
-    r8 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(r8, k, Bls12FpConst.modulus.limbs[5], carry);
+    r8 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.adc(t9, r9, carry);
-    r9 = tmp[0];
-    BigInt r10 = tmp[1];
+    tmp = Uint64.adc(t9, r9, carry);
+    r9 = tmp.$1;
+    Uint64 r10 = tmp.$2;
 
     // --- 5th iteration --------------------------------------------------------
-    k = (r4 * inv).toU64;
+    k = (r4 * inv);
 
-    tmp = BigintUtils.mac(r4, k, Bls12FpConst.modulus.limbs[0], BigInt.zero);
-    carry = tmp[1];
+    tmp = Uint64.mac(r4, k, Bls12FpConst.modulus.limbs[0], Uint64.zero);
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(r5, k, Bls12FpConst.modulus.limbs[1], carry);
-    r5 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(r5, k, Bls12FpConst.modulus.limbs[1], carry);
+    r5 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(r6, k, Bls12FpConst.modulus.limbs[2], carry);
-    r6 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(r6, k, Bls12FpConst.modulus.limbs[2], carry);
+    r6 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(r7, k, Bls12FpConst.modulus.limbs[3], carry);
-    r7 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(r7, k, Bls12FpConst.modulus.limbs[3], carry);
+    r7 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(r8, k, Bls12FpConst.modulus.limbs[4], carry);
-    r8 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(r8, k, Bls12FpConst.modulus.limbs[4], carry);
+    r8 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(r9, k, Bls12FpConst.modulus.limbs[5], carry);
-    r9 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(r9, k, Bls12FpConst.modulus.limbs[5], carry);
+    r9 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.adc(t10, r10, carry);
-    r10 = tmp[0];
-    BigInt r11 = tmp[1];
+    tmp = Uint64.adc(t10, r10, carry);
+    r10 = tmp.$1;
+    Uint64 r11 = tmp.$2;
 
     // --- 6th iteration --------------------------------------------------------
-    k = (r5 * inv).toU64;
+    k = (r5 * inv);
 
-    tmp = BigintUtils.mac(r5, k, Bls12FpConst.modulus.limbs[0], BigInt.zero);
-    carry = tmp[1];
+    tmp = Uint64.mac(r5, k, Bls12FpConst.modulus.limbs[0], Uint64.zero);
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(r6, k, Bls12FpConst.modulus.limbs[1], carry);
-    r6 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(r6, k, Bls12FpConst.modulus.limbs[1], carry);
+    r6 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(r7, k, Bls12FpConst.modulus.limbs[2], carry);
-    r7 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(r7, k, Bls12FpConst.modulus.limbs[2], carry);
+    r7 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(r8, k, Bls12FpConst.modulus.limbs[3], carry);
-    r8 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(r8, k, Bls12FpConst.modulus.limbs[3], carry);
+    r8 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(r9, k, Bls12FpConst.modulus.limbs[4], carry);
-    r9 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(r9, k, Bls12FpConst.modulus.limbs[4], carry);
+    r9 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(r10, k, Bls12FpConst.modulus.limbs[5], carry);
-    r10 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(r10, k, Bls12FpConst.modulus.limbs[5], carry);
+    r10 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.adc(t11, r11, carry);
-    r11 = tmp[0];
+    tmp = Uint64.adc(t11, r11, carry);
+    r11 = tmp.$1;
 
     // Final reduce: subtract modulus
     return Bls12Fp([r6, r7, r8, r9, r10, r11])._subtractP();
   }
 
-  /// Zero element of the BLS12-381 base field.
-  factory Bls12Fp.zero() => Bls12Fp(List.filled(6, BigInt.zero));
-
-  /// Square root of the BLS12-381 base field modulus.
-  factory Bls12Fp.r2() {
-    return Bls12Fp([
-      BigInt.parse('0xf4df1f341c341746'),
-      BigInt.parse('0x0a76e6a609d104f1'),
-      BigInt.parse('0x8de5476c4c95b6d5'),
-      BigInt.parse('0x67eb88a9939d83c0'),
-      BigInt.parse('0x9a793e85b519952d'),
-      BigInt.parse('0x11988fe592cae3aa'),
-    ]);
-  }
-
-  /// One element of the BLS12-381 base field.
-  factory Bls12Fp.one() {
-    return Bls12Fp([
-      BigInt.parse('0x760900000002fffd'),
-      BigInt.parse('0xebf4000bc40c0002'),
-      BigInt.parse('0x5f48985753c758ba'),
-      BigInt.parse('0x77ce585370525745'),
-      BigInt.parse('0x5c071a97a256ec6d'),
-      BigInt.parse('0x15f65ec3fa80e493'),
-    ]);
-  }
-
-  factory Bls12Fp.b() {
-    return Bls12Fp([
-      BigInt.parse('0xaa270000000cfff3'),
-      BigInt.parse('0x53cc0032fc34000a'),
-      BigInt.parse('0x478fe97a6b0a807f'),
-      BigInt.parse('0xb1d37ebee6ba24d7'),
-      BigInt.parse('0x8ec9733bbf78ab2f'),
-      BigInt.parse('0x09d645513d83de7e'),
-    ]);
-  }
-  factory Bls12Fp.beta() {
-    return Bls12Fp([
-      BigInt.parse('0x30f1361b798a64e8'),
-      BigInt.parse('0xf3b8ddab7ece5a2a'),
-      BigInt.parse('0x16a8ca3ac61577f7'),
-      BigInt.parse('0xc26a2ff874fd029b'),
-      BigInt.parse('0x3636b76660701c6e'),
-      BigInt.parse('0x051ba4ab241b6160'),
-    ]);
-  }
+  static const zero = Bls12Fp.unsafe([
+    Uint64.zero,
+    Uint64.zero,
+    Uint64.zero,
+    Uint64.zero,
+    Uint64.zero,
+    Uint64.zero,
+  ]);
+  static const one = Bls12Fp.unsafe([
+    Uint64.unsafe(1980301312, 196605),
+    Uint64.unsafe(3958636555, 3289120770),
+    Uint64.unsafe(1598593111, 1405573306),
+    Uint64.unsafe(2010011731, 1884444485),
+    Uint64.unsafe(1543969431, 2723605613),
+    Uint64.unsafe(368467651, 4202751123),
+  ]);
+  static const r2 = Bls12Fp.unsafe([
+    Uint64.unsafe(4108263220, 473175878),
+    Uint64.unsafe(175564454, 164693233),
+    Uint64.unsafe(2380613484, 1284880085),
+    Uint64.unsafe(1743489193, 2476573632),
+    Uint64.unsafe(2591637125, 3038352685),
+    Uint64.unsafe(295210981, 2462770090),
+  ]);
+  static const b = Bls12Fp.unsafe([
+    Uint64.unsafe(2854682624, 851955),
+    Uint64.unsafe(1405878322, 4231266314),
+    Uint64.unsafe(1200613754, 1795850367),
+    Uint64.unsafe(2983427774, 3870958807),
+    Uint64.unsafe(2395566907, 3212356399),
+    Uint64.unsafe(165037393, 1032052350),
+  ]);
+  static const beta = Bls12Fp.unsafe([
+    Uint64.unsafe(821114395, 2039112936),
+    Uint64.unsafe(4088978859, 2127452714),
+    Uint64.unsafe(380160570, 3323295735),
+    Uint64.unsafe(3261739000, 1962738331),
+    Uint64.unsafe(909555558, 1617960046),
+    Uint64.unsafe(85697707, 605774176),
+  ]);
 
   /// Creates a BLS12-381 field element from a byte array.
   factory Bls12Fp.fromBytes(List<int> bytes) {
@@ -296,116 +284,102 @@ class Bls12Fp extends BlsField<Bls12Fp> with ConstantEquality<Bls12Fp> {
       );
     }
     final tmp = Bls12Fp([
-      BigintUtils.fromBytes(bytes.sublist(40), byteOrder: Endian.big),
-      BigintUtils.fromBytes(bytes.sublist(32, 40), byteOrder: Endian.big),
-      BigintUtils.fromBytes(bytes.sublist(24, 32), byteOrder: Endian.big),
-      BigintUtils.fromBytes(bytes.sublist(16, 24), byteOrder: Endian.big),
-      BigintUtils.fromBytes(bytes.sublist(8, 16), byteOrder: Endian.big),
-      BigintUtils.fromBytes(bytes.sublist(0, 8), byteOrder: Endian.big),
+      Uint64.fromBytes(bytes, endian: Endian.big, offset: 40),
+      Uint64.fromBytes(bytes, endian: Endian.big, offset: 32),
+      Uint64.fromBytes(bytes, endian: Endian.big, offset: 24),
+      Uint64.fromBytes(bytes, endian: Endian.big, offset: 16),
+      Uint64.fromBytes(bytes, endian: Endian.big, offset: 8),
+      Uint64.fromBytes(bytes, endian: Endian.big),
     ]);
-    BigInt borrow = BigInt.zero;
-    List<BigInt> temp = BigintUtils.sbb(
-      tmp.limbs[0],
-      Bls12FpConst.modulus.limbs[0],
-      borrow,
-    );
-    borrow = temp[1];
-    temp = BigintUtils.sbb(tmp.limbs[1], Bls12FpConst.modulus.limbs[1], borrow);
-    borrow = temp[1];
-    temp = BigintUtils.sbb(tmp.limbs[2], Bls12FpConst.modulus.limbs[2], borrow);
-    borrow = temp[1];
-    temp = BigintUtils.sbb(tmp.limbs[3], Bls12FpConst.modulus.limbs[3], borrow);
-    borrow = temp[1];
-    temp = BigintUtils.sbb(tmp.limbs[4], Bls12FpConst.modulus.limbs[4], borrow);
-    borrow = temp[1];
-    temp = BigintUtils.sbb(tmp.limbs[5], Bls12FpConst.modulus.limbs[5], borrow);
-    borrow = temp[1];
+    Uint64 borrow = Uint64.zero;
+    var temp = Uint64.sbb(tmp.limbs[0], Bls12FpConst.modulus.limbs[0], borrow);
+    borrow = temp.$2;
+    temp = Uint64.sbb(tmp.limbs[1], Bls12FpConst.modulus.limbs[1], borrow);
+    borrow = temp.$2;
+    temp = Uint64.sbb(tmp.limbs[2], Bls12FpConst.modulus.limbs[2], borrow);
+    borrow = temp.$2;
+    temp = Uint64.sbb(tmp.limbs[3], Bls12FpConst.modulus.limbs[3], borrow);
+    borrow = temp.$2;
+    temp = Uint64.sbb(tmp.limbs[4], Bls12FpConst.modulus.limbs[4], borrow);
+    borrow = temp.$2;
+    temp = Uint64.sbb(tmp.limbs[5], Bls12FpConst.modulus.limbs[5], borrow);
+    borrow = temp.$2;
     // final result = tmp * Bls12FpConst.r2;
-    if ((borrow & BigInt.one) != BigInt.one) {
+    if ((borrow & Uint64.one) != Uint64.one) {
       throw ArgumentException.invalidOperationArguments(
         "Bls12Fp",
         reason: "Invalid field encoding bytes.",
       );
     }
-    return tmp * Bls12Fp.r2();
+    return tmp * Bls12Fp.r2;
   }
 
   factory Bls12Fp.sumOfProducts(List<Bls12Fp> a, List<Bls12Fp> b) {
     final int length = a.length;
-    List<BigInt> u = List.filled(6, BigInt.zero);
+    List<Uint64> u = List.filled(6, Uint64.zero);
 
     for (int j = 0; j < 6; j++) {
       // Accumulate products for limb j
-      List<BigInt> t = [...u, BigInt.zero]; // t0..t5 + t6
+      List<Uint64> t = [...u, Uint64.zero]; // t0..t5 + t6
       for (int i = 0; i < length; i++) {
-        var res = BigintUtils.mac(
-          t[0],
-          a[i].limbs[j],
-          b[i].limbs[0],
-          BigInt.zero,
-        );
-        t[0] = res[0];
-        BigInt carry = res[1];
+        var res = Uint64.mac(t[0], a[i].limbs[j], b[i].limbs[0], Uint64.zero);
+        t[0] = res.$1;
+        Uint64 carry = res.$2;
 
-        res = BigintUtils.mac(t[1], a[i].limbs[j], b[i].limbs[1], carry);
-        t[1] = res[0];
-        carry = res[1];
+        res = Uint64.mac(t[1], a[i].limbs[j], b[i].limbs[1], carry);
+        t[1] = res.$1;
+        carry = res.$2;
 
-        res = BigintUtils.mac(t[2], a[i].limbs[j], b[i].limbs[2], carry);
-        t[2] = res[0];
-        carry = res[1];
+        res = Uint64.mac(t[2], a[i].limbs[j], b[i].limbs[2], carry);
+        t[2] = res.$1;
+        carry = res.$2;
 
-        res = BigintUtils.mac(t[3], a[i].limbs[j], b[i].limbs[3], carry);
-        t[3] = res[0];
-        carry = res[1];
+        res = Uint64.mac(t[3], a[i].limbs[j], b[i].limbs[3], carry);
+        t[3] = res.$1;
+        carry = res.$2;
 
-        res = BigintUtils.mac(t[4], a[i].limbs[j], b[i].limbs[4], carry);
-        t[4] = res[0];
-        carry = res[1];
+        res = Uint64.mac(t[4], a[i].limbs[j], b[i].limbs[4], carry);
+        t[4] = res.$1;
+        carry = res.$2;
 
-        res = BigintUtils.mac(t[5], a[i].limbs[j], b[i].limbs[5], carry);
-        t[5] = res[0];
-        carry = res[1];
+        res = Uint64.mac(t[5], a[i].limbs[j], b[i].limbs[5], carry);
+        t[5] = res.$1;
+        carry = res.$2;
 
-        res = BigintUtils.adc(t[6], BigInt.zero, carry);
-        t[6] = res[0];
+        res = Uint64.adc(t[6], Uint64.zero, carry);
+        t[6] = res.$1;
       }
 
       // Montgomery reduction step
-      final k = (t[0] * Bls12FpConst.inv).toU64;
-      var carry = BigInt.zero;
-      var r = List<BigInt>.filled(6, BigInt.zero);
+      final k = (t[0] * Bls12FpConst.inv);
+      var carry = Uint64.zero;
+      var r = List<Uint64>.filled(6, Uint64.zero);
 
-      var res = BigintUtils.mac(
-        t[0],
-        k,
-        Bls12FpConst.modulus.limbs[0],
-        BigInt.zero,
-      );
-      carry = res[1];
+      var res = Uint64.mac(t[0], k, Bls12FpConst.modulus.limbs[0], Uint64.zero);
+      carry = res.$2;
 
-      res = BigintUtils.mac(t[1], k, Bls12FpConst.modulus.limbs[1], carry);
-      r[0] = res[0];
-      carry = res[1];
+      res = Uint64.mac(t[1], k, Bls12FpConst.modulus.limbs[1], carry);
+      r[0] = res.$1;
+      carry = res.$2;
 
-      res = BigintUtils.mac(t[2], k, Bls12FpConst.modulus.limbs[2], carry);
-      r[1] = res[0];
-      carry = res[1];
+      res = Uint64.mac(t[2], k, Bls12FpConst.modulus.limbs[2], carry);
+      r[1] = res.$1;
+      carry = res.$2;
 
-      res = BigintUtils.mac(t[3], k, Bls12FpConst.modulus.limbs[3], carry);
-      r[2] = res[0];
-      carry = res[1];
+      res = Uint64.mac(t[3], k, Bls12FpConst.modulus.limbs[3], carry);
+      r[2] = res.$1;
+      carry = res.$2;
 
-      res = BigintUtils.mac(t[4], k, Bls12FpConst.modulus.limbs[4], carry);
-      r[3] = res[0];
-      carry = res[1];
+      res = Uint64.mac(t[4], k, Bls12FpConst.modulus.limbs[4], carry);
+      r[3] = res.$1;
+      carry = res.$2;
 
-      res = BigintUtils.mac(t[5], k, Bls12FpConst.modulus.limbs[5], carry);
-      r[4] = res[0];
-      carry = res[1];
+      res = Uint64.mac(t[5], k, Bls12FpConst.modulus.limbs[5], carry);
+      r[4] = res.$1;
+      carry = res.$2;
 
-      res = BigintUtils.adc(t[6], BigInt.zero, carry);
-      r[5] = res[0];
+      res = Uint64.adc(t[6], Uint64.zero, carry);
+      r[5] = res.$1;
 
       u = r;
     }
@@ -415,50 +389,46 @@ class Bls12Fp extends BlsField<Bls12Fp> with ConstantEquality<Bls12Fp> {
 
   factory Bls12Fp.conditionalSelect(Bls12Fp a, Bls12Fp b, bool choice) {
     return Bls12Fp([
-      BigintUtils.ctSelectBigInt(a.limbs[0], b.limbs[0], choice),
-      BigintUtils.ctSelectBigInt(a.limbs[1], b.limbs[1], choice),
-      BigintUtils.ctSelectBigInt(a.limbs[2], b.limbs[2], choice),
-      BigintUtils.ctSelectBigInt(a.limbs[3], b.limbs[3], choice),
-      BigintUtils.ctSelectBigInt(a.limbs[4], b.limbs[4], choice),
-      BigintUtils.ctSelectBigInt(a.limbs[5], b.limbs[5], choice),
+      Uint64.ctSelect(a.limbs[0], b.limbs[0], choice),
+      Uint64.ctSelect(a.limbs[1], b.limbs[1], choice),
+      Uint64.ctSelect(a.limbs[2], b.limbs[2], choice),
+      Uint64.ctSelect(a.limbs[3], b.limbs[3], choice),
+      Uint64.ctSelect(a.limbs[4], b.limbs[4], choice),
+      Uint64.ctSelect(a.limbs[5], b.limbs[5], choice),
     ]);
   }
 
   Bls12Fp _subtractP() {
-    var tmp = BigintUtils.sbb(
-      limbs[0],
-      Bls12FpConst.modulus.limbs[0],
-      BigInt.zero,
-    );
-    BigInt r0 = tmp[0];
-    BigInt borrow = tmp[1];
+    var tmp = Uint64.sbb(limbs[0], Bls12FpConst.modulus.limbs[0], Uint64.zero);
+    Uint64 r0 = tmp.$1;
+    Uint64 borrow = tmp.$2;
 
-    tmp = BigintUtils.sbb(limbs[1], Bls12FpConst.modulus.limbs[1], borrow);
-    BigInt r1 = tmp[0];
-    borrow = tmp[1];
+    tmp = Uint64.sbb(limbs[1], Bls12FpConst.modulus.limbs[1], borrow);
+    Uint64 r1 = tmp.$1;
+    borrow = tmp.$2;
 
-    tmp = BigintUtils.sbb(limbs[2], Bls12FpConst.modulus.limbs[2], borrow);
-    BigInt r2 = tmp[0];
-    borrow = tmp[1];
+    tmp = Uint64.sbb(limbs[2], Bls12FpConst.modulus.limbs[2], borrow);
+    Uint64 r2 = tmp.$1;
+    borrow = tmp.$2;
 
-    tmp = BigintUtils.sbb(limbs[3], Bls12FpConst.modulus.limbs[3], borrow);
-    BigInt r3 = tmp[0];
-    borrow = tmp[1];
+    tmp = Uint64.sbb(limbs[3], Bls12FpConst.modulus.limbs[3], borrow);
+    Uint64 r3 = tmp.$1;
+    borrow = tmp.$2;
 
-    tmp = BigintUtils.sbb(limbs[4], Bls12FpConst.modulus.limbs[4], borrow);
-    BigInt r4 = tmp[0];
-    borrow = tmp[1];
+    tmp = Uint64.sbb(limbs[4], Bls12FpConst.modulus.limbs[4], borrow);
+    Uint64 r4 = tmp.$1;
+    borrow = tmp.$2;
 
-    tmp = BigintUtils.sbb(limbs[5], Bls12FpConst.modulus.limbs[5], borrow);
-    BigInt r5 = tmp[0];
-    borrow = tmp[1];
+    tmp = Uint64.sbb(limbs[5], Bls12FpConst.modulus.limbs[5], borrow);
+    Uint64 r5 = tmp.$1;
+    borrow = tmp.$2;
 
-    r0 = ((limbs[0] & borrow) | (r0 & ~borrow)).toU64;
-    r1 = ((limbs[1] & borrow) | (r1 & ~borrow)).toU64;
-    r2 = ((limbs[2] & borrow) | (r2 & ~borrow)).toU64;
-    r3 = ((limbs[3] & borrow) | (r3 & ~borrow)).toU64;
-    r4 = ((limbs[4] & borrow) | (r4 & ~borrow)).toU64;
-    r5 = ((limbs[5] & borrow) | (r5 & ~borrow)).toU64;
+    r0 = ((limbs[0] & borrow) | (r0 & ~borrow));
+    r1 = ((limbs[1] & borrow) | (r1 & ~borrow));
+    r2 = ((limbs[2] & borrow) | (r2 & ~borrow));
+    r3 = ((limbs[3] & borrow) | (r3 & ~borrow));
+    r4 = ((limbs[4] & borrow) | (r4 & ~borrow));
+    r5 = ((limbs[5] & borrow) | (r5 & ~borrow));
 
     return Bls12Fp([r0, r1, r2, r3, r4, r5]);
   }
@@ -466,127 +436,127 @@ class Bls12Fp extends BlsField<Bls12Fp> with ConstantEquality<Bls12Fp> {
   /// Square
   @override
   Bls12Fp square() {
-    var tmp = BigintUtils.mac(BigInt.zero, limbs[0], limbs[1], BigInt.zero);
-    BigInt t1 = tmp[0];
-    BigInt carry = tmp[1];
+    var tmp = Uint64.mac(Uint64.zero, limbs[0], limbs[1], Uint64.zero);
+    Uint64 t1 = tmp.$1;
+    Uint64 carry = tmp.$2;
 
-    tmp = BigintUtils.mac(BigInt.zero, limbs[0], limbs[2], carry);
-    BigInt t2 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(Uint64.zero, limbs[0], limbs[2], carry);
+    Uint64 t2 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(BigInt.zero, limbs[0], limbs[3], carry);
-    BigInt t3 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(Uint64.zero, limbs[0], limbs[3], carry);
+    Uint64 t3 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(BigInt.zero, limbs[0], limbs[4], carry);
-    BigInt t4 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(Uint64.zero, limbs[0], limbs[4], carry);
+    Uint64 t4 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(BigInt.zero, limbs[0], limbs[5], carry);
-    BigInt t5 = tmp[0];
-    BigInt t6 = tmp[1];
+    tmp = Uint64.mac(Uint64.zero, limbs[0], limbs[5], carry);
+    Uint64 t5 = tmp.$1;
+    Uint64 t6 = tmp.$2;
 
-    tmp = BigintUtils.mac(t3, limbs[1], limbs[2], BigInt.zero);
-    t3 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(t3, limbs[1], limbs[2], Uint64.zero);
+    t3 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(t4, limbs[1], limbs[3], carry);
-    t4 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(t4, limbs[1], limbs[3], carry);
+    t4 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(t5, limbs[1], limbs[4], carry);
-    t5 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(t5, limbs[1], limbs[4], carry);
+    t5 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(t6, limbs[1], limbs[5], carry);
-    t6 = tmp[0];
-    BigInt t7 = tmp[1];
+    tmp = Uint64.mac(t6, limbs[1], limbs[5], carry);
+    t6 = tmp.$1;
+    Uint64 t7 = tmp.$2;
 
     ///
-    tmp = BigintUtils.mac(t5, limbs[2], limbs[3], BigInt.zero);
-    t5 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(t5, limbs[2], limbs[3], Uint64.zero);
+    t5 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(t6, limbs[2], limbs[4], carry);
-    t6 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(t6, limbs[2], limbs[4], carry);
+    t6 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(t7, limbs[2], limbs[5], carry);
-    t7 = tmp[0];
-    BigInt t8 = tmp[1];
+    tmp = Uint64.mac(t7, limbs[2], limbs[5], carry);
+    t7 = tmp.$1;
+    Uint64 t8 = tmp.$2;
     //
-    tmp = BigintUtils.mac(t7, limbs[3], limbs[4], BigInt.zero);
-    t7 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(t7, limbs[3], limbs[4], Uint64.zero);
+    t7 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(t8, limbs[3], limbs[5], carry);
-    t8 = tmp[0];
-    BigInt t9 = tmp[1];
+    tmp = Uint64.mac(t8, limbs[3], limbs[5], carry);
+    t8 = tmp.$1;
+    Uint64 t9 = tmp.$2;
 
-    tmp = BigintUtils.mac(t9, limbs[4], limbs[5], BigInt.zero);
-    t9 = tmp[0];
-    BigInt t10 = tmp[1];
+    tmp = Uint64.mac(t9, limbs[4], limbs[5], Uint64.zero);
+    t9 = tmp.$1;
+    Uint64 t10 = tmp.$2;
 
     // Double the cross products
-    BigInt t11 = (t10 >> 63).toU64;
-    t10 = ((t10 << 1) | (t9 >> 63)).toU64;
-    t9 = ((t9 << 1) | (t8 >> 63)).toU64;
-    t8 = ((t8 << 1) | (t7 >> 63)).toU64;
-    t7 = ((t7 << 1) | (t6 >> 63)).toU64;
-    t6 = ((t6 << 1) | (t5 >> 63)).toU64;
-    t5 = ((t5 << 1) | (t4 >> 63)).toU64;
-    t4 = ((t4 << 1) | (t3 >> 63)).toU64;
-    t3 = ((t3 << 1) | (t2 >> 63)).toU64;
-    t2 = ((t2 << 1) | (t1 >> 63)).toU64;
-    t1 = (t1 << 1).toU64;
+    Uint64 t11 = (t10 >> 63);
+    t10 = ((t10 << 1) | (t9 >> 63));
+    t9 = ((t9 << 1) | (t8 >> 63));
+    t8 = ((t8 << 1) | (t7 >> 63));
+    t7 = ((t7 << 1) | (t6 >> 63));
+    t6 = ((t6 << 1) | (t5 >> 63));
+    t5 = ((t5 << 1) | (t4 >> 63));
+    t4 = ((t4 << 1) | (t3 >> 63));
+    t3 = ((t3 << 1) | (t2 >> 63));
+    t2 = ((t2 << 1) | (t1 >> 63));
+    t1 = (t1 << 1);
 
     // Square the limbs and accumulate
-    tmp = BigintUtils.mac(BigInt.zero, limbs[0], limbs[0], BigInt.zero);
-    BigInt t0 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(Uint64.zero, limbs[0], limbs[0], Uint64.zero);
+    Uint64 t0 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.adc(t1, BigInt.zero, carry);
-    t1 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.adc(t1, Uint64.zero, carry);
+    t1 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(t2, limbs[1], limbs[1], carry);
-    t2 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(t2, limbs[1], limbs[1], carry);
+    t2 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.adc(t3, BigInt.zero, carry);
-    t3 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.adc(t3, Uint64.zero, carry);
+    t3 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(t4, limbs[2], limbs[2], carry);
-    t4 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(t4, limbs[2], limbs[2], carry);
+    t4 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.adc(t5, BigInt.zero, carry);
-    t5 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.adc(t5, Uint64.zero, carry);
+    t5 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(t6, limbs[3], limbs[3], carry);
-    t6 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(t6, limbs[3], limbs[3], carry);
+    t6 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.adc(t7, BigInt.zero, carry);
-    t7 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.adc(t7, Uint64.zero, carry);
+    t7 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(t8, limbs[4], limbs[4], carry);
-    t8 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(t8, limbs[4], limbs[4], carry);
+    t8 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.adc(t9, BigInt.zero, carry);
-    t9 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.adc(t9, Uint64.zero, carry);
+    t9 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(t10, limbs[5], limbs[5], carry);
-    t10 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(t10, limbs[5], limbs[5], carry);
+    t10 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.adc(t11, BigInt.zero, carry);
-    t11 = tmp[0];
+    tmp = Uint64.adc(t11, Uint64.zero, carry);
+    t11 = tmp.$1;
     // final carry ignored
     // --- Montgomery reduction -------------------------------------------------
     return Bls12Fp.montgomeryReduce(
@@ -610,161 +580,156 @@ class Bls12Fp extends BlsField<Bls12Fp> with ConstantEquality<Bls12Fp> {
   }
 
   Bls12Fp _mul(Bls12Fp rhs) {
-    List<BigInt> t = List.filled(12, BigInt.zero);
+    List<Uint64> t = List.filled(12, Uint64.zero);
 
-    List<BigInt> tmp = BigintUtils.mac(
-      BigInt.zero,
-      limbs[0],
-      rhs.limbs[0],
-      BigInt.zero,
-    );
-    t[0] = tmp[0];
-    BigInt carry = tmp[1];
+    var tmp = Uint64.mac(Uint64.zero, limbs[0], rhs.limbs[0], Uint64.zero);
+    t[0] = tmp.$1;
+    Uint64 carry = tmp.$2;
 
-    tmp = BigintUtils.mac(BigInt.zero, limbs[0], rhs.limbs[1], carry);
-    t[1] = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(Uint64.zero, limbs[0], rhs.limbs[1], carry);
+    t[1] = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(BigInt.zero, limbs[0], rhs.limbs[2], carry);
-    t[2] = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(Uint64.zero, limbs[0], rhs.limbs[2], carry);
+    t[2] = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(BigInt.zero, limbs[0], rhs.limbs[3], carry);
-    t[3] = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(Uint64.zero, limbs[0], rhs.limbs[3], carry);
+    t[3] = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(BigInt.zero, limbs[0], rhs.limbs[4], carry);
-    t[4] = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(Uint64.zero, limbs[0], rhs.limbs[4], carry);
+    t[4] = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(BigInt.zero, limbs[0], rhs.limbs[5], carry);
-    t[5] = tmp[0];
-    t[6] = tmp[1];
+    tmp = Uint64.mac(Uint64.zero, limbs[0], rhs.limbs[5], carry);
+    t[5] = tmp.$1;
+    t[6] = tmp.$2;
 
     // 2nd row: self.limbs[1] * rhs.limbs[0..5]
-    tmp = BigintUtils.mac(t[1], limbs[1], rhs.limbs[0], BigInt.zero);
-    t[1] = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(t[1], limbs[1], rhs.limbs[0], Uint64.zero);
+    t[1] = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(t[2], limbs[1], rhs.limbs[1], carry);
-    t[2] = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(t[2], limbs[1], rhs.limbs[1], carry);
+    t[2] = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(t[3], limbs[1], rhs.limbs[2], carry);
-    t[3] = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(t[3], limbs[1], rhs.limbs[2], carry);
+    t[3] = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(t[4], limbs[1], rhs.limbs[3], carry);
-    t[4] = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(t[4], limbs[1], rhs.limbs[3], carry);
+    t[4] = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(t[5], limbs[1], rhs.limbs[4], carry);
-    t[5] = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(t[5], limbs[1], rhs.limbs[4], carry);
+    t[5] = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(t[6], limbs[1], rhs.limbs[5], carry);
-    t[6] = tmp[0];
-    t[7] = tmp[1];
+    tmp = Uint64.mac(t[6], limbs[1], rhs.limbs[5], carry);
+    t[6] = tmp.$1;
+    t[7] = tmp.$2;
 
     // 3rd row: self.limbs[2] * rhs.limbs[0..5]
-    tmp = BigintUtils.mac(t[2], limbs[2], rhs.limbs[0], BigInt.zero);
-    t[2] = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(t[2], limbs[2], rhs.limbs[0], Uint64.zero);
+    t[2] = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(t[3], limbs[2], rhs.limbs[1], carry);
-    t[3] = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(t[3], limbs[2], rhs.limbs[1], carry);
+    t[3] = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(t[4], limbs[2], rhs.limbs[2], carry);
-    t[4] = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(t[4], limbs[2], rhs.limbs[2], carry);
+    t[4] = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(t[5], limbs[2], rhs.limbs[3], carry);
-    t[5] = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(t[5], limbs[2], rhs.limbs[3], carry);
+    t[5] = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(t[6], limbs[2], rhs.limbs[4], carry);
-    t[6] = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(t[6], limbs[2], rhs.limbs[4], carry);
+    t[6] = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(t[7], limbs[2], rhs.limbs[5], carry);
-    t[7] = tmp[0];
-    t[8] = tmp[1];
+    tmp = Uint64.mac(t[7], limbs[2], rhs.limbs[5], carry);
+    t[7] = tmp.$1;
+    t[8] = tmp.$2;
 
     // 4th row: self.limbs[3] * rhs.limbs[0..5]
-    tmp = BigintUtils.mac(t[3], limbs[3], rhs.limbs[0], BigInt.zero);
-    t[3] = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(t[3], limbs[3], rhs.limbs[0], Uint64.zero);
+    t[3] = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(t[4], limbs[3], rhs.limbs[1], carry);
-    t[4] = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(t[4], limbs[3], rhs.limbs[1], carry);
+    t[4] = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(t[5], limbs[3], rhs.limbs[2], carry);
-    t[5] = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(t[5], limbs[3], rhs.limbs[2], carry);
+    t[5] = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(t[6], limbs[3], rhs.limbs[3], carry);
-    t[6] = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(t[6], limbs[3], rhs.limbs[3], carry);
+    t[6] = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(t[7], limbs[3], rhs.limbs[4], carry);
-    t[7] = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(t[7], limbs[3], rhs.limbs[4], carry);
+    t[7] = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(t[8], limbs[3], rhs.limbs[5], carry);
-    t[8] = tmp[0];
-    t[9] = tmp[1];
+    tmp = Uint64.mac(t[8], limbs[3], rhs.limbs[5], carry);
+    t[8] = tmp.$1;
+    t[9] = tmp.$2;
 
     // 5th row: self.limbs[4] * rhs.limbs[0..5]
-    tmp = BigintUtils.mac(t[4], limbs[4], rhs.limbs[0], BigInt.zero);
-    t[4] = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(t[4], limbs[4], rhs.limbs[0], Uint64.zero);
+    t[4] = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(t[5], limbs[4], rhs.limbs[1], carry);
-    t[5] = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(t[5], limbs[4], rhs.limbs[1], carry);
+    t[5] = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(t[6], limbs[4], rhs.limbs[2], carry);
-    t[6] = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(t[6], limbs[4], rhs.limbs[2], carry);
+    t[6] = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(t[7], limbs[4], rhs.limbs[3], carry);
-    t[7] = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(t[7], limbs[4], rhs.limbs[3], carry);
+    t[7] = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(t[8], limbs[4], rhs.limbs[4], carry);
-    t[8] = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(t[8], limbs[4], rhs.limbs[4], carry);
+    t[8] = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(t[9], limbs[4], rhs.limbs[5], carry);
-    t[9] = tmp[0];
-    t[10] = tmp[1];
+    tmp = Uint64.mac(t[9], limbs[4], rhs.limbs[5], carry);
+    t[9] = tmp.$1;
+    t[10] = tmp.$2;
 
     // 6th row: self.limbs[5] * rhs.limbs[0..5]
-    tmp = BigintUtils.mac(t[5], limbs[5], rhs.limbs[0], BigInt.zero);
-    t[5] = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(t[5], limbs[5], rhs.limbs[0], Uint64.zero);
+    t[5] = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(t[6], limbs[5], rhs.limbs[1], carry);
-    t[6] = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(t[6], limbs[5], rhs.limbs[1], carry);
+    t[6] = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(t[7], limbs[5], rhs.limbs[2], carry);
-    t[7] = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(t[7], limbs[5], rhs.limbs[2], carry);
+    t[7] = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(t[8], limbs[5], rhs.limbs[3], carry);
-    t[8] = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(t[8], limbs[5], rhs.limbs[3], carry);
+    t[8] = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(t[9], limbs[5], rhs.limbs[4], carry);
-    t[9] = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(t[9], limbs[5], rhs.limbs[4], carry);
+    t[9] = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(t[10], limbs[5], rhs.limbs[5], carry);
-    t[10] = tmp[0];
-    t[11] = tmp[1];
+    tmp = Uint64.mac(t[10], limbs[5], rhs.limbs[5], carry);
+    t[10] = tmp.$1;
+    t[11] = tmp.$2;
 
     // --- Montgomery reduction -------------------------------------------------
     return Bls12Fp.montgomeryReduce(
@@ -784,31 +749,31 @@ class Bls12Fp extends BlsField<Bls12Fp> with ConstantEquality<Bls12Fp> {
   }
 
   Bls12Fp _add(Bls12Fp rhs) {
-    List<BigInt> d = List.filled(6, BigInt.zero);
-    BigInt carry;
+    List<Uint64> d = List.filled(6, Uint64.zero);
+    Uint64 carry;
 
-    List<BigInt> tmp = BigintUtils.adc(limbs[0], rhs.limbs[0], BigInt.zero);
-    d[0] = tmp[0];
-    carry = tmp[1];
+    var tmp = Uint64.adc(limbs[0], rhs.limbs[0], Uint64.zero);
+    d[0] = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.adc(limbs[1], rhs.limbs[1], carry);
-    d[1] = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.adc(limbs[1], rhs.limbs[1], carry);
+    d[1] = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.adc(limbs[2], rhs.limbs[2], carry);
-    d[2] = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.adc(limbs[2], rhs.limbs[2], carry);
+    d[2] = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.adc(limbs[3], rhs.limbs[3], carry);
-    d[3] = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.adc(limbs[3], rhs.limbs[3], carry);
+    d[3] = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.adc(limbs[4], rhs.limbs[4], carry);
-    d[4] = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.adc(limbs[4], rhs.limbs[4], carry);
+    d[4] = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.adc(limbs[5], rhs.limbs[5], carry);
-    d[5] = tmp[0];
+    tmp = Uint64.adc(limbs[5], rhs.limbs[5], carry);
+    d[5] = tmp.$1;
     // final carry ignored
 
     // Reduce modulo the field
@@ -816,39 +781,36 @@ class Bls12Fp extends BlsField<Bls12Fp> with ConstantEquality<Bls12Fp> {
   }
 
   Bls12Fp _neg() {
-    List<BigInt> d = List.filled(6, BigInt.zero);
-    BigInt borrow;
+    List<Uint64> d = List.filled(6, Uint64.zero);
+    Uint64 borrow;
 
-    List<BigInt> tmp = BigintUtils.sbb(
-      Bls12FpConst.modulus.limbs[0],
-      limbs[0],
-      BigInt.zero,
-    );
-    d[0] = tmp[0];
-    borrow = tmp[1];
+    var tmp = Uint64.sbb(Bls12FpConst.modulus.limbs[0], limbs[0], Uint64.zero);
+    d[0] = tmp.$1;
+    borrow = tmp.$2;
 
-    tmp = BigintUtils.sbb(Bls12FpConst.modulus.limbs[1], limbs[1], borrow);
-    d[1] = tmp[0];
-    borrow = tmp[1];
+    tmp = Uint64.sbb(Bls12FpConst.modulus.limbs[1], limbs[1], borrow);
+    d[1] = tmp.$1;
+    borrow = tmp.$2;
 
-    tmp = BigintUtils.sbb(Bls12FpConst.modulus.limbs[2], limbs[2], borrow);
-    d[2] = tmp[0];
-    borrow = tmp[1];
+    tmp = Uint64.sbb(Bls12FpConst.modulus.limbs[2], limbs[2], borrow);
+    d[2] = tmp.$1;
+    borrow = tmp.$2;
 
-    tmp = BigintUtils.sbb(Bls12FpConst.modulus.limbs[3], limbs[3], borrow);
-    d[3] = tmp[0];
-    borrow = tmp[1];
+    tmp = Uint64.sbb(Bls12FpConst.modulus.limbs[3], limbs[3], borrow);
+    d[3] = tmp.$1;
+    borrow = tmp.$2;
 
-    tmp = BigintUtils.sbb(Bls12FpConst.modulus.limbs[4], limbs[4], borrow);
-    d[4] = tmp[0];
-    borrow = tmp[1];
+    tmp = Uint64.sbb(Bls12FpConst.modulus.limbs[4], limbs[4], borrow);
+    d[4] = tmp.$1;
+    borrow = tmp.$2;
 
-    tmp = BigintUtils.sbb(Bls12FpConst.modulus.limbs[5], limbs[5], borrow);
-    d[5] = tmp[0];
+    tmp = Uint64.sbb(Bls12FpConst.modulus.limbs[5], limbs[5], borrow);
+    d[5] = tmp.$1;
+    final x = limbs[0] | limbs[1] | limbs[2] | limbs[3] | limbs[4] | limbs[5];
 
     // --- compute mask for zero ----------------------------------------------
-    bool isZero = limbs.every((x) => x == BigInt.zero);
-    BigInt mask = isZero ? BigInt.zero : BigInt.from(-1); // -1 = all bits set
+    final mask =
+        (x == Uint64.zero) ? Uint64.zero : Uint64.max; // 0 // -1 = all bits set
 
     // --- apply mask to each limb ---------------------------------------------
     for (int i = 0; i < 6; i++) {
@@ -861,26 +823,27 @@ class Bls12Fp extends BlsField<Bls12Fp> with ConstantEquality<Bls12Fp> {
   /// Invert null of field is zero
   @override
   Bls12Fp? invert() {
-    final modulus = pow([
-      BigInt.parse('0xb9feffffffffaaa9'),
-      BigInt.parse('0x1eabfffeb153ffff'),
-      BigInt.parse('0x6730d2a0f6b0f624'),
-      BigInt.parse('0x64774b84f38512bf'),
-      BigInt.parse('0x4b1ba7b6434bacd7'),
-      BigInt.parse('0x1a0111ea397fe69a'),
-    ]);
+    const m = [
+      Uint64.unsafe(3120496639, 4294945449),
+      Uint64.unsafe(514588670, 2975072255),
+      Uint64.unsafe(1731252896, 4138792484),
+      Uint64.unsafe(1685539716, 4085584575),
+      Uint64.unsafe(1260103606, 1129032919),
+      Uint64.unsafe(436277738, 964683418),
+    ];
+    final modulus = pow(m);
     if (isZero()) return null;
     return modulus;
   }
 
   /// pow
-  Bls12Fp pow(List<BigInt> by) {
-    Bls12Fp res = Bls12Fp.one();
-    for (BigInt e in by.reversed) {
+  Bls12Fp pow(List<Uint64> by) {
+    Bls12Fp res = Bls12Fp.one;
+    for (Uint64 e in by.reversed) {
       for (int i = 63; i >= 0; i--) {
         res = res.square();
 
-        if (((e >> i) & BigInt.one) == BigInt.one) {
+        if (((e >> i) & Uint64.one) == Uint64.one) {
           res = res * this;
         }
       }
@@ -891,22 +854,22 @@ class Bls12Fp extends BlsField<Bls12Fp> with ConstantEquality<Bls12Fp> {
   /// sqrt
   @override
   FieldSqrtResult<Bls12Fp> sqrt() {
-    final sqrt = pow([
-      BigInt.parse("0xee7fbfffffffeaab"),
-      BigInt.parse("0x07aaffffac54ffff"),
-      BigInt.parse("0xd9cc34a83dac3d89"),
-      BigInt.parse("0xd91dd2e13ce144af"),
-      BigInt.parse("0x92c6e9ed90d2eb35"),
-      BigInt.parse("0x0680447a8e5ff9a6"),
-    ]);
-
+    const m = [
+      Uint64.unsafe(4001349631, 4294961835),
+      Uint64.unsafe(128647167, 2891251711),
+      Uint64.unsafe(3654038696, 1034698121),
+      Uint64.unsafe(3642610401, 1021396143),
+      Uint64.unsafe(2462509549, 2429741877),
+      Uint64.unsafe(109069434, 2388654502),
+    ];
+    final sqrt = pow(m);
     return FieldSqrtResult(sqrt, sqrt.square() == this);
   }
 
   /// check zero
   @override
   bool isZero() {
-    return this == Bls12Fp.zero();
+    return this == Bls12Fp.zero;
   }
 
   /// double field
@@ -932,61 +895,45 @@ class Bls12Fp extends BlsField<Bls12Fp> with ConstantEquality<Bls12Fp> {
       limbs[3],
       limbs[4],
       limbs[5],
-      BigInt.zero,
-      BigInt.zero,
-      BigInt.zero,
-      BigInt.zero,
-      BigInt.zero,
-      BigInt.zero,
+      Uint64.zero,
+      Uint64.zero,
+      Uint64.zero,
+      Uint64.zero,
+      Uint64.zero,
+      Uint64.zero,
     );
 
-    BigInt borrow = BigInt.zero;
+    Uint64 borrow = Uint64.zero;
+    const d = [
+      Uint64.unsafe(3707731967, 4294956374),
+      Uint64.unsafe(257294335, 1487536127),
+      Uint64.unsafe(3013110096, 2069396242),
+      Uint64.unsafe(2990253506, 2042792287),
+      Uint64.unsafe(630051803, 564516459),
+      Uint64.unsafe(218138869, 482341709),
+    ];
 
     // Subtract ((p - 1) / 2) + 1 using sbb
-    final result0 = BigintUtils.sbb(
-      tmp.limbs[0],
-      BigInt.parse('0xdcff7fffffffd556'),
-      borrow,
-    );
-    borrow = result0[1];
+    final result0 = Uint64.sbb(tmp.limbs[0], d[0], borrow);
+    borrow = result0.$2;
 
-    final result1 = BigintUtils.sbb(
-      tmp.limbs[1],
-      BigInt.parse('0x0f55ffff58a9ffff'),
-      borrow,
-    );
-    borrow = result1[1];
+    final result1 = Uint64.sbb(tmp.limbs[1], d[1], borrow);
+    borrow = result1.$2;
 
-    final result2 = BigintUtils.sbb(
-      tmp.limbs[2],
-      BigInt.parse('0xb39869507b587b12'),
-      borrow,
-    );
-    borrow = result2[1];
+    final result2 = Uint64.sbb(tmp.limbs[2], d[2], borrow);
+    borrow = result2.$2;
 
-    final result3 = BigintUtils.sbb(
-      tmp.limbs[3],
-      BigInt.parse('0xb23ba5c279c2895f'),
-      borrow,
-    );
-    borrow = result3[1];
+    final result3 = Uint64.sbb(tmp.limbs[3], d[3], borrow);
+    borrow = result3.$2;
 
-    final result4 = BigintUtils.sbb(
-      tmp.limbs[4],
-      BigInt.parse('0x258dd3db21a5d66b'),
-      borrow,
-    );
-    borrow = result4[1];
+    final result4 = Uint64.sbb(tmp.limbs[4], d[4], borrow);
+    borrow = result4.$2;
 
-    final result5 = BigintUtils.sbb(
-      tmp.limbs[5],
-      BigInt.parse('0x0d0088f51cbff34d'),
-      borrow,
-    );
-    borrow = result5[1];
+    final result5 = Uint64.sbb(tmp.limbs[5], d[5], borrow);
+    borrow = result5.$2;
 
     // If borrow = 0, element is lexicographically largest
-    return borrow == BigInt.zero;
+    return borrow == Uint64.zero;
   }
 
   /// Serializes the field element to a 48-byte big-endian representation.
@@ -999,20 +946,20 @@ class Bls12Fp extends BlsField<Bls12Fp> with ConstantEquality<Bls12Fp> {
       limbs[3],
       limbs[4],
       limbs[5],
-      BigInt.zero,
-      BigInt.zero,
-      BigInt.zero,
-      BigInt.zero,
-      BigInt.zero,
-      BigInt.zero,
+      Uint64.zero,
+      Uint64.zero,
+      Uint64.zero,
+      Uint64.zero,
+      Uint64.zero,
+      Uint64.zero,
     );
-    return tmp.limbs.reversed.expand((e) => e.toU64BeBytes()).toList();
+    return tmp.limbs.reversed.expand((e) => e.toBytesBE()).toList();
   }
 
   /// check equality
   @override
   bool constantEquality(Bls12Fp other) {
-    return CompareUtils.constantTimeBigIntEquals(limbs, other.limbs);
+    return Uint64.ctEquals(limbs, other.limbs);
   }
 }
 

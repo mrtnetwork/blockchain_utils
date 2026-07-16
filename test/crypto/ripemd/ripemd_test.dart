@@ -7,7 +7,7 @@ import 'test_vector.dart';
 
 void main() {
   test("RIPEMD128", () {
-    for (final i in ripemd128) {
+    for (final i in ripemd128.shuffleTake()) {
       final k = RIPEMD128();
       final message = BytesUtils.fromHexString(i["message"]);
       k.update(message.sublist(0, 10));
@@ -19,7 +19,7 @@ void main() {
     }
   });
   test("RIPEMD160", () {
-    for (final i in ripemd160) {
+    for (final i in ripemd160.shuffleTake()) {
       final k = RIPEMD160();
       final message = BytesUtils.fromHexString(i["message"]);
       k.update(message.sublist(0, 10));
@@ -31,7 +31,7 @@ void main() {
     }
   });
   test("RIPEMD256", () {
-    for (final i in ripemd256) {
+    for (final i in ripemd256.shuffleTake()) {
       final k = RIPEMD256();
       final message = BytesUtils.fromHexString(i["message"]);
       k.update(message.sublist(0, 10));
@@ -43,7 +43,7 @@ void main() {
     }
   });
   test("RIPEMD320", () {
-    for (final i in ripemd320) {
+    for (final i in ripemd320.shuffleTake()) {
       final k = RIPEMD320();
       final message = BytesUtils.fromHexString(i["message"]);
       k.update(message.sublist(0, 10));

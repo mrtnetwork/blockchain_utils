@@ -7,7 +7,7 @@ import 'test_vector.dart' show testVecotr;
 
 void main() {
   test("neo address test", () {
-    for (final i in testVecotr) {
+    for (final i in testVecotr.shuffleTake()) {
       final params = Map<String, dynamic>.from(i["params"]);
       final z = NeoAddrEncoder().encodeKey(
         BytesUtils.fromHexString(i["public"]),

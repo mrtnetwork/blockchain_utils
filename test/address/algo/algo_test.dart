@@ -7,7 +7,7 @@ import 'test_vector.dart';
 
 void main() {
   test("algo address tes", () {
-    for (final i in testVector) {
+    for (final i in testVector.shuffleTake()) {
       final z = AlgoAddrEncoder().encodeKey(
         BytesUtils.fromHexString(i["public"]),
       );

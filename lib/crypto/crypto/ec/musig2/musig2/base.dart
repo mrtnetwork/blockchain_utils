@@ -7,8 +7,8 @@ import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/helper/helper.dart';
 import 'package:blockchain_utils/utils/numbers/utils/bigint_utils.dart';
 
-abstract class Musig2Bsae {
-  const Musig2Bsae();
+abstract class Musig2Context {
+  const Musig2Context();
   List<int> nonceAgg(List<List<int>> pubnonces);
 
   /// Generates a MuSig2 nonce for signing

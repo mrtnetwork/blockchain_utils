@@ -5,11 +5,9 @@
 // *******************************************************************************
 
 import 'dart:math';
-import 'package:blockchain_utils/crypto/quick_crypto.dart';
-import 'package:blockchain_utils/helper/extensions/extensions.dart';
-import 'package:blockchain_utils/utils/binary/binary_operation.dart';
-import 'package:blockchain_utils/utils/compare/compare.dart';
-import 'package:blockchain_utils/crypto/crypto/ec/projective/secp256k1/secp256k1.dart';
+import 'package:blockchain_utils/blockchain_utils.dart';
+import 'package:blockchain_utils/numbers/src/i64.dart';
+import 'package:blockchain_utils/numbers/src/u64.dart';
 import 'package:test/test.dart';
 
 import 'test_constants.dart';
@@ -24,21 +22,24 @@ void main() {
 }
 
 void _testModinv64Uint16(List<int> out, List<int> ind, List<int> mod) {
-  final BigInt m62 = BinaryOps.maxU64 >> 2;
+  final Uint64 m62 = Uint64.max >> 2;
 
   Secp256k1ModinvSigned x = Secp256k1ModinvSigned();
   Secp256k1ModinvInfo m = Secp256k1ModinvInfo(
     modulus: Secp256k1ModinvSigned(),
-    modulusInv: BigInt.zero,
+    modulusInv: Uint64.zero,
   );
 
   _uint16ToSigned62(x, ind);
-  bool nonzero = (x[0] | x[1] | x[2] | x[3] | x[4]) != BigInt.zero;
+  bool nonzero = (x[0] | x[1] | x[2] | x[3] | x[4]) != Int64.zero;
   _uint16ToSigned62(m.modulus, mod);
-  m = m.copyWith(modulusInv: _modinv2p64(m.modulus[0]) & m62);
+  m = Secp256k1ModinvInfo(
+    modulus: m.modulus,
+    modulusInv: _modinv2p64(m.modulus[0].toUint64()) & m62,
+  );
   int i, vartime;
 
-  expect(((m.modulusInv * m.modulus[0]) & m62), BigInt.one);
+  expect(((m.modulusInv * m.modulus[0].toUint64()) & m62), Uint64.one);
   if (nonzero) {
     int jac;
     List<int> sqr = List<int>.filled(16, 0), negone = List<int>.filled(16, 0);
@@ -99,9 +100,10 @@ void _signed62ToUint16(List<int> out, Secp256k1ModinvSigned ind) {
   }
   for (i = 0; i < 256; ++i) {
     out[i >> 4] |=
-        ((((ind[i ~/ 62]) >> (i % 62)) & BigInt.one) << (i & 15))
-            .toUnsigned(16)
-            .toInt();
+        (((((ind[i ~/ 62]) >> (i % 62)) & Int64.one) << (i & 15))
+            .toUint32()
+            .toInt()) &
+        BinaryOps.mask16;
   }
 }
 
@@ -115,39 +117,38 @@ void _modinvTest() {
 
 void _uint16ToSigned62(Secp256k1ModinvSigned out, List<int> ind) {
   for (int i = 0; i < 5; i++) {
-    out[i] = BigInt.zero;
+    out[i] = Int64.zero;
   }
   int i;
   for (i = 0; i < 256; ++i) {
     out[i ~/ 62] =
         out[i ~/ 62] |
-        (BigInt.from(((ind[i >> 4]) >> (i & 15))) & BigInt.one).toSigned(64) <<
-            (i % 62);
+        (Int64(((ind[i >> 4]) >> (i & 15))) & Int64.one) << (i % 62);
   }
 }
 
 void _mutateSignSigned62(Secp256k1ModinvSigned x) {
-  final BigInt m62 = ((BigInt.one << 62) - BigInt.one).toSigned(64);
+  final Int64 m62 = ((Int64.one << 62) - Int64.one);
   int testrandBits2() => Random().nextInt(4);
 
   for (int i = 0; i < 8; i++) {
     int pos = testrandBits2(); // random 0..3
-    if (x[pos] > BigInt.zero && x[pos + 1] <= m62) {
-      x[pos] -= (m62 + BigInt.one);
-      x[pos + 1] += BigInt.one;
-    } else if (x[pos] < BigInt.zero && x[pos + 1] >= -m62) {
-      x[pos] += (m62 + BigInt.one);
-      x[pos + 1] -= BigInt.one;
+    if (x[pos] > Int64.zero && x[pos + 1] <= m62) {
+      x[pos] -= (m62 + Int64.one);
+      x[pos + 1] += Int64.one;
+    } else if (x[pos] < Int64.zero && x[pos + 1] >= -m62) {
+      x[pos] += (m62 + Int64.one);
+      x[pos + 1] -= Int64.one;
     }
   }
 }
 
-BigInt _modinv2p64(BigInt x) {
-  expect(x & BigInt.one, BigInt.one);
-  BigInt w = BigInt.one;
+Uint64 _modinv2p64(Uint64 x) {
+  expect(x & Uint64.one, Uint64.one);
+  Uint64 w = Uint64.one;
   for (int l = 0; l < 6; l++) {
-    w = w * (BigInt.from(2) - w * x);
-    w = w.toU64;
+    w = w * (Uint64(2) - w * x);
+    w = w;
   }
   return w;
 }
@@ -218,7 +219,7 @@ void _inv() {
     }
   }
   /* Test inputs 0..999 and their respective negations. */
-  for (i = 0; i < 1000; ++i) {
+  for (i = 0; i < testIteration; ++i) {
     b32[31] = i & 0xff;
     b32[30] = (i >> 8) & 0xff;
     Secp256k1.secp256k1ScalarSetB32(xScalar, b32);
@@ -266,7 +267,7 @@ void _testInverseField(Secp256k1Fe? out, Secp256k1Fe x, int v) {
   } else {
     Secp256k1.secp256k1FeInv(l, x);
   }
-  out?.set(l);
+  out?.fill(l);
   t = x.clone();
   if (Secp256k1.secp256k1FeNormalizesToZeroVar(t) == 1) {
     expect(Secp256k1.secp256k1FeNormalizesToZero(l), 1);
@@ -300,11 +301,11 @@ void _testInverseField(Secp256k1Fe? out, Secp256k1Fe x, int v) {
   expect(Secp256k1.secp256k1FeNormalizesToZeroVar(l), 1); /* l == 0 */
 }
 
-void _testInverseScalar(Secp256k1Scalar? out, Secp256k1Scalar x, int v) {
+void _testInverseScalar(Secp256k1Scalar? out, BaseSecp256k1Scalar x, int v) {
   Secp256k1Scalar l = Secp256k1Scalar(),
       r = Secp256k1Scalar(),
       t = Secp256k1Scalar();
-  Secp256k1Scalar secp256k1ScalarOne = Secp256k1Scalar.constants(
+  Secp256k1ScalarConst secp256k1ScalarOne = Secp256k1ScalarConst.constants(
     BigInt.zero,
     BigInt.zero,
     BigInt.zero,
@@ -314,7 +315,7 @@ void _testInverseScalar(Secp256k1Scalar? out, Secp256k1Scalar x, int v) {
     BigInt.zero,
     BigInt.one,
   );
-  Secp256k1Scalar scalarMinusOne = Secp256k1Scalar.constants(
+  Secp256k1ScalarConst scalarMinusOne = Secp256k1ScalarConst.constants(
     BigInt.from(0xFFFFFFFF),
     BigInt.from(0xFFFFFFFF),
     BigInt.from(0xFFFFFFFF),
@@ -329,7 +330,7 @@ void _testInverseScalar(Secp256k1Scalar? out, Secp256k1Scalar x, int v) {
   } else {
     Secp256k1.secp256k1ScalarInverseVar(l, x);
   }
-  out?.set(l);
+  out?.fill(l);
 
   if (Secp256k1.secp256k1ScalarIsZero(x) == 1) {
     expect(Secp256k1.secp256k1ScalarIsZero(l), 1);

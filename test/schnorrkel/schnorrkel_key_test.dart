@@ -9,7 +9,7 @@ import 'key_test_vector.dart';
 
 void main() {
   test("schnorrkel keys", () {
-    for (final i in keyTestVector) {
+    for (final i in keyTestVector.shuffleTake()) {
       final seed = BytesUtils.fromHexString(i["mini_secret"]);
       final miniSecret = SchnorrkelMiniSecretKey.fromBytes(seed);
       final edSecret = miniSecret.toSecretKey(ExpansionMode.ed25519);

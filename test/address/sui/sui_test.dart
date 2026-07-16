@@ -1,32 +1,33 @@
 import 'package:blockchain_utils/blockchain_utils.dart';
 import 'package:test/test.dart';
 
+import '../../quick_hex.dart';
 import 'test_vector.dart';
 
 void main() {
   test("sui secp256k1 address", () {
-    for (final i in secp256k1) {
+    for (final i in secp256k1.shuffleTake()) {
       final publicKey = BytesUtils.fromHexString(i["publickKey"]);
       final address = SuiSecp256k1AddrEncoder().encodeKey(publicKey);
       expect(address, i["address"]);
     }
   });
   test("sui secp256r1 address", () {
-    for (final i in secp256r1) {
+    for (final i in secp256r1.shuffleTake()) {
       final publicKey = BytesUtils.fromHexString(i["publickKey"]);
       final address = SuiSecp256r1AddrEncoder().encodeKey(publicKey);
       expect(address, i["address"]);
     }
   });
   test("sui ed25519 address", () {
-    for (final i in ed25519) {
+    for (final i in ed25519.shuffleTake()) {
       final publicKey = BytesUtils.fromHexString(i["publickKey"]);
       final address = SuiAddrEncoder().encodeKey(publicKey);
       expect(address, i["address"]);
     }
   });
   test("sui multisig address", () {
-    for (final i in multisig) {
+    for (final i in multisig.shuffleTake()) {
       final publicKey =
           (i["publicKeys"] as List).map((e) {
             final IPublicKey key = switch (e["type"]) {

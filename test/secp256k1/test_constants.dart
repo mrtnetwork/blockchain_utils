@@ -1,6 +1,5 @@
 /* Fixed test cases for field inverses: pairs of (x, 1/x) mod p. */
-import 'package:blockchain_utils/crypto/crypto/ec/projective/secp256k1/secp256k1.dart';
-import 'package:blockchain_utils/helper/extensions/extensions.dart';
+import 'package:blockchain_utils/blockchain_utils.dart';
 
 Secp256k1Fe _toFe(
   int d7,
@@ -990,7 +989,7 @@ List<List<Secp256k1Fe>> feCases =
       ],
     ].map((e) => e.immutable).toImutableList;
 
-Secp256k1Scalar _toScalar(
+Secp256k1ScalarConst _toScalar(
   int d7,
   int d6,
   int d5,
@@ -1000,7 +999,7 @@ Secp256k1Scalar _toScalar(
   int d1,
   int d0,
 ) {
-  return Secp256k1Scalar.constants(
+  return Secp256k1ScalarConst.constants(
     BigInt.from(d7),
     BigInt.from(d6),
     BigInt.from(d5),
@@ -1013,7 +1012,7 @@ Secp256k1Scalar _toScalar(
 }
 
 /* Fixed test cases for scalar inverses: pairs of (x, 1/x) mod n. */
-final List<List<Secp256k1Scalar>> scalarCases =
+final List<List<Secp256k1ScalarConst>> scalarCases =
     [
       /* 0 */
       [_toScalar(0, 0, 0, 0, 0, 0, 0, 0), _toScalar(0, 0, 0, 0, 0, 0, 0, 0)],
@@ -6667,7 +6666,7 @@ const List<List<List<int>>> cases = [
   ],
 ];
 
-final List<Secp256k1Scalar> scalarsNearSplitBounds =
+final List<Secp256k1ScalarConst> scalarsNearSplitBounds =
     [
       _toScalar(
         0xd938a566,

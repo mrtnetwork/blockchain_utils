@@ -1,4 +1,5 @@
 import 'package:blockchain_utils/blockchain_utils.dart';
+import 'package:blockchain_utils/numbers/src/u64.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -44,11 +45,11 @@ void _hashToCurve() {
 
 void _swu() {
   var p = PastaUtils.mapToCurveSimpleSwu(
-    u: PallasFp.zero(),
-    theta: PallasFp.theta(),
-    z: PallasFp.z(),
+    u: PallasFp.zero,
+    theta: PallasFp.theta,
+    z: PallasFp.z,
     isogenyParams: PastaCurveParams.isoPallas,
-    r: PallasFp.r(),
+    r: PallasFp.r,
   );
   expect(
     BytesUtils.toHexString(p.$1.toBytes().reversed.toList()),
@@ -63,11 +64,11 @@ void _swu() {
     "054b3ba10416dc104157b1318534a19d5d115472da7d746f8a5f250cd8cdef36",
   );
   p = PastaUtils.mapToCurveSimpleSwu(
-    u: PallasFp.one(),
-    theta: PallasFp.theta(),
-    z: PallasFp.z(),
+    u: PallasFp.one,
+    theta: PallasFp.theta,
+    z: PallasFp.z,
     isogenyParams: PastaCurveParams.isoPallas,
-    r: PallasFp.r(),
+    r: PallasFp.r,
   );
   expect(
     BytesUtils.toHexString(p.$1.toBytes().reversed.toList()),
@@ -86,25 +87,25 @@ void _swu() {
 void _isoMapIdentity() {
   var r = PallasIsoPoint(
     x: PallasFp.fromRaw([
-      BigInt.parse("0xc37f111df5c4419e"),
-      BigInt.parse("0x593c053e5e2337ad"),
-      BigInt.parse("0x9c6cfc47bce1aba6"),
-      BigInt.parse("0x0a881e4d556945aa"),
+      Uint64.parseHex("0xc37f111df5c4419e"),
+      Uint64.parseHex("0x593c053e5e2337ad"),
+      Uint64.parseHex("0x9c6cfc47bce1aba6"),
+      Uint64.parseHex("0x0a881e4d556945aa"),
     ]),
     y: PallasFp.fromRaw([
-      BigInt.parse("0xf234e04434502b47"),
-      BigInt.parse("0x6979f7f2b0acf188"),
-      BigInt.parse("0xa62eec46f662cb4e"),
-      BigInt.parse("0x035e5c8a06d5cfb4"),
+      Uint64.parseHex("0xf234e04434502b47"),
+      Uint64.parseHex("0x6979f7f2b0acf188"),
+      Uint64.parseHex("0xa62eec46f662cb4e"),
+      Uint64.parseHex("0x035e5c8a06d5cfb4"),
     ]),
     z: PallasFp.fromRaw([
-      BigInt.parse("0x11ab791d4fb6f6b4"),
-      BigInt.parse("0x575baa717958ef1f"),
-      BigInt.parse("0x6ac4e343558dcbf3"),
-      BigInt.parse("0x3af37975b0933125"),
+      Uint64.parseHex("0x11ab791d4fb6f6b4"),
+      Uint64.parseHex("0x575baa717958ef1f"),
+      Uint64.parseHex("0x6ac4e343558dcbf3"),
+      Uint64.parseHex("0x3af37975b0933125"),
     ]),
   );
-  final e = (r * -VestaFq.one()) + r;
+  final e = (r * -VestaFq.one) + r;
   expect(e.isOnCurve(), true);
   expect(e.isIdentity(), true);
   final p = PastaUtils.isoMap(
@@ -121,22 +122,22 @@ void _isoMapIdentity() {
 void _isoMap() {
   final PallasIsoPoint r = PallasIsoPoint(
     x: PallasFp.fromRaw([
-      BigInt.parse("0xc37f111df5c4419e"),
-      BigInt.parse("0x593c053e5e2337ad"),
-      BigInt.parse("0x9c6cfc47bce1aba6"),
-      BigInt.parse("0x0a881e4d556945aa"),
+      Uint64.parseHex("0xc37f111df5c4419e"),
+      Uint64.parseHex("0x593c053e5e2337ad"),
+      Uint64.parseHex("0x9c6cfc47bce1aba6"),
+      Uint64.parseHex("0x0a881e4d556945aa"),
     ]),
     y: PallasFp.fromRaw([
-      BigInt.parse("0xf234e04434502b47"),
-      BigInt.parse("0x6979f7f2b0acf188"),
-      BigInt.parse("0xa62eec46f662cb4e"),
-      BigInt.parse("0x035e5c8a06d5cfb4"),
+      Uint64.parseHex("0xf234e04434502b47"),
+      Uint64.parseHex("0x6979f7f2b0acf188"),
+      Uint64.parseHex("0xa62eec46f662cb4e"),
+      Uint64.parseHex("0x035e5c8a06d5cfb4"),
     ]),
     z: PallasFp.fromRaw([
-      BigInt.parse("0x11ab791d4fb6f6b4"),
-      BigInt.parse("0x575baa717958ef1f"),
-      BigInt.parse("0x6ac4e343558dcbf3"),
-      BigInt.parse("0x3af37975b0933125"),
+      Uint64.parseHex("0x11ab791d4fb6f6b4"),
+      Uint64.parseHex("0x575baa717958ef1f"),
+      Uint64.parseHex("0x6ac4e343558dcbf3"),
+      Uint64.parseHex("0x3af37975b0933125"),
     ]),
   );
   final p = PastaUtils.isoMap(
@@ -170,60 +171,60 @@ void _isoMap() {
 
 void _delta() {
   expect(
-    PallasFp.delta(),
-    PallasFp.generator().pow([
-      BigInt.one << PallasFPConst.S,
-      BigInt.zero,
-      BigInt.zero,
-      BigInt.zero,
+    PallasFp.delta,
+    PallasFp.generator.pow([
+      Uint64.one << PallasFPConst.S,
+      Uint64.zero,
+      Uint64.zero,
+      Uint64.zero,
     ]),
   );
   expect(
-    PallasFp.delta(),
-    PallasFp.generator().pow([
-      BigInt.one << PallasFPConst.S,
-      BigInt.zero,
-      BigInt.zero,
-      BigInt.zero,
+    PallasFp.delta,
+    PallasFp.generator.pow([
+      Uint64.one << PallasFPConst.S,
+      Uint64.zero,
+      Uint64.zero,
+      Uint64.zero,
     ]),
   );
 }
 
 void _inv2() {
-  expect(PallasFp.twoInv(), PallasFp.from(BigInt.from(2)).invert());
+  expect(PallasFp.twoInv, PallasFp.from(Uint64(2)).invert());
 }
 
 void _rootOfUnity() {
-  final v = PallasFp.rootOfUnity().pow([
-    BigInt.one << PallasFPConst.S,
-    BigInt.zero,
-    BigInt.zero,
-    BigInt.zero,
+  final v = PallasFp.rootOfUnity.pow([
+    Uint64.one << PallasFPConst.S,
+    Uint64.zero,
+    Uint64.zero,
+    Uint64.zero,
   ]);
-  expect(v, PallasFp.one());
+  expect(v, PallasFp.one);
 }
 
 void _rootOfUnityInv() {
-  expect(PallasFp.rootOfUnityInv(), PallasFp.rootOfUnity().invert());
+  expect(PallasFp.rootOfUnityInv, PallasFp.rootOfUnity.invert());
 }
 
 void _testZeta() {
-  final v = BytesUtils.toHexString(PallasFp.zeta().toBytes().reversed.toList());
+  final v = BytesUtils.toHexString(PallasFp.zeta.toBytes().reversed.toList());
   expect(v, "12ccca834acdba712caad5dc57aab1b01d1f8bd237ad31491dad5ebdfdfe4ab9");
-  final a = PallasFp.zeta();
-  expect(a != PallasFp.one(), true);
+  final a = PallasFp.zeta;
+  expect(a != PallasFp.one, true);
   final b = a * a;
-  expect(b != PallasFp.one(), true);
+  expect(b != PallasFp.one, true);
   final c = b * a;
-  expect(c, PallasFp.one());
+  expect(c, PallasFp.one);
 }
 
 void _testSqrtRatioAndAlt() {
   // (true, sqrt(num/div)), if num and div are nonzero and num/div is a square
-  var num = PallasFp.twoInv().square();
-  var div = PallasFp.from(BigInt.from(25));
+  var num = PallasFp.twoInv.square();
+  var div = PallasFp.from(Uint64(25));
   var divInverse = div.invert();
-  var expected = PallasFp.twoInv() * PallasFp.from(BigInt.from(5)).invert()!;
+  var expected = PallasFp.twoInv * PallasFp.from(Uint64(5)).invert()!;
 
   var result = PallasFp.sqrtRatio(num, div);
   var isSquare = result.isSquare;
@@ -238,11 +239,11 @@ void _testSqrtRatioAndAlt() {
   expect(vAlt, v);
 
   // (false, sqrt(rootOfUnity * num/div)), if num/div is nonsquare
-  num = num * PallasFp.rootOfUnity();
+  num = num * PallasFp.rootOfUnity;
   expected =
-      PallasFp.twoInv() *
-      PallasFp.rootOfUnity() *
-      PallasFp.from(BigInt.from(5)).invert()!;
+      PallasFp.twoInv *
+      PallasFp.rootOfUnity *
+      PallasFp.from(Uint64(5)).invert()!;
 
   result = PallasFp.sqrtRatio(num, div);
   isSquare = result.isSquare;
@@ -256,8 +257,8 @@ void _testSqrtRatioAndAlt() {
   expect(isSquareAlt, false);
 
   // (true, 0), if num is zero
-  num = PallasFp.zero();
-  expected = PallasFp.zero();
+  num = PallasFp.zero;
+  expected = PallasFp.zero;
 
   result = PallasFp.sqrtRatio(num, div);
   isSquare = result.isSquare;
@@ -272,9 +273,9 @@ void _testSqrtRatioAndAlt() {
   expect(vAlt, v);
 
   // (false, 0), if num is nonzero and div is zero
-  num = PallasFp.twoInv().square();
-  div = PallasFp.zero();
-  expected = PallasFp.zero();
+  num = PallasFp.twoInv.square();
+  div = PallasFp.zero;
+  expected = PallasFp.zero;
 
   result = PallasFp.sqrtRatio(num, div);
   isSquare = result.isSquare;
@@ -284,14 +285,11 @@ void _testSqrtRatioAndAlt() {
 }
 
 void _testSqrt() {
-  final v = PallasFp.twoInv().square().sqrt();
-  expect(
-    v.result == PallasFp.twoInv() || (-v.result) == PallasFp.twoInv(),
-    true,
-  );
+  final v = PallasFp.twoInv.square().sqrt();
+  expect(v.result == PallasFp.twoInv || (-v.result) == PallasFp.twoInv, true);
 }
 
 void _powByMinus1() {
-  final v = PallasFp.twoInv().powByTMinus1Over2();
-  expect(v, PallasFp.twoInv().pow(PallasFPConst.tMinus1Over2));
+  final v = PallasFp.twoInv.powByTMinus1Over2();
+  expect(v, PallasFp.twoInv.pow(PallasFPConst.tMinus1Over2));
 }

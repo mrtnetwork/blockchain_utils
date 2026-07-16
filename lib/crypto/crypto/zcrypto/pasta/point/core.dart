@@ -8,6 +8,7 @@ import 'package:blockchain_utils/crypto/crypto/zcrypto/pasta/fields/pallas_fp.da
 import 'package:blockchain_utils/crypto/crypto/zcrypto/pasta/fields/vesta_fq.dart';
 import 'package:blockchain_utils/crypto/crypto/exception/exception.dart';
 import 'package:blockchain_utils/helper/extensions/extensions.dart';
+import 'package:blockchain_utils/numbers/src/u64.dart';
 import 'package:blockchain_utils/utils/compare/hash_code.dart';
 import 'package:blockchain_utils/utils/equatable/equatable.dart';
 import 'package:blockchain_utils/utils/binary/utils.dart';
@@ -52,13 +53,13 @@ class PastaCurveParams<F extends PastaFieldElement<F>> with Equality {
     required this.b,
     required this.name,
   });
-  static PastaCurveParams<PallasFp> get pallas => PastaCurveParams<PallasFp>(
-    a: PallasFp.fromRaw([BigInt.zero, BigInt.zero, BigInt.zero, BigInt.zero]),
-    b: PallasFp.fromRaw([
-      BigInt.from(5),
-      BigInt.zero,
-      BigInt.zero,
-      BigInt.zero,
+  static const PastaCurveParams<PallasFp> pallas = PastaCurveParams<PallasFp>(
+    a: PallasFp.unsafe([Uint64.zero, Uint64.zero, Uint64.zero, Uint64.zero]),
+    b: PallasFp.unsafe([
+      Uint64.unsafe(2711969384, 4294967277),
+      Uint64.unsafe(1958913355, 1330217715),
+      Uint64.unsafe(4294967295, 4294967293),
+      Uint64.unsafe(1073741823, 4294967295),
     ]),
     name: PastaCurveName.pallas,
   );
@@ -69,9 +70,14 @@ class PastaCurveParams<F extends PastaFieldElement<F>> with Equality {
         name: PastaCurveName.pallas,
       );
 
-  static PastaCurveParams<VestaFq> get vesta => PastaCurveParams<VestaFq>(
-    a: VestaFq.fromRaw([BigInt.zero, BigInt.zero, BigInt.zero, BigInt.zero]),
-    b: VestaFq.fromRaw([BigInt.from(5), BigInt.zero, BigInt.zero, BigInt.zero]),
+  static const PastaCurveParams<VestaFq> vesta = PastaCurveParams<VestaFq>(
+    a: VestaFq.unsafe([Uint64.zero, Uint64.zero, Uint64.zero, Uint64.zero]),
+    b: VestaFq.unsafe([
+      Uint64.unsafe(2528939148, 4294967277),
+      Uint64.unsafe(1958913355, 1240954766),
+      Uint64.unsafe(4294967295, 4294967293),
+      Uint64.unsafe(1073741823, 4294967295),
+    ]),
     name: PastaCurveName.vesta,
   );
   static PastaCurveParams<VestaNativeFq> get vestaNative =>
@@ -103,33 +109,34 @@ class PastaCurveParams<F extends PastaFieldElement<F>> with Equality {
     name: PastaCurveName.isoVesta,
   );
 
-  static PastaCurveParams<PallasFp> get isoPallas => PastaCurveParams<PallasFp>(
-    a: PallasFp.fromRaw([
-      BigInt.parse("0x92bb4b0b657a014b"),
-      BigInt.parse("0xb74134581a27a59f"),
-      BigInt.parse("0x49be2d7258370742"),
-      BigInt.parse("0x18354a2eb0ea8c9c"),
+  static const PastaCurveParams<PallasFp> isoPallas =
+      PastaCurveParams<PallasFp>(
+        a: PallasFp.unsafe([
+          Uint64.unsafe(2143670928, 2008746206),
+          Uint64.unsafe(2466841170, 3474071816),
+          Uint64.unsafe(1240874997, 3658565051),
+          Uint64.unsafe(476925704, 1899491548),
+        ]),
+        b: PallasFp.unsafe([
+          Uint64.unsafe(4159841400, 4294962237),
+          Uint64.unsafe(2799616852, 870396827),
+          Uint64.unsafe(4294967295, 4294966618),
+          Uint64.unsafe(1073741823, 4294967295),
+        ]),
+        name: PastaCurveName.isoPallas,
+      );
+  static const PastaCurveParams<VestaFq> isoVesta = PastaCurveParams<VestaFq>(
+    a: VestaFq.unsafe([
+      Uint64.unsafe(3818772284, 3858374752),
+      Uint64.unsafe(2793033388, 1102944330),
+      Uint64.unsafe(1318270008, 478479374),
+      Uint64.unsafe(678844599, 540353717),
     ]),
-    b: PallasFp.fromRaw([
-      BigInt.from(1265),
-      BigInt.zero,
-      BigInt.zero,
-      BigInt.zero,
-    ]),
-    name: PastaCurveName.isoPallas,
-  );
-  static PastaCurveParams<VestaFq> get isoVesta => PastaCurveParams<VestaFq>(
-    a: VestaFq.fromRaw([
-      BigInt.parse("0xc515ad7242eaa6b1"),
-      BigInt.parse("0x9673928c7d01b212"),
-      BigInt.parse("0x81639c4d96f78773"),
-      BigInt.parse("0x267f9b2ee592271a"),
-    ]),
-    b: VestaFq.fromRaw([
-      BigInt.from(1265),
-      BigInt.zero,
-      BigInt.zero,
-      BigInt.zero,
+    b: VestaFq.unsafe([
+      Uint64.unsafe(3800527580, 4294962237),
+      Uint64.unsafe(2799616846, 2872765908),
+      Uint64.unsafe(4294967295, 4294966618),
+      Uint64.unsafe(1073741823, 4294967295),
     ]),
     name: PastaCurveName.isoVesta,
   );
@@ -142,6 +149,7 @@ abstract class BasePastaPoint<
   BASE extends PastaFieldElement<BASE>
 >
     extends ECPoint<SCALAR, BasePastaPoint<SCALAR, BASE>> {
+  const BasePastaPoint();
   abstract final PastaCurveParams<BASE> curveParams;
   abstract final BASE x;
   abstract final BASE y;
@@ -162,7 +170,7 @@ abstract class PastaPoint<
   final BASE y;
   final BASE z;
 
-  PastaPoint({required this.x, required this.y, required this.z});
+  const PastaPoint({required this.x, required this.y, required this.z});
   PastaAffinePoint<SCALAR, BASE, P> toAffine();
   P from({required BASE x, required BASE y, required BASE z});
   @override
@@ -439,7 +447,7 @@ abstract class PastaAffinePoint<
   final BASE x;
   @override
   final BASE y;
-  PastaAffinePoint({required this.x, required this.y});
+  const PastaAffinePoint({required this.x, required this.y});
   P toCurve();
   P from({required BASE x, required BASE y, required BASE z});
   PastaAffinePoint<SCALAR, BASE, P> affineFrom({

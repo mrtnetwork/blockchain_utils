@@ -3,11 +3,12 @@ import 'package:blockchain_utils/bip/cardano/cip1852/cip1852.dart';
 import 'package:blockchain_utils/bip/cardano/cip1852/conf/cip1852_coins.dart';
 import 'package:blockchain_utils/bip/cardano/shelley/cardano_shelley.dart';
 import 'package:test/test.dart';
+import '../../quick_hex.dart';
 import 'test_vector.dart';
 
 void main() {
   test("cardano shelly", () {
-    for (final i in testVector) {
+    for (final i in testVector.shuffleTake()) {
       final cip = Cip1852.fromExtendedKey(
         i["private"],
         Cip1852Coins.cardanoLedger,

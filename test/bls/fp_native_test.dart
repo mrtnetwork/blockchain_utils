@@ -1,4 +1,5 @@
 import 'package:blockchain_utils/blockchain_utils.dart';
+import 'package:blockchain_utils/numbers/src/u64.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -407,6 +408,8 @@ extension _TOBIG on List<int> {
 
 extension _TOSINGLEBIG on List<BigInt> {
   BigInt toBigInt() {
-    return BigintUtils.fromBytes(Bls12Fp(this).toBytes());
+    return BigintUtils.fromBytes(
+      Bls12Fp(map((e) => Uint64.fromBigInt(e)).toList()).toBytes(),
+    );
   }
 }

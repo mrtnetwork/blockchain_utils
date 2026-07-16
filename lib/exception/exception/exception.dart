@@ -2,6 +2,7 @@ import 'package:blockchain_utils/cbor/cbor.dart';
 import 'package:blockchain_utils/crypto/crypto/zcrypto/pedersen_hash/src/exception.dart';
 import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/networks/types/network.dart';
+import 'package:blockchain_utils/numbers/src/exception/exception.dart';
 import 'package:blockchain_utils/proto/exception/exception.dart';
 import 'package:blockchain_utils/utils/equatable/equatable.dart';
 import 'package:blockchain_utils/base58/base58_ex.dart';
@@ -102,6 +103,8 @@ abstract class IException
         JsonParserError.deserialize(object: values.tag),
       BlockchainUtilsSerializationIdentifier.pedersenHashError =>
         PedersenHashException.deserialize(object: values.tag),
+      BlockchainUtilsSerializationIdentifier.integerError =>
+        IntegerError.deserialize(object: values.tag),
       _ => CborSerializableException.incorrectTagValue(tag: values.tag.tags),
     };
   }

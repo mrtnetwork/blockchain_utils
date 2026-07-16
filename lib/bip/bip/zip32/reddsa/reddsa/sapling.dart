@@ -110,7 +110,7 @@ class SaplingSpendAuthorizingKey
 
   @override
   JubJubPoint generator() {
-    return SaplingKeyUtils.spendAuthGenerator.toExtended();
+    return SaplingKeyUtils.spendAuthGenerator;
   }
 
   @override
@@ -159,8 +159,7 @@ class SaplingBindingAuthorizingKey
 
   @override
   JubJubPoint generator() {
-    final generator = SaplingKeyUtils.bindingGenerator;
-    return generator.toExtended();
+    return SaplingKeyUtils.bindingGenerator;
   }
 
   @override
@@ -208,7 +207,7 @@ class SaplingSpendVerificationKey
   }
 
   factory SaplingSpendVerificationKey.fromAutorizationKey(List<int> sk) {
-    final generator = SaplingKeyUtils.spendAuthGenerator.toExtended();
+    final generator = SaplingKeyUtils.spendAuthGenerator;
     return SaplingSpendVerificationKey(
       RedJubJubPrivateKey.fromBytes(sk, generator).publicKey.point,
     );
@@ -264,7 +263,7 @@ class SaplingBindingVerificationKey
     );
   }
   factory SaplingBindingVerificationKey.fromAutorizationKey(List<int> sk) {
-    final generator = SaplingKeyUtils.bindingGenerator.toExtended();
+    final generator = SaplingKeyUtils.bindingGenerator;
     return SaplingBindingVerificationKey(
       RedJubJubPrivateKey.fromBytes(sk, generator).publicKey.point,
     );

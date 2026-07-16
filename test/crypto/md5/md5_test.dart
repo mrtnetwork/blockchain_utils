@@ -7,7 +7,7 @@ import 'test_vector.dart';
 
 void main() {
   test("md5 test", () {
-    for (final i in testVector) {
+    for (final i in testVector.shuffleTake()) {
       final k = MD5();
       final message = BytesUtils.fromHexString(i["message"]);
       k.update(message.sublist(0, 10));

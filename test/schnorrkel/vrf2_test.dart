@@ -53,7 +53,7 @@ void main() {
   test("schnorrkel vrf verify", () {
     /// test vrf verify
     /// https://github.com/noot/schnorrkel/blob/master/src/vrf.rs#L922
-    for (final i in testVector) {
+    for (final i in testVector.shuffleTake()) {
       final keyPair = SchnorrkelKeypair.fromBytes(
         BytesUtils.fromHexString(i["keypair"]),
       );

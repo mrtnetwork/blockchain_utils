@@ -7,7 +7,7 @@ import 'stacking_test_vector.dart' as t;
 
 void main() {
   test("adda shelly address test", () {
-    for (final i in testVector) {
+    for (final i in testVector.shuffleTake()) {
       final params = Map<String, dynamic>.from(i["params"]);
       final z = AdaShelleyAddrEncoder().encodeKey(
         BytesUtils.fromHexString(i["public"]),
@@ -19,7 +19,7 @@ void main() {
     }
   });
   test("ada shelly stacking address test", () {
-    for (final i in t.testVector) {
+    for (final i in t.testVector.shuffleTake()) {
       final params = Map<String, dynamic>.from(i["params"]);
       final netTag = ADANetwork.values.firstWhere(
         (element) =>

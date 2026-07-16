@@ -1,6 +1,8 @@
 import 'package:blockchain_utils/blockchain_utils.dart';
 import 'package:test/test.dart';
 
+import '../quick_hex.dart';
+
 final List<Map<String, String>> _testVect = [
   {
     "raw": "751e76e8199196d454941c45d1b3a323f1433bd6",
@@ -30,7 +32,7 @@ final List<Map<String, String>> _testVect = [
 
 void main() {
   test("bach32 decode", () {
-    for (final i in _testVect) {
+    for (final i in _testVect.shuffleTake()) {
       final hrp = i["encode"]!.substring(0, i["encode"]!.indexOf(":"));
       final decode = BchBech32Decoder.decode(hrp, i["encode"]!);
       expect(BytesUtils.toHexString(decode.$2), i["raw"]);

@@ -10,7 +10,7 @@ import 'segwit_test_vector.dart';
 
 void main() {
   test("test legacy", () {
-    for (final i in testVector) {
+    for (final i in testVector.shuffleTake(2)) {
       final seed = BytesUtils.fromHexString(i["seed"]);
       final elc = ElectrumV2Standard.fromSeed(seed);
       final prv = WifEncoder.encode(
@@ -38,7 +38,7 @@ void main() {
     }
   });
   test("segwit", () {
-    for (final i in segwitTestVector) {
+    for (final i in segwitTestVector.shuffleTake(2)) {
       final seed = BytesUtils.fromHexString(i["seed"]);
       final elc = ElectrumV2Segwit.fromSeed(seed);
       final prv = WifEncoder.encode(

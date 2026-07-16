@@ -2,11 +2,12 @@ import 'package:blockchain_utils/bip/bip/bip84/bip84_base.dart';
 import 'package:blockchain_utils/bip/bip/conf/bip84/bip84_coins.dart';
 import 'package:blockchain_utils/utils/utils.dart';
 import 'package:test/test.dart';
+import '../../quick_hex.dart';
 import 'test_vector.dart';
 
 void main() {
   test("bip84", () {
-    for (final i in testVector) {
+    for (final i in testVector.shuffleTake()) {
       final seed = BytesUtils.fromHexString(i["seed"]);
       final coin = Bip84Coins.values.firstWhere(
         (element) =>

@@ -7,7 +7,7 @@ import 'test_vector.dart' show testVector;
 
 void main() {
   test("p2sh address test", () {
-    for (final i in testVector) {
+    for (final i in testVector.shuffleTake()) {
       final params = Map<String, dynamic>.from(i["params"]);
       final netVersion = BytesUtils.fromHexString(params["net_ver"]);
       final z = P2SHAddrEncoder().encodeKey(

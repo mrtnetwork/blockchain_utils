@@ -1,4 +1,5 @@
 import 'package:blockchain_utils/blockchain_utils.dart';
+import 'package:blockchain_utils/numbers/src/u64.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -23,10 +24,10 @@ void _sqrt() {
   expect(JubJubNativeFq.zero().sqrt().result, JubJubNativeFq.zero());
   JubJubNativeFq square = JubJubNativeFq.fromBytes(
     JubJubFq([
-      BigInt.parse("0x46cd85a5f273077e"),
-      BigInt.parse("0x1d30c47dd68fc735"),
-      BigInt.parse("0x77f656f60beca0eb"),
-      BigInt.parse("0x494aa01bdf32468d"),
+      Uint64.parseHex("0x46cd85a5f273077e"),
+      Uint64.parseHex("0x1d30c47dd68fc735"),
+      Uint64.parseHex("0x77f656f60beca0eb"),
+      Uint64.parseHex("0x494aa01bdf32468d"),
     ]).toBytes(),
   );
 
@@ -52,7 +53,7 @@ void _invert() {
     BigInt.parse("0x3339d80809a1d805"),
     BigInt.parse("0x73eda753299d7d48"),
   ];
-  final r = JubJubNativeFq.fromBytes(JubJubFq.r().toBytes());
+  final r = JubJubNativeFq.fromBytes(JubJubFq.r.toBytes());
 
   JubJubNativeFq r1 = r;
   JubJubNativeFq r2 = r;
@@ -76,13 +77,13 @@ void _invert2() {
   expect(JubJubNativeFq.one().invert(), JubJubNativeFq.one());
   expect((-JubJubNativeFq.one()).invert(), -JubJubNativeFq.one());
 
-  JubJubNativeFq tmp = JubJubNativeFq.fromBytes(JubJubFq.r2().toBytes());
+  JubJubNativeFq tmp = JubJubNativeFq.fromBytes(JubJubFq.r2.toBytes());
 
   for (int i = 0; i < 100; i++) {
     JubJubNativeFq tmp2 = tmp.invert()!;
     tmp2 *= tmp;
     expect(tmp2, JubJubNativeFq.one());
-    tmp += JubJubNativeFq.fromBytes(JubJubFq.r2().toBytes());
+    tmp += JubJubNativeFq.fromBytes(JubJubFq.r2.toBytes());
   }
 }
 
@@ -172,10 +173,10 @@ void _subtraction() {
 }
 
 final largest = JubJubFq([
-  BigInt.parse('0xffffffff00000000'), // 64-bit + overflow safe
-  BigInt.parse('0x53bda402fffe5bfe'),
-  BigInt.parse('0x3339d80809a1d805'),
-  BigInt.parse('0x73eda753299d7d48'),
+  Uint64.parseHex('0xffffffff00000000'), // 64-bit + overflow safe
+  Uint64.parseHex('0x53bda402fffe5bfe'),
+  Uint64.parseHex('0x3339d80809a1d805'),
+  Uint64.parseHex('0x73eda753299d7d48'),
 ]);
 
 void _negation() {
@@ -184,7 +185,7 @@ void _negation() {
   expect(
     tmp,
     JubJubNativeFq.fromBytes(
-      JubJubFq([1, 0, 0, 0].map(BigInt.from).toList()).toBytes(),
+      JubJubFq([1, 0, 0, 0].map((e) => Uint64(e)).toList()).toBytes(),
     ),
   );
 
@@ -192,7 +193,7 @@ void _negation() {
   expect(tmp, JubJubNativeFq.zero());
   tmp =
       -JubJubNativeFq.fromBytes(
-        JubJubFq([1, 0, 0, 0].map(BigInt.from).toList()).toBytes(),
+        JubJubFq([1, 0, 0, 0].map((e) => Uint64(e)).toList()).toBytes(),
       );
   expect(tmp, l);
 }
@@ -205,17 +206,17 @@ void _addition() {
     tmp,
     JubJubNativeFq.fromBytes(
       JubJubFq([
-        BigInt.parse('0xfffffffeffffffff'),
-        BigInt.parse('0x53bda402fffe5bfe'),
-        BigInt.parse('0x3339d80809a1d805'),
-        BigInt.parse('0x73eda753299d7d48'),
+        Uint64.parseHex('0xfffffffeffffffff'),
+        Uint64.parseHex('0x53bda402fffe5bfe'),
+        Uint64.parseHex('0x3339d80809a1d805'),
+        Uint64.parseHex('0x73eda753299d7d48'),
       ]).toBytes(),
     ),
   );
 
   tmp = l;
   tmp += JubJubNativeFq.fromBytes(
-    JubJubFq([1, 0, 0, 0].map(BigInt.from).toList()).toBytes(),
+    JubJubFq([1, 0, 0, 0].map((e) => Uint64(e)).toList()).toBytes(),
   );
 
   expect(tmp, JubJubNativeFq.zero());
@@ -231,10 +232,10 @@ void _testZero() {
 void _fromBytesMax() {
   expect(
     JubJubFq([
-      BigInt.parse('0xc62c1805439b73b1'),
-      BigInt.parse('0xc2b9551e8ced218e'),
-      BigInt.parse('0xda44ec81daf9a422'),
-      BigInt.parse('0x5605aa601c162e79'),
+      Uint64.parseHex('0xc62c1805439b73b1'),
+      Uint64.parseHex('0xc2b9551e8ced218e'),
+      Uint64.parseHex('0xda44ec81daf9a422'),
+      Uint64.parseHex('0x5605aa601c162e79'),
     ]),
     JubJubFq.fromBytes64(List<int>.filled(64, 0xff)),
   );
@@ -250,7 +251,7 @@ void _bytes64() {
     ),
   );
   expect(
-    JubJubFq.r2().toBytes(),
+    JubJubFq.r2.toBytes(),
     JubJubNativeFq.fromBytes64(
       BytesUtils.fromHexString(
         "feffffff0100000002480300fab78458f54fbcecef4f8c996f05c5ac59b124180000000000000000000000000000000000000000000000000000000000000000",
@@ -263,9 +264,9 @@ void _toBytes() {
   final r2Bytes = BytesUtils.fromHexString(
     "feffffff0100000002480300fab78458f54fbcecef4f8c996f05c5ac59b12418",
   );
-  expect(JubJubNativeFq.fromBytes(JubJubFq.r2().toBytes()).toBytes(), r2Bytes);
+  expect(JubJubNativeFq.fromBytes(JubJubFq.r2.toBytes()).toBytes(), r2Bytes);
   expect(
-    JubJubNativeFq.fromBytes(JubJubFq.r2().toBytes()),
+    JubJubNativeFq.fromBytes(JubJubFq.r2.toBytes()),
     JubJubNativeFq.fromBytes(r2Bytes),
   );
 }
@@ -273,25 +274,25 @@ void _toBytes() {
 void _constants() {
   final delta = JubJubNativeFq.fromBytes(
     JubJubFq([
-      BigInt.parse('0x70e310d3d146f96a'),
-      BigInt.parse('0x4b64c08919e299e6'),
-      BigInt.parse('0x51e114186a8b970d'),
-      BigInt.parse('0x6185d06627c067cb'),
+      Uint64.parseHex('0x70e310d3d146f96a'),
+      Uint64.parseHex('0x4b64c08919e299e6'),
+      Uint64.parseHex('0x51e114186a8b970d'),
+      Uint64.parseHex('0x6185d06627c067cb'),
     ]).toBytes(),
   );
   expect(
-    (JubJubNativeFq.fromBytes(JubJubFq.from(BigInt.from(2)).toBytes()) *
-            JubJubNativeFq.fromBytes(JubJubFq.twoInv().toBytes()))
+    (JubJubNativeFq.fromBytes(JubJubFq.from(Uint64(2)).toBytes()) *
+            JubJubNativeFq.fromBytes(JubJubFq.twoInv.toBytes()))
         .toBytes(),
-    JubJubFq.one().toBytes(),
+    JubJubFq.one.toBytes(),
   );
   expect(
-    (JubJubNativeFq.fromBytes(JubJubFq.rootOfUnity().toBytes()) *
-        JubJubNativeFq.fromBytes(JubJubFq.rootOfUnityInv().toBytes())),
+    (JubJubNativeFq.fromBytes(JubJubFq.rootOfUnity.toBytes()) *
+        JubJubNativeFq.fromBytes(JubJubFq.rootOfUnityInv.toBytes())),
     JubJubNativeFq.one(),
   );
   expect(
-    JubJubNativeFq.fromBytes(JubJubFq.rootOfUnity().toBytes()).powVartime([
+    JubJubNativeFq.fromBytes(JubJubFq.rootOfUnity.toBytes()).powVartime([
       BigInt.one << JubJubFqConst.S,
       BigInt.zero,
       BigInt.zero,

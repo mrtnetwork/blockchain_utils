@@ -27,7 +27,7 @@ class MuSig2UtilsConst {
     return false;
   }
 
-  static Secp256k1Scalar getSessionKeyAggCoeffConst({
+  static BaseSecp256k1Scalar getSessionKeyAggCoeffConst({
     required MuSig2Session session,
     required List<int> pkBytes,
   }) {
@@ -52,10 +52,11 @@ class MuSig2UtilsConst {
       ...hashKeys,
       ...pkBytes,
     ]);
+
     return Secp256k1Utils.scalarFromBytes(hash);
   }
 
-  static Secp256k1Scalar _keyAggCoeffConst({
+  static BaseSecp256k1Scalar _keyAggCoeffConst({
     required List<List<int>> keys,
     required List<int> key,
   }) {

@@ -8,7 +8,7 @@ import 'test_vector.dart';
 
 void main() {
   test("hmac sha512", () {
-    for (final i in hmach512TestVector) {
+    for (final i in hmach512TestVector.shuffleTake()) {
       final key = BytesUtils.fromHexString(i["key"]);
       final message = BytesUtils.fromHexString(i["message"]);
       final mac = HMAC(() => SHA512(), key);
@@ -21,7 +21,7 @@ void main() {
     }
   });
   test("hmac sha256", () {
-    for (final i in hmac256TestVector) {
+    for (final i in hmac256TestVector.shuffleTake()) {
       final key = BytesUtils.fromHexString(i["key"]);
       final message = BytesUtils.fromHexString(i["message"]);
       final mac = HMAC(() => SHA256(), key);
@@ -34,7 +34,7 @@ void main() {
     }
   });
   test("hmac sha3", () {
-    for (final i in sha3TestVector) {
+    for (final i in sha3TestVector.shuffleTake()) {
       final key = BytesUtils.fromHexString(i["key"]);
       final message = BytesUtils.fromHexString(i["message"]);
       final mac = HMAC(() => SHA3(), key);

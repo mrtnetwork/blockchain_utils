@@ -6,6 +6,7 @@ import 'package:blockchain_utils/crypto/crypto/zcrypto/jubjub/fields/native.dart
 import 'package:blockchain_utils/crypto/crypto/exception/exception.dart';
 import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/helper/extensions/extensions.dart';
+import 'package:blockchain_utils/numbers/src/u64.dart';
 import 'package:blockchain_utils/utils/binary/utils.dart';
 import 'package:blockchain_utils/utils/compare/hash_code.dart';
 import 'package:blockchain_utils/utils/equatable/equatable.dart';
@@ -16,7 +17,7 @@ class G1Projective extends Bls12Point<G1Projective> {
   final Bls12Fp x;
   final Bls12Fp y;
   final Bls12Fp z;
-  G1Projective({required this.x, required this.y, required this.z});
+  const G1Projective({required this.x, required this.y, required this.z});
   G1Projective copyWith({Bls12Fp? x, Bls12Fp? y, Bls12Fp? z}) =>
       G1Projective(x: x ?? this.x, y: y ?? this.y, z: z ?? this.z);
 
@@ -33,39 +34,38 @@ class G1Projective extends Bls12Point<G1Projective> {
   }
 
   /// identity point
-  factory G1Projective.identity() =>
-      G1Projective(x: Bls12Fp.zero(), y: Bls12Fp.one(), z: Bls12Fp.zero());
+  static const G1Projective identity = G1Projective(
+    x: Bls12Fp.zero,
+    y: Bls12Fp.one,
+    z: Bls12Fp.zero,
+  );
 
   /// generator
-  factory G1Projective.generator() => G1Projective(
-    x: Bls12Fp([
-      BigInt.parse('0x5cb38790fd530c16'),
-      BigInt.parse('0x7817fc679976fff5'),
-      BigInt.parse('0x154f95c7143ba1c1'),
-      BigInt.parse('0xf0ae6acdf3d0e747'),
-      BigInt.parse('0xedce6ecc21dbf440'),
-      BigInt.parse('0x120177419e0bfb75'),
+  static const G1Projective generator = G1Projective(
+    x: Bls12Fp.unsafe([
+      Uint64.unsafe(1555269520, 4250078230),
+      Uint64.unsafe(2014837863, 2574712821),
+      Uint64.unsafe(357537223, 339452353),
+      Uint64.unsafe(4037962445, 4090554183),
+      Uint64.unsafe(3989728972, 568063040),
+      Uint64.unsafe(302085953, 2651585397),
     ]),
-    y: Bls12Fp([
-      BigInt.parse('0xbaac93d50ce72271'),
-      BigInt.parse('0x8c22631a7918fd8e'),
-      BigInt.parse('0xdd595f13570725ce'),
-      BigInt.parse('0x51ac582950405194'),
-      BigInt.parse('0x0e1c8c3fad0059c0'),
-      BigInt.parse('0x0bbc3efc5008a26a'),
+    y: Bls12Fp.unsafe([
+      Uint64.unsafe(3131872213, 216474225),
+      Uint64.unsafe(2351063834, 2031680910),
+      Uint64.unsafe(3713621779, 1460086222),
+      Uint64.unsafe(1370249257, 1346392468),
+      Uint64.unsafe(236751935, 2902481344),
+      Uint64.unsafe(196886268, 1342743146),
     ]),
-    z: Bls12Fp.one(),
+    z: Bls12Fp.one,
   );
 
   factory G1Projective.fromAffine(G1AffinePoint affine) {
     return G1Projective(
       x: affine.x,
       y: affine.y,
-      z: Bls12Fp.conditionalSelect(
-        Bls12Fp.one(),
-        Bls12Fp.zero(),
-        affine.infinity,
-      ),
+      z: Bls12Fp.conditionalSelect(Bls12Fp.one, Bls12Fp.zero, affine.infinity),
     );
   }
 
@@ -81,7 +81,7 @@ class G1Projective extends Bls12Point<G1Projective> {
 
   G1Projective _multiply(List<int> by) {
     assert(by.length == 32);
-    G1Projective acc = G1Projective.identity();
+    G1Projective acc = G1Projective.identity;
     final bits = BytesUtils.bytesToBits(by); // length = 256
     final iterableBits = bits.reversed.skip(1);
     for (final bit in iterableBits) {
@@ -93,7 +93,7 @@ class G1Projective extends Bls12Point<G1Projective> {
 
   /// Multiply this point by `BLS_X` using double-and-add
   G1Projective mulByX() {
-    G1Projective result = G1Projective.identity();
+    G1Projective result = G1Projective.identity;
 
     BigInt x = BigInt.parse("0xd201000000010000") >> 1; // skip the first bit
     G1Projective tmp = this;
@@ -252,20 +252,19 @@ class G1Projective extends Bls12Point<G1Projective> {
   /// Checks whether the point satisfies the BLS12-381 curve equation in projective form.
   bool isOnCurve() {
     // Y^2 * Z = X^3 + b * Z^3
-    return (y.square() * z) ==
-            (x.square() * x + z.square() * z * Bls12Fp.b()) ||
+    return (y.square() * z) == (x.square() * x + z.square() * z * Bls12Fp.b) ||
         z.isZero();
   }
 
   /// convert point to affine
   G1AffinePoint toAffine() {
-    final zinv = z.invert() ?? Bls12Fp.zero();
+    final zinv = z.invert() ?? Bls12Fp.zero;
     final x = this.x * zinv;
     final y = this.y * zinv;
     final tmp = G1AffinePoint(x: x, y: y, infinity: false);
     return G1AffinePoint.conditionalSelect(
       tmp,
-      G1AffinePoint.identity(),
+      G1AffinePoint.identity,
       zinv.isZero(),
     );
   }
@@ -293,7 +292,11 @@ class G1AffinePoint extends Bls12AffinePoint<G1Projective> with Equality {
   final Bls12Fp x;
   final Bls12Fp y;
   final bool infinity;
-  G1AffinePoint({required this.x, required this.y, required this.infinity});
+  const G1AffinePoint({
+    required this.x,
+    required this.y,
+    required this.infinity,
+  });
   factory G1AffinePoint._fromUncompressedBytes(List<int> bytes) {
     bytes = bytes.exc(
       length: 96,
@@ -336,8 +339,8 @@ class G1AffinePoint extends Bls12AffinePoint<G1Projective> with Equality {
 
     final infinity =
         infinityFlagSet & compressionFlagSet & (!sortFlagSet) & x.isZero();
-    if (infinity) return G1AffinePoint.identity();
-    final l = ((x.square() * x) + Bls12Fp.b()).sqrt();
+    if (infinity) return G1AffinePoint.identity;
+    final l = ((x.square() * x) + Bls12Fp.b).sqrt();
     if (!l.isSquare) {
       throw ArgumentException.invalidOperationArguments(
         "fromCompressedBytes",
@@ -395,40 +398,39 @@ class G1AffinePoint extends Bls12AffinePoint<G1Projective> with Equality {
       infinity: IntUtils.ctSelectBool(a.infinity, b.infinity, choice),
     );
   }
-  static final _identity = G1AffinePoint(
-    x: Bls12Fp.zero(),
-    y: Bls12Fp.one(),
+  static const identity = G1AffinePoint(
+    x: Bls12Fp.zero,
+    y: Bls12Fp.one,
     infinity: true,
   );
-  factory G1AffinePoint.identity() => _identity;
-  factory G1AffinePoint.generator() => G1AffinePoint(
-    x: Bls12Fp([
-      BigInt.parse('0x5cb38790fd530c16'),
-      BigInt.parse('0x7817fc679976fff5'),
-      BigInt.parse('0x154f95c7143ba1c1'),
-      BigInt.parse('0xf0ae6acdf3d0e747'),
-      BigInt.parse('0xedce6ecc21dbf440'),
-      BigInt.parse('0x120177419e0bfb75'),
+  static const G1AffinePoint generator = G1AffinePoint(
+    x: Bls12Fp.unsafe([
+      Uint64.unsafe(1555269520, 4250078230),
+      Uint64.unsafe(2014837863, 2574712821),
+      Uint64.unsafe(357537223, 339452353),
+      Uint64.unsafe(4037962445, 4090554183),
+      Uint64.unsafe(3989728972, 568063040),
+      Uint64.unsafe(302085953, 2651585397),
     ]),
-    y: Bls12Fp([
-      BigInt.parse('0xbaac93d50ce72271'),
-      BigInt.parse('0x8c22631a7918fd8e'),
-      BigInt.parse('0xdd595f13570725ce'),
-      BigInt.parse('0x51ac582950405194'),
-      BigInt.parse('0x0e1c8c3fad0059c0'),
-      BigInt.parse('0x0bbc3efc5008a26a'),
+    y: Bls12Fp.unsafe([
+      Uint64.unsafe(3131872213, 216474225),
+      Uint64.unsafe(2351063834, 2031680910),
+      Uint64.unsafe(3713621779, 1460086222),
+      Uint64.unsafe(1370249257, 1346392468),
+      Uint64.unsafe(236751935, 2902481344),
+      Uint64.unsafe(196886268, 1342743146),
     ]),
     infinity: false,
   );
 
   factory G1AffinePoint.fromProjective(G1Projective p) {
-    final zInv = p.z.invert() ?? Bls12Fp.zero();
+    final zInv = p.z.invert() ?? Bls12Fp.zero;
     final x = p.x * zInv;
     final y = p.y * zInv;
     final tmp = G1AffinePoint(x: x, y: y, infinity: false);
     return G1AffinePoint.conditionalSelect(
       tmp,
-      G1AffinePoint.identity(),
+      G1AffinePoint.identity,
       zInv.isZero(),
     );
   }
@@ -458,7 +460,7 @@ class G1AffinePoint extends Bls12AffinePoint<G1Projective> with Equality {
   }
 
   G1AffinePoint _endomorphism() {
-    return G1AffinePoint(x: x * Bls12Fp.beta(), y: y, infinity: infinity);
+    return G1AffinePoint(x: x * Bls12Fp.beta, y: y, infinity: infinity);
   }
 
   /// Converts this affine point to its projective representation.
@@ -474,12 +476,11 @@ class G1AffinePoint extends Bls12AffinePoint<G1Projective> with Equality {
   /// Checks whether the point satisfies the BLS12-381 curve equation in projective form.
   bool isOnCurve() {
     if (infinity) return true;
-    return (y.square() - (x.square() * x)) == Bls12Fp.b();
+    return (y.square() - (x.square() * x)) == Bls12Fp.b;
   }
 
   List<int> _toCompressed() {
-    final res =
-        Bls12Fp.conditionalSelect(x, Bls12Fp.zero(), infinity).toBytes();
+    final res = Bls12Fp.conditionalSelect(x, Bls12Fp.zero, infinity).toBytes();
     res[0] |= 1 << 7;
     // Is this point at infinity? If so, set the second-most significant bit.
     res[0] |= IntUtils.ctSelectInt(0, 1 << 6, infinity);
@@ -493,8 +494,8 @@ class G1AffinePoint extends Bls12AffinePoint<G1Projective> with Equality {
 
   List<int> _toUncompressed() {
     final res = [
-      ...Bls12Fp.conditionalSelect(x, Bls12Fp.zero(), infinity).toBytes(),
-      ...Bls12Fp.conditionalSelect(y, Bls12Fp.zero(), infinity).toBytes(),
+      ...Bls12Fp.conditionalSelect(x, Bls12Fp.zero, infinity).toBytes(),
+      ...Bls12Fp.conditionalSelect(y, Bls12Fp.zero, infinity).toBytes(),
     ];
     res[0] |= IntUtils.ctSelectInt(0, 1 << 6, infinity);
     return res;
@@ -519,7 +520,7 @@ class G1AffinePoint extends Bls12AffinePoint<G1Projective> with Equality {
   G1AffinePoint operator -() {
     return G1AffinePoint(
       x: x,
-      y: Bls12Fp.conditionalSelect(-y, Bls12Fp.one(), infinity),
+      y: Bls12Fp.conditionalSelect(-y, Bls12Fp.one, infinity),
       infinity: infinity,
     );
   }

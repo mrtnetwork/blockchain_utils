@@ -7,7 +7,7 @@ import 'test_vector.dart' show testVector;
 
 void main() {
   test("substrate ED25519 test", () {
-    for (final i in testVector) {
+    for (final i in testVector.shuffleTake()) {
       final params = Map<String, dynamic>.from(i["params"]);
 
       final z = SubstrateEd25519AddrEncoder().encodeKey(
@@ -23,7 +23,7 @@ void main() {
     }
   });
   test("substrate sr25519 test", () {
-    for (final i in testVector) {
+    for (final i in testVector.shuffleTake()) {
       final params = Map<String, dynamic>.from(i["params"]);
 
       final z = SubstrateGenericAddrEncoder().encodeKey(

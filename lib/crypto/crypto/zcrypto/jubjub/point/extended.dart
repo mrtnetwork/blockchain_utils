@@ -7,6 +7,7 @@ import 'package:blockchain_utils/crypto/crypto/exception/exception.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
 import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/helper/helper.dart';
+import 'package:blockchain_utils/numbers/src/u64.dart';
 import 'package:blockchain_utils/utils/compare/hash_code.dart';
 import 'package:blockchain_utils/utils/equatable/equatable.dart';
 
@@ -17,7 +18,7 @@ class JubJubPoint extends BaseJubJubPoint<JubJubFr, JubJubPoint> {
   final JubJubFq t1;
   final JubJubFq t2;
 
-  JubJubPoint({
+  const JubJubPoint({
     required this.u,
     required this.v,
     required this.z,
@@ -29,7 +30,7 @@ class JubJubPoint extends BaseJubJubPoint<JubJubFr, JubJubPoint> {
     return JubJubPoint(
       u: point.u,
       v: point.v,
-      z: JubJubFq.one(),
+      z: JubJubFq.one,
       t1: point.u,
       t2: point.v,
     );
@@ -40,11 +41,11 @@ class JubJubPoint extends BaseJubJubPoint<JubJubFr, JubJubPoint> {
     );
   }
   static final _identity = JubJubPoint(
-    u: JubJubFq.zero(),
-    v: JubJubFq.one(),
-    z: JubJubFq.one(),
-    t1: JubJubFq.zero(),
-    t2: JubJubFq.zero(),
+    u: JubJubFq.zero,
+    v: JubJubFq.one,
+    z: JubJubFq.one,
+    t1: JubJubFq.zero,
+    t2: JubJubFq.zero,
   );
 
   factory JubJubPoint.identity() {
@@ -127,7 +128,7 @@ class JubJubPoint extends BaseJubJubPoint<JubJubFr, JubJubPoint> {
       vPlusU: v + u,
       vMinusU: v - u,
       z: z,
-      t2d: t1 * t2 * JubJubFq.edwardsD2(),
+      t2d: t1 * t2 * JubJubFq.edwardsD2,
     );
   }
 
@@ -173,7 +174,7 @@ class JubJubPoint extends BaseJubJubPoint<JubJubFr, JubJubPoint> {
   bool isOnCurve() {
     final point = JubJubAffinePoint.fromExtendedPoint(this);
 
-    return (z != JubJubFq.zero() &&
+    return (z != JubJubFq.zero &&
         point.isOnCurve() &&
         (point.u * point.v * z) == (t1 * t2));
   }
@@ -271,21 +272,21 @@ class JubJubAffinePoint extends BaseJubJubAffinePoint<JubJubFr> with Equality {
     );
   }
   factory JubJubAffinePoint.identity() {
-    return JubJubAffinePoint(u: JubJubFq.zero(), v: JubJubFq.one());
+    return JubJubAffinePoint(u: JubJubFq.zero, v: JubJubFq.one);
   }
   factory JubJubAffinePoint.generator() {
     return JubJubAffinePoint(
       u: JubJubFq.fromRaw([
-        BigInt.parse("0xe4b3d35df1a7adfe"),
-        BigInt.parse("0xcaf55d1b29bf81af"),
-        BigInt.parse("0x8b0f03ddd60a8187"),
-        BigInt.parse("0x62edcbb8bf3787c8"),
+        Uint64.parseHex("0xe4b3d35df1a7adfe"),
+        Uint64.parseHex("0xcaf55d1b29bf81af"),
+        Uint64.parseHex("0x8b0f03ddd60a8187"),
+        Uint64.parseHex("0x62edcbb8bf3787c8"),
       ]),
       v: JubJubFq.fromRaw([
-        BigInt.parse("0x000000000000000b"),
-        BigInt.parse("0x0000000000000000"),
-        BigInt.parse("0x0000000000000000"),
-        BigInt.parse("0x0000000000000000"),
+        Uint64.parseHex("0x000000000000000b"),
+        Uint64.parseHex("0x0000000000000000"),
+        Uint64.parseHex("0x0000000000000000"),
+        Uint64.parseHex("0x0000000000000000"),
       ]),
     );
   }
@@ -322,9 +323,9 @@ class JubJubAffinePoint extends BaseJubJubAffinePoint<JubJubFr> with Equality {
     final v2 = v.square();
 
     // u^2 = (v^2 - 1) / (1 + d*v^2)
-    final denominator = JubJubFq.one() + JubJubFq.edwardsD() * v2;
-    JubJubFq invDenominator = denominator.invert() ?? JubJubFq.zero();
-    final u2 = (v2 - JubJubFq.one()) * invDenominator;
+    final denominator = JubJubFq.one + JubJubFq.edwardsD * v2;
+    JubJubFq invDenominator = denominator.invert() ?? JubJubFq.zero;
+    final u2 = (v2 - JubJubFq.one) * invDenominator;
     final u = u2.sqrt().sqrtOrNull();
     if (u == null) {
       throw ArgumentException.invalidOperationArguments(
@@ -381,7 +382,7 @@ class JubJubAffinePoint extends BaseJubJubAffinePoint<JubJubFr> with Equality {
     return JubJubAffineNielsPoint(
       vPlusU: v + u,
       vMinusU: v - u,
-      t2d: (u * v) * JubJubFq.edwardsD2(),
+      t2d: (u * v) * JubJubFq.edwardsD2,
     );
   }
 
@@ -394,7 +395,7 @@ class JubJubAffinePoint extends BaseJubJubAffinePoint<JubJubFr> with Equality {
     final u2 = u.square();
     final v2 = v.square();
 
-    return v2 - u2 == JubJubFq.one() + JubJubFq.edwardsD() * u2 * v2;
+    return v2 - u2 == JubJubFq.one + JubJubFq.edwardsD * u2 * v2;
   }
 
   @override
@@ -714,16 +715,16 @@ class JubJubAffineNativePoint extends BaseJubJubAffinePoint<JubJubNativeFr>
     return JubJubAffineNativePoint.fromBytes(
       JubJubAffinePoint(
         u: JubJubFq.fromRaw([
-          BigInt.parse("0xe4b3d35df1a7adfe"),
-          BigInt.parse("0xcaf55d1b29bf81af"),
-          BigInt.parse("0x8b0f03ddd60a8187"),
-          BigInt.parse("0x62edcbb8bf3787c8"),
+          Uint64.parseHex("0xe4b3d35df1a7adfe"),
+          Uint64.parseHex("0xcaf55d1b29bf81af"),
+          Uint64.parseHex("0x8b0f03ddd60a8187"),
+          Uint64.parseHex("0x62edcbb8bf3787c8"),
         ]),
         v: JubJubFq.fromRaw([
-          BigInt.parse("0x000000000000000b"),
-          BigInt.parse("0x0000000000000000"),
-          BigInt.parse("0x0000000000000000"),
-          BigInt.parse("0x0000000000000000"),
+          Uint64.parseHex("0x000000000000000b"),
+          Uint64.parseHex("0x0000000000000000"),
+          Uint64.parseHex("0x0000000000000000"),
+          Uint64.parseHex("0x0000000000000000"),
         ]),
       ).toBytes(),
     );

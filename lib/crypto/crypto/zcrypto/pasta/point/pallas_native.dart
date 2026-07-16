@@ -73,13 +73,13 @@ class PallasNativePoint
     return PallasNativePoint(x: point.$1, y: point.$2, z: point.$3);
   }
 
-  static final _identity = PallasNativePoint(
+  static final identity_ = PallasNativePoint(
     x: PallasNativeFp.zero(),
     y: PallasNativeFp.zero(),
     z: PallasNativeFp.zero(),
   );
   factory PallasNativePoint.identity() {
-    return _identity;
+    return identity_;
   }
   factory PallasNativePoint.generator() {
     final negOne = -PallasNativeFp.one();
@@ -98,7 +98,7 @@ class PallasNativePoint
 
   @override
   PallasNativePoint identity() {
-    return PallasNativePoint.identity();
+    return PallasNativePoint.identity_;
   }
 
   @override
@@ -114,7 +114,7 @@ class PallasNativePoint
   PallasAffineNativePoint toAffine() {
     final zInv = z.invert();
     if (zInv == null) {
-      return PallasAffineNativePoint.identity();
+      return PallasAffineNativePoint.identity_;
     }
     final zInv2 = zInv.square();
     final x = this.x * zInv2;
@@ -137,12 +137,12 @@ class PallasNativePoint
 class PallasAffineNativePoint
     extends PastaAffinePoint<VestaNativeFq, PallasNativeFp, PallasNativePoint> {
   PallasAffineNativePoint({required super.x, required super.y});
-  static final _identity = PallasAffineNativePoint(
+  static final identity_ = PallasAffineNativePoint(
     x: PallasNativeFp.zero(),
     y: PallasNativeFp.zero(),
   );
   factory PallasAffineNativePoint.identity() {
-    return _identity;
+    return identity_;
   }
 
   factory PallasAffineNativePoint.fromBytes(List<int> bytes) {
@@ -181,16 +181,6 @@ class PallasAffineNativePoint
     return PallasAffineNativePoint(x: x, y: yFinal);
   }
 
-  // factory PallasAffineNativePoint.conditionalSelect(
-  //   PallasAffineNativePoint a,
-  //   PallasAffineNativePoint b,
-  //   bool choice,
-  // ) {
-  //   return PallasAffineNativePoint(
-  //     x: PallasNativeFp.conditionalSelect(a.x, b.x, choice),
-  //     y: PallasNativeFp.conditionalSelect(a.y, b.y, choice),
-  //   );
-  // }
   @override
   PallasAffineNativePoint affineFrom({
     required PallasNativeFp x,
@@ -219,7 +209,7 @@ class PallasAffineNativePoint
 
   @override
   PallasNativePoint identity() {
-    return PallasNativePoint.identity();
+    return PallasNativePoint.identity_;
   }
 
   @override

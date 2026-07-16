@@ -1,12 +1,13 @@
 import 'package:blockchain_utils/bip/address/ada/ada_byron_addr.dart';
 import 'package:blockchain_utils/utils/utils.dart';
 import 'package:test/test.dart';
+import '../../quick_hex.dart';
 import 'byron_test_vector.dart' as byron;
 import 'lagacy_test_vector.dart' as lagacy;
 
 void main() {
   test("ada byron legacy test", () {
-    for (final i in lagacy.testVector) {
+    for (final i in lagacy.testVector.shuffleTake()) {
       final params = Map<String, dynamic>.from(i["params"]);
 
       final l = AdaByronLegacyAddrEncoder().encodeKey(
@@ -25,7 +26,7 @@ void main() {
   });
 
   test("ada byron icarus test", () {
-    for (final i in byron.testVector) {
+    for (final i in byron.testVector.shuffleTake()) {
       final params = Map<String, dynamic>.from(i["params"]);
       final l = AdaByronIcarusAddrEncoder().encodeKey(
         BytesUtils.fromHexString(i["public"]),

@@ -1,5 +1,6 @@
 import 'package:blockchain_utils/crypto/crypto/zcrypto/bls12_381/src/fp.dart';
 import 'package:blockchain_utils/crypto/crypto/zcrypto/bls12_381/src/fp2.dart';
+import 'package:blockchain_utils/numbers/src/u64.dart';
 import 'package:blockchain_utils/utils/equatable/equatable.dart';
 
 /// Cubic extension field GF(p⁶) over GF(p²), represented as c0 + c1·v + c2·v² with v³ = u + 1.
@@ -16,15 +17,21 @@ class Bls12Fp6 with Equality {
       c2: Bls12Fp2.conditionalSelect(a.c2, b.c2, choice),
     );
   }
-  factory Bls12Fp6.zero() =>
-      Bls12Fp6(c0: Bls12Fp2.zero(), c1: Bls12Fp2.zero(), c2: Bls12Fp2.zero());
-  factory Bls12Fp6.one() =>
-      Bls12Fp6(c0: Bls12Fp2.one(), c1: Bls12Fp2.zero(), c2: Bls12Fp2.zero());
+  static const zero = Bls12Fp6(
+    c0: Bls12Fp2.zero,
+    c1: Bls12Fp2.zero,
+    c2: Bls12Fp2.zero,
+  );
+  static const one = Bls12Fp6(
+    c0: Bls12Fp2.one,
+    c1: Bls12Fp2.zero,
+    c2: Bls12Fp2.zero,
+  );
 
   factory Bls12Fp6.fromFp(Bls12Fp f) =>
-      Bls12Fp6(c0: Bls12Fp2.from(f), c1: Bls12Fp2.zero(), c2: Bls12Fp2.zero());
+      Bls12Fp6(c0: Bls12Fp2.from(f), c1: Bls12Fp2.zero, c2: Bls12Fp2.zero);
   factory Bls12Fp6.fromBls12Fp2(Bls12Fp2 f) =>
-      Bls12Fp6(c0: f, c1: Bls12Fp2.zero(), c2: Bls12Fp2.zero());
+      Bls12Fp6(c0: f, c1: Bls12Fp2.zero, c2: Bls12Fp2.zero);
 
   bool isZero() => c0.isZero() && c1.isZero() && c2.isZero();
 
@@ -67,28 +74,28 @@ class Bls12Fp6 with Equality {
     c0: c0.frobeniusMap(),
     c1:
         c1.frobeniusMap() *
-        Bls12Fp2(
-          c0: Bls12Fp.zero(),
-          c1: Bls12Fp([
-            BigInt.parse('0xcd03c9e48671f071'),
-            BigInt.parse('0x5dab22461fcda5d2'),
-            BigInt.parse('0x587042afd3851b95'),
-            BigInt.parse('0x8eb60ebe01bacb9e'),
-            BigInt.parse('0x03f97d6e83d050d2'),
-            BigInt.parse('0x18f0206554638741'),
+        const Bls12Fp2(
+          c0: Bls12Fp.zero,
+          c1: Bls12Fp.unsafe([
+            Uint64.unsafe(3439577572, 2255614065),
+            Uint64.unsafe(1571496518, 533571026),
+            Uint64.unsafe(1483752111, 3548715925),
+            Uint64.unsafe(2394295998, 29019038),
+            Uint64.unsafe(66682222, 2211467474),
+            Uint64.unsafe(418390117, 1415808833),
           ]),
         ),
     c2:
         c2.frobeniusMap() *
-        Bls12Fp2(
-          c1: Bls12Fp.zero(),
-          c0: Bls12Fp([
-            BigInt.parse('0x890dc9e4867545c3'),
-            BigInt.parse('0x2af322533285a5d5'),
-            BigInt.parse('0x50880866309b7e2c'),
-            BigInt.parse('0xa20d1b8c7e881024'),
-            BigInt.parse('0x14e4f04fe2db9068'),
-            BigInt.parse('0x14e56d3f1564853a'),
+        const Bls12Fp2(
+          c1: Bls12Fp.zero,
+          c0: Bls12Fp.unsafe([
+            Uint64.unsafe(2299382244, 2255832515),
+            Uint64.unsafe(720577107, 847619541),
+            Uint64.unsafe(1351092326, 815496748),
+            Uint64.unsafe(2718768012, 2122846244),
+            Uint64.unsafe(350548047, 3806040168),
+            Uint64.unsafe(350580031, 358909242),
           ]),
         ),
   );

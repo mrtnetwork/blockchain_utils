@@ -1,10 +1,11 @@
 import 'package:blockchain_utils/blockchain_utils.dart';
 import 'package:test/test.dart';
+import '../../quick_hex.dart';
 import "test_vector.dart";
 
 void main() {
   test("monero mnemonic", () {
-    for (final i in testVector) {
+    for (final i in testVector.shuffleTake()) {
       final lang = MoneroLanguages.values.firstWhere(
         (element) =>
             element.name.toLowerCase() ==

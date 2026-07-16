@@ -5,7 +5,7 @@ import 'test_vector.dart';
 
 void main() {
   test("blake2b test", () {
-    for (final i in testVector64) {
+    for (final i in testVector64.shuffleTake()) {
       final k = BLAKE2b(digestLength: 64);
       final message = BytesUtils.fromHexString(i["message"]);
       k.update(message.sublist(0, 10));

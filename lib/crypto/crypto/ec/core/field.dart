@@ -3,6 +3,7 @@ import 'package:blockchain_utils/crypto/crypto/zcrypto/pasta/utils/utils.dart';
 abstract class CryptoFieldElement {}
 
 abstract class CryptoGroupElement<F, SCALAR extends CryptoField<SCALAR>> {
+  const CryptoGroupElement();
   F double();
   F identity();
   F operator +(F other);

@@ -50,7 +50,8 @@ enum BlockchainUtilsSerializationIdentifier implements SerializationIdentifier {
   amountConverterError(11129),
   jsonParserError(11130),
   mnemonic(11131),
-  pedersenHashError(11132);
+  pedersenHashError(11132),
+  integerError(11133);
 
   @override
   final int id;

@@ -11,7 +11,7 @@ import 'test_vector.dart';
 
 void main() {
   test("algorand", () {
-    for (final i in testVector) {
+    for (final i in testVector.shuffleTake()) {
       final mn = AlgorandMnemonicGenerator().fromEntropy(
         BytesUtils.fromHexString(i["entropy"]),
       );

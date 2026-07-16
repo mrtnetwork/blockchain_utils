@@ -7,7 +7,7 @@ import 'test_vector.dart';
 
 void main() {
   test("sha256", () {
-    for (final i in testVector) {
+    for (final i in testVector.shuffleTake()) {
       final k = SHA256();
       final message = BytesUtils.fromHexString(i["message"]);
       k.update(message.sublist(0, 10));

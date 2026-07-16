@@ -144,8 +144,8 @@ class PedersenHash extends BasePedersenHash<JubJubFr, JubJubPoint> {
       personalization: personalization,
       inputBits: inputBits,
       identity: JubJubPoint.identity(),
-      one: JubJubFr.one(),
-      zero: JubJubFr.zero(),
+      one: JubJubFr.one,
+      zero: JubJubFr.zero,
     );
   }
 }

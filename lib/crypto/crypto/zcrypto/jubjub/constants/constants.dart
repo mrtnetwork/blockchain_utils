@@ -1,15 +1,16 @@
 import 'package:blockchain_utils/crypto/crypto/zcrypto/jubjub/fields/field.dart';
+import 'package:blockchain_utils/numbers/src/u64.dart';
 
 class JubJubFrConst {
   static const int bits = 252;
   static const int capacity = bits - 1;
   static const int s = 1;
-  static final inv = BigInt.parse("0x1ba3a358ef788ef9");
-  static final modulus = JubJubFr([
-    BigInt.parse("0xd0970e5ed6f72cb7"),
-    BigInt.parse("0xa6682093ccc81082"),
-    BigInt.parse("0x06673b0101343b00"),
-    BigInt.parse("0x0e7db4ea6533afa9"),
+  static const Uint64 inv = Uint64.unsafe(463709016, 4017655545);
+  static const modulus = JubJubFr.unsafe([
+    Uint64.unsafe(3499560542, 3606523063),
+    Uint64.unsafe(2791841939, 3435663490),
+    Uint64.unsafe(107428609, 20200192),
+    Uint64.unsafe(243119338, 1697886121),
   ]);
 
   static const List<int> frModulusBytes = [
@@ -52,12 +53,12 @@ class JubJubFqConst {
   static const int bits = 255;
   static const int capacity = bits - 1;
   static const int S = 32;
-  static final BigInt inv = BigInt.parse("0xfffffffeffffffff");
+  static const Uint64 inv = Uint64.unsafe(4294967294, 4294967295);
 
-  static final modulus = JubJubFq([
-    BigInt.parse('0xffffffff00000001'),
-    BigInt.parse('0x53bda402fffe5bfe'),
-    BigInt.parse('0x3339d80809a1d805'),
-    BigInt.parse('0x73eda753299d7d48'),
+  static const modulus = JubJubFq.unsafe([
+    Uint64.unsafe(4294967295, 1),
+    Uint64.unsafe(1404937218, 4294859774),
+    Uint64.unsafe(859428872, 161601541),
+    Uint64.unsafe(1944954707, 698187080),
   ]);
 }

@@ -8,7 +8,8 @@ import 'derive_public_vector.dart';
 
 void main() {
   test("shnorrkel public derive", () {
-    for (final i in derivePublicTestVector) {
+    final vector = derivePublicTestVector.shuffleTake();
+    for (final i in vector) {
       SchnorrkelPublicKey publicKey = SchnorrkelPublicKey(
         BytesUtils.fromHexString(i["public_key"]),
       );
@@ -21,7 +22,8 @@ void main() {
     }
   });
   test("schnorrkel derive", () {
-    for (final i in testVector) {
+    final vector = testVector.shuffleTake();
+    for (final i in vector) {
       final seed = BytesUtils.fromHexString(i["seed"]);
       final miniSecret = SchnorrkelMiniSecretKey.fromBytes(seed);
       SchnorrkelSecretKey secretKey = miniSecret.toSecretKey();

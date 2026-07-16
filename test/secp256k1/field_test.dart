@@ -6,15 +6,18 @@
 
 import 'dart:math';
 import 'package:blockchain_utils/crypto/crypto/ec/projective/secp256k1/secp256k1.dart';
+import 'package:blockchain_utils/numbers/src/u64.dart';
 import 'package:test/test.dart';
 import 'tools.dart';
 
 void main() {
+  test("sqrt", () => _sqrt());
+
   group("secp256k1 field", () {
+    test("sqrt", () => _fields());
     test("sqrt", () => _sqrt());
     test("mul", () => _feMul());
     test("sqr", () => _sqr());
-    test("fields", () => _fields());
   });
 }
 
@@ -28,7 +31,7 @@ void _sqr() {
 
   Secp256k1.secp256k1FeSetInt(x, 1);
   Secp256k1.secp256k1FeNegate(x, x, 1);
-  for (i = 1; i <= 512; ++i) {
+  for (i = 1; i <= testIteration; ++i) {
     Secp256k1.secp256k1FeMulInt(x, 2);
     Secp256k1.secp256k1FeNormalize(x);
     /* Check that (x+y)*(x-y) = x^2 - y*2 for some random values y */
@@ -71,7 +74,7 @@ void _randomFeMagnitude(Secp256k1Fe fe, int m) {
 
 void _feMul() {
   int i;
-  for (i = 0; i < 100 * 16; ++i) {
+  for (i = 0; i < testIteration; ++i) {
     Secp256k1Fe a, b, c, d;
     a = randomFe();
     _randomFeMagnitude(a, 8);
@@ -283,12 +286,11 @@ void _sqrt() {
   /* Check sqrt(0) is 0 */
   Secp256k1.secp256k1FeSetInt(x, 0);
   Secp256k1.secp256k1FeSqr(s, x);
-  // printU64_5("fe: ",s.n);
   // return;
   _testSqrt(s, x);
 
   /* Check sqrt of small squares (and their negatives) */
-  for (i = 1; i <= 100; i++) {
+  for (i = 1; i <= testIteration; i++) {
     Secp256k1.secp256k1FeSetInt(x, i);
     Secp256k1.secp256k1FeSqr(s, x);
     _testSqrt(s, x);
@@ -303,6 +305,7 @@ void _sqrt() {
     for (j = 0; j < 16; j++) {
       x = randomFe();
       Secp256k1.secp256k1FeSqr(s, x);
+
       expect(Secp256k1.secp256k1FeIsSquareVar(s) != 0, true);
       _testSqrt(s, x);
       Secp256k1.secp256k1FeNegate(t, s, 1);
@@ -333,7 +336,7 @@ void _fields() {
     BigInt.from(5),
   );
   int i, j;
-  for (i = 0; i < 1000 * 16; i++) {
+  for (i = 0; i < testIteration; i++) {
     Secp256k1FeStorage xs = Secp256k1FeStorage(),
         ys = Secp256k1FeStorage(),
         zs = Secp256k1FeStorage();
@@ -342,10 +345,13 @@ void _fields() {
     v = _testrandBits15();
     /* Test that fe_add_int is equivalent to fe_set_int + fe_add. */
     Secp256k1.secp256k1FeSetInt(q, v); /* q = v */
-    z = x.clone(); /* z = x */
-    Secp256k1.secp256k1FeAdd(z, q); /* z = x+v */
+    z = x.clone();
+
+    Secp256k1.secp256k1FeAdd(z, q);
+
     q = x.clone(); /* q = x */
-    Secp256k1.secp256k1FeAddInt(q, v); /* q = x+v */
+    Secp256k1.secp256k1FeAddInt(q, v);
+
     expect(_feEqual(q, z) != 0, true);
     /* Test the fe equality and comparison operations. */
     expect(Secp256k1.secp256k1FeEqual(x, x) != 0, true);
@@ -353,11 +359,14 @@ void _fields() {
     Secp256k1.secp256k1FeAdd(z, y);
     /* Test fe conditional move; z is not normalized here. */
     q = x.clone();
+
     Secp256k1.secp256k1FeCmov(x, z, 0);
+
     x = q.clone();
     Secp256k1.secp256k1FeCmov(x, x, 1);
 
     expect(_feIdentical(x, z), BigInt.zero);
+
     expect(_feIdentical(x, q) != BigInt.zero, true);
     Secp256k1.secp256k1FeCmov(q, z, 1);
     expect(_feIdentical(q, z), BigInt.one);
@@ -417,8 +426,8 @@ BigInt _feIdentical(Secp256k1Fe a, Secp256k1Fe b) {
   BigInt ret = BigInt.one;
   /* Compare the struct member that holds the limbs. */
   for (int i = 0; i < 5; i++) {
-    BigInt diff = a[i] - b[i];
-    if (diff != BigInt.zero) {
+    Uint64 diff = a[i] - b[i];
+    if (diff != Uint64.zero) {
       return ret & BigInt.zero;
     }
   }

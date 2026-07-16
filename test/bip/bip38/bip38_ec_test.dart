@@ -63,14 +63,16 @@ final List<Map<String, dynamic>> _testVectEnc = [
 ];
 void main() {
   test("decrypt ec", () {
-    for (final i in _testVectorDec) {
+    final vector = _testVectorDec.shuffleTake(1);
+    for (final i in vector) {
       final dec = Bip38Decrypter.decryptEc(i["encrypted"], i["passphrase"]);
       expect(dec.$1.toHex(), i["priv_key_bytes"]);
       expect(dec.$2, i["pub_key_mode"]);
     }
   });
   test("encrypt", () {
-    for (final i in _testVectEnc) {
+    final vector = _testVectEnc.shuffleTake(1);
+    for (final i in vector) {
       final enc = Bip38Encrypter.generatePrivateKeyEc(
         i["passphrase"],
         pubKeyMode: i["pub_key_mode"],

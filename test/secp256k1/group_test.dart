@@ -4,15 +4,13 @@
 // file COPYING or https://www.opensource.org/licenses/mit-license.php.          *
 // *******************************************************************************
 
-import 'package:blockchain_utils/utils/binary/utils.dart';
-import 'package:blockchain_utils/crypto/crypto/ec/projective/secp256k1/secp256k1.dart';
+import 'package:blockchain_utils/blockchain_utils.dart';
 import 'package:test/test.dart';
 
 import 'test_constants.dart';
 import 'tools.dart';
 
 void main() {
-  // return;
   group("secp256k1 group element", () {
     test("group element endomorphism ", () => _endomorphismTests());
     test("group element ", () => _ge());
@@ -442,7 +440,7 @@ void _groupDecompressTest() {
   }
 }
 
-void _scalarSplit(Secp256k1Scalar full) {
+void _scalarSplit(BaseSecp256k1Scalar full) {
   Secp256k1Scalar s = Secp256k1Scalar(),
       s1 = Secp256k1Scalar(),
       slam = Secp256k1Scalar();

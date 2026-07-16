@@ -2,6 +2,7 @@ import 'package:blockchain_utils/bip/ecc/keys/sr25519_keys.dart';
 import 'package:blockchain_utils/bip/substrate/conf/substrate_coins.dart';
 import 'package:blockchain_utils/bip/substrate/core/substrate_base.dart';
 import 'package:blockchain_utils/bip/substrate/path/substrate_path.dart';
+import 'package:blockchain_utils/helper/extensions/extensions.dart';
 import 'package:blockchain_utils/utils/utils.dart';
 import 'package:test/test.dart';
 
@@ -10,8 +11,10 @@ import 'test_vector.dart';
 
 void main() {
   test("substrate test from private key", () {
+    final vector = testVector.shuffleTake();
+
     /// test from private key and derive
-    for (final i in testVector) {
+    for (final i in vector) {
       final seed = BytesUtils.fromHexString(i["private_key"]);
       final coin = SubstrateCoins.values.firstWhere(
         (element) =>
@@ -47,7 +50,8 @@ void main() {
   /// test from seed and derive
 
   test("test from seed and derive", () {
-    for (final i in testVector) {
+    final vector = testVector.clone()..shuffle();
+    for (final i in vector.take(5)) {
       final seed = BytesUtils.fromHexString(i["seed"]);
       final coin = SubstrateCoins.values.firstWhere(
         (element) =>

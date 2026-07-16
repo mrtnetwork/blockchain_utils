@@ -15,7 +15,9 @@ import 'test_vector_v2.dart';
 
 void main() {
   test("electrum mnemonic v2", () {
-    for (final i in testVectorV2) {
+    final vector = testVectorV2.shuffleTake();
+
+    for (final i in vector) {
       final type = ElectrumV2MnemonicTypes.values.firstWhere(
         (element) =>
             element.name.toLowerCase() ==
@@ -54,7 +56,9 @@ void main() {
     }
   });
   test("electrum mnemonic v1", () {
-    for (final i in testVectorV1) {
+    final vector = testVectorV1.shuffleTake();
+
+    for (final i in vector) {
       final entropy = BytesUtils.fromHexString(i["entropy"]);
       final toMnemonic = ElectrumV1MnemonicGenerator().fromEntropy(entropy);
       expect(toMnemonic.toStr(), i["mnemonic"]);

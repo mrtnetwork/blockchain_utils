@@ -37,14 +37,11 @@ abstract mixin class ZCryptoContext {
 
 class DefaultZCryptoContext implements ZCryptoContext {
   late final _spec = P128Pow5T3NativeFp();
-  late final sinsemillaS = HashDomainNative.generateSinsemillaS();
+  late final sinsemillaS = HashDomainNative.generateSinsemillaSConstants();
   final Map<String, CommitDomainNative> _cachedDomains = {};
 
   CommitDomainNative getCommitDomain(String domain) {
-    return _cachedDomains[domain] ??= CommitDomainNative.create(
-      domain,
-      sinsemillaS: sinsemillaS,
-    );
+    return _cachedDomains[domain] ??= CommitDomainNative.create(domain);
   }
 
   @override

@@ -3,11 +3,12 @@ import 'package:blockchain_utils/bip/bip/bip32/slip10/bip32_slip10_nist256p1.dar
 import 'package:blockchain_utils/utils/utils.dart';
 import 'package:test/test.dart';
 
+import '../../../quick_hex.dart';
 import 'test_vector.dart';
 
 void main() {
   test("nist256p1", () {
-    for (final i in testVector) {
+    for (final i in testVector.shuffleTake()) {
       final seed = BytesUtils.fromHexString(i["seed"]);
       var w = Bip32Slip10Nist256p1.fromSeed(seed);
       expect(w.publicKey.toExtended, i["public"]);

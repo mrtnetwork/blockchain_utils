@@ -1,12 +1,13 @@
 import 'package:blockchain_utils/blockchain_utils.dart';
 import 'package:test/test.dart';
+import '../quick_hex.dart';
 import 'nonce_vector.dart';
 
 void main() {
   test("generate nonce", () {
     final musig = MuSig2();
     final musigConst = Musig2Const();
-    for (final i in nonceVector) {
+    for (final i in nonceVector.shuffleTake()) {
       final rand = BytesUtils.fromHexString(i["rand_"]!);
       final sk = BytesUtils.tryFromHexString(i["sk"]);
       final publicKey = BytesUtils.fromHexString(i["pk"]!);

@@ -6,7 +6,7 @@ import 'test_vector.dart' show testVector;
 const String _passphrase = "MRT";
 void main() {
   test("bip39", () {
-    for (final i in testVector) {
+    for (final i in testVector.shuffleTake()) {
       final lower = (i["lang"] as String).replaceAll("_", "").toLowerCase();
       final lang = Bip39Languages.values.firstWhere(
         (element) => element.name.toLowerCase() == lower,

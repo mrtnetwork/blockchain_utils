@@ -1,9 +1,7 @@
-import 'package:blockchain_utils/crypto/crypto/ec/curve/curves.dart';
-import 'package:blockchain_utils/crypto/quick_crypto.dart';
-import 'package:blockchain_utils/helper/helper.dart';
-import 'package:blockchain_utils/utils/numbers/utils/bigint_utils.dart';
 import 'package:test/test.dart';
-import 'package:blockchain_utils/crypto/crypto/ec/projective/secp256k1/secp256k1.dart';
+import 'package:blockchain_utils/blockchain_utils.dart';
+
+import 'tools.dart';
 
 final _generator = Curves.generatorSecp256k1;
 final _curve = Curves.curveSecp256k1;
@@ -41,7 +39,7 @@ void main() {
 
 void _scalarAdd() {
   test("scalar add", () {
-    for (int i = 0; i < 10000; i++) {
+    for (int i = 0; i < testIteration; i++) {
       final a = _generateScalar();
       final b = _generateScalar();
       if (!_isScalar(a.$1) || !_isScalar(b.$1)) {
@@ -75,7 +73,7 @@ void _scalarMul() {
   });
 }
 
-bool _isScalar(Secp256k1Scalar r) {
+bool _isScalar(BaseSecp256k1Scalar r) {
   return Secp256k1.secp256k1ScalarCheckOverflow(r) == 0;
 }
 
@@ -117,7 +115,7 @@ void _scalarIsOne() {
 
 void _scalarIsHigh() {
   test("scalar is high", () {
-    for (int i = 0; i < 1000; i++) {
+    for (int i = 0; i < testIteration; i++) {
       final a = _generateScalar();
       if (!_isScalar(a.$1)) continue;
       final int high = Secp256k1.secp256k1ScalarIsHigh(a.$1);
@@ -130,7 +128,7 @@ void _scalarIsHigh() {
 
 void _scalarNegate() {
   test("scalar negate", () {
-    for (int i = 0; i < 1000; i++) {
+    for (int i = 0; i < testIteration; i++) {
       final scalarBytes = QuickCrypto.generateRandom();
       final List<int> result = List<int>.filled(32, 0);
       final Secp256k1Scalar r = Secp256k1Scalar();
@@ -150,7 +148,7 @@ void _scalarNegate() {
 
 void _overFlow() {
   test('overflowed', () {
-    final Secp256k1Scalar overflowed = Secp256k1Scalar.constants(
+    final Secp256k1ScalarConst overflowed = Secp256k1ScalarConst.constants(
       BigInt.from(0xFFFFFFFF),
       BigInt.from(0xFFFFFFFF),
       BigInt.from(0xFFFFFFFF),
@@ -166,7 +164,7 @@ void _overFlow() {
 
 void _scalarCmove() {
   test("secp256k1ScalarCmov", () {
-    for (int i = 0; i < 1000; i++) {
+    for (int i = 0; i < testIteration; i++) {
       final aBytes = QuickCrypto.generateRandom();
       final Secp256k1Scalar a = Secp256k1Scalar();
       final Secp256k1Scalar negate = Secp256k1Scalar();
@@ -193,7 +191,7 @@ void _scalarCmove() {
 
 void _scalarEqual() {
   test("scalar equal", () {
-    for (int i = 0; i < 1000; i++) {
+    for (int i = 0; i < testIteration; i++) {
       final rand = QuickCrypto.generateRandom();
       final a = _generateScalar(bytes: rand);
       final b = _generateScalar(bytes: rand);
@@ -204,7 +202,7 @@ void _scalarEqual() {
   });
 
   test("scalar not equal", () {
-    for (int i = 0; i < 1000; i++) {
+    for (int i = 0; i < testIteration; i++) {
       final a = _generateScalar();
       final b = _generateScalar();
       if (!_isScalar(a.$1) || !_isScalar(b.$1)) continue;
@@ -222,7 +220,7 @@ void _half() {
   }
 
   test("scalar half", () {
-    for (int i = 0; i < 1000; i++) {
+    for (int i = 0; i < testIteration; i++) {
       final a = _generateScalar();
       if (!_isScalar(a.$1)) continue;
       final r = Secp256k1Scalar();

@@ -6,7 +6,7 @@ import 'test_vector.dart';
 
 void main() {
   test("mnemonic", () {
-    for (final i in testVector) {
+    for (final i in testVector.shuffleTake()) {
       final String mnemonic = i["mnemonic"];
       final legacy = CardanoByronLegacySeedGenerator(mnemonic).generate();
       final icarus = CardanoIcarusSeedGenerator(mnemonic).generate();

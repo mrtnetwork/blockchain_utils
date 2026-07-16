@@ -10,7 +10,7 @@ import 'test_vector.dart';
 
 void main() {
   test("test aes ctr", () {
-    for (final i in testVector) {
+    for (final i in testVector.shuffleTake()) {
       final key = BytesUtils.fromHexString(i["key"]);
       final iv = BytesUtils.fromHexString(i["iv"]);
       final plainText = BytesUtils.fromHexString(i["plain_text"]);

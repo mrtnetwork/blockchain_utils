@@ -7,7 +7,7 @@ import 'test_vector.dart' show testVector;
 
 void main() {
   test("bch p2pkh test", () {
-    for (final i in testVector) {
+    for (final i in testVector.shuffleTake()) {
       final params = Map<String, dynamic>.from(i["params"]);
       final z = BchP2PKHAddrEncoder().encodeKey(
         BytesUtils.fromHexString(i["public"]),

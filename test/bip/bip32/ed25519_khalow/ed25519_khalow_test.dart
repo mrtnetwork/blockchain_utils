@@ -3,11 +3,12 @@ import 'package:blockchain_utils/bip/bip/bip32/khalow/bip32_kholaw_ed25519.dart'
 import 'package:blockchain_utils/utils/utils.dart';
 import 'package:test/test.dart';
 
+import '../../../quick_hex.dart';
 import 'test_vector.dart';
 
 void main() {
   test("ed25519 khalow", () {
-    for (final i in testVector) {
+    for (final i in testVector.shuffleTake()) {
       final seed = BytesUtils.fromHexString(i["seed"]);
       var w = Bip32KholawEd25519.fromSeed(seed);
       expect(w.publicKey.toExtended, i["public"]);

@@ -8,7 +8,7 @@ import 'test_vector_integrate.dart' show integrateTestVecotr;
 
 void main() {
   test("xrm address test", () {
-    for (final i in testVector) {
+    for (final i in testVector.shuffleTake()) {
       final params = Map<String, dynamic>.from(i["params"]);
       final pubVkey = BytesUtils.tryFromHexString(params["pub_vkey"]);
       final netVersion = params["net_ver"];
@@ -23,7 +23,7 @@ void main() {
     }
   });
   test("xmr integrate address test", () {
-    for (final i in integrateTestVecotr) {
+    for (final i in integrateTestVecotr.shuffleTake()) {
       final params = Map<String, dynamic>.from(i["params"]);
       final pubVkey = BytesUtils.tryFromHexString(params["pub_vkey"]);
       final netVersion = params["net_ver"];

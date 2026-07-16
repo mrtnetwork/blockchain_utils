@@ -15,13 +15,13 @@ class VestaIsoNativePoint
   factory VestaIsoNativePoint.fromBytes(List<int> bytes) {
     return VestaIsoAffineNativePoint.fromBytes(bytes).toCurve();
   }
-  static final _identity = VestaIsoNativePoint(
+  static final identity_ = VestaIsoNativePoint(
     x: VestaNativeFq.zero(),
     y: VestaNativeFq.zero(),
     z: VestaNativeFq.zero(),
   );
   factory VestaIsoNativePoint.identity() {
-    return _identity;
+    return identity_;
   }
   @override
   VestaIsoNativePoint from({
@@ -34,7 +34,7 @@ class VestaIsoNativePoint
 
   @override
   VestaIsoNativePoint identity() {
-    return identity();
+    return identity_;
   }
 
   @override
@@ -50,7 +50,7 @@ class VestaIsoNativePoint
   VestaIsoAffineNativePoint toAffine() {
     final zInv = z.invert();
     if (zInv == null) {
-      return VestaIsoAffineNativePoint.identity();
+      return VestaIsoAffineNativePoint.identity_;
     }
     final zInv2 = zInv.square();
     final x = this.x * zInv2;
@@ -74,12 +74,12 @@ class VestaIsoAffineNativePoint
     extends
         PastaAffinePoint<PallasNativeFp, VestaNativeFq, VestaIsoNativePoint> {
   VestaIsoAffineNativePoint({required super.x, required super.y});
-  static final _identity = VestaIsoAffineNativePoint(
+  static final identity_ = VestaIsoAffineNativePoint(
     x: VestaNativeFq.zero(),
     y: VestaNativeFq.zero(),
   );
   factory VestaIsoAffineNativePoint.identity() {
-    return _identity;
+    return identity_;
   }
 
   factory VestaIsoAffineNativePoint.fromBytes(List<int> bytes) {
@@ -141,7 +141,7 @@ class VestaIsoAffineNativePoint
 
   @override
   VestaIsoNativePoint identity() {
-    return VestaIsoNativePoint.identity();
+    return VestaIsoNativePoint.identity_;
   }
 
   @override

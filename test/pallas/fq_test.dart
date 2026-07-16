@@ -5,6 +5,7 @@ import 'package:blockchain_utils/crypto/crypto/zcrypto/pasta/point/core.dart';
 import 'package:blockchain_utils/crypto/crypto/zcrypto/pasta/point/pallas.dart';
 import 'package:blockchain_utils/crypto/crypto/zcrypto/pasta/point/vesta.dart';
 import 'package:blockchain_utils/crypto/crypto/zcrypto/pasta/utils/utils.dart';
+import 'package:blockchain_utils/numbers/src/u64.dart';
 import 'package:blockchain_utils/utils/utils.dart';
 import 'package:test/test.dart';
 
@@ -26,10 +27,10 @@ void main() {
 }
 
 void _endo() {
-  final pallasGenerator = PallasPoint.generator();
-  expect((pallasGenerator * VestaFq.zeta()), pallasGenerator.endo());
+  final pallasGenerator = PallasPoint.generator_;
+  expect((pallasGenerator * VestaFq.zeta), pallasGenerator.endo());
   final generatior = VestaPoint.generator();
-  expect((generatior * PallasFp.zeta()), generatior.endo());
+  expect((generatior * PallasFp.zeta), generatior.endo());
 }
 
 void _hashToCurve() {
@@ -56,11 +57,11 @@ void _hashToCurve() {
 
 void _swu() {
   var p = PastaUtils.mapToCurveSimpleSwu(
-    u: VestaFq.zero(),
-    theta: VestaFq.theta(),
-    z: VestaFq.z(),
+    u: VestaFq.zero,
+    theta: VestaFq.theta,
+    z: VestaFq.z,
     isogenyParams: PastaCurveParams.isoVesta,
-    r: VestaFq.r(),
+    r: VestaFq.r,
   );
   expect(
     BytesUtils.toHexString(p.$1.toBytes().reversed.toList()),
@@ -75,11 +76,11 @@ void _swu() {
     "0b851e9e579403a76df1100f556e1f226e5656bdf38f3bf8601d8a3a9a15890b",
   );
   p = PastaUtils.mapToCurveSimpleSwu(
-    u: VestaFq.one(),
-    theta: VestaFq.theta(),
-    z: VestaFq.z(),
+    u: VestaFq.one,
+    theta: VestaFq.theta,
+    z: VestaFq.z,
     isogenyParams: PastaCurveParams.isoVesta,
-    r: VestaFq.r(),
+    r: VestaFq.r,
   );
   expect(
     BytesUtils.toHexString(p.$1.toBytes().reversed.toList()),
@@ -97,60 +98,60 @@ void _swu() {
 
 void _testDelta() {
   expect(
-    VestaFq.delta(),
-    VestaFq.generator().pow([
-      BigInt.one << VestaFQConst.S,
-      BigInt.zero,
-      BigInt.zero,
-      BigInt.zero,
+    VestaFq.delta,
+    VestaFq.generator.pow([
+      Uint64.one << VestaFQConst.S,
+      Uint64.zero,
+      Uint64.zero,
+      Uint64.zero,
     ]),
   );
   expect(
-    VestaFq.delta(),
-    VestaFq.generator().pow([
-      BigInt.one << VestaFQConst.S,
-      BigInt.zero,
-      BigInt.zero,
-      BigInt.zero,
+    VestaFq.delta,
+    VestaFq.generator.pow([
+      Uint64.one << VestaFQConst.S,
+      Uint64.zero,
+      Uint64.zero,
+      Uint64.zero,
     ]),
   );
 }
 
 void _testInv2() {
-  expect(VestaFq.twoInv(), VestaFq.from(BigInt.from(2)).invert());
+  expect(VestaFq.twoInv, VestaFq.from(Uint64(2)).invert());
 }
 
 void _testRootOfUnity() {
-  final v = VestaFq.rootOfUnity().powVarTime([
-    BigInt.one << VestaFQConst.S,
-    BigInt.zero,
-    BigInt.zero,
-    BigInt.zero,
+  final v = VestaFq.rootOfUnity.powVarTime([
+    Uint64.one << VestaFQConst.S,
+    Uint64.zero,
+    Uint64.zero,
+    Uint64.zero,
   ]);
-  expect(v, VestaFq.one());
+  expect(v, VestaFq.one);
 }
 
 void _testRootOfUnityInv() {
-  expect(VestaFq.rootOfUnityInv(), VestaFq.rootOfUnity().invert());
+  expect(VestaFq.rootOfUnityInv, VestaFq.rootOfUnity.invert());
 }
 
 void _testZeta() {
-  final v = BytesUtils.toHexString(VestaFq.zeta().toBytes().reversed.toList());
+  final v = BytesUtils.toHexString(VestaFq.zeta.toBytes().reversed.toList());
   expect(v, "06819a58283e528e511db4d81cf70f5a0fed467d47c033af2aa9d2e050aa0e4f");
-  final a = VestaFq.zeta();
-  expect(a != VestaFq.one(), true);
+  final a = VestaFq.zeta;
+  expect(a != VestaFq.one, true);
   final b = a * a;
-  expect(b != VestaFq.one(), true);
+  expect(b != VestaFq.one, true);
   final c = b * a;
-  expect(c, VestaFq.one());
+  expect(c, VestaFq.one);
 }
 
 void _testSqrtRatioAndAlt() {
   // (true, sqrt(num/div)), if num and div are nonzero and num/div is a square
-  var num = VestaFq.twoInv().square();
-  var div = VestaFq.from(BigInt.from(25));
+  var num = VestaFq.twoInv.square();
+  var div = VestaFq.from(Uint64(25));
   var divInverse = div.invert();
-  var expected = VestaFq.twoInv() * VestaFq.from(BigInt.from(5)).invert()!;
+  var expected = VestaFq.twoInv * VestaFq.from(Uint64(5)).invert()!;
 
   var result = VestaFq.sqrtRatio(num, div);
   var isSquare = result.isSquare;
@@ -165,11 +166,9 @@ void _testSqrtRatioAndAlt() {
   expect(vAlt, v);
 
   // (false, sqrt(ROOT_OF_UNITY * num/div)), if num/div is nonsquare
-  num = num * VestaFq.rootOfUnity();
+  num = num * VestaFq.rootOfUnity;
   expected =
-      VestaFq.twoInv() *
-      VestaFq.rootOfUnity() *
-      VestaFq.from(BigInt.from(5)).invert()!;
+      VestaFq.twoInv * VestaFq.rootOfUnity * VestaFq.from(Uint64(5)).invert()!;
 
   result = VestaFq.sqrtRatio(num, div);
   isSquare = result.isSquare;
@@ -184,8 +183,8 @@ void _testSqrtRatioAndAlt() {
   // expect(vAlt, v);
 
   // (true, 0), if num is zero
-  num = VestaFq.zero();
-  expected = VestaFq.zero();
+  num = VestaFq.zero;
+  expected = VestaFq.zero;
 
   result = VestaFq.sqrtRatio(num, div);
   isSquare = result.isSquare;
@@ -200,9 +199,9 @@ void _testSqrtRatioAndAlt() {
   expect(vAlt, v);
 
   // (false, 0), if num is nonzero and div is zero
-  num = VestaFq.twoInv().square();
-  div = VestaFq.zero();
-  expected = VestaFq.zero();
+  num = VestaFq.twoInv.square();
+  div = VestaFq.zero;
+  expected = VestaFq.zero;
 
   result = VestaFq.sqrtRatio(num, div);
   isSquare = result.isSquare;
@@ -212,16 +211,16 @@ void _testSqrtRatioAndAlt() {
 }
 
 void _testSqrt() {
-  final v = VestaFq.twoInv().square().sqrt();
-  expect(v.result == VestaFq.twoInv() || (-v.result) == VestaFq.twoInv(), true);
+  final v = VestaFq.twoInv.square().sqrt();
+  expect(v.result == VestaFq.twoInv || (-v.result) == VestaFq.twoInv, true);
 }
 
 void _powByTMinus1() {
-  final v = VestaFq.twoInv().powByTMinus1Over2();
-  expect(v, VestaFq.twoInv().powVarTime(VestaFQConst.tMinus1Over2));
+  final v = VestaFq.twoInv.powByTMinus1Over2();
+  expect(v, VestaFq.twoInv.powVarTime(VestaFQConst.tMinus1Over2));
 }
 
 void _sqrtOverflow() {
-  final v = VestaFq.from(BigInt.from(5)).sqrt();
+  final v = VestaFq.from(Uint64(5)).sqrt();
   expect(v.isSquare, false);
 }

@@ -7,7 +7,7 @@ import 'test_vector.dart' show testVector;
 
 void main() {
   test("one address test", () {
-    for (final i in testVector) {
+    for (final i in testVector.shuffleTake()) {
       final z = OneAddrEncoder().encodeKey(
         BytesUtils.fromHexString(i["public"]),
       );

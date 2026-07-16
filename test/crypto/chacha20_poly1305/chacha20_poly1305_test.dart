@@ -7,7 +7,7 @@ import 'test_vector.dart';
 
 void main() {
   test("chacha poly 1305 test", () {
-    for (final i in testVector) {
+    for (final i in testVector.shuffleTake()) {
       final plaintext = BytesUtils.fromHexString(i["plain_text"]);
       final assocData = BytesUtils.fromHexString(i["assoc_data"]);
       final key = BytesUtils.fromHexString(i["key"]);

@@ -1,17 +1,55 @@
-import 'package:blockchain_utils/crypto/crypto/ec/extended/crypto_ops/const/const.dart';
-import 'package:blockchain_utils/crypto/crypto/ec/extended/crypto_ops/models/models.dart';
 import 'package:blockchain_utils/crypto/crypto/ec/extended/native/edwards.dart';
+
 import 'package:blockchain_utils/crypto/crypto/ec/utils/ed25519.dart';
 import 'package:blockchain_utils/crypto/crypto/exception/exception.dart';
 import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/helper/extensions/extensions.dart';
+import 'package:blockchain_utils/numbers/src/i32.dart';
+import 'package:blockchain_utils/numbers/src/i64.dart';
+import 'package:blockchain_utils/numbers/src/u64.dart';
 import 'package:blockchain_utils/utils/binary/utils.dart';
 
+import '../const/const.dart';
+import '../models/models.dart';
+
 class CryptoOps {
-  static final BigInt _bitMaskFor25 = BigInt.one << 25;
-  static final BigInt _bitMaskFor24 = BigInt.one << 24;
-  static final BigInt _bitMaskFor20 = BigInt.one << 20;
-  static final _b2097151 = BigInt.from(2097151);
+  static final _b2097151 = Int64(2097151);
+  static final Int64 _bitMaskFor25 = Int64.one << 25;
+  static final Int64 _bitMaskFor24 = Int64.one << 24;
+  static final Int64 _bitMaskFor20 = Int64.one << 20;
+  static Int32 _mulInt(int a, Int32 b) {
+    return Int32.unsafe(a) * b;
+  }
+
+  static Int64 _mulInt64(Int32 a, Int32 b) {
+    return a.toInt64() * b.toInt64();
+  }
+
+  static Int64 _mulInt64Int(Int64 a, int b) {
+    return a * Int64.unsafe(Uint64.unsafe(0, b));
+  }
+
+  // static Int64 _andU64(Int64 a, Uint64 b) {
+  //   return a & b.toInt64();
+  // }
+  static Int64 _andU64(Int64 a, Uint64 b) {
+    return Int64.unsafe(a.rawBits & b);
+  }
+
+  static Uint64 _load4(List<int> data, int offset) {
+    int r = data[offset];
+    r |= data[offset + 1] << 8;
+    r |= data[offset + 2] << 16;
+    r |= data[offset + 3] << 24;
+    return Uint64.unsafe(0, r);
+  }
+
+  static Uint64 _load3(List<int> data, int offset) {
+    int r = data[offset];
+    r |= data[offset + 1] << 8;
+    r |= data[offset + 2] << 16;
+    return Uint64.unsafe(0, r);
+  }
 
   static int scIsNonZero(List<int> s) {
     s.asMin32("scIsNonZero");
@@ -24,37 +62,37 @@ class CryptoOps {
     return 0;
   }
 
-  static BigInt signum(BigInt a) {
-    if (a > BigInt.zero) {
-      return BigInt.one;
+  static Int64 signum(Int64 a) {
+    if (a > Int64.zero) {
+      return Int64.one;
     }
-    if (a < BigInt.zero) {
-      return BigInt.from(-1);
+    if (a < Int64.zero) {
+      return Int64(-1);
     }
-    return BigInt.zero;
+    return Int64.zero;
   }
 
   static int scCheck(List<int> s) {
-    s.asMin32("scCheck");
-    final BigInt s0 = _load4(s, 0);
-    final BigInt s1 = _load4(s, 4);
-    final BigInt s2 = _load4(s, 8);
-    final BigInt s3 = _load4(s, 12);
-    final BigInt s4 = _load4(s, 16);
-    final BigInt s5 = _load4(s, 20);
-    final BigInt s6 = _load4(s, 24);
-    final BigInt s7 = _load4(s, 28);
-    final r =
-        (signum(1559614444.toBigInt - s0) +
-            (signum(1477600026.toBigInt - s1) << 1) +
-            (signum(2734136534.toBigInt - s2) << 2) +
-            (signum(350157278.toBigInt - s3) << 3) +
-            (signum(-s4) << 4) +
-            (signum(-s5) << 5) +
-            (signum(-s6) << 6) +
-            (signum(268435456.toBigInt - s7) << 7)) >>
-        8;
-    return r.toInt();
+    final Int64 s0 = _load4(s, 0).toInt64();
+    final Int64 s1 = _load4(s, 4).toInt64();
+    final Int64 s2 = _load4(s, 8).toInt64();
+    final Int64 s3 = _load4(s, 12).toInt64();
+    final Int64 s4 = _load4(s, 16).toInt64();
+    final Int64 s5 = _load4(s, 20).toInt64();
+    final Int64 s6 = _load4(s, 24).toInt64();
+    final Int64 s7 = _load4(s, 28).toInt64();
+
+    final Int64 r =
+        signum(1559614444.toInt64 - s0) +
+        (signum(1477600026.toInt64 - s1) << 1) +
+        (signum(2734136534.toInt64 - s2) << 2) +
+        (signum(350157278.toInt64 - s3) << 3) +
+        (signum(-s4) << 4) +
+        (signum(-s5) << 5) +
+        (signum(-s6) << 6) +
+        (signum(268435456.toInt64 - s7) << 7);
+
+    return -(0 > r.toInt() ? 1 : 0);
   }
 
   static void scReduce32Copy(List<int> scopy, List<int> s) {
@@ -76,36 +114,36 @@ class CryptoOps {
   }
 
   static void feAdd(FieldElement h, FieldElement f, FieldElement g) {
-    final int f0 = f.h[0];
-    final int f1 = f.h[1];
-    final int f2 = f.h[2];
-    final int f3 = f.h[3];
-    final int f4 = f.h[4];
-    final int f5 = f.h[5];
-    final int f6 = f.h[6];
-    final int f7 = f.h[7];
-    final int f8 = f.h[8];
-    final int f9 = f.h[9];
-    final int g0 = g.h[0];
-    final int g1 = g.h[1];
-    final int g2 = g.h[2];
-    final int g3 = g.h[3];
-    final int g4 = g.h[4];
-    final int g5 = g.h[5];
-    final int g6 = g.h[6];
-    final int g7 = g.h[7];
-    final int g8 = g.h[8];
-    final int g9 = g.h[9];
-    final int h0 = f0 + g0;
-    final int h1 = f1 + g1;
-    final int h2 = f2 + g2;
-    final int h3 = f3 + g3;
-    final int h4 = f4 + g4;
-    final int h5 = f5 + g5;
-    final int h6 = f6 + g6;
-    final int h7 = f7 + g7;
-    final int h8 = f8 + g8;
-    final int h9 = f9 + g9;
+    final Int32 f0 = f.h[0];
+    final Int32 f1 = f.h[1];
+    final Int32 f2 = f.h[2];
+    final Int32 f3 = f.h[3];
+    final Int32 f4 = f.h[4];
+    final Int32 f5 = f.h[5];
+    final Int32 f6 = f.h[6];
+    final Int32 f7 = f.h[7];
+    final Int32 f8 = f.h[8];
+    final Int32 f9 = f.h[9];
+    final Int32 g0 = g.h[0];
+    final Int32 g1 = g.h[1];
+    final Int32 g2 = g.h[2];
+    final Int32 g3 = g.h[3];
+    final Int32 g4 = g.h[4];
+    final Int32 g5 = g.h[5];
+    final Int32 g6 = g.h[6];
+    final Int32 g7 = g.h[7];
+    final Int32 g8 = g.h[8];
+    final Int32 g9 = g.h[9];
+    final Int32 h0 = f0 + g0;
+    final Int32 h1 = f1 + g1;
+    final Int32 h2 = f2 + g2;
+    final Int32 h3 = f3 + g3;
+    final Int32 h4 = f4 + g4;
+    final Int32 h5 = f5 + g5;
+    final Int32 h6 = f6 + g6;
+    final Int32 h7 = f7 + g7;
+    final Int32 h8 = f8 + g8;
+    final Int32 h9 = f9 + g9;
     h.h[0] = h0;
     h.h[1] = h1;
     h.h[2] = h2;
@@ -118,53 +156,54 @@ class CryptoOps {
     h.h[9] = h9;
   }
 
-  static int _xor32(int a, int b) {
-    return (a ^ b).toI32;
+  static Int32 _xor32(Int32 a, Int32 b) {
+    return (a ^ b);
   }
 
   static void feCmov(FieldElement f, FieldElement g, int b) {
     assert(b == 0 || b == 1, "b should be either 0 or 1.");
-    final int f0 = f.h[0];
-    final int f1 = f.h[1];
-    final int f2 = f.h[2];
-    final int f3 = f.h[3];
-    final int f4 = f.h[4];
-    final int f5 = f.h[5];
-    final int f6 = f.h[6];
-    final int f7 = f.h[7];
-    final int f8 = f.h[8];
-    final int f9 = f.h[9];
-    final int g0 = g.h[0];
-    final int g1 = g.h[1];
-    final int g2 = g.h[2];
-    final int g3 = g.h[3];
-    final int g4 = g.h[4];
-    final int g5 = g.h[5];
-    final int g6 = g.h[6];
-    final int g7 = g.h[7];
-    final int g8 = g.h[8];
-    final int g9 = g.h[9];
-    int x0 = f0 ^ g0;
-    int x1 = f1 ^ g1;
-    int x2 = f2 ^ g2;
-    int x3 = f3 ^ g3;
-    int x4 = f4 ^ g4;
-    int x5 = f5 ^ g5;
-    int x6 = f6 ^ g6;
-    int x7 = f7 ^ g7;
-    int x8 = f8 ^ g8;
-    int x9 = f9 ^ g9;
-    b = -b;
-    x0 &= b;
-    x1 &= b;
-    x2 &= b;
-    x3 &= b;
-    x4 &= b;
-    x5 &= b;
-    x6 &= b;
-    x7 &= b;
-    x8 &= b;
-    x9 &= b;
+    final Int32 f0 = f.h[0];
+    final Int32 f1 = f.h[1];
+    final Int32 f2 = f.h[2];
+    final Int32 f3 = f.h[3];
+    final Int32 f4 = f.h[4];
+    final Int32 f5 = f.h[5];
+    final Int32 f6 = f.h[6];
+    final Int32 f7 = f.h[7];
+    final Int32 f8 = f.h[8];
+    final Int32 f9 = f.h[9];
+    final Int32 g0 = g.h[0];
+    final Int32 g1 = g.h[1];
+    final Int32 g2 = g.h[2];
+    final Int32 g3 = g.h[3];
+    final Int32 g4 = g.h[4];
+    final Int32 g5 = g.h[5];
+    final Int32 g6 = g.h[6];
+    final Int32 g7 = g.h[7];
+    final Int32 g8 = g.h[8];
+    final Int32 g9 = g.h[9];
+    Int32 x0 = f0 ^ g0;
+    Int32 x1 = f1 ^ g1;
+    Int32 x2 = f2 ^ g2;
+    Int32 x3 = f3 ^ g3;
+    Int32 x4 = f4 ^ g4;
+    Int32 x5 = f5 ^ g5;
+    Int32 x6 = f6 ^ g6;
+    Int32 x7 = f7 ^ g7;
+    Int32 x8 = f8 ^ g8;
+    Int32 x9 = f9 ^ g9;
+    Int32 b32 = Int32(-b);
+    // b = -b;
+    x0 &= b32;
+    x1 &= b32;
+    x2 &= b32;
+    x3 &= b32;
+    x4 &= b32;
+    x5 &= b32;
+    x6 &= b32;
+    x7 &= b32;
+    x8 &= b32;
+    x9 &= b32;
     f.h[0] = _xor32(f0, x0);
     f.h[1] = _xor32(f1, x1);
     f.h[2] = _xor32(f2, x2);
@@ -178,16 +217,16 @@ class CryptoOps {
   }
 
   static void feCopy(FieldElement h, FieldElement f) {
-    final int f0 = f.h[0];
-    final int f1 = f.h[1];
-    final int f2 = f.h[2];
-    final int f3 = f.h[3];
-    final int f4 = f.h[4];
-    final int f5 = f.h[5];
-    final int f6 = f.h[6];
-    final int f7 = f.h[7];
-    final int f8 = f.h[8];
-    final int f9 = f.h[9];
+    final Int32 f0 = f.h[0];
+    final Int32 f1 = f.h[1];
+    final Int32 f2 = f.h[2];
+    final Int32 f3 = f.h[3];
+    final Int32 f4 = f.h[4];
+    final Int32 f5 = f.h[5];
+    final Int32 f6 = f.h[6];
+    final Int32 f7 = f.h[7];
+    final Int32 f8 = f.h[8];
+    final Int32 f9 = f.h[9];
     h.h[0] = f0;
     h.h[1] = f1;
     h.h[2] = f2;
@@ -201,105 +240,105 @@ class CryptoOps {
   }
 
   static void feSq(FieldElement h, FieldElement f) {
-    final int f0 = f.h[0];
-    final int f1 = f.h[1];
-    final int f2 = f.h[2];
-    final int f3 = f.h[3];
-    final int f4 = f.h[4];
-    final int f5 = f.h[5];
-    final int f6 = f.h[6];
-    final int f7 = f.h[7];
-    final int f8 = f.h[8];
-    final int f9 = f.h[9];
-    final int f0_2 = (2 * f0).toI32;
-    final int f1_2 = (2 * f1).toI32;
-    final int f2_2 = (2 * f2).toI32;
-    final int f3_2 = (2 * f3).toI32;
-    final int f4_2 = (2 * f4).toI32;
-    final int f5_2 = (2 * f5).toI32;
-    final int f6_2 = (2 * f6).toI32;
-    final int f7_2 = (2 * f7).toI32;
-    final int f5_38 = (38 * f5).toI32; /* 1.959375*2^30 */
-    final int f6_19 = (19 * f6).toI32; /* 1.959375*2^30 */
-    final int f7_38 = (38 * f7).toI32; /* 1.959375*2^30 */
-    final int f8_19 = (19 * f8).toI32; /* 1.959375*2^30 */
-    final int f9_38 = (38 * f9).toI32; /* 1.959375*2^30 */
+    final Int32 f0 = f.h[0];
+    final Int32 f1 = f.h[1];
+    final Int32 f2 = f.h[2];
+    final Int32 f3 = f.h[3];
+    final Int32 f4 = f.h[4];
+    final Int32 f5 = f.h[5];
+    final Int32 f6 = f.h[6];
+    final Int32 f7 = f.h[7];
+    final Int32 f8 = f.h[8];
+    final Int32 f9 = f.h[9];
+    final Int32 f0_2 = _mulInt(2, f0);
+    final Int32 f1_2 = _mulInt(2, f1);
+    final Int32 f2_2 = _mulInt(2, f2);
+    final Int32 f3_2 = _mulInt(2, f3);
+    final Int32 f4_2 = _mulInt(2, f4);
+    final Int32 f5_2 = _mulInt(2, f5);
+    final Int32 f6_2 = _mulInt(2, f6);
+    final Int32 f7_2 = _mulInt(2, f7);
+    final Int32 f5_38 = _mulInt(38, f5); /* 1.959375*2^30 */
+    final Int32 f6_19 = _mulInt(19, f6); /* 1.959375*2^30 */
+    final Int32 f7_38 = _mulInt(38, f7); /* 1.959375*2^30 */
+    final Int32 f8_19 = _mulInt(19, f8); /* 1.959375*2^30 */
+    final Int32 f9_38 = _mulInt(38, f9); /* 1.959375*2^30 */
 
-    final BigInt f0f0 = f0.toBigInt * f0.toBigInt;
-    final BigInt f0f1_2 = f0_2.toBigInt * f1.toBigInt;
-    final BigInt f0f2_2 = f0_2.toBigInt * f2.toBigInt;
-    final BigInt f0f3_2 = f0_2.toBigInt * f3.toBigInt;
-    final BigInt f0f4_2 = f0_2.toBigInt * f4.toBigInt;
-    final BigInt f0f5_2 = f0_2.toBigInt * f5.toBigInt;
-    final BigInt f0f6_2 = f0_2.toBigInt * f6.toBigInt;
-    final BigInt f0f7_2 = f0_2.toBigInt * f7.toBigInt;
-    final BigInt f0f8_2 = f0_2.toBigInt * f8.toBigInt;
-    final BigInt f0f9_2 = f0_2.toBigInt * f9.toBigInt;
-    final BigInt f1f1_2 = f1_2.toBigInt * f1.toBigInt;
-    final BigInt f1f2_2 = f1_2.toBigInt * f2.toBigInt;
-    final BigInt f1f3_4 = f1_2.toBigInt * f3_2.toBigInt;
-    final BigInt f1f4_2 = f1_2.toBigInt * f4.toBigInt;
-    final BigInt f1f5_4 = f1_2.toBigInt * f5_2.toBigInt;
-    final BigInt f1f6_2 = f1_2.toBigInt * f6.toBigInt;
-    final BigInt f1f7_4 = f1_2.toBigInt * f7_2.toBigInt;
-    final BigInt f1f8_2 = f1_2.toBigInt * f8.toBigInt;
-    final BigInt f1f9_76 = f1_2.toBigInt * f9_38.toBigInt;
-    final BigInt f2f2 = f2.toBigInt * f2.toBigInt;
-    final BigInt f2f3_2 = f2_2.toBigInt * f3.toBigInt;
-    final BigInt f2f4_2 = f2_2.toBigInt * f4.toBigInt;
-    final BigInt f2f5_2 = f2_2.toBigInt * f5.toBigInt;
-    final BigInt f2f6_2 = f2_2.toBigInt * f6.toBigInt;
-    final BigInt f2f7_2 = f2_2.toBigInt * f7.toBigInt;
-    final BigInt f2f8_38 = f2_2.toBigInt * f8_19.toBigInt;
-    final BigInt f2f9_38 = f2.toBigInt * f9_38.toBigInt;
-    final BigInt f3f3_2 = f3_2.toBigInt * f3.toBigInt;
-    final BigInt f3f4_2 = f3_2.toBigInt * f4.toBigInt;
-    final BigInt f3f5_4 = f3_2.toBigInt * f5_2.toBigInt;
-    final BigInt f3f6_2 = f3_2.toBigInt * f6.toBigInt;
-    final BigInt f3f7_76 = f3_2.toBigInt * f7_38.toBigInt;
-    final BigInt f3f8_38 = f3_2.toBigInt * f8_19.toBigInt;
-    final BigInt f3f9_76 = f3_2.toBigInt * f9_38.toBigInt;
-    final BigInt f4f4 = f4.toBigInt * f4.toBigInt;
-    final BigInt f4f5_2 = f4_2.toBigInt * f5.toBigInt;
-    final BigInt f4f6_38 = f4_2.toBigInt * f6_19.toBigInt;
-    final BigInt f4f7_38 = f4.toBigInt * f7_38.toBigInt;
-    final BigInt f4f8_38 = f4_2.toBigInt * f8_19.toBigInt;
-    final BigInt f4f9_38 = f4.toBigInt * f9_38.toBigInt;
-    final BigInt f5f5_38 = f5.toBigInt * f5_38.toBigInt;
-    final BigInt f5f6_38 = f5_2.toBigInt * f6_19.toBigInt;
-    final BigInt f5f7_76 = f5_2.toBigInt * f7_38.toBigInt;
-    final BigInt f5f8_38 = f5_2.toBigInt * f8_19.toBigInt;
-    final BigInt f5f9_76 = f5_2.toBigInt * f9_38.toBigInt;
-    final BigInt f6f6_19 = f6.toBigInt * f6_19.toBigInt;
-    final BigInt f6f7_38 = f6.toBigInt * f7_38.toBigInt;
-    final BigInt f6f8_38 = f6_2.toBigInt * f8_19.toBigInt;
-    final BigInt f6f9_38 = f6.toBigInt * f9_38.toBigInt;
-    final BigInt f7f7_38 = f7.toBigInt * f7_38.toBigInt;
-    final BigInt f7f8_38 = f7_2.toBigInt * f8_19.toBigInt;
-    final BigInt f7f9_76 = f7_2.toBigInt * f9_38.toBigInt;
-    final BigInt f8f8_19 = f8.toBigInt * f8_19.toBigInt;
-    final BigInt f8f9_38 = f8.toBigInt * f9_38.toBigInt;
-    final BigInt f9f9_38 = f9.toBigInt * f9_38.toBigInt;
-    BigInt h0 = f0f0 + f1f9_76 + f2f8_38 + f3f7_76 + f4f6_38 + f5f5_38;
-    BigInt h1 = f0f1_2 + f2f9_38 + f3f8_38 + f4f7_38 + f5f6_38;
-    BigInt h2 = f0f2_2 + f1f1_2 + f3f9_76 + f4f8_38 + f5f7_76 + f6f6_19;
-    BigInt h3 = f0f3_2 + f1f2_2 + f4f9_38 + f5f8_38 + f6f7_38;
-    BigInt h4 = f0f4_2 + f1f3_4 + f2f2 + f5f9_76 + f6f8_38 + f7f7_38;
-    BigInt h5 = f0f5_2 + f1f4_2 + f2f3_2 + f6f9_38 + f7f8_38;
-    BigInt h6 = f0f6_2 + f1f5_4 + f2f4_2 + f3f3_2 + f7f9_76 + f8f8_19;
-    BigInt h7 = f0f7_2 + f1f6_2 + f2f5_2 + f3f4_2 + f8f9_38;
-    BigInt h8 = f0f8_2 + f1f7_4 + f2f6_2 + f3f5_4 + f4f4 + f9f9_38;
-    BigInt h9 = f0f9_2 + f1f8_2 + f2f7_2 + f3f6_2 + f4f5_2;
-    BigInt carry0;
-    BigInt carry1;
-    BigInt carry2;
-    BigInt carry3;
-    BigInt carry4;
-    BigInt carry5;
-    BigInt carry6;
-    BigInt carry7;
-    BigInt carry8;
-    BigInt carry9;
+    final Int64 f0f0 = _mulInt64(f0, f0);
+    final Int64 f0f1_2 = _mulInt64(f0_2, f1);
+    final Int64 f0f2_2 = _mulInt64(f0_2, f2);
+    final Int64 f0f3_2 = _mulInt64(f0_2, f3);
+    final Int64 f0f4_2 = _mulInt64(f0_2, f4);
+    final Int64 f0f5_2 = _mulInt64(f0_2, f5);
+    final Int64 f0f6_2 = _mulInt64(f0_2, f6);
+    final Int64 f0f7_2 = _mulInt64(f0_2, f7);
+    final Int64 f0f8_2 = _mulInt64(f0_2, f8);
+    final Int64 f0f9_2 = _mulInt64(f0_2, f9);
+    final Int64 f1f1_2 = _mulInt64(f1_2, f1);
+    final Int64 f1f2_2 = _mulInt64(f1_2, f2);
+    final Int64 f1f3_4 = _mulInt64(f1_2, f3_2);
+    final Int64 f1f4_2 = _mulInt64(f1_2, f4);
+    final Int64 f1f5_4 = _mulInt64(f1_2, f5_2);
+    final Int64 f1f6_2 = _mulInt64(f1_2, f6);
+    final Int64 f1f7_4 = _mulInt64(f1_2, f7_2);
+    final Int64 f1f8_2 = _mulInt64(f1_2, f8);
+    final Int64 f1f9_76 = _mulInt64(f1_2, f9_38);
+    final Int64 f2f2 = _mulInt64(f2, f2);
+    final Int64 f2f3_2 = _mulInt64(f2_2, f3);
+    final Int64 f2f4_2 = _mulInt64(f2_2, f4);
+    final Int64 f2f5_2 = _mulInt64(f2_2, f5);
+    final Int64 f2f6_2 = _mulInt64(f2_2, f6);
+    final Int64 f2f7_2 = _mulInt64(f2_2, f7);
+    final Int64 f2f8_38 = _mulInt64(f2_2, f8_19);
+    final Int64 f2f9_38 = _mulInt64(f2, f9_38);
+    final Int64 f3f3_2 = _mulInt64(f3_2, f3);
+    final Int64 f3f4_2 = _mulInt64(f3_2, f4);
+    final Int64 f3f5_4 = _mulInt64(f3_2, f5_2);
+    final Int64 f3f6_2 = _mulInt64(f3_2, f6);
+    final Int64 f3f7_76 = _mulInt64(f3_2, f7_38);
+    final Int64 f3f8_38 = _mulInt64(f3_2, f8_19);
+    final Int64 f3f9_76 = _mulInt64(f3_2, f9_38);
+    final Int64 f4f4 = _mulInt64(f4, f4);
+    final Int64 f4f5_2 = _mulInt64(f4_2, f5);
+    final Int64 f4f6_38 = _mulInt64(f4_2, f6_19);
+    final Int64 f4f7_38 = _mulInt64(f4, f7_38);
+    final Int64 f4f8_38 = _mulInt64(f4_2, f8_19);
+    final Int64 f4f9_38 = _mulInt64(f4, f9_38);
+    final Int64 f5f5_38 = _mulInt64(f5, f5_38);
+    final Int64 f5f6_38 = _mulInt64(f5_2, f6_19);
+    final Int64 f5f7_76 = _mulInt64(f5_2, f7_38);
+    final Int64 f5f8_38 = _mulInt64(f5_2, f8_19);
+    final Int64 f5f9_76 = _mulInt64(f5_2, f9_38);
+    final Int64 f6f6_19 = _mulInt64(f6, f6_19);
+    final Int64 f6f7_38 = _mulInt64(f6, f7_38);
+    final Int64 f6f8_38 = _mulInt64(f6_2, f8_19);
+    final Int64 f6f9_38 = _mulInt64(f6, f9_38);
+    final Int64 f7f7_38 = _mulInt64(f7, f7_38);
+    final Int64 f7f8_38 = _mulInt64(f7_2, f8_19);
+    final Int64 f7f9_76 = _mulInt64(f7_2, f9_38);
+    final Int64 f8f8_19 = _mulInt64(f8, f8_19);
+    final Int64 f8f9_38 = _mulInt64(f8, f9_38);
+    final Int64 f9f9_38 = _mulInt64(f9, f9_38);
+    Int64 h0 = f0f0 + f1f9_76 + f2f8_38 + f3f7_76 + f4f6_38 + f5f5_38;
+    Int64 h1 = f0f1_2 + f2f9_38 + f3f8_38 + f4f7_38 + f5f6_38;
+    Int64 h2 = f0f2_2 + f1f1_2 + f3f9_76 + f4f8_38 + f5f7_76 + f6f6_19;
+    Int64 h3 = f0f3_2 + f1f2_2 + f4f9_38 + f5f8_38 + f6f7_38;
+    Int64 h4 = f0f4_2 + f1f3_4 + f2f2 + f5f9_76 + f6f8_38 + f7f7_38;
+    Int64 h5 = f0f5_2 + f1f4_2 + f2f3_2 + f6f9_38 + f7f8_38;
+    Int64 h6 = f0f6_2 + f1f5_4 + f2f4_2 + f3f3_2 + f7f9_76 + f8f8_19;
+    Int64 h7 = f0f7_2 + f1f6_2 + f2f5_2 + f3f4_2 + f8f9_38;
+    Int64 h8 = f0f8_2 + f1f7_4 + f2f6_2 + f3f5_4 + f4f4 + f9f9_38;
+    Int64 h9 = f0f9_2 + f1f8_2 + f2f7_2 + f3f6_2 + f4f5_2;
+    Int64 carry0;
+    Int64 carry1;
+    Int64 carry2;
+    Int64 carry3;
+    Int64 carry4;
+    Int64 carry5;
+    Int64 carry6;
+    Int64 carry7;
+    Int64 carry8;
+    Int64 carry9;
 
     carry0 = (h0 + _bitMaskFor25) >> 26;
     h1 += carry0;
@@ -337,7 +376,7 @@ class CryptoOps {
     h8 -= carry8 << 26;
 
     carry9 = (h9 + _bitMaskFor24) >> 25;
-    h0 += carry9 * 19.toBigInt;
+    h0 += carry9 * Int64(19);
     h9 -= carry9 << 25;
 
     carry0 = (h0 + _bitMaskFor25) >> 26;
@@ -357,105 +396,105 @@ class CryptoOps {
   }
 
   static void feSq2(FieldElement h, FieldElement f) {
-    final int f0 = f.h[0];
-    final int f1 = f.h[1];
-    final int f2 = f.h[2];
-    final int f3 = f.h[3];
-    final int f4 = f.h[4];
-    final int f5 = f.h[5];
-    final int f6 = f.h[6];
-    final int f7 = f.h[7];
-    final int f8 = f.h[8];
-    final int f9 = f.h[9];
-    final int f0_2 = (2 * f0).toI32;
-    final int f1_2 = (2 * f1).toI32;
-    final int f2_2 = (2 * f2).toI32;
-    final int f3_2 = (2 * f3).toI32;
-    final int f4_2 = (2 * f4).toI32;
-    final int f5_2 = (2 * f5).toI32;
-    final int f6_2 = (2 * f6).toI32;
-    final int f7_2 = (2 * f7).toI32;
-    final int f5_38 = (38 * f5).toI32; /* 1.959375*2^30 */
-    final int f6_19 = (19 * f6).toI32; /* 1.959375*2^30 */
-    final int f7_38 = (38 * f7).toI32; /* 1.959375*2^30 */
-    final int f8_19 = (19 * f8).toI32; /* 1.959375*2^30 */
-    final int f9_38 = (38 * f9).toI32; /* 1.959375*2^30 */
-    final BigInt f0f0 = f0.toBigInt * f0.toBigInt;
+    final f0 = f.h[0];
+    final f1 = f.h[1];
+    final f2 = f.h[2];
+    final f3 = f.h[3];
+    final f4 = f.h[4];
+    final f5 = f.h[5];
+    final f6 = f.h[6];
+    final f7 = f.h[7];
+    final f8 = f.h[8];
+    final f9 = f.h[9];
+    final f0_2 = _mulInt(2, f0);
+    final f1_2 = _mulInt(2, f1);
+    final f2_2 = _mulInt(2, f2);
+    final f3_2 = _mulInt(2, f3);
+    final f4_2 = _mulInt(2, f4);
+    final f5_2 = _mulInt(2, f5);
+    final f6_2 = _mulInt(2, f6);
+    final f7_2 = _mulInt(2, f7);
+    final f5_38 = _mulInt(38, f5); /* 1.959375*2^30 */
+    final f6_19 = _mulInt(19, f6); /* 1.959375*2^30 */
+    final f7_38 = _mulInt(38, f7); /* 1.959375*2^30 */
+    final f8_19 = _mulInt(19, f8); /* 1.959375*2^30 */
+    final f9_38 = _mulInt(38, f9); /* 1.959375*2^30 */
+    final Int64 f0f0 = _mulInt64(f0, f0);
 
-    final BigInt f0f1_2 = f0_2.toBigInt * f1.toBigInt;
-    final BigInt f0f2_2 = f0_2.toBigInt * f2.toBigInt;
-    final BigInt f0f3_2 = f0_2.toBigInt * f3.toBigInt;
-    final BigInt f0f4_2 = f0_2.toBigInt * f4.toBigInt;
-    final BigInt f0f5_2 = f0_2.toBigInt * f5.toBigInt;
-    final BigInt f0f6_2 = f0_2.toBigInt * f6.toBigInt;
-    final BigInt f0f7_2 = f0_2.toBigInt * f7.toBigInt;
-    final BigInt f0f8_2 = f0_2.toBigInt * f8.toBigInt;
-    final BigInt f0f9_2 = f0_2.toBigInt * f9.toBigInt;
-    final BigInt f1f1_2 = f1_2.toBigInt * f1.toBigInt;
-    final BigInt f1f2_2 = f1_2.toBigInt * f2.toBigInt;
-    final BigInt f1f3_4 = f1_2.toBigInt * f3_2.toBigInt;
-    final BigInt f1f4_2 = f1_2.toBigInt * f4.toBigInt;
-    final BigInt f1f5_4 = f1_2.toBigInt * f5_2.toBigInt;
-    final BigInt f1f6_2 = f1_2.toBigInt * f6.toBigInt;
-    final BigInt f1f7_4 = f1_2.toBigInt * f7_2.toBigInt;
-    final BigInt f1f8_2 = f1_2.toBigInt * f8.toBigInt;
-    final BigInt f1f9_76 = f1_2.toBigInt * f9_38.toBigInt;
-    final BigInt f2f2 = f2.toBigInt * f2.toBigInt;
-    final BigInt f2f3_2 = f2_2.toBigInt * f3.toBigInt;
-    final BigInt f2f4_2 = f2_2.toBigInt * f4.toBigInt;
-    final BigInt f2f5_2 = f2_2.toBigInt * f5.toBigInt;
-    final BigInt f2f6_2 = f2_2.toBigInt * f6.toBigInt;
-    final BigInt f2f7_2 = f2_2.toBigInt * f7.toBigInt;
-    final BigInt f2f8_38 = f2_2.toBigInt * f8_19.toBigInt;
-    final BigInt f2f9_38 = f2.toBigInt * f9_38.toBigInt;
-    final BigInt f3f3_2 = f3_2.toBigInt * f3.toBigInt;
-    final BigInt f3f4_2 = f3_2.toBigInt * f4.toBigInt;
-    final BigInt f3f5_4 = f3_2.toBigInt * f5_2.toBigInt;
-    final BigInt f3f6_2 = f3_2.toBigInt * f6.toBigInt;
-    final BigInt f3f7_76 = f3_2.toBigInt * f7_38.toBigInt;
-    final BigInt f3f8_38 = f3_2.toBigInt * f8_19.toBigInt;
-    final BigInt f3f9_76 = f3_2.toBigInt * f9_38.toBigInt;
-    final BigInt f4f4 = f4.toBigInt * f4.toBigInt;
-    final BigInt f4f5_2 = f4_2.toBigInt * f5.toBigInt;
-    final BigInt f4f6_38 = f4_2.toBigInt * f6_19.toBigInt;
-    final BigInt f4f7_38 = f4.toBigInt * f7_38.toBigInt;
-    final BigInt f4f8_38 = f4_2.toBigInt * f8_19.toBigInt;
-    final BigInt f4f9_38 = f4.toBigInt * f9_38.toBigInt;
-    final BigInt f5f5_38 = f5.toBigInt * f5_38.toBigInt;
-    final BigInt f5f6_38 = f5_2.toBigInt * f6_19.toBigInt;
-    final BigInt f5f7_76 = f5_2.toBigInt * f7_38.toBigInt;
-    final BigInt f5f8_38 = f5_2.toBigInt * f8_19.toBigInt;
-    final BigInt f5f9_76 = f5_2.toBigInt * f9_38.toBigInt;
-    final BigInt f6f6_19 = f6.toBigInt * f6_19.toBigInt;
-    final BigInt f6f7_38 = f6.toBigInt * f7_38.toBigInt;
-    final BigInt f6f8_38 = f6_2.toBigInt * f8_19.toBigInt;
-    final BigInt f6f9_38 = f6.toBigInt * f9_38.toBigInt;
-    final BigInt f7f7_38 = f7.toBigInt * f7_38.toBigInt;
-    final BigInt f7f8_38 = f7_2.toBigInt * f8_19.toBigInt;
-    final BigInt f7f9_76 = f7_2.toBigInt * f9_38.toBigInt;
-    final BigInt f8f8_19 = f8.toBigInt * f8_19.toBigInt;
-    final BigInt f8f9_38 = f8.toBigInt * f9_38.toBigInt;
-    final BigInt f9f9_38 = f9.toBigInt * f9_38.toBigInt;
-    BigInt h0 = f0f0 + f1f9_76 + f2f8_38 + f3f7_76 + f4f6_38 + f5f5_38;
-    BigInt h1 = f0f1_2 + f2f9_38 + f3f8_38 + f4f7_38 + f5f6_38;
-    BigInt h2 = f0f2_2 + f1f1_2 + f3f9_76 + f4f8_38 + f5f7_76 + f6f6_19;
-    BigInt h3 = f0f3_2 + f1f2_2 + f4f9_38 + f5f8_38 + f6f7_38;
-    BigInt h4 = f0f4_2 + f1f3_4 + f2f2 + f5f9_76 + f6f8_38 + f7f7_38;
-    BigInt h5 = f0f5_2 + f1f4_2 + f2f3_2 + f6f9_38 + f7f8_38;
-    BigInt h6 = f0f6_2 + f1f5_4 + f2f4_2 + f3f3_2 + f7f9_76 + f8f8_19;
-    BigInt h7 = f0f7_2 + f1f6_2 + f2f5_2 + f3f4_2 + f8f9_38;
-    BigInt h8 = f0f8_2 + f1f7_4 + f2f6_2 + f3f5_4 + f4f4 + f9f9_38;
-    BigInt h9 = f0f9_2 + f1f8_2 + f2f7_2 + f3f6_2 + f4f5_2;
-    BigInt carry0;
-    BigInt carry1;
-    BigInt carry2;
-    BigInt carry3;
-    BigInt carry4;
-    BigInt carry5;
-    BigInt carry6;
-    BigInt carry7;
-    BigInt carry8;
-    BigInt carry9;
+    final Int64 f0f1_2 = _mulInt64(f0_2, f1);
+    final Int64 f0f2_2 = _mulInt64(f0_2, f2);
+    final Int64 f0f3_2 = _mulInt64(f0_2, f3);
+    final Int64 f0f4_2 = _mulInt64(f0_2, f4);
+    final Int64 f0f5_2 = _mulInt64(f0_2, f5);
+    final Int64 f0f6_2 = _mulInt64(f0_2, f6);
+    final Int64 f0f7_2 = _mulInt64(f0_2, f7);
+    final Int64 f0f8_2 = _mulInt64(f0_2, f8);
+    final Int64 f0f9_2 = _mulInt64(f0_2, f9);
+    final Int64 f1f1_2 = _mulInt64(f1_2, f1);
+    final Int64 f1f2_2 = _mulInt64(f1_2, f2);
+    final Int64 f1f3_4 = _mulInt64(f1_2, f3_2);
+    final Int64 f1f4_2 = _mulInt64(f1_2, f4);
+    final Int64 f1f5_4 = _mulInt64(f1_2, f5_2);
+    final Int64 f1f6_2 = _mulInt64(f1_2, f6);
+    final Int64 f1f7_4 = _mulInt64(f1_2, f7_2);
+    final Int64 f1f8_2 = _mulInt64(f1_2, f8);
+    final Int64 f1f9_76 = _mulInt64(f1_2, f9_38);
+    final Int64 f2f2 = _mulInt64(f2, f2);
+    final Int64 f2f3_2 = _mulInt64(f2_2, f3);
+    final Int64 f2f4_2 = _mulInt64(f2_2, f4);
+    final Int64 f2f5_2 = _mulInt64(f2_2, f5);
+    final Int64 f2f6_2 = _mulInt64(f2_2, f6);
+    final Int64 f2f7_2 = _mulInt64(f2_2, f7);
+    final Int64 f2f8_38 = _mulInt64(f2_2, f8_19);
+    final Int64 f2f9_38 = _mulInt64(f2, f9_38);
+    final Int64 f3f3_2 = _mulInt64(f3_2, f3);
+    final Int64 f3f4_2 = _mulInt64(f3_2, f4);
+    final Int64 f3f5_4 = _mulInt64(f3_2, f5_2);
+    final Int64 f3f6_2 = _mulInt64(f3_2, f6);
+    final Int64 f3f7_76 = _mulInt64(f3_2, f7_38);
+    final Int64 f3f8_38 = _mulInt64(f3_2, f8_19);
+    final Int64 f3f9_76 = _mulInt64(f3_2, f9_38);
+    final Int64 f4f4 = _mulInt64(f4, f4);
+    final Int64 f4f5_2 = _mulInt64(f4_2, f5);
+    final Int64 f4f6_38 = _mulInt64(f4_2, f6_19);
+    final Int64 f4f7_38 = _mulInt64(f4, f7_38);
+    final Int64 f4f8_38 = _mulInt64(f4_2, f8_19);
+    final Int64 f4f9_38 = _mulInt64(f4, f9_38);
+    final Int64 f5f5_38 = _mulInt64(f5, f5_38);
+    final Int64 f5f6_38 = _mulInt64(f5_2, f6_19);
+    final Int64 f5f7_76 = _mulInt64(f5_2, f7_38);
+    final Int64 f5f8_38 = _mulInt64(f5_2, f8_19);
+    final Int64 f5f9_76 = _mulInt64(f5_2, f9_38);
+    final Int64 f6f6_19 = _mulInt64(f6, f6_19);
+    final Int64 f6f7_38 = _mulInt64(f6, f7_38);
+    final Int64 f6f8_38 = _mulInt64(f6_2, f8_19);
+    final Int64 f6f9_38 = _mulInt64(f6, f9_38);
+    final Int64 f7f7_38 = _mulInt64(f7, f7_38);
+    final Int64 f7f8_38 = _mulInt64(f7_2, f8_19);
+    final Int64 f7f9_76 = _mulInt64(f7_2, f9_38);
+    final Int64 f8f8_19 = _mulInt64(f8, f8_19);
+    final Int64 f8f9_38 = _mulInt64(f8, f9_38);
+    final Int64 f9f9_38 = _mulInt64(f9, f9_38);
+    Int64 h0 = f0f0 + f1f9_76 + f2f8_38 + f3f7_76 + f4f6_38 + f5f5_38;
+    Int64 h1 = f0f1_2 + f2f9_38 + f3f8_38 + f4f7_38 + f5f6_38;
+    Int64 h2 = f0f2_2 + f1f1_2 + f3f9_76 + f4f8_38 + f5f7_76 + f6f6_19;
+    Int64 h3 = f0f3_2 + f1f2_2 + f4f9_38 + f5f8_38 + f6f7_38;
+    Int64 h4 = f0f4_2 + f1f3_4 + f2f2 + f5f9_76 + f6f8_38 + f7f7_38;
+    Int64 h5 = f0f5_2 + f1f4_2 + f2f3_2 + f6f9_38 + f7f8_38;
+    Int64 h6 = f0f6_2 + f1f5_4 + f2f4_2 + f3f3_2 + f7f9_76 + f8f8_19;
+    Int64 h7 = f0f7_2 + f1f6_2 + f2f5_2 + f3f4_2 + f8f9_38;
+    Int64 h8 = f0f8_2 + f1f7_4 + f2f6_2 + f3f5_4 + f4f4 + f9f9_38;
+    Int64 h9 = f0f9_2 + f1f8_2 + f2f7_2 + f3f6_2 + f4f5_2;
+    Int64 carry0;
+    Int64 carry1;
+    Int64 carry2;
+    Int64 carry3;
+    Int64 carry4;
+    Int64 carry5;
+    Int64 carry6;
+    Int64 carry7;
+    Int64 carry8;
+    Int64 carry9;
 
     h0 += h0;
     h1 += h1;
@@ -504,7 +543,7 @@ class CryptoOps {
     h8 -= carry8 << 26;
 
     carry9 = (h9 + _bitMaskFor24) >> 25;
-    h0 += carry9 * BigInt.from(19);
+    h0 += carry9 * Int64(19);
     h9 -= carry9 << 25;
 
     carry0 = (h0 + _bitMaskFor25) >> 26;
@@ -524,36 +563,36 @@ class CryptoOps {
   }
 
   static void feSub(FieldElement h, FieldElement f, FieldElement g) {
-    final int f0 = f.h[0];
-    final int f1 = f.h[1];
-    final int f2 = f.h[2];
-    final int f3 = f.h[3];
-    final int f4 = f.h[4];
-    final int f5 = f.h[5];
-    final int f6 = f.h[6];
-    final int f7 = f.h[7];
-    final int f8 = f.h[8];
-    final int f9 = f.h[9];
-    final int g0 = g.h[0];
-    final int g1 = g.h[1];
-    final int g2 = g.h[2];
-    final int g3 = g.h[3];
-    final int g4 = g.h[4];
-    final int g5 = g.h[5];
-    final int g6 = g.h[6];
-    final int g7 = g.h[7];
-    final int g8 = g.h[8];
-    final int g9 = g.h[9];
-    final int h0 = f0 - g0;
-    final int h1 = f1 - g1;
-    final int h2 = f2 - g2;
-    final int h3 = f3 - g3;
-    final int h4 = f4 - g4;
-    final int h5 = f5 - g5;
-    final int h6 = f6 - g6;
-    final int h7 = f7 - g7;
-    final int h8 = f8 - g8;
-    final int h9 = f9 - g9;
+    final Int32 f0 = f.h[0];
+    final Int32 f1 = f.h[1];
+    final Int32 f2 = f.h[2];
+    final Int32 f3 = f.h[3];
+    final Int32 f4 = f.h[4];
+    final Int32 f5 = f.h[5];
+    final Int32 f6 = f.h[6];
+    final Int32 f7 = f.h[7];
+    final Int32 f8 = f.h[8];
+    final Int32 f9 = f.h[9];
+    final Int32 g0 = g.h[0];
+    final Int32 g1 = g.h[1];
+    final Int32 g2 = g.h[2];
+    final Int32 g3 = g.h[3];
+    final Int32 g4 = g.h[4];
+    final Int32 g5 = g.h[5];
+    final Int32 g6 = g.h[6];
+    final Int32 g7 = g.h[7];
+    final Int32 g8 = g.h[8];
+    final Int32 g9 = g.h[9];
+    final Int32 h0 = f0 - g0;
+    final Int32 h1 = f1 - g1;
+    final Int32 h2 = f2 - g2;
+    final Int32 h3 = f3 - g3;
+    final Int32 h4 = f4 - g4;
+    final Int32 h5 = f5 - g5;
+    final Int32 h6 = f6 - g6;
+    final Int32 h7 = f7 - g7;
+    final Int32 h8 = f8 - g8;
+    final Int32 h9 = f9 - g9;
     h.h[0] = h0;
     h.h[1] = h1;
     h.h[2] = h2;
@@ -568,29 +607,29 @@ class CryptoOps {
 
   static void feTobytes(List<int> s, FieldElement h) {
     s.asMin32("feTobytes");
-    BigInt h0 = h.h[0].toBigInt;
-    BigInt h1 = h.h[1].toBigInt;
-    BigInt h2 = h.h[2].toBigInt;
-    BigInt h3 = h.h[3].toBigInt;
-    BigInt h4 = h.h[4].toBigInt;
-    BigInt h5 = h.h[5].toBigInt;
-    BigInt h6 = h.h[6].toBigInt;
-    BigInt h7 = h.h[7].toBigInt;
-    BigInt h8 = h.h[8].toBigInt;
-    BigInt h9 = h.h[9].toBigInt;
-    BigInt q;
-    BigInt carry0;
-    BigInt carry1;
-    BigInt carry2;
-    BigInt carry3;
-    BigInt carry4;
-    BigInt carry5;
-    BigInt carry6;
-    BigInt carry7;
-    BigInt carry8;
-    BigInt carry9;
+    Int32 h0 = h.h[0];
+    Int32 h1 = h.h[1];
+    Int32 h2 = h.h[2];
+    Int32 h3 = h.h[3];
+    Int32 h4 = h.h[4];
+    Int32 h5 = h.h[5];
+    Int32 h6 = h.h[6];
+    Int32 h7 = h.h[7];
+    Int32 h8 = h.h[8];
+    Int32 h9 = h.h[9];
+    Int32 q;
+    Int32 carry0;
+    Int32 carry1;
+    Int32 carry2;
+    Int32 carry3;
+    Int32 carry4;
+    Int32 carry5;
+    Int32 carry6;
+    Int32 carry7;
+    Int32 carry8;
+    Int32 carry9;
 
-    q = (BigInt.from(19) * h9 + ((1) << 24).toBigInt) >> 25;
+    q = (Int32(19) * h9 + (Int32.one << 24)) >> 25;
     q = (h0 + q) >> 26;
     q = (h1 + q) >> 25;
     q = (h2 + q) >> 26;
@@ -602,7 +641,7 @@ class CryptoOps {
     q = (h8 + q) >> 26;
     q = (h9 + q) >> 25;
     /* Goal: Output h-(2^255-19)q, which is between 0 and 2^255-20. */
-    h0 += BigInt.from(19) * q;
+    h0 += Int32.unsafe(19) * q;
     /* Goal: Output h-2^255 q, which is between 0 and 2^255-20. */
 
     carry0 = (h0 >> 26);
@@ -642,7 +681,7 @@ class CryptoOps {
   evidently 2^255 h10-2^255 q = 0.
   Goal: Output h0+...+2^230 h9.
   */
-    final List<BigInt> sBig = List<BigInt>.filled(32, BigInt.zero);
+    final List<Int32> sBig = List<Int32>.filled(32, Int32.zero);
     sBig[0] = h0 >> 0;
     sBig[1] = h0 >> 8;
     sBig[2] = h0 >> 16;
@@ -676,147 +715,147 @@ class CryptoOps {
     sBig[30] = h9 >> 10;
     sBig[31] = h9 >> 18;
     for (int i = 0; i < s.length; i++) {
-      s[i] = sBig[i].toU8;
+      s[i] = sBig[i].toUint8();
     }
   }
 
   static void feMul(FieldElement h, FieldElement f, FieldElement g) {
-    final int f0 = f.h[0];
-    final int f1 = f.h[1];
-    final int f2 = f.h[2];
-    final int f3 = f.h[3];
-    final int f4 = f.h[4];
-    final int f5 = f.h[5];
-    final int f6 = f.h[6];
-    final int f7 = f.h[7];
-    final int f8 = f.h[8];
-    final int f9 = f.h[9];
-    final int g0 = g.h[0];
-    final int g1 = g.h[1];
-    final int g2 = g.h[2];
-    final int g3 = g.h[3];
-    final int g4 = g.h[4];
-    final int g5 = g.h[5];
-    final int g6 = g.h[6];
-    final int g7 = g.h[7];
-    final int g8 = g.h[8];
-    final int g9 = g.h[9];
-    final int g1_19 = (19 * g1).toI32; /* 1.959375*2^29 */
-    final int g2_19 = (19 * g2).toI32; /* 1.959375*2^30; still ok */
-    final int g3_19 = (19 * g3).toI32;
-    final int g4_19 = (19 * g4).toI32;
-    final int g5_19 = (19 * g5).toI32;
-    final int g6_19 = (19 * g6).toI32;
-    final int g7_19 = (19 * g7).toI32;
-    final int g8_19 = (19 * g8).toI32;
-    final int g9_19 = (19 * g9).toI32;
-    final int f1_2 = (2 * f1).toI32;
-    final int f3_2 = (2 * f3).toI32;
-    final int f5_2 = (2 * f5).toI32;
-    final int f7_2 = (2 * f7).toI32;
-    final int f9_2 = (2 * f9).toI32;
+    final Int32 f0 = f.h[0];
+    final Int32 f1 = f.h[1];
+    final Int32 f2 = f.h[2];
+    final Int32 f3 = f.h[3];
+    final Int32 f4 = f.h[4];
+    final Int32 f5 = f.h[5];
+    final Int32 f6 = f.h[6];
+    final Int32 f7 = f.h[7];
+    final Int32 f8 = f.h[8];
+    final Int32 f9 = f.h[9];
+    final Int32 g0 = g.h[0];
+    final Int32 g1 = g.h[1];
+    final Int32 g2 = g.h[2];
+    final Int32 g3 = g.h[3];
+    final Int32 g4 = g.h[4];
+    final Int32 g5 = g.h[5];
+    final Int32 g6 = g.h[6];
+    final Int32 g7 = g.h[7];
+    final Int32 g8 = g.h[8];
+    final Int32 g9 = g.h[9];
+    final Int32 g1_19 = _mulInt(19, g1); /* 1.959375*2^29 */
+    final Int32 g2_19 = _mulInt(19, g2); /* 1.959375*2^30; still ok */
+    final Int32 g3_19 = _mulInt(19, g3);
+    final Int32 g4_19 = _mulInt(19, g4);
+    final Int32 g5_19 = _mulInt(19, g5);
+    final Int32 g6_19 = _mulInt(19, g6);
+    final Int32 g7_19 = _mulInt(19, g7);
+    final Int32 g8_19 = _mulInt(19, g8);
+    final Int32 g9_19 = _mulInt(19, g9);
+    final Int32 f1_2 = _mulInt(2, f1);
+    final Int32 f3_2 = _mulInt(2, f3);
+    final Int32 f5_2 = _mulInt(2, f5);
+    final Int32 f7_2 = _mulInt(2, f7);
+    final Int32 f9_2 = _mulInt(2, f9);
 
-    final BigInt f0g0 = f0.toBigInt * g0.toBigInt;
-    final BigInt f0g1 = f0.toBigInt * g1.toBigInt;
-    final BigInt f0g2 = f0.toBigInt * g2.toBigInt;
-    final BigInt f0g3 = f0.toBigInt * g3.toBigInt;
-    final BigInt f0g4 = f0.toBigInt * g4.toBigInt;
-    final BigInt f0g5 = f0.toBigInt * g5.toBigInt;
-    final BigInt f0g6 = f0.toBigInt * g6.toBigInt;
-    final BigInt f0g7 = f0.toBigInt * g7.toBigInt;
-    final BigInt f0g8 = f0.toBigInt * g8.toBigInt;
-    final BigInt f0g9 = f0.toBigInt * g9.toBigInt;
-    final BigInt f1g0 = f1.toBigInt * g0.toBigInt;
-    final BigInt f1g1_2 = f1_2.toBigInt * g1.toBigInt;
-    final BigInt f1g2 = f1.toBigInt * g2.toBigInt;
-    final BigInt f1g3_2 = f1_2.toBigInt * g3.toBigInt;
-    final BigInt f1g4 = f1.toBigInt * g4.toBigInt;
-    final BigInt f1g5_2 = f1_2.toBigInt * g5.toBigInt;
-    final BigInt f1g6 = f1.toBigInt * g6.toBigInt;
-    final BigInt f1g7_2 = f1_2.toBigInt * g7.toBigInt;
-    final BigInt f1g8 = f1.toBigInt * g8.toBigInt;
-    final BigInt f1g9_38 = f1_2.toBigInt * g9_19.toBigInt;
-    final BigInt f2g0 = f2.toBigInt * g0.toBigInt;
-    final BigInt f2g1 = f2.toBigInt * g1.toBigInt;
-    final BigInt f2g2 = f2.toBigInt * g2.toBigInt;
-    final BigInt f2g3 = f2.toBigInt * g3.toBigInt;
-    final BigInt f2g4 = f2.toBigInt * g4.toBigInt;
-    final BigInt f2g5 = f2.toBigInt * g5.toBigInt;
-    final BigInt f2g6 = f2.toBigInt * g6.toBigInt;
-    final BigInt f2g7 = f2.toBigInt * g7.toBigInt;
-    final BigInt f2g8_19 = f2.toBigInt * g8_19.toBigInt;
-    final BigInt f2g9_19 = f2.toBigInt * g9_19.toBigInt;
-    final BigInt f3g0 = f3.toBigInt * g0.toBigInt;
-    final BigInt f3g1_2 = f3_2.toBigInt * g1.toBigInt;
-    final BigInt f3g2 = f3.toBigInt * g2.toBigInt;
-    final BigInt f3g3_2 = f3_2.toBigInt * g3.toBigInt;
-    final BigInt f3g4 = f3.toBigInt * g4.toBigInt;
-    final BigInt f3g5_2 = f3_2.toBigInt * g5.toBigInt;
-    final BigInt f3g6 = f3.toBigInt * g6.toBigInt;
-    final BigInt f3g7_38 = f3_2.toBigInt * g7_19.toBigInt;
-    final BigInt f3g8_19 = f3.toBigInt * g8_19.toBigInt;
-    final BigInt f3g9_38 = f3_2.toBigInt * g9_19.toBigInt;
-    final BigInt f4g0 = f4.toBigInt * g0.toBigInt;
-    final BigInt f4g1 = f4.toBigInt * g1.toBigInt;
-    final BigInt f4g2 = f4.toBigInt * g2.toBigInt;
-    final BigInt f4g3 = f4.toBigInt * g3.toBigInt;
-    final BigInt f4g4 = f4.toBigInt * g4.toBigInt;
-    final BigInt f4g5 = f4.toBigInt * g5.toBigInt;
-    final BigInt f4g6_19 = f4.toBigInt * g6_19.toBigInt;
-    final BigInt f4g7_19 = f4.toBigInt * g7_19.toBigInt;
-    final BigInt f4g8_19 = f4.toBigInt * g8_19.toBigInt;
-    final BigInt f4g9_19 = f4.toBigInt * g9_19.toBigInt;
-    final BigInt f5g0 = f5.toBigInt * g0.toBigInt;
-    final BigInt f5g1_2 = f5_2.toBigInt * g1.toBigInt;
-    final BigInt f5g2 = f5.toBigInt * g2.toBigInt;
-    final BigInt f5g3_2 = f5_2.toBigInt * g3.toBigInt;
-    final BigInt f5g4 = f5.toBigInt * g4.toBigInt;
-    final BigInt f5g5_38 = f5_2.toBigInt * g5_19.toBigInt;
-    final BigInt f5g6_19 = f5.toBigInt * g6_19.toBigInt;
-    final BigInt f5g7_38 = f5_2.toBigInt * g7_19.toBigInt;
-    final BigInt f5g8_19 = f5.toBigInt * g8_19.toBigInt;
-    final BigInt f5g9_38 = f5_2.toBigInt * g9_19.toBigInt;
-    final BigInt f6g0 = f6.toBigInt * g0.toBigInt;
-    final BigInt f6g1 = f6.toBigInt * g1.toBigInt;
-    final BigInt f6g2 = f6.toBigInt * g2.toBigInt;
-    final BigInt f6g3 = f6.toBigInt * g3.toBigInt;
-    final BigInt f6g4_19 = f6.toBigInt * g4_19.toBigInt;
-    final BigInt f6g5_19 = f6.toBigInt * g5_19.toBigInt;
-    final BigInt f6g6_19 = f6.toBigInt * g6_19.toBigInt;
-    final BigInt f6g7_19 = f6.toBigInt * g7_19.toBigInt;
-    final BigInt f6g8_19 = f6.toBigInt * g8_19.toBigInt;
-    final BigInt f6g9_19 = f6.toBigInt * g9_19.toBigInt;
-    final BigInt f7g0 = f7.toBigInt * g0.toBigInt;
-    final BigInt f7g1_2 = f7_2.toBigInt * g1.toBigInt;
-    final BigInt f7g2 = f7.toBigInt * g2.toBigInt;
-    final BigInt f7g3_38 = f7_2.toBigInt * g3_19.toBigInt;
-    final BigInt f7g4_19 = f7.toBigInt * g4_19.toBigInt;
-    final BigInt f7g5_38 = f7_2.toBigInt * g5_19.toBigInt;
-    final BigInt f7g6_19 = f7.toBigInt * g6_19.toBigInt;
-    final BigInt f7g7_38 = f7_2.toBigInt * g7_19.toBigInt;
-    final BigInt f7g8_19 = f7.toBigInt * g8_19.toBigInt;
-    final BigInt f7g9_38 = f7_2.toBigInt * g9_19.toBigInt;
-    final BigInt f8g0 = f8.toBigInt * g0.toBigInt;
-    final BigInt f8g1 = f8.toBigInt * g1.toBigInt;
-    final BigInt f8g2_19 = f8.toBigInt * g2_19.toBigInt;
-    final BigInt f8g3_19 = f8.toBigInt * g3_19.toBigInt;
-    final BigInt f8g4_19 = f8.toBigInt * g4_19.toBigInt;
-    final BigInt f8g5_19 = f8.toBigInt * g5_19.toBigInt;
-    final BigInt f8g6_19 = f8.toBigInt * g6_19.toBigInt;
-    final BigInt f8g7_19 = f8.toBigInt * g7_19.toBigInt;
-    final BigInt f8g8_19 = f8.toBigInt * g8_19.toBigInt;
-    final BigInt f8g9_19 = f8.toBigInt * g9_19.toBigInt;
-    final BigInt f9g0 = f9.toBigInt * g0.toBigInt;
-    final BigInt f9g1_38 = f9_2.toBigInt * g1_19.toBigInt;
-    final BigInt f9g2_19 = f9.toBigInt * g2_19.toBigInt;
-    final BigInt f9g3_38 = f9_2.toBigInt * g3_19.toBigInt;
-    final BigInt f9g4_19 = f9.toBigInt * g4_19.toBigInt;
-    final BigInt f9g5_38 = f9_2.toBigInt * g5_19.toBigInt;
-    final BigInt f9g6_19 = f9.toBigInt * g6_19.toBigInt;
-    final BigInt f9g7_38 = f9_2.toBigInt * g7_19.toBigInt;
-    final BigInt f9g8_19 = f9.toBigInt * g8_19.toBigInt;
-    final BigInt f9g9_38 = f9_2.toBigInt * g9_19.toBigInt;
-    BigInt h0 =
+    final Int64 f0g0 = _mulInt64(f0, g0);
+    final Int64 f0g1 = _mulInt64(f0, g1);
+    final Int64 f0g2 = _mulInt64(f0, g2);
+    final Int64 f0g3 = _mulInt64(f0, g3);
+    final Int64 f0g4 = _mulInt64(f0, g4);
+    final Int64 f0g5 = _mulInt64(f0, g5);
+    final Int64 f0g6 = _mulInt64(f0, g6);
+    final Int64 f0g7 = _mulInt64(f0, g7);
+    final Int64 f0g8 = _mulInt64(f0, g8);
+    final Int64 f0g9 = _mulInt64(f0, g9);
+    final Int64 f1g0 = _mulInt64(f1, g0);
+    final Int64 f1g1_2 = _mulInt64(f1_2, g1);
+    final Int64 f1g2 = _mulInt64(f1, g2);
+    final Int64 f1g3_2 = _mulInt64(f1_2, g3);
+    final Int64 f1g4 = _mulInt64(f1, g4);
+    final Int64 f1g5_2 = _mulInt64(f1_2, g5);
+    final Int64 f1g6 = _mulInt64(f1, g6);
+    final Int64 f1g7_2 = _mulInt64(f1_2, g7);
+    final Int64 f1g8 = _mulInt64(f1, g8);
+    final Int64 f1g9_38 = _mulInt64(f1_2, g9_19);
+    final Int64 f2g0 = _mulInt64(f2, g0);
+    final Int64 f2g1 = _mulInt64(f2, g1);
+    final Int64 f2g2 = _mulInt64(f2, g2);
+    final Int64 f2g3 = _mulInt64(f2, g3);
+    final Int64 f2g4 = _mulInt64(f2, g4);
+    final Int64 f2g5 = _mulInt64(f2, g5);
+    final Int64 f2g6 = _mulInt64(f2, g6);
+    final Int64 f2g7 = _mulInt64(f2, g7);
+    final Int64 f2g8_19 = _mulInt64(f2, g8_19);
+    final Int64 f2g9_19 = _mulInt64(f2, g9_19);
+    final Int64 f3g0 = _mulInt64(f3, g0);
+    final Int64 f3g1_2 = _mulInt64(f3_2, g1);
+    final Int64 f3g2 = _mulInt64(f3, g2);
+    final Int64 f3g3_2 = _mulInt64(f3_2, g3);
+    final Int64 f3g4 = _mulInt64(f3, g4);
+    final Int64 f3g5_2 = _mulInt64(f3_2, g5);
+    final Int64 f3g6 = _mulInt64(f3, g6);
+    final Int64 f3g7_38 = _mulInt64(f3_2, g7_19);
+    final Int64 f3g8_19 = _mulInt64(f3, g8_19);
+    final Int64 f3g9_38 = _mulInt64(f3_2, g9_19);
+    final Int64 f4g0 = _mulInt64(f4, g0);
+    final Int64 f4g1 = _mulInt64(f4, g1);
+    final Int64 f4g2 = _mulInt64(f4, g2);
+    final Int64 f4g3 = _mulInt64(f4, g3);
+    final Int64 f4g4 = _mulInt64(f4, g4);
+    final Int64 f4g5 = _mulInt64(f4, g5);
+    final Int64 f4g6_19 = _mulInt64(f4, g6_19);
+    final Int64 f4g7_19 = _mulInt64(f4, g7_19);
+    final Int64 f4g8_19 = _mulInt64(f4, g8_19);
+    final Int64 f4g9_19 = _mulInt64(f4, g9_19);
+    final Int64 f5g0 = _mulInt64(f5, g0);
+    final Int64 f5g1_2 = _mulInt64(f5_2, g1);
+    final Int64 f5g2 = _mulInt64(f5, g2);
+    final Int64 f5g3_2 = _mulInt64(f5_2, g3);
+    final Int64 f5g4 = _mulInt64(f5, g4);
+    final Int64 f5g5_38 = _mulInt64(f5_2, g5_19);
+    final Int64 f5g6_19 = _mulInt64(f5, g6_19);
+    final Int64 f5g7_38 = _mulInt64(f5_2, g7_19);
+    final Int64 f5g8_19 = _mulInt64(f5, g8_19);
+    final Int64 f5g9_38 = _mulInt64(f5_2, g9_19);
+    final Int64 f6g0 = _mulInt64(f6, g0);
+    final Int64 f6g1 = _mulInt64(f6, g1);
+    final Int64 f6g2 = _mulInt64(f6, g2);
+    final Int64 f6g3 = _mulInt64(f6, g3);
+    final Int64 f6g4_19 = _mulInt64(f6, g4_19);
+    final Int64 f6g5_19 = _mulInt64(f6, g5_19);
+    final Int64 f6g6_19 = _mulInt64(f6, g6_19);
+    final Int64 f6g7_19 = _mulInt64(f6, g7_19);
+    final Int64 f6g8_19 = _mulInt64(f6, g8_19);
+    final Int64 f6g9_19 = _mulInt64(f6, g9_19);
+    final Int64 f7g0 = _mulInt64(f7, g0);
+    final Int64 f7g1_2 = _mulInt64(f7_2, g1);
+    final Int64 f7g2 = _mulInt64(f7, g2);
+    final Int64 f7g3_38 = _mulInt64(f7_2, g3_19);
+    final Int64 f7g4_19 = _mulInt64(f7, g4_19);
+    final Int64 f7g5_38 = _mulInt64(f7_2, g5_19);
+    final Int64 f7g6_19 = _mulInt64(f7, g6_19);
+    final Int64 f7g7_38 = _mulInt64(f7_2, g7_19);
+    final Int64 f7g8_19 = _mulInt64(f7, g8_19);
+    final Int64 f7g9_38 = _mulInt64(f7_2, g9_19);
+    final Int64 f8g0 = _mulInt64(f8, g0);
+    final Int64 f8g1 = _mulInt64(f8, g1);
+    final Int64 f8g2_19 = _mulInt64(f8, g2_19);
+    final Int64 f8g3_19 = _mulInt64(f8, g3_19);
+    final Int64 f8g4_19 = _mulInt64(f8, g4_19);
+    final Int64 f8g5_19 = _mulInt64(f8, g5_19);
+    final Int64 f8g6_19 = _mulInt64(f8, g6_19);
+    final Int64 f8g7_19 = _mulInt64(f8, g7_19);
+    final Int64 f8g8_19 = _mulInt64(f8, g8_19);
+    final Int64 f8g9_19 = _mulInt64(f8, g9_19);
+    final Int64 f9g0 = _mulInt64(f9, g0);
+    final Int64 f9g1_38 = _mulInt64(f9_2, g1_19);
+    final Int64 f9g2_19 = _mulInt64(f9, g2_19);
+    final Int64 f9g3_38 = _mulInt64(f9_2, g3_19);
+    final Int64 f9g4_19 = _mulInt64(f9, g4_19);
+    final Int64 f9g5_38 = _mulInt64(f9_2, g5_19);
+    final Int64 f9g6_19 = _mulInt64(f9, g6_19);
+    final Int64 f9g7_38 = _mulInt64(f9_2, g7_19);
+    final Int64 f9g8_19 = _mulInt64(f9, g8_19);
+    final Int64 f9g9_38 = _mulInt64(f9_2, g9_19);
+    Int64 h0 =
         f0g0 +
         f1g9_38 +
         f2g8_19 +
@@ -827,7 +866,7 @@ class CryptoOps {
         f7g3_38 +
         f8g2_19 +
         f9g1_38;
-    BigInt h1 =
+    Int64 h1 =
         f0g1 +
         f1g0 +
         f2g9_19 +
@@ -838,7 +877,7 @@ class CryptoOps {
         f7g4_19 +
         f8g3_19 +
         f9g2_19;
-    BigInt h2 =
+    Int64 h2 =
         f0g2 +
         f1g1_2 +
         f2g0 +
@@ -849,7 +888,7 @@ class CryptoOps {
         f7g5_38 +
         f8g4_19 +
         f9g3_38;
-    BigInt h3 =
+    Int64 h3 =
         f0g3 +
         f1g2 +
         f2g1 +
@@ -860,7 +899,7 @@ class CryptoOps {
         f7g6_19 +
         f8g5_19 +
         f9g4_19;
-    BigInt h4 =
+    Int64 h4 =
         f0g4 +
         f1g3_2 +
         f2g2 +
@@ -871,7 +910,7 @@ class CryptoOps {
         f7g7_38 +
         f8g6_19 +
         f9g5_38;
-    BigInt h5 =
+    Int64 h5 =
         f0g5 +
         f1g4 +
         f2g3 +
@@ -882,7 +921,7 @@ class CryptoOps {
         f7g8_19 +
         f8g7_19 +
         f9g6_19;
-    BigInt h6 =
+    Int64 h6 =
         f0g6 +
         f1g5_2 +
         f2g4 +
@@ -893,7 +932,7 @@ class CryptoOps {
         f7g9_38 +
         f8g8_19 +
         f9g7_38;
-    BigInt h7 =
+    Int64 h7 =
         f0g7 +
         f1g6 +
         f2g5 +
@@ -904,7 +943,7 @@ class CryptoOps {
         f7g0 +
         f8g9_19 +
         f9g8_19;
-    BigInt h8 =
+    Int64 h8 =
         f0g8 +
         f1g7_2 +
         f2g6 +
@@ -915,18 +954,18 @@ class CryptoOps {
         f7g1_2 +
         f8g0 +
         f9g9_38;
-    BigInt h9 =
+    Int64 h9 =
         f0g9 + f1g8 + f2g7 + f3g6 + f4g5 + f5g4 + f6g3 + f7g2 + f8g1 + f9g0;
-    BigInt carry0;
-    BigInt carry1;
-    BigInt carry2;
-    BigInt carry3;
-    BigInt carry4;
-    BigInt carry5;
-    BigInt carry6;
-    BigInt carry7;
-    BigInt carry8;
-    BigInt carry9;
+    Int64 carry0;
+    Int64 carry1;
+    Int64 carry2;
+    Int64 carry3;
+    Int64 carry4;
+    Int64 carry5;
+    Int64 carry6;
+    Int64 carry7;
+    Int64 carry8;
+    Int64 carry9;
 
     /*
   |h0| <= (1.65*1.65*2^52*(1+19+19+19+19)+1.65*1.65*2^50*(38+38+38+38+38))
@@ -991,7 +1030,7 @@ class CryptoOps {
     /* |h9| <= 1.71*2^59 */
 
     carry9 = (h9 + _bitMaskFor24) >> 25;
-    h0 += carry9 * BigInt.from(19);
+    h0 += carry9 * Int64(19);
     h9 -= carry9 << 25;
     /* |h9| <= 2^24; from now on fits into int32 unchanged */
     /* |h0| <= 1.1*2^39 */
@@ -1191,77 +1230,77 @@ class CryptoOps {
     s.asMin32("scMul");
     a.asMin32("scMul");
     b.asMin32("scMul");
-    final BigInt a0 = _b2097151 & _load3(a, 0);
-    final BigInt a1 = _b2097151 & (_load4(a, 2) >> 5);
-    final BigInt a2 = _b2097151 & (_load3(a, 5) >> 2);
-    final BigInt a3 = _b2097151 & (_load4(a, 7) >> 7);
-    final BigInt a4 = _b2097151 & (_load4(a, 10) >> 4);
-    final BigInt a5 = _b2097151 & (_load3(a, 13) >> 1);
-    final BigInt a6 = _b2097151 & (_load4(a, 15) >> 6);
-    final BigInt a7 = _b2097151 & (_load3(a, 18) >> 3);
-    final BigInt a8 = _b2097151 & _load3(a, 21);
-    final BigInt a9 = _b2097151 & (_load4(a, 23) >> 5);
-    final BigInt a10 = _b2097151 & (_load3(a, 26) >> 2);
-    final BigInt a11 = (_load4(a, 28) >> 7);
-    final BigInt b0 = _b2097151 & _load3(b, 0);
-    final BigInt b1 = _b2097151 & (_load4(b, 2) >> 5);
-    final BigInt b2 = _b2097151 & (_load3(b, 5) >> 2);
-    final BigInt b3 = _b2097151 & (_load4(b, 7) >> 7);
-    final BigInt b4 = _b2097151 & (_load4(b, 10) >> 4);
-    final BigInt b5 = _b2097151 & (_load3(b, 13) >> 1);
-    final BigInt b6 = _b2097151 & (_load4(b, 15) >> 6);
-    final BigInt b7 = _b2097151 & (_load3(b, 18) >> 3);
-    final BigInt b8 = _b2097151 & _load3(b, 21);
-    final BigInt b9 = _b2097151 & (_load4(b, 23) >> 5);
-    final BigInt b10 = _b2097151 & (_load3(b, 26) >> 2);
-    final BigInt b11 = (_load4(b, 28) >> 7);
-    BigInt s0;
-    BigInt s1;
-    BigInt s2;
-    BigInt s3;
-    BigInt s4;
-    BigInt s5;
-    BigInt s6;
-    BigInt s7;
-    BigInt s8;
-    BigInt s9;
-    BigInt s10;
-    BigInt s11;
-    BigInt s12;
-    BigInt s13;
-    BigInt s14;
-    BigInt s15;
-    BigInt s16;
-    BigInt s17;
-    BigInt s18;
-    BigInt s19;
-    BigInt s20;
-    BigInt s21;
-    BigInt s22;
-    BigInt s23;
-    BigInt carry0;
-    BigInt carry1;
-    BigInt carry2;
-    BigInt carry3;
-    BigInt carry4;
-    BigInt carry5;
-    BigInt carry6;
-    BigInt carry7;
-    BigInt carry8;
-    BigInt carry9;
-    BigInt carry10;
-    BigInt carry11;
-    BigInt carry12;
-    BigInt carry13;
-    BigInt carry14;
-    BigInt carry15;
-    BigInt carry16;
-    BigInt carry17;
-    BigInt carry18;
-    BigInt carry19;
-    BigInt carry20;
-    BigInt carry21;
-    BigInt carry22;
+    final Int64 a0 = _andU64(_b2097151, _load3(a, 0));
+    final Int64 a1 = _andU64(_b2097151, (_load4(a, 2) >> 5));
+    final Int64 a2 = _andU64(_b2097151, (_load3(a, 5) >> 2));
+    final Int64 a3 = _andU64(_b2097151, (_load4(a, 7) >> 7));
+    final Int64 a4 = _andU64(_b2097151, (_load4(a, 10) >> 4));
+    final Int64 a5 = _andU64(_b2097151, (_load3(a, 13) >> 1));
+    final Int64 a6 = _andU64(_b2097151, (_load4(a, 15) >> 6));
+    final Int64 a7 = _andU64(_b2097151, (_load3(a, 18) >> 3));
+    final Int64 a8 = _andU64(_b2097151, _load3(a, 21));
+    final Int64 a9 = _andU64(_b2097151, (_load4(a, 23) >> 5));
+    final Int64 a10 = _andU64(_b2097151, (_load3(a, 26) >> 2));
+    final Int64 a11 = (_load4(a, 28) >> 7).toInt64();
+    final Int64 b0 = _andU64(_b2097151, _load3(b, 0));
+    final Int64 b1 = _andU64(_b2097151, (_load4(b, 2) >> 5));
+    final Int64 b2 = _andU64(_b2097151, (_load3(b, 5) >> 2));
+    final Int64 b3 = _andU64(_b2097151, (_load4(b, 7) >> 7));
+    final Int64 b4 = _andU64(_b2097151, (_load4(b, 10) >> 4));
+    final Int64 b5 = _andU64(_b2097151, (_load3(b, 13) >> 1));
+    final Int64 b6 = _andU64(_b2097151, (_load4(b, 15) >> 6));
+    final Int64 b7 = _andU64(_b2097151, (_load3(b, 18) >> 3));
+    final Int64 b8 = _andU64(_b2097151, _load3(b, 21));
+    final Int64 b9 = _andU64(_b2097151, (_load4(b, 23) >> 5));
+    final Int64 b10 = _andU64(_b2097151, (_load3(b, 26) >> 2));
+    final Int64 b11 = (_load4(b, 28) >> 7).toInt64();
+    Int64 s0;
+    Int64 s1;
+    Int64 s2;
+    Int64 s3;
+    Int64 s4;
+    Int64 s5;
+    Int64 s6;
+    Int64 s7;
+    Int64 s8;
+    Int64 s9;
+    Int64 s10;
+    Int64 s11;
+    Int64 s12;
+    Int64 s13;
+    Int64 s14;
+    Int64 s15;
+    Int64 s16;
+    Int64 s17;
+    Int64 s18;
+    Int64 s19;
+    Int64 s20;
+    Int64 s21;
+    Int64 s22;
+    Int64 s23;
+    Int64 carry0;
+    Int64 carry1;
+    Int64 carry2;
+    Int64 carry3;
+    Int64 carry4;
+    Int64 carry5;
+    Int64 carry6;
+    Int64 carry7;
+    Int64 carry8;
+    Int64 carry9;
+    Int64 carry10;
+    Int64 carry11;
+    Int64 carry12;
+    Int64 carry13;
+    Int64 carry14;
+    Int64 carry15;
+    Int64 carry16;
+    Int64 carry17;
+    Int64 carry18;
+    Int64 carry19;
+    Int64 carry20;
+    Int64 carry21;
+    Int64 carry22;
 
     s0 = a0 * b0;
     s1 = (a0 * b1 + a1 * b0);
@@ -1381,7 +1420,7 @@ class CryptoOps {
     s20 = (a9 * b11 + a10 * b10 + a11 * b9);
     s21 = (a10 * b11 + a11 * b10);
     s22 = a11 * b11;
-    s23 = BigInt.zero;
+    s23 = Int64.zero;
 
     carry0 = (s0 + _bitMaskFor20) >> 21;
     s1 += carry0;
@@ -1454,47 +1493,47 @@ class CryptoOps {
     s22 += carry21;
     s21 -= carry21 << 21;
 
-    s11 += s23 * 666643.toBigInt;
-    s12 += s23 * 470296.toBigInt;
-    s13 += s23 * 654183.toBigInt;
-    s14 -= s23 * 997805.toBigInt;
-    s15 += s23 * 136657.toBigInt;
-    s16 -= s23 * 683901.toBigInt;
+    s11 += _mulInt64Int(s23, 666643);
+    s12 += _mulInt64Int(s23, 470296);
+    s13 += _mulInt64Int(s23, 654183);
+    s14 -= _mulInt64Int(s23, 997805);
+    s15 += _mulInt64Int(s23, 136657);
+    s16 -= _mulInt64Int(s23, 683901);
 
-    s10 += s22 * 666643.toBigInt;
-    s11 += s22 * 470296.toBigInt;
-    s12 += s22 * 654183.toBigInt;
-    s13 -= s22 * 997805.toBigInt;
-    s14 += s22 * 136657.toBigInt;
-    s15 -= s22 * 683901.toBigInt;
+    s10 += _mulInt64Int(s22, 666643);
+    s11 += _mulInt64Int(s22, 470296);
+    s12 += _mulInt64Int(s22, 654183);
+    s13 -= _mulInt64Int(s22, 997805);
+    s14 += _mulInt64Int(s22, 136657);
+    s15 -= _mulInt64Int(s22, 683901);
 
-    s9 += s21 * 666643.toBigInt;
-    s10 += s21 * 470296.toBigInt;
-    s11 += s21 * 654183.toBigInt;
-    s12 -= s21 * 997805.toBigInt;
-    s13 += s21 * 136657.toBigInt;
-    s14 -= s21 * 683901.toBigInt;
+    s9 += _mulInt64Int(s21, 666643);
+    s10 += _mulInt64Int(s21, 470296);
+    s11 += _mulInt64Int(s21, 654183);
+    s12 -= _mulInt64Int(s21, 997805);
+    s13 += _mulInt64Int(s21, 136657);
+    s14 -= _mulInt64Int(s21, 683901);
 
-    s8 += s20 * 666643.toBigInt;
-    s9 += s20 * 470296.toBigInt;
-    s10 += s20 * 654183.toBigInt;
-    s11 -= s20 * 997805.toBigInt;
-    s12 += s20 * 136657.toBigInt;
-    s13 -= s20 * 683901.toBigInt;
+    s8 += _mulInt64Int(s20, 666643);
+    s9 += _mulInt64Int(s20, 470296);
+    s10 += _mulInt64Int(s20, 654183);
+    s11 -= _mulInt64Int(s20, 997805);
+    s12 += _mulInt64Int(s20, 136657);
+    s13 -= _mulInt64Int(s20, 683901);
 
-    s7 += s19 * 666643.toBigInt;
-    s8 += s19 * 470296.toBigInt;
-    s9 += s19 * 654183.toBigInt;
-    s10 -= s19 * 997805.toBigInt;
-    s11 += s19 * 136657.toBigInt;
-    s12 -= s19 * 683901.toBigInt;
+    s7 += _mulInt64Int(s19, 666643);
+    s8 += _mulInt64Int(s19, 470296);
+    s9 += _mulInt64Int(s19, 654183);
+    s10 -= _mulInt64Int(s19, 997805);
+    s11 += _mulInt64Int(s19, 136657);
+    s12 -= _mulInt64Int(s19, 683901);
 
-    s6 += s18 * 666643.toBigInt;
-    s7 += s18 * 470296.toBigInt;
-    s8 += s18 * 654183.toBigInt;
-    s9 -= s18 * 997805.toBigInt;
-    s10 += s18 * 136657.toBigInt;
-    s11 -= s18 * 683901.toBigInt;
+    s6 += _mulInt64Int(s18, 666643);
+    s7 += _mulInt64Int(s18, 470296);
+    s8 += _mulInt64Int(s18, 654183);
+    s9 -= _mulInt64Int(s18, 997805);
+    s10 += _mulInt64Int(s18, 136657);
+    s11 -= _mulInt64Int(s18, 683901);
 
     carry6 = (s6 + _bitMaskFor20) >> 21;
     s7 += carry6;
@@ -1531,48 +1570,48 @@ class CryptoOps {
     s16 += carry15;
     s15 -= carry15 << 21;
 
-    s5 += s17 * 666643.toBigInt;
-    s6 += s17 * 470296.toBigInt;
-    s7 += s17 * 654183.toBigInt;
-    s8 -= s17 * 997805.toBigInt;
-    s9 += s17 * 136657.toBigInt;
-    s10 -= s17 * 683901.toBigInt;
+    s5 += _mulInt64Int(s17, 666643);
+    s6 += _mulInt64Int(s17, 470296);
+    s7 += _mulInt64Int(s17, 654183);
+    s8 -= _mulInt64Int(s17, 997805);
+    s9 += _mulInt64Int(s17, 136657);
+    s10 -= _mulInt64Int(s17, 683901);
 
-    s4 += s16 * 666643.toBigInt;
-    s5 += s16 * 470296.toBigInt;
-    s6 += s16 * 654183.toBigInt;
-    s7 -= s16 * 997805.toBigInt;
-    s8 += s16 * 136657.toBigInt;
-    s9 -= s16 * 683901.toBigInt;
+    s4 += _mulInt64Int(s16, 666643);
+    s5 += _mulInt64Int(s16, 470296);
+    s6 += _mulInt64Int(s16, 654183);
+    s7 -= _mulInt64Int(s16, 997805);
+    s8 += _mulInt64Int(s16, 136657);
+    s9 -= _mulInt64Int(s16, 683901);
 
-    s3 += s15 * 666643.toBigInt;
-    s4 += s15 * 470296.toBigInt;
-    s5 += s15 * 654183.toBigInt;
-    s6 -= s15 * 997805.toBigInt;
-    s7 += s15 * 136657.toBigInt;
-    s8 -= s15 * 683901.toBigInt;
+    s3 += _mulInt64Int(s15, 666643);
+    s4 += _mulInt64Int(s15, 470296);
+    s5 += _mulInt64Int(s15, 654183);
+    s6 -= _mulInt64Int(s15, 997805);
+    s7 += _mulInt64Int(s15, 136657);
+    s8 -= _mulInt64Int(s15, 683901);
 
-    s2 += s14 * 666643.toBigInt;
-    s3 += s14 * 470296.toBigInt;
-    s4 += s14 * 654183.toBigInt;
-    s5 -= s14 * 997805.toBigInt;
-    s6 += s14 * 136657.toBigInt;
-    s7 -= s14 * 683901.toBigInt;
+    s2 += _mulInt64Int(s14, 666643);
+    s3 += _mulInt64Int(s14, 470296);
+    s4 += _mulInt64Int(s14, 654183);
+    s5 -= _mulInt64Int(s14, 997805);
+    s6 += _mulInt64Int(s14, 136657);
+    s7 -= _mulInt64Int(s14, 683901);
 
-    s1 += s13 * 666643.toBigInt;
-    s2 += s13 * 470296.toBigInt;
-    s3 += s13 * 654183.toBigInt;
-    s4 -= s13 * 997805.toBigInt;
-    s5 += s13 * 136657.toBigInt;
-    s6 -= s13 * 683901.toBigInt;
+    s1 += _mulInt64Int(s13, 666643);
+    s2 += _mulInt64Int(s13, 470296);
+    s3 += _mulInt64Int(s13, 654183);
+    s4 -= _mulInt64Int(s13, 997805);
+    s5 += _mulInt64Int(s13, 136657);
+    s6 -= _mulInt64Int(s13, 683901);
 
-    s0 += s12 * 666643.toBigInt;
-    s1 += s12 * 470296.toBigInt;
-    s2 += s12 * 654183.toBigInt;
-    s3 -= s12 * 997805.toBigInt;
-    s4 += s12 * 136657.toBigInt;
-    s5 -= s12 * 683901.toBigInt;
-    s12 = BigInt.zero;
+    s0 += _mulInt64Int(s12, 666643);
+    s1 += _mulInt64Int(s12, 470296);
+    s2 += _mulInt64Int(s12, 654183);
+    s3 -= _mulInt64Int(s12, 997805);
+    s4 += _mulInt64Int(s12, 136657);
+    s5 -= _mulInt64Int(s12, 683901);
+    s12 = Int64.zero;
 
     carry0 = (s0 + _bitMaskFor20) >> 21;
     s1 += carry0;
@@ -1612,13 +1651,13 @@ class CryptoOps {
     s12 += carry11;
     s11 -= carry11 << 21;
 
-    s0 += s12 * 666643.toBigInt;
-    s1 += s12 * 470296.toBigInt;
-    s2 += s12 * 654183.toBigInt;
-    s3 -= s12 * 997805.toBigInt;
-    s4 += s12 * 136657.toBigInt;
-    s5 -= s12 * 683901.toBigInt;
-    s12 = BigInt.zero;
+    s0 += _mulInt64Int(s12, 666643);
+    s1 += _mulInt64Int(s12, 470296);
+    s2 += _mulInt64Int(s12, 654183);
+    s3 -= _mulInt64Int(s12, 997805);
+    s4 += _mulInt64Int(s12, 136657);
+    s5 -= _mulInt64Int(s12, 683901);
+    s12 = Int64.zero;
 
     carry0 = s0 >> 21;
     s1 += carry0;
@@ -1657,12 +1696,12 @@ class CryptoOps {
     s12 += carry11;
     s11 -= carry11 << 21;
 
-    s0 += s12 * 666643.toBigInt;
-    s1 += s12 * 470296.toBigInt;
-    s2 += s12 * 654183.toBigInt;
-    s3 -= s12 * 997805.toBigInt;
-    s4 += s12 * 136657.toBigInt;
-    s5 -= s12 * 683901.toBigInt;
+    s0 += _mulInt64Int(s12, 666643);
+    s1 += _mulInt64Int(s12, 470296);
+    s2 += _mulInt64Int(s12, 654183);
+    s3 -= _mulInt64Int(s12, 997805);
+    s4 += _mulInt64Int(s12, 136657);
+    s5 -= _mulInt64Int(s12, 683901);
 
     carry0 = s0 >> 21;
     s1 += carry0;
@@ -1697,7 +1736,7 @@ class CryptoOps {
     carry10 = s10 >> 21;
     s11 += carry10;
     s10 -= carry10 << 21;
-    final List<BigInt> sBig = List<BigInt>.filled(32, BigInt.zero);
+    final List<Int64> sBig = List<Int64>.filled(32, Int64.zero);
     sBig[0] = s0 >> 0;
     sBig[1] = s0 >> 8;
     sBig[2] = (s0 >> 16) | (s1 << 5);
@@ -1731,7 +1770,7 @@ class CryptoOps {
     sBig[30] = s11 >> 9;
     sBig[31] = s11 >> 17;
     for (int i = 0; i < sBig.length; i++) {
-      s[i] = sBig[i].toU8;
+      s[i] = sBig[i].toUint8();
     }
   }
 
@@ -1747,89 +1786,89 @@ class CryptoOps {
     a.asMin32("scMulAdd");
     b.asMin32("scMulAdd");
     c.asMin32("scMulAdd");
-    final BigInt a0 = _b2097151 & _load3(a, 0);
-    final BigInt a1 = _b2097151 & (_load4(a, 2) >> 5);
-    final BigInt a2 = _b2097151 & (_load3(a, 5) >> 2);
-    final BigInt a3 = _b2097151 & (_load4(a, 7) >> 7);
-    final BigInt a4 = _b2097151 & (_load4(a, 10) >> 4);
-    final BigInt a5 = _b2097151 & (_load3(a, 13) >> 1);
-    final BigInt a6 = _b2097151 & (_load4(a, 15) >> 6);
-    final BigInt a7 = _b2097151 & (_load3(a, 18) >> 3);
-    final BigInt a8 = _b2097151 & _load3(a, 21);
-    final BigInt a9 = _b2097151 & (_load4(a, 23) >> 5);
-    final BigInt a10 = _b2097151 & (_load3(a, 26) >> 2);
-    final BigInt a11 = (_load4(a, 28) >> 7);
-    final BigInt b0 = _b2097151 & _load3(b, 0);
-    final BigInt b1 = _b2097151 & (_load4(b, 2) >> 5);
-    final BigInt b2 = _b2097151 & (_load3(b, 5) >> 2);
-    final BigInt b3 = _b2097151 & (_load4(b, 7) >> 7);
-    final BigInt b4 = _b2097151 & (_load4(b, 10) >> 4);
-    final BigInt b5 = _b2097151 & (_load3(b, 13) >> 1);
-    final BigInt b6 = _b2097151 & (_load4(b, 15) >> 6);
-    final BigInt b7 = _b2097151 & (_load3(b, 18) >> 3);
-    final BigInt b8 = _b2097151 & _load3(b, 21);
-    final BigInt b9 = _b2097151 & (_load4(b, 23) >> 5);
-    final BigInt b10 = _b2097151 & (_load3(b, 26) >> 2);
-    final BigInt b11 = (_load4(b, 28) >> 7);
-    final BigInt c0 = _b2097151 & _load3(c, 0);
-    final BigInt c1 = _b2097151 & (_load4(c, 2) >> 5);
-    final BigInt c2 = _b2097151 & (_load3(c, 5) >> 2);
-    final BigInt c3 = _b2097151 & (_load4(c, 7) >> 7);
-    final BigInt c4 = _b2097151 & (_load4(c, 10) >> 4);
-    final BigInt c5 = _b2097151 & (_load3(c, 13) >> 1);
-    final BigInt c6 = _b2097151 & (_load4(c, 15) >> 6);
-    final BigInt c7 = _b2097151 & (_load3(c, 18) >> 3);
-    final BigInt c8 = _b2097151 & _load3(c, 21);
-    final BigInt c9 = _b2097151 & (_load4(c, 23) >> 5);
-    final BigInt c10 = _b2097151 & (_load3(c, 26) >> 2);
-    final BigInt c11 = (_load4(c, 28) >> 7);
-    BigInt s0;
-    BigInt s1;
-    BigInt s2;
-    BigInt s3;
-    BigInt s4;
-    BigInt s5;
-    BigInt s6;
-    BigInt s7;
-    BigInt s8;
-    BigInt s9;
-    BigInt s10;
-    BigInt s11;
-    BigInt s12;
-    BigInt s13;
-    BigInt s14;
-    BigInt s15;
-    BigInt s16;
-    BigInt s17;
-    BigInt s18;
-    BigInt s19;
-    BigInt s20;
-    BigInt s21;
-    BigInt s22;
-    BigInt s23;
-    BigInt carry0;
-    BigInt carry1;
-    BigInt carry2;
-    BigInt carry3;
-    BigInt carry4;
-    BigInt carry5;
-    BigInt carry6;
-    BigInt carry7;
-    BigInt carry8;
-    BigInt carry9;
-    BigInt carry10;
-    BigInt carry11;
-    BigInt carry12;
-    BigInt carry13;
-    BigInt carry14;
-    BigInt carry15;
-    BigInt carry16;
-    BigInt carry17;
-    BigInt carry18;
-    BigInt carry19;
-    BigInt carry20;
-    BigInt carry21;
-    BigInt carry22;
+    final Int64 a0 = _andU64(_b2097151, _load3(a, 0));
+    final Int64 a1 = _andU64(_b2097151, (_load4(a, 2) >> 5));
+    final Int64 a2 = _andU64(_b2097151, (_load3(a, 5) >> 2));
+    final Int64 a3 = _andU64(_b2097151, (_load4(a, 7) >> 7));
+    final Int64 a4 = _andU64(_b2097151, (_load4(a, 10) >> 4));
+    final Int64 a5 = _andU64(_b2097151, (_load3(a, 13) >> 1));
+    final Int64 a6 = _andU64(_b2097151, (_load4(a, 15) >> 6));
+    final Int64 a7 = _andU64(_b2097151, (_load3(a, 18) >> 3));
+    final Int64 a8 = _andU64(_b2097151, _load3(a, 21));
+    final Int64 a9 = _andU64(_b2097151, (_load4(a, 23) >> 5));
+    final Int64 a10 = _andU64(_b2097151, (_load3(a, 26) >> 2));
+    final Int64 a11 = (_load4(a, 28) >> 7).toInt64();
+    final Int64 b0 = _andU64(_b2097151, _load3(b, 0));
+    final Int64 b1 = _andU64(_b2097151, (_load4(b, 2) >> 5));
+    final Int64 b2 = _andU64(_b2097151, (_load3(b, 5) >> 2));
+    final Int64 b3 = _andU64(_b2097151, (_load4(b, 7) >> 7));
+    final Int64 b4 = _andU64(_b2097151, (_load4(b, 10) >> 4));
+    final Int64 b5 = _andU64(_b2097151, (_load3(b, 13) >> 1));
+    final Int64 b6 = _andU64(_b2097151, (_load4(b, 15) >> 6));
+    final Int64 b7 = _andU64(_b2097151, (_load3(b, 18) >> 3));
+    final Int64 b8 = _andU64(_b2097151, _load3(b, 21));
+    final Int64 b9 = _andU64(_b2097151, (_load4(b, 23) >> 5));
+    final Int64 b10 = _andU64(_b2097151, (_load3(b, 26) >> 2));
+    final Int64 b11 = (_load4(b, 28) >> 7).toInt64();
+    final Int64 c0 = _andU64(_b2097151, _load3(c, 0));
+    final Int64 c1 = _andU64(_b2097151, (_load4(c, 2) >> 5));
+    final Int64 c2 = _andU64(_b2097151, (_load3(c, 5) >> 2));
+    final Int64 c3 = _andU64(_b2097151, (_load4(c, 7) >> 7));
+    final Int64 c4 = _andU64(_b2097151, (_load4(c, 10) >> 4));
+    final Int64 c5 = _andU64(_b2097151, (_load3(c, 13) >> 1));
+    final Int64 c6 = _andU64(_b2097151, (_load4(c, 15) >> 6));
+    final Int64 c7 = _andU64(_b2097151, (_load3(c, 18) >> 3));
+    final Int64 c8 = _andU64(_b2097151, _load3(c, 21));
+    final Int64 c9 = _andU64(_b2097151, (_load4(c, 23) >> 5));
+    final Int64 c10 = _andU64(_b2097151, (_load3(c, 26) >> 2));
+    final Int64 c11 = (_load4(c, 28) >> 7).toInt64();
+    Int64 s0;
+    Int64 s1;
+    Int64 s2;
+    Int64 s3;
+    Int64 s4;
+    Int64 s5;
+    Int64 s6;
+    Int64 s7;
+    Int64 s8;
+    Int64 s9;
+    Int64 s10;
+    Int64 s11;
+    Int64 s12;
+    Int64 s13;
+    Int64 s14;
+    Int64 s15;
+    Int64 s16;
+    Int64 s17;
+    Int64 s18;
+    Int64 s19;
+    Int64 s20;
+    Int64 s21;
+    Int64 s22;
+    Int64 s23;
+    Int64 carry0;
+    Int64 carry1;
+    Int64 carry2;
+    Int64 carry3;
+    Int64 carry4;
+    Int64 carry5;
+    Int64 carry6;
+    Int64 carry7;
+    Int64 carry8;
+    Int64 carry9;
+    Int64 carry10;
+    Int64 carry11;
+    Int64 carry12;
+    Int64 carry13;
+    Int64 carry14;
+    Int64 carry15;
+    Int64 carry16;
+    Int64 carry17;
+    Int64 carry18;
+    Int64 carry19;
+    Int64 carry20;
+    Int64 carry21;
+    Int64 carry22;
 
     s0 = c0 + a0 * b0;
     s1 = c1 + (a0 * b1 + a1 * b0);
@@ -1956,7 +1995,7 @@ class CryptoOps {
     s20 = (a9 * b11 + a10 * b10 + a11 * b9);
     s21 = (a10 * b11 + a11 * b10);
     s22 = a11 * b11;
-    s23 = BigInt.zero;
+    s23 = Int64.zero;
 
     carry0 = (s0 + _bitMaskFor20) >> 21;
     s1 += carry0;
@@ -2029,47 +2068,47 @@ class CryptoOps {
     s22 += carry21;
     s21 -= carry21 << 21;
 
-    s11 += s23 * 666643.toBigInt;
-    s12 += s23 * 470296.toBigInt;
-    s13 += s23 * 654183.toBigInt;
-    s14 -= s23 * 997805.toBigInt;
-    s15 += s23 * 136657.toBigInt;
-    s16 -= s23 * 683901.toBigInt;
+    s11 += _mulInt64Int(s23, 666643);
+    s12 += _mulInt64Int(s23, 470296);
+    s13 += _mulInt64Int(s23, 654183);
+    s14 -= _mulInt64Int(s23, 997805);
+    s15 += _mulInt64Int(s23, 136657);
+    s16 -= _mulInt64Int(s23, 683901);
 
-    s10 += s22 * 666643.toBigInt;
-    s11 += s22 * 470296.toBigInt;
-    s12 += s22 * 654183.toBigInt;
-    s13 -= s22 * 997805.toBigInt;
-    s14 += s22 * 136657.toBigInt;
-    s15 -= s22 * 683901.toBigInt;
+    s10 += _mulInt64Int(s22, 666643);
+    s11 += _mulInt64Int(s22, 470296);
+    s12 += _mulInt64Int(s22, 654183);
+    s13 -= _mulInt64Int(s22, 997805);
+    s14 += _mulInt64Int(s22, 136657);
+    s15 -= _mulInt64Int(s22, 683901);
 
-    s9 += s21 * 666643.toBigInt;
-    s10 += s21 * 470296.toBigInt;
-    s11 += s21 * 654183.toBigInt;
-    s12 -= s21 * 997805.toBigInt;
-    s13 += s21 * 136657.toBigInt;
-    s14 -= s21 * 683901.toBigInt;
+    s9 += _mulInt64Int(s21, 666643);
+    s10 += _mulInt64Int(s21, 470296);
+    s11 += _mulInt64Int(s21, 654183);
+    s12 -= _mulInt64Int(s21, 997805);
+    s13 += _mulInt64Int(s21, 136657);
+    s14 -= _mulInt64Int(s21, 683901);
 
-    s8 += s20 * 666643.toBigInt;
-    s9 += s20 * 470296.toBigInt;
-    s10 += s20 * 654183.toBigInt;
-    s11 -= s20 * 997805.toBigInt;
-    s12 += s20 * 136657.toBigInt;
-    s13 -= s20 * 683901.toBigInt;
+    s8 += _mulInt64Int(s20, 666643);
+    s9 += _mulInt64Int(s20, 470296);
+    s10 += _mulInt64Int(s20, 654183);
+    s11 -= _mulInt64Int(s20, 997805);
+    s12 += _mulInt64Int(s20, 136657);
+    s13 -= _mulInt64Int(s20, 683901);
 
-    s7 += s19 * 666643.toBigInt;
-    s8 += s19 * 470296.toBigInt;
-    s9 += s19 * 654183.toBigInt;
-    s10 -= s19 * 997805.toBigInt;
-    s11 += s19 * 136657.toBigInt;
-    s12 -= s19 * 683901.toBigInt;
+    s7 += _mulInt64Int(s19, 666643);
+    s8 += _mulInt64Int(s19, 470296);
+    s9 += _mulInt64Int(s19, 654183);
+    s10 -= _mulInt64Int(s19, 997805);
+    s11 += _mulInt64Int(s19, 136657);
+    s12 -= _mulInt64Int(s19, 683901);
 
-    s6 += s18 * 666643.toBigInt;
-    s7 += s18 * 470296.toBigInt;
-    s8 += s18 * 654183.toBigInt;
-    s9 -= s18 * 997805.toBigInt;
-    s10 += s18 * 136657.toBigInt;
-    s11 -= s18 * 683901.toBigInt;
+    s6 += _mulInt64Int(s18, 666643);
+    s7 += _mulInt64Int(s18, 470296);
+    s8 += _mulInt64Int(s18, 654183);
+    s9 -= _mulInt64Int(s18, 997805);
+    s10 += _mulInt64Int(s18, 136657);
+    s11 -= _mulInt64Int(s18, 683901);
 
     carry6 = (s6 + _bitMaskFor20) >> 21;
     s7 += carry6;
@@ -2106,48 +2145,48 @@ class CryptoOps {
     s16 += carry15;
     s15 -= carry15 << 21;
 
-    s5 += s17 * 666643.toBigInt;
-    s6 += s17 * 470296.toBigInt;
-    s7 += s17 * 654183.toBigInt;
-    s8 -= s17 * 997805.toBigInt;
-    s9 += s17 * 136657.toBigInt;
-    s10 -= s17 * 683901.toBigInt;
+    s5 += _mulInt64Int(s17, 666643);
+    s6 += _mulInt64Int(s17, 470296);
+    s7 += _mulInt64Int(s17, 654183);
+    s8 -= _mulInt64Int(s17, 997805);
+    s9 += _mulInt64Int(s17, 136657);
+    s10 -= _mulInt64Int(s17, 683901);
 
-    s4 += s16 * 666643.toBigInt;
-    s5 += s16 * 470296.toBigInt;
-    s6 += s16 * 654183.toBigInt;
-    s7 -= s16 * 997805.toBigInt;
-    s8 += s16 * 136657.toBigInt;
-    s9 -= s16 * 683901.toBigInt;
+    s4 += _mulInt64Int(s16, 666643);
+    s5 += _mulInt64Int(s16, 470296);
+    s6 += _mulInt64Int(s16, 654183);
+    s7 -= _mulInt64Int(s16, 997805);
+    s8 += _mulInt64Int(s16, 136657);
+    s9 -= _mulInt64Int(s16, 683901);
 
-    s3 += s15 * 666643.toBigInt;
-    s4 += s15 * 470296.toBigInt;
-    s5 += s15 * 654183.toBigInt;
-    s6 -= s15 * 997805.toBigInt;
-    s7 += s15 * 136657.toBigInt;
-    s8 -= s15 * 683901.toBigInt;
+    s3 += _mulInt64Int(s15, 666643);
+    s4 += _mulInt64Int(s15, 470296);
+    s5 += _mulInt64Int(s15, 654183);
+    s6 -= _mulInt64Int(s15, 997805);
+    s7 += _mulInt64Int(s15, 136657);
+    s8 -= _mulInt64Int(s15, 683901);
 
-    s2 += s14 * 666643.toBigInt;
-    s3 += s14 * 470296.toBigInt;
-    s4 += s14 * 654183.toBigInt;
-    s5 -= s14 * 997805.toBigInt;
-    s6 += s14 * 136657.toBigInt;
-    s7 -= s14 * 683901.toBigInt;
+    s2 += _mulInt64Int(s14, 666643);
+    s3 += _mulInt64Int(s14, 470296);
+    s4 += _mulInt64Int(s14, 654183);
+    s5 -= _mulInt64Int(s14, 997805);
+    s6 += _mulInt64Int(s14, 136657);
+    s7 -= _mulInt64Int(s14, 683901);
 
-    s1 += s13 * 666643.toBigInt;
-    s2 += s13 * 470296.toBigInt;
-    s3 += s13 * 654183.toBigInt;
-    s4 -= s13 * 997805.toBigInt;
-    s5 += s13 * 136657.toBigInt;
-    s6 -= s13 * 683901.toBigInt;
+    s1 += _mulInt64Int(s13, 666643);
+    s2 += _mulInt64Int(s13, 470296);
+    s3 += _mulInt64Int(s13, 654183);
+    s4 -= _mulInt64Int(s13, 997805);
+    s5 += _mulInt64Int(s13, 136657);
+    s6 -= _mulInt64Int(s13, 683901);
 
-    s0 += s12 * 666643.toBigInt;
-    s1 += s12 * 470296.toBigInt;
-    s2 += s12 * 654183.toBigInt;
-    s3 -= s12 * 997805.toBigInt;
-    s4 += s12 * 136657.toBigInt;
-    s5 -= s12 * 683901.toBigInt;
-    s12 = BigInt.zero;
+    s0 += _mulInt64Int(s12, 666643);
+    s1 += _mulInt64Int(s12, 470296);
+    s2 += _mulInt64Int(s12, 654183);
+    s3 -= _mulInt64Int(s12, 997805);
+    s4 += _mulInt64Int(s12, 136657);
+    s5 -= _mulInt64Int(s12, 683901);
+    s12 = Int64.zero;
 
     carry0 = (s0 + _bitMaskFor20) >> 21;
     s1 += carry0;
@@ -2187,13 +2226,13 @@ class CryptoOps {
     s12 += carry11;
     s11 -= carry11 << 21;
 
-    s0 += s12 * 666643.toBigInt;
-    s1 += s12 * 470296.toBigInt;
-    s2 += s12 * 654183.toBigInt;
-    s3 -= s12 * 997805.toBigInt;
-    s4 += s12 * 136657.toBigInt;
-    s5 -= s12 * 683901.toBigInt;
-    s12 = 0.toBigInt;
+    s0 += _mulInt64Int(s12, 666643);
+    s1 += _mulInt64Int(s12, 470296);
+    s2 += _mulInt64Int(s12, 654183);
+    s3 -= _mulInt64Int(s12, 997805);
+    s4 += _mulInt64Int(s12, 136657);
+    s5 -= _mulInt64Int(s12, 683901);
+    s12 = Int64.zero;
 
     carry0 = s0 >> 21;
     s1 += carry0;
@@ -2232,12 +2271,12 @@ class CryptoOps {
     s12 += carry11;
     s11 -= carry11 << 21;
 
-    s0 += s12 * 666643.toBigInt;
-    s1 += s12 * 470296.toBigInt;
-    s2 += s12 * 654183.toBigInt;
-    s3 -= s12 * 997805.toBigInt;
-    s4 += s12 * 136657.toBigInt;
-    s5 -= s12 * 683901.toBigInt;
+    s0 += _mulInt64Int(s12, 666643);
+    s1 += _mulInt64Int(s12, 470296);
+    s2 += _mulInt64Int(s12, 654183);
+    s3 -= _mulInt64Int(s12, 997805);
+    s4 += _mulInt64Int(s12, 136657);
+    s5 -= _mulInt64Int(s12, 683901);
 
     carry0 = s0 >> 21;
     s1 += carry0;
@@ -2272,7 +2311,7 @@ class CryptoOps {
     carry10 = s10 >> 21;
     s11 += carry10;
     s10 -= carry10 << 21;
-    final List<BigInt> sBig = List<BigInt>.filled(32, BigInt.zero);
+    final List<Int64> sBig = List<Int64>.filled(32, Int64.zero);
     sBig[0] = s0 >> 0;
     sBig[1] = s0 >> 8;
     sBig[2] = (s0 >> 16) | (s1 << 5);
@@ -2306,7 +2345,7 @@ class CryptoOps {
     sBig[30] = s11 >> 9;
     sBig[31] = s11 >> 17;
     for (int i = 0; i < sBig.length; i++) {
-      s[i] = sBig[i].toU8;
+      s[i] = sBig[i].toUint8();
     }
   }
 
@@ -2512,29 +2551,29 @@ class CryptoOps {
 
     /* From fe_frombytes.c */
 
-    BigInt h0 = _load4(s, 0);
-    BigInt h1 = _load3(s, 4) << 6;
-    BigInt h2 = _load3(s, 7) << 5;
-    BigInt h3 = _load3(s, 10) << 3;
-    BigInt h4 = _load3(s, 13) << 2;
-    BigInt h5 = _load4(s, 16);
-    BigInt h6 = _load3(s, 20) << 7;
-    BigInt h7 = _load3(s, 23) << 5;
-    BigInt h8 = _load3(s, 26) << 4;
-    BigInt h9 = _load3(s, 29) << 2;
-    BigInt carry0;
-    BigInt carry1;
-    BigInt carry2;
-    BigInt carry3;
-    BigInt carry4;
-    BigInt carry5;
-    BigInt carry6;
-    BigInt carry7;
-    BigInt carry8;
-    BigInt carry9;
+    Int64 h0 = _load4(s, 0).toInt64();
+    Int64 h1 = (_load3(s, 4) << 6).toInt64();
+    Int64 h2 = (_load3(s, 7) << 5).toInt64();
+    Int64 h3 = (_load3(s, 10) << 3).toInt64();
+    Int64 h4 = (_load3(s, 13) << 2).toInt64();
+    Int64 h5 = _load4(s, 16).toInt64();
+    Int64 h6 = (_load3(s, 20) << 7).toInt64();
+    Int64 h7 = (_load3(s, 23) << 5).toInt64();
+    Int64 h8 = (_load3(s, 26) << 4).toInt64();
+    Int64 h9 = (_load3(s, 29) << 2).toInt64();
+    Int64 carry0;
+    Int64 carry1;
+    Int64 carry2;
+    Int64 carry3;
+    Int64 carry4;
+    Int64 carry5;
+    Int64 carry6;
+    Int64 carry7;
+    Int64 carry8;
+    Int64 carry9;
 
     carry9 = (h9 + _bitMaskFor24) >> 25;
-    h0 += carry9 * BigInt.from(19);
+    h0 += carry9 * Int64(19);
     h9 -= carry9 << 25;
     carry1 = (h1 + _bitMaskFor24) >> 25;
     h2 += carry1;
@@ -2644,213 +2683,213 @@ class CryptoOps {
   }
 
   static void scReduce(List<int> r, List<int> s) {
-    BigInt s0 = _b2097151 & _load3(s, 0);
-    BigInt s1 = _b2097151 & (_load4(s, 2) >> 5);
-    BigInt s2 = _b2097151 & (_load3(s, 5) >> 2);
-    BigInt s3 = _b2097151 & (_load4(s, 7) >> 7);
-    BigInt s4 = _b2097151 & (_load4(s, 10) >> 4);
-    BigInt s5 = _b2097151 & (_load3(s, 13) >> 1);
-    BigInt s6 = _b2097151 & (_load4(s, 15) >> 6);
-    BigInt s7 = _b2097151 & (_load3(s, 18) >> 3);
-    BigInt s8 = _b2097151 & _load3(s, 21);
-    BigInt s9 = _b2097151 & (_load4(s, 23) >> 5);
-    BigInt s10 = _b2097151 & (_load3(s, 26) >> 2);
-    BigInt s11 = _b2097151 & (_load4(s, 28) >> 7);
-    BigInt s12 = _b2097151 & (_load4(s, 31) >> 4);
-    BigInt s13 = _b2097151 & (_load3(s, 34) >> 1);
-    BigInt s14 = _b2097151 & (_load4(s, 36) >> 6);
-    BigInt s15 = _b2097151 & (_load3(s, 39) >> 3);
-    BigInt s16 = _b2097151 & _load3(s, 42);
-    BigInt s17 = _b2097151 & (_load4(s, 44) >> 5);
-    BigInt s18 = _b2097151 & (_load3(s, 47) >> 2);
-    BigInt s19 = _b2097151 & (_load4(s, 49) >> 7);
-    BigInt s20 = _b2097151 & (_load4(s, 52) >> 4);
-    BigInt s21 = _b2097151 & (_load3(s, 55) >> 1);
-    BigInt s22 = _b2097151 & (_load4(s, 57) >> 6);
-    BigInt s23 = (_load4(s, 60) >> 3);
-    BigInt carry0;
-    BigInt carry1;
-    BigInt carry2;
-    BigInt carry3;
-    BigInt carry4;
-    BigInt carry5;
-    BigInt carry6;
-    BigInt carry7;
-    BigInt carry8;
-    BigInt carry9;
-    BigInt carry10;
-    BigInt carry11;
-    BigInt carry12;
-    BigInt carry13;
-    BigInt carry14;
-    BigInt carry15;
-    BigInt carry16;
+    Int64 s0 = _andU64(_b2097151, _load3(s, 0));
+    Int64 s1 = _andU64(_b2097151, (_load4(s, 2) >> 5));
+    Int64 s2 = _andU64(_b2097151, (_load3(s, 5) >> 2));
+    Int64 s3 = _andU64(_b2097151, (_load4(s, 7) >> 7));
+    Int64 s4 = _andU64(_b2097151, (_load4(s, 10) >> 4));
+    Int64 s5 = _andU64(_b2097151, (_load3(s, 13) >> 1));
+    Int64 s6 = _andU64(_b2097151, (_load4(s, 15) >> 6));
+    Int64 s7 = _andU64(_b2097151, (_load3(s, 18) >> 3));
+    Int64 s8 = _andU64(_b2097151, _load3(s, 21));
+    Int64 s9 = _andU64(_b2097151, (_load4(s, 23) >> 5));
+    Int64 s10 = _andU64(_b2097151, (_load3(s, 26) >> 2));
+    Int64 s11 = _andU64(_b2097151, (_load4(s, 28) >> 7));
+    Int64 s12 = _andU64(_b2097151, (_load4(s, 31) >> 4));
+    Int64 s13 = _andU64(_b2097151, (_load3(s, 34) >> 1));
+    Int64 s14 = _andU64(_b2097151, (_load4(s, 36) >> 6));
+    Int64 s15 = _andU64(_b2097151, (_load3(s, 39) >> 3));
+    Int64 s16 = _andU64(_b2097151, _load3(s, 42));
+    Int64 s17 = _andU64(_b2097151, (_load4(s, 44) >> 5));
+    Int64 s18 = _andU64(_b2097151, (_load3(s, 47) >> 2));
+    Int64 s19 = _andU64(_b2097151, (_load4(s, 49) >> 7));
+    Int64 s20 = _andU64(_b2097151, (_load4(s, 52) >> 4));
+    Int64 s21 = _andU64(_b2097151, (_load3(s, 55) >> 1));
+    Int64 s22 = _andU64(_b2097151, (_load4(s, 57) >> 6));
+    Int64 s23 = (_load4(s, 60) >> 3).toInt64();
+    Int64 carry0;
+    Int64 carry1;
+    Int64 carry2;
+    Int64 carry3;
+    Int64 carry4;
+    Int64 carry5;
+    Int64 carry6;
+    Int64 carry7;
+    Int64 carry8;
+    Int64 carry9;
+    Int64 carry10;
+    Int64 carry11;
+    Int64 carry12;
+    Int64 carry13;
+    Int64 carry14;
+    Int64 carry15;
+    Int64 carry16;
 
-    s11 += s23 * 666643.toBigInt;
-    s12 += s23 * 470296.toBigInt;
-    s13 += s23 * 654183.toBigInt;
-    s14 -= s23 * 997805.toBigInt;
-    s15 += s23 * 136657.toBigInt;
-    s16 -= s23 * 683901.toBigInt;
+    s11 += _mulInt64Int(s23, 666643);
+    s12 += _mulInt64Int(s23, 470296);
+    s13 += _mulInt64Int(s23, 654183);
+    s14 -= _mulInt64Int(s23, 997805);
+    s15 += _mulInt64Int(s23, 136657);
+    s16 -= _mulInt64Int(s23, 683901);
 
-    s10 += s22 * 666643.toBigInt;
-    s11 += s22 * 470296.toBigInt;
-    s12 += s22 * 654183.toBigInt;
-    s13 -= s22 * 997805.toBigInt;
-    s14 += s22 * 136657.toBigInt;
-    s15 -= s22 * 683901.toBigInt;
+    s10 += _mulInt64Int(s22, 666643);
+    s11 += _mulInt64Int(s22, 470296);
+    s12 += _mulInt64Int(s22, 654183);
+    s13 -= _mulInt64Int(s22, 997805);
+    s14 += _mulInt64Int(s22, 136657);
+    s15 -= _mulInt64Int(s22, 683901);
 
-    s9 += s21 * 666643.toBigInt;
-    s10 += s21 * 470296.toBigInt;
-    s11 += s21 * 654183.toBigInt;
-    s12 -= s21 * 997805.toBigInt;
-    s13 += s21 * 136657.toBigInt;
-    s14 -= s21 * 683901.toBigInt;
+    s9 += _mulInt64Int(s21, 666643);
+    s10 += _mulInt64Int(s21, 470296);
+    s11 += _mulInt64Int(s21, 654183);
+    s12 -= _mulInt64Int(s21, 997805);
+    s13 += _mulInt64Int(s21, 136657);
+    s14 -= _mulInt64Int(s21, 683901);
 
-    s8 += s20 * 666643.toBigInt;
-    s9 += s20 * 470296.toBigInt;
-    s10 += s20 * 654183.toBigInt;
-    s11 -= s20 * 997805.toBigInt;
-    s12 += s20 * 136657.toBigInt;
-    s13 -= s20 * 683901.toBigInt;
+    s8 += _mulInt64Int(s20, 666643);
+    s9 += _mulInt64Int(s20, 470296);
+    s10 += _mulInt64Int(s20, 654183);
+    s11 -= _mulInt64Int(s20, 997805);
+    s12 += _mulInt64Int(s20, 136657);
+    s13 -= _mulInt64Int(s20, 683901);
 
-    s7 += s19 * 666643.toBigInt;
-    s8 += s19 * 470296.toBigInt;
-    s9 += s19 * 654183.toBigInt;
-    s10 -= s19 * 997805.toBigInt;
-    s11 += s19 * 136657.toBigInt;
-    s12 -= s19 * 683901.toBigInt;
+    s7 += _mulInt64Int(s19, 666643);
+    s8 += _mulInt64Int(s19, 470296);
+    s9 += _mulInt64Int(s19, 654183);
+    s10 -= _mulInt64Int(s19, 997805);
+    s11 += _mulInt64Int(s19, 136657);
+    s12 -= _mulInt64Int(s19, 683901);
 
-    s6 += s18 * 666643.toBigInt;
-    s7 += s18 * 470296.toBigInt;
-    s8 += s18 * 654183.toBigInt;
-    s9 -= s18 * 997805.toBigInt;
-    s10 += s18 * 136657.toBigInt;
-    s11 -= s18 * 683901.toBigInt;
+    s6 += _mulInt64Int(s18, 666643);
+    s7 += _mulInt64Int(s18, 470296);
+    s8 += _mulInt64Int(s18, 654183);
+    s9 -= _mulInt64Int(s18, 997805);
+    s10 += _mulInt64Int(s18, 136657);
+    s11 -= _mulInt64Int(s18, 683901);
 
-    carry6 = (s6 + (BigInt.one << 20)) >> 21;
+    carry6 = (s6 + (Int64.one << 20)) >> 21;
     s7 += carry6;
     s6 -= carry6 << 21;
-    carry8 = (s8 + (BigInt.one << 20)) >> 21;
+    carry8 = (s8 + (Int64.one << 20)) >> 21;
     s9 += carry8;
     s8 -= carry8 << 21;
-    carry10 = (s10 + (BigInt.one << 20)) >> 21;
+    carry10 = (s10 + (Int64.one << 20)) >> 21;
     s11 += carry10;
     s10 -= carry10 << 21;
-    carry12 = (s12 + (BigInt.one << 20)) >> 21;
+    carry12 = (s12 + (Int64.one << 20)) >> 21;
     s13 += carry12;
     s12 -= carry12 << 21;
-    carry14 = (s14 + (BigInt.one << 20)) >> 21;
+    carry14 = (s14 + (Int64.one << 20)) >> 21;
     s15 += carry14;
     s14 -= carry14 << 21;
-    carry16 = (s16 + (BigInt.one << 20)) >> 21;
+    carry16 = (s16 + (Int64.one << 20)) >> 21;
     s17 += carry16;
     s16 -= carry16 << 21;
 
-    carry7 = (s7 + (BigInt.one << 20)) >> 21;
+    carry7 = (s7 + (Int64.one << 20)) >> 21;
     s8 += carry7;
     s7 -= carry7 << 21;
-    carry9 = (s9 + (BigInt.one << 20)) >> 21;
+    carry9 = (s9 + (Int64.one << 20)) >> 21;
     s10 += carry9;
     s9 -= carry9 << 21;
-    carry11 = (s11 + (BigInt.one << 20)) >> 21;
+    carry11 = (s11 + (Int64.one << 20)) >> 21;
     s12 += carry11;
     s11 -= carry11 << 21;
-    carry13 = (s13 + (BigInt.one << 20)) >> 21;
+    carry13 = (s13 + (Int64.one << 20)) >> 21;
     s14 += carry13;
     s13 -= carry13 << 21;
-    carry15 = (s15 + (BigInt.one << 20)) >> 21;
+    carry15 = (s15 + (Int64.one << 20)) >> 21;
     s16 += carry15;
     s15 -= carry15 << 21;
 
-    s5 += s17 * 666643.toBigInt;
-    s6 += s17 * 470296.toBigInt;
-    s7 += s17 * 654183.toBigInt;
-    s8 -= s17 * 997805.toBigInt;
-    s9 += s17 * 136657.toBigInt;
-    s10 -= s17 * 683901.toBigInt;
+    s5 += _mulInt64Int(s17, 666643);
+    s6 += _mulInt64Int(s17, 470296);
+    s7 += _mulInt64Int(s17, 654183);
+    s8 -= _mulInt64Int(s17, 997805);
+    s9 += _mulInt64Int(s17, 136657);
+    s10 -= _mulInt64Int(s17, 683901);
 
-    s4 += s16 * 666643.toBigInt;
-    s5 += s16 * 470296.toBigInt;
-    s6 += s16 * 654183.toBigInt;
-    s7 -= s16 * 997805.toBigInt;
-    s8 += s16 * 136657.toBigInt;
-    s9 -= s16 * 683901.toBigInt;
+    s4 += _mulInt64Int(s16, 666643);
+    s5 += _mulInt64Int(s16, 470296);
+    s6 += _mulInt64Int(s16, 654183);
+    s7 -= _mulInt64Int(s16, 997805);
+    s8 += _mulInt64Int(s16, 136657);
+    s9 -= _mulInt64Int(s16, 683901);
 
-    s3 += s15 * 666643.toBigInt;
-    s4 += s15 * 470296.toBigInt;
-    s5 += s15 * 654183.toBigInt;
-    s6 -= s15 * 997805.toBigInt;
-    s7 += s15 * 136657.toBigInt;
-    s8 -= s15 * 683901.toBigInt;
+    s3 += _mulInt64Int(s15, 666643);
+    s4 += _mulInt64Int(s15, 470296);
+    s5 += _mulInt64Int(s15, 654183);
+    s6 -= _mulInt64Int(s15, 997805);
+    s7 += _mulInt64Int(s15, 136657);
+    s8 -= _mulInt64Int(s15, 683901);
 
-    s2 += s14 * 666643.toBigInt;
-    s3 += s14 * 470296.toBigInt;
-    s4 += s14 * 654183.toBigInt;
-    s5 -= s14 * 997805.toBigInt;
-    s6 += s14 * 136657.toBigInt;
-    s7 -= s14 * 683901.toBigInt;
+    s2 += _mulInt64Int(s14, 666643);
+    s3 += _mulInt64Int(s14, 470296);
+    s4 += _mulInt64Int(s14, 654183);
+    s5 -= _mulInt64Int(s14, 997805);
+    s6 += _mulInt64Int(s14, 136657);
+    s7 -= _mulInt64Int(s14, 683901);
 
-    s1 += s13 * 666643.toBigInt;
-    s2 += s13 * 470296.toBigInt;
-    s3 += s13 * 654183.toBigInt;
-    s4 -= s13 * 997805.toBigInt;
-    s5 += s13 * 136657.toBigInt;
-    s6 -= s13 * 683901.toBigInt;
+    s1 += _mulInt64Int(s13, 666643);
+    s2 += _mulInt64Int(s13, 470296);
+    s3 += _mulInt64Int(s13, 654183);
+    s4 -= _mulInt64Int(s13, 997805);
+    s5 += _mulInt64Int(s13, 136657);
+    s6 -= _mulInt64Int(s13, 683901);
 
-    s0 += s12 * 666643.toBigInt;
-    s1 += s12 * 470296.toBigInt;
-    s2 += s12 * 654183.toBigInt;
-    s3 -= s12 * 997805.toBigInt;
-    s4 += s12 * 136657.toBigInt;
-    s5 -= s12 * 683901.toBigInt;
-    s12 = BigInt.zero;
+    s0 += _mulInt64Int(s12, 666643);
+    s1 += _mulInt64Int(s12, 470296);
+    s2 += _mulInt64Int(s12, 654183);
+    s3 -= _mulInt64Int(s12, 997805);
+    s4 += _mulInt64Int(s12, 136657);
+    s5 -= _mulInt64Int(s12, 683901);
+    s12 = Int64.zero;
 
-    carry0 = (s0 + (BigInt.one << 20)) >> 21;
+    carry0 = (s0 + (Int64.one << 20)) >> 21;
     s1 += carry0;
     s0 -= carry0 << 21;
-    carry2 = (s2 + (BigInt.one << 20)) >> 21;
+    carry2 = (s2 + (Int64.one << 20)) >> 21;
     s3 += carry2;
     s2 -= carry2 << 21;
-    carry4 = (s4 + (BigInt.one << 20)) >> 21;
+    carry4 = (s4 + (Int64.one << 20)) >> 21;
     s5 += carry4;
     s4 -= carry4 << 21;
-    carry6 = (s6 + (BigInt.one << 20)) >> 21;
+    carry6 = (s6 + (Int64.one << 20)) >> 21;
     s7 += carry6;
     s6 -= carry6 << 21;
-    carry8 = (s8 + (BigInt.one << 20)) >> 21;
+    carry8 = (s8 + (Int64.one << 20)) >> 21;
     s9 += carry8;
     s8 -= carry8 << 21;
-    carry10 = (s10 + (BigInt.one << 20)) >> 21;
+    carry10 = (s10 + (Int64.one << 20)) >> 21;
     s11 += carry10;
     s10 -= carry10 << 21;
 
-    carry1 = (s1 + (BigInt.one << 20)) >> 21;
+    carry1 = (s1 + (Int64.one << 20)) >> 21;
     s2 += carry1;
     s1 -= carry1 << 21;
-    carry3 = (s3 + (BigInt.one << 20)) >> 21;
+    carry3 = (s3 + (Int64.one << 20)) >> 21;
     s4 += carry3;
     s3 -= carry3 << 21;
-    carry5 = (s5 + (BigInt.one << 20)) >> 21;
+    carry5 = (s5 + (Int64.one << 20)) >> 21;
     s6 += carry5;
     s5 -= carry5 << 21;
-    carry7 = (s7 + (BigInt.one << 20)) >> 21;
+    carry7 = (s7 + (Int64.one << 20)) >> 21;
     s8 += carry7;
     s7 -= carry7 << 21;
-    carry9 = (s9 + (BigInt.one << 20)) >> 21;
+    carry9 = (s9 + (Int64.one << 20)) >> 21;
     s10 += carry9;
     s9 -= carry9 << 21;
-    carry11 = (s11 + (BigInt.one << 20)) >> 21;
+    carry11 = (s11 + (Int64.one << 20)) >> 21;
     s12 += carry11;
     s11 -= carry11 << 21;
 
-    s0 += s12 * 666643.toBigInt;
-    s1 += s12 * 470296.toBigInt;
-    s2 += s12 * 654183.toBigInt;
-    s3 -= s12 * 997805.toBigInt;
-    s4 += s12 * 136657.toBigInt;
-    s5 -= s12 * 683901.toBigInt;
-    s12 = BigInt.zero;
+    s0 += _mulInt64Int(s12, 666643);
+    s1 += _mulInt64Int(s12, 470296);
+    s2 += _mulInt64Int(s12, 654183);
+    s3 -= _mulInt64Int(s12, 997805);
+    s4 += _mulInt64Int(s12, 136657);
+    s5 -= _mulInt64Int(s12, 683901);
+    s12 = Int64.zero;
 
     carry0 = s0 >> 21;
     s1 += carry0;
@@ -2889,12 +2928,12 @@ class CryptoOps {
     s12 += carry11;
     s11 -= carry11 << 21;
 
-    s0 += s12 * 666643.toBigInt;
-    s1 += s12 * 470296.toBigInt;
-    s2 += s12 * 654183.toBigInt;
-    s3 -= s12 * 997805.toBigInt;
-    s4 += s12 * 136657.toBigInt;
-    s5 -= s12 * 683901.toBigInt;
+    s0 += _mulInt64Int(s12, 666643);
+    s1 += _mulInt64Int(s12, 470296);
+    s2 += _mulInt64Int(s12, 654183);
+    s3 -= _mulInt64Int(s12, 997805);
+    s4 += _mulInt64Int(s12, 136657);
+    s5 -= _mulInt64Int(s12, 683901);
 
     carry0 = s0 >> 21;
     s1 += carry0;
@@ -2929,7 +2968,7 @@ class CryptoOps {
     carry10 = s10 >> 21;
     s11 += carry10;
     s10 -= carry10 << 21;
-    final List<BigInt> sBig = List<BigInt>.filled(32, BigInt.zero);
+    final List<Int64> sBig = List<Int64>.filled(32, Int64.zero);
 
     sBig[0] = s0 >> 0;
     sBig[1] = s0 >> 8;
@@ -2964,7 +3003,7 @@ class CryptoOps {
     sBig[30] = s11 >> 9;
     sBig[31] = s11 >> 17;
     for (int i = 0; i < sBig.length; i++) {
-      r[i] = sBig[i].toU8;
+      r[i] = sBig[i].toUint8();
     }
   }
 
@@ -3246,26 +3285,26 @@ class CryptoOps {
   }
 
   static void feNeg(FieldElement h, FieldElement f) {
-    final int f0 = f.h[0];
-    final int f1 = f.h[1];
-    final int f2 = f.h[2];
-    final int f3 = f.h[3];
-    final int f4 = f.h[4];
-    final int f5 = f.h[5];
-    final int f6 = f.h[6];
-    final int f7 = f.h[7];
-    final int f8 = f.h[8];
-    final int f9 = f.h[9];
-    final int h0 = -f0;
-    final int h1 = -f1;
-    final int h2 = -f2;
-    final int h3 = -f3;
-    final int h4 = -f4;
-    final int h5 = -f5;
-    final int h6 = -f6;
-    final int h7 = -f7;
-    final int h8 = -f8;
-    final int h9 = -f9;
+    final Int32 f0 = f.h[0];
+    final Int32 f1 = f.h[1];
+    final Int32 f2 = f.h[2];
+    final Int32 f3 = f.h[3];
+    final Int32 f4 = f.h[4];
+    final Int32 f5 = f.h[5];
+    final Int32 f6 = f.h[6];
+    final Int32 f7 = f.h[7];
+    final Int32 f8 = f.h[8];
+    final Int32 f9 = f.h[9];
+    final Int32 h0 = -f0;
+    final Int32 h1 = -f1;
+    final Int32 h2 = -f2;
+    final Int32 h3 = -f3;
+    final Int32 h4 = -f4;
+    final Int32 h5 = -f5;
+    final Int32 h6 = -f6;
+    final Int32 h7 = -f7;
+    final Int32 h8 = -f8;
+    final Int32 h9 = -f9;
     h.h[0] = h0;
     h.h[1] = h1;
     h.h[2] = h2;
@@ -3283,89 +3322,89 @@ class CryptoOps {
     a.asMin32("scMulSub");
     b.asMin32("scMulSub");
     c.asMin32("scMulSub");
-    final BigInt a0 = _b2097151 & _load3(a, 0);
-    final BigInt a1 = _b2097151 & (_load4(a, 2) >> 5);
-    final BigInt a2 = _b2097151 & (_load3(a, 5) >> 2);
-    final BigInt a3 = _b2097151 & (_load4(a, 7) >> 7);
-    final BigInt a4 = _b2097151 & (_load4(a, 10) >> 4);
-    final BigInt a5 = _b2097151 & (_load3(a, 13) >> 1);
-    final BigInt a6 = _b2097151 & (_load4(a, 15) >> 6);
-    final BigInt a7 = _b2097151 & (_load3(a, 18) >> 3);
-    final BigInt a8 = _b2097151 & _load3(a, 21);
-    final BigInt a9 = _b2097151 & (_load4(a, 23) >> 5);
-    final BigInt a10 = _b2097151 & (_load3(a, 26) >> 2);
-    final BigInt a11 = (_load4(a, 28) >> 7);
-    final BigInt b0 = _b2097151 & _load3(b, 0);
-    final BigInt b1 = _b2097151 & (_load4(b, 2) >> 5);
-    final BigInt b2 = _b2097151 & (_load3(b, 5) >> 2);
-    final BigInt b3 = _b2097151 & (_load4(b, 7) >> 7);
-    final BigInt b4 = _b2097151 & (_load4(b, 10) >> 4);
-    final BigInt b5 = _b2097151 & (_load3(b, 13) >> 1);
-    final BigInt b6 = _b2097151 & (_load4(b, 15) >> 6);
-    final BigInt b7 = _b2097151 & (_load3(b, 18) >> 3);
-    final BigInt b8 = _b2097151 & _load3(b, 21);
-    final BigInt b9 = _b2097151 & (_load4(b, 23) >> 5);
-    final BigInt b10 = _b2097151 & (_load3(b, 26) >> 2);
-    final BigInt b11 = (_load4(b, 28) >> 7);
-    final BigInt c0 = _b2097151 & _load3(c, 0);
-    final BigInt c1 = _b2097151 & (_load4(c, 2) >> 5);
-    final BigInt c2 = _b2097151 & (_load3(c, 5) >> 2);
-    final BigInt c3 = _b2097151 & (_load4(c, 7) >> 7);
-    final BigInt c4 = _b2097151 & (_load4(c, 10) >> 4);
-    final BigInt c5 = _b2097151 & (_load3(c, 13) >> 1);
-    final BigInt c6 = _b2097151 & (_load4(c, 15) >> 6);
-    final BigInt c7 = _b2097151 & (_load3(c, 18) >> 3);
-    final BigInt c8 = _b2097151 & _load3(c, 21);
-    final BigInt c9 = _b2097151 & (_load4(c, 23) >> 5);
-    final BigInt c10 = _b2097151 & (_load3(c, 26) >> 2);
-    final BigInt c11 = (_load4(c, 28) >> 7);
-    BigInt s0;
-    BigInt s1;
-    BigInt s2;
-    BigInt s3;
-    BigInt s4;
-    BigInt s5;
-    BigInt s6;
-    BigInt s7;
-    BigInt s8;
-    BigInt s9;
-    BigInt s10;
-    BigInt s11;
-    BigInt s12;
-    BigInt s13;
-    BigInt s14;
-    BigInt s15;
-    BigInt s16;
-    BigInt s17;
-    BigInt s18;
-    BigInt s19;
-    BigInt s20;
-    BigInt s21;
-    BigInt s22;
-    BigInt s23;
-    BigInt carry0;
-    BigInt carry1;
-    BigInt carry2;
-    BigInt carry3;
-    BigInt carry4;
-    BigInt carry5;
-    BigInt carry6;
-    BigInt carry7;
-    BigInt carry8;
-    BigInt carry9;
-    BigInt carry10;
-    BigInt carry11;
-    BigInt carry12;
-    BigInt carry13;
-    BigInt carry14;
-    BigInt carry15;
-    BigInt carry16;
-    BigInt carry17;
-    BigInt carry18;
-    BigInt carry19;
-    BigInt carry20;
-    BigInt carry21;
-    BigInt carry22;
+    final Int64 a0 = _andU64(_b2097151, _load3(a, 0));
+    final Int64 a1 = _andU64(_b2097151, (_load4(a, 2) >> 5));
+    final Int64 a2 = _andU64(_b2097151, (_load3(a, 5) >> 2));
+    final Int64 a3 = _andU64(_b2097151, (_load4(a, 7) >> 7));
+    final Int64 a4 = _andU64(_b2097151, (_load4(a, 10) >> 4));
+    final Int64 a5 = _andU64(_b2097151, (_load3(a, 13) >> 1));
+    final Int64 a6 = _andU64(_b2097151, (_load4(a, 15) >> 6));
+    final Int64 a7 = _andU64(_b2097151, (_load3(a, 18) >> 3));
+    final Int64 a8 = _andU64(_b2097151, _load3(a, 21));
+    final Int64 a9 = _andU64(_b2097151, (_load4(a, 23) >> 5));
+    final Int64 a10 = _andU64(_b2097151, (_load3(a, 26) >> 2));
+    final Int64 a11 = (_load4(a, 28) >> 7).toInt64();
+    final Int64 b0 = _andU64(_b2097151, _load3(b, 0));
+    final Int64 b1 = _andU64(_b2097151, (_load4(b, 2) >> 5));
+    final Int64 b2 = _andU64(_b2097151, (_load3(b, 5) >> 2));
+    final Int64 b3 = _andU64(_b2097151, (_load4(b, 7) >> 7));
+    final Int64 b4 = _andU64(_b2097151, (_load4(b, 10) >> 4));
+    final Int64 b5 = _andU64(_b2097151, (_load3(b, 13) >> 1));
+    final Int64 b6 = _andU64(_b2097151, (_load4(b, 15) >> 6));
+    final Int64 b7 = _andU64(_b2097151, (_load3(b, 18) >> 3));
+    final Int64 b8 = _andU64(_b2097151, _load3(b, 21));
+    final Int64 b9 = _andU64(_b2097151, (_load4(b, 23) >> 5));
+    final Int64 b10 = _andU64(_b2097151, (_load3(b, 26) >> 2));
+    final Int64 b11 = (_load4(b, 28) >> 7).toInt64();
+    final Int64 c0 = _andU64(_b2097151, _load3(c, 0));
+    final Int64 c1 = _andU64(_b2097151, (_load4(c, 2) >> 5));
+    final Int64 c2 = _andU64(_b2097151, (_load3(c, 5) >> 2));
+    final Int64 c3 = _andU64(_b2097151, (_load4(c, 7) >> 7));
+    final Int64 c4 = _andU64(_b2097151, (_load4(c, 10) >> 4));
+    final Int64 c5 = _andU64(_b2097151, (_load3(c, 13) >> 1));
+    final Int64 c6 = _andU64(_b2097151, (_load4(c, 15) >> 6));
+    final Int64 c7 = _andU64(_b2097151, (_load3(c, 18) >> 3));
+    final Int64 c8 = _andU64(_b2097151, _load3(c, 21));
+    final Int64 c9 = _andU64(_b2097151, (_load4(c, 23) >> 5));
+    final Int64 c10 = _andU64(_b2097151, (_load3(c, 26) >> 2));
+    final Int64 c11 = (_load4(c, 28) >> 7).toInt64();
+    Int64 s0;
+    Int64 s1;
+    Int64 s2;
+    Int64 s3;
+    Int64 s4;
+    Int64 s5;
+    Int64 s6;
+    Int64 s7;
+    Int64 s8;
+    Int64 s9;
+    Int64 s10;
+    Int64 s11;
+    Int64 s12;
+    Int64 s13;
+    Int64 s14;
+    Int64 s15;
+    Int64 s16;
+    Int64 s17;
+    Int64 s18;
+    Int64 s19;
+    Int64 s20;
+    Int64 s21;
+    Int64 s22;
+    Int64 s23;
+    Int64 carry0;
+    Int64 carry1;
+    Int64 carry2;
+    Int64 carry3;
+    Int64 carry4;
+    Int64 carry5;
+    Int64 carry6;
+    Int64 carry7;
+    Int64 carry8;
+    Int64 carry9;
+    Int64 carry10;
+    Int64 carry11;
+    Int64 carry12;
+    Int64 carry13;
+    Int64 carry14;
+    Int64 carry15;
+    Int64 carry16;
+    Int64 carry17;
+    Int64 carry18;
+    Int64 carry19;
+    Int64 carry20;
+    Int64 carry21;
+    Int64 carry22;
 
     s0 = c0 - a0 * b0;
     s1 = c1 - (a0 * b1 + a1 * b0);
@@ -3492,7 +3531,7 @@ class CryptoOps {
     s20 = -(a9 * b11 + a10 * b10 + a11 * b9);
     s21 = -(a10 * b11 + a11 * b10);
     s22 = -a11 * b11;
-    s23 = BigInt.zero;
+    s23 = Int64.zero;
 
     carry0 = (s0 + _bitMaskFor20) >> 21;
     s1 += carry0;
@@ -3565,47 +3604,47 @@ class CryptoOps {
     s22 += carry21;
     s21 -= carry21 << 21;
 
-    s11 += s23 * 666643.toBigInt;
-    s12 += s23 * 470296.toBigInt;
-    s13 += s23 * 654183.toBigInt;
-    s14 -= s23 * 997805.toBigInt;
-    s15 += s23 * 136657.toBigInt;
-    s16 -= s23 * 683901.toBigInt;
+    s11 += _mulInt64Int(s23, 666643);
+    s12 += _mulInt64Int(s23, 470296);
+    s13 += _mulInt64Int(s23, 654183);
+    s14 -= _mulInt64Int(s23, 997805);
+    s15 += _mulInt64Int(s23, 136657);
+    s16 -= _mulInt64Int(s23, 683901);
 
-    s10 += s22 * 666643.toBigInt;
-    s11 += s22 * 470296.toBigInt;
-    s12 += s22 * 654183.toBigInt;
-    s13 -= s22 * 997805.toBigInt;
-    s14 += s22 * 136657.toBigInt;
-    s15 -= s22 * 683901.toBigInt;
+    s10 += _mulInt64Int(s22, 666643);
+    s11 += _mulInt64Int(s22, 470296);
+    s12 += _mulInt64Int(s22, 654183);
+    s13 -= _mulInt64Int(s22, 997805);
+    s14 += _mulInt64Int(s22, 136657);
+    s15 -= _mulInt64Int(s22, 683901);
 
-    s9 += s21 * 666643.toBigInt;
-    s10 += s21 * 470296.toBigInt;
-    s11 += s21 * 654183.toBigInt;
-    s12 -= s21 * 997805.toBigInt;
-    s13 += s21 * 136657.toBigInt;
-    s14 -= s21 * 683901.toBigInt;
+    s9 += _mulInt64Int(s21, 666643);
+    s10 += _mulInt64Int(s21, 470296);
+    s11 += _mulInt64Int(s21, 654183);
+    s12 -= _mulInt64Int(s21, 997805);
+    s13 += _mulInt64Int(s21, 136657);
+    s14 -= _mulInt64Int(s21, 683901);
 
-    s8 += s20 * 666643.toBigInt;
-    s9 += s20 * 470296.toBigInt;
-    s10 += s20 * 654183.toBigInt;
-    s11 -= s20 * 997805.toBigInt;
-    s12 += s20 * 136657.toBigInt;
-    s13 -= s20 * 683901.toBigInt;
+    s8 += _mulInt64Int(s20, 666643);
+    s9 += _mulInt64Int(s20, 470296);
+    s10 += _mulInt64Int(s20, 654183);
+    s11 -= _mulInt64Int(s20, 997805);
+    s12 += _mulInt64Int(s20, 136657);
+    s13 -= _mulInt64Int(s20, 683901);
 
-    s7 += s19 * 666643.toBigInt;
-    s8 += s19 * 470296.toBigInt;
-    s9 += s19 * 654183.toBigInt;
-    s10 -= s19 * 997805.toBigInt;
-    s11 += s19 * 136657.toBigInt;
-    s12 -= s19 * 683901.toBigInt;
+    s7 += _mulInt64Int(s19, 666643);
+    s8 += _mulInt64Int(s19, 470296);
+    s9 += _mulInt64Int(s19, 654183);
+    s10 -= _mulInt64Int(s19, 997805);
+    s11 += _mulInt64Int(s19, 136657);
+    s12 -= _mulInt64Int(s19, 683901);
 
-    s6 += s18 * 666643.toBigInt;
-    s7 += s18 * 470296.toBigInt;
-    s8 += s18 * 654183.toBigInt;
-    s9 -= s18 * 997805.toBigInt;
-    s10 += s18 * 136657.toBigInt;
-    s11 -= s18 * 683901.toBigInt;
+    s6 += _mulInt64Int(s18, 666643);
+    s7 += _mulInt64Int(s18, 470296);
+    s8 += _mulInt64Int(s18, 654183);
+    s9 -= _mulInt64Int(s18, 997805);
+    s10 += _mulInt64Int(s18, 136657);
+    s11 -= _mulInt64Int(s18, 683901);
 
     carry6 = (s6 + _bitMaskFor20) >> 21;
     s7 += carry6;
@@ -3642,48 +3681,48 @@ class CryptoOps {
     s16 += carry15;
     s15 -= carry15 << 21;
 
-    s5 += s17 * 666643.toBigInt;
-    s6 += s17 * 470296.toBigInt;
-    s7 += s17 * 654183.toBigInt;
-    s8 -= s17 * 997805.toBigInt;
-    s9 += s17 * 136657.toBigInt;
-    s10 -= s17 * 683901.toBigInt;
+    s5 += _mulInt64Int(s17, 666643);
+    s6 += _mulInt64Int(s17, 470296);
+    s7 += _mulInt64Int(s17, 654183);
+    s8 -= _mulInt64Int(s17, 997805);
+    s9 += _mulInt64Int(s17, 136657);
+    s10 -= _mulInt64Int(s17, 683901);
 
-    s4 += s16 * 666643.toBigInt;
-    s5 += s16 * 470296.toBigInt;
-    s6 += s16 * 654183.toBigInt;
-    s7 -= s16 * 997805.toBigInt;
-    s8 += s16 * 136657.toBigInt;
-    s9 -= s16 * 683901.toBigInt;
+    s4 += _mulInt64Int(s16, 666643);
+    s5 += _mulInt64Int(s16, 470296);
+    s6 += _mulInt64Int(s16, 654183);
+    s7 -= _mulInt64Int(s16, 997805);
+    s8 += _mulInt64Int(s16, 136657);
+    s9 -= _mulInt64Int(s16, 683901);
 
-    s3 += s15 * 666643.toBigInt;
-    s4 += s15 * 470296.toBigInt;
-    s5 += s15 * 654183.toBigInt;
-    s6 -= s15 * 997805.toBigInt;
-    s7 += s15 * 136657.toBigInt;
-    s8 -= s15 * 683901.toBigInt;
+    s3 += _mulInt64Int(s15, 666643);
+    s4 += _mulInt64Int(s15, 470296);
+    s5 += _mulInt64Int(s15, 654183);
+    s6 -= _mulInt64Int(s15, 997805);
+    s7 += _mulInt64Int(s15, 136657);
+    s8 -= _mulInt64Int(s15, 683901);
 
-    s2 += s14 * 666643.toBigInt;
-    s3 += s14 * 470296.toBigInt;
-    s4 += s14 * 654183.toBigInt;
-    s5 -= s14 * 997805.toBigInt;
-    s6 += s14 * 136657.toBigInt;
-    s7 -= s14 * 683901.toBigInt;
+    s2 += _mulInt64Int(s14, 666643);
+    s3 += _mulInt64Int(s14, 470296);
+    s4 += _mulInt64Int(s14, 654183);
+    s5 -= _mulInt64Int(s14, 997805);
+    s6 += _mulInt64Int(s14, 136657);
+    s7 -= _mulInt64Int(s14, 683901);
 
-    s1 += s13 * 666643.toBigInt;
-    s2 += s13 * 470296.toBigInt;
-    s3 += s13 * 654183.toBigInt;
-    s4 -= s13 * 997805.toBigInt;
-    s5 += s13 * 136657.toBigInt;
-    s6 -= s13 * 683901.toBigInt;
+    s1 += _mulInt64Int(s13, 666643);
+    s2 += _mulInt64Int(s13, 470296);
+    s3 += _mulInt64Int(s13, 654183);
+    s4 -= _mulInt64Int(s13, 997805);
+    s5 += _mulInt64Int(s13, 136657);
+    s6 -= _mulInt64Int(s13, 683901);
 
-    s0 += s12 * 666643.toBigInt;
-    s1 += s12 * 470296.toBigInt;
-    s2 += s12 * 654183.toBigInt;
-    s3 -= s12 * 997805.toBigInt;
-    s4 += s12 * 136657.toBigInt;
-    s5 -= s12 * 683901.toBigInt;
-    s12 = BigInt.zero;
+    s0 += _mulInt64Int(s12, 666643);
+    s1 += _mulInt64Int(s12, 470296);
+    s2 += _mulInt64Int(s12, 654183);
+    s3 -= _mulInt64Int(s12, 997805);
+    s4 += _mulInt64Int(s12, 136657);
+    s5 -= _mulInt64Int(s12, 683901);
+    s12 = Int64.zero;
 
     carry0 = (s0 + _bitMaskFor20) >> 21;
     s1 += carry0;
@@ -3723,13 +3762,13 @@ class CryptoOps {
     s12 += carry11;
     s11 -= carry11 << 21;
 
-    s0 += s12 * 666643.toBigInt;
-    s1 += s12 * 470296.toBigInt;
-    s2 += s12 * 654183.toBigInt;
-    s3 -= s12 * 997805.toBigInt;
-    s4 += s12 * 136657.toBigInt;
-    s5 -= s12 * 683901.toBigInt;
-    s12 = BigInt.zero;
+    s0 += _mulInt64Int(s12, 666643);
+    s1 += _mulInt64Int(s12, 470296);
+    s2 += _mulInt64Int(s12, 654183);
+    s3 -= _mulInt64Int(s12, 997805);
+    s4 += _mulInt64Int(s12, 136657);
+    s5 -= _mulInt64Int(s12, 683901);
+    s12 = Int64.zero;
 
     carry0 = s0 >> 21;
     s1 += carry0;
@@ -3768,12 +3807,12 @@ class CryptoOps {
     s12 += carry11;
     s11 -= carry11 << 21;
 
-    s0 += s12 * 666643.toBigInt;
-    s1 += s12 * 470296.toBigInt;
-    s2 += s12 * 654183.toBigInt;
-    s3 -= s12 * 997805.toBigInt;
-    s4 += s12 * 136657.toBigInt;
-    s5 -= s12 * 683901.toBigInt;
+    s0 += _mulInt64Int(s12, 666643);
+    s1 += _mulInt64Int(s12, 470296);
+    s2 += _mulInt64Int(s12, 654183);
+    s3 -= _mulInt64Int(s12, 997805);
+    s4 += _mulInt64Int(s12, 136657);
+    s5 -= _mulInt64Int(s12, 683901);
 
     carry0 = s0 >> 21;
     s1 += carry0;
@@ -3808,7 +3847,7 @@ class CryptoOps {
     carry10 = s10 >> 21;
     s11 += carry10;
     s10 -= carry10 << 21;
-    final List<BigInt> sBig = List<BigInt>.filled(32, BigInt.zero);
+    final List<Int64> sBig = List<Int64>.filled(32, Int64.zero);
     sBig[0] = s0 >> 0;
     sBig[1] = s0 >> 8;
     sBig[2] = (s0 >> 16) | (s1 << 5);
@@ -3842,7 +3881,7 @@ class CryptoOps {
     sBig[30] = s11 >> 9;
     sBig[31] = s11 >> 17;
     for (int i = 0; i < sBig.length; i++) {
-      s[i] = sBig[i].toU8;
+      s[i] = sBig[i].toUint8();
     }
   }
 
@@ -3850,55 +3889,55 @@ class CryptoOps {
     s.asMin32("scSub");
     a.asMin32("scSub");
     b.asMin32("scSub");
-    final BigInt a0 = _b2097151 & _load3(a, 0);
-    final BigInt a1 = _b2097151 & (_load4(a, 2) >> 5);
-    final BigInt a2 = _b2097151 & (_load3(a, 5) >> 2);
-    final BigInt a3 = _b2097151 & (_load4(a, 7) >> 7);
-    final BigInt a4 = _b2097151 & (_load4(a, 10) >> 4);
-    final BigInt a5 = _b2097151 & (_load3(a, 13) >> 1);
-    final BigInt a6 = _b2097151 & (_load4(a, 15) >> 6);
-    final BigInt a7 = _b2097151 & (_load3(a, 18) >> 3);
-    final BigInt a8 = _b2097151 & _load3(a, 21);
-    final BigInt a9 = _b2097151 & (_load4(a, 23) >> 5);
-    final BigInt a10 = _b2097151 & (_load3(a, 26) >> 2);
-    final BigInt a11 = (_load4(a, 28) >> 7);
-    final BigInt b0 = _b2097151 & _load3(b, 0);
-    final BigInt b1 = _b2097151 & (_load4(b, 2) >> 5);
-    final BigInt b2 = _b2097151 & (_load3(b, 5) >> 2);
-    final BigInt b3 = _b2097151 & (_load4(b, 7) >> 7);
-    final BigInt b4 = _b2097151 & (_load4(b, 10) >> 4);
-    final BigInt b5 = _b2097151 & (_load3(b, 13) >> 1);
-    final BigInt b6 = _b2097151 & (_load4(b, 15) >> 6);
-    final BigInt b7 = _b2097151 & (_load3(b, 18) >> 3);
-    final BigInt b8 = _b2097151 & _load3(b, 21);
-    final BigInt b9 = _b2097151 & (_load4(b, 23) >> 5);
-    final BigInt b10 = _b2097151 & (_load3(b, 26) >> 2);
-    final BigInt b11 = (_load4(b, 28) >> 7);
-    BigInt s0 = a0 - b0;
-    BigInt s1 = a1 - b1;
-    BigInt s2 = a2 - b2;
-    BigInt s3 = a3 - b3;
-    BigInt s4 = a4 - b4;
-    BigInt s5 = a5 - b5;
-    BigInt s6 = a6 - b6;
-    BigInt s7 = a7 - b7;
-    BigInt s8 = a8 - b8;
-    BigInt s9 = a9 - b9;
-    BigInt s10 = a10 - b10;
-    BigInt s11 = a11 - b11;
-    BigInt s12 = BigInt.zero;
-    BigInt carry0;
-    BigInt carry1;
-    BigInt carry2;
-    BigInt carry3;
-    BigInt carry4;
-    BigInt carry5;
-    BigInt carry6;
-    BigInt carry7;
-    BigInt carry8;
-    BigInt carry9;
-    BigInt carry10;
-    BigInt carry11;
+    final Int64 a0 = _andU64(_b2097151, _load3(a, 0));
+    final Int64 a1 = _andU64(_b2097151, (_load4(a, 2) >> 5));
+    final Int64 a2 = _andU64(_b2097151, (_load3(a, 5) >> 2));
+    final Int64 a3 = _andU64(_b2097151, (_load4(a, 7) >> 7));
+    final Int64 a4 = _andU64(_b2097151, (_load4(a, 10) >> 4));
+    final Int64 a5 = _andU64(_b2097151, (_load3(a, 13) >> 1));
+    final Int64 a6 = _andU64(_b2097151, (_load4(a, 15) >> 6));
+    final Int64 a7 = _andU64(_b2097151, (_load3(a, 18) >> 3));
+    final Int64 a8 = _andU64(_b2097151, _load3(a, 21));
+    final Int64 a9 = _andU64(_b2097151, (_load4(a, 23) >> 5));
+    final Int64 a10 = _andU64(_b2097151, (_load3(a, 26) >> 2));
+    final Int64 a11 = (_load4(a, 28) >> 7).toInt64();
+    final Int64 b0 = _andU64(_b2097151, _load3(b, 0));
+    final Int64 b1 = _andU64(_b2097151, (_load4(b, 2) >> 5));
+    final Int64 b2 = _andU64(_b2097151, (_load3(b, 5) >> 2));
+    final Int64 b3 = _andU64(_b2097151, (_load4(b, 7) >> 7));
+    final Int64 b4 = _andU64(_b2097151, (_load4(b, 10) >> 4));
+    final Int64 b5 = _andU64(_b2097151, (_load3(b, 13) >> 1));
+    final Int64 b6 = _andU64(_b2097151, (_load4(b, 15) >> 6));
+    final Int64 b7 = _andU64(_b2097151, (_load3(b, 18) >> 3));
+    final Int64 b8 = _andU64(_b2097151, _load3(b, 21));
+    final Int64 b9 = _andU64(_b2097151, (_load4(b, 23) >> 5));
+    final Int64 b10 = _andU64(_b2097151, (_load3(b, 26) >> 2));
+    final Int64 b11 = (_load4(b, 28) >> 7).toInt64();
+    Int64 s0 = a0 - b0;
+    Int64 s1 = a1 - b1;
+    Int64 s2 = a2 - b2;
+    Int64 s3 = a3 - b3;
+    Int64 s4 = a4 - b4;
+    Int64 s5 = a5 - b5;
+    Int64 s6 = a6 - b6;
+    Int64 s7 = a7 - b7;
+    Int64 s8 = a8 - b8;
+    Int64 s9 = a9 - b9;
+    Int64 s10 = a10 - b10;
+    Int64 s11 = a11 - b11;
+    Int64 s12 = Int64.zero;
+    Int64 carry0;
+    Int64 carry1;
+    Int64 carry2;
+    Int64 carry3;
+    Int64 carry4;
+    Int64 carry5;
+    Int64 carry6;
+    Int64 carry7;
+    Int64 carry8;
+    Int64 carry9;
+    Int64 carry10;
+    Int64 carry11;
 
     carry0 = (s0 + _bitMaskFor20) >> 21;
     s1 += carry0;
@@ -3938,13 +3977,13 @@ class CryptoOps {
     s12 += carry11;
     s11 -= carry11 << 21;
 
-    s0 += s12 * 666643.toBigInt;
-    s1 += s12 * 470296.toBigInt;
-    s2 += s12 * 654183.toBigInt;
-    s3 -= s12 * 997805.toBigInt;
-    s4 += s12 * 136657.toBigInt;
-    s5 -= s12 * 683901.toBigInt;
-    s12 = BigInt.zero;
+    s0 += _mulInt64Int(s12, 666643);
+    s1 += _mulInt64Int(s12, 470296);
+    s2 += _mulInt64Int(s12, 654183);
+    s3 -= _mulInt64Int(s12, 997805);
+    s4 += _mulInt64Int(s12, 136657);
+    s5 -= _mulInt64Int(s12, 683901);
+    s12 = Int64.zero;
 
     carry0 = s0 >> 21;
     s1 += carry0;
@@ -3983,12 +4022,12 @@ class CryptoOps {
     s12 += carry11;
     s11 -= carry11 << 21;
 
-    s0 += s12 * 666643.toBigInt;
-    s1 += s12 * 470296.toBigInt;
-    s2 += s12 * 654183.toBigInt;
-    s3 -= s12 * 997805.toBigInt;
-    s4 += s12 * 136657.toBigInt;
-    s5 -= s12 * 683901.toBigInt;
+    s0 += _mulInt64Int(s12, 666643);
+    s1 += _mulInt64Int(s12, 470296);
+    s2 += _mulInt64Int(s12, 654183);
+    s3 -= _mulInt64Int(s12, 997805);
+    s4 += _mulInt64Int(s12, 136657);
+    s5 -= _mulInt64Int(s12, 683901);
 
     carry0 = s0 >> 21;
     s1 += carry0;
@@ -4023,7 +4062,7 @@ class CryptoOps {
     carry10 = s10 >> 21;
     s11 += carry10;
     s10 -= carry10 << 21;
-    final List<BigInt> sBig = List<BigInt>.filled(32, BigInt.zero);
+    final List<Int64> sBig = List<Int64>.filled(32, Int64.zero);
     sBig[0] = s0 >> 0;
     sBig[1] = s0 >> 8;
     sBig[2] = (s0 >> 16) | (s1 << 5);
@@ -4057,7 +4096,7 @@ class CryptoOps {
     sBig[30] = s11 >> 9;
     sBig[31] = s11 >> 17;
     for (int i = 0; i < sBig.length; i++) {
-      s[i] = sBig[i].toU8;
+      s[i] = sBig[i].toUint8();
     }
   }
 
@@ -4117,55 +4156,55 @@ class CryptoOps {
     s.asMin32("scAdd");
     a.asMin32("scAdd");
     b.asMin32("scAdd");
-    final BigInt a0 = _b2097151 & _load3(a, 0);
-    final BigInt a1 = _b2097151 & (_load4(a, 2) >> 5);
-    final BigInt a2 = _b2097151 & (_load3(a, 5) >> 2);
-    final BigInt a3 = _b2097151 & (_load4(a, 7) >> 7);
-    final BigInt a4 = _b2097151 & (_load4(a, 10) >> 4);
-    final BigInt a5 = _b2097151 & (_load3(a, 13) >> 1);
-    final BigInt a6 = _b2097151 & (_load4(a, 15) >> 6);
-    final BigInt a7 = _b2097151 & (_load3(a, 18) >> 3);
-    final BigInt a8 = _b2097151 & _load3(a, 21);
-    final BigInt a9 = _b2097151 & (_load4(a, 23) >> 5);
-    final BigInt a10 = _b2097151 & (_load3(a, 26) >> 2);
-    final BigInt a11 = (_load4(a, 28) >> 7);
-    final BigInt b0 = _b2097151 & _load3(b, 0);
-    final BigInt b1 = _b2097151 & (_load4(b, 2) >> 5);
-    final BigInt b2 = _b2097151 & (_load3(b, 5) >> 2);
-    final BigInt b3 = _b2097151 & (_load4(b, 7) >> 7);
-    final BigInt b4 = _b2097151 & (_load4(b, 10) >> 4);
-    final BigInt b5 = _b2097151 & (_load3(b, 13) >> 1);
-    final BigInt b6 = _b2097151 & (_load4(b, 15) >> 6);
-    final BigInt b7 = _b2097151 & (_load3(b, 18) >> 3);
-    final BigInt b8 = _b2097151 & _load3(b, 21);
-    final BigInt b9 = _b2097151 & (_load4(b, 23) >> 5);
-    final BigInt b10 = _b2097151 & (_load3(b, 26) >> 2);
-    final BigInt b11 = (_load4(b, 28) >> 7);
-    BigInt s0 = a0 + b0;
-    BigInt s1 = a1 + b1;
-    BigInt s2 = a2 + b2;
-    BigInt s3 = a3 + b3;
-    BigInt s4 = a4 + b4;
-    BigInt s5 = a5 + b5;
-    BigInt s6 = a6 + b6;
-    BigInt s7 = a7 + b7;
-    BigInt s8 = a8 + b8;
-    BigInt s9 = a9 + b9;
-    BigInt s10 = a10 + b10;
-    BigInt s11 = a11 + b11;
-    BigInt s12 = BigInt.zero;
-    BigInt carry0;
-    BigInt carry1;
-    BigInt carry2;
-    BigInt carry3;
-    BigInt carry4;
-    BigInt carry5;
-    BigInt carry6;
-    BigInt carry7;
-    BigInt carry8;
-    BigInt carry9;
-    BigInt carry10;
-    BigInt carry11;
+    final Int64 a0 = _andU64(_b2097151, _load3(a, 0));
+    final Int64 a1 = _andU64(_b2097151, (_load4(a, 2) >> 5));
+    final Int64 a2 = _andU64(_b2097151, (_load3(a, 5) >> 2));
+    final Int64 a3 = _andU64(_b2097151, (_load4(a, 7) >> 7));
+    final Int64 a4 = _andU64(_b2097151, (_load4(a, 10) >> 4));
+    final Int64 a5 = _andU64(_b2097151, (_load3(a, 13) >> 1));
+    final Int64 a6 = _andU64(_b2097151, (_load4(a, 15) >> 6));
+    final Int64 a7 = _andU64(_b2097151, (_load3(a, 18) >> 3));
+    final Int64 a8 = _andU64(_b2097151, _load3(a, 21));
+    final Int64 a9 = _andU64(_b2097151, (_load4(a, 23) >> 5));
+    final Int64 a10 = _andU64(_b2097151, (_load3(a, 26) >> 2));
+    final Int64 a11 = (_load4(a, 28) >> 7).toInt64();
+    final Int64 b0 = _andU64(_b2097151, _load3(b, 0));
+    final Int64 b1 = _andU64(_b2097151, (_load4(b, 2) >> 5));
+    final Int64 b2 = _andU64(_b2097151, (_load3(b, 5) >> 2));
+    final Int64 b3 = _andU64(_b2097151, (_load4(b, 7) >> 7));
+    final Int64 b4 = _andU64(_b2097151, (_load4(b, 10) >> 4));
+    final Int64 b5 = _andU64(_b2097151, (_load3(b, 13) >> 1));
+    final Int64 b6 = _andU64(_b2097151, (_load4(b, 15) >> 6));
+    final Int64 b7 = _andU64(_b2097151, (_load3(b, 18) >> 3));
+    final Int64 b8 = _andU64(_b2097151, _load3(b, 21));
+    final Int64 b9 = _andU64(_b2097151, (_load4(b, 23) >> 5));
+    final Int64 b10 = _andU64(_b2097151, (_load3(b, 26) >> 2));
+    final Int64 b11 = (_load4(b, 28) >> 7).toInt64();
+    Int64 s0 = a0 + b0;
+    Int64 s1 = a1 + b1;
+    Int64 s2 = a2 + b2;
+    Int64 s3 = a3 + b3;
+    Int64 s4 = a4 + b4;
+    Int64 s5 = a5 + b5;
+    Int64 s6 = a6 + b6;
+    Int64 s7 = a7 + b7;
+    Int64 s8 = a8 + b8;
+    Int64 s9 = a9 + b9;
+    Int64 s10 = a10 + b10;
+    Int64 s11 = a11 + b11;
+    Int64 s12 = Int64.zero;
+    Int64 carry0;
+    Int64 carry1;
+    Int64 carry2;
+    Int64 carry3;
+    Int64 carry4;
+    Int64 carry5;
+    Int64 carry6;
+    Int64 carry7;
+    Int64 carry8;
+    Int64 carry9;
+    Int64 carry10;
+    Int64 carry11;
 
     carry0 = (s0 + _bitMaskFor20) >> 21;
     s1 += carry0;
@@ -4205,13 +4244,13 @@ class CryptoOps {
     s12 += carry11;
     s11 -= carry11 << 21;
 
-    s0 += s12 * 666643.toBigInt;
-    s1 += s12 * 470296.toBigInt;
-    s2 += s12 * 654183.toBigInt;
-    s3 -= s12 * 997805.toBigInt;
-    s4 += s12 * 136657.toBigInt;
-    s5 -= s12 * 683901.toBigInt;
-    s12 = BigInt.zero;
+    s0 += _mulInt64Int(s12, 666643);
+    s1 += _mulInt64Int(s12, 470296);
+    s2 += _mulInt64Int(s12, 654183);
+    s3 -= _mulInt64Int(s12, 997805);
+    s4 += _mulInt64Int(s12, 136657);
+    s5 -= _mulInt64Int(s12, 683901);
+    s12 = Int64.zero;
 
     carry0 = s0 >> 21;
     s1 += carry0;
@@ -4250,12 +4289,12 @@ class CryptoOps {
     s12 += carry11;
     s11 -= carry11 << 21;
 
-    s0 += s12 * 666643.toBigInt;
-    s1 += s12 * 470296.toBigInt;
-    s2 += s12 * 654183.toBigInt;
-    s3 -= s12 * 997805.toBigInt;
-    s4 += s12 * 136657.toBigInt;
-    s5 -= s12 * 683901.toBigInt;
+    s0 += _mulInt64Int(s12, 666643);
+    s1 += _mulInt64Int(s12, 470296);
+    s2 += _mulInt64Int(s12, 654183);
+    s3 -= _mulInt64Int(s12, 997805);
+    s4 += _mulInt64Int(s12, 136657);
+    s5 -= _mulInt64Int(s12, 683901);
 
     carry0 = s0 >> 21;
     s1 += carry0;
@@ -4290,7 +4329,7 @@ class CryptoOps {
     carry10 = s10 >> 21;
     s11 += carry10;
     s10 -= carry10 << 21;
-    final List<BigInt> sBig = List<BigInt>.filled(32, BigInt.zero);
+    final List<Int64> sBig = List<Int64>.filled(32, Int64.zero);
     sBig[0] = s0 >> 0;
     sBig[1] = s0 >> 8;
     sBig[2] = (s0 >> 16) | (s1 << 5);
@@ -4324,38 +4363,38 @@ class CryptoOps {
     sBig[30] = s11 >> 9;
     sBig[31] = s11 >> 17;
     for (int i = 0; i < sBig.length; i++) {
-      s[i] = sBig[i].toU8;
+      s[i] = sBig[i].toUint8();
     }
     0xFFFFFFFF;
   }
 
   static void scReduce32(List<int> s) {
     s.asMin32("scReduce32");
-    BigInt s0 = _b2097151 & _load3(s, 0);
-    BigInt s1 = _b2097151 & (_load4(s, 2) >> 5);
-    BigInt s2 = _b2097151 & (_load3(s, 5) >> 2);
-    BigInt s3 = _b2097151 & (_load4(s, 7) >> 7);
-    BigInt s4 = _b2097151 & (_load4(s, 10) >> 4);
-    BigInt s5 = _b2097151 & (_load3(s, 13) >> 1);
-    BigInt s6 = _b2097151 & (_load4(s, 15) >> 6);
-    BigInt s7 = _b2097151 & (_load3(s, 18) >> 3);
-    BigInt s8 = _b2097151 & _load3(s, 21);
-    BigInt s9 = _b2097151 & (_load4(s, 23) >> 5);
-    BigInt s10 = _b2097151 & (_load3(s, 26) >> 2);
-    BigInt s11 = (_load4(s, 28) >> 7);
-    BigInt s12 = BigInt.zero;
-    BigInt carry0;
-    BigInt carry1;
-    BigInt carry2;
-    BigInt carry3;
-    BigInt carry4;
-    BigInt carry5;
-    BigInt carry6;
-    BigInt carry7;
-    BigInt carry8;
-    BigInt carry9;
-    BigInt carry10;
-    BigInt carry11;
+    Int64 s0 = _andU64(_b2097151, _load3(s, 0));
+    Int64 s1 = _andU64(_b2097151, (_load4(s, 2) >> 5));
+    Int64 s2 = _andU64(_b2097151, (_load3(s, 5) >> 2));
+    Int64 s3 = _andU64(_b2097151, (_load4(s, 7) >> 7));
+    Int64 s4 = _andU64(_b2097151, (_load4(s, 10) >> 4));
+    Int64 s5 = _andU64(_b2097151, (_load3(s, 13) >> 1));
+    Int64 s6 = _andU64(_b2097151, (_load4(s, 15) >> 6));
+    Int64 s7 = _andU64(_b2097151, (_load3(s, 18) >> 3));
+    Int64 s8 = _andU64(_b2097151, _load3(s, 21));
+    Int64 s9 = _andU64(_b2097151, (_load4(s, 23) >> 5));
+    Int64 s10 = _andU64(_b2097151, (_load3(s, 26) >> 2));
+    Int64 s11 = (_load4(s, 28) >> 7).toInt64();
+    Int64 s12 = Int64.zero;
+    Int64 carry0;
+    Int64 carry1;
+    Int64 carry2;
+    Int64 carry3;
+    Int64 carry4;
+    Int64 carry5;
+    Int64 carry6;
+    Int64 carry7;
+    Int64 carry8;
+    Int64 carry9;
+    Int64 carry10;
+    Int64 carry11;
 
     carry0 = (s0 + _bitMaskFor20) >> 21;
     s1 += carry0;
@@ -4395,13 +4434,13 @@ class CryptoOps {
     s12 += carry11;
     s11 -= carry11 << 21;
 
-    s0 += s12 * 666643.toBigInt;
-    s1 += s12 * 470296.toBigInt;
-    s2 += s12 * 654183.toBigInt;
-    s3 -= s12 * 997805.toBigInt;
-    s4 += s12 * 136657.toBigInt;
-    s5 -= s12 * 683901.toBigInt;
-    s12 = BigInt.zero;
+    s0 += _mulInt64Int(s12, 666643);
+    s1 += _mulInt64Int(s12, 470296);
+    s2 += _mulInt64Int(s12, 654183);
+    s3 -= _mulInt64Int(s12, 997805);
+    s4 += _mulInt64Int(s12, 136657);
+    s5 -= _mulInt64Int(s12, 683901);
+    s12 = Int64.zero;
 
     carry0 = s0 >> 21;
     s1 += carry0;
@@ -4440,12 +4479,12 @@ class CryptoOps {
     s12 += carry11;
     s11 -= carry11 << 21;
 
-    s0 += s12 * 666643.toBigInt;
-    s1 += s12 * 470296.toBigInt;
-    s2 += s12 * 654183.toBigInt;
-    s3 -= s12 * 997805.toBigInt;
-    s4 += s12 * 136657.toBigInt;
-    s5 -= s12 * 683901.toBigInt;
+    s0 += _mulInt64Int(s12, 666643);
+    s1 += _mulInt64Int(s12, 470296);
+    s2 += _mulInt64Int(s12, 654183);
+    s3 -= _mulInt64Int(s12, 997805);
+    s4 += _mulInt64Int(s12, 136657);
+    s5 -= _mulInt64Int(s12, 683901);
 
     carry0 = s0 >> 21;
     s1 += carry0;
@@ -4480,7 +4519,7 @@ class CryptoOps {
     carry10 = s10 >> 21;
     s11 += carry10;
     s10 -= carry10 << 21;
-    final List<BigInt> sBig = List<BigInt>.filled(32, BigInt.zero);
+    final List<Int64> sBig = List<Int64>.filled(32, Int64.zero);
     sBig[0] = s0 >> 0;
     sBig[1] = s0 >> 8;
     sBig[2] = (s0 >> 16) | (s1 << 5);
@@ -4514,23 +4553,8 @@ class CryptoOps {
     sBig[30] = s11 >> 9;
     sBig[31] = s11 >> 17;
     for (int i = 0; i < sBig.length; i++) {
-      s[i] = sBig[i].toU8;
+      s[i] = sBig[i].toUint8();
     }
-  }
-
-  static BigInt _load4(List<int> data, int offset) {
-    int r = data[offset];
-    r |= data[offset + 1] << 8;
-    r |= data[offset + 2] << 16;
-    r |= data[offset + 3] << 24;
-    return BigInt.from(r);
-  }
-
-  static BigInt _load3(List<int> data, int offset) {
-    int r = data[offset];
-    r |= data[offset + 1] << 8;
-    r |= data[offset + 2] << 16;
-    return BigInt.from(r);
   }
 
   static GroupElementP3 geFromBytesVartime(List<int> s) {
@@ -4552,45 +4576,43 @@ class CryptoOps {
     final FieldElement vxx = FieldElement();
     final FieldElement check = FieldElement();
 
-    /* From fe_frombytes.c */
-
-    BigInt h0 = _load4(s, 0);
-    BigInt h1 = _load3(s, 4) << 6;
-    BigInt h2 = _load3(s, 7) << 5;
-    BigInt h3 = _load3(s, 10) << 3;
-    BigInt h4 = _load3(s, 13) << 2;
-    BigInt h5 = _load4(s, 16);
-    BigInt h6 = _load3(s, 20) << 7;
-    BigInt h7 = _load3(s, 23) << 5;
-    BigInt h8 = _load3(s, 26) << 4;
-    BigInt h9 = (_load3(s, 29) & BigInt.from(8388607)) << 2;
-    BigInt carry0;
-    BigInt carry1;
-    BigInt carry2;
-    BigInt carry3;
-    BigInt carry4;
-    BigInt carry5;
-    BigInt carry6;
-    BigInt carry7;
-    BigInt carry8;
-    BigInt carry9;
+    Int64 h0 = _load4(s, 0).toInt64();
+    Int64 h1 = (_load3(s, 4) << 6).toInt64();
+    Int64 h2 = (_load3(s, 7) << 5).toInt64();
+    Int64 h3 = (_load3(s, 10) << 3).toInt64();
+    Int64 h4 = (_load3(s, 13) << 2).toInt64();
+    Int64 h5 = _load4(s, 16).toInt64();
+    Int64 h6 = (_load3(s, 20) << 7).toInt64();
+    Int64 h7 = (_load3(s, 23) << 5).toInt64();
+    Int64 h8 = (_load3(s, 26) << 4).toInt64();
+    Int64 h9 = ((_load3(s, 29) & Uint64(8388607)) << 2).toInt64();
+    Int64 carry0;
+    Int64 carry1;
+    Int64 carry2;
+    Int64 carry3;
+    Int64 carry4;
+    Int64 carry5;
+    Int64 carry6;
+    Int64 carry7;
+    Int64 carry8;
+    Int64 carry9;
 
     /* Validate the number to be canonical */
-    if (h9 == 33554428.toBigInt &&
-        h8 == 268435440.toBigInt &&
-        h7 == 536870880.toBigInt &&
-        h6 == 2147483520.toBigInt &&
-        h5 == 4294967295.toBigInt &&
-        h4 == 67108860.toBigInt &&
-        h3 == 134217720.toBigInt &&
-        h2 == 536870880.toBigInt &&
-        h1 == 1073741760.toBigInt &&
-        h0 >= 4294967277.toBigInt) {
+    if (h9 == 33554428.toInt64 &&
+        h8 == 268435440.toInt64 &&
+        h7 == 536870880.toInt64 &&
+        h6 == 2147483520.toInt64 &&
+        h5 == 4294967295.toInt64 &&
+        h4 == 67108860.toInt64 &&
+        h3 == 134217720.toInt64 &&
+        h2 == 536870880.toInt64 &&
+        h1 == 1073741760.toInt64 &&
+        h0 >= 4294967277.toInt64) {
       return -1;
     }
 
     carry9 = (h9 + _bitMaskFor24) >> 25;
-    h0 += carry9 * BigInt.from(19);
+    h0 += carry9 * Int64(19);
     h9 -= carry9 << 25;
     carry1 = (h1 + _bitMaskFor24) >> 25;
     h2 += carry1;
@@ -5200,4 +5222,8 @@ extension _BytesHelper on List<int> {
       );
     }
   }
+}
+
+extension _T on int {
+  Int64 get toInt64 => Int64(this);
 }

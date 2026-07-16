@@ -1,4 +1,5 @@
 import 'package:blockchain_utils/blockchain_utils.dart';
+import 'package:blockchain_utils/numbers/src/u64.dart';
 import 'package:test/expect.dart';
 import 'package:test/scaffolding.dart';
 
@@ -148,18 +149,18 @@ void _testBilinearity() {
   // Scalars
   final a =
       JubJubFq.fromRaw([
-        BigInt.one,
-        BigInt.from(2),
-        BigInt.from(3),
-        BigInt.from(4),
+        Uint64.one,
+        Uint64(2),
+        Uint64(3),
+        Uint64(4),
       ]).toNative().invert()!.square();
 
   final b =
       JubJubFq.fromRaw([
-        BigInt.from(5),
-        BigInt.from(6),
-        BigInt.from(7),
-        BigInt.from(8),
+        Uint64(5),
+        Uint64(6),
+        Uint64(7),
+        Uint64(8),
       ]).toNative().invert()!.square();
 
   final c = a * b;
@@ -206,5 +207,5 @@ void _testGenerator() {
 }
 
 extension _TOBIG on List<int> {
-  List<BigInt> toBigInt() => map((e) => BigInt.from(e)).toList();
+  List<Uint64> toBigInt() => map((e) => Uint64(e)).toList();
 }

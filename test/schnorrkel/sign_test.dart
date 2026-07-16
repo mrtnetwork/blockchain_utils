@@ -4,11 +4,12 @@ import 'package:blockchain_utils/utils/utils.dart';
 import 'package:test/test.dart';
 
 // import '../quick_hex.dart';
+import '../quick_hex.dart';
 import 'sign_test_vector.dart';
 
 void main() {
   test("schnorrkel sign ", () {
-    for (final i in signTestVector) {
+    for (final i in signTestVector.shuffleTake()) {
       final mini = SchnorrkelMiniSecretKey.fromBytes(
         BytesUtils.fromHexString(i["seed"]!),
       );

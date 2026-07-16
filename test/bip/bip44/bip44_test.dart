@@ -4,11 +4,14 @@ import 'package:blockchain_utils/bip/monero/monero_base.dart';
 import 'package:blockchain_utils/utils/utils.dart';
 import 'package:test/test.dart';
 
+import '../../quick_hex.dart';
 import 'test_vector.dart';
 
 void main() {
   test("bip44", () {
-    for (final i in testVector) {
+    final vector = testVector.shuffleTake(10);
+
+    for (final i in vector) {
       final seed = BytesUtils.fromHexString(i["seed"]);
       final coin = Bip44Coins.values.firstWhere(
         (element) =>

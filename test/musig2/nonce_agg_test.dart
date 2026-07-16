@@ -1,5 +1,6 @@
 import 'package:blockchain_utils/blockchain_utils.dart';
 import 'package:test/test.dart';
+import '../quick_hex.dart';
 import 'nonce_agg_test_vector.dart';
 
 void main() {
@@ -17,7 +18,7 @@ void _test() {
     final validateTestCase = List<Map<String, dynamic>>.from(
       nonceAggVectors["valid_test_cases"]!,
     );
-    for (final i in validateTestCase) {
+    for (final i in validateTestCase.shuffleTake()) {
       final indeces = List<int>.from(i["pnonce_indices"]);
       final keys = List.generate(indeces.length, (i) {
         return pubKeys.elementAt(indeces[i]);

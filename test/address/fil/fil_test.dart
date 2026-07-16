@@ -7,7 +7,7 @@ import 'test_vector.dart' show testVector;
 
 void main() {
   test("fil address test", () {
-    for (final i in testVector) {
+    for (final i in testVector.shuffleTake()) {
       final z = FilSecp256k1AddrEncoder().encodeKey(
         BytesUtils.fromHexString(i["public"]),
       );

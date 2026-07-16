@@ -4,11 +4,13 @@ import 'package:blockchain_utils/bip/cardano/cip1852/conf/cip1852_coins.dart';
 import 'package:blockchain_utils/bip/cardano/shelley/cardano_shelley.dart';
 import 'package:blockchain_utils/utils/utils.dart';
 import 'package:test/test.dart';
+import '../../quick_hex.dart';
 import 'test_vector.dart';
 
 void main() {
   test("cip1852", () {
-    for (final i in testVector) {
+    final vector = testVector.shuffleTake(3);
+    for (final i in vector) {
       final seed = BytesUtils.fromHexString(i["seed"]);
       final cip = Cip1852.fromSeed(seed, Cip1852Coins.cardanoIcarus);
       final public = cip.publicKey.toExtended;

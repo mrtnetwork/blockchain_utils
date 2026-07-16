@@ -1,11 +1,18 @@
 import 'package:blockchain_utils/crypto/crypto/ec/cdsa.dart';
-import 'package:blockchain_utils/crypto/crypto/ec/projective/secp256k1/secp256k1.dart';
 import 'package:blockchain_utils/crypto/crypto/hash/hash.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
 import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/helper/helper.dart';
 
 class Secp256k1Utils {
+  static Secp256k1ECmultGenContext? _context;
+  static Secp256k1ECmultGenContext getOrinitalizeBlindEcMultContext({
+    List<int>? seed,
+  }) {
+    final context = _context ??= initalizeBlindEcMultContext(seed: seed);
+    return context;
+  }
+
   /// generate ecmult blind context for ecmult using blind alg.
   static Secp256k1ECmultGenContext initalizeBlindEcMultContext({
     List<int>? seed,
@@ -62,7 +69,7 @@ class Secp256k1Utils {
   }
 
   /// check scalar is valid and not zero
-  static bool scCheck(Secp256k1Scalar scalar) {
+  static bool scCheck(BaseSecp256k1Scalar scalar) {
     return Secp256k1.secp256k1ScalarCheckOverflow(scalar) == 0 &&
         Secp256k1.secp256k1ScalarIsZero(scalar) == 0;
   }
@@ -92,7 +99,7 @@ class Secp256k1Utils {
       Secp256k1.secp256k1ScalarGetB32(bytes, scalar);
       return bytes;
     } finally {
-      if (clean) scalar.setZero();
+      if (clean) scalar.fillZero();
     }
   }
 
@@ -169,7 +176,7 @@ class Secp256k1Utils {
         Secp256k1Const.secp256k1ScalarOne,
         diff,
       );
-      ctx.projBlind = Secp256k1Const.secp256k1FeOne.clone();
+      ctx.fillBlindFe(Secp256k1Const.secp256k1FeOne);
       return;
     }
 
@@ -189,7 +196,7 @@ class Secp256k1Utils {
       Secp256k1Const.secp256k1FeOne,
       Secp256k1.secp256k1FeNormalizesToZero(f),
     );
-    ctx.projBlind = f;
+    ctx.fillBlindFe(f);
     nonce32 = RFC6979.generateSecp256k1KBytes(
       secexp: keydata.sublist(0, 32),
       hashFunc: () => SHA256(),
@@ -234,9 +241,8 @@ class Secp256k1Utils {
       );
     }
     bool hasScalar = scalar != null;
-    bool hasContext = context != null;
     scalar ??= scalarFromBytes(scalarBytes!, secp: secp);
-    context ??= initalizeBlindEcMultContext();
+    context ??= getOrinitalizeBlindEcMultContext();
     if (secp &&
         hasScalar &&
         Secp256k1.secp256k1ScalarCheckOverflow(scalar) == 1) {
@@ -251,17 +257,15 @@ class Secp256k1Utils {
     Secp256k1Ge mid1 = Secp256k1Ge();
     Secp256k1.secp256k1GeSetGej(mid1, R);
     R.setZero();
-    if (!hasScalar) scalar.setZero();
-    if (!hasContext) context.clean();
+    if (!hasScalar) scalar.fillZero();
     return mid1;
   }
 
   static Secp256k1Gej secp256k1Mult({
     List<int>? scalarBytes,
-    Secp256k1Scalar? scalar,
+    BaseSecp256k1Scalar? scalar,
     Secp256k1Ge? point,
     List<int>? pointBytes,
-    // Secp256k1ECmultGenContext? context,
     bool checkScalar = true,
   }) {
     if (scalar == null && scalarBytes == null) {
@@ -297,9 +301,11 @@ class Secp256k1Utils {
     }
     Secp256k1Gej R = Secp256k1Gej();
     Secp256k1.secp256k1ECmultConst(R, point, scalar);
-    // Secp256k1Ge mid1 = Secp256k1Ge();
-    // Secp256k1.secp256k1GeSetGej(mid1, R);
-    if (!hasScalar) scalar.setZero();
+    if (scalar case Secp256k1Scalar()) {
+      if (!hasScalar) {
+        scalar.fillZero();
+      }
+    }
     return R;
   }
 }

@@ -7,7 +7,7 @@ import 'test_vector.dart' show testVector;
 
 void main() {
   test("xtz address", () {
-    for (final i in testVector) {
+    for (final i in testVector.shuffleTake()) {
       final z = XtzAddrEncoder().encodeKey(
         BytesUtils.fromHexString(i["public"]),
         addressPrefix: XtzAddrPrefixes.tz1,

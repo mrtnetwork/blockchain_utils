@@ -4,6 +4,7 @@ import 'package:blockchain_utils/crypto/crypto/zcrypto/jubjub/point/core.dart';
 import 'package:blockchain_utils/crypto/crypto/zcrypto/jubjub/point/extended.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
 import 'package:blockchain_utils/helper/extensions/extensions.dart';
+import 'package:blockchain_utils/numbers/src/u64.dart';
 
 class SaplingKeyUtils {
   static const String saplingInternalPersonalization = "Zcash_SaplingInt";
@@ -68,22 +69,38 @@ class SaplingKeyUtils {
     );
   }
 
-  static JubJubPoint get proofGenerationKeyGenerator {
-    return JubJubAffinePoint(
-      u: JubJubFq([
-        BigInt.parse('4688329274464987593'),
-        BigInt.parse('14151053748480064462'),
-        BigInt.parse('14558782058791214728'),
-        BigInt.parse('4953935332217131816'),
-      ]),
-      v: JubJubFq([
-        BigInt.parse('6509994339305065288'),
-        BigInt.parse('10393745954890678923'),
-        BigInt.parse('13091562770945060566'),
-        BigInt.parse('3281762369979631463'),
-      ]),
-    ).toExtended();
-  }
+  static const JubJubPoint proofGenerationKeyGenerator = JubJubPoint(
+    u: JubJubFq.unsafe([
+      Uint64.unsafe(1091586722, 2727143881),
+      Uint64.unsafe(3294798952, 2744990670),
+      Uint64.unsafe(3389730597, 2425659016),
+      Uint64.unsafe(1153427952, 84874024),
+    ]),
+    v: JubJubFq.unsafe([
+      Uint64.unsafe(1515726172, 873794376),
+      Uint64.unsafe(2419982560, 2800321163),
+      Uint64.unsafe(3048116986, 1692970710),
+      Uint64.unsafe(764094844, 3957409639),
+    ]),
+    z: JubJubFq.unsafe([
+      Uint64.unsafe(1, 4294967294),
+      Uint64.unsafe(1485092858, 215042),
+      Uint64.unsafe(2576109551, 3971764213),
+      Uint64.unsafe(405057881, 2898593135),
+    ]),
+    t1: JubJubFq.unsafe([
+      Uint64.unsafe(1091586722, 2727143881),
+      Uint64.unsafe(3294798952, 2744990670),
+      Uint64.unsafe(3389730597, 2425659016),
+      Uint64.unsafe(1153427952, 84874024),
+    ]),
+    t2: JubJubFq.unsafe([
+      Uint64.unsafe(1515726172, 873794376),
+      Uint64.unsafe(2419982560, 2800321163),
+      Uint64.unsafe(3048116986, 1692970710),
+      Uint64.unsafe(764094844, 3957409639),
+    ]),
+  );
 
   static JubJubNativePoint get proofGenerationKeyGeneratorNative =>
       JubJubAffineNativePoint(
@@ -166,20 +183,39 @@ class SaplingKeyUtils {
     48,
   ];
 
-  static JubJubAffinePoint get spendAuthGenerator => JubJubAffinePoint(
-    u: JubJubFq([
-      BigInt.parse("11523136253062974710"),
-      BigInt.parse("1565710093821875141"),
-      BigInt.parse("9772861389303152376"),
-      BigInt.parse("789406954895279390"),
+  static const JubJubPoint spendAuthGenerator = JubJubPoint(
+    u: JubJubFq.unsafe([
+      Uint64.unsafe(2682939230, 3057552630),
+      Uint64.unsafe(364545288, 3950973893),
+      Uint64.unsafe(2275421607, 2626387704),
+      Uint64.unsafe(183798129, 1774290206),
     ]),
-    v: JubJubFq([
-      BigInt.parse("18114344539046435414"),
-      BigInt.parse("8643525643390539237"),
-      BigInt.parse("9759478803715485369"),
-      BigInt.parse("7916771090361405495"),
+    v: JubJubFq.unsafe([
+      Uint64.unsafe(4217574498, 1692818006),
+      Uint64.unsafe(2012477638, 4249212389),
+      Uint64.unsafe(2272305731, 2557111993),
+      Uint64.unsafe(1843266908, 2702364727),
+    ]),
+    z: JubJubFq.unsafe([
+      Uint64.unsafe(1, 4294967294),
+      Uint64.unsafe(1485092858, 215042),
+      Uint64.unsafe(2576109551, 3971764213),
+      Uint64.unsafe(405057881, 2898593135),
+    ]),
+    t1: JubJubFq.unsafe([
+      Uint64.unsafe(2682939230, 3057552630),
+      Uint64.unsafe(364545288, 3950973893),
+      Uint64.unsafe(2275421607, 2626387704),
+      Uint64.unsafe(183798129, 1774290206),
+    ]),
+    t2: JubJubFq.unsafe([
+      Uint64.unsafe(4217574498, 1692818006),
+      Uint64.unsafe(2012477638, 4249212389),
+      Uint64.unsafe(2272305731, 2557111993),
+      Uint64.unsafe(1843266908, 2702364727),
     ]),
   );
+
   static JubJubAffineNativePoint
   get spendAuthGeneratorNative => JubJubAffineNativePoint(
     u: JubJubNativeFq.nP(
@@ -193,19 +229,36 @@ class SaplingKeyUtils {
       ),
     ),
   );
-
-  static JubJubAffinePoint get bindingGenerator => JubJubAffinePoint(
-    u: JubJubFq([
-      BigInt.parse("5549540396793142930"),
-      BigInt.parse("13424322059144101642"),
-      BigInt.parse("15696773774614557624"),
-      BigInt.parse("4735710324177639912"),
+  static const JubJubPoint bindingGenerator = JubJubPoint(
+    u: JubJubFq.unsafe([
+      Uint64.unsafe(1292103062, 2441682578),
+      Uint64.unsafe(3125593545, 2780397322),
+      Uint64.unsafe(3654689941, 999388088),
+      Uint64.unsafe(1102618482, 4022475240),
     ]),
-    v: JubJubFq([
-      BigInt.parse("9534511422473925453"),
-      BigInt.parse("14189824261890655055"),
-      BigInt.parse("11868011878947860258"),
-      BigInt.parse("2814246734807231969"),
+    v: JubJubFq.unsafe([
+      Uint64.unsafe(2219926431, 1802924877),
+      Uint64.unsafe(3303825916, 993411919),
+      Uint64.unsafe(2763236844, 2865606434),
+      Uint64.unsafe(655242878, 2860314081),
+    ]),
+    z: JubJubFq.unsafe([
+      Uint64.unsafe(1, 4294967294),
+      Uint64.unsafe(1485092858, 215042),
+      Uint64.unsafe(2576109551, 3971764213),
+      Uint64.unsafe(405057881, 2898593135),
+    ]),
+    t1: JubJubFq.unsafe([
+      Uint64.unsafe(1292103062, 2441682578),
+      Uint64.unsafe(3125593545, 2780397322),
+      Uint64.unsafe(3654689941, 999388088),
+      Uint64.unsafe(1102618482, 4022475240),
+    ]),
+    t2: JubJubFq.unsafe([
+      Uint64.unsafe(2219926431, 1802924877),
+      Uint64.unsafe(3303825916, 993411919),
+      Uint64.unsafe(2763236844, 2865606434),
+      Uint64.unsafe(655242878, 2860314081),
     ]),
   );
 

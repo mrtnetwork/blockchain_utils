@@ -1,9 +1,11 @@
 import 'package:blockchain_utils/helper/helper.dart';
+import 'package:blockchain_utils/numbers/src/i32.dart';
 
 class FieldElement {
-  final List<int> h;
+  final List<Int32> h;
   const FieldElement.uncheck(this.h);
-  factory FieldElement() => FieldElement.uncheck(List<int>.filled(10, 0));
+  factory FieldElement() =>
+      FieldElement.uncheck(List<Int32>.filled(10, Int32.zero));
   FieldElement clone({bool immutable = false}) {
     return FieldElement.uncheck(h.clone(immutable: immutable));
   }
@@ -18,18 +20,18 @@ class FieldElement {
 
   void fillZero() {
     for (int i = 0; i < 10; i++) {
-      h[i] = 0;
+      h[i] = Int32.zero;
     }
   }
 
   void fillOne() {
-    h[0] = 1;
+    h[0] = Int32.one;
     for (int i = 1; i < 10; i++) {
-      h[i] = 0;
+      h[i] = Int32.zero;
     }
   }
 
-  void fill(List<int> other) {
+  void fill(List<Int32> other) {
     assert(other.length >= 10);
     for (int i = 0; i < 10; i++) {
       h[i] = other[i];

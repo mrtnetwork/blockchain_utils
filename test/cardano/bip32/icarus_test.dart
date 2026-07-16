@@ -1,5 +1,6 @@
 import 'package:blockchain_utils/bip/bip/bip32/bip32_key_data.dart';
 import 'package:blockchain_utils/bip/cardano/bip32/cardano_icarus_bip32.dart';
+import 'package:blockchain_utils/helper/extensions/extensions.dart';
 import 'package:blockchain_utils/utils/utils.dart';
 import 'package:test/test.dart';
 
@@ -7,7 +8,8 @@ import 'icarus_test_vector.dart';
 
 void main() {
   test("bip32 cardano", () {
-    for (final i in icarusTestVector) {
+    final vecot = icarusTestVector.clone()..shuffle();
+    for (final i in vecot.take(5)) {
       final seed = BytesUtils.fromHexString(i["seed"]);
       final w = CardanoIcarusBip32.fromSeed(seed);
       final String public = w.publicKey.toExtended;

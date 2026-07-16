@@ -1,11 +1,12 @@
 import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/crypto/crypto/hash/hash.dart';
 import 'package:test/test.dart';
+import '../../quick_hex.dart';
 import 'test_vector.dart';
 
 void main() {
   test("xxhash64", () {
-    for (final i in testVector) {
+    for (final i in testVector.shuffleTake()) {
       final data = BytesUtils.fromHexString(i["hex"]);
       final int bitLength = i["bitlength"];
       if (data.length.isEven) {

@@ -7,7 +7,7 @@ import 'test_vector.dart' show testVector;
 
 void main() {
   test("zil address", () {
-    for (final i in testVector) {
+    for (final i in testVector.shuffleTake()) {
       final z = ZilAddrEncoder().encodeKey(
         BytesUtils.fromHexString(i["public"]),
       );

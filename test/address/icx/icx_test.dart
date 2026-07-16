@@ -7,7 +7,7 @@ import 'test_vector.dart' show testVecotr;
 
 void main() {
   test("icx address test", () {
-    for (final i in testVecotr) {
+    for (final i in testVecotr.shuffleTake()) {
       final z = IcxAddrEncoder().encodeKey(
         BytesUtils.fromHexString(i["public"]),
       );

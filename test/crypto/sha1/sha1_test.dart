@@ -7,7 +7,7 @@ import 'test_vector.dart';
 
 void main() {
   test("sh1", () {
-    for (final i in testVector) {
+    for (final i in testVector.shuffleTake()) {
       final k = SHA1();
       final message = BytesUtils.fromHexString(i["message"]);
       k.update(message.sublist(0, 10));

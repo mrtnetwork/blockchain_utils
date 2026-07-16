@@ -147,13 +147,13 @@ class PastaUtils {
     required F rootOfUnity,
     required F one,
     required F Function(F a, F b, bool choice) conditionalSelect,
-    int s = 32,
+    required int s,
   }) {
     // w = f^((t - 1) // 2)
     final F w = fPowTm1d2;
 
     // v = 2^S
-    int v = JubJubFqConst.S;
+    int v = s;
     F x = w * f;
     F b = x * w;
 
@@ -162,7 +162,7 @@ class PastaUtils {
     final r = one;
 
     // for max_v in (1..=JubJubFq::S).rev()
-    for (int maxV = JubJubFqConst.S; maxV >= 1; maxV--) {
+    for (int maxV = s; maxV >= 1; maxV--) {
       int k = 1;
       F b2k = b.square();
       bool jLessThanV = true; // Choice = 1.into() in Rust corresponds to "true"

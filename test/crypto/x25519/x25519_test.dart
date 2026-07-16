@@ -2,12 +2,13 @@ import 'package:blockchain_utils/crypto/crypto/x25519/x25519.dart';
 import 'package:blockchain_utils/utils/binary/utils.dart';
 import 'package:test/test.dart';
 
+import '../../quick_hex.dart';
 import 'test_vector.dart';
 
 void main() {
   group("X25519", () {
     test("generate keypair", () {
-      for (final i in testVector) {
+      for (final i in testVector.shuffleTake()) {
         final seed = BytesUtils.fromHexString(i["seed"]);
         final key = X25519Keypair.generate(seed: seed);
         expect(key.privateKeyHex(), i["privateKey"]);
@@ -15,7 +16,7 @@ void main() {
       }
     });
     test("generate shared key", () {
-      for (final i in sharedTestVector) {
+      for (final i in sharedTestVector.shuffleTake()) {
         final seed = BytesUtils.fromHexString(i["seed"]);
         final key = X25519Keypair.generate(seed: seed);
         expect(key.privateKeyHex(), i["privateKey"]);

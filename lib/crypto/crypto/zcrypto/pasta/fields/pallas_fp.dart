@@ -6,26 +6,31 @@ import 'package:blockchain_utils/crypto/crypto/zcrypto/pasta/utils/utils.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
 import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/helper/extensions/extensions.dart';
-import 'package:blockchain_utils/utils/compare/compare.dart';
+import 'package:blockchain_utils/numbers/src/u64.dart';
 import 'package:blockchain_utils/utils/equatable/equatable.dart';
-import 'package:blockchain_utils/utils/numbers/utils/bigint_utils.dart';
 
 class PallasFp extends PastaFieldElement<PallasFp>
     with ConstantEquality<PallasFp> {
-  final List<BigInt> limbs;
-  PallasFp(List<BigInt> limbs)
+  final List<Uint64> limbs;
+  const PallasFp.unsafe(this.limbs);
+  PallasFp(List<Uint64> limbs)
     : limbs = limbs.exc(length: 4, operation: "PallasFp").immutable;
-  factory PallasFp.zero() =>
-      PallasFp([BigInt.zero, BigInt.zero, BigInt.zero, BigInt.zero]);
-  factory PallasFp.one() => PallasFp.r();
-  factory PallasFp.from(BigInt val) =>
-      PallasFp([val, BigInt.zero, BigInt.zero, BigInt.zero]).mul(PallasFp.r2());
+  static const zero = PallasFp.unsafe([
+    Uint64.zero,
+    Uint64.zero,
+    Uint64.zero,
+    Uint64.zero,
+  ]);
+
+  static const PallasFp one = r;
+  factory PallasFp.from(Uint64 val) =>
+      PallasFp([val, Uint64.zero, Uint64.zero, Uint64.zero]).mul(PallasFp.r2);
   factory PallasFp.conditionalSelect(PallasFp a, PallasFp b, bool choice) {
     return PallasFp([
-      BigintUtils.ctSelectBigInt(a.limbs[0], b.limbs[0], choice),
-      BigintUtils.ctSelectBigInt(a.limbs[1], b.limbs[1], choice),
-      BigintUtils.ctSelectBigInt(a.limbs[2], b.limbs[2], choice),
-      BigintUtils.ctSelectBigInt(a.limbs[3], b.limbs[3], choice),
+      Uint64.ctSelect(a.limbs[0], b.limbs[0], choice),
+      Uint64.ctSelect(a.limbs[1], b.limbs[1], choice),
+      Uint64.ctSelect(a.limbs[2], b.limbs[2], choice),
+      Uint64.ctSelect(a.limbs[3], b.limbs[3], choice),
     ]);
   }
   factory PallasFp.fromBytes(List<int> bytes) {
@@ -37,22 +42,33 @@ class PallasFp extends PastaFieldElement<PallasFp>
       );
     }
     // Parse 4 limbs
-    final tmpLimbs = List<BigInt>.generate(4, (i) {
-      return BigintUtils.fromBytes(
-        bytes.sublist(i * 8, (i * 8) + 8),
-        byteOrder: Endian.little,
-      );
+    final tmpLimbs = List<Uint64>.generate(4, (i) {
+      return Uint64.fromBytes(bytes, endian: Endian.little, offset: i * 8);
     });
 
     final tmp = PallasFp(tmpLimbs);
-
-    // Constant-time check: tmp < modulus
-    BigInt borrow = BigInt.zero;
-    for (int i = 0; i < 4; i++) {
-      borrow = tmp.limbs[i] - PallasFPConst.modulus.limbs[i] - borrow;
-      borrow = borrow.isNegative ? BigInt.one : BigInt.zero;
-    }
-    bool isValid = borrow != BigInt.zero;
+    Uint64 borrow = Uint64.zero;
+    (_, borrow) = Uint64.sbb(
+      tmp.limbs[0],
+      PallasFPConst.modulus.limbs[0],
+      Uint64.zero,
+    );
+    (_, borrow) = Uint64.sbb(
+      tmp.limbs[1],
+      PallasFPConst.modulus.limbs[1],
+      borrow,
+    );
+    (_, borrow) = Uint64.sbb(
+      tmp.limbs[2],
+      PallasFPConst.modulus.limbs[2],
+      borrow,
+    );
+    (_, borrow) = Uint64.sbb(
+      tmp.limbs[3],
+      PallasFPConst.modulus.limbs[3],
+      borrow,
+    );
+    bool isValid = borrow != Uint64.zero;
     if (!isValid) {
       throw ArgumentException.invalidOperationArguments(
         "PallasFp",
@@ -62,159 +78,155 @@ class PallasFp extends PastaFieldElement<PallasFp>
     }
 
     // Convert to Montgomery form
-    return tmp.mul(PallasFp.r2());
+    return tmp.mul(PallasFp.r2);
   }
   factory PallasFp.random() {
-    return PallasFp._fromU512(List.generate(8, (i) => QuickCrypto.nextU64()));
+    return PallasFp._fromU512(
+      List.generate(8, (i) => Uint64.fromBigInt(QuickCrypto.nextU64())),
+    );
   }
-  factory PallasFp.twoInv() => PallasFp.fromRaw([
-    BigInt.parse("0xcc96987680000001"),
-    BigInt.parse("0x11234c7e04a67c8d"),
-    BigInt.parse("0x0000000000000000"),
-    BigInt.parse("0x2000000000000000"),
+  static const PallasFp r = PallasFp.unsafe([
+    Uint64.unsafe(880307512, 4294967293),
+    Uint64.unsafe(2569811211, 3826848941),
+    Uint64.unsafe(4294967295, 4294967295),
+    Uint64.unsafe(1073741823, 4294967295),
   ]);
-
-  factory PallasFp.delta() => PallasFp.fromRaw([
-    BigInt.parse("0x6a6ccd20dd7b9ba2"),
-    BigInt.parse("0xf5e4f3f13eee5636"),
-    BigInt.parse("0xbd455b7112a5049d"),
-    BigInt.parse("0x0a757d0f0006ab6c"),
+  static const PallasFp twoInv = PallasFp.unsafe([
+    Uint64.unsafe(1725091602, 4294967295),
+    Uint64.unsafe(3719915267, 4138927844),
+    Uint64.unsafe(4294967295, 4294967295),
+    Uint64.unsafe(1073741823, 4294967295),
   ]);
-  factory PallasFp.zeta() => PallasFp.fromRaw([
-    BigInt.parse("0x1dad5ebdfdfe4ab9"),
-    BigInt.parse("0x1d1f8bd237ad3149"),
-    BigInt.parse("0x2caad5dc57aab1b0"),
-    BigInt.parse("0x12ccca834acdba71"),
+  static const PallasFp delta = PallasFp.unsafe([
+    Uint64.unsafe(1499851183, 2640646513),
+    Uint64.unsafe(3351616539, 2988632374),
+    Uint64.unsafe(657115884, 1505142668),
+    Uint64.unsafe(149618766, 2030286673),
   ]);
-  factory PallasFp.rootOfUnityInv() => PallasFp.fromRaw([
-    BigInt.parse("0xf0b87c7db2ce91f6"),
-    BigInt.parse("0x84a0a1d8859f066f"),
-    BigInt.parse("0xb4ed8e647196dad1"),
-    BigInt.parse("0x2cd5282c53116b5c"),
+  static const PallasFp r2 = PallasFp.unsafe([
+    Uint64.unsafe(2356735155, 15),
+    Uint64.unsafe(3620933053, 2332942567),
+    Uint64.unsafe(2006428059, 3284753688),
+    Uint64.unsafe(158155183, 2073868052),
   ]);
-  factory PallasFp.rootOfUnity() => PallasFp.fromRaw([
-    BigInt.parse("0xbdad6fabd87ea32f"),
-    BigInt.parse("0xea322bf2b7bb7584"),
-    BigInt.parse("0x362120830561f81a"),
-    BigInt.parse("0x2bce74deac30ebda"),
+  static const PallasFp r3 = PallasFp.unsafe([
+    Uint64.unsafe(4052067737, 983437561),
+    Uint64.unsafe(4138110779, 1791341009),
+    Uint64.unsafe(3750563860, 893375532),
+    Uint64.unsafe(719522082, 757963024),
   ]);
-  factory PallasFp.generator() => PallasFp.fromRaw([
-    BigInt.parse("0x0000000000000005"),
-    BigInt.parse("0x0000000000000000"),
-    BigInt.parse("0x0000000000000000"),
-    BigInt.parse("0x0000000000000000"),
+  static const PallasFp rootOfUnity = PallasFp.unsafe([
+    Uint64.unsafe(2727196745, 3134643184),
+    Uint64.unsafe(2424556803, 3551869407),
+    Uint64.unsafe(4222007754, 2647147662),
+    Uint64.unsafe(1053370484, 2072626906),
   ]);
-  factory PallasFp.theta() => PallasFp.fromRaw([
-    BigInt.parse("0xca330bcc09ac318e"),
-    BigInt.parse("0x51f64fc4dc888857"),
-    BigInt.parse("0x4647aef782d5cdc8"),
-    BigInt.parse("0x0f7bdb65814179b4"),
+  static const PallasFp rootOfUnityInv = PallasFp.unsafe([
+    Uint64.unsafe(1560174439, 3407172674),
+    Uint64.unsafe(392454338, 1934378529),
+    Uint64.unsafe(3749773334, 1159807248),
+    Uint64.unsafe(402948025, 4178602172),
   ]);
-  factory PallasFp.z() => PallasFp.fromRaw([
-    BigInt.parse("0x992d30ecfffffff4"),
-    BigInt.parse("0x224698fc094cf91b"),
-    BigInt.parse("0x0000000000000000"),
-    BigInt.parse("0x4000000000000000"),
+  static const PallasFp zeta = PallasFp.unsafe([
+    Uint64.unsafe(33692918, 1637487933),
+    Uint64.unsafe(2659985047, 1233172366),
+    Uint64.unsafe(711421276, 3363456614),
+    Uint64.unsafe(366478493, 2812377206),
   ]);
-  factory PallasFp.r3() => PallasFp([
-    BigInt.parse("0xf185a5993a9e10f9"),
-    BigInt.parse("0xf6a68f3b6ac5b1d1"),
-    BigInt.parse("0xdf8d1014353fd42c"),
-    BigInt.parse("0x2ae309222d2d9910"),
+  static const PallasFp generator = PallasFp.unsafe([
+    Uint64.unsafe(2711969384, 4294967277),
+    Uint64.unsafe(1958913355, 1330217715),
+    Uint64.unsafe(4294967295, 4294967293),
+    Uint64.unsafe(1073741823, 4294967295),
   ]);
-  factory PallasFp.r2() => PallasFp([
-    BigInt.parse("0x8c78ecb30000000f"),
-    BigInt.parse("0xd7d30dbd8b0de0e7"),
-    BigInt.parse("0x7797a99bc3c95d18"),
-    BigInt.parse("0x096d41af7b9cb714"),
+  static const PallasFp z = PallasFp.unsafe([
+    Uint64.unsafe(489549860, 52),
+    Uint64.unsafe(4132901681, 3819084187),
+    Uint64.unsafe(0, 6),
+    Uint64.zero,
   ]);
-  factory PallasFp.r() => PallasFp([
-    BigInt.parse("0x34786d38fffffffd"),
-    BigInt.parse("0x992c350be41914ad"),
-    BigInt.parse("0xffffffffffffffff"),
-    BigInt.parse("0x3fffffffffffffff"),
+  static const PallasFp theta = PallasFp.unsafe([
+    Uint64.unsafe(2547692973, 1678643153),
+    Uint64.unsafe(2582586898, 3497062826),
+    Uint64.unsafe(1061503000, 2575344300),
+    Uint64.unsafe(695866171, 2338936367),
   ]);
   factory PallasFp.montgomeryReduce(
-    BigInt r0,
-    BigInt r1,
-    BigInt r2,
-    BigInt r3,
-    BigInt r4,
-    BigInt r5,
-    BigInt r6,
-    BigInt r7,
+    Uint64 r0,
+    Uint64 r1,
+    Uint64 r2,
+    Uint64 r3,
+    Uint64 r4,
+    Uint64 r5,
+    Uint64 r6,
+    Uint64 r7,
   ) {
     // Step 1
-    BigInt k = (r0 * PallasFPConst.inv).toU64;
-    var tmp = BigintUtils.mac(
-      r0,
-      k,
-      PallasFPConst.modulus.limbs[0],
-      BigInt.zero,
-    );
-    var carry = tmp[1];
-    tmp = BigintUtils.mac(r1, k, PallasFPConst.modulus.limbs[1], carry);
-    r1 = tmp[0];
-    carry = tmp[1];
-    tmp = BigintUtils.mac(r2, k, PallasFPConst.modulus.limbs[2], carry);
-    r2 = tmp[0];
-    carry = tmp[1];
-    tmp = BigintUtils.mac(r3, k, PallasFPConst.modulus.limbs[3], carry);
-    r3 = tmp[0];
-    carry = tmp[1];
-    var r4New = BigintUtils.adc(r4, BigInt.zero, carry);
-    r4 = r4New[0];
-    var carry2 = r4New[1];
+    Uint64 k = (r0 * PallasFPConst.inv);
+    var tmp = Uint64.mac(r0, k, PallasFPConst.modulus.limbs[0], Uint64.zero);
+    var carry = tmp.$2;
+    tmp = Uint64.mac(r1, k, PallasFPConst.modulus.limbs[1], carry);
+    r1 = tmp.$1;
+    carry = tmp.$2;
+    tmp = Uint64.mac(r2, k, PallasFPConst.modulus.limbs[2], carry);
+    r2 = tmp.$1;
+    carry = tmp.$2;
+    tmp = Uint64.mac(r3, k, PallasFPConst.modulus.limbs[3], carry);
+    r3 = tmp.$1;
+    carry = tmp.$2;
+    var r4New = Uint64.adc(r4, Uint64.zero, carry);
+    r4 = r4New.$1;
+    var carry2 = r4New.$2;
 
     // Step 2
-    k = (r1 * PallasFPConst.inv).toU64;
-    tmp = BigintUtils.mac(r1, k, PallasFPConst.modulus.limbs[0], BigInt.zero);
-    carry = tmp[1];
-    tmp = BigintUtils.mac(r2, k, PallasFPConst.modulus.limbs[1], carry);
-    r2 = tmp[0];
-    carry = tmp[1];
-    tmp = BigintUtils.mac(r3, k, PallasFPConst.modulus.limbs[2], carry);
-    r3 = tmp[0];
-    carry = tmp[1];
-    tmp = BigintUtils.mac(r4, k, PallasFPConst.modulus.limbs[3], carry);
-    r4 = tmp[0];
-    carry = tmp[1];
-    var r5New = BigintUtils.adc(r5, carry2, carry);
-    r5 = r5New[0];
-    carry2 = r5New[1];
+    k = (r1 * PallasFPConst.inv);
+    tmp = Uint64.mac(r1, k, PallasFPConst.modulus.limbs[0], Uint64.zero);
+    carry = tmp.$2;
+    tmp = Uint64.mac(r2, k, PallasFPConst.modulus.limbs[1], carry);
+    r2 = tmp.$1;
+    carry = tmp.$2;
+    tmp = Uint64.mac(r3, k, PallasFPConst.modulus.limbs[2], carry);
+    r3 = tmp.$1;
+    carry = tmp.$2;
+    tmp = Uint64.mac(r4, k, PallasFPConst.modulus.limbs[3], carry);
+    r4 = tmp.$1;
+    carry = tmp.$2;
+    var r5New = Uint64.adc(r5, carry2, carry);
+    r5 = r5New.$1;
+    carry2 = r5New.$2;
 
     // Step 3
-    k = (r2 * PallasFPConst.inv).toU64;
-    tmp = BigintUtils.mac(r2, k, PallasFPConst.modulus.limbs[0], BigInt.zero);
-    carry = tmp[1];
-    tmp = BigintUtils.mac(r3, k, PallasFPConst.modulus.limbs[1], carry);
-    r3 = tmp[0];
-    carry = tmp[1];
-    tmp = BigintUtils.mac(r4, k, PallasFPConst.modulus.limbs[2], carry);
-    r4 = tmp[0];
-    carry = tmp[1];
-    tmp = BigintUtils.mac(r5, k, PallasFPConst.modulus.limbs[3], carry);
-    r5 = tmp[0];
-    carry = tmp[1];
-    var r6New = BigintUtils.adc(r6, carry2, carry);
-    r6 = r6New[0];
-    carry2 = r6New[1];
+    k = (r2 * PallasFPConst.inv);
+    tmp = Uint64.mac(r2, k, PallasFPConst.modulus.limbs[0], Uint64.zero);
+    carry = tmp.$2;
+    tmp = Uint64.mac(r3, k, PallasFPConst.modulus.limbs[1], carry);
+    r3 = tmp.$1;
+    carry = tmp.$2;
+    tmp = Uint64.mac(r4, k, PallasFPConst.modulus.limbs[2], carry);
+    r4 = tmp.$1;
+    carry = tmp.$2;
+    tmp = Uint64.mac(r5, k, PallasFPConst.modulus.limbs[3], carry);
+    r5 = tmp.$1;
+    carry = tmp.$2;
+    var r6New = Uint64.adc(r6, carry2, carry);
+    r6 = r6New.$1;
+    carry2 = r6New.$2;
 
     // Step 4
-    k = (r3 * PallasFPConst.inv).toU64;
-    tmp = BigintUtils.mac(r3, k, PallasFPConst.modulus.limbs[0], BigInt.zero);
-    carry = tmp[1];
-    tmp = BigintUtils.mac(r4, k, PallasFPConst.modulus.limbs[1], carry);
-    r4 = tmp[0];
-    carry = tmp[1];
-    tmp = BigintUtils.mac(r5, k, PallasFPConst.modulus.limbs[2], carry);
-    r5 = tmp[0];
-    carry = tmp[1];
-    tmp = BigintUtils.mac(r6, k, PallasFPConst.modulus.limbs[3], carry);
-    r6 = tmp[0];
-    carry = tmp[1];
-    var r7New = BigintUtils.adc(r7, carry2, carry);
-    r7 = r7New[0];
+    k = (r3 * PallasFPConst.inv);
+    tmp = Uint64.mac(r3, k, PallasFPConst.modulus.limbs[0], Uint64.zero);
+    carry = tmp.$2;
+    tmp = Uint64.mac(r4, k, PallasFPConst.modulus.limbs[1], carry);
+    r4 = tmp.$1;
+    carry = tmp.$2;
+    tmp = Uint64.mac(r5, k, PallasFPConst.modulus.limbs[2], carry);
+    r5 = tmp.$1;
+    carry = tmp.$2;
+    tmp = Uint64.mac(r6, k, PallasFPConst.modulus.limbs[3], carry);
+    r6 = tmp.$1;
+    carry = tmp.$2;
+    var r7New = Uint64.adc(r7, carry2, carry);
+    r7 = r7New.$1;
     // final carry ignored
 
     // Result may be within modulus of the correct value
@@ -227,115 +239,99 @@ class PallasFp extends PastaFieldElement<PallasFp>
 
   PallasFp sub(PallasFp rhs) {
     // 4-limb subtraction with borrow
-    var r0 = BigintUtils.sbb(limbs[0], rhs.limbs[0], BigInt.zero);
-    var d0 = r0[0];
-    var borrow = r0[1];
+    var r0 = Uint64.sbb(limbs[0], rhs.limbs[0], Uint64.zero);
+    var d0 = r0.$1;
+    var borrow = r0.$2;
 
-    var r1 = BigintUtils.sbb(limbs[1], rhs.limbs[1], borrow);
-    var d1 = r1[0];
-    borrow = r1[1];
+    var r1 = Uint64.sbb(limbs[1], rhs.limbs[1], borrow);
+    var d1 = r1.$1;
+    borrow = r1.$2;
 
-    var r2 = BigintUtils.sbb(limbs[2], rhs.limbs[2], borrow);
-    var d2 = r2[0];
-    borrow = r2[1];
+    var r2 = Uint64.sbb(limbs[2], rhs.limbs[2], borrow);
+    var d2 = r2.$1;
+    borrow = r2.$2;
 
-    var r3 = BigintUtils.sbb(limbs[3], rhs.limbs[3], borrow);
-    var d3 = r3[0];
-    borrow = r3[1];
+    var r3 = Uint64.sbb(limbs[3], rhs.limbs[3], borrow);
+    var d3 = r3.$1;
+    borrow = r3.$2;
 
     // If underflow happened:
-    //   borrow = 0xFFFFFFFFFFFFFFFF (as BigInt)
+    //   borrow = 0xFFFFFFFFFFFFFFFF (as Uint64)
     // Otherwise:
     //   borrow = 0x0
     //
     // So we AND each modulus limb with borrow to conditionally add modulus.
 
     // Add modulus if borrow mask is nonzero
-    var a0 = BigintUtils.adc(
+    var a0 = Uint64.adc(
       d0,
       PallasFPConst.modulus.limbs[0] & borrow,
-      BigInt.zero,
+      Uint64.zero,
     );
-    d0 = a0[0];
-    var carry = a0[1];
+    d0 = a0.$1;
+    var carry = a0.$2;
 
-    var a1 = BigintUtils.adc(
-      d1,
-      PallasFPConst.modulus.limbs[1] & borrow,
-      carry,
-    );
-    d1 = a1[0];
-    carry = a1[1];
+    var a1 = Uint64.adc(d1, PallasFPConst.modulus.limbs[1] & borrow, carry);
+    d1 = a1.$1;
+    carry = a1.$2;
 
-    var a2 = BigintUtils.adc(
-      d2,
-      PallasFPConst.modulus.limbs[2] & borrow,
-      carry,
-    );
-    d2 = a2[0];
-    carry = a2[1];
+    var a2 = Uint64.adc(d2, PallasFPConst.modulus.limbs[2] & borrow, carry);
+    d2 = a2.$1;
+    carry = a2.$2;
 
-    var a3 = BigintUtils.adc(
-      d3,
-      PallasFPConst.modulus.limbs[3] & borrow,
-      carry,
-    );
-    d3 = a3[0];
+    var a3 = Uint64.adc(d3, PallasFPConst.modulus.limbs[3] & borrow, carry);
+    d3 = a3.$1;
 
     return PallasFp([d0, d1, d2, d3]);
   }
 
   PallasFp add(PallasFp rhs) {
     // Limbwise addition
-    var r0 = BigintUtils.adc(limbs[0], rhs.limbs[0], BigInt.zero);
-    var d0 = r0[0];
-    var carry = r0[1];
+    var r0 = Uint64.adc(limbs[0], rhs.limbs[0], Uint64.zero);
+    var d0 = r0.$1;
+    var carry = r0.$2;
 
-    var r1 = BigintUtils.adc(limbs[1], rhs.limbs[1], carry);
-    var d1 = r1[0];
-    carry = r1[1];
+    var r1 = Uint64.adc(limbs[1], rhs.limbs[1], carry);
+    var d1 = r1.$1;
+    carry = r1.$2;
 
-    var r2 = BigintUtils.adc(limbs[2], rhs.limbs[2], carry);
-    var d2 = r2[0];
-    carry = r2[1];
+    var r2 = Uint64.adc(limbs[2], rhs.limbs[2], carry);
+    var d2 = r2.$1;
+    carry = r2.$2;
 
-    var r3 = BigintUtils.adc(limbs[3], rhs.limbs[3], carry);
-    var d3 = r3[0];
+    var r3 = Uint64.adc(limbs[3], rhs.limbs[3], carry);
+    var d3 = r3.$1;
     // ignore final carry — reduction handles it
 
     // Reduce by subtracting modulus
-    return PallasFp([d0, d1, d2, d3]).sub(PallasFPConst.modulus.clone());
+    return PallasFp([d0, d1, d2, d3]).sub(PallasFPConst.modulus);
   }
 
   PallasFp neg() {
     // Compute modulus - self
-    var r0 = BigintUtils.sbb(
-      PallasFPConst.modulus.limbs[0],
-      limbs[0],
-      BigInt.zero,
-    );
-    var d0 = r0[0];
-    var borrow = r0[1];
+    var r0 = Uint64.sbb(PallasFPConst.modulus.limbs[0], limbs[0], Uint64.zero);
+    var d0 = r0.$1;
+    var borrow = r0.$2;
 
-    var r1 = BigintUtils.sbb(PallasFPConst.modulus.limbs[1], limbs[1], borrow);
-    var d1 = r1[0];
-    borrow = r1[1];
+    var r1 = Uint64.sbb(PallasFPConst.modulus.limbs[1], limbs[1], borrow);
+    var d1 = r1.$1;
+    borrow = r1.$2;
 
-    var r2 = BigintUtils.sbb(PallasFPConst.modulus.limbs[2], limbs[2], borrow);
-    var d2 = r2[0];
-    borrow = r2[1];
+    var r2 = Uint64.sbb(PallasFPConst.modulus.limbs[2], limbs[2], borrow);
+    var d2 = r2.$1;
+    borrow = r2.$2;
 
-    var r3 = BigintUtils.sbb(PallasFPConst.modulus.limbs[3], limbs[3], borrow);
-    var d3 = r3[0];
+    var r3 = Uint64.sbb(PallasFPConst.modulus.limbs[3], limbs[3], borrow);
+    var d3 = r3.$1;
     // final borrow ignored (same as Rust)
 
     // mask = 0xffff...ffff if self != 0
     // mask = 0x0000...0000 if self == 0
-    final BigInt orAll = limbs[0] | limbs[1] | limbs[2] | limbs[3];
+    final Uint64 orAll = limbs[0] | limbs[1] | limbs[2] | limbs[3];
 
     // ((orAll == 0) ? 1 : 0) - 1  →  0 or -1
-    BigInt mask =
-        ((orAll == BigInt.zero ? BigInt.one : BigInt.zero) - BigInt.one).toU64;
+    Uint64 mask =
+        ((orAll == Uint64.zero ? Uint64.one : Uint64.zero) - Uint64.one);
 
     return PallasFp([d0 & mask, d1 & mask, d2 & mask, d3 & mask]);
   }
@@ -343,69 +339,69 @@ class PallasFp extends PastaFieldElement<PallasFp>
   PallasFp mul(PallasFp rhs) {
     // Schoolbook multiplication
 
-    var tmp = BigintUtils.mac(BigInt.zero, limbs[0], rhs.limbs[0], BigInt.zero);
-    var r0 = tmp[0];
-    var carry = tmp[1];
+    var tmp = Uint64.mac(Uint64.zero, limbs[0], rhs.limbs[0], Uint64.zero);
+    var r0 = tmp.$1;
+    var carry = tmp.$2;
 
-    tmp = BigintUtils.mac(BigInt.zero, limbs[0], rhs.limbs[1], carry);
-    var r1 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(Uint64.zero, limbs[0], rhs.limbs[1], carry);
+    var r1 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(BigInt.zero, limbs[0], rhs.limbs[2], carry);
-    var r2 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(Uint64.zero, limbs[0], rhs.limbs[2], carry);
+    var r2 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(BigInt.zero, limbs[0], rhs.limbs[3], carry);
-    var r3 = tmp[0];
-    var r4 = tmp[1];
+    tmp = Uint64.mac(Uint64.zero, limbs[0], rhs.limbs[3], carry);
+    var r3 = tmp.$1;
+    var r4 = tmp.$2;
 
-    tmp = BigintUtils.mac(r1, limbs[1], rhs.limbs[0], BigInt.zero);
-    r1 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(r1, limbs[1], rhs.limbs[0], Uint64.zero);
+    r1 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(r2, limbs[1], rhs.limbs[1], carry);
-    r2 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(r2, limbs[1], rhs.limbs[1], carry);
+    r2 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(r3, limbs[1], rhs.limbs[2], carry);
-    r3 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(r3, limbs[1], rhs.limbs[2], carry);
+    r3 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(r4, limbs[1], rhs.limbs[3], carry);
-    r4 = tmp[0];
-    var r5 = tmp[1];
+    tmp = Uint64.mac(r4, limbs[1], rhs.limbs[3], carry);
+    r4 = tmp.$1;
+    var r5 = tmp.$2;
 
-    tmp = BigintUtils.mac(r2, limbs[2], rhs.limbs[0], BigInt.zero);
-    r2 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(r2, limbs[2], rhs.limbs[0], Uint64.zero);
+    r2 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(r3, limbs[2], rhs.limbs[1], carry);
-    r3 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(r3, limbs[2], rhs.limbs[1], carry);
+    r3 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(r4, limbs[2], rhs.limbs[2], carry);
-    r4 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(r4, limbs[2], rhs.limbs[2], carry);
+    r4 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(r5, limbs[2], rhs.limbs[3], carry);
-    r5 = tmp[0];
-    var r6 = tmp[1];
+    tmp = Uint64.mac(r5, limbs[2], rhs.limbs[3], carry);
+    r5 = tmp.$1;
+    var r6 = tmp.$2;
 
-    tmp = BigintUtils.mac(r3, limbs[3], rhs.limbs[0], BigInt.zero);
-    r3 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(r3, limbs[3], rhs.limbs[0], Uint64.zero);
+    r3 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(r4, limbs[3], rhs.limbs[1], carry);
-    r4 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(r4, limbs[3], rhs.limbs[1], carry);
+    r4 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(r5, limbs[3], rhs.limbs[2], carry);
-    r5 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(r5, limbs[3], rhs.limbs[2], carry);
+    r5 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(r6, limbs[3], rhs.limbs[3], carry);
-    r6 = tmp[0];
-    var r7 = tmp[1];
+    tmp = Uint64.mac(r6, limbs[3], rhs.limbs[3], carry);
+    r6 = tmp.$1;
+    var r7 = tmp.$2;
 
     // Perform Montgomery reduction
     return PallasFp.montgomeryReduce(r0, r1, r2, r3, r4, r5, r6, r7);
@@ -416,7 +412,7 @@ class PallasFp extends PastaFieldElement<PallasFp>
     return add(this);
   }
 
-  factory PallasFp._fromU512(List<BigInt> limbs) {
+  factory PallasFp._fromU512(List<Uint64> limbs) {
     assert(limbs.length == 8);
 
     // Lower 256 bits
@@ -425,101 +421,105 @@ class PallasFp extends PastaFieldElement<PallasFp>
     PallasFp d1 = PallasFp([limbs[4], limbs[5], limbs[6], limbs[7]]);
 
     // Convert to Montgomery form: d0*R^2 + d1*R^3
-    PallasFp lower = d0.mul(PallasFp.r2());
-    PallasFp upper = d1.mul(PallasFp.r3());
+    PallasFp lower = d0.mul(PallasFp.r2);
+    PallasFp upper = d1.mul(PallasFp.r3);
 
     return lower.add(upper);
   }
 
   factory PallasFp.fromU128(BigInt v) {
-    final lower = v.toU64;
-    final upper = (v >> 64).toU64;
-    PallasFp tmp = PallasFp.from(upper);
+    final lower = v;
+    final upper = (v >> 64);
+    PallasFp tmp = PallasFp.from(Uint64.fromBigInt(upper));
     for (int i = 0; i < 64; i++) {
       tmp = tmp.double();
     }
-    return tmp + PallasFp.from(lower);
+    return tmp + PallasFp.from(Uint64.fromBigInt(lower));
   }
 
   @override
   PallasFp square() {
     // Compute cross terms
-    var tmp = BigintUtils.mac(BigInt.zero, limbs[0], limbs[1], BigInt.zero);
-    var r1 = tmp[0];
-    var carry = tmp[1];
+    var tmp = Uint64.mac(Uint64.zero, limbs[0], limbs[1], Uint64.zero);
+    var r1 = tmp.$1;
+    var carry = tmp.$2;
 
-    tmp = BigintUtils.mac(BigInt.zero, limbs[0], limbs[2], carry);
-    var r2 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(Uint64.zero, limbs[0], limbs[2], carry);
+    var r2 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(BigInt.zero, limbs[0], limbs[3], carry);
-    var r3 = tmp[0];
-    var r4 = tmp[1];
+    tmp = Uint64.mac(Uint64.zero, limbs[0], limbs[3], carry);
+    var r3 = tmp.$1;
+    var r4 = tmp.$2;
 
-    tmp = BigintUtils.mac(r3, limbs[1], limbs[2], BigInt.zero);
-    r3 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(r3, limbs[1], limbs[2], Uint64.zero);
+    r3 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(r4, limbs[1], limbs[3], carry);
-    r4 = tmp[0];
-    var r5 = tmp[1];
+    tmp = Uint64.mac(r4, limbs[1], limbs[3], carry);
+    r4 = tmp.$1;
+    var r5 = tmp.$2;
 
-    tmp = BigintUtils.mac(r5, limbs[2], limbs[3], BigInt.zero);
-    r5 = tmp[0];
-    var r6 = tmp[1];
+    tmp = Uint64.mac(r5, limbs[2], limbs[3], Uint64.zero);
+    r5 = tmp.$1;
+    var r6 = tmp.$2;
 
     // Step 2: double the cross terms
-    var r7 = (r6 >> 63).toU64;
-    r6 = ((r6 << 1) | (r5 >> 63)).toU64;
-    r5 = ((r5 << 1) | (r4 >> 63)).toU64;
-    r4 = ((r4 << 1) | (r3 >> 63)).toU64;
-    r3 = ((r3 << 1) | (r2 >> 63)).toU64;
-    r2 = ((r2 << 1) | (r1 >> 63)).toU64;
-    r1 = (r1 << 1).toU64;
+    var r7 = (r6 >> 63);
+    r6 = ((r6 << 1) | (r5 >> 63));
+    r5 = ((r5 << 1) | (r4 >> 63));
+    r4 = ((r4 << 1) | (r3 >> 63));
+    r3 = ((r3 << 1) | (r2 >> 63));
+    r2 = ((r2 << 1) | (r1 >> 63));
+    r1 = (r1 << 1);
 
     // Add squares of individual limbs
-    tmp = BigintUtils.mac(BigInt.zero, limbs[0], limbs[0], BigInt.zero);
-    var r0 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(Uint64.zero, limbs[0], limbs[0], Uint64.zero);
+    var r0 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.adc(BigInt.zero, r1, carry);
-    r1 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.adc(Uint64.zero, r1, carry);
+    r1 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(r2, limbs[1], limbs[1], carry);
-    r2 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(r2, limbs[1], limbs[1], carry);
+    r2 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.adc(BigInt.zero, r3, carry);
-    r3 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.adc(Uint64.zero, r3, carry);
+    r3 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(r4, limbs[2], limbs[2], carry);
-    r4 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(r4, limbs[2], limbs[2], carry);
+    r4 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.adc(BigInt.zero, r5, carry);
-    r5 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.adc(Uint64.zero, r5, carry);
+    r5 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(r6, limbs[3], limbs[3], carry);
-    r6 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(r6, limbs[3], limbs[3], carry);
+    r6 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.adc(BigInt.zero, r7, carry);
-    r7 = tmp[0];
+    tmp = Uint64.adc(Uint64.zero, r7, carry);
+    r7 = tmp.$1;
     // final carry ignored
 
     // Perform Montgomery reduction
     return PallasFp.montgomeryReduce(r0, r1, r2, r3, r4, r5, r6, r7);
   }
 
-  factory PallasFp.fromRaw(List<BigInt> val) {
-    assert(val.length == 4);
+  factory PallasFp.fromRaw(List<Uint64> limbs) {
+    limbs = limbs.exc(
+      length: 4,
+      operation: "fromRaw",
+      reason: "Invalid limbs length.",
+    );
     // Create PallasFp element from raw limbs
-    PallasFp tmp = PallasFp(val);
+    PallasFp tmp = PallasFp(limbs);
     // Convert to Montgomery form
-    return tmp.mul(PallasFp.r2());
+    return tmp.mul(PallasFp.r2);
   }
 
   factory PallasFp.fromBytes64(List<int> bytes) {
@@ -528,16 +528,12 @@ class PallasFp extends PastaFieldElement<PallasFp>
       operation: "fromBytes64",
       reason: "Invalid bytes length.",
     );
-    return PallasFp._fromU512([
-      BigintUtils.fromBytes(bytes.sublist(0, 8), byteOrder: Endian.little),
-      BigintUtils.fromBytes(bytes.sublist(8, 16), byteOrder: Endian.little),
-      BigintUtils.fromBytes(bytes.sublist(16, 24), byteOrder: Endian.little),
-      BigintUtils.fromBytes(bytes.sublist(24, 32), byteOrder: Endian.little),
-      BigintUtils.fromBytes(bytes.sublist(32, 40), byteOrder: Endian.little),
-      BigintUtils.fromBytes(bytes.sublist(40, 48), byteOrder: Endian.little),
-      BigintUtils.fromBytes(bytes.sublist(48, 56), byteOrder: Endian.little),
-      BigintUtils.fromBytes(bytes.sublist(56, 64), byteOrder: Endian.little),
-    ]);
+    return PallasFp._fromU512(
+      List.generate(
+        8,
+        (i) => Uint64.fromBytes(bytes, endian: Endian.little, offset: i * 8),
+      ),
+    );
   }
 
   @override
@@ -556,17 +552,17 @@ class PallasFp extends PastaFieldElement<PallasFp>
       limbs[1],
       limbs[2],
       limbs[3],
-      BigInt.zero,
-      BigInt.zero,
-      BigInt.zero,
-      BigInt.zero,
+      Uint64.zero,
+      Uint64.zero,
+      Uint64.zero,
+      Uint64.zero,
     );
-    return tmp.limbs[0].toU32;
+    return (tmp.limbs[0] & Uint64.maxU32).toInt();
   }
 
   @override
   bool isZero() {
-    return this == PallasFp.zero();
+    return this == PallasFp.zero;
   }
 
   @override
@@ -609,21 +605,15 @@ class PallasFp extends PastaFieldElement<PallasFp>
 
   @override
   FieldSqrtResult<PallasFp> sqrt() {
-    return PastaUtils.sqrtTonelliShanks(
-      f: this,
-      fPowTm1d2: powByTMinus1Over2(),
-      rootOfUnity: PallasFp.rootOfUnity(),
-      one: PallasFp.one(),
-      conditionalSelect: PallasFp.conditionalSelect,
-    );
+    return sqrtAlt(this);
   }
 
   static FieldSqrtResult<PallasFp> sqrtRatio(PallasFp num, PallasFp div) {
     return PastaUtils.sqrtRatioGeneric(
       num: num,
       div: div,
-      zero: PallasFp.zero(),
-      rootOfUnity: PallasFp.rootOfUnity(),
+      zero: PallasFp.zero,
+      rootOfUnity: PallasFp.rootOfUnity,
     );
   }
 
@@ -631,9 +621,10 @@ class PallasFp extends PastaFieldElement<PallasFp>
     return PastaUtils.sqrtTonelliShanks(
       f: r,
       fPowTm1d2: r.powByTMinus1Over2(),
-      rootOfUnity: PallasFp.rootOfUnity(),
-      one: PallasFp.one(),
+      rootOfUnity: PallasFp.rootOfUnity,
+      one: PallasFp.one,
       conditionalSelect: PallasFp.conditionalSelect,
+      s: PallasFPConst.S,
     );
   }
 
@@ -644,22 +635,22 @@ class PallasFp extends PastaFieldElement<PallasFp>
       limbs[1],
       limbs[2],
       limbs[3],
-      BigInt.zero,
-      BigInt.zero,
-      BigInt.zero,
-      BigInt.zero,
+      Uint64.zero,
+      Uint64.zero,
+      Uint64.zero,
+      Uint64.zero,
     );
     final res = List<int>.filled(32, 0);
     for (int i = 0; i < 4; i++) {
-      final limbBytes = tmp.limbs[i].toLeBytes(length: 8);
+      final limbBytes = tmp.limbs[i].toBytesLE();
       res.setRange(i * 8, i * 8 + 8, limbBytes);
     }
 
     return res;
   }
 
-  PallasFp pow(List<BigInt> expWords) {
-    var res = PallasFp.one();
+  PallasFp pow(List<Uint64> expWords) {
+    var res = PallasFp.one;
     var foundOne = false;
 
     // Process exponent words from most-significant to least
@@ -670,7 +661,7 @@ class PallasFp extends PastaFieldElement<PallasFp>
           res = res.square();
         }
 
-        if (((e >> i).toU64 & BigInt.one) == BigInt.one) {
+        if (((e >> i) & Uint64.one) == Uint64.one) {
           foundOne = true;
           res = res * this; // or res = res.mul(this);
         }
@@ -683,18 +674,19 @@ class PallasFp extends PastaFieldElement<PallasFp>
   @override
   PallasFp? invert() {
     if (isZero()) return null;
-    final tmp = pow([
-      BigInt.parse("0x992d30ecffffffff"),
-      BigInt.parse("0x224698fc094cf91b"),
-      BigInt.zero,
-      BigInt.parse("0x4000000000000000"),
-    ]);
+    const m = [
+      Uint64.unsafe(2569875692, 4294967295),
+      Uint64.unsafe(575052028, 156039451),
+      Uint64.zero,
+      Uint64.unsafe(1073741824, 0),
+    ];
+    final tmp = pow(m);
     return tmp;
   }
 
   @override
   bool constantEquality(PallasFp other) {
-    return CompareUtils.constantTimeBigIntEquals(limbs, other.limbs);
+    return Uint64.ctEquals(limbs, other.limbs);
   }
 
   @override

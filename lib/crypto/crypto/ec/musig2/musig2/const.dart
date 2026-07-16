@@ -16,8 +16,9 @@ import 'package:blockchain_utils/signer/exception/signing_exception.dart';
 import 'package:blockchain_utils/utils/binary/bytes_tracker.dart';
 import 'package:blockchain_utils/utils/binary/utils.dart';
 
-class Musig2Const extends Musig2Bsae {
-  const Musig2Const();
+class Musig2Const extends Musig2Context {
+  final Secp256k1ECmultGenContext? context;
+  const Musig2Const({this.context});
   @override
   MuSig2KeyAggContext aggPublicKeys({required List<List<int>> keys}) {
     return MuSig2UtilsConst.aggPublicKeys(keys: keys);
@@ -203,7 +204,6 @@ class Musig2Const extends Musig2Bsae {
     required List<int> secnonce,
     required List<int> sk,
     required MuSig2Session session,
-    Secp256k1ECmultGenContext? context,
   }) {
     if (secnonce.length != MuSig2Constants.secnoncelength) {
       throw ArgumentException.invalidOperationArguments(
@@ -236,7 +236,8 @@ class Musig2Const extends Musig2Bsae {
     Secp256k1.secp256k1ScalarCondNegate(k1Scalar, isOdd);
     Secp256k1.secp256k1ScalarCondNegate(k2Scalar, isOdd);
     final d = Secp256k1Utils.scalarFromBytes(sk);
-    context ??= Secp256k1Utils.initalizeBlindEcMultContext();
+    final context =
+        this.context ?? Secp256k1Utils.initalizeBlindEcMultContext();
     Secp256k1Gej R = Secp256k1Gej();
     Secp256k1.secp256k1ECmultGen(context, R, d);
     Secp256k1Ge mid1 = Secp256k1Utils.secp256k1MultBase(
@@ -265,7 +266,7 @@ class Musig2Const extends Musig2Bsae {
         reason: "Missmatch between secret key and public key.",
       );
     }
-    final a = MuSig2Utils.getSessionKeyAggCoeffConst(
+    final a = MuSig2UtilsConst.getSessionKeyAggCoeffConst(
       session: session,
       pkBytes: pkBytes,
     );

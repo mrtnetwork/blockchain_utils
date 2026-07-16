@@ -3,11 +3,12 @@ import 'package:blockchain_utils/bip/bip/bip32/slip10/bip32_slip10_ed25519_blake
 import 'package:blockchain_utils/utils/utils.dart';
 import 'package:test/test.dart';
 
+import '../../../quick_hex.dart';
 import 'test_vector.dart';
 
 void main() {
   test("bip32 ed25519 blake2b", () {
-    for (final i in testVector) {
+    for (final i in testVector.shuffleTake()) {
       final seed = BytesUtils.fromHexString(i["seed"]);
       var w = Bip32Slip10Ed25519Blake2b.fromSeed(seed);
       expect(w.publicKey.toExtended, i["public"]);

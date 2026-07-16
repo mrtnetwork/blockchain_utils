@@ -3,8 +3,6 @@ import 'package:blockchain_utils/bip/ecc/keys/ecdsa_keys.dart';
 import 'package:blockchain_utils/crypto/crypto/ec/musig2/constants/const.dart';
 import 'package:blockchain_utils/crypto/crypto/ec/musig2/types/types.dart';
 import 'package:blockchain_utils/crypto/crypto/ec/projective/native/native.dart';
-import 'package:blockchain_utils/crypto/crypto/ec/projective/secp256k1/secp256k1.dart';
-import 'package:blockchain_utils/crypto/crypto/ec/utils/secp256k1.dart';
 import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/helper/helper.dart';
 import 'package:blockchain_utils/utils/binary/bytes_tracker.dart';
@@ -66,34 +64,6 @@ class MuSig2Utils {
       );
     }
     return _keyAggCoeff(keys: session.publicKeys, key: pkBytes);
-  }
-
-  static Secp256k1Scalar getSessionKeyAggCoeffConst({
-    required MuSig2Session session,
-    required List<int> pkBytes,
-  }) {
-    final signerPk = session.publicKeys.any(
-      (e) => BytesUtils.bytesEqualConst(e, pkBytes),
-    );
-    if (!signerPk) {
-      throw ArgumentException.invalidOperationArguments(
-        "getSessionKeyAggCoeff",
-        name: "pk",
-        reason: "The signer pubkey does not exists in pubkey list.",
-      );
-    }
-    if (_isSecondUniqueKey(keys: session.publicKeys, key: pkBytes)) {
-      return Secp256k1Const.secp256k1ScalarOne;
-    }
-    final hashKeys = P2TRUtils.taggedHash(
-      MuSig2Constants.keyAggListDomain,
-      session.publicKeys.expand((e) => e).toList(),
-    );
-    final hash = P2TRUtils.taggedHash(MuSig2Constants.keyAggCoeffDomain, [
-      ...hashKeys,
-      ...pkBytes,
-    ]);
-    return Secp256k1Utils.scalarFromBytes(hash);
   }
 
   static List<List<int>> sortPublicKeys(List<List<int>> keys) {

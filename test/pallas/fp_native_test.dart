@@ -1,4 +1,5 @@
 import 'package:blockchain_utils/blockchain_utils.dart';
+import 'package:blockchain_utils/numbers/src/u64.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -89,26 +90,26 @@ void _isoMapIdentity() {
   var r = PallasIsoNativePoint(
     x: PallasNativeFp.fromBytes(
       PallasFp.fromRaw([
-        BigInt.parse("0xc37f111df5c4419e"),
-        BigInt.parse("0x593c053e5e2337ad"),
-        BigInt.parse("0x9c6cfc47bce1aba6"),
-        BigInt.parse("0x0a881e4d556945aa"),
+        Uint64.parseHex("0xc37f111df5c4419e"),
+        Uint64.parseHex("0x593c053e5e2337ad"),
+        Uint64.parseHex("0x9c6cfc47bce1aba6"),
+        Uint64.parseHex("0x0a881e4d556945aa"),
       ]).toBytes(),
     ),
     y: PallasNativeFp.fromBytes(
       PallasFp.fromRaw([
-        BigInt.parse("0xf234e04434502b47"),
-        BigInt.parse("0x6979f7f2b0acf188"),
-        BigInt.parse("0xa62eec46f662cb4e"),
-        BigInt.parse("0x035e5c8a06d5cfb4"),
+        Uint64.parseHex("0xf234e04434502b47"),
+        Uint64.parseHex("0x6979f7f2b0acf188"),
+        Uint64.parseHex("0xa62eec46f662cb4e"),
+        Uint64.parseHex("0x035e5c8a06d5cfb4"),
       ]).toBytes(),
     ),
     z: PallasNativeFp.fromBytes(
       PallasFp.fromRaw([
-        BigInt.parse("0x11ab791d4fb6f6b4"),
-        BigInt.parse("0x575baa717958ef1f"),
-        BigInt.parse("0x6ac4e343558dcbf3"),
-        BigInt.parse("0x3af37975b0933125"),
+        Uint64.parseHex("0x11ab791d4fb6f6b4"),
+        Uint64.parseHex("0x575baa717958ef1f"),
+        Uint64.parseHex("0x6ac4e343558dcbf3"),
+        Uint64.parseHex("0x3af37975b0933125"),
       ]).toBytes(),
     ),
   );
@@ -131,13 +132,13 @@ void _isoMapIdentity() {
 
 void _testDelta() {
   expect(
-    PallasNativeFp.fromBytes(PallasFp.delta().toBytes()),
+    PallasNativeFp.fromBytes(PallasFp.delta.toBytes()),
     PallasNativeFp.fromBytes(
-      PallasFp.generator().pow([
-        BigInt.one << PallasFPConst.S,
-        BigInt.zero,
-        BigInt.zero,
-        BigInt.zero,
+      PallasFp.generator.pow([
+        Uint64.one << PallasFPConst.S,
+        Uint64.zero,
+        Uint64.zero,
+        Uint64.zero,
       ]).toBytes(),
     ),
   );
@@ -145,7 +146,7 @@ void _testDelta() {
 
 void _testInv2() {
   expect(
-    PallasNativeFp.fromBytes(PallasFp.twoInv().toBytes()),
+    PallasNativeFp.fromBytes(PallasFp.twoInv.toBytes()),
     PallasNativeFp(BigInt.from(2)).invert(),
   );
 }
@@ -157,13 +158,13 @@ void _testRootOfUnity() {
 
 void _testRootOfUnityInv() {
   expect(
-    PallasNativeFp.fromBytes(PallasFp.rootOfUnityInv().toBytes()),
+    PallasNativeFp.fromBytes(PallasFp.rootOfUnityInv.toBytes()),
     PallasNativeFp.rootOfUnity().invert(),
   );
 }
 
 void _testZeta() {
-  final zeta = PallasNativeFp.fromBytes(PallasFp.zeta().toBytes());
+  final zeta = PallasNativeFp.fromBytes(PallasFp.zeta.toBytes());
   final v = BytesUtils.toHexString(zeta.toBytes().reversed.toList());
   expect(v, "12ccca834acdba712caad5dc57aab1b01d1f8bd237ad31491dad5ebdfdfe4ab9");
   final a = zeta;
@@ -175,7 +176,7 @@ void _testZeta() {
 }
 
 void _testSqrtRatioAndAlt() {
-  final toInv = PallasNativeFp.fromBytes(PallasFp.twoInv().toBytes());
+  final toInv = PallasNativeFp.fromBytes(PallasFp.twoInv.toBytes());
 
   // (true, sqrt(num/div)), if num and div are nonzero and num/div is a square
   var num = toInv.square();
@@ -234,7 +235,7 @@ void _testSqrtRatioAndAlt() {
 }
 
 void _testSqrt() {
-  final toInv = PallasNativeFp.fromBytes(PallasFp.twoInv().toBytes());
+  final toInv = PallasNativeFp.fromBytes(PallasFp.twoInv.toBytes());
 
   final v = toInv.square().sqrt();
   expect(v.result == toInv || (-v.result) == toInv, true);

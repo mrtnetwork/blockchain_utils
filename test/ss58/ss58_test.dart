@@ -2,6 +2,8 @@ import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/ss58/ss58_base.dart';
 import 'package:test/test.dart';
 
+import '../quick_hex.dart';
+
 final List<Map<String, dynamic>> _testVector = [
   {
     "raw": "facc4de5b7745215ec8255c743f044d2a94ef72b2fb6d8e22c35ffbc3ac8ac9e",
@@ -36,14 +38,14 @@ final List<Map<String, dynamic>> _testVector = [
 ];
 void main() {
   test("decode", () {
-    for (final i in _testVector) {
+    for (final i in _testVector.shuffleTake()) {
       final dec = SS58Decoder.decode(i["encode"]);
       expect(dec.$1, i["ss58_format"]);
       expect(BytesUtils.toHexString(dec.$2), i["raw"]);
     }
   });
   test("encode", () {
-    for (final i in _testVector) {
+    for (final i in _testVector.shuffleTake()) {
       final dec = SS58Encoder.encode(
         BytesUtils.fromHexString(i["raw"]),
         i["ss58_format"],

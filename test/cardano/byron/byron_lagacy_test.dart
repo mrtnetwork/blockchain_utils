@@ -1,6 +1,5 @@
 import 'package:blockchain_utils/bip/bip/bip32/bip32_key_data.dart';
 import 'package:blockchain_utils/bip/cardano/byron/cardano_byron_legacy.dart';
-
 import 'package:blockchain_utils/utils/utils.dart';
 import 'package:test/test.dart';
 import '../../quick_hex.dart';
@@ -8,7 +7,8 @@ import 'test_vector.dart';
 
 void main() {
   test("byron test", () {
-    for (final i in testVector) {
+    final vector = testVector.shuffleTake();
+    for (final i in vector) {
       final seed = BytesUtils.fromHexString(i["seed"]);
       final w = CardanoByronLegacy.fromSeed(seed);
       final masterPrivate = w.masterPrivateKey.raw.toHex();

@@ -5,13 +5,12 @@ import 'package:blockchain_utils/crypto/crypto/zcrypto/jubjub/fields/native.dart
 import 'package:blockchain_utils/crypto/crypto/zcrypto/pasta/utils/utils.dart';
 import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/helper/extensions/extensions.dart';
-import 'package:blockchain_utils/utils/compare/compare.dart';
-import 'package:blockchain_utils/utils/equatable/equatable.dart';
+import 'package:blockchain_utils/numbers/src/u64.dart';
 import 'package:blockchain_utils/utils/numbers/utils/bigint_utils.dart';
-import 'package:blockchain_utils/utils/binary/binary_operation.dart';
 
 abstract class JubJubPrimeField<F extends JubJubPrimeField<F>>
     extends CryptoField<F> {
+  const JubJubPrimeField();
   List<int> toBytes();
   List<bool> toBits() {
     final toBytes = this.toBytes();
@@ -32,6 +31,7 @@ abstract class JubJubPrimeField<F extends JubJubPrimeField<F>>
 
 abstract class JubJubField<F extends JubJubField<F>>
     extends JubJubPrimeField<F> {
+  const JubJubField();
   @override
   List<bool> charBits() {
     return BigintUtils.toBinaryBool(JubJubNativeConst.qJ, bitLength: 256);
@@ -40,157 +40,144 @@ abstract class JubJubField<F extends JubJubField<F>>
 
 abstract class JubJubScalar<F extends JubJubScalar<F>>
     extends JubJubPrimeField<F> {
+  const JubJubScalar();
   @override
   List<bool> charBits() {
     return BigintUtils.toBinaryBool(JubJubNativeConst.rJ, bitLength: 256);
   }
 }
 
-/// Element of the JubJub scalar field Fr, internally represented as 4 64-bit limbs in Montgomery form.
-class JubJubFr extends JubJubScalar<JubJubFr> with ConstantEquality<JubJubFr> {
-  final List<BigInt> limbs;
-  JubJubFr(List<BigInt> limbs)
+/// Element of the JubJub scalar field Fr, internally represented as 4
+/// 64-bit limbs (Uint64, not BigInt) in Montgomery form.
+class JubJubFr extends JubJubScalar<JubJubFr> {
+  final List<Uint64> limbs;
+  const JubJubFr.unsafe(this.limbs);
+  JubJubFr(List<Uint64> limbs)
     : limbs = limbs.exc(length: 4, operation: "JubJubFr").immutable;
 
   factory JubJubFr.montgomeryReduce(
-    BigInt r0,
-    BigInt r1,
-    BigInt r2,
-    BigInt r3,
-    BigInt r4,
-    BigInt r5,
-    BigInt r6,
-    BigInt r7,
+    Uint64 r0,
+    Uint64 r1,
+    Uint64 r2,
+    Uint64 r3,
+    Uint64 r4,
+    Uint64 r5,
+    Uint64 r6,
+    Uint64 r7,
   ) {
-    BigInt k = (r0 * JubJubFrConst.inv).toU64;
-    List<BigInt> t = BigintUtils.mac(
-      r0,
-      k,
-      JubJubFrConst.modulus.limbs[0],
-      BigInt.zero,
-    );
-    BigInt carry = t[1];
-    t = BigintUtils.mac(r1, k, JubJubFrConst.modulus.limbs[1], carry);
-    r1 = t[0];
-    carry = t[1];
+    Uint64 k = r0 * JubJubFrConst.inv;
+    var t = Uint64.mac(r0, k, JubJubFrConst.modulus.limbs[0], Uint64.zero);
+    Uint64 carry = t.$2;
+    t = Uint64.mac(r1, k, JubJubFrConst.modulus.limbs[1], carry);
+    r1 = t.$1;
+    carry = t.$2;
 
-    t = BigintUtils.mac(r2, k, JubJubFrConst.modulus.limbs[2], carry);
-    r2 = t[0];
-    carry = t[1];
+    t = Uint64.mac(r2, k, JubJubFrConst.modulus.limbs[2], carry);
+    r2 = t.$1;
+    carry = t.$2;
 
-    t = BigintUtils.mac(r3, k, JubJubFrConst.modulus.limbs[3], carry);
-    r3 = t[0];
-    carry = t[1];
+    t = Uint64.mac(r3, k, JubJubFrConst.modulus.limbs[3], carry);
+    r3 = t.$1;
+    carry = t.$2;
 
-    t = BigintUtils.adc(r4, BigInt.zero, carry);
-    r4 = t[0];
-    BigInt carry2 = t[1];
+    t = Uint64.adc(r4, Uint64.zero, carry);
+    r4 = t.$1;
+    Uint64 carry2 = t.$2;
 
     // --- 2nd iteration --------------------------------------------------------
-    k = (r1 * JubJubFrConst.inv).toU64;
+    k = r1 * JubJubFrConst.inv;
 
-    t = BigintUtils.mac(r1, k, JubJubFrConst.modulus.limbs[0], BigInt.zero);
-    carry = t[1];
+    t = Uint64.mac(r1, k, JubJubFrConst.modulus.limbs[0], Uint64.zero);
+    carry = t.$2;
 
-    t = BigintUtils.mac(r2, k, JubJubFrConst.modulus.limbs[1], carry);
-    r2 = t[0];
-    carry = t[1];
+    t = Uint64.mac(r2, k, JubJubFrConst.modulus.limbs[1], carry);
+    r2 = t.$1;
+    carry = t.$2;
 
-    t = BigintUtils.mac(r3, k, JubJubFrConst.modulus.limbs[2], carry);
-    r3 = t[0];
-    carry = t[1];
+    t = Uint64.mac(r3, k, JubJubFrConst.modulus.limbs[2], carry);
+    r3 = t.$1;
+    carry = t.$2;
 
-    t = BigintUtils.mac(r4, k, JubJubFrConst.modulus.limbs[3], carry);
-    r4 = t[0];
-    carry = t[1];
+    t = Uint64.mac(r4, k, JubJubFrConst.modulus.limbs[3], carry);
+    r4 = t.$1;
+    carry = t.$2;
 
-    t = BigintUtils.adc(r5, carry2, carry);
-    r5 = t[0];
-    carry2 = t[1];
+    t = Uint64.adc(r5, carry2, carry);
+    r5 = t.$1;
+    carry2 = t.$2;
 
     // --- 3rd iteration --------------------------------------------------------
-    k = (r2 * JubJubFrConst.inv).toU64;
+    k = r2 * JubJubFrConst.inv;
 
-    t = BigintUtils.mac(r2, k, JubJubFrConst.modulus.limbs[0], BigInt.zero);
-    carry = t[1];
+    t = Uint64.mac(r2, k, JubJubFrConst.modulus.limbs[0], Uint64.zero);
+    carry = t.$2;
 
-    t = BigintUtils.mac(r3, k, JubJubFrConst.modulus.limbs[1], carry);
-    r3 = t[0];
-    carry = t[1];
+    t = Uint64.mac(r3, k, JubJubFrConst.modulus.limbs[1], carry);
+    r3 = t.$1;
+    carry = t.$2;
 
-    t = BigintUtils.mac(r4, k, JubJubFrConst.modulus.limbs[2], carry);
-    r4 = t[0];
-    carry = t[1];
+    t = Uint64.mac(r4, k, JubJubFrConst.modulus.limbs[2], carry);
+    r4 = t.$1;
+    carry = t.$2;
 
-    t = BigintUtils.mac(r5, k, JubJubFrConst.modulus.limbs[3], carry);
-    r5 = t[0];
-    carry = t[1];
+    t = Uint64.mac(r5, k, JubJubFrConst.modulus.limbs[3], carry);
+    r5 = t.$1;
+    carry = t.$2;
 
-    t = BigintUtils.adc(r6, carry2, carry);
-    r6 = t[0];
-    carry2 = t[1];
+    t = Uint64.adc(r6, carry2, carry);
+    r6 = t.$1;
+    carry2 = t.$2;
 
     // --- 4th iteration --------------------------------------------------------
-    k = (r3 * JubJubFrConst.inv).toU64;
+    k = r3 * JubJubFrConst.inv;
 
-    t = BigintUtils.mac(r3, k, JubJubFrConst.modulus.limbs[0], BigInt.zero);
-    carry = t[1];
+    t = Uint64.mac(r3, k, JubJubFrConst.modulus.limbs[0], Uint64.zero);
+    carry = t.$2;
 
-    t = BigintUtils.mac(r4, k, JubJubFrConst.modulus.limbs[1], carry);
-    r4 = t[0];
-    carry = t[1];
+    t = Uint64.mac(r4, k, JubJubFrConst.modulus.limbs[1], carry);
+    r4 = t.$1;
+    carry = t.$2;
 
-    t = BigintUtils.mac(r5, k, JubJubFrConst.modulus.limbs[2], carry);
-    r5 = t[0];
-    carry = t[1];
+    t = Uint64.mac(r5, k, JubJubFrConst.modulus.limbs[2], carry);
+    r5 = t.$1;
+    carry = t.$2;
 
-    t = BigintUtils.mac(r6, k, JubJubFrConst.modulus.limbs[3], carry);
-    r6 = t[0];
-    carry = t[1];
+    t = Uint64.mac(r6, k, JubJubFrConst.modulus.limbs[3], carry);
+    r6 = t.$1;
+    carry = t.$2;
 
-    t = BigintUtils.adc(r7, carry2, carry);
-    r7 = t[0];
+    t = Uint64.adc(r7, carry2, carry);
+    r7 = t.$1;
     return JubJubFr([r4, r5, r6, r7]).sub(JubJubFrConst.modulus);
   }
+
   factory JubJubFr.fromBytes(List<int> bytes) {
     bytes = bytes.exc(
       length: 32,
       operation: "fromBytes",
       reason: "Invalid field bytes length.",
     );
-    final tmp = JubJubFr([
-      BigintUtils.fromBytes(bytes.sublist(0, 8), byteOrder: Endian.little),
-      BigintUtils.fromBytes(bytes.sublist(8, 16), byteOrder: Endian.little),
-      BigintUtils.fromBytes(bytes.sublist(16, 24), byteOrder: Endian.little),
-      BigintUtils.fromBytes(bytes.sublist(24, 32), byteOrder: Endian.little),
-    ]);
-    BigInt borrow = BigInt.zero;
-    List<BigInt> temp = BigintUtils.sbb(
+    final tmp = JubJubFr(
+      List.generate(
+        4,
+        (i) => Uint64.fromBytes(bytes, endian: Endian.little, offset: i * 8),
+      ),
+    );
+    Uint64 borrowMask = Uint64.zero;
+    var temp = Uint64.sbb(
       tmp.limbs[0],
       JubJubFrConst.modulus.limbs[0],
-      borrow,
+      borrowMask,
     );
-    borrow = temp[1];
-    temp = BigintUtils.sbb(
-      tmp.limbs[1],
-      JubJubFrConst.modulus.limbs[1],
-      borrow,
-    );
-    borrow = temp[1];
-    temp = BigintUtils.sbb(
-      tmp.limbs[2],
-      JubJubFrConst.modulus.limbs[2],
-      borrow,
-    );
-    borrow = temp[1];
-    temp = BigintUtils.sbb(
-      tmp.limbs[3],
-      JubJubFrConst.modulus.limbs[3],
-      borrow,
-    );
-    borrow = temp[1];
-    final result = tmp * JubJubFr.r2();
-    if ((borrow & BigInt.one) != BigInt.one) {
+    borrowMask = temp.$2;
+    temp = Uint64.sbb(tmp.limbs[1], JubJubFrConst.modulus.limbs[1], borrowMask);
+    borrowMask = temp.$2;
+    temp = Uint64.sbb(tmp.limbs[2], JubJubFrConst.modulus.limbs[2], borrowMask);
+    borrowMask = temp.$2;
+    temp = Uint64.sbb(tmp.limbs[3], JubJubFrConst.modulus.limbs[3], borrowMask);
+    borrowMask = temp.$2;
+    final result = tmp * JubJubFr.r2;
+    if ((borrowMask & Uint64.one) != Uint64.one) {
       throw ArgumentException.invalidOperationArguments(
         "JubJubFr",
         reason: "Invalid point encoding bytes.",
@@ -198,341 +185,312 @@ class JubJubFr extends JubJubScalar<JubJubFr> with ConstantEquality<JubJubFr> {
     }
     return result;
   }
-  factory JubJubFr._fromU512(List<BigInt> limbs) {
+
+  factory JubJubFr._fromU512(List<Uint64> limbs) {
     assert(limbs.length == 8);
-
-    // Lower 256 bits
     JubJubFr d0 = JubJubFr([limbs[0], limbs[1], limbs[2], limbs[3]]);
-    // Upper 256 bits
     JubJubFr d1 = JubJubFr([limbs[4], limbs[5], limbs[6], limbs[7]]);
+    return d0 * JubJubFr.r2 + d1 * JubJubFr.r3;
+  }
 
-    return d0 * JubJubFr.r2() + d1 * JubJubFr.r3();
-  }
   factory JubJubFr.fromBytes64(List<int> bytes) {
-    return JubJubFr._fromU512([
-      BigintUtils.fromBytes(bytes.sublist(0, 8), byteOrder: Endian.little),
-      BigintUtils.fromBytes(bytes.sublist(8, 16), byteOrder: Endian.little),
-      BigintUtils.fromBytes(bytes.sublist(16, 24), byteOrder: Endian.little),
-      BigintUtils.fromBytes(bytes.sublist(24, 32), byteOrder: Endian.little),
-      BigintUtils.fromBytes(bytes.sublist(32, 40), byteOrder: Endian.little),
-      BigintUtils.fromBytes(bytes.sublist(40, 48), byteOrder: Endian.little),
-      BigintUtils.fromBytes(bytes.sublist(48, 56), byteOrder: Endian.little),
-      BigintUtils.fromBytes(bytes.sublist(56, 64), byteOrder: Endian.little),
-    ]);
+    return JubJubFr._fromU512(
+      List.generate(
+        8,
+        (i) => Uint64.fromBytes(bytes, endian: Endian.little, offset: i * 8),
+      ),
+    );
   }
-  factory JubJubFr.from(BigInt val) {
+
+  factory JubJubFr.from(Uint64 val) {
     return JubJubFr([
       val,
-      BigInt.zero,
-      BigInt.zero,
-      BigInt.zero,
-    ]).mul(JubJubFr.r2());
+      Uint64.zero,
+      Uint64.zero,
+      Uint64.zero,
+    ]).mul(JubJubFr.r2);
   }
-  factory JubJubFr.fromRaw(List<BigInt> val) {
+
+  factory JubJubFr.fromRaw(List<Uint64> val) {
     if (val.length != 4) {
       throw ArgumentException.invalidOperationArguments(
         "fromRaw",
         reason: "Invalid limbs length.",
       );
     }
-    return JubJubFr(val).mul(JubJubFr.r2());
+    return JubJubFr(val).mul(JubJubFr.r2);
   }
-  factory JubJubFr.zero() {
-    return JubJubFr([BigInt.zero, BigInt.zero, BigInt.zero, BigInt.zero]);
-  }
-  factory JubJubFr.one() {
-    return JubJubFr.r();
-  }
-  factory JubJubFr.r() => JubJubFr([
-    BigInt.parse("0x25f80bb3b99607d9"),
-    BigInt.parse("0xf315d62f66b6e750"),
-    BigInt.parse("0x932514eeeb8814f4"),
-    BigInt.parse("0x09a6fc6f479155c6"),
+
+  static const JubJubFr zero = JubJubFr.unsafe([
+    Uint64.zero,
+    Uint64.zero,
+    Uint64.zero,
+    Uint64.zero,
   ]);
-  factory JubJubFr.r3() => JubJubFr([
-    BigInt.parse("0xe0d6c6563d830544"),
-    BigInt.parse("0x323e3883598d0f85"),
-    BigInt.parse("0xf0fea3004c2e2ba8"),
-    BigInt.parse("0x05874f84946737ec"),
+  static const JubJubFr one = JubJubFr.r;
+
+  static const JubJubFr r = JubJubFr.unsafe([
+    Uint64.unsafe(637012915, 3113617369),
+    Uint64.unsafe(4078294575, 1723262800),
+    Uint64.unsafe(2468680942, 3951564020),
+    Uint64.unsafe(161938543, 1200707014),
   ]);
-  factory JubJubFr.twoInv() => JubJubFr([
-    BigInt.parse("0x7b478d0948469a48"),
-    BigInt.parse("0xccbefb6199bf7be9"),
-    BigInt.parse("0xccc627f7f65e27fa"),
-    BigInt.parse("0xc1258acd66282b7"), // note: kept your hex exactly
+  static const JubJubFr r3 = JubJubFr.unsafe([
+    Uint64.unsafe(3772171862, 1031996740),
+    Uint64.unsafe(842938499, 1502416773),
+    Uint64.unsafe(4043219712, 1278094248),
+    Uint64.unsafe(92753796, 2489792492),
   ]);
-  factory JubJubFr.generator() => JubJubFr([
-    BigInt.parse("0x720b1b19d49ea8f1"),
-    BigInt.parse("0xbf4aa36101f13a58"),
-    BigInt.parse("0x5fa8cc968193ccbb"),
-    BigInt.parse("0x0e70cbdc7dccf3ac"),
+  static const JubJubFr twoInv = JubJubFr.unsafe([
+    Uint64.unsafe(2068286729, 1212586568),
+    Uint64.unsafe(3435068257, 2579463145),
+    Uint64.unsafe(3435538423, 4133365754),
+    Uint64.unsafe(202528940, 3596780215),
   ]);
-  factory JubJubFr.rootOfUnity() => JubJubFr([
-    BigInt.parse("0xaa9f02ab1d6124de"),
-    BigInt.parse("0xb3524a6466112932"),
-    BigInt.parse("0x7342261215ac260b"),
-    BigInt.parse("0x04d6b87b1da259e2"),
+  static const JubJubFr generator = JubJubFr.unsafe([
+    Uint64.unsafe(1913330457, 3567167729),
+    Uint64.unsafe(3209339745, 32586328),
+    Uint64.unsafe(1604897942, 2173947067),
+    Uint64.unsafe(242273244, 2110583724),
   ]);
-  factory JubJubFr.rootOfUnityInv() => JubJubFr.rootOfUnity();
-  factory JubJubFr.delta() => JubJubFr([
-    BigInt.parse("0x994f5ac0c8e41613"),
-    BigInt.parse("0x3bb731630bbf0b84"),
-    BigInt.parse("0x1df0a4820371a563"),
-    BigInt.parse("0x0e303e96f8cb47bd"),
+  static const JubJubFr rootOfUnity = JubJubFr.unsafe([
+    Uint64.unsafe(2862547627, 492905694),
+    Uint64.unsafe(3008514660, 1712400690),
+    Uint64.unsafe(1933714962, 363603467),
+    Uint64.unsafe(81180795, 497179106),
   ]);
-  factory JubJubFr.r2() => JubJubFr([
-    BigInt.parse("0x67719aa495e57731"),
-    BigInt.parse("0x51b0cef09ce3fc26"),
-    BigInt.parse("0x69dab7fac026e9a5"),
-    BigInt.parse("0x04f6547b8d127688"),
+  static const JubJubFr rootOfUnityInv = JubJubFr.rootOfUnity;
+  static const JubJubFr delta = JubJubFr.unsafe([
+    Uint64.unsafe(2572114624, 3370391059),
+    Uint64.unsafe(1001861475, 197069700),
+    Uint64.unsafe(502310018, 57779555),
+    Uint64.unsafe(238042774, 4174071741),
   ]);
+  static const JubJubFr r2 = JubJubFr.unsafe([
+    Uint64.unsafe(1735498404, 2514843441),
+    Uint64.unsafe(1370541808, 2632186918),
+    Uint64.unsafe(1775941626, 3223775653),
+    Uint64.unsafe(83252347, 2366797448),
+  ]);
+
   @override
   JubJubFr square() {
-    List<BigInt> tmp = BigintUtils.mac(
-      BigInt.zero,
-      limbs[0],
-      limbs[1],
-      BigInt.zero,
-    );
-    BigInt r1 = tmp[0];
-    BigInt carry = tmp[1];
+    var tmp = Uint64.mac(Uint64.zero, limbs[0], limbs[1], Uint64.zero);
+    Uint64 r1 = tmp.$1;
+    Uint64 carry = tmp.$2;
 
-    tmp = BigintUtils.mac(BigInt.zero, limbs[0], limbs[2], carry);
-    BigInt r2 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(Uint64.zero, limbs[0], limbs[2], carry);
+    Uint64 r2 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(BigInt.zero, limbs[0], limbs[3], carry);
-    BigInt r3 = tmp[0];
-    BigInt r4 = tmp[1];
+    tmp = Uint64.mac(Uint64.zero, limbs[0], limbs[3], carry);
+    Uint64 r3 = tmp.$1;
+    Uint64 r4 = tmp.$2;
 
-    tmp = BigintUtils.mac(r3, limbs[1], limbs[2], BigInt.zero);
-    r3 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(r3, limbs[1], limbs[2], Uint64.zero);
+    r3 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(r4, limbs[1], limbs[3], carry);
-    r4 = tmp[0];
-    BigInt r5 = tmp[1];
+    tmp = Uint64.mac(r4, limbs[1], limbs[3], carry);
+    r4 = tmp.$1;
+    Uint64 r5 = tmp.$2;
 
-    tmp = BigintUtils.mac(r5, limbs[2], limbs[3], BigInt.zero);
-    r5 = tmp[0];
-    BigInt r6 = tmp[1];
+    tmp = Uint64.mac(r5, limbs[2], limbs[3], Uint64.zero);
+    r5 = tmp.$1;
+    Uint64 r6 = tmp.$2;
 
     // Double the cross products
-    BigInt r7 = (r6 >> 63).toU64;
-    r6 = ((r6 << 1) | (r5 >> 63)).toU64;
-    r5 = ((r5 << 1) | (r4 >> 63)).toU64;
-    r4 = ((r4 << 1) | (r3 >> 63)).toU64;
-    r3 = ((r3 << 1) | (r2 >> 63)).toU64;
-    r2 = ((r2 << 1) | (r1 >> 63)).toU64;
-    r1 = (r1 << 1).toU64;
+    Uint64 r7 = r6 >> 63;
+    r6 = (r6 << 1) | (r5 >> 63);
+    r5 = (r5 << 1) | (r4 >> 63);
+    r4 = (r4 << 1) | (r3 >> 63);
+    r3 = (r3 << 1) | (r2 >> 63);
+    r2 = (r2 << 1) | (r1 >> 63);
+    r1 = r1 << 1;
 
-    tmp = BigintUtils.mac(BigInt.zero, limbs[0], limbs[0], BigInt.zero);
-    BigInt r0 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(Uint64.zero, limbs[0], limbs[0], Uint64.zero);
+    Uint64 r0 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.adc(BigInt.zero, r1, carry);
-    r1 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.adc(Uint64.zero, r1, carry);
+    r1 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(r2, limbs[1], limbs[1], carry);
-    r2 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(r2, limbs[1], limbs[1], carry);
+    r2 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.adc(BigInt.zero, r3, carry);
-    r3 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.adc(Uint64.zero, r3, carry);
+    r3 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(r4, limbs[2], limbs[2], carry);
-    r4 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(r4, limbs[2], limbs[2], carry);
+    r4 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.adc(BigInt.zero, r5, carry);
-    r5 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.adc(Uint64.zero, r5, carry);
+    r5 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(r6, limbs[3], limbs[3], carry);
-    r6 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(r6, limbs[3], limbs[3], carry);
+    r6 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.adc(BigInt.zero, r7, carry);
-    r7 = tmp[0];
+    tmp = Uint64.adc(Uint64.zero, r7, carry);
+    r7 = tmp.$1;
     return JubJubFr.montgomeryReduce(r0, r1, r2, r3, r4, r5, r6, r7);
   }
 
   JubJubFr sub(JubJubFr rhs) {
-    final x0 = limbs[0];
-    final x1 = limbs[1];
-    final x2 = limbs[2];
-    final x3 = limbs[3];
+    final x0 = limbs[0], x1 = limbs[1], x2 = limbs[2], x3 = limbs[3];
+    final y0 = rhs.limbs[0],
+        y1 = rhs.limbs[1],
+        y2 = rhs.limbs[2],
+        y3 = rhs.limbs[3];
 
-    final y0 = rhs.limbs[0];
-    final y1 = rhs.limbs[1];
-    final y2 = rhs.limbs[2];
-    final y3 = rhs.limbs[3];
+    var t = Uint64.sbb(x0, y0, Uint64.zero);
+    Uint64 d0 = t.$1;
+    Uint64 borrow = t.$2;
 
-    // ----------- First SBB chain -----------
-    List<BigInt> t = BigintUtils.sbb(x0, y0, BigInt.zero);
-    BigInt d0 = t[0];
-    BigInt borrow = t[1];
+    t = Uint64.sbb(x1, y1, borrow);
+    Uint64 d1 = t.$1;
+    borrow = t.$2;
 
-    t = BigintUtils.sbb(x1, y1, borrow);
-    BigInt d1 = t[0];
-    borrow = t[1];
+    t = Uint64.sbb(x2, y2, borrow);
+    Uint64 d2 = t.$1;
+    borrow = t.$2;
 
-    t = BigintUtils.sbb(x2, y2, borrow);
-    BigInt d2 = t[0];
-    borrow = t[1];
+    t = Uint64.sbb(x3, y3, borrow);
+    Uint64 d3 = t.$1;
+    borrow = t.$2;
 
-    t = BigintUtils.sbb(x3, y3, borrow);
-    BigInt d3 = t[0];
-    borrow = t[1];
+    t = Uint64.adc(d0, JubJubFrConst.modulus.limbs[0] & borrow, Uint64.zero);
+    d0 = t.$1;
+    Uint64 carry = t.$2;
 
-    t = BigintUtils.adc(
-      d0,
-      JubJubFrConst.modulus.limbs[0] & borrow,
-      BigInt.zero,
-    );
-    d0 = t[0];
-    BigInt carry = t[1];
+    t = Uint64.adc(d1, JubJubFrConst.modulus.limbs[1] & borrow, carry);
+    d1 = t.$1;
+    carry = t.$2;
 
-    t = BigintUtils.adc(d1, JubJubFrConst.modulus.limbs[1] & borrow, carry);
-    d1 = t[0];
-    carry = t[1];
+    t = Uint64.adc(d2, JubJubFrConst.modulus.limbs[2] & borrow, carry);
+    d2 = t.$1;
+    carry = t.$2;
 
-    t = BigintUtils.adc(d2, JubJubFrConst.modulus.limbs[2] & borrow, carry);
-    d2 = t[0];
-    carry = t[1];
-
-    t = BigintUtils.adc(d3, JubJubFrConst.modulus.limbs[3] & borrow, carry);
-    d3 = t[0];
+    t = Uint64.adc(d3, JubJubFrConst.modulus.limbs[3] & borrow, carry);
+    d3 = t.$1;
 
     return JubJubFr([d0, d1, d2, d3]);
   }
 
   JubJubFr mul(JubJubFr rhs) {
-    final x0 = limbs[0];
-    final x1 = limbs[1];
-    final x2 = limbs[2];
-    final x3 = limbs[3];
+    final x0 = limbs[0], x1 = limbs[1], x2 = limbs[2], x3 = limbs[3];
+    final y0 = rhs.limbs[0],
+        y1 = rhs.limbs[1],
+        y2 = rhs.limbs[2],
+        y3 = rhs.limbs[3];
 
-    final y0 = rhs.limbs[0];
-    final y1 = rhs.limbs[1];
-    final y2 = rhs.limbs[2];
-    final y3 = rhs.limbs[3];
+    var t = Uint64.mac(Uint64.zero, x0, y0, Uint64.zero);
+    Uint64 r0 = t.$1;
+    Uint64 carry = t.$2;
 
-    // ---------------- SCHOOLBOOK MULTIPLICATION ----------------
+    t = Uint64.mac(Uint64.zero, x0, y1, carry);
+    Uint64 r1 = t.$1;
+    carry = t.$2;
 
-    // row 0
-    List<BigInt> t = BigintUtils.mac(BigInt.zero, x0, y0, BigInt.zero);
-    BigInt r0 = t[0];
-    BigInt carry = t[1];
+    t = Uint64.mac(Uint64.zero, x0, y2, carry);
+    Uint64 r2 = t.$1;
+    carry = t.$2;
 
-    t = BigintUtils.mac(BigInt.zero, x0, y1, carry);
-    BigInt r1 = t[0];
-    carry = t[1];
+    t = Uint64.mac(Uint64.zero, x0, y3, carry);
+    Uint64 r3 = t.$1;
+    Uint64 r4 = t.$2;
 
-    t = BigintUtils.mac(BigInt.zero, x0, y2, carry);
-    BigInt r2 = t[0];
-    carry = t[1];
+    t = Uint64.mac(r1, x1, y0, Uint64.zero);
+    r1 = t.$1;
+    carry = t.$2;
 
-    t = BigintUtils.mac(BigInt.zero, x0, y3, carry);
-    BigInt r3 = t[0];
-    BigInt r4 = t[1];
+    t = Uint64.mac(r2, x1, y1, carry);
+    r2 = t.$1;
+    carry = t.$2;
 
-    // row 1
-    t = BigintUtils.mac(r1, x1, y0, BigInt.zero);
-    r1 = t[0];
-    carry = t[1];
+    t = Uint64.mac(r3, x1, y2, carry);
+    r3 = t.$1;
+    carry = t.$2;
 
-    t = BigintUtils.mac(r2, x1, y1, carry);
-    r2 = t[0];
-    carry = t[1];
+    t = Uint64.mac(r4, x1, y3, carry);
+    r4 = t.$1;
+    Uint64 r5 = t.$2;
 
-    t = BigintUtils.mac(r3, x1, y2, carry);
-    r3 = t[0];
-    carry = t[1];
+    t = Uint64.mac(r2, x2, y0, Uint64.zero);
+    r2 = t.$1;
+    carry = t.$2;
 
-    t = BigintUtils.mac(r4, x1, y3, carry);
-    r4 = t[0];
-    BigInt r5 = t[1];
+    t = Uint64.mac(r3, x2, y1, carry);
+    r3 = t.$1;
+    carry = t.$2;
 
-    // row 2
-    t = BigintUtils.mac(r2, x2, y0, BigInt.zero);
-    r2 = t[0];
-    carry = t[1];
+    t = Uint64.mac(r4, x2, y2, carry);
+    r4 = t.$1;
+    carry = t.$2;
 
-    t = BigintUtils.mac(r3, x2, y1, carry);
-    r3 = t[0];
-    carry = t[1];
+    t = Uint64.mac(r5, x2, y3, carry);
+    r5 = t.$1;
+    Uint64 r6 = t.$2;
 
-    t = BigintUtils.mac(r4, x2, y2, carry);
-    r4 = t[0];
-    carry = t[1];
+    t = Uint64.mac(r3, x3, y0, Uint64.zero);
+    r3 = t.$1;
+    carry = t.$2;
 
-    t = BigintUtils.mac(r5, x2, y3, carry);
-    r5 = t[0];
-    BigInt r6 = t[1];
+    t = Uint64.mac(r4, x3, y1, carry);
+    r4 = t.$1;
+    carry = t.$2;
 
-    // row 3
-    t = BigintUtils.mac(r3, x3, y0, BigInt.zero);
-    r3 = t[0];
-    carry = t[1];
+    t = Uint64.mac(r5, x3, y2, carry);
+    r5 = t.$1;
+    carry = t.$2;
 
-    t = BigintUtils.mac(r4, x3, y1, carry);
-    r4 = t[0];
-    carry = t[1];
-
-    t = BigintUtils.mac(r5, x3, y2, carry);
-    r5 = t[0];
-    carry = t[1];
-
-    t = BigintUtils.mac(r6, x3, y3, carry);
-    r6 = t[0];
-    BigInt r7 = t[1];
+    t = Uint64.mac(r6, x3, y3, carry);
+    r6 = t.$1;
+    Uint64 r7 = t.$2;
     return JubJubFr.montgomeryReduce(r0, r1, r2, r3, r4, r5, r6, r7);
   }
 
   JubJubFr add(JubJubFr rhs) {
-    List<BigInt> t = BigintUtils.adc(limbs[0], rhs.limbs[0], BigInt.zero);
-    BigInt d0 = t[0];
-    BigInt carry = t[1];
+    var t = Uint64.adc(limbs[0], rhs.limbs[0], Uint64.zero);
+    Uint64 d0 = t.$1;
+    Uint64 carry = t.$2;
 
-    t = BigintUtils.adc(limbs[1], rhs.limbs[1], carry);
-    BigInt d1 = t[0];
-    carry = t[1];
+    t = Uint64.adc(limbs[1], rhs.limbs[1], carry);
+    Uint64 d1 = t.$1;
+    carry = t.$2;
 
-    t = BigintUtils.adc(limbs[2], rhs.limbs[2], carry);
-    BigInt d2 = t[0];
-    carry = t[1];
+    t = Uint64.adc(limbs[2], rhs.limbs[2], carry);
+    Uint64 d2 = t.$1;
+    carry = t.$2;
 
-    t = BigintUtils.adc(limbs[3], rhs.limbs[3], carry);
-    BigInt d3 = t[0];
+    t = Uint64.adc(limbs[3], rhs.limbs[3], carry);
+    Uint64 d3 = t.$1;
     return JubJubFr([d0, d1, d2, d3]).sub(JubJubFrConst.modulus);
   }
 
   JubJubFr neg() {
-    // Compute modulus - self
-    List<BigInt> t = BigintUtils.sbb(
-      JubJubFrConst.modulus.limbs[0],
-      limbs[0],
-      BigInt.zero,
-    );
-    BigInt d0 = t[0];
-    BigInt borrow = t[1];
+    var t = Uint64.sbb(JubJubFrConst.modulus.limbs[0], limbs[0], Uint64.zero);
+    Uint64 d0 = t.$1;
+    Uint64 borrow = t.$2;
 
-    t = BigintUtils.sbb(JubJubFrConst.modulus.limbs[1], limbs[1], borrow);
-    BigInt d1 = t[0];
-    borrow = t[1];
+    t = Uint64.sbb(JubJubFrConst.modulus.limbs[1], limbs[1], borrow);
+    Uint64 d1 = t.$1;
+    borrow = t.$2;
 
-    t = BigintUtils.sbb(JubJubFrConst.modulus.limbs[2], limbs[2], borrow);
-    BigInt d2 = t[0];
-    borrow = t[1];
+    t = Uint64.sbb(JubJubFrConst.modulus.limbs[2], limbs[2], borrow);
+    Uint64 d2 = t.$1;
+    borrow = t.$2;
 
-    t = BigintUtils.sbb(JubJubFrConst.modulus.limbs[3], limbs[3], borrow);
-    BigInt d3 = t[0];
+    t = Uint64.sbb(JubJubFrConst.modulus.limbs[3], limbs[3], borrow);
+    Uint64 d3 = t.$1;
+
     final oRed = limbs[0] | limbs[1] | limbs[2] | limbs[3];
-    final isZero = oRed == BigInt.zero;
-    final mask = isZero ? BigInt.zero : BinaryOps.maskBig64;
+    final mask = oRed.isZero ? Uint64.zero : Uint64.max;
     return JubJubFr([d0 & mask, d1 & mask, d2 & mask, d3 & mask]);
   }
 
@@ -545,7 +503,6 @@ class JubJubFr extends JubJubScalar<JubJubFr> with ConstantEquality<JubJubFr> {
       return n;
     }
 
-    // Initial computations
     JubJubFr t1 = square();
     JubJubFr t0 = t1.square();
     JubJubFr t3 = t0 * t1;
@@ -569,7 +526,6 @@ class JubJubFr extends JubJubScalar<JubJubFr> with ConstantEquality<JubJubFr> {
     t3 = t5 * t0;
     t0 = t5.square();
 
-    // Sequence of squarings and multiplications
     t0 = squareAssignMulti(t0, 5) * t3;
     t0 = squareAssignMulti(t0, 6) * t8;
     t0 = squareAssignMulti(t0, 7) * t19;
@@ -606,71 +562,57 @@ class JubJubFr extends JubJubScalar<JubJubFr> with ConstantEquality<JubJubFr> {
     t0 = squareAssignMulti(t0, 6) * t2;
     t0 = squareAssignMulti(t0, 7) * t1;
 
-    if (this == JubJubFr.zero()) return null;
+    if (this == JubJubFr.zero) return null;
     return t0;
   }
 
-  JubJubFr powVartime(List<BigInt> by) {
-    JubJubFr res = JubJubFr.one();
-    for (BigInt e in by.reversed) {
+  JubJubFr powVartime(List<Uint64> by) {
+    JubJubFr res = JubJubFr.one;
+    for (Uint64 e in by.reversed) {
       for (int i = 63; i >= 0; i--) {
         res = res.square();
-
-        if (((e >> i) & BigInt.one) == BigInt.one) {
+        if (((e >> i) & Uint64.one) == Uint64.one) {
           res = res * this;
         }
       }
     }
-
     return res;
   }
 
-  JubJubFr pow(List<BigInt> by) {
-    JubJubFr res = JubJubFr.one();
-
-    // Loop over exponent words, from high → low
+  JubJubFr pow(List<Uint64> by) {
+    JubJubFr res = JubJubFr.one;
     for (final e in by.reversed) {
-      // Loop bits from highest to lowest
       for (int i = 63; i >= 0; i--) {
         res = res.square();
-
-        JubJubFr tmp = res;
-        tmp = tmp * this;
-
-        // Extract bit: ((e >> i) & 1)
-        final bit = ((e >> i) & BigInt.one) == BigInt.one;
-
-        // Constant-time conditional assign
+        JubJubFr tmp = res * this;
+        final bit = ((e >> i) & Uint64.one) == Uint64.one;
         res = bit ? tmp : res;
       }
     }
-
     return res;
   }
 
   @override
   FieldSqrtResult<JubJubFr> sqrt() {
-    // (t - 1) // 2 as four u64s
-    final sqrt = powVartime([
-      BigInt.parse("0xb425c397b5bdcb2e"),
-      BigInt.parse("0x299a0824f3320420"),
-      BigInt.parse("0x4199cec0404d0ec0"),
-      BigInt.parse("0x039f6d3a994cebea"),
-    ]);
+    const m = [
+      Uint64.unsafe(3022373783, 3049114414),
+      Uint64.unsafe(697960484, 4080141344),
+      Uint64.unsafe(1100598976, 1078791872),
+      Uint64.unsafe(60779834, 2571955178),
+    ];
+    final sqrt = powVartime(m);
     return FieldSqrtResult(sqrt, (sqrt * sqrt) == this);
   }
 
   @override
-  bool isZero() {
-    return this == JubJubFr.zero();
-  }
+  bool isZero() => this == JubJubFr.zero;
 
   FieldSqrtResult<JubJubFr> sqrtRatio(JubJubFr num, JubJubFr div) {
     return PastaUtils.sqrtRatioGeneric(
       num: num,
       div: div,
-      zero: JubJubFr.zero(),
-      rootOfUnity: JubJubFr.rootOfUnity(),
+      zero: JubJubFr.zero,
+      rootOfUnity: JubJubFr.rootOfUnity,
     );
   }
 
@@ -693,133 +635,122 @@ class JubJubFr extends JubJubScalar<JubJubFr> with ConstantEquality<JubJubFr> {
       limbs[1],
       limbs[2],
       limbs[3],
-      BigInt.zero,
-      BigInt.zero,
-      BigInt.zero,
-      BigInt.zero,
+      Uint64.zero,
+      Uint64.zero,
+      Uint64.zero,
+      Uint64.zero,
     );
-    final res = List<int>.filled(32, 0);
+    final res = Uint8List(32);
     for (int i = 0; i < 4; i++) {
-      final limbBytes = tmp.limbs[i].toLeBytes(length: 8);
-      res.setRange(i * 8, i * 8 + 8, limbBytes);
+      res.setRange(i * 8, i * 8 + 8, tmp.limbs[i].toBytes(Endian.little));
     }
     return res;
   }
 
   @override
-  bool constantEquality(JubJubFr other) {
-    return CompareUtils.constantTimeBigIntEquals(limbs, other.limbs);
-  }
+  bool operator ==(Object other) =>
+      other is JubJubFr && Uint64.ctEquals(limbs, other.limbs);
+
+  @override
+  int get hashCode => Object.hashAll(limbs);
 }
 
-class JubJubFq extends JubJubField<JubJubFq> with ConstantEquality<JubJubFq> {
-  final List<BigInt> limbs;
-  JubJubFq(List<BigInt> limbs)
+class JubJubFq extends JubJubField<JubJubFq> {
+  final List<Uint64> limbs;
+  const JubJubFq.unsafe(this.limbs);
+  JubJubFq(List<Uint64> limbs)
     : limbs = limbs.exc(length: 4, operation: "JubJubFq").immutable;
-  factory JubJubFq.zero() {
-    return JubJubFq([BigInt.zero, BigInt.zero, BigInt.zero, BigInt.zero]);
-  }
-  factory JubJubFq.one() {
-    return JubJubFq.r();
-  }
-  factory JubJubFq.from(BigInt val) {
+  static const JubJubFq zero = JubJubFq.unsafe([
+    Uint64.zero,
+    Uint64.zero,
+    Uint64.zero,
+    Uint64.zero,
+  ]);
+  static JubJubFq one = JubJubFq.r;
+
+  factory JubJubFq.from(Uint64 val) {
     return JubJubFq([
       val,
-      BigInt.zero,
-      BigInt.zero,
-      BigInt.zero,
-    ]).mul(JubJubFq.r2());
+      Uint64.zero,
+      Uint64.zero,
+      Uint64.zero,
+    ]).mul(JubJubFq.r2);
   }
 
-  factory JubJubFq.edwardsD() {
-    return JubJubFq([
-      BigInt.parse('3049539848285517488'),
-      BigInt.parse('18189135023605205683'),
-      BigInt.parse('8793554888777148625'),
-      BigInt.parse('6339087681201251886'),
-    ]);
-  }
-  factory JubJubFq.edwardsD2() {
-    return JubJubFq([
-      BigInt.parse('6099079700866002271'),
-      BigInt.parse('11897366564962777447'),
-      BigInt.parse('13895890878914525598'),
-      BigInt.parse('4324658502938054420'),
-    ]);
-  }
+  static const JubJubFq edwardsD = JubJubFq.unsafe([
+    Uint64.unsafe(710026325, 3111450288),
+    Uint64.unsafe(4234988015, 228248243),
+    Uint64.unsafe(2047409044, 3262523601),
+    Uint64.unsafe(1475933864, 4262340142),
+  ]);
+  static const edwardsD2 = JubJubFq.unsafe([
+    Uint64.unsafe(1420052652, 1927933279),
+    Uint64.unsafe(2770071515, 456604007),
+    Uint64.unsafe(3235389217, 2068478366),
+    Uint64.unsafe(1006913022, 3531525908),
+  ]);
 
-  factory JubJubFq.rootOfUnityInv() {
-    return JubJubFq([
-      BigInt.parse('0x4256481adcf3219a'),
-      BigInt.parse('0x45f37b7f96b6cad3'),
-      BigInt.parse('0xf9c3f1d75f7a3b27'),
-      BigInt.parse('0x2d2fc049658afd43'),
-    ]);
-  }
-  factory JubJubFq.rootOfUnity() {
-    return JubJubFq([
-      BigInt.parse('0xb9b58d8c5f0e466a'),
-      BigInt.parse('0x5b1b4c801819d7ec'),
-      BigInt.parse('0x0af53ae352a31e64'),
-      BigInt.parse('0x5bf3adda19e9b27b'),
-    ]);
-  }
-  factory JubJubFq.twoInv() {
-    return JubJubFq([
-      BigInt.parse('0x00000000ffffffff'),
-      BigInt.parse('0xac425bfd0001a401'),
-      BigInt.parse('0xccc627f7f65e27fa'),
-      BigInt.parse('0x0c1258acd66282b7'),
-    ]);
-  }
-  factory JubJubFq.r3() {
-    return JubJubFq([
-      BigInt.parse('0xc62c1807439b73af'),
-      BigInt.parse('0x1b3e0d188cf06990'),
-      BigInt.parse('0x73d13c71c7b5f418'),
-      BigInt.parse('0x6e2a5bb9c8db33e9'),
-    ]);
-  }
-  factory JubJubFq.r2() {
-    return JubJubFq([
-      BigInt.parse('0xc999e990f3f29c6d'),
-      BigInt.parse('0x2b6cedcb87925c23'),
-      BigInt.parse('0x05d314967254398f'),
-      BigInt.parse('0x0748d9d99f59ff11'),
-    ]);
-  }
-  factory JubJubFq.r() {
-    return JubJubFq([
-      BigInt.parse('0x00000001fffffffe'),
-      BigInt.parse('0x5884b7fa00034802'),
-      BigInt.parse('0x998c4fefecbc4ff5'),
-      BigInt.parse('0x1824b159acc5056f'),
-    ]);
-  }
-  factory JubJubFq.fromRaw(List<BigInt> val) {
+  static const rootOfUnityInv = JubJubFq.unsafe([
+    Uint64.unsafe(1112950810, 3706921370),
+    Uint64.unsafe(1173584767, 2528561875),
+    Uint64.unsafe(4190368215, 1601846055),
+    Uint64.unsafe(758104137, 1703607619),
+  ]);
+
+  static const rootOfUnity = JubJubFq.unsafe([
+    Uint64.unsafe(3115683212, 1594771050),
+    Uint64.unsafe(1528515712, 404346860),
+    Uint64.unsafe(183843555, 1386421860),
+    Uint64.unsafe(1542696410, 434745979),
+  ]);
+
+  static const twoInv = JubJubFq.unsafe([
+    Uint64.unsafe(0, 4294967295),
+    Uint64.unsafe(2890030077, 107521),
+    Uint64.unsafe(3435538423, 4133365754),
+    Uint64.unsafe(202528940, 3596780215),
+  ]);
+
+  static const r3 = JubJubFq.unsafe([
+    Uint64.unsafe(3324778503, 1134261167),
+    Uint64.unsafe(457051416, 2364565904),
+    Uint64.unsafe(1943092337, 3350590488),
+    Uint64.unsafe(1848269753, 3369808873),
+  ]);
+
+  static const r2 = JubJubFq.unsafe([
+    Uint64.unsafe(3382307216, 4092763245),
+    Uint64.unsafe(728559051, 2274516003),
+    Uint64.unsafe(97719446, 1918122383),
+    Uint64.unsafe(122214873, 2673475345),
+  ]);
+
+  static const r = JubJubFq.unsafe([
+    Uint64.unsafe(1, 4294967294),
+    Uint64.unsafe(1485092858, 215042),
+    Uint64.unsafe(2576109551, 3971764213),
+    Uint64.unsafe(405057881, 2898593135),
+  ]);
+
+  factory JubJubFq.fromRaw(List<Uint64> val) {
     assert(val.length == 4);
-    // Create JubJubFq element from raw limbs
     JubJubFq tmp = JubJubFq(val);
-    // Convert to Montgomery form
-    return tmp.mul(JubJubFq.r2());
+    return tmp.mul(JubJubFq.r2);
   }
-  factory JubJubFq._fromU512(List<BigInt> limbs) {
+
+  factory JubJubFq._fromU512(List<Uint64> limbs) {
     assert(limbs.length == 8);
-
-    // Lower 256 bits
     JubJubFq d0 = JubJubFq([limbs[0], limbs[1], limbs[2], limbs[3]]);
-    // Upper 256 bits
     JubJubFq d1 = JubJubFq([limbs[4], limbs[5], limbs[6], limbs[7]]);
-
-    return d0 * JubJubFq.r2() + d1 * JubJubFq.r3();
+    return d0 * JubJubFq.r2 + d1 * JubJubFq.r3;
   }
 
   factory JubJubFq.conditionalSelect(JubJubFq a, JubJubFq b, bool choice) {
     return JubJubFq([
-      BigintUtils.ctSelectBigInt(a.limbs[0], b.limbs[0], choice),
-      BigintUtils.ctSelectBigInt(a.limbs[1], b.limbs[1], choice),
-      BigintUtils.ctSelectBigInt(a.limbs[2], b.limbs[2], choice),
-      BigintUtils.ctSelectBigInt(a.limbs[3], b.limbs[3], choice),
+      Uint64.ctSelect(a.limbs[0], b.limbs[0], choice),
+      Uint64.ctSelect(a.limbs[1], b.limbs[1], choice),
+      Uint64.ctSelect(a.limbs[2], b.limbs[2], choice),
+      Uint64.ctSelect(a.limbs[3], b.limbs[3], choice),
     ]);
   }
 
@@ -830,16 +761,12 @@ class JubJubFq extends JubJubField<JubJubFq> with ConstantEquality<JubJubFq> {
         reason: "Invalid field encoding bytes length.",
       );
     }
-    return JubJubFq._fromU512([
-      BigintUtils.fromBytes(bytes.sublist(0, 8), byteOrder: Endian.little),
-      BigintUtils.fromBytes(bytes.sublist(8, 16), byteOrder: Endian.little),
-      BigintUtils.fromBytes(bytes.sublist(16, 24), byteOrder: Endian.little),
-      BigintUtils.fromBytes(bytes.sublist(24, 32), byteOrder: Endian.little),
-      BigintUtils.fromBytes(bytes.sublist(32, 40), byteOrder: Endian.little),
-      BigintUtils.fromBytes(bytes.sublist(40, 48), byteOrder: Endian.little),
-      BigintUtils.fromBytes(bytes.sublist(48, 56), byteOrder: Endian.little),
-      BigintUtils.fromBytes(bytes.sublist(56, 64), byteOrder: Endian.little),
-    ]);
+    return JubJubFq._fromU512(
+      List.generate(
+        8,
+        (i) => Uint64.fromBytes(bytes, endian: Endian.little, offset: i * 8),
+      ),
+    );
   }
 
   factory JubJubFq.fromBytes(List<int> bytes) {
@@ -849,130 +776,109 @@ class JubJubFq extends JubJubField<JubJubFq> with ConstantEquality<JubJubFq> {
         reason: "Invalid field encoding bytes length.",
       );
     }
-    final tmp = JubJubFq([
-      BigintUtils.fromBytes(bytes.sublist(0, 8), byteOrder: Endian.little),
-      BigintUtils.fromBytes(bytes.sublist(8, 16), byteOrder: Endian.little),
-      BigintUtils.fromBytes(bytes.sublist(16, 24), byteOrder: Endian.little),
-      BigintUtils.fromBytes(bytes.sublist(24, 32), byteOrder: Endian.little),
-    ]);
+    final tmp = JubJubFq(
+      List.generate(
+        4,
+        (i) => Uint64.fromBytes(bytes, endian: Endian.little, offset: i * 8),
+      ),
+    );
 
-    BigInt borrow = BigInt.zero;
-    var temp = BigintUtils.sbb(
+    Uint64 borrowMask = Uint64.zero;
+    var temp = Uint64.sbb(
       tmp.limbs[0],
       JubJubFqConst.modulus.limbs[0],
-      borrow,
+      borrowMask,
     );
-    borrow = temp[1];
-    temp = BigintUtils.sbb(
-      tmp.limbs[1],
-      JubJubFqConst.modulus.limbs[1],
-      borrow,
-    );
-    borrow = temp[1];
-    temp = BigintUtils.sbb(
-      tmp.limbs[2],
-      JubJubFqConst.modulus.limbs[2],
-      borrow,
-    );
-    borrow = temp[1];
-    temp = BigintUtils.sbb(
-      tmp.limbs[3],
-      JubJubFqConst.modulus.limbs[3],
-      borrow,
-    );
-    borrow = temp[1];
+    borrowMask = temp.$2;
+    temp = Uint64.sbb(tmp.limbs[1], JubJubFqConst.modulus.limbs[1], borrowMask);
+    borrowMask = temp.$2;
+    temp = Uint64.sbb(tmp.limbs[2], JubJubFqConst.modulus.limbs[2], borrowMask);
+    borrowMask = temp.$2;
+    temp = Uint64.sbb(tmp.limbs[3], JubJubFqConst.modulus.limbs[3], borrowMask);
+    borrowMask = temp.$2;
 
-    // Convert to Montgomery form: tmp = tmp * r2
-    final result = tmp * JubJubFq.r2();
-    if ((borrow & BigInt.one) != BigInt.one) {
+    final result = tmp * JubJubFq.r2;
+    if ((borrowMask & Uint64.one) != Uint64.one) {
       throw ArgumentException.invalidOperationArguments(
         "fromBytes",
         reason: "Invalid field encoding bytes.",
       );
     }
-
     return result;
   }
+
   factory JubJubFq.montgomeryReduce(
-    BigInt r0,
-    BigInt r1,
-    BigInt r2,
-    BigInt r3,
-    BigInt r4,
-    BigInt r5,
-    BigInt r6,
-    BigInt r7,
+    Uint64 r0,
+    Uint64 r1,
+    Uint64 r2,
+    Uint64 r3,
+    Uint64 r4,
+    Uint64 r5,
+    Uint64 r6,
+    Uint64 r7,
   ) {
-    BigInt k = (r0 * JubJubFqConst.inv).toU64;
-    var tmp = BigintUtils.mac(
-      r0,
-      k,
-      JubJubFqConst.modulus.limbs[0],
-      BigInt.zero,
-    );
-    var carry = tmp[1];
-    tmp = BigintUtils.mac(r1, k, JubJubFqConst.modulus.limbs[1], carry);
-    r1 = tmp[0];
-    carry = tmp[1];
-    tmp = BigintUtils.mac(r2, k, JubJubFqConst.modulus.limbs[2], carry);
-    r2 = tmp[0];
-    carry = tmp[1];
-    tmp = BigintUtils.mac(r3, k, JubJubFqConst.modulus.limbs[3], carry);
-    r3 = tmp[0];
-    carry = tmp[1];
-    var r4New = BigintUtils.adc(r4, BigInt.zero, carry);
-    r4 = r4New[0];
-    var carry2 = r4New[1];
+    Uint64 k = r0 * JubJubFqConst.inv;
+    var tmp = Uint64.mac(r0, k, JubJubFqConst.modulus.limbs[0], Uint64.zero);
+    var carry = tmp.$2;
+    tmp = Uint64.mac(r1, k, JubJubFqConst.modulus.limbs[1], carry);
+    r1 = tmp.$1;
+    carry = tmp.$2;
+    tmp = Uint64.mac(r2, k, JubJubFqConst.modulus.limbs[2], carry);
+    r2 = tmp.$1;
+    carry = tmp.$2;
+    tmp = Uint64.mac(r3, k, JubJubFqConst.modulus.limbs[3], carry);
+    r3 = tmp.$1;
+    carry = tmp.$2;
+    var r4New = Uint64.adc(r4, Uint64.zero, carry);
+    r4 = r4New.$1;
+    var carry2 = r4New.$2;
 
-    // Step 2
-    k = (r1 * JubJubFqConst.inv).toU64;
-    tmp = BigintUtils.mac(r1, k, JubJubFqConst.modulus.limbs[0], BigInt.zero);
-    carry = tmp[1];
-    tmp = BigintUtils.mac(r2, k, JubJubFqConst.modulus.limbs[1], carry);
-    r2 = tmp[0];
-    carry = tmp[1];
-    tmp = BigintUtils.mac(r3, k, JubJubFqConst.modulus.limbs[2], carry);
-    r3 = tmp[0];
-    carry = tmp[1];
-    tmp = BigintUtils.mac(r4, k, JubJubFqConst.modulus.limbs[3], carry);
-    r4 = tmp[0];
-    carry = tmp[1];
-    var r5New = BigintUtils.adc(r5, carry2, carry);
-    r5 = r5New[0];
-    carry2 = r5New[1];
+    k = r1 * JubJubFqConst.inv;
+    tmp = Uint64.mac(r1, k, JubJubFqConst.modulus.limbs[0], Uint64.zero);
+    carry = tmp.$2;
+    tmp = Uint64.mac(r2, k, JubJubFqConst.modulus.limbs[1], carry);
+    r2 = tmp.$1;
+    carry = tmp.$2;
+    tmp = Uint64.mac(r3, k, JubJubFqConst.modulus.limbs[2], carry);
+    r3 = tmp.$1;
+    carry = tmp.$2;
+    tmp = Uint64.mac(r4, k, JubJubFqConst.modulus.limbs[3], carry);
+    r4 = tmp.$1;
+    carry = tmp.$2;
+    var r5New = Uint64.adc(r5, carry2, carry);
+    r5 = r5New.$1;
+    carry2 = r5New.$2;
 
-    // Step 3
-    k = (r2 * JubJubFqConst.inv).toU64;
-    tmp = BigintUtils.mac(r2, k, JubJubFqConst.modulus.limbs[0], BigInt.zero);
-    carry = tmp[1];
-    tmp = BigintUtils.mac(r3, k, JubJubFqConst.modulus.limbs[1], carry);
-    r3 = tmp[0];
-    carry = tmp[1];
-    tmp = BigintUtils.mac(r4, k, JubJubFqConst.modulus.limbs[2], carry);
-    r4 = tmp[0];
-    carry = tmp[1];
-    tmp = BigintUtils.mac(r5, k, JubJubFqConst.modulus.limbs[3], carry);
-    r5 = tmp[0];
-    carry = tmp[1];
-    var r6New = BigintUtils.adc(r6, carry2, carry);
-    r6 = r6New[0];
-    carry2 = r6New[1];
+    k = r2 * JubJubFqConst.inv;
+    tmp = Uint64.mac(r2, k, JubJubFqConst.modulus.limbs[0], Uint64.zero);
+    carry = tmp.$2;
+    tmp = Uint64.mac(r3, k, JubJubFqConst.modulus.limbs[1], carry);
+    r3 = tmp.$1;
+    carry = tmp.$2;
+    tmp = Uint64.mac(r4, k, JubJubFqConst.modulus.limbs[2], carry);
+    r4 = tmp.$1;
+    carry = tmp.$2;
+    tmp = Uint64.mac(r5, k, JubJubFqConst.modulus.limbs[3], carry);
+    r5 = tmp.$1;
+    carry = tmp.$2;
+    var r6New = Uint64.adc(r6, carry2, carry);
+    r6 = r6New.$1;
+    carry2 = r6New.$2;
 
-    // Step 4
-    k = (r3 * JubJubFqConst.inv).toU64;
-    tmp = BigintUtils.mac(r3, k, JubJubFqConst.modulus.limbs[0], BigInt.zero);
-    carry = tmp[1];
-    tmp = BigintUtils.mac(r4, k, JubJubFqConst.modulus.limbs[1], carry);
-    r4 = tmp[0];
-    carry = tmp[1];
-    tmp = BigintUtils.mac(r5, k, JubJubFqConst.modulus.limbs[2], carry);
-    r5 = tmp[0];
-    carry = tmp[1];
-    tmp = BigintUtils.mac(r6, k, JubJubFqConst.modulus.limbs[3], carry);
-    r6 = tmp[0];
-    carry = tmp[1];
-    var r7New = BigintUtils.adc(r7, carry2, carry);
-    r7 = r7New[0];
+    k = r3 * JubJubFqConst.inv;
+    tmp = Uint64.mac(r3, k, JubJubFqConst.modulus.limbs[0], Uint64.zero);
+    carry = tmp.$2;
+    tmp = Uint64.mac(r4, k, JubJubFqConst.modulus.limbs[1], carry);
+    r4 = tmp.$1;
+    carry = tmp.$2;
+    tmp = Uint64.mac(r5, k, JubJubFqConst.modulus.limbs[2], carry);
+    r5 = tmp.$1;
+    carry = tmp.$2;
+    tmp = Uint64.mac(r6, k, JubJubFqConst.modulus.limbs[3], carry);
+    r6 = tmp.$1;
+    carry = tmp.$2;
+    var r7New = Uint64.adc(r7, carry2, carry);
+    r7 = r7New.$1;
 
     return JubJubFq([r4, r5, r6, r7]).sub(JubJubFqConst.modulus);
   }
@@ -993,266 +899,234 @@ class JubJubFq extends JubJubField<JubJubFq> with ConstantEquality<JubJubFq> {
       limbs[1],
       limbs[2],
       limbs[3],
-      BigInt.zero,
-      BigInt.zero,
-      BigInt.zero,
-      BigInt.zero,
+      Uint64.zero,
+      Uint64.zero,
+      Uint64.zero,
+      Uint64.zero,
     );
-    final res = List<int>.filled(32, 0);
+    final res = Uint8List(32);
     for (int i = 0; i < 4; i++) {
-      final limbBytes = tmp.limbs[i].toLeBytes(length: 8);
-      res.setRange(i * 8, i * 8 + 8, limbBytes);
+      res.setRange(i * 8, i * 8 + 8, tmp.limbs[i].toBytes(Endian.little));
     }
     return res;
   }
 
   @override
-  bool isZero() {
-    return this == JubJubFq.zero();
-  }
+  bool isZero() => this == JubJubFq.zero;
 
   JubJubFq sub(JubJubFq rhs) {
-    // Step 1: Subtract limbs with borrow
-    var sbbRes = BigintUtils.sbb(limbs[0], rhs.limbs[0], BigInt.zero);
-    BigInt d0 = sbbRes[0];
-    BigInt borrow = sbbRes[1];
+    var t = Uint64.sbb(limbs[0], rhs.limbs[0], Uint64.zero);
+    Uint64 d0 = t.$1;
+    Uint64 borrow = t.$2;
 
-    sbbRes = BigintUtils.sbb(limbs[1], rhs.limbs[1], borrow);
-    BigInt d1 = sbbRes[0];
-    borrow = sbbRes[1];
+    t = Uint64.sbb(limbs[1], rhs.limbs[1], borrow);
+    Uint64 d1 = t.$1;
+    borrow = t.$2;
 
-    sbbRes = BigintUtils.sbb(limbs[2], rhs.limbs[2], borrow);
-    BigInt d2 = sbbRes[0];
-    borrow = sbbRes[1];
+    t = Uint64.sbb(limbs[2], rhs.limbs[2], borrow);
+    Uint64 d2 = t.$1;
+    borrow = t.$2;
 
-    sbbRes = BigintUtils.sbb(limbs[3], rhs.limbs[3], borrow);
-    BigInt d3 = sbbRes[0];
-    borrow = sbbRes[1];
+    t = Uint64.sbb(limbs[3], rhs.limbs[3], borrow);
+    Uint64 d3 = t.$1;
+    borrow = t.$2;
 
-    // Step 2: Conditionally add modulus if underflow occurred
-    var adcRes = BigintUtils.adc(
+    var a = Uint64.adc(
       d0,
       JubJubFqConst.modulus.limbs[0] & borrow,
-      BigInt.zero,
+      Uint64.zero,
     );
-    d0 = adcRes[0];
-    BigInt carry = adcRes[1];
+    d0 = a.$1;
+    Uint64 carry = a.$2;
 
-    adcRes = BigintUtils.adc(
-      d1,
-      JubJubFqConst.modulus.limbs[1] & borrow,
-      carry,
-    );
-    d1 = adcRes[0];
-    carry = adcRes[1];
+    a = Uint64.adc(d1, JubJubFqConst.modulus.limbs[1] & borrow, carry);
+    d1 = a.$1;
+    carry = a.$2;
 
-    adcRes = BigintUtils.adc(
-      d2,
-      JubJubFqConst.modulus.limbs[2] & borrow,
-      carry,
-    );
-    d2 = adcRes[0];
-    carry = adcRes[1];
+    a = Uint64.adc(d2, JubJubFqConst.modulus.limbs[2] & borrow, carry);
+    d2 = a.$1;
+    carry = a.$2;
 
-    adcRes = BigintUtils.adc(
-      d3,
-      JubJubFqConst.modulus.limbs[3] & borrow,
-      carry,
-    );
-    d3 = adcRes[0];
-    // final carry ignored
+    a = Uint64.adc(d3, JubJubFqConst.modulus.limbs[3] & borrow, carry);
+    d3 = a.$1;
 
     return JubJubFq([d0, d1, d2, d3]);
   }
 
   JubJubFq add(JubJubFq rhs) {
-    // Step 1: Add limbs with carry
-    var adcRes = BigintUtils.adc(limbs[0], rhs.limbs[0], BigInt.zero);
-    BigInt d0 = adcRes[0];
-    BigInt carry = adcRes[1];
+    var t = Uint64.adc(limbs[0], rhs.limbs[0], Uint64.zero);
+    Uint64 d0 = t.$1;
+    Uint64 carry = t.$2;
 
-    adcRes = BigintUtils.adc(limbs[1], rhs.limbs[1], carry);
-    BigInt d1 = adcRes[0];
-    carry = adcRes[1];
+    t = Uint64.adc(limbs[1], rhs.limbs[1], carry);
+    Uint64 d1 = t.$1;
+    carry = t.$2;
 
-    adcRes = BigintUtils.adc(limbs[2], rhs.limbs[2], carry);
-    BigInt d2 = adcRes[0];
-    carry = adcRes[1];
+    t = Uint64.adc(limbs[2], rhs.limbs[2], carry);
+    Uint64 d2 = t.$1;
+    carry = t.$2;
 
-    adcRes = BigintUtils.adc(limbs[3], rhs.limbs[3], carry);
-    BigInt d3 = adcRes[0];
-    // final carry ignored
+    t = Uint64.adc(limbs[3], rhs.limbs[3], carry);
+    Uint64 d3 = t.$1;
 
-    // Step 2: Reduce modulo modulus
     return JubJubFq([d0, d1, d2, d3]).sub(JubJubFqConst.modulus);
   }
 
   JubJubFq neg() {
-    // Step 1: Subtract this from modulus
-    var sbbRes = BigintUtils.sbb(
-      JubJubFqConst.modulus.limbs[0],
-      limbs[0],
-      BigInt.zero,
-    );
-    BigInt d0 = sbbRes[0];
-    BigInt borrow = sbbRes[1];
+    var t = Uint64.sbb(JubJubFqConst.modulus.limbs[0], limbs[0], Uint64.zero);
+    Uint64 d0 = t.$1;
+    Uint64 borrow = t.$2;
 
-    sbbRes = BigintUtils.sbb(JubJubFqConst.modulus.limbs[1], limbs[1], borrow);
-    BigInt d1 = sbbRes[0];
-    borrow = sbbRes[1];
+    t = Uint64.sbb(JubJubFqConst.modulus.limbs[1], limbs[1], borrow);
+    Uint64 d1 = t.$1;
+    borrow = t.$2;
 
-    sbbRes = BigintUtils.sbb(JubJubFqConst.modulus.limbs[2], limbs[2], borrow);
-    BigInt d2 = sbbRes[0];
-    borrow = sbbRes[1];
+    t = Uint64.sbb(JubJubFqConst.modulus.limbs[2], limbs[2], borrow);
+    Uint64 d2 = t.$1;
+    borrow = t.$2;
 
-    sbbRes = BigintUtils.sbb(JubJubFqConst.modulus.limbs[3], limbs[3], borrow);
-    BigInt d3 = sbbRes[0];
-    // final borrow ignored
+    t = Uint64.sbb(JubJubFqConst.modulus.limbs[3], limbs[3], borrow);
+    Uint64 d3 = t.$1;
 
-    // Step 2: Compute mask
-    BigInt zeroCheck = limbs[0] | limbs[1] | limbs[2] | limbs[3];
-    // If zeroCheck == 0, mask = 0; else mask = 0xffff... (64-bit max)
-    BigInt mask = zeroCheck == BigInt.zero ? BigInt.zero : BinaryOps.maskBig64;
+    final zeroCheck = limbs[0] | limbs[1] | limbs[2] | limbs[3];
+    final mask = zeroCheck.isZero ? Uint64.zero : Uint64.max;
 
-    // Step 3: Apply mask
     return JubJubFq([d0 & mask, d1 & mask, d2 & mask, d3 & mask]);
   }
 
   JubJubFq mul(JubJubFq rhs) {
-    // Schoolbook multiplication
-    var tmp = BigintUtils.mac(BigInt.zero, limbs[0], rhs.limbs[0], BigInt.zero);
-    BigInt r0 = tmp[0];
-    BigInt carry = tmp[1];
+    var t = Uint64.mac(Uint64.zero, limbs[0], rhs.limbs[0], Uint64.zero);
+    Uint64 r0 = t.$1;
+    Uint64 carry = t.$2;
 
-    tmp = BigintUtils.mac(BigInt.zero, limbs[0], rhs.limbs[1], carry);
-    BigInt r1 = tmp[0];
-    carry = tmp[1];
+    t = Uint64.mac(Uint64.zero, limbs[0], rhs.limbs[1], carry);
+    Uint64 r1 = t.$1;
+    carry = t.$2;
 
-    tmp = BigintUtils.mac(BigInt.zero, limbs[0], rhs.limbs[2], carry);
-    BigInt r2 = tmp[0];
-    carry = tmp[1];
+    t = Uint64.mac(Uint64.zero, limbs[0], rhs.limbs[2], carry);
+    Uint64 r2 = t.$1;
+    carry = t.$2;
 
-    tmp = BigintUtils.mac(BigInt.zero, limbs[0], rhs.limbs[3], carry);
-    BigInt r3 = tmp[0];
-    BigInt r4 = tmp[1];
+    t = Uint64.mac(Uint64.zero, limbs[0], rhs.limbs[3], carry);
+    Uint64 r3 = t.$1;
+    Uint64 r4 = t.$2;
 
-    tmp = BigintUtils.mac(r1, limbs[1], rhs.limbs[0], BigInt.zero);
-    r1 = tmp[0];
-    carry = tmp[1];
+    t = Uint64.mac(r1, limbs[1], rhs.limbs[0], Uint64.zero);
+    r1 = t.$1;
+    carry = t.$2;
 
-    tmp = BigintUtils.mac(r2, limbs[1], rhs.limbs[1], carry);
-    r2 = tmp[0];
-    carry = tmp[1];
+    t = Uint64.mac(r2, limbs[1], rhs.limbs[1], carry);
+    r2 = t.$1;
+    carry = t.$2;
 
-    tmp = BigintUtils.mac(r3, limbs[1], rhs.limbs[2], carry);
-    r3 = tmp[0];
-    carry = tmp[1];
+    t = Uint64.mac(r3, limbs[1], rhs.limbs[2], carry);
+    r3 = t.$1;
+    carry = t.$2;
 
-    tmp = BigintUtils.mac(r4, limbs[1], rhs.limbs[3], carry);
-    r4 = tmp[0];
-    BigInt r5 = tmp[1];
+    t = Uint64.mac(r4, limbs[1], rhs.limbs[3], carry);
+    r4 = t.$1;
+    Uint64 r5 = t.$2;
 
-    tmp = BigintUtils.mac(r2, limbs[2], rhs.limbs[0], BigInt.zero);
-    r2 = tmp[0];
-    carry = tmp[1];
+    t = Uint64.mac(r2, limbs[2], rhs.limbs[0], Uint64.zero);
+    r2 = t.$1;
+    carry = t.$2;
 
-    tmp = BigintUtils.mac(r3, limbs[2], rhs.limbs[1], carry);
-    r3 = tmp[0];
-    carry = tmp[1];
+    t = Uint64.mac(r3, limbs[2], rhs.limbs[1], carry);
+    r3 = t.$1;
+    carry = t.$2;
 
-    tmp = BigintUtils.mac(r4, limbs[2], rhs.limbs[2], carry);
-    r4 = tmp[0];
-    carry = tmp[1];
+    t = Uint64.mac(r4, limbs[2], rhs.limbs[2], carry);
+    r4 = t.$1;
+    carry = t.$2;
 
-    tmp = BigintUtils.mac(r5, limbs[2], rhs.limbs[3], carry);
-    r5 = tmp[0];
-    BigInt r6 = tmp[1];
+    t = Uint64.mac(r5, limbs[2], rhs.limbs[3], carry);
+    r5 = t.$1;
+    Uint64 r6 = t.$2;
 
-    tmp = BigintUtils.mac(r3, limbs[3], rhs.limbs[0], BigInt.zero);
-    r3 = tmp[0];
-    carry = tmp[1];
+    t = Uint64.mac(r3, limbs[3], rhs.limbs[0], Uint64.zero);
+    r3 = t.$1;
+    carry = t.$2;
 
-    tmp = BigintUtils.mac(r4, limbs[3], rhs.limbs[1], carry);
-    r4 = tmp[0];
-    carry = tmp[1];
+    t = Uint64.mac(r4, limbs[3], rhs.limbs[1], carry);
+    r4 = t.$1;
+    carry = t.$2;
 
-    tmp = BigintUtils.mac(r5, limbs[3], rhs.limbs[2], carry);
-    r5 = tmp[0];
-    carry = tmp[1];
+    t = Uint64.mac(r5, limbs[3], rhs.limbs[2], carry);
+    r5 = t.$1;
+    carry = t.$2;
 
-    tmp = BigintUtils.mac(r6, limbs[3], rhs.limbs[3], carry);
-    r6 = tmp[0];
-    BigInt r7 = tmp[1];
+    t = Uint64.mac(r6, limbs[3], rhs.limbs[3], carry);
+    r6 = t.$1;
+    Uint64 r7 = t.$2;
 
     return JubJubFq.montgomeryReduce(r0, r1, r2, r3, r4, r5, r6, r7);
   }
 
   @override
   JubJubFq square() {
-    var tmp = BigintUtils.mac(BigInt.zero, limbs[0], limbs[1], BigInt.zero);
-    BigInt r1 = tmp[0];
-    BigInt carry = tmp[1];
+    var tmp = Uint64.mac(Uint64.zero, limbs[0], limbs[1], Uint64.zero);
+    Uint64 r1 = tmp.$1;
+    Uint64 carry = tmp.$2;
 
-    tmp = BigintUtils.mac(BigInt.zero, limbs[0], limbs[2], carry);
-    BigInt r2 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(Uint64.zero, limbs[0], limbs[2], carry);
+    Uint64 r2 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(BigInt.zero, limbs[0], limbs[3], carry);
-    BigInt r3 = tmp[0];
-    BigInt r4 = tmp[1];
+    tmp = Uint64.mac(Uint64.zero, limbs[0], limbs[3], carry);
+    Uint64 r3 = tmp.$1;
+    Uint64 r4 = tmp.$2;
 
-    tmp = BigintUtils.mac(r3, limbs[1], limbs[2], BigInt.zero);
-    r3 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(r3, limbs[1], limbs[2], Uint64.zero);
+    r3 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(r4, limbs[1], limbs[3], carry);
-    r4 = tmp[0];
-    BigInt r5 = tmp[1];
+    tmp = Uint64.mac(r4, limbs[1], limbs[3], carry);
+    r4 = tmp.$1;
+    Uint64 r5 = tmp.$2;
 
-    tmp = BigintUtils.mac(r5, limbs[2], limbs[3], BigInt.zero);
-    r5 = tmp[0];
-    BigInt r6 = tmp[1];
+    tmp = Uint64.mac(r5, limbs[2], limbs[3], Uint64.zero);
+    r5 = tmp.$1;
+    Uint64 r6 = tmp.$2;
 
-    // Double the cross products
-    BigInt r7 = (r6 >> 63).toU64;
-    r6 = ((r6 << 1) | (r5 >> 63)).toU64;
-    r5 = ((r5 << 1) | (r4 >> 63)).toU64;
-    r4 = ((r4 << 1) | (r3 >> 63)).toU64;
-    r3 = ((r3 << 1) | (r2 >> 63)).toU64;
-    r2 = ((r2 << 1) | (r1 >> 63)).toU64;
-    r1 = (r1 << 1).toU64;
+    Uint64 r7 = r6 >> 63;
+    r6 = (r6 << 1) | (r5 >> 63);
+    r5 = (r5 << 1) | (r4 >> 63);
+    r4 = (r4 << 1) | (r3 >> 63);
+    r3 = (r3 << 1) | (r2 >> 63);
+    r2 = (r2 << 1) | (r1 >> 63);
+    r1 = r1 << 1;
 
-    tmp = BigintUtils.mac(BigInt.zero, limbs[0], limbs[0], BigInt.zero);
-    BigInt r0 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(Uint64.zero, limbs[0], limbs[0], Uint64.zero);
+    Uint64 r0 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.adc(BigInt.zero, r1, carry);
-    r1 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.adc(Uint64.zero, r1, carry);
+    r1 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(r2, limbs[1], limbs[1], carry);
-    r2 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(r2, limbs[1], limbs[1], carry);
+    r2 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.adc(BigInt.zero, r3, carry);
-    r3 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.adc(Uint64.zero, r3, carry);
+    r3 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(r4, limbs[2], limbs[2], carry);
-    r4 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(r4, limbs[2], limbs[2], carry);
+    r4 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.adc(BigInt.zero, r5, carry);
-    r5 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.adc(Uint64.zero, r5, carry);
+    r5 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.mac(r6, limbs[3], limbs[3], carry);
-    r6 = tmp[0];
-    carry = tmp[1];
+    tmp = Uint64.mac(r6, limbs[3], limbs[3], carry);
+    r6 = tmp.$1;
+    carry = tmp.$2;
 
-    tmp = BigintUtils.adc(BigInt.zero, r7, carry);
-    r7 = tmp[0];
-    // final carry ignored
+    tmp = Uint64.adc(Uint64.zero, r7, carry);
+    r7 = tmp.$1;
+
     return JubJubFq.montgomeryReduce(r0, r1, r2, r3, r4, r5, r6, r7);
   }
 
@@ -1356,36 +1230,33 @@ class JubJubFq extends JubJubField<JubJubFq> with ConstantEquality<JubJubFq> {
     return t0;
   }
 
-  JubJubFq powVartime(List<BigInt> by) {
-    JubJubFq res = JubJubFq.one();
-    for (BigInt e in by.reversed) {
+  JubJubFq powVartime(List<Uint64> by) {
+    JubJubFq res = JubJubFq.one;
+    for (Uint64 e in by.reversed) {
       for (int i = 63; i >= 0; i--) {
         res = res.square();
-
-        if (((e >> i) & BigInt.one) == BigInt.one) {
+        if (((e >> i) & Uint64.one) == Uint64.one) {
           res = res * this;
         }
       }
     }
-
     return res;
   }
 
   @override
   FieldSqrtResult<JubJubFq> sqrt() {
-    final List<BigInt> tm1d2 = [
-      BigInt.parse("0x7fff2dff7fffffff"),
-      BigInt.parse("0x04d0ec02a9ded201"),
-      BigInt.parse("0x94cebea4199cec04"),
-      BigInt.parse("0x0000000039f6d3a9"),
+    const List<Uint64> tm1d2 = [
+      Uint64.unsafe(2147429887, 2147483647),
+      Uint64.unsafe(80800770, 2849952257),
+      Uint64.unsafe(2496577188, 429714436),
+      Uint64.unsafe(0, 972477353),
     ];
-
     return PastaUtils.sqrtTonelliShanks(
       f: this,
       fPowTm1d2: powVartime(tm1d2),
-      rootOfUnity: JubJubFq.rootOfUnity(),
+      rootOfUnity: JubJubFq.rootOfUnity,
       s: JubJubFqConst.S,
-      one: JubJubFq.r(),
+      one: JubJubFq.r,
       conditionalSelect:
           (a, b, choice) => JubJubFq.conditionalSelect(a, b, choice),
     );
@@ -1394,31 +1265,23 @@ class JubJubFq extends JubJubField<JubJubFq> with ConstantEquality<JubJubFq> {
   @override
   JubJubFq double() => add(this);
 
-  JubJubFq pow(List<BigInt> by) {
-    JubJubFq res = JubJubFq.one();
-
-    // Loop over exponent words, from high → low
+  JubJubFq pow(List<Uint64> by) {
+    JubJubFq res = JubJubFq.one;
     for (final e in by.reversed) {
-      // Loop bits from highest to lowest
       for (int i = 63; i >= 0; i--) {
         res = res.square();
-
-        JubJubFq tmp = res;
-        tmp = tmp * this;
-
-        // Extract bit: ((e >> i) & 1)
-        final bit = ((e >> i) & BigInt.one) == BigInt.one;
-
-        // Constant-time conditional assign
+        JubJubFq tmp = res * this;
+        final bit = ((e >> i) & Uint64.one) == Uint64.one;
         res = bit ? tmp : res;
       }
     }
-
     return res;
   }
 
   @override
-  bool constantEquality(JubJubFq other) {
-    return CompareUtils.constantTimeBigIntEquals(limbs, other.limbs);
-  }
+  bool operator ==(Object other) =>
+      other is JubJubFq && Uint64.ctEquals(limbs, other.limbs);
+
+  @override
+  int get hashCode => Object.hashAll(limbs);
 }

@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 import 'package:blockchain_utils/crypto/crypto/ec/core/field.dart';
+import 'package:blockchain_utils/crypto/crypto/zcrypto/jubjub/constants/constants.dart';
 import 'package:blockchain_utils/crypto/crypto/zcrypto/jubjub/fields/field.dart';
 import 'package:blockchain_utils/crypto/crypto/zcrypto/pasta/utils/utils.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
@@ -146,6 +147,7 @@ class JubJubNativeFq extends JubJubNativeFieldElement<JubJubNativeFq>
       ),
       rootOfUnity: JubJubNativeFq.rootOfUnity(),
       one: JubJubNativeFq.one(),
+      s: JubJubFqConst.S,
       conditionalSelect: (a, b, choice) {
         return choice ? b : a;
       },

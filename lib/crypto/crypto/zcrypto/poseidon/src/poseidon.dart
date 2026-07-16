@@ -7,6 +7,7 @@ import 'package:blockchain_utils/crypto/crypto/zcrypto/pasta/fields/vesta_fq.dar
 import 'package:blockchain_utils/crypto/crypto/zcrypto/poseidon/src/exception.dart';
 import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/helper/helper.dart';
+import 'package:blockchain_utils/numbers/src/u64.dart';
 
 class MdsGenerateResult<F extends PastaFieldElement<F>> {
   final List<List<F>> mds;
@@ -208,8 +209,8 @@ class P128Pow5T3Fp extends PoseidonSpec<PallasFp> {
         }
         return PallasFp.fromBytes64(bytes);
       },
-      zero: PallasFp.zero(),
-      one: PallasFp.one(),
+      zero: PallasFp.zero,
+      one: PallasFp.one,
     );
     return P128Pow5T3Fp._(constants);
   }
@@ -224,7 +225,7 @@ class P128Pow5T3Fp extends PoseidonSpec<PallasFp> {
 
   @override
   PallasFp zero() {
-    return PallasFp.zero();
+    return PallasFp.zero;
   }
 
   @override
@@ -234,7 +235,7 @@ class P128Pow5T3Fp extends PoseidonSpec<PallasFp> {
 
   @override
   PallasFp sbox(PallasFp field) {
-    return field.pow([BigInt.from(5), BigInt.zero, BigInt.zero, BigInt.zero]);
+    return field.pow([Uint64(5), Uint64.zero, Uint64.zero, Uint64.zero]);
   }
 }
 
@@ -254,8 +255,8 @@ class P128Pow5T3Fq extends PoseidonSpec<VestaFq> {
         }
         return VestaFq.fromBytes64(bytes);
       },
-      zero: VestaFq.zero(),
-      one: VestaFq.one(),
+      zero: VestaFq.zero,
+      one: VestaFq.one,
     );
     return P128Pow5T3Fq._(constants);
   }
@@ -270,7 +271,7 @@ class P128Pow5T3Fq extends PoseidonSpec<VestaFq> {
 
   @override
   VestaFq zero() {
-    return VestaFq.zero();
+    return VestaFq.zero;
   }
 
   @override
@@ -280,7 +281,7 @@ class P128Pow5T3Fq extends PoseidonSpec<VestaFq> {
 
   @override
   VestaFq sbox(VestaFq field) {
-    return field.pow([BigInt.from(5), BigInt.zero, BigInt.zero, BigInt.zero]);
+    return field.pow([Uint64(5), Uint64.zero, Uint64.zero, Uint64.zero]);
   }
 }
 

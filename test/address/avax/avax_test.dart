@@ -8,7 +8,7 @@ import 'test_x_vector.dart' as x;
 
 void main() {
   test("avax P-address test", () {
-    for (final i in p.testVector) {
+    for (final i in p.testVector.shuffleTake()) {
       final z = AvaxPChainAddrEncoder().encodeKey(
         BytesUtils.fromHexString(i["public"]),
       );
@@ -18,7 +18,7 @@ void main() {
     }
   });
   test("avax x-address test", () {
-    for (final i in x.testVector) {
+    for (final i in x.testVector.shuffleTake()) {
       final z = AvaxXChainAddrEncoder().encodeKey(
         BytesUtils.fromHexString(i["public"]),
       );

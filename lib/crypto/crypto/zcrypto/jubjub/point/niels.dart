@@ -20,10 +20,10 @@ class JubJubNielsPoint extends BaseJubJubNielsPoint<JubJubFr> with Equality {
   });
   factory JubJubNielsPoint.identity() {
     return JubJubNielsPoint(
-      vPlusU: JubJubFq.one(),
-      vMinusU: JubJubFq.one(),
-      z: JubJubFq.one(),
-      t2d: JubJubFq.zero(),
+      vPlusU: JubJubFq.one,
+      vMinusU: JubJubFq.one,
+      z: JubJubFq.one,
+      t2d: JubJubFq.zero,
     );
   }
   factory JubJubNielsPoint.conditionalSelect(
@@ -110,9 +110,9 @@ class JubJubAffineNielsPoint extends BaseJubJubNielsPoint<JubJubFr>
   }
   factory JubJubAffineNielsPoint.identity() {
     return JubJubAffineNielsPoint(
-      vPlusU: JubJubFq.one(),
-      vMinusU: JubJubFq.one(),
-      t2d: JubJubFq.zero(),
+      vPlusU: JubJubFq.one,
+      vMinusU: JubJubFq.one,
+      t2d: JubJubFq.zero,
     );
   }
   @override

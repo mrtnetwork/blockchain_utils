@@ -3,12 +3,14 @@
 // Distributed under the MIT software license, see the accompanying              *
 // file COPYING or https://www.opensource.org/licenses/mit-license.php.          *
 // *******************************************************************************
-import 'package:blockchain_utils/blockchain_utils.dart';
+// import 'package:blockchain_utils/blockchain_utils.dart';
 import 'package:test/test.dart';
+import 'package:blockchain_utils/blockchain_utils.dart';
+
 import 'test_constants.dart';
-import 'package:blockchain_utils/crypto/crypto/ec/projective/secp256k1/secp256k1.dart';
 
 import 'tools.dart';
+import 'utils.dart';
 
 void main() {
   // return;
@@ -27,19 +29,25 @@ void main() {
 
 void _testRandomPublicKey() {
   Secp256k1ECmultGenContext cr = Secp256k1ECmultGenContext();
-  Secp256k1Utils.secp256k1ECmultGenBlind(cr, null);
-  for (int i = 0; i < 250; i++) {
+  Secp256k1UtilsNew.secp256k1ECmultGenBlind(cr, null);
+  for (int i = 0; i < testIteration; i++) {
     Secp256k1Scalar a = Secp256k1Scalar();
     randomScalarOrderTest(a);
     Secp256k1Gej res2 = Secp256k1Gej();
 
     if (i % 5 == 0) {
-      Secp256k1Utils.secp256k1ECmultGenBlind(cr, QuickCrypto.generateRandom());
+      Secp256k1UtilsNew.secp256k1ECmultGenBlind(
+        cr,
+        QuickCrypto.generateRandom(),
+      );
     }
     Secp256k1.secp256k1ECmultGen(cr, res2, a);
     Secp256k1Ge mid2 = Secp256k1Ge();
     Secp256k1.secp256k1GeSetGej(mid2, res2);
-    final m2Bytes = Secp256k1Utils.secp256k1ECkeyPubkeySerialize(mid2, false);
+    final m2Bytes = Secp256k1UtilsNew.secp256k1ECkeyPubkeySerialize(
+      mid2,
+      false,
+    );
 
     List<int> scalarByte = List<int>.filled(32, 0);
     Secp256k1.secp256k1ScalarGetB32(scalarByte, a);
@@ -49,7 +57,10 @@ void _testRandomPublicKey() {
     Secp256k1.secp256k1GeSetGej(mid1, res1);
     final es = BigintUtils.fromBytes(scalarByte);
     final rr = Curves.generatorSecp256k1 * es;
-    final m1Bytes = Secp256k1Utils.secp256k1ECkeyPubkeySerialize(mid1, false);
+    final m1Bytes = Secp256k1UtilsNew.secp256k1ECkeyPubkeySerialize(
+      mid1,
+      false,
+    );
     expect(
       BytesUtils.bytesEqual(m1Bytes, rr.toBytes(EncodeType.uncompressed)),
       true,
@@ -57,7 +68,7 @@ void _testRandomPublicKey() {
     expect(BytesUtils.bytesEqual(m1Bytes, m2Bytes), true);
     expect(
       BytesUtils.bytesEqual(
-        Secp256k1Utils.secp256k1ECkeyPubkeySerialize(mid1, true),
+        Secp256k1UtilsNew.secp256k1ECkeyPubkeySerialize(mid1, true),
         rr.toBytes(),
       ),
       true,
@@ -66,7 +77,7 @@ void _testRandomPublicKey() {
 }
 
 void _testRandomXonlyPublicKey() {
-  for (int i = 0; i < 100; i++) {
+  for (int i = 0; i < testIteration; i++) {
     Secp256k1Scalar a = Secp256k1Scalar();
     randomScalarOrderTest(a);
     List<int> scalarByte = List<int>.filled(32, 0);
@@ -191,7 +202,7 @@ void _dges() {
 
 void _randomMult() {
   /* random starting point A (on the curve) */
-  Secp256k1Ge a = Secp256k1Ge.constants(
+  Secp256k1Ge a = buildGeConstants(
     BigInt.from(0x6d986544),
     BigInt.from(0x57ff52b8),
     BigInt.from(0xcf1b8126),
@@ -210,7 +221,7 @@ void _randomMult() {
     BigInt.from(0xdd769c7d),
   );
   /* random initial factor xn */
-  Secp256k1Scalar xn = Secp256k1Scalar.constants(
+  Secp256k1ScalarConst xn = Secp256k1ScalarConst.constants(
     BigInt.from(0x649d4f77),
     BigInt.from(0xc4242df7),
     BigInt.from(0x7f2079c9),
@@ -221,7 +232,7 @@ void _randomMult() {
     BigInt.from(0xd7b2029b),
   );
   /* expected xn * A (from sage) */
-  Secp256k1Ge excB = Secp256k1Ge.constants(
+  Secp256k1Ge excB = buildGeConstants(
     BigInt.from(0x23773684),
     BigInt.from(0x4d209dc7),
     BigInt.from(0x098a786f),
@@ -248,7 +259,7 @@ void _randomMult() {
 
 void _chainMult() {
   /* Check known result (randomly generated test problem from sage) */
-  final Secp256k1Scalar scalar = Secp256k1Scalar.constants(
+  final Secp256k1ScalarConst scalar = Secp256k1ScalarConst.constants(
     BigInt.from(0x4968d524),
     BigInt.from(0x2abf9b7a),
     BigInt.from(0x466abbcf),
@@ -292,7 +303,7 @@ void _chainMult() {
 
 void _testEcmultGenEdgeCases() {
   Secp256k1ECmultGenContext cr = Secp256k1ECmultGenContext();
-  Secp256k1Utils.secp256k1ECmultGenBlind(cr, null);
+  Secp256k1UtilsNew.secp256k1ECmultGenBlind(cr, null);
   int i;
   Secp256k1Gej res1 = Secp256k1Gej(), res3 = Secp256k1Gej();
   Secp256k1Scalar gn = Secp256k1Const.secp256k1ScalarOne.clone(); /* gn = 1 */
@@ -310,3 +321,54 @@ void _testEcmultGenEdgeCases() {
     Secp256k1.secp256k1ScalarAdd(gn, gn, Secp256k1Const.secp256k1ScalarOne);
   }
 }
+
+Secp256k1Ge buildGeConstants(
+  BigInt a,
+  BigInt b,
+  BigInt c,
+  BigInt d,
+  BigInt e,
+  BigInt f,
+  BigInt g,
+  BigInt h,
+  BigInt i,
+  BigInt j,
+  BigInt k,
+  BigInt l,
+  BigInt m,
+  BigInt n,
+  BigInt o,
+  BigInt p,
+) {
+  return Secp256k1Ge(
+    x: Secp256k1Fe.constants(a, b, c, d, e, f, g, h),
+    y: Secp256k1Fe.constants((i), (j), (k), (l), (m), (n), (o), (p)),
+    infinity: 0,
+  );
+}
+
+// factory Secp256k1Ge.infinity() {
+//   return Secp256k1Ge(
+//     x: Secp256k1Fe.constants(
+//       BigInt.zero,
+//       BigInt.zero,
+//       BigInt.zero,
+//       BigInt.zero,
+//       BigInt.zero,
+//       BigInt.zero,
+//       BigInt.zero,
+//       BigInt.zero,
+//     ),
+//     y: Secp256k1Fe.constants(
+//       BigInt.zero,
+//       BigInt.zero,
+//       BigInt.zero,
+//       BigInt.zero,
+//       BigInt.zero,
+//       BigInt.zero,
+//       BigInt.zero,
+//       BigInt.zero,
+//     ),
+//     infinity: 1,
+//   );
+// }

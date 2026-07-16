@@ -1,4 +1,5 @@
 import 'dart:typed_data';
+import 'package:blockchain_utils/crypto/crypto/zcrypto/pasta/constants/vesta.dart';
 import 'package:blockchain_utils/crypto/crypto/zcrypto/pasta/fields/native/fp.dart';
 import 'package:blockchain_utils/crypto/crypto/zcrypto/pasta/utils/utils.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
@@ -114,15 +115,7 @@ class VestaNativeFq extends PastaNativeFieldElement<VestaNativeFq>
 
   @override
   FieldSqrtResult<VestaNativeFq> sqrt() {
-    return PastaUtils.sqrtTonelliShanks(
-      f: this,
-      fPowTm1d2: powByTMinus1Over2(),
-
-      one: _one,
-      rootOfUnity: VestaNativeFq.rootOfUnity(),
-      s: 32,
-      conditionalSelect: (a, b, choice) => choice ? b : a,
-    );
+    return sqrtAlt(this);
   }
 
   static FieldSqrtResult<VestaNativeFq> sqrtRatio(
@@ -144,7 +137,7 @@ class VestaNativeFq extends PastaNativeFieldElement<VestaNativeFq>
 
       one: _one,
       rootOfUnity: VestaNativeFq.rootOfUnity(),
-      s: 32,
+      s: VestaFQConst.S,
       conditionalSelect: (a, b, choice) => choice ? b : a,
     );
   }

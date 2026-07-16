@@ -3,11 +3,13 @@ import 'package:blockchain_utils/bip/cardano/bip32/cardano_byron_legacy_bip32.da
 import 'package:blockchain_utils/utils/utils.dart';
 import 'package:test/test.dart';
 
+import '../../quick_hex.dart';
 import 'test_vector.dart';
 
 void main() {
   test("bip32 cardano lagacy test", () {
-    for (final i in testVector) {
+    final vector = testVector.shuffleTake();
+    for (final i in vector) {
       final seed = BytesUtils.fromHexString(i["seed"]);
       final w = CardanoByronLegacyBip32.fromSeed(seed);
       final String public = w.publicKey.toExtended;

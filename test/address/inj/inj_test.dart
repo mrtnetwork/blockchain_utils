@@ -7,7 +7,7 @@ import 'test_vector.dart' show testVector;
 
 void main() {
   test("inj address test", () {
-    for (final i in testVector) {
+    for (final i in testVector.shuffleTake()) {
       final z = InjAddrEncoder().encodeKey(
         BytesUtils.fromHexString(i["public"]),
       );

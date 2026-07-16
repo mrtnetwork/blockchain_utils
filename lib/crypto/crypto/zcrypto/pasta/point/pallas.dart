@@ -7,9 +7,10 @@ import 'package:blockchain_utils/crypto/crypto/zcrypto/pasta/utils/utils.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
 import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/helper/extensions/extensions.dart';
+import 'package:blockchain_utils/numbers/src/u64.dart';
 
 class PallasPoint extends PastaPoint<VestaFq, PallasFp, PallasPoint> {
-  PallasPoint({required super.x, required super.y, required super.z});
+  const PallasPoint({required super.x, required super.y, required super.z});
 
   factory PallasPoint.fromAffine(PallasAffinePoint point) {
     return point.toCurve();
@@ -47,19 +48,19 @@ class PallasPoint extends PastaPoint<VestaFq, PallasFp, PallasPoint> {
     final PallasFp b = PallasFp.fromBytes64(hashToField.$2);
     final q0 = PastaUtils.mapToCurveSimpleSwu(
       u: a,
-      theta: PallasFp.theta(),
-      z: PallasFp.z(),
+      theta: PallasFp.theta,
+      z: PallasFp.z,
       isogenyParams: PastaCurveParams.isoPallas,
-      r: PallasFp.r(),
+      r: PallasFp.r,
     );
     final q0Point = PallasIsoPoint(x: q0.$1, y: q0.$2, z: q0.$3);
 
     final q1 = PastaUtils.mapToCurveSimpleSwu(
       u: b,
-      theta: PallasFp.theta(),
-      z: PallasFp.z(),
+      theta: PallasFp.theta,
+      z: PallasFp.z,
       isogenyParams: PastaCurveParams.isoPallas,
-      r: PallasFp.r(),
+      r: PallasFp.r,
     );
     final q1Point = PallasIsoPoint(x: q1.$1, y: q1.$2, z: q1.$3);
     final r = q0Point + q1Point;
@@ -70,23 +71,31 @@ class PallasPoint extends PastaPoint<VestaFq, PallasFp, PallasPoint> {
     );
     return PallasPoint(x: point.$1, y: point.$2, z: point.$3);
   }
-  factory PallasPoint.identity() {
-    return PallasPoint(
-      x: PallasFp.zero(),
-      y: PallasFp.zero(),
-      z: PallasFp.zero(),
-    );
-  }
-  factory PallasPoint.generator() {
-    final negOne = -PallasFp.one();
-    final two = PallasFp.fromRaw([
-      BigInt.two,
-      BigInt.zero,
-      BigInt.zero,
-      BigInt.zero,
-    ]);
-    return PallasPoint(x: negOne, y: two, z: PallasFp.one());
-  }
+  static const identity_ = PallasPoint(
+    x: PallasFp.zero,
+    y: PallasFp.zero,
+    z: PallasFp.zero,
+  );
+  static const generator_ = PallasPoint(
+    x: PallasFp.unsafe([
+      Uint64.unsafe(1689568180, 4),
+      Uint64.unsafe(2300208112, 624157806),
+      Uint64.zero,
+      Uint64.zero,
+    ]),
+    y: PallasFp.unsafe([
+      Uint64.unsafe(3485706628, 4294967289),
+      Uint64.unsafe(269603099, 3202691134),
+      Uint64.unsafe(4294967295, 4294967295),
+      Uint64.unsafe(1073741823, 4294967295),
+    ]),
+    z: PallasFp.unsafe([
+      Uint64.unsafe(880307512, 4294967293),
+      Uint64.unsafe(2569811211, 3826848941),
+      Uint64.unsafe(4294967295, 4294967295),
+      Uint64.unsafe(1073741823, 4294967295),
+    ]),
+  );
 
   @override
   PallasPoint from({
@@ -99,22 +108,22 @@ class PallasPoint extends PastaPoint<VestaFq, PallasFp, PallasPoint> {
 
   @override
   PallasPoint identity() {
-    return PallasPoint.identity();
+    return PallasPoint.identity_;
   }
 
   @override
   PallasPoint generator() {
-    return PallasPoint.generator();
+    return PallasPoint.generator_;
   }
 
   @override
-  PastaCurveParams<PallasFp> get curveParams => PastaCurveParams.pallas;
+  final PastaCurveParams<PallasFp> curveParams = PastaCurveParams.pallas;
 
   @override
   PallasAffinePoint toAffine() {
     final zInv = z.invert();
     if (zInv == null) {
-      return PallasAffinePoint.identity();
+      return PallasAffinePoint.identity_;
     }
     final zInv2 = zInv.square();
     final x = this.x * zInv2;
@@ -125,7 +134,7 @@ class PallasPoint extends PastaPoint<VestaFq, PallasFp, PallasPoint> {
 
   @override
   PallasPoint endo() {
-    return PallasPoint(x: x * PallasFp.zeta(), y: y, z: z);
+    return PallasPoint(x: x * PallasFp.zeta, y: y, z: z);
   }
 
   @override
@@ -136,9 +145,28 @@ class PallasPoint extends PastaPoint<VestaFq, PallasFp, PallasPoint> {
 
 class PallasAffinePoint
     extends PastaAffinePoint<VestaFq, PallasFp, PallasPoint> {
-  PallasAffinePoint({required super.x, required super.y});
+  const PallasAffinePoint({required super.x, required super.y});
+  static const identity_ = PallasAffinePoint(
+    x: PallasFp.zero,
+    y: PallasFp.zero,
+  );
+
+  static const generator_ = PallasAffinePoint(
+    x: PallasFp.unsafe([
+      Uint64.unsafe(1689568180, 4),
+      Uint64.unsafe(2300208112, 624157806),
+      Uint64.zero,
+      Uint64.zero,
+    ]),
+    y: PallasFp.unsafe([
+      Uint64.unsafe(3485706628, 4294967289),
+      Uint64.unsafe(269603099, 3202691134),
+      Uint64.unsafe(4294967295, 4294967295),
+      Uint64.unsafe(1073741823, 4294967295),
+    ]),
+  );
   factory PallasAffinePoint.identity() {
-    return PallasAffinePoint(x: PallasFp.zero(), y: PallasFp.zero());
+    return identity_;
   }
   factory PallasAffinePoint.fromBytes(List<int> bytes) {
     if (bytes.length != 32) {
@@ -157,7 +185,7 @@ class PallasAffinePoint
 
     final x = PallasFp.fromBytes(tmp);
     if (x.isZero() && ySign == 0) {
-      return PallasAffinePoint.identity();
+      return PallasAffinePoint.identity_;
     }
     final x3 = x.square() * x;
     final rhs = (x3 + PastaCurveParams.pallas.b);
@@ -215,7 +243,7 @@ class PallasAffinePoint
 
   @override
   PallasPoint identity() {
-    return PallasPoint.identity();
+    return PallasPoint.identity_;
   }
 
   @override
@@ -223,27 +251,15 @@ class PallasAffinePoint
     return PallasPoint(
       x: x,
       y: y,
-      z: PallasFp.conditionalSelect(
-        PallasFp.one(),
-        PallasFp.zero(),
-        isIdentity(),
-      ),
+      z: PallasFp.conditionalSelect(PallasFp.one, PallasFp.zero, isIdentity()),
     );
   }
 
   @override
   PallasAffinePoint generator() {
-    final negOne =
-        -PallasFp.fromRaw([BigInt.one, BigInt.zero, BigInt.zero, BigInt.zero]);
-    final two = PallasFp.fromRaw([
-      BigInt.two,
-      BigInt.zero,
-      BigInt.zero,
-      BigInt.zero,
-    ]);
-    return PallasAffinePoint(x: negOne, y: two);
+    return generator_;
   }
 
   @override
-  PastaCurveParams<PallasFp> get curveParams => PastaCurveParams.pallas;
+  final PastaCurveParams<PallasFp> curveParams = PastaCurveParams.pallas;
 }

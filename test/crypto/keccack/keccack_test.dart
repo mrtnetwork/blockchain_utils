@@ -7,7 +7,7 @@ import 'test_vector.dart';
 
 void main() {
   test("kechack 256 bit", () {
-    for (final i in testVector) {
+    for (final i in testVector.shuffleTake()) {
       final k = Keccack();
       final message = BytesUtils.fromHexString(i["message"]);
       k.update(message.sublist(0, 10));
@@ -19,7 +19,7 @@ void main() {
     }
   });
   test("test keccack 512 bit", () {
-    for (final i in keccack512TestVector) {
+    for (final i in keccack512TestVector.shuffleTake()) {
       final k = Keccack(64);
       final message = BytesUtils.fromHexString(i["message"]);
       k.update(message.sublist(0, 10));

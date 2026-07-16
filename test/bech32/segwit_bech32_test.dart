@@ -4,6 +4,8 @@ import 'package:blockchain_utils/bech32/segwit_bech32.dart';
 import 'package:blockchain_utils/utils/utils.dart';
 import 'package:test/test.dart';
 
+import '../quick_hex.dart';
+
 final List<Map<String, String>> _testVectors = [
   {
     "raw": "751e76e8199196d454941c45d1b3a323f1433bd6",
@@ -48,7 +50,7 @@ final List<Map<String, String>> _testVectors = [
 ];
 void main() {
   test("test decode", () {
-    for (final i in _testVectors) {
+    for (final i in _testVectors.shuffleTake()) {
       final hrp = i["encode"]!.substring(0, i["encode"]!.indexOf("1"));
       final decode = SegwitBech32Decoder.decode(hrp, i["encode"]!);
       expect(decode.$1, 0);
@@ -56,7 +58,7 @@ void main() {
     }
   });
   test("test encode", () {
-    for (final i in _testVectors) {
+    for (final i in _testVectors.shuffleTake()) {
       final hrp = i["encode"]!.substring(0, i["encode"]!.indexOf("1"));
       final decode = SegwitBech32Encoder.encode(
         hrp,

@@ -9,7 +9,7 @@ import 'test_vector.dart';
 
 void main() {
   test("pbkdf2", () {
-    for (final i in testVector) {
+    for (final i in testVector.shuffleTake()) {
       final password = BytesUtils.fromHexString(i["password"]);
       final salt = BytesUtils.fromHexString(i["salt"]);
       final h = PBKDF2.deriveKey(

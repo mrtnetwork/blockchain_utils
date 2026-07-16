@@ -1,6 +1,5 @@
 import 'package:blockchain_utils/bip/address/p2tr_addr.dart';
 import 'package:blockchain_utils/bip/ecc/keys/ecdsa_keys.dart';
-import 'package:blockchain_utils/crypto/crypto/ec/projective/secp256k1/secp256k1.dart';
 import 'package:blockchain_utils/crypto/crypto/crypto.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
 import 'package:blockchain_utils/exception/exceptions.dart';

@@ -7,9 +7,10 @@ import 'package:blockchain_utils/crypto/crypto/zcrypto/pasta/utils/utils.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
 import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/helper/helper.dart';
+import 'package:blockchain_utils/numbers/src/u64.dart';
 
 class VestaPoint extends PastaPoint<PallasFp, VestaFq, VestaPoint> {
-  VestaPoint({required super.x, required super.y, required super.z});
+  const VestaPoint({required super.x, required super.y, required super.z});
   factory VestaPoint.random() {
     while (true) {
       final x = VestaFq.random();
@@ -40,19 +41,19 @@ class VestaPoint extends PastaPoint<PallasFp, VestaFq, VestaPoint> {
     final VestaFq b = VestaFq.fromBytes64(hashToField.$2);
     final q0 = PastaUtils.mapToCurveSimpleSwu(
       u: a,
-      theta: VestaFq.theta(),
-      z: VestaFq.z(),
+      theta: VestaFq.theta,
+      z: VestaFq.z,
       isogenyParams: PastaCurveParams.isoVesta,
-      r: VestaFq.r(),
+      r: VestaFq.r,
     );
     final q0Point = VestaIsoPoint(x: q0.$1, y: q0.$2, z: q0.$3);
 
     final q1 = PastaUtils.mapToCurveSimpleSwu(
       u: b,
-      theta: VestaFq.theta(),
-      z: VestaFq.z(),
+      theta: VestaFq.theta,
+      z: VestaFq.z,
       isogenyParams: PastaCurveParams.isoVesta,
-      r: VestaFq.r(),
+      r: VestaFq.r,
     );
     final q1Point = VestaIsoPoint(x: q1.$1, y: q1.$2, z: q1.$3);
     final r = q0Point + q1Point;
@@ -70,18 +71,31 @@ class VestaPoint extends PastaPoint<PallasFp, VestaFq, VestaPoint> {
   factory VestaPoint.fromBytes(List<int> bytes) {
     return VestaAffinePoint.fromBytes(bytes).toCurve();
   }
+  static const identity_ = VestaPoint(
+    x: VestaFq.zero,
+    y: VestaFq.zero,
+    z: VestaFq.zero,
+  );
+  static const generator_ = VestaPoint(
+    x: VestaFq.unsafe([
+      Uint64.unsafe(823897220, 4),
+      Uint64.unsafe(2300208112, 642950006),
+      Uint64.zero,
+      Uint64.zero,
+    ]),
+    y: VestaFq.unsafe([
+      Uint64.unsafe(705663512, 4294967289),
+      Uint64.unsafe(269603099, 3169804785),
+      Uint64.unsafe(4294967295, 4294967295),
+      Uint64.unsafe(1073741823, 4294967295),
+    ]),
+    z: VestaFq.one,
+  );
   factory VestaPoint.identity() {
-    return VestaPoint(x: VestaFq.zero(), y: VestaFq.zero(), z: VestaFq.zero());
+    return VestaPoint(x: VestaFq.zero, y: VestaFq.zero, z: VestaFq.zero);
   }
   factory VestaPoint.generator() {
-    final negOne = -VestaFq.one();
-    final two = VestaFq.fromRaw([
-      BigInt.two,
-      BigInt.zero,
-      BigInt.zero,
-      BigInt.zero,
-    ]);
-    return VestaPoint(x: negOne, y: two, z: VestaFq.one());
+    return generator_;
   }
   @override
   VestaPoint from({
@@ -94,22 +108,22 @@ class VestaPoint extends PastaPoint<PallasFp, VestaFq, VestaPoint> {
 
   @override
   VestaPoint identity() {
-    return VestaPoint.identity();
+    return identity_;
   }
 
   @override
   VestaPoint generator() {
-    return VestaPoint.generator();
+    return VestaPoint.generator_;
   }
 
   @override
-  PastaCurveParams<VestaFq> get curveParams => PastaCurveParams.vesta;
+  final PastaCurveParams<VestaFq> curveParams = PastaCurveParams.vesta;
 
   @override
   VestaAffinePoint toAffine() {
     final zInv = z.invert();
     if (zInv == null) {
-      return VestaAffinePoint.identity();
+      return VestaAffinePoint.identity_;
     }
     final zInv2 = zInv.square();
     final x = this.x * zInv2;
@@ -120,7 +134,7 @@ class VestaPoint extends PastaPoint<PallasFp, VestaFq, VestaPoint> {
 
   @override
   VestaPoint endo() {
-    return VestaPoint(x: x * VestaFq.zeta(), y: y, z: z);
+    return VestaPoint(x: x * VestaFq.zeta, y: y, z: z);
   }
 
   @override
@@ -130,9 +144,24 @@ class VestaPoint extends PastaPoint<PallasFp, VestaFq, VestaPoint> {
 }
 
 class VestaAffinePoint extends PastaAffinePoint<PallasFp, VestaFq, VestaPoint> {
-  VestaAffinePoint({required super.x, required super.y});
+  const VestaAffinePoint({required super.x, required super.y});
+  static const identity_ = VestaAffinePoint(x: VestaFq.zero, y: VestaFq.zero);
+  static const generator_ = VestaAffinePoint(
+    x: VestaFq.unsafe([
+      Uint64.unsafe(823897220, 4),
+      Uint64.unsafe(2300208112, 642950006),
+      Uint64.zero,
+      Uint64.zero,
+    ]),
+    y: VestaFq.unsafe([
+      Uint64.unsafe(705663512, 4294967289),
+      Uint64.unsafe(269603099, 3169804785),
+      Uint64.unsafe(4294967295, 4294967295),
+      Uint64.unsafe(1073741823, 4294967295),
+    ]),
+  );
   factory VestaAffinePoint.identity() {
-    return VestaAffinePoint(x: VestaFq.zero(), y: VestaFq.zero());
+    return identity_;
   }
   factory VestaAffinePoint.fromBytes(List<int> bytes) {
     if (bytes.length != 32) {
@@ -151,7 +180,7 @@ class VestaAffinePoint extends PastaAffinePoint<PallasFp, VestaFq, VestaPoint> {
 
     final x = VestaFq.fromBytes(tmp);
     if (x.isZero() && ySign == 0) {
-      return VestaAffinePoint.identity();
+      return VestaAffinePoint.identity_;
     }
     final x3 = x.square() * x;
     final rhs = (x3 + PastaCurveParams.vesta.b);
@@ -211,7 +240,7 @@ class VestaAffinePoint extends PastaAffinePoint<PallasFp, VestaFq, VestaPoint> {
 
   @override
   VestaPoint identity() {
-    return VestaPoint.identity();
+    return VestaPoint.identity_;
   }
 
   @override
@@ -219,21 +248,13 @@ class VestaAffinePoint extends PastaAffinePoint<PallasFp, VestaFq, VestaPoint> {
     return VestaPoint(
       x: x,
       y: y,
-      z: VestaFq.conditionalSelect(VestaFq.one(), VestaFq.zero(), isIdentity()),
+      z: VestaFq.conditionalSelect(VestaFq.one, VestaFq.zero, isIdentity()),
     );
   }
 
   @override
   VestaAffinePoint generator() {
-    final negOne =
-        -VestaFq.fromRaw([BigInt.one, BigInt.zero, BigInt.zero, BigInt.zero]);
-    final two = VestaFq.fromRaw([
-      BigInt.two,
-      BigInt.zero,
-      BigInt.zero,
-      BigInt.zero,
-    ]);
-    return VestaAffinePoint(x: negOne, y: two);
+    return generator_;
   }
 
   @override

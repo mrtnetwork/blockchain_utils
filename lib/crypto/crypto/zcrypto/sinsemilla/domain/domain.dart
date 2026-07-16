@@ -6,6 +6,7 @@ import 'package:blockchain_utils/crypto/crypto/zcrypto/pasta/fields/vesta_fq.dar
 import 'package:blockchain_utils/crypto/crypto/zcrypto/pasta/point/core.dart';
 import 'package:blockchain_utils/crypto/crypto/zcrypto/pasta/point/pallas.dart';
 import 'package:blockchain_utils/crypto/crypto/zcrypto/pasta/point/pallas_native.dart';
+import 'package:blockchain_utils/crypto/crypto/zcrypto/sinsemilla/constants/constants.dart';
 import 'package:blockchain_utils/crypto/crypto/zcrypto/wnaf/wnaf.dart';
 import 'package:blockchain_utils/crypto/crypto/exception/exception.dart';
 import 'package:blockchain_utils/helper/extensions/extensions.dart';
@@ -107,17 +108,15 @@ class _IncompletePoint<
     return _IncompletePoint(result);
   }
 
-  _IncompletePoint<SCALAR, BASE, P> addAffine(
-    PastaAffinePoint<SCALAR, BASE, P> rhs,
-  ) {
+  _IncompletePoint<SCALAR, BASE, P> addAffine(P rhs) {
     final p = point;
     if (p == null) {
       return const _IncompletePoint(null);
     }
-    final q = rhs.toCurve();
+    final q = rhs;
 
     final valid = !(p.isIdentity() || q.isIdentity() || p == q || p == -q);
-    final result = valid ? (p + rhs) : null;
+    final result = valid ? (p + q) : null;
     return _IncompletePoint(result);
   }
 }
@@ -141,12 +140,12 @@ abstract final class BaseHashDomain<
   P extends PastaPoint<SCALAR, BASE, P>,
   AFFINE extends PastaAffinePoint<SCALAR, BASE, P>
 > {
-  final List<AFFINE> _sinsemillaS;
-  List<AFFINE> get sinsemillaS => _sinsemillaS;
+  final List<P> _sinsemillaS;
+  List<P> get sinsemillaS => _sinsemillaS;
   final P q;
-  BaseHashDomain({required this.q, required List<AFFINE> sinsemillaS})
+  BaseHashDomain({required this.q, required List<P> sinsemillaS})
     : _sinsemillaS = sinsemillaS;
-  PastaAffinePoint<SCALAR, BASE, P> pointAtIndex(int index);
+  P pointAtIndex(int index);
 
   /// - [hashToPoint]: https://zips.z.cash/protocol/nu5.pdf#concretesinsemillahash
   _IncompletePoint<SCALAR, BASE, P> _hashToPoint(List<bool> msg) {
@@ -205,14 +204,13 @@ abstract class BaseCommitDomain<
 final class HashDomain
     extends BaseHashDomain<VestaFq, PallasFp, PallasPoint, PallasAffinePoint> {
   HashDomain({required super.q, required super.sinsemillaS});
-  static List<PallasAffinePoint> generateSinsemillaS() {
-    List<PallasAffinePoint> points = [];
+  static List<PallasPoint> generateSinsemillaS() {
+    List<PallasPoint> points = [];
     for (int index = 0; index < 1024; index++) {
-      final hash =
-          PallasPoint.hashToCurve(
-            domainPrefix: HashDomainConst.sPersonalization,
-            message: index.toU32LeBytes(),
-          ).toAffine();
+      final hash = PallasPoint.hashToCurve(
+        domainPrefix: HashDomainConst.sPersonalization,
+        message: index.toU32LeBytes(),
+      );
       points.add(hash);
     }
     return points;
@@ -221,7 +219,7 @@ final class HashDomain
   factory HashDomain.fromDomain(
     String domain, {
     List<int>? message,
-    List<PallasAffinePoint>? sinsemillaS,
+    List<PallasPoint>? sinsemillaS,
     bool withSeperator = false,
   }) {
     if (withSeperator) {
@@ -237,7 +235,7 @@ final class HashDomain
   }
 
   @override
-  PastaAffinePoint<VestaFq, PallasFp, PallasPoint> pointAtIndex(int index) {
+  PallasPoint pointAtIndex(int index) {
     final r = _sinsemillaS.elementAtOrNull(index);
     if (r == null) {
       throw CryptoException.failed(
@@ -259,22 +257,33 @@ final class HashDomainNative
         > {
   HashDomainNative({required super.q, required super.sinsemillaS});
 
-  static List<PallasAffineNativePoint> generateSinsemillaS() {
-    List<PallasAffineNativePoint> points = [];
+  static List<PallasNativePoint> generateSinsemillaS() {
+    List<PallasNativePoint> points = [];
     for (int index = 0; index < 1024; index++) {
-      final hash =
-          PallasNativePoint.hashToCurve(
-            domainPrefix: HashDomainConst.sPersonalization,
-            message: index.toU32LeBytes(),
-          ).toAffine();
+      final hash = PallasNativePoint.hashToCurve(
+        domainPrefix: HashDomainConst.sPersonalization,
+        message: index.toU32LeBytes(),
+      );
       points.add(hash);
     }
     return points;
   }
 
+  static List<PallasNativePoint> generateSinsemillaSConstants() {
+    return SinsemillaConst.sConstants
+        .map(
+          (e) => PallasNativePoint(
+            x: PallasNativeFp.nP(BigInt.parse(e[0])),
+            y: PallasNativeFp.nP(BigInt.parse(e[1])),
+            z: PallasNativeFp.nP(BigInt.parse(e[2])),
+          ),
+        )
+        .toList();
+  }
+
   factory HashDomainNative.fromDomain(
     String domain, {
-    List<PallasAffineNativePoint>? sinsemillaS,
+    List<PallasNativePoint>? sinsemillaS,
     bool withSeperator = false,
   }) {
     if (withSeperator) {
@@ -285,13 +294,12 @@ final class HashDomainNative
       domainPrefix: HashDomainConst.qPersonalization,
       message: message,
     );
-    sinsemillaS ??= generateSinsemillaS();
+    sinsemillaS ??= generateSinsemillaSConstants();
     return HashDomainNative(q: point, sinsemillaS: sinsemillaS);
   }
 
   @override
-  PastaAffinePoint<VestaNativeFq, PallasNativeFp, PallasNativePoint>
-  pointAtIndex(int index) {
+  PallasNativePoint pointAtIndex(int index) {
     final r = _sinsemillaS.elementAtOrNull(index);
     if (r == null) {
       throw CryptoException.failed(
@@ -314,10 +322,7 @@ class CommitDomain
 
   /// Constructs a new [CommitDomainNative] with a specific prefix string.
   /// [sinsemillaS] pre generated sinsemilaS
-  factory CommitDomain.create(
-    String domain, {
-    List<PallasAffinePoint>? sinsemillaS,
-  }) {
+  factory CommitDomain.create(String domain, {List<PallasPoint>? sinsemillaS}) {
     return CommitDomain.withSeperateDomain(
       hashDomain: domain,
       blindDomain: domain,
@@ -330,7 +335,7 @@ class CommitDomain
   factory CommitDomain.withSeperateDomain({
     required String hashDomain,
     required String blindDomain,
-    List<PallasAffinePoint>? sinsemillaS,
+    List<PallasPoint>? sinsemillaS,
   }) {
     final mPrefix = "$hashDomain-M";
     final rPrefix = "$blindDomain-r";
@@ -361,7 +366,7 @@ class CommitDomainNative
   /// [sinsemillaS] pre generated sinsemilaS
   factory CommitDomainNative.create(
     String domain, {
-    List<PallasAffineNativePoint>? sinsemillaS,
+    List<PallasNativePoint>? sinsemillaS,
   }) {
     return CommitDomainNative.withSeperateDomain(
       hashDomain: domain,
@@ -375,7 +380,7 @@ class CommitDomainNative
   factory CommitDomainNative.withSeperateDomain({
     required String hashDomain,
     required String blindDomain,
-    List<PallasAffineNativePoint>? sinsemillaS,
+    List<PallasNativePoint>? sinsemillaS,
   }) {
     final mPrefix = "$hashDomain-M";
     final rPrefix = "$blindDomain-r";

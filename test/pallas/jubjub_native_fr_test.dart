@@ -1,4 +1,5 @@
 import 'package:blockchain_utils/blockchain_utils.dart';
+import 'package:blockchain_utils/numbers/src/u64.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -20,7 +21,7 @@ void _invert() {
   final m2 = BigInt.parse(
     "6554484396890773809930967563523245729705921265872317281365359162392183254197",
   );
-  final r = JubJubNativeFr.fromBytes(JubJubFr.r().toBytes());
+  final r = JubJubNativeFr.fromBytes(JubJubFr.r.toBytes());
   JubJubNativeFr r1 = r;
   JubJubNativeFr r2 = r;
   JubJubNativeFr r3 = r;
@@ -42,13 +43,13 @@ void _inversion() {
   expect(JubJubNativeFr.one().invert(), JubJubNativeFr.one());
   expect((-JubJubNativeFr.one()).invert(), -JubJubNativeFr.one());
 
-  JubJubNativeFr tmp = JubJubNativeFr.fromBytes(JubJubFr.r2().toBytes());
+  JubJubNativeFr tmp = JubJubNativeFr.fromBytes(JubJubFr.r2.toBytes());
 
   for (int i = 0; i < 100; i++) {
     JubJubNativeFr tmp2 = tmp.invert() ?? JubJubNativeFr.zero();
     tmp2 *= tmp;
     expect(tmp2, JubJubNativeFr.one());
-    tmp += JubJubNativeFr.fromBytes(JubJubFr.r2().toBytes());
+    tmp += JubJubNativeFr.fromBytes(JubJubFr.r2.toBytes());
   }
 }
 
@@ -108,14 +109,14 @@ void _negation() {
 
   expect(
     tmp.toBytes(),
-    JubJubFr([1, 0, 0, 0].map(BigInt.from).toList()).toBytes(),
+    JubJubFr([1, 0, 0, 0].map((e) => Uint64(e)).toList()).toBytes(),
   );
 
   tmp = -JubJubNativeFr.zero();
   expect(tmp, JubJubNativeFr.zero());
   tmp =
       -JubJubNativeFr.fromBytes(
-        JubJubFr([1, 0, 0, 0].map(BigInt.from).toList()).toBytes(),
+        JubJubFr([1, 0, 0, 0].map((e) => Uint64(e)).toList()).toBytes(),
       );
   expect(tmp, largest);
 }
@@ -127,16 +128,16 @@ void _addition() {
   expect(
     tmp.toBytes(),
     JubJubFr([
-      BigInt.parse('0xd0970e5ed6f72cb5'),
-      BigInt.parse('0xa6682093ccc81082'),
-      BigInt.parse('0x06673b0101343b00'),
-      BigInt.parse('0x0e7db4ea6533afa9'),
+      Uint64.parseHex('0xd0970e5ed6f72cb5'),
+      Uint64.parseHex('0xa6682093ccc81082'),
+      Uint64.parseHex('0x06673b0101343b00'),
+      Uint64.parseHex('0x0e7db4ea6533afa9'),
     ]).toBytes(),
   );
 
   tmp = largest;
   tmp += JubJubNativeFr.fromBytes(
-    JubJubFr([1, 0, 0, 0].map(BigInt.from).toList()).toBytes(),
+    JubJubFr([1, 0, 0, 0].map((e) => Uint64(e)).toList()).toBytes(),
   );
 
   expect(tmp, JubJubNativeFr.zero());
@@ -152,10 +153,10 @@ void _testZero() {
 void _fromBytesMax() {
   expect(
     JubJubFr([
-      BigInt.parse('0x8b75c9015ae42a22'),
-      BigInt.parse('0xe59082e7bf9e38b8'),
-      BigInt.parse('0x6440c91261da51b3'),
-      BigInt.parse('0x0a5e07ffb20991cf'),
+      Uint64.parseHex('0x8b75c9015ae42a22'),
+      Uint64.parseHex('0xe59082e7bf9e38b8'),
+      Uint64.parseHex('0x6440c91261da51b3'),
+      Uint64.parseHex('0x0a5e07ffb20991cf'),
     ]).toBytes(),
     JubJubNativeFr.fromBytes64(List<int>.filled(64, 0xff)).toBytes(),
   );
@@ -171,7 +172,7 @@ void _bytes64() {
     ),
   );
   expect(
-    JubJubFr.r2().toBytes(),
+    JubJubFr.r2.toBytes(),
     JubJubNativeFr.fromBytes64(
       BytesUtils.fromHexString(
         "d90796b9b30bf82550e7b6662fd615f3f41488ebee142593c65591476ffca6090000000000000000000000000000000000000000000000000000000000000000",

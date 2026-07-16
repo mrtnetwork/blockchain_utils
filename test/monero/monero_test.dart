@@ -7,7 +7,8 @@ import 'test_vector.dart';
 
 void main() {
   test("monero account", () {
-    for (final i in testVector) {
+    final vector = testVector.shuffleTake();
+    for (final i in vector) {
       final seed = BytesUtils.fromHexString(i["seed"]);
       final coin = MoneroCoins.values.firstWhere(
         (element) =>

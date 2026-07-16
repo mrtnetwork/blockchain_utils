@@ -71,13 +71,13 @@ class VestaNativePoint
   factory VestaNativePoint.fromBytes(List<int> bytes) {
     return VestaAffineNativePoint.fromBytes(bytes).toCurve();
   }
-  static final VestaNativePoint _identity = VestaNativePoint(
+  static final VestaNativePoint identity_ = VestaNativePoint(
     x: VestaNativeFq.zero(),
     y: VestaNativeFq.zero(),
     z: VestaNativeFq.zero(),
   );
   factory VestaNativePoint.identity() {
-    return _identity;
+    return identity_;
   }
   factory VestaNativePoint.generator() {
     final negOne = -VestaNativeFq.one();
@@ -126,7 +126,7 @@ class VestaNativePoint
 
   @override
   VestaNativePoint identity() {
-    return VestaNativePoint.identity();
+    return VestaNativePoint.identity_;
   }
 
   @override
@@ -142,7 +142,7 @@ class VestaNativePoint
   VestaAffineNativePoint toAffine() {
     final zInv = z.invert();
     if (zInv == null) {
-      return VestaAffineNativePoint.identity();
+      return VestaAffineNativePoint.identity_;
     }
     final zInv2 = zInv.square();
     final x = this.x * zInv2;
@@ -165,12 +165,12 @@ class VestaNativePoint
 class VestaAffineNativePoint
     extends PastaAffinePoint<PallasNativeFp, VestaNativeFq, VestaNativePoint> {
   VestaAffineNativePoint({required super.x, required super.y});
-  static final _identity = VestaAffineNativePoint(
+  static final identity_ = VestaAffineNativePoint(
     x: VestaNativeFq.zero(),
     y: VestaNativeFq.zero(),
   );
   factory VestaAffineNativePoint.identity() {
-    return _identity;
+    return identity_;
   }
   factory VestaAffineNativePoint.fromBytes(List<int> bytes) {
     if (bytes.length != 32) {
@@ -189,7 +189,7 @@ class VestaAffineNativePoint
 
     final x = VestaNativeFq.fromBytes(tmp);
     if (x.isZero() && ySign == 0) {
-      return VestaAffineNativePoint.identity();
+      return VestaAffineNativePoint.identity_;
     }
     final x3 = x.square() * x;
     final rhs = (x3 + PastaCurveParams.vestaNative.b);
@@ -237,7 +237,7 @@ class VestaAffineNativePoint
 
   @override
   VestaNativePoint identity() {
-    return VestaNativePoint.identity();
+    return VestaNativePoint.identity_;
   }
 
   @override

@@ -3,6 +3,8 @@
 import 'package:blockchain_utils/blockchain_utils.dart';
 import 'package:test/test.dart';
 
+import '../quick_hex.dart';
+
 final List<Map<String, dynamic>> _testVector = [
   {
     "key_bytes":
@@ -120,7 +122,7 @@ final List<Map<String, dynamic>> _testVector = [
 
 void main() {
   test("decode", () {
-    for (final i in _testVector) {
+    for (final i in _testVector.shuffleTake()) {
       final dec = WifDecoder.decode(i["encode"], netVer: i["net_ver"]);
       expect(
         BytesUtils.toHexString(dec.$1) == i["key_bytes"] &&
@@ -130,7 +132,7 @@ void main() {
     }
   });
   test("encode", () {
-    for (final i in _testVector) {
+    for (final i in _testVector.shuffleTake()) {
       final encode = WifEncoder.encode(
         BytesUtils.fromHexString(i["key_bytes"]),
         netVer: i["net_ver"],

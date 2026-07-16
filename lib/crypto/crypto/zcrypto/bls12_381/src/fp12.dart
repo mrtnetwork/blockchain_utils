@@ -1,6 +1,7 @@
 import 'package:blockchain_utils/crypto/crypto/zcrypto/bls12_381/src/fp.dart';
 import 'package:blockchain_utils/crypto/crypto/zcrypto/bls12_381/src/fp2.dart';
 import 'package:blockchain_utils/crypto/crypto/zcrypto/bls12_381/src/fp6.dart';
+import 'package:blockchain_utils/numbers/src/u64.dart';
 import 'package:blockchain_utils/utils/equatable/equatable.dart';
 
 /// Quadratic extension field GF(p¹²) over GF(p⁶), represented as c0 + c1·w with w² = v.
@@ -15,11 +16,9 @@ class Bls12Fp12 with Equality {
       c1: Bls12Fp6.conditionalSelect(a.c1, b.c1, choice),
     );
   }
+  static const zero = Bls12Fp12(c0: Bls12Fp6.zero, c1: Bls12Fp6.zero);
+  static const one = Bls12Fp12(c0: Bls12Fp6.one, c1: Bls12Fp6.zero);
 
-  /// zero element
-  factory Bls12Fp12.zero() =>
-      Bls12Fp12(c0: Bls12Fp6.zero(), c1: Bls12Fp6.zero());
-  factory Bls12Fp12.one() => Bls12Fp12(c0: Bls12Fp6.one(), c1: Bls12Fp6.zero());
   Bls12Fp12 mulBy014(Bls12Fp2 c0, Bls12Fp2 c1, Bls12Fp2 c4) {
     // aa = this.c0 * (c0 + c1*u)
     final aa = this.c0.mulBy01(c0, c1);
@@ -53,22 +52,22 @@ class Bls12Fp12 with Equality {
 
     // Multiply c1 by (u + 1)^((p - 1) / 6)
     final frobCoeff = Bls12Fp6.fromBls12Fp2(
-      Bls12Fp2(
-        c0: Bls12Fp([
-          BigInt.parse('0x07089552b319d465'),
-          BigInt.parse('0xc6695f92b50a8313'),
-          BigInt.parse('0x97e83cccd117228f'),
-          BigInt.parse('0xa35baecab2dc29ee'),
-          BigInt.parse('0x1ce393ea5daace4d'),
-          BigInt.parse('0x08f2220fb0fb66eb'),
+      const Bls12Fp2(
+        c0: Bls12Fp.unsafe([
+          Uint64.unsafe(118003026, 3004814437),
+          Uint64.unsafe(3328794514, 3037365011),
+          Uint64.unsafe(2548579532, 3507954319),
+          Uint64.unsafe(2740694730, 3000773102),
+          Uint64.unsafe(484676586, 1571475021),
+          Uint64.unsafe(150086159, 2969265899),
         ]),
-        c1: Bls12Fp([
-          BigInt.parse('0xb2f66aad4ce5d646'),
-          BigInt.parse('0x5842a06bfc497cec'),
-          BigInt.parse('0xcf4895d42599d394'),
-          BigInt.parse('0xc11b9cba40a8e8d0'),
-          BigInt.parse('0x2e3813cbe5a0de89'),
-          BigInt.parse('0x110eefda88847faf'),
+        c1: Bls12Fp.unsafe([
+          Uint64.unsafe(3002493613, 1290131014),
+          Uint64.unsafe(1480761451, 4232674540),
+          Uint64.unsafe(3477640660, 630838164),
+          Uint64.unsafe(3239812282, 1084811472),
+          Uint64.unsafe(775427019, 3852525193),
+          Uint64.unsafe(286191578, 2290384815),
         ]),
       ),
     );

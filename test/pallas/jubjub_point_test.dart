@@ -1,9 +1,8 @@
 import 'package:blockchain_utils/blockchain_utils.dart';
+import 'package:blockchain_utils/numbers/src/u64.dart';
 import 'package:test/test.dart';
 
 void main() {
-  // i();
-  // return;
   test("JubJub/Point", () {
     _isOnCurve();
     _nonQuadraticResidue();
@@ -94,24 +93,24 @@ void _serializationConsistency() {
 
 void _testMulConsistency() {
   final a = JubJubFr([
-    BigInt.parse("0x21e61211d9934f2e"),
-    BigInt.parse("0xa52c058a693c3e07"),
-    BigInt.parse("0x9ccb77bfb12d6360"),
-    BigInt.parse("0x07df2470ec94398e"),
+    Uint64.parseHex("0x21e61211d9934f2e"),
+    Uint64.parseHex("0xa52c058a693c3e07"),
+    Uint64.parseHex("0x9ccb77bfb12d6360"),
+    Uint64.parseHex("0x07df2470ec94398e"),
   ]);
 
   final b = JubJubFr([
-    BigInt.parse("0x03336d1cbe19dbe0"),
-    BigInt.parse("0x0153618f6156a536"),
-    BigInt.parse("0x2604c9e1fc3c6b15"),
-    BigInt.parse("0x04ae581ceb028720"),
+    Uint64.parseHex("0x03336d1cbe19dbe0"),
+    Uint64.parseHex("0x0153618f6156a536"),
+    Uint64.parseHex("0x2604c9e1fc3c6b15"),
+    Uint64.parseHex("0x04ae581ceb028720"),
   ]);
 
   final c = JubJubFr([
-    BigInt.parse("0xd7abf5bb24683f4c"),
-    BigInt.parse("0x9d7712cc274b7c03"),
-    BigInt.parse("0x973293db9683789f"),
-    BigInt.parse("0x0b677e29380a97a7"),
+    Uint64.parseHex("0xd7abf5bb24683f4c"),
+    Uint64.parseHex("0x9d7712cc274b7c03"),
+    Uint64.parseHex("0x973293db9683789f"),
+    Uint64.parseHex("0x0b677e29380a97a7"),
   ]);
 
   expect(a * b, c);
@@ -124,16 +123,16 @@ void _testMulConsistency() {
       JubJubPoint.fromAffinePoint(
         JubJubAffinePoint(
           u: JubJubFq.fromRaw([
-            BigInt.parse("0x81c571e5d883cfb0"),
-            BigInt.parse("0x049f7a686f147029"),
-            BigInt.parse("0xf539c860bc3ea21f"),
-            BigInt.parse("0x4284715b7ccc8162"),
+            Uint64.parseHex("0x81c571e5d883cfb0"),
+            Uint64.parseHex("0x049f7a686f147029"),
+            Uint64.parseHex("0xf539c860bc3ea21f"),
+            Uint64.parseHex("0x4284715b7ccc8162"),
           ]),
           v: JubJubFq.fromRaw([
-            BigInt.parse("0xbf096275684bb8ca"),
-            BigInt.parse("0xc7ba245890af256d"),
-            BigInt.parse("0x59119f3e86380eb0"),
-            BigInt.parse("0x3793de182f9fb1d2"),
+            Uint64.parseHex("0xbf096275684bb8ca"),
+            Uint64.parseHex("0xc7ba245890af256d"),
+            Uint64.parseHex("0x59119f3e86380eb0"),
+            Uint64.parseHex("0x3793de182f9fb1d2"),
           ]),
         ),
       ).mulByCofactor();
@@ -291,144 +290,144 @@ void _findEightTorsion() {
 
 final _fullGenerator = JubJubAffinePoint(
   u: JubJubFq.fromRaw([
-    BigInt.parse("0xe4b3d35df1a7adfe"),
-    BigInt.parse("0xcaf55d1b29bf81af"),
-    BigInt.parse("0x8b0f03ddd60a8187"),
-    BigInt.parse("0x62edcbb8bf3787c8"),
+    Uint64.parseHex("0xe4b3d35df1a7adfe"),
+    Uint64.parseHex("0xcaf55d1b29bf81af"),
+    Uint64.parseHex("0x8b0f03ddd60a8187"),
+    Uint64.parseHex("0x62edcbb8bf3787c8"),
   ]),
   v: JubJubFq.fromRaw([
-    BigInt.parse("0xb"),
-    BigInt.parse("0x0"),
-    BigInt.parse("0x0"),
-    BigInt.parse("0x0"),
+    Uint64.parseHex("0xb"),
+    Uint64.parseHex("0x0"),
+    Uint64.parseHex("0x0"),
+    Uint64.parseHex("0x0"),
   ]),
 );
 final _eightTorsion = <JubJubAffinePoint>[
   // 0 ----------------------------------------------------
   JubJubAffinePoint(
     u: JubJubFq.fromRaw([
-      BigInt.parse("0xd92e6a7927200d43"),
-      BigInt.parse("0x7aa41ac43dae8582"),
-      BigInt.parse("0xeaaae086a16618d1"),
-      BigInt.parse("0x71d4df38ba9e7973"),
+      Uint64.parseHex("0xd92e6a7927200d43"),
+      Uint64.parseHex("0x7aa41ac43dae8582"),
+      Uint64.parseHex("0xeaaae086a16618d1"),
+      Uint64.parseHex("0x71d4df38ba9e7973"),
     ]),
     v: JubJubFq.fromRaw([
-      BigInt.parse("0xff0d2068eff496dd"),
-      BigInt.parse("0x9106ee90f384a4a1"),
-      BigInt.parse("0x16a13035ad4d7266"),
-      BigInt.parse("0x4958bdb21966982e"),
+      Uint64.parseHex("0xff0d2068eff496dd"),
+      Uint64.parseHex("0x9106ee90f384a4a1"),
+      Uint64.parseHex("0x16a13035ad4d7266"),
+      Uint64.parseHex("0x4958bdb21966982e"),
     ]),
   ),
 
   // 1 ----------------------------------------------------
   JubJubAffinePoint(
     u: JubJubFq.fromRaw([
-      BigInt.parse("0xfffeffff00000001"),
-      BigInt.parse("0x67baa40089fb5bfe"),
-      BigInt.parse("0xa5e80b39939ed334"),
-      BigInt.parse("0x73eda753299d7d47"),
+      Uint64.parseHex("0xfffeffff00000001"),
+      Uint64.parseHex("0x67baa40089fb5bfe"),
+      Uint64.parseHex("0xa5e80b39939ed334"),
+      Uint64.parseHex("0x73eda753299d7d47"),
     ]),
     v: JubJubFq.fromRaw([
-      BigInt.parse("0x0"),
-      BigInt.parse("0x0"),
-      BigInt.parse("0x0"),
-      BigInt.parse("0x0"),
+      Uint64.parseHex("0x0"),
+      Uint64.parseHex("0x0"),
+      Uint64.parseHex("0x0"),
+      Uint64.parseHex("0x0"),
     ]),
   ),
 
   // 2 ----------------------------------------------------
   JubJubAffinePoint(
     u: JubJubFq.fromRaw([
-      BigInt.parse("0xd92e6a7927200d43"),
-      BigInt.parse("0x7aa41ac43dae8582"),
-      BigInt.parse("0xeaaae086a16618d1"),
-      BigInt.parse("0x71d4df38ba9e7973"),
+      Uint64.parseHex("0xd92e6a7927200d43"),
+      Uint64.parseHex("0x7aa41ac43dae8582"),
+      Uint64.parseHex("0xeaaae086a16618d1"),
+      Uint64.parseHex("0x71d4df38ba9e7973"),
     ]),
     v: JubJubFq.fromRaw([
-      BigInt.parse("0x00f2df96100b6924"),
-      BigInt.parse("0xc2b6b5720c79b75d"),
-      BigInt.parse("0x1c98a7d25c54659e"),
-      BigInt.parse("0x2a94e9a11036e51a"),
+      Uint64.parseHex("0x00f2df96100b6924"),
+      Uint64.parseHex("0xc2b6b5720c79b75d"),
+      Uint64.parseHex("0x1c98a7d25c54659e"),
+      Uint64.parseHex("0x2a94e9a11036e51a"),
     ]),
   ),
 
   // 3 ----------------------------------------------------
   JubJubAffinePoint(
     u: JubJubFq.fromRaw([
-      BigInt.parse("0x0"),
-      BigInt.parse("0x0"),
-      BigInt.parse("0x0"),
-      BigInt.parse("0x0"),
+      Uint64.parseHex("0x0"),
+      Uint64.parseHex("0x0"),
+      Uint64.parseHex("0x0"),
+      Uint64.parseHex("0x0"),
     ]),
     v: JubJubFq.fromRaw([
-      BigInt.parse("0xffffffff00000000"),
-      BigInt.parse("0x53bda402fffe5bfe"),
-      BigInt.parse("0x3339d80809a1d805"),
-      BigInt.parse("0x73eda753299d7d48"),
+      Uint64.parseHex("0xffffffff00000000"),
+      Uint64.parseHex("0x53bda402fffe5bfe"),
+      Uint64.parseHex("0x3339d80809a1d805"),
+      Uint64.parseHex("0x73eda753299d7d48"),
     ]),
   ),
 
   // 4 ----------------------------------------------------
   JubJubAffinePoint(
     u: JubJubFq.fromRaw([
-      BigInt.parse("0x26d19585d8dff2be"),
-      BigInt.parse("0xd919893ec24fd67c"),
-      BigInt.parse("0x488ef781683bbf33"),
-      BigInt.parse("0x0218c81a6eff03d4"),
+      Uint64.parseHex("0x26d19585d8dff2be"),
+      Uint64.parseHex("0xd919893ec24fd67c"),
+      Uint64.parseHex("0x488ef781683bbf33"),
+      Uint64.parseHex("0x0218c81a6eff03d4"),
     ]),
     v: JubJubFq.fromRaw([
-      BigInt.parse("0x00f2df96100b6924"),
-      BigInt.parse("0xc2b6b5720c79b75d"),
-      BigInt.parse("0x1c98a7d25c54659e"),
-      BigInt.parse("0x2a94e9a11036e51a"),
+      Uint64.parseHex("0x00f2df96100b6924"),
+      Uint64.parseHex("0xc2b6b5720c79b75d"),
+      Uint64.parseHex("0x1c98a7d25c54659e"),
+      Uint64.parseHex("0x2a94e9a11036e51a"),
     ]),
   ),
 
   // 5 ----------------------------------------------------
   JubJubAffinePoint(
     u: JubJubFq.fromRaw([
-      BigInt.parse("0x0001000000000000"),
-      BigInt.parse("0xec03000276030000"),
-      BigInt.parse("0x8d51ccce760304d0"),
-      BigInt.parse("0x0"),
+      Uint64.parseHex("0x0001000000000000"),
+      Uint64.parseHex("0xec03000276030000"),
+      Uint64.parseHex("0x8d51ccce760304d0"),
+      Uint64.parseHex("0x0"),
     ]),
     v: JubJubFq.fromRaw([
-      BigInt.parse("0x0"),
-      BigInt.parse("0x0"),
-      BigInt.parse("0x0"),
-      BigInt.parse("0x0"),
+      Uint64.parseHex("0x0"),
+      Uint64.parseHex("0x0"),
+      Uint64.parseHex("0x0"),
+      Uint64.parseHex("0x0"),
     ]),
   ),
 
   // 6 ----------------------------------------------------
   JubJubAffinePoint(
     u: JubJubFq.fromRaw([
-      BigInt.parse("0x26d19585d8dff2be"),
-      BigInt.parse("0xd919893ec24fd67c"),
-      BigInt.parse("0x488ef781683bbf33"),
-      BigInt.parse("0x0218c81a6eff03d4"),
+      Uint64.parseHex("0x26d19585d8dff2be"),
+      Uint64.parseHex("0xd919893ec24fd67c"),
+      Uint64.parseHex("0x488ef781683bbf33"),
+      Uint64.parseHex("0x0218c81a6eff03d4"),
     ]),
     v: JubJubFq.fromRaw([
-      BigInt.parse("0xff0d2068eff496dd"),
-      BigInt.parse("0x9106ee90f384a4a1"),
-      BigInt.parse("0x16a13035ad4d7266"),
-      BigInt.parse("0x4958bdb21966982e"),
+      Uint64.parseHex("0xff0d2068eff496dd"),
+      Uint64.parseHex("0x9106ee90f384a4a1"),
+      Uint64.parseHex("0x16a13035ad4d7266"),
+      Uint64.parseHex("0x4958bdb21966982e"),
     ]),
   ),
 
   // 7 ----------------------------------------------------
   JubJubAffinePoint(
     u: JubJubFq.fromRaw([
-      BigInt.parse("0x0"),
-      BigInt.parse("0x0"),
-      BigInt.parse("0x0"),
-      BigInt.parse("0x0"),
+      Uint64.parseHex("0x0"),
+      Uint64.parseHex("0x0"),
+      Uint64.parseHex("0x0"),
+      Uint64.parseHex("0x0"),
     ]),
     v: JubJubFq.fromRaw([
-      BigInt.parse("0x1"),
-      BigInt.parse("0x0"),
-      BigInt.parse("0x0"),
-      BigInt.parse("0x0"),
+      Uint64.parseHex("0x1"),
+      Uint64.parseHex("0x0"),
+      Uint64.parseHex("0x0"),
+      Uint64.parseHex("0x0"),
     ]),
   ),
 ];
@@ -439,16 +438,16 @@ void _testBatchNormalize() {
       JubJubPoint.fromAffinePoint(
         JubJubAffinePoint(
           u: JubJubFq.fromRaw([
-            BigInt.parse("0x81c571e5d883cfb0"),
-            BigInt.parse("0x049f7a686f147029"),
-            BigInt.parse("0xf539c860bc3ea21f"),
-            BigInt.parse("0x4284715b7ccc8162"),
+            Uint64.parseHex("0x81c571e5d883cfb0"),
+            Uint64.parseHex("0x049f7a686f147029"),
+            Uint64.parseHex("0xf539c860bc3ea21f"),
+            Uint64.parseHex("0x4284715b7ccc8162"),
           ]),
           v: JubJubFq.fromRaw([
-            BigInt.parse("0xbf096275684bb8ca"),
-            BigInt.parse("0xc7ba245890af256d"),
-            BigInt.parse("0x59119f3e86380eb0"),
-            BigInt.parse("0x3793de182f9fb1d2"),
+            Uint64.parseHex("0xbf096275684bb8ca"),
+            Uint64.parseHex("0xc7ba245890af256d"),
+            Uint64.parseHex("0x59119f3e86380eb0"),
+            Uint64.parseHex("0x3793de182f9fb1d2"),
           ]),
         ),
       ).mulByCofactor();
@@ -486,25 +485,23 @@ void _assoc() {
       JubJubPoint.fromAffinePoint(
         JubJubAffinePoint(
           u: JubJubFq.fromRaw([
-            BigInt.parse("0x81c571e5d883cfb0"),
-            BigInt.parse("0x049f7a686f147029"),
-            BigInt.parse("0xf539c860bc3ea21f"),
-            BigInt.parse("0x4284715b7ccc8162"),
+            Uint64.parseHex("0x81c571e5d883cfb0"),
+            Uint64.parseHex("0x049f7a686f147029"),
+            Uint64.parseHex("0xf539c860bc3ea21f"),
+            Uint64.parseHex("0x4284715b7ccc8162"),
           ]),
           v: JubJubFq.fromRaw([
-            BigInt.parse("0xbf096275684bb8ca"),
-            BigInt.parse("0xc7ba245890af256d"),
-            BigInt.parse("0x59119f3e86380eb0"),
-            BigInt.parse("0x3793de182f9fb1d2"),
+            Uint64.parseHex("0xbf096275684bb8ca"),
+            Uint64.parseHex("0xc7ba245890af256d"),
+            Uint64.parseHex("0x59119f3e86380eb0"),
+            Uint64.parseHex("0x3793de182f9fb1d2"),
           ]),
         ),
       ).mulByCofactor();
   expect(p.isOnCurve(), true);
 
-  final n =
-      (p * JubJubFr.from(BigInt.from(1000))) * JubJubFr.from(BigInt.from(3938));
-  final n2 =
-      p * (JubJubFr.from(BigInt.from(1000)) * JubJubFr.from(BigInt.from(3938)));
+  final n = (p * JubJubFr.from(Uint64(1000))) * JubJubFr.from(Uint64(3938));
+  final n2 = p * (JubJubFr.from(Uint64(1000)) * JubJubFr.from(Uint64(3938)));
   expect(n, n2);
   // expect(p*JubJubFr.from(BigInt.from(1000))*JubJubFr.from(BigInt.from(3938)),(p*JubJubFr.from(BigInt.from(1000))*JubJubFr.from(BigInt.from(3938)));
 }
@@ -542,7 +539,7 @@ void _isOnCurve() {
 }
 
 void _nonQuadraticResidue() {
-  expect(JubJubFq.edwardsD().sqrt().isSquare, false);
-  expect((-JubJubFq.edwardsD2()).sqrt().isSquare, false);
-  expect((-JubJubFq.edwardsD2()).invert()?.sqrt().isSquare, false);
+  expect(JubJubFq.edwardsD.sqrt().isSquare, false);
+  expect((-JubJubFq.edwardsD2).sqrt().isSquare, false);
+  expect((-JubJubFq.edwardsD2).invert()?.sqrt().isSquare, false);
 }

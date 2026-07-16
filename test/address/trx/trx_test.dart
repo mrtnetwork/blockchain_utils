@@ -7,7 +7,7 @@ import 'test_vector.dart' show testVecotr;
 
 void main() {
   test("trx address test", () {
-    for (final i in testVecotr) {
+    for (final i in testVecotr.shuffleTake()) {
       final z = TrxAddrEncoder().encodeKey(
         BytesUtils.fromHexString(i["public"]),
       );

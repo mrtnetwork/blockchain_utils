@@ -14,7 +14,7 @@ import 'package:blockchain_utils/utils/binary/bytes_tracker.dart';
 import 'package:blockchain_utils/utils/binary/utils.dart';
 import 'package:blockchain_utils/utils/numbers/utils/bigint_utils.dart';
 
-class MuSig2 extends Musig2Bsae {
+class MuSig2 extends Musig2Context {
   const MuSig2();
 
   /// Aggregates public nonces for MuSig2

@@ -7,9 +7,10 @@
 import 'dart:math';
 
 import 'package:blockchain_utils/blockchain_utils.dart';
-import 'package:blockchain_utils/crypto/crypto/ec/projective/secp256k1/secp256k1.dart';
+// import 'package:blockchain_utils/crypto/crypto/ec/projective/secp256k1/secp256k1.dart';
 import 'package:test/test.dart';
 
+const testIteration = 25;
 Secp256k1Fe randomFe() {
   while (true) {
     final x = Secp256k1Fe();
@@ -142,12 +143,12 @@ void randomGejTest(Secp256k1Gej gej) {
 
 void randomGeJacobian(Secp256k1Gej gej, Secp256k1Ge ge, [Secp256k1Fe? z]) {
   Secp256k1Fe z2 = Secp256k1Fe(), z3 = Secp256k1Fe();
-  gej.z = z ?? randomFeNonZero();
+  gej.fillZ(z ?? randomFeNonZero());
   Secp256k1.secp256k1FeSqr(z2, gej.z);
   Secp256k1.secp256k1FeMul(z3, z2, gej.z);
   Secp256k1.secp256k1FeMul(gej.x, ge.x, z2);
   Secp256k1.secp256k1FeMul(gej.y, ge.y, z3);
-  gej.infinity = ge.infinity;
+  gej.setInfinity(ge.infinity);
 }
 
 void randomGeTest(Secp256k1Ge ge) {
@@ -159,7 +160,7 @@ void randomGeTest(Secp256k1Ge ge) {
       break;
     }
   } while (true);
-  ge.infinity = 0;
+  ge.setInfinity(0);
 }
 
 int testrandBits1() => Random().nextInt(2);

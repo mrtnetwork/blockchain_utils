@@ -6,7 +6,7 @@ import 'test_vector.dart';
 
 void main() {
   test("atom address test", () {
-    for (final i in testVector) {
+    for (final i in testVector.shuffleTake()) {
       final params = Map<String, dynamic>.from(i["params"]);
 
       final z = AtomAddrEncoder().encodeKey(

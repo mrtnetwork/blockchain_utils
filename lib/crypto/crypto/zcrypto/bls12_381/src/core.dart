@@ -30,6 +30,7 @@ abstract class BaseBls12Point<
   P extends BaseBls12Point<SCALAR, P>
 >
     extends ECPoint<SCALAR, P> {
+  const BaseBls12Point();
   bool isIdentity();
 }
 
@@ -37,6 +38,8 @@ abstract class BaseBls12Point<
 /// (field elements may be split into limbs).
 abstract class Bls12Point<P extends Bls12Point<P>>
     extends BaseBls12Point<JubJubFq, Bls12Point<P>> {
+  const Bls12Point();
+
   /// Point addition.
   @override
   P operator +(Bls12Point<P> rhs);
@@ -74,8 +77,9 @@ abstract class Bls12NativePoint<P extends Bls12NativePoint<P>>
 }
 
 /// Affine-coordinate BLS12 point with non-native field elements.
-abstract class Bls12AffinePoint<P extends Bls12Point<P>>
-    extends Bls12Point<P> {}
+abstract class Bls12AffinePoint<P extends Bls12Point<P>> extends Bls12Point<P> {
+  const Bls12AffinePoint();
+}
 
 /// Affine-coordinate BLS12 point with native field elements
 /// (coordinates stored as single BigInts).
@@ -85,6 +89,8 @@ abstract class Bls12NativeAffinePoint<P extends Bls12NativePoint<P>>
 /// Base interface for BLS scalar or base fields.
 abstract class BlsField<F extends BlsField<F>>
     extends CryptoPrimeFieldElement<F> {
+  const BlsField();
+
   /// Returns whether or not this element is strictly lexicographically
   /// larger than its negation.
   bool lexicographicallyLargest();

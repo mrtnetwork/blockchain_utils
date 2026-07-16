@@ -8,13 +8,13 @@ import 'package:blockchain_utils/helper/extensions/extensions.dart';
 class PallasIsoNativePoint
     extends PastaPoint<VestaNativeFq, PallasNativeFp, PallasIsoNativePoint> {
   PallasIsoNativePoint({required super.x, required super.y, required super.z});
-  static final _identity = PallasIsoNativePoint(
+  static final identity_ = PallasIsoNativePoint(
     x: PallasNativeFp.zero(),
     y: PallasNativeFp.zero(),
     z: PallasNativeFp.zero(),
   );
   factory PallasIsoNativePoint.identity() {
-    return _identity;
+    return identity_;
   }
   factory PallasIsoNativePoint.fromAffine(PallasIsoAffineNativePoint point) {
     return point.toCurve();
@@ -34,7 +34,7 @@ class PallasIsoNativePoint
 
   @override
   PallasIsoNativePoint identity() {
-    return PallasIsoNativePoint.identity();
+    return identity_;
   }
 
   @override
@@ -50,7 +50,7 @@ class PallasIsoNativePoint
   PallasIsoAffineNativePoint toAffine() {
     final zInv = z.invert();
     if (zInv == null) {
-      return PallasIsoAffineNativePoint.identity();
+      return PallasIsoAffineNativePoint.identity_;
     }
     final zInv2 = zInv.square();
     final x = this.x * zInv2;
@@ -74,13 +74,13 @@ class PallasIsoAffineNativePoint
     extends
         PastaAffinePoint<VestaNativeFq, PallasNativeFp, PallasIsoNativePoint> {
   PallasIsoAffineNativePoint({required super.x, required super.y});
-  static final _identity = PallasIsoAffineNativePoint(
+  static final identity_ = PallasIsoAffineNativePoint(
     x: PallasNativeFp.zero(),
     y: PallasNativeFp.zero(),
   );
-  factory PallasIsoAffineNativePoint.identity() {
-    return _identity;
-  }
+  // factory PallasIsoAffineNativePoint.identity() {
+  //   return _identity;
+  // }
   factory PallasIsoAffineNativePoint.fromBytes(List<int> bytes) {
     if (bytes.length != 32) {
       throw ArgumentException.invalidOperationArguments(
@@ -94,7 +94,7 @@ class PallasIsoAffineNativePoint
     tmp[31] &= 0x7F;
     final x = PallasNativeFp.fromBytes(tmp);
     if (x.isZero() && ySign == 0) {
-      return PallasIsoAffineNativePoint.identity();
+      return identity_;
     }
     final x3 = x.square() * x;
     final rhs = (x3 + PastaCurveParams.isoPallasNative.b);
@@ -149,7 +149,7 @@ class PallasIsoAffineNativePoint
 
   @override
   PallasIsoNativePoint identity() {
-    return PallasIsoNativePoint.identity();
+    return PallasIsoNativePoint.identity_;
   }
 
   @override

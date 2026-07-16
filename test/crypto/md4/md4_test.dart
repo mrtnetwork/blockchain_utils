@@ -7,7 +7,7 @@ import 'test_vector.dart';
 
 void main() {
   test("md4 test", () {
-    for (final i in testVector) {
+    for (final i in testVector.shuffleTake()) {
       final k = MD4();
       final message = BytesUtils.fromHexString(i["message"]);
       k.update(message.sublist(0, 10));

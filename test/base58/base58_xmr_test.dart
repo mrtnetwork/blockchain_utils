@@ -5,6 +5,8 @@ import 'package:blockchain_utils/utils/utils.dart';
 import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:test/test.dart';
 
+import '../quick_hex.dart';
+
 var _testVect = [
   {"raw": "", "encode": ""},
   {"raw": "61", "encode": "2g"},
@@ -38,13 +40,13 @@ var _testVect = [
 ];
 void main() {
   test("base58 xmr decod ", () {
-    for (final i in _testVect) {
+    for (final i in _testVect.shuffleTake()) {
       final decode = Base58XmrDecoder.decode(i["encode"]!);
       expect(i["raw"], BytesUtils.toHexString(decode));
     }
   });
   test("base58 xmr encode ", () {
-    for (final i in _testVect) {
+    for (final i in _testVect.shuffleTake()) {
       final decode = Base58XmrEncoder.encode(
         BytesUtils.fromHexString(i["raw"]!),
       );

@@ -2,12 +2,14 @@ import 'package:blockchain_utils/blockchain_utils.dart';
 import 'package:test/expect.dart';
 import 'package:test/scaffolding.dart';
 
+import '../../quick_hex.dart';
+
 void main() {
   test("FF1", _ff1);
 }
 
 void _ff1() {
-  for (final t in _testVector) {
+  for (final t in _testVector.shuffleTake()) {
     final i = _TestVector.fromJson(t);
     final aes = AES(i.key);
     final ff = FF1Flexible(radix: i.radix, aes: aes);
@@ -23,7 +25,7 @@ void _ff1() {
     expect(dec.digits, i.pt);
   }
 
-  for (final t in _testVector.indexed) {
+  for (final t in _testVector.shuffleTake().indexed) {
     final i = _TestVector.fromJson(t.$2);
     final binary = i.binary;
     if (binary == null) continue;

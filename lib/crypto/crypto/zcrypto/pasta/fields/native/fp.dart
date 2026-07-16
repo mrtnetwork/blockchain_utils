@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:blockchain_utils/crypto/crypto/zcrypto/pasta/constants/pallas.dart';
 import 'package:blockchain_utils/crypto/crypto/zcrypto/pasta/fields/core.dart';
 import 'package:blockchain_utils/crypto/crypto/zcrypto/pasta/utils/utils.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
@@ -135,14 +136,7 @@ class PallasNativeFp extends PastaNativeFieldElement<PallasNativeFp>
 
   @override
   FieldSqrtResult<PallasNativeFp> sqrt() {
-    return PastaUtils.sqrtTonelliShanks(
-      f: this,
-      fPowTm1d2: powByTMinus1Over2(),
-      one: _one,
-      rootOfUnity: PallasNativeFp.rootOfUnity(),
-      s: 32,
-      conditionalSelect: (a, b, choice) => choice ? b : a,
-    );
+    return sqrtAlt(this);
   }
 
   static FieldSqrtResult<PallasNativeFp> sqrtRatio(
@@ -163,7 +157,7 @@ class PallasNativeFp extends PastaNativeFieldElement<PallasNativeFp>
       fPowTm1d2: e.powByTMinus1Over2(),
       one: _one,
       rootOfUnity: PallasNativeFp.rootOfUnity(),
-      s: 32,
+      s: PallasFPConst.S,
       conditionalSelect: (a, b, choice) => choice ? b : a,
     );
   }

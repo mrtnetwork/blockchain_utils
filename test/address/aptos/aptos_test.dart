@@ -6,7 +6,7 @@ import 'test_vector.dart';
 
 void main() {
   test("aptos address test", () {
-    for (final i in testVector) {
+    for (final i in testVector.shuffleTake()) {
       final z = AptosAddrEncoder().encodeKey(
         BytesUtils.fromHexString(i["public"]),
       );

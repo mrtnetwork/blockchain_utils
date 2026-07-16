@@ -2,11 +2,14 @@ import 'package:blockchain_utils/blockchain_utils.dart';
 import 'package:test/expect.dart';
 import 'package:test/scaffolding.dart';
 
+import '../quick_hex.dart';
+
 void main() {
   test("ZCash UFVK/UFSK", () {
     final network = ZcashNetwork.mainnet;
     final context = DefaultZCryptoContext();
-    for (final t in _testVector) {
+    final vector = _testVector.clone()..shuffle();
+    for (final t in vector.shuffleTake()) {
       final test = _TestVector.fromJson(t);
       final usk = UnifiedSpendingKey.fromSeed(
         context: context,
@@ -24,7 +27,6 @@ void main() {
         context: context,
       );
       final ufvk = decode.toUnifiedFullViewingKey();
-
       UnifiedDerivedAddress addr;
       try {
         addr = ufvk.address(

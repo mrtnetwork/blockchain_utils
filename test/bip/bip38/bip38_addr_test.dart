@@ -3,6 +3,8 @@
 import 'package:blockchain_utils/blockchain_utils.dart';
 import 'package:test/test.dart';
 
+import '../../quick_hex.dart';
+
 List<Map<String, dynamic>> _testVector = [
   {
     "pub_key_mode": PubKeyModes.compressed,
@@ -31,7 +33,7 @@ List<Map<String, dynamic>> _testVector = [
 ];
 void main() {
   test("address hash", () {
-    for (final i in _testVector) {
+    for (final i in _testVector.shuffleTake()) {
       final result = Bip38Addr.addressHash(
         BytesUtils.fromHexString(i["pub_key"]),
         i["pub_key_mode"],

@@ -25,6 +25,8 @@ import 'package:blockchain_utils/crypto/crypto/zcrypto/jubjub/fields/field.dart'
 /// Base abstract class for JubJub points in extended/projective coordinates.
 abstract class BaseRedJubJubPoint<SCALAR extends JubJubScalar<SCALAR>>
     extends ECPoint<SCALAR, BaseRedJubJubPoint<SCALAR>> {
+  const BaseRedJubJubPoint();
+
   /// Converts this point to its Niels representation for faster arithmetic.
   BaseJubJubNielsPoint<SCALAR> toNiels();
 
@@ -43,6 +45,8 @@ abstract class BaseJubJubPoint<
 >
     extends BaseRedJubJubPoint<SCALAR>
     implements CryptoGroupElement<P, SCALAR>, CofactorGroupElement<SCALAR, P> {
+  const BaseJubJubPoint();
+
   /// Multiplies the point by the group cofactor.
   P mulByCofactor();
 

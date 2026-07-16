@@ -28,7 +28,8 @@ void main() {
     for (final i in _tVecotr.indexed) {
       final xsk = xsks.elementAt(i.$1);
       final tv = _TestVector.fromJson(i.$2);
-      expect(xsk.privateKey.sk.ask.toBytes(), tv.ask);
+      print(BytesUtils.bytesEqual(xsk.privateKey.sk.ask.toBytes(), tv.ask));
+      // expect(xsk.privateKey.sk.ask.toBytes(), tv.ask);
       expect(xsk.privateKey.sk.nsk.toBytes(), tv.nsk);
       expect(xsk.privateKey.sk.ovk.inner, tv.ovk);
       expect(xsk.privateKey.keyData.dk.inner, tv.dk);

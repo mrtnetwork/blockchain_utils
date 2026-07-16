@@ -1,4 +1,5 @@
 import 'package:blockchain_utils/blockchain_utils.dart';
+import 'package:blockchain_utils/numbers/src/u64.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -21,7 +22,7 @@ void _endo() {
   final pallasGenerator = PallasNativePoint.generator();
   expect((pallasGenerator * VestaNativeFq.zeta()), pallasGenerator.endo());
   final generatior = VestaPoint.generator();
-  expect((generatior * PallasFp.zeta()), generatior.endo());
+  expect((generatior * PallasFp.zeta), generatior.endo());
 }
 
 void _hashToCurve() {
@@ -89,18 +90,18 @@ void _swu() {
 
 void _testDelta() {
   expect(
-    VestaFq.delta(),
-    VestaFq.generator().pow([
-      BigInt.one << VestaFQConst.S,
-      BigInt.zero,
-      BigInt.zero,
-      BigInt.zero,
+    VestaFq.delta,
+    VestaFq.generator.pow([
+      Uint64.one << VestaFQConst.S,
+      Uint64.zero,
+      Uint64.zero,
+      Uint64.zero,
     ]),
   );
   expect(
-    VestaNativeFq.fromBytes(VestaFq.delta().toBytes()),
+    VestaNativeFq.fromBytes(VestaFq.delta.toBytes()),
     VestaNativeFq.fromBytes(
-      VestaFq.generator().toBytes(),
+      VestaFq.generator.toBytes(),
     ).pow(BigInt.one << VestaFQConst.S),
   );
 }
@@ -116,13 +117,13 @@ void _testRootOfUnity() {
 
 void _testRootOfUnityInv() {
   expect(
-    VestaNativeFq.fromBytes(VestaFq.rootOfUnityInv().toBytes()),
+    VestaNativeFq.fromBytes(VestaFq.rootOfUnityInv.toBytes()),
     VestaNativeFq.rootOfUnity().invert(),
   );
 }
 
 void _testZeta() {
-  final a = VestaNativeFq.fromBytes(VestaFq.zeta().toBytes());
+  final a = VestaNativeFq.fromBytes(VestaFq.zeta.toBytes());
   final v = BytesUtils.toHexString(a.toBytes().reversed.toList());
   expect(v, "06819a58283e528e511db4d81cf70f5a0fed467d47c033af2aa9d2e050aa0e4f");
   expect(a != VestaNativeFq.one(), true);

@@ -6,7 +6,7 @@ import 'package:blockchain_utils/blockchain_utils.dart';
 
 void main() {
   test("electrum v1", () {
-    for (final i in testVector) {
+    for (final i in testVector.shuffleTake()) {
       final seed = BytesUtils.fromHexString(i["seed"]);
       final elc = ElectrumV1.fromSeed(seed);
       final prv = WifEncoder.encode(

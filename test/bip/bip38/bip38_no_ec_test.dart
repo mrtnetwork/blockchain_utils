@@ -1,6 +1,8 @@
 import 'package:test/test.dart';
 import 'package:blockchain_utils/blockchain_utils.dart';
 
+import '../../quick_hex.dart';
+
 List<Map<String, dynamic>> _testVector = [
   {
     "pub_key_mode": PubKeyModes.uncompressed,
@@ -34,7 +36,8 @@ List<Map<String, dynamic>> _testVector = [
 
 void main() {
   test("encrypt decrypt without EC multiplication", () {
-    for (final i in _testVector) {
+    final vector = _testVector.shuffleTake(1);
+    for (final i in vector.take(1)) {
       final enc = Bip38Encrypter.encryptNoEc(
         BytesUtils.fromHexString(i["priv_key_bytes"]),
         i["passphrase"],

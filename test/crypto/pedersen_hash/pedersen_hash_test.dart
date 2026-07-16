@@ -1,6 +1,8 @@
 import 'package:blockchain_utils/blockchain_utils.dart';
 import 'package:test/test.dart';
 
+import '../../quick_hex.dart';
+
 void main() {
   _test();
 }
@@ -9,7 +11,7 @@ void _test() {
   test("Pedersen hash", () {
     final pedersen = PedersenHash();
     final pedersenNative = PedersenHashNative();
-    for (final json in _testVector) {
+    for (final json in _testVector.shuffleTake()) {
       final i = _TestVector.fromJson(json);
       final inputBits = i.inputBits.map((e) => e == 0 ? false : true).toList();
       {

@@ -1,3 +1,8 @@
+## 7.1.0
+
+- Replaced `BigInt` with optimized `Uint64` arithmetic across CryptoOps, Secp256k1, JubJub, BLS12-381, and Pasta curves.
+- Improved Secp256k1 public key generation performance.
+
 ## 7.0.0
   - Added CBOR encoding and decoding support for all provider requests and exception payloads.
   - Added support for the Poseidon hash function.

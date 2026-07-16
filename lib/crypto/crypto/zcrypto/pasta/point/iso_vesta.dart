@@ -6,7 +6,7 @@ import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/helper/extensions/extensions.dart';
 
 class VestaIsoPoint extends PastaPoint<PallasFp, VestaFq, VestaIsoPoint> {
-  VestaIsoPoint({required super.x, required super.y, required super.z});
+  const VestaIsoPoint({required super.x, required super.y, required super.z});
   factory VestaIsoPoint.fromAffine(VestaIsoAffinePoint point) {
     return point.toCurve();
   }
@@ -14,13 +14,12 @@ class VestaIsoPoint extends PastaPoint<PallasFp, VestaFq, VestaIsoPoint> {
   factory VestaIsoPoint.fromBytes(List<int> bytes) {
     return VestaIsoAffinePoint.fromBytes(bytes).toCurve();
   }
-  factory VestaIsoPoint.identity() {
-    return VestaIsoPoint(
-      x: VestaFq.zero(),
-      y: VestaFq.zero(),
-      z: VestaFq.zero(),
-    );
-  }
+  static const identity_ = VestaIsoPoint(
+    x: VestaFq.zero,
+    y: VestaFq.zero,
+    z: VestaFq.zero,
+  );
+
   @override
   VestaIsoPoint from({
     required VestaFq x,
@@ -32,7 +31,7 @@ class VestaIsoPoint extends PastaPoint<PallasFp, VestaFq, VestaIsoPoint> {
 
   @override
   VestaIsoPoint identity() {
-    return identity();
+    return identity_;
   }
 
   @override
@@ -41,13 +40,13 @@ class VestaIsoPoint extends PastaPoint<PallasFp, VestaFq, VestaIsoPoint> {
   }
 
   @override
-  PastaCurveParams<VestaFq> get curveParams => PastaCurveParams.isoVesta;
+  final PastaCurveParams<VestaFq> curveParams = PastaCurveParams.isoVesta;
 
   @override
   VestaIsoAffinePoint toAffine() {
     final zInv = z.invert();
     if (zInv == null) {
-      return VestaIsoAffinePoint.identity();
+      return VestaIsoAffinePoint.identity_;
     }
     final zInv2 = zInv.square();
     final x = this.x * zInv2;
@@ -69,10 +68,12 @@ class VestaIsoPoint extends PastaPoint<PallasFp, VestaFq, VestaIsoPoint> {
 
 class VestaIsoAffinePoint
     extends PastaAffinePoint<PallasFp, VestaFq, VestaIsoPoint> {
-  VestaIsoAffinePoint({required super.x, required super.y});
-  factory VestaIsoAffinePoint.identity() {
-    return VestaIsoAffinePoint(x: VestaFq.zero(), y: VestaFq.zero());
-  }
+  const VestaIsoAffinePoint({required super.x, required super.y});
+  static const identity_ = VestaIsoAffinePoint(
+    x: VestaFq.zero,
+    y: VestaFq.zero,
+  );
+
   factory VestaIsoAffinePoint.conditionalSelect(
     VestaIsoAffinePoint a,
     VestaIsoAffinePoint b,
@@ -96,7 +97,7 @@ class VestaIsoAffinePoint
     tmp[31] &= 0x7F;
     final x = VestaFq.fromBytes(tmp);
     if (x.isZero() && ySign == 0) {
-      return VestaIsoAffinePoint.identity();
+      return identity_;
     }
     final x3 = x.square() * x;
     final rhs = (x3 + PastaCurveParams.isoVesta.b);
@@ -148,7 +149,7 @@ class VestaIsoAffinePoint
 
   @override
   VestaIsoPoint identity() {
-    return VestaIsoPoint.identity();
+    return VestaIsoPoint.identity_;
   }
 
   @override
@@ -156,7 +157,7 @@ class VestaIsoAffinePoint
     return VestaIsoPoint(
       x: x,
       y: y,
-      z: VestaFq.conditionalSelect(VestaFq.one(), VestaFq.zero(), isIdentity()),
+      z: VestaFq.conditionalSelect(VestaFq.one, VestaFq.zero, isIdentity()),
     );
   }
 
@@ -166,5 +167,5 @@ class VestaIsoAffinePoint
   }
 
   @override
-  PastaCurveParams<VestaFq> get curveParams => PastaCurveParams.isoVesta;
+  final PastaCurveParams<VestaFq> curveParams = PastaCurveParams.isoVesta;
 }

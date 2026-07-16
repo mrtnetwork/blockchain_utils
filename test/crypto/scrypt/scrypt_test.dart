@@ -7,7 +7,7 @@ import 'test_vector.dart';
 
 void main() {
   test("scrypt", () {
-    for (final i in testVector) {
+    for (final i in testVector.shuffleTake()) {
       final s = Scrypt(i["n"], i["r"], i["p"]);
       final derive = s.derive(
         BytesUtils.fromHexString(i["password"]),

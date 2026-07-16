@@ -7,7 +7,7 @@ import 'uncompresed_test_vector.dart' show uncompressedTestVector;
 
 void main() {
   test("p2pkh address test", () {
-    for (final i in compresedTestVector) {
+    for (final i in compresedTestVector.shuffleTake()) {
       final params = Map<String, dynamic>.from(i["params"]);
       final mode = PubKeyModes.compressed;
       final netVersion = BytesUtils.fromHexString(params["net_ver"]);
@@ -22,7 +22,7 @@ void main() {
     }
   });
   test("p2pkh uncompressed publickey address test", () {
-    for (final i in uncompressedTestVector) {
+    for (final i in uncompressedTestVector.shuffleTake()) {
       final params = Map<String, dynamic>.from(i["params"]);
       final mode = PubKeyModes.uncompressed;
       final netVersion = BytesUtils.fromHexString(params["net_ver"]);

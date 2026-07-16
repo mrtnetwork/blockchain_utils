@@ -1,10 +1,12 @@
 import 'package:blockchain_utils/blockchain_utils.dart';
 import 'package:test/test.dart';
 
+import '../../quick_hex.dart';
+
 void main() {
   test("ZCaash Unified address", () {
     final network = ZcashNetwork.mainnet;
-    for (final t in _testVector) {
+    for (final t in _testVector.shuffleTake()) {
       final test = _TestVector.fromJson(t);
       final addr = ZcashAddrDecoder().decodeAddr(test.unifiedAddr);
       expect(addr.network, network);

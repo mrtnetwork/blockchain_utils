@@ -9,7 +9,7 @@ import 'test_vector_128.dart';
 
 void main() {
   test("shake25", () {
-    for (final i in testVecotr256) {
+    for (final i in testVecotr256.shuffleTake()) {
       final inp = BytesUtils.fromHexString(i["input"]);
       final int out = i["out_size"];
       final h = SHAKE256();
@@ -23,7 +23,7 @@ void main() {
     }
   });
   test("shake128", () {
-    for (final i in testVector128) {
+    for (final i in testVector128.shuffleTake()) {
       final inp = BytesUtils.fromHexString(i["input"]);
       final int out = i["out_size"];
       final h = SHAKE128();

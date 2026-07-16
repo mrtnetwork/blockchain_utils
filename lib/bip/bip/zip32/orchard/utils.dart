@@ -6,6 +6,7 @@ import 'package:blockchain_utils/crypto/crypto/zcrypto/pasta/fields/pallas_fp.da
 import 'package:blockchain_utils/crypto/crypto/zcrypto/pasta/point/pallas.dart';
 import 'package:blockchain_utils/crypto/crypto/zcrypto/pasta/point/pallas_native.dart';
 import 'package:blockchain_utils/helper/extensions/extensions.dart';
+import 'package:blockchain_utils/numbers/src/u64.dart';
 
 class OrchardKeyUtils {
   static PallasNativePoint diversifyHashNative(List<int> bytes) {
@@ -49,21 +50,27 @@ class OrchardKeyUtils {
     return context.pseudoRando(nk: nk, rho: rho);
   }
 
-  static PallasPoint get orchardSpendAuthSigBasepoint =>
-      PallasAffinePoint(
-        x: PallasFp([
-          BigInt.parse("5264466673313547928"),
-          BigInt.parse("10333203565794581066"),
-          BigInt.parse("9965125688782365053"),
-          BigInt.parse("1191378874554977547"),
-        ]),
-        y: PallasFp([
-          BigInt.parse("16613790901992704663"),
-          BigInt.parse("2660772978433416708"),
-          BigInt.parse("8778179246636635677"),
-          BigInt.parse("935550387939465227"),
-        ]),
-      ).toCurve();
+  static const PallasPoint orchardSpendAuthSigBasepoint = PallasPoint(
+    x: PallasFp.unsafe([
+      Uint64.unsafe(1225729164, 180127384),
+      Uint64.unsafe(2405886437, 989616714),
+      Uint64.unsafe(2320186628, 905847165),
+      Uint64.unsafe(277389510, 851512587),
+    ]),
+    y: PallasFp.unsafe([
+      Uint64.unsafe(3868199629, 1038371479),
+      Uint64.unsafe(619509485, 796614148),
+      Uint64.unsafe(2043829124, 444306973),
+      Uint64.unsafe(217824798, 4271659019),
+    ]),
+    z: PallasFp.unsafe([
+      Uint64.unsafe(880307512, 4294967293),
+      Uint64.unsafe(2569811211, 3826848941),
+      Uint64.unsafe(4294967295, 4294967295),
+      Uint64.unsafe(1073741823, 4294967295),
+    ]),
+  );
+
   static PallasNativePoint get orchardSpendAuthSigBasepointNative =>
       PallasAffineNativePoint(
         x: PallasNativeFp.nP(
@@ -90,19 +97,24 @@ class OrchardKeyUtils {
           ),
         ),
       ).toCurve();
-  static PallasPoint get orchardBindingSigBasepoint =>
-      PallasAffinePoint(
-        x: PallasFp([
-          BigInt.parse("2845817119958416836"),
-          BigInt.parse("9164760055157252168"),
-          BigInt.parse("17374653478061863198"),
-          BigInt.parse("1858716823038486356"),
-        ]),
-        y: PallasFp([
-          BigInt.parse("5358554816547260529"),
-          BigInt.parse("12651796841123479157"),
-          BigInt.parse("5360682003649880277"),
-          BigInt.parse("3717404296076135847"),
-        ]),
-      ).toCurve();
+  static const PallasPoint orchardBindingSigBasepoint = PallasPoint(
+    x: PallasFp.unsafe([
+      Uint64.unsafe(662593431, 3268984260),
+      Uint64.unsafe(2133836982, 2471911496),
+      Uint64.unsafe(4045351752, 2405560606),
+      Uint64.unsafe(432766234, 1195403092),
+    ]),
+    y: PallasFp.unsafe([
+      Uint64.unsafe(1247635766, 4257351793),
+      Uint64.unsafe(2945726001, 3851615861),
+      Uint64.unsafe(1248131041, 1432445141),
+      Uint64.unsafe(865525634, 4196470183),
+    ]),
+    z: PallasFp.unsafe([
+      Uint64.unsafe(880307512, 4294967293),
+      Uint64.unsafe(2569811211, 3826848941),
+      Uint64.unsafe(4294967295, 4294967295),
+      Uint64.unsafe(1073741823, 4294967295),
+    ]),
+  );
 }

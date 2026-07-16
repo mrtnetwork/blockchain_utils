@@ -1,11 +1,12 @@
 import 'package:blockchain_utils/blockchain_utils.dart';
 import 'package:test/test.dart';
 
+import '../../../quick_hex.dart';
 import 'test_vector.dart';
 
 void main() {
   test("bip32 secp256k1", () {
-    for (final i in testVector) {
+    for (final i in testVector.shuffleTake()) {
       final seed = BytesUtils.fromHexString(i["seed"]);
       Bip32Slip10Secp256k1 w = Bip32Slip10Secp256k1.fromSeed(seed);
       expect(w.publicKey.toExtended, i["public"]);

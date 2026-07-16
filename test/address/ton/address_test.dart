@@ -1,6 +1,7 @@
 import 'package:blockchain_utils/blockchain_utils.dart';
 import 'package:test/test.dart';
 
+import '../../quick_hex.dart';
 import 'test_vector.dart';
 
 void main() {
@@ -11,7 +12,7 @@ void _test() {
   test("Ton encode, decode address", () {
     final encoder = TonAddrEncoder();
     final decoder = TonAddrDecoder();
-    for (final i in tonTestVector) {
+    for (final i in tonTestVector.shuffleTake()) {
       final hash = BytesUtils.fromHexString(i["hash"]);
       final String bounceable = encoder.encodeKey(
         hash,

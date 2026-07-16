@@ -1,6 +1,7 @@
 import 'package:blockchain_utils/crypto/crypto/ec/core/field.dart';
 import 'package:blockchain_utils/crypto/crypto/zcrypto/bls12_381/src/fp.dart';
 import 'package:blockchain_utils/crypto/crypto/zcrypto/pasta/utils/utils.dart';
+import 'package:blockchain_utils/numbers/src/u64.dart';
 import 'package:blockchain_utils/utils/equatable/equatable.dart';
 
 /// Implements arithmetic over the quadratic extension field Fp2.
@@ -16,21 +17,16 @@ class Bls12Fp2 with Equality implements CryptoField<Bls12Fp2> {
 
   const Bls12Fp2({required this.c0, required this.c1});
 
-  factory Bls12Fp2.from(Bls12Fp f) => Bls12Fp2(c0: f, c1: Bls12Fp.zero());
+  factory Bls12Fp2.from(Bls12Fp f) => Bls12Fp2(c0: f, c1: Bls12Fp.zero);
 
-  factory Bls12Fp2.b() {
-    return Bls12Fp2(c0: Bls12Fp.b(), c1: Bls12Fp.b());
-  }
+  static const b = Bls12Fp2(c0: Bls12Fp.b, c1: Bls12Fp.b);
+  static const zero = Bls12Fp2(c0: Bls12Fp.zero, c1: Bls12Fp.zero);
+  static const one = Bls12Fp2(c0: Bls12Fp.one, c1: Bls12Fp.zero);
+
   factory Bls12Fp2.b3() {
-    final b = Bls12Fp2.b();
+    final b = Bls12Fp2.b;
     return b + b + b;
   }
-
-  /// Zero element
-  factory Bls12Fp2.zero() => Bls12Fp2(c0: Bls12Fp.zero(), c1: Bls12Fp.zero());
-
-  /// One element
-  factory Bls12Fp2.one() => Bls12Fp2(c0: Bls12Fp.one(), c1: Bls12Fp.zero());
 
   /// Conjugate: a + bu -> a - bu
   Bls12Fp2 conjugate() => Bls12Fp2(c0: c0, c1: -c1);
@@ -91,12 +87,12 @@ class Bls12Fp2 with Equality implements CryptoField<Bls12Fp2> {
   /// Raises this element to p.
   Bls12Fp2 frobeniusMap() => conjugate();
 
-  Bls12Fp2 powVarTime(List<BigInt> exponent) {
-    var res = Bls12Fp2.one();
+  Bls12Fp2 powVarTime(List<Uint64> exponent) {
+    var res = Bls12Fp2.one;
     for (var limb in exponent.reversed) {
       for (var i = 63; i >= 0; i--) {
         res = res.square();
-        if ((limb >> i) & BigInt.one == BigInt.one) {
+        if ((limb >> i) & Uint64.one == Uint64.one) {
           res = res * this;
         }
       }
@@ -107,18 +103,19 @@ class Bls12Fp2 with Equality implements CryptoField<Bls12Fp2> {
   @override
   FieldSqrtResult<Bls12Fp2> sqrt() {
     if (isZero()) {
-      return FieldSqrtResult(Bls12Fp2.zero(), true);
+      return FieldSqrtResult(Bls12Fp2.zero, true);
     }
+    const m = [
+      Uint64.unsafe(4001349631, 4294961834),
+      Uint64.unsafe(128647167, 2891251711),
+      Uint64.unsafe(3654038696, 1034698121),
+      Uint64.unsafe(3642610401, 1021396143),
+      Uint64.unsafe(2462509549, 2429741877),
+      Uint64.unsafe(109069434, 2388654502),
+    ];
 
     // a1 = self^((p - 3) / 4)
-    final a1 = powVarTime([
-      BigInt.parse('0xee7fbfffffffeaaa'),
-      BigInt.parse('0x07aaffffac54ffff'),
-      BigInt.parse('0xd9cc34a83dac3d89'),
-      BigInt.parse('0xd91dd2e13ce144af'),
-      BigInt.parse('0x92c6e9ed90d2eb35'),
-      BigInt.parse('0x0680447a8e5ff9a6'),
-    ]);
+    final a1 = powVarTime(m);
 
     // alpha = a1^2 * self = self^((p - 1) / 2)
     final alpha = a1.square() * this;
@@ -127,24 +124,22 @@ class Bls12Fp2 with Equality implements CryptoField<Bls12Fp2> {
     final x0 = a1 * this;
 
     // Case 1: alpha == -1
-    if (alpha == -Bls12Fp2.one()) {
+    if (alpha == -Bls12Fp2.one) {
       final sqrt = Bls12Fp2(c0: -x0.c1, c1: x0.c0);
 
       // Verify sqrt^2 == self
       return FieldSqrtResult(sqrt, sqrt.square() == this);
     }
-
+    const m2 = [
+      Uint64.unsafe(3707731967, 4294956373),
+      Uint64.unsafe(257294335, 1487536127),
+      Uint64.unsafe(3013110096, 2069396242),
+      Uint64.unsafe(2990253506, 2042792287),
+      Uint64.unsafe(630051803, 564516459),
+      Uint64.unsafe(218138869, 482341709),
+    ];
     // Case 2: general case
-    final sqrt =
-        (alpha + Bls12Fp2.one()).powVarTime([
-          BigInt.parse('0xdcff7fffffffd555'),
-          BigInt.parse('0x0f55ffff58a9ffff'),
-          BigInt.parse('0xb39869507b587b12'),
-          BigInt.parse('0xb23ba5c279c2895f'),
-          BigInt.parse('0x258dd3db21a5d66b'),
-          BigInt.parse('0x0d0088f51cbff34d'),
-        ]) *
-        x0;
+    final sqrt = (alpha + Bls12Fp2.one).powVarTime(m2) * x0;
 
     // Final verification
     return FieldSqrtResult(sqrt, sqrt.square() == this);

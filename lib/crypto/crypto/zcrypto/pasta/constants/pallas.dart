@@ -1,5 +1,6 @@
 import 'package:blockchain_utils/crypto/crypto/zcrypto/pasta/fields/native/fp.dart';
 import 'package:blockchain_utils/crypto/crypto/zcrypto/pasta/fields/pallas_fp.dart';
+import 'package:blockchain_utils/numbers/src/u64.dart';
 
 class PallasFPConst {
   static const int S = 32;
@@ -73,98 +74,98 @@ class PallasFPConst {
       ),
     ),
   ];
-  static List<PallasFp> get isogenyConstants => [
-    PallasFp.fromRaw([
-      BigInt.parse("0x775f6034aaaaaaab"),
-      BigInt.parse("0x4081775473d8375b"),
-      BigInt.parse("0xe38e38e38e38e38e"),
-      BigInt.parse("0x0e38e38e38e38e38"),
+  static const List<PallasFp> isogenyConstants = [
+    PallasFp.unsafe([
+      Uint64.unsafe(3336583072, 477218589),
+      Uint64.unsafe(319473348, 3904437291),
+      Uint64.zero,
+      Uint64.unsafe(1073741824, 0),
     ]),
-    PallasFp.fromRaw([
-      BigInt.parse("0x8cf863b02814fb76"),
-      BigInt.parse("0x0f93b82ee4b99495"),
-      BigInt.parse("0x267c7ffa51cf412a"),
-      BigInt.parse("0x3509afd51872d88e"),
+    PallasFp.unsafe([
+      Uint64.unsafe(1282303218, 842882286),
+      Uint64.unsafe(1344225743, 3529425392),
+      Uint64.unsafe(98494318, 2285853863),
+      Uint64.unsafe(857226392, 322096217),
     ]),
-    PallasFp.fromRaw([
-      BigInt.parse("0x0eb64faef37ea4f7"),
-      BigInt.parse("0x380af066cfeb6d69"),
-      BigInt.parse("0x98c7d7ac3d98fd13"),
-      BigInt.parse("0x17329b9ec5253753"),
+    PallasFp.unsafe([
+      Uint64.unsafe(1782507385, 2650104694),
+      Uint64.unsafe(309033387, 2026313007),
+      Uint64.unsafe(845205959, 961508313),
+      Uint64.unsafe(1068442649, 2174100045),
     ]),
-    PallasFp.fromRaw([
-      BigInt.parse("0xeebec06955555580"),
-      BigInt.parse("0x8102eea8e7b06eb6"),
-      BigInt.parse("0xc71c71c71c71c71c"),
-      BigInt.parse("0x1c71c71c71c71c71"),
+    PallasFp.unsafe([
+      Uint64.unsafe(1860903627, 954437009),
+      Uint64.unsafe(2239401767, 2913043743),
+      Uint64.unsafe(4294967295, 4294967273),
+      Uint64.unsafe(1073741823, 4294967295),
     ]),
-    PallasFp.fromRaw([
-      BigInt.parse("0xc47f2ab668bcd71f"),
-      BigInt.parse("0x9c434ac1c96b6980"),
-      BigInt.parse("0x5a607fcce0494a79"),
-      BigInt.parse("0x1d572e7ddc099cff"),
+    PallasFp.unsafe([
+      Uint64.unsafe(2141533704, 3290973271),
+      Uint64.unsafe(3777700202, 607781297),
+      Uint64.unsafe(886448866, 3392815584),
+      Uint64.unsafe(198844760, 2898865953),
     ]),
-    PallasFp.fromRaw([
-      BigInt.parse("0x2aa3af1eae5b6604"),
-      BigInt.parse("0xb4abf9fb9a1fc81c"),
-      BigInt.parse("0x1d13bf2a7f22b105"),
-      BigInt.parse("0x325669becaecd5d1"),
+    PallasFp.unsafe([
+      Uint64.unsafe(2785767873, 2833349976),
+      Uint64.unsafe(1982483324, 3408785202),
+      Uint64.unsafe(1345724419, 190920673),
+      Uint64.unsafe(930664112, 2866126372),
     ]),
-    PallasFp.fromRaw([
-      BigInt.parse("0x5ad985b5e38e38e4"),
-      BigInt.parse("0x7642b01ad461bad2"),
-      BigInt.parse("0x4bda12f684bda12f"),
-      BigInt.parse("0x1a12f684bda12f68"),
+    PallasFp.unsafe([
+      Uint64.unsafe(3400475353, 3022384394),
+      Uint64.unsafe(3161486656, 1353492247),
+      Uint64.unsafe(2863311530, 2863311530),
+      Uint64.unsafe(715827882, 2863311530),
     ]),
-    PallasFp.fromRaw([
-      BigInt.parse("0xc67c31d8140a7dbb"),
-      BigInt.parse("0x07c9dc17725cca4a"),
-      BigInt.parse("0x133e3ffd28e7a095"),
-      BigInt.parse("0x1a84d7ea8c396c47"),
+    PallasFp.unsafe([
+      Uint64.unsafe(641151609, 421441143),
+      Uint64.unsafe(2819596519, 3912196344),
+      Uint64.unsafe(2196730807, 1142926931),
+      Uint64.unsafe(428613196, 161048108),
     ]),
-    PallasFp.fromRaw([
-      BigInt.parse("0x02e2be87d225b234"),
-      BigInt.parse("0x1765e924f7459378"),
-      BigInt.parse("0x303216cce1db9ff1"),
-      BigInt.parse("0x3fb98ff0d2ddcadd"),
+    PallasFp.unsafe([
+      Uint64.unsafe(1689544865, 2558771715),
+      Uint64.unsafe(2271277867, 1235072944),
+      Uint64.unsafe(235776986, 2093874715),
+      Uint64.unsafe(696397576, 813421339),
     ]),
-    PallasFp.fromRaw([
-      BigInt.parse("0x93e53ab371c71c4f"),
-      BigInt.parse("0x0ac03e8e134eb3e4"),
-      BigInt.parse("0x7b425ed097b425ed"),
-      BigInt.parse("0x025ed097b425ed09"),
+    PallasFp.unsafe([
+      Uint64.unsafe(4003126549, 2227020219),
+      Uint64.unsafe(100280610, 2375062331),
+      Uint64.unsafe(1431655765, 1431655784),
+      Uint64.unsafe(357913941, 1431655765),
     ]),
-    PallasFp.fromRaw([
-      BigInt.parse("0x5a28279b1d1b42ae"),
-      BigInt.parse("0x5941a3a4a97aa1b3"),
-      BigInt.parse("0x0790bfb3506defb6"),
-      BigInt.parse("0x0c02c5bcca0e6b7f"),
+    PallasFp.unsafe([
+      Uint64.unsafe(202271107, 2788976259),
+      Uint64.unsafe(1659109021, 989691672),
+      Uint64.unsafe(3477156948, 794256081),
+      Uint64.unsafe(835138053, 53331633),
     ]),
-    PallasFp.fromRaw([
-      BigInt.parse("0x4d90ab820b12320a"),
-      BigInt.parse("0xd976bbfabbc5661d"),
-      BigInt.parse("0x573b3d7f7d681310"),
-      BigInt.parse("0x17033d3c60c68173"),
+    PallasFp.unsafe([
+      Uint64.unsafe(3217552234, 4205082630),
+      Uint64.unsafe(502378622, 1324342112),
+      Uint64.unsafe(4037173257, 572762020),
+      Uint64.unsafe(644508690, 8444524),
     ]),
-    PallasFp.fromRaw([
-      BigInt.parse("0x992d30ecfffffde5"),
-      BigInt.parse("0x224698fc094cf91b"),
-      BigInt.parse("0x0000000000000000"),
-      BigInt.parse("0x4000000000000000"),
+    PallasFp.unsafe([
+      Uint64.unsafe(1833750448, 2160),
+      Uint64.unsafe(866832014, 2037766364),
+      Uint64.unsafe(0, 289),
+      Uint64.zero,
     ]),
   ];
 
-  static final tMinus1Over2 = [
-    BigInt.parse("0x04a67c8dcc969876"),
-    BigInt.parse("0x0000000011234c7e"),
-    BigInt.parse("0x0000000000000000"),
-    BigInt.parse("0x0000000020000000"),
+  static const tMinus1Over2 = [
+    Uint64.unsafe(78019725, 3432421494),
+    Uint64.unsafe(0, 287526014),
+    Uint64.zero,
+    Uint64.unsafe(0, 536870912),
   ];
-  static final modulus = PallasFp([
-    BigInt.parse("0x992d30ed00000001"),
-    BigInt.parse("0x224698fc094cf91b"),
-    BigInt.parse("0x0000000000000000"),
-    BigInt.parse("0x4000000000000000"),
+  static const modulus = PallasFp.unsafe([
+    Uint64.unsafe(2569875693, 1),
+    Uint64.unsafe(575052028, 156039451),
+    Uint64.zero,
+    Uint64.unsafe(1073741824, 0),
   ]);
-  static final inv = BigInt.parse("0x992d30ecffffffff");
+  static const inv = Uint64.unsafe(2569875692, 4294967295);
 }

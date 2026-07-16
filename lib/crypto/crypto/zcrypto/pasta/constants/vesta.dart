@@ -1,10 +1,12 @@
 import 'package:blockchain_utils/crypto/crypto/zcrypto/pasta/fields/native/fq.dart';
 import 'package:blockchain_utils/crypto/crypto/zcrypto/pasta/fields/vesta_fq.dart';
+import 'package:blockchain_utils/numbers/src/u64.dart';
 
 class VestaFQConst {
-  static final BigInt inv = BigInt.parse("0x8c46eb20ffffffff");
   static const int S = 32;
   static const int numBits = 255;
+
+  static const Uint64 inv = Uint64.unsafe(2353457952, 4294967295);
 
   static List<VestaNativeFq> get isogenyNativeConstants => [
     VestaNativeFq.nP(
@@ -75,98 +77,97 @@ class VestaFQConst {
   ];
 
   /// Constants used for computing the isogeny from IsoEq to Eq.
-  static List<VestaFq> get isogenyConstants => [
-    VestaFq.fromRaw([
-      BigInt.parse("0x43cd42c800000001"),
-      BigInt.parse("0x0205dd51cfa0961a"),
-      BigInt.parse("0x8e38e38e38e38e39"),
-      BigInt.parse("0x38e38e38e38e38e3"),
+  static const List<VestaFq> isogenyConstants = [
+    VestaFq.unsafe([
+      Uint64.unsafe(2909083598, 1908874354),
+      Uint64.unsafe(2991100870, 990156621),
+      Uint64.unsafe(2863311530, 2863311530),
+      Uint64.unsafe(715827882, 2863311530),
     ]),
-    VestaFq.fromRaw([
-      BigInt.parse("0x8b95c6aaf703bcc5"),
-      BigInt.parse("0x216b8861ec72bd5d"),
-      BigInt.parse("0xacecf10f5f7c09a2"),
-      BigInt.parse("0x1d935247b4473d17"),
+    VestaFq.unsafe([
+      Uint64.unsafe(1177948497, 2838842699),
+      Uint64.unsafe(1746634135, 4096898960),
+      Uint64.unsafe(2725972293, 1233924495),
+      Uint64.unsafe(983877443, 1301480824),
     ]),
-    VestaFq.fromRaw([
-      BigInt.parse("0xaeac67bbeb586a3d"),
-      BigInt.parse("0xd59d03d23b39cb11"),
-      BigInt.parse("0xed7ee4a9cdf78f8f"),
-      BigInt.parse("0x18760c7f7a9ad20d"),
+    VestaFq.unsafe([
+      Uint64.unsafe(870216970, 4061209031),
+      Uint64.unsafe(4145321727, 4245418536),
+      Uint64.unsafe(1560173897, 1426339327),
+      Uint64.unsafe(1018477247, 1664261129),
     ]),
-    VestaFq.fromRaw([
-      BigInt.parse("0xfb539a6f0000002b"),
-      BigInt.parse("0xe1c521a795ac8356"),
-      BigInt.parse("0x1c71c71c71c71c71"),
-      BigInt.parse("0x31c71c71c71c71c7"),
+    VestaFq.unsafe([
+      Uint64.unsafe(3220764371, 3817748539),
+      Uint64.unsafe(3287689514, 585479257),
+      Uint64.unsafe(1431655765, 1431655742),
+      Uint64.unsafe(357913941, 1431655765),
     ]),
-    VestaFq.fromRaw([
-      BigInt.parse("0xb7284f7eaf21a2e9"),
-      BigInt.parse("0xa3ad678129b604d3"),
-      BigInt.parse("0x1454798a5b5c56b2"),
-      BigInt.parse("0x0a2de485568125d5"),
+    VestaFq.unsafe([
+      Uint64.unsafe(363807446, 4074747803),
+      Uint64.unsafe(2529356407, 1226452262),
+      Uint64.unsafe(3058914159, 2515385865),
+      Uint64.unsafe(264962397, 3123392829),
     ]),
-    VestaFq.fromRaw([
-      BigInt.parse("0xf169c187d2533465"),
-      BigInt.parse("0x30cd6d53df49d235"),
-      BigInt.parse("0x0c621de8b91c242a"),
-      BigInt.parse("0x14735171ee542778"),
+    VestaFq.unsafe([
+      Uint64.unsafe(3314115054, 2278461412),
+      Uint64.unsafe(3058105442, 3233680538),
+      Uint64.unsafe(3469989563, 4151423483),
+      Uint64.unsafe(655340079, 1985377532),
     ]),
-    VestaFq.fromRaw([
-      BigInt.parse("0x6bef1642aaaaaaab"),
-      BigInt.parse("0x5601f4709a8adcb3"),
-      BigInt.parse("0xda12f684bda12f68"),
-      BigInt.parse("0x12f684bda12f684b"),
+    VestaFq.unsafe([
+      Uint64.unsafe(1107010736, 636291452),
+      Uint64.unsafe(4243713172, 3300522072),
+      Uint64.unsafe(2386092942, 954437176),
+      Uint64.unsafe(954437176, 3817748707),
     ]),
-    VestaFq.fromRaw([
-      BigInt.parse("0x8bee58e5fb81de63"),
-      BigInt.parse("0x21d910aefb03b31d"),
-      BigInt.parse("0xd6767887afbe04d1"),
-      BigInt.parse("0x2ec9a923da239e8b"),
+    VestaFq.unsafe([
+      Uint64.unsafe(3913186873, 1419421350),
+      Uint64.unsafe(3308326729, 4276301878),
+      Uint64.unsafe(1362986146, 2764445895),
+      Uint64.unsafe(1028809633, 2798224060),
     ]),
-    VestaFq.fromRaw([
-      BigInt.parse("0x4986913ab4443034"),
-      BigInt.parse("0x97a3ca5c24e9ea63"),
-      BigInt.parse("0x66d1466e9de10e64"),
-      BigInt.parse("0x19b0d87e16e25788"),
+    VestaFq.unsafe([
+      Uint64.unsafe(2641530746, 3437853655),
+      Uint64.unsafe(781139039, 3684655172),
+      Uint64.unsafe(1425670327, 2366599338),
+      Uint64.unsafe(871105043, 375667746),
     ]),
-    VestaFq.fromRaw([
-      BigInt.parse("0x8f64842c55555533"),
-      BigInt.parse("0x8bc32d36fb21a6a3"),
-      BigInt.parse("0x425ed097b425ed09"),
-      BigInt.parse("0x1ed097b425ed097b"),
+    VestaFq.unsafe([
+      Uint64.unsafe(3482788088, 3181457396),
+      Uint64.unsafe(641393868, 4003172203),
+      Uint64.unsafe(3340530119, 477218607),
+      Uint64.unsafe(477218588, 1908874353),
     ]),
-    VestaFq.fromRaw([
-      BigInt.parse("0x58dfecce86b2745e"),
-      BigInt.parse("0x06a767bfc35b5bac"),
-      BigInt.parse("0x9e7eb64f890a820c"),
-      BigInt.parse("0x2f44d6c801c1b8bf"),
+    VestaFq.unsafe([
+      Uint64.unsafe(3869923794, 3964638057),
+      Uint64.unsafe(1934076976, 4067530791),
+      Uint64.unsafe(2440887591, 1625595150),
+      Uint64.unsafe(934314508, 2537605596),
     ]),
-    VestaFq.fromRaw([
-      BigInt.parse("0xd43d449776f99d2f"),
-      BigInt.parse("0x926847fb9ddd76a1"),
-      BigInt.parse("0x252659ba2b546c7e"),
-      BigInt.parse("0x3d59f455cafc7668"),
+    VestaFq.unsafe([
+      Uint64.unsafe(3293919914, 2540416939),
+      Uint64.unsafe(9329708, 950369522),
+      Uint64.unsafe(1820034099, 3864335859),
+      Uint64.unsafe(892278414, 1661165302),
     ]),
-    VestaFq.fromRaw([
-      BigInt.parse("0x8c46eb20fffffde5"),
-      BigInt.parse("0x224698fc0994a8dd"),
-      BigInt.parse("0x0000000000000000"),
-      BigInt.parse("0x4000000000000000"),
+    VestaFq.unsafe([
+      Uint64.unsafe(2522867312, 2160),
+      Uint64.unsafe(866832016, 3595619663),
+      Uint64.unsafe(0, 289),
+      Uint64.zero,
     ]),
   ];
-
-  static final modulus = VestaFq([
-    BigInt.parse("0x8c46eb2100000001"),
-    BigInt.parse("0x224698fc0994a8dd"),
-    BigInt.parse("0x0"),
-    BigInt.parse("0x4000000000000000"),
+  static const modulus = VestaFq.unsafe([
+    Uint64.unsafe(2353457953, 1),
+    Uint64.unsafe(575052028, 160737501),
+    Uint64.zero,
+    Uint64.unsafe(1073741824, 0),
   ]);
 
-  static final List<BigInt> tMinus1Over2 = [
-    BigInt.parse("0x04ca546ec6237590"),
-    BigInt.parse("0x0000000011234c7e"),
-    BigInt.parse("0x0000000000000000"),
-    BigInt.parse("0x0000000020000000"),
+  static const List<Uint64> tMinus1Over2 = [
+    Uint64.unsafe(80368750, 3324212624),
+    Uint64.unsafe(0, 287526014),
+    Uint64.zero,
+    Uint64.unsafe(0, 536870912),
   ];
 }

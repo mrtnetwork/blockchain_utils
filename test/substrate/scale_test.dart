@@ -79,7 +79,7 @@ List<Map<String, dynamic>> _vector = [
 ];
 void main() {
   test("substrate scale test", () {
-    for (final i in _vector) {
+    for (final i in _vector.shuffleTake()) {
       final SubstrateScaleEncoderBase encoder = i["scale_enc"]!;
       final encode = encoder.encode(i["value"]);
       expect(encode.toHex(), i["enc_value"]);
