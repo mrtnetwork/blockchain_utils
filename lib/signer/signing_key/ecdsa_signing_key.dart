@@ -62,7 +62,11 @@ class ECDSASigningKey {
     required BigInt k,
     bool truncate = false,
   }) {
-    final digestInt = _truncateAndConvertDigest(digest, generator, truncate: truncate);
+    final digestInt = _truncateAndConvertDigest(
+      digest,
+      generator,
+      truncate: truncate,
+    );
     final sign = privateKey.sign(digestInt, k);
     return sign;
   }
@@ -130,7 +134,8 @@ class Secp256k1SigningKey extends ECDSASigningKey {
     //CryptoSignException
     try {
       return Secp256k1SigningKey(
-        ecMultContext: ecMultContext ?? Secp256k1Utils.initalizeBlindEcMultContext(),
+        ecMultContext:
+            ecMultContext ?? Secp256k1Utils.initalizeBlindEcMultContext(),
         privateKey: ECDSAPrivateKey.fromBytesConst(
           secretKey: keyBytes,
           type: EllipticCurveTypes.secp256k1,
@@ -146,8 +151,10 @@ class Secp256k1SigningKey extends ECDSASigningKey {
   }
 
   /// Constructs an [ECDSASigningKey] instance with the given private key.
-  Secp256k1SigningKey({required this.ecMultContext, required ECDSAPrivateKey privateKey})
-    : super(privateKey);
+  Secp256k1SigningKey({
+    required this.ecMultContext,
+    required ECDSAPrivateKey privateKey,
+  }) : super(privateKey);
 
   (ECDSASignature, int) _signEcdsaConst({
     required List<int> digest,
@@ -189,7 +196,10 @@ class Secp256k1SigningKey extends ECDSASigningKey {
     throw CryptoSignException.signatureVerificationFailed;
   }
 
-  (ECDSASignature, int) _signEcdsa({required List<int> digest, List<int>? extraEntropy}) {
+  (ECDSASignature, int) _signEcdsa({
+    required List<int> digest,
+    List<int>? extraEntropy,
+  }) {
     ECDSASignature ecdsaSign = signDigestDeterminstic(
       digest: digest,
       hashFunc: () => SHA256(),
@@ -217,7 +227,10 @@ class Secp256k1SigningKey extends ECDSASigningKey {
     throw CryptoSignException.signatureVerificationFailed;
   }
 
-  (ECDSASignature, int) signConst({required List<int> digest, List<int>? extraEntropy}) {
+  (ECDSASignature, int) signConst({
+    required List<int> digest,
+    List<int>? extraEntropy,
+  }) {
     return _signEcdsaConst(digest: digest, extraEntropy: extraEntropy);
   }
 
@@ -226,7 +239,10 @@ class Secp256k1SigningKey extends ECDSASigningKey {
     return CryptoSignatureUtils.toDer([signature.r, signature.s]);
   }
 
-  (ECDSASignature, int) sign({required List<int> digest, List<int>? extraEntropy}) {
+  (ECDSASignature, int) sign({
+    required List<int> digest,
+    List<int>? extraEntropy,
+  }) {
     return _signEcdsa(digest: digest, extraEntropy: extraEntropy);
   }
 
@@ -247,7 +263,9 @@ class Secp256k1SigningKey extends ECDSASigningKey {
     Secp256k1Scalar msg = Secp256k1Utils.scalarFromBytes(message);
     Secp256k1Scalar sk = Secp256k1Utils.scalarFromBytes(privateKey);
     if (!Secp256k1Utils.scCheck(k)) {
-      throw const CryptoSignException('Signing failed due to an unexpected error.');
+      throw const CryptoSignException(
+        'Signing failed due to an unexpected error.',
+      );
     }
 
     if (!Secp256k1Utils.scCheck(sk)) {
@@ -277,15 +295,23 @@ class Secp256k1SigningKey extends ECDSASigningKey {
     List<int> rBytes = List<int>.filled(32, 0);
     List<int> sBytes = List<int>.filled(32, 0);
     if (!Secp256k1Utils.scCheck(sigr) || !Secp256k1Utils.scCheck(sigs)) {
-      throw const CryptoSignException('Signing failed due to an unexpected error.');
+      throw const CryptoSignException(
+        'Signing failed due to an unexpected error.',
+      );
     }
     Secp256k1.secp256k1ScalarGetB32(rBytes, sigr);
     Secp256k1.secp256k1ScalarGetB32(sBytes, sigs);
 
-    return ECDSASignature(BigintUtils.fromBytes(rBytes), BigintUtils.fromBytes(sBytes));
+    return ECDSASignature(
+      BigintUtils.fromBytes(rBytes),
+      BigintUtils.fromBytes(sBytes),
+    );
   }
 
-  List<int> signSchnorrConst({required List<int> digest, List<int>? extraEntropy}) {
+  List<int> signSchnorrConst({
+    required List<int> digest,
+    List<int>? extraEntropy,
+  }) {
     if (digest.length != Curves.curveSecp256k1.baselen) {
       throw ArgumentException.invalidOperationArguments(
         "signSchnorrConst",
@@ -370,7 +396,10 @@ class Secp256k1SigningKey extends ECDSASigningKey {
       ecMultContext,
       tapTweakHash: tapTweakHash,
     );
-    aux ??= QuickCrypto.sha256Hash([...digest, ...Secp256k1Utils.scalarToBytes(tKey)]);
+    aux ??= QuickCrypto.sha256Hash([
+      ...digest,
+      ...Secp256k1Utils.scalarToBytes(tKey),
+    ]);
 
     Secp256k1Ge mid = Secp256k1Ge();
     Secp256k1Gej res = Secp256k1Gej();
@@ -384,7 +413,11 @@ class Secp256k1SigningKey extends ECDSASigningKey {
     Secp256k1.secp256k1FeNormalize(mid.x);
     final xBytes = Secp256k1Utils.feToBytes(mid.x);
 
-    final kHash = P2TRUtils.taggedHash("BIP0340/nonce", [...t, ...xBytes, ...digest]);
+    final kHash = P2TRUtils.taggedHash("BIP0340/nonce", [
+      ...t,
+      ...xBytes,
+      ...digest,
+    ]);
     final k0 = Secp256k1Utils.scalarFromBytes(kHash);
 
     if (!Secp256k1Utils.scCheck(k0)) {
@@ -530,7 +563,9 @@ class Secp256k1SigningKey extends ECDSASigningKey {
     final k0 = BigintUtils.fromBytes(kHash) % BitcoinSignerUtils.order;
 
     if (k0 == BigInt.zero) {
-      throw const CryptoSignException('Signing failed due to an unexpected error.');
+      throw const CryptoSignException(
+        'Signing failed due to an unexpected error.',
+      );
     }
     final R = (BitcoinSignerUtils.generator * k0);
     BigInt k = k0;
@@ -547,7 +582,10 @@ class Secp256k1SigningKey extends ECDSASigningKey {
     final e = BigintUtils.fromBytes(eHash) % BitcoinSignerUtils.order;
 
     final eKey = (k + e * d) % BitcoinSignerUtils.order;
-    return [...R.toXonly(), ...eKey.toBeBytes(length: BitcoinSignerUtils.baselen)];
+    return [
+      ...R.toXonly(),
+      ...eKey.toBeBytes(length: BitcoinSignerUtils.baselen),
+    ];
   }
 
   static Secp256k1Scalar _tweakConst(
