@@ -34,3 +34,5 @@ lib.zip
 /example/ios
 /example
 .github/workflows/dart_.yml
+test/benchmark_u64_test.dart
+test/benchmark_test.dart

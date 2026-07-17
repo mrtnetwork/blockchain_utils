@@ -24,24 +24,9 @@ class Uint256 implements Comparable<Uint256> {
     Uint64.zero,
     Uint64.zero,
   );
-  static const Uint256 one = Uint256._(
-    Uint64.zero,
-    Uint64.zero,
-    Uint64.zero,
-    Uint64.one,
-  );
-  static const Uint256 max = Uint256._(
-    Uint64.max,
-    Uint64.max,
-    Uint64.max,
-    Uint64.max,
-  );
-  static const Uint256 two = Uint256._(
-    Uint64.zero,
-    Uint64.zero,
-    Uint64.zero,
-    Uint64.two,
-  );
+  static const Uint256 one = Uint256._(Uint64.zero, Uint64.zero, Uint64.zero, Uint64.one);
+  static const Uint256 max = Uint256._(Uint64.max, Uint64.max, Uint64.max, Uint64.max);
+  static const Uint256 two = Uint256._(Uint64.zero, Uint64.zero, Uint64.zero, Uint64.two);
 
   /// Raw limb constructor (most-significant limb first) — prefer
   /// [Uint256.new] / [Uint256.fromBigInt] for arbitrary values.
@@ -191,47 +176,20 @@ class Uint256 implements Comparable<Uint256> {
       throw ArgumentException.invalidOperationArguments(
         "Uint256.fromBytes",
         reason: 'Need at least 32 bytes from offset.',
-        details: {
-          "offset": offset.toString(),
-          "length": bytes.length.toString(),
-        },
+        details: {"offset": offset.toString(), "length": bytes.length.toString()},
       );
     }
     if (endian == Endian.big) {
       final d3 = Uint64.fromBytes(bytes, endian: Endian.big, offset: offset);
-      final d2 = Uint64.fromBytes(
-        bytes,
-        endian: Endian.big,
-        offset: offset + 8,
-      );
-      final d1 = Uint64.fromBytes(
-        bytes,
-        endian: Endian.big,
-        offset: offset + 16,
-      );
-      final d0 = Uint64.fromBytes(
-        bytes,
-        endian: Endian.big,
-        offset: offset + 24,
-      );
+      final d2 = Uint64.fromBytes(bytes, endian: Endian.big, offset: offset + 8);
+      final d1 = Uint64.fromBytes(bytes, endian: Endian.big, offset: offset + 16);
+      final d0 = Uint64.fromBytes(bytes, endian: Endian.big, offset: offset + 24);
       return Uint256._(d3, d2, d1, d0);
     } else {
       final d0 = Uint64.fromBytes(bytes, endian: Endian.little, offset: offset);
-      final d1 = Uint64.fromBytes(
-        bytes,
-        endian: Endian.little,
-        offset: offset + 8,
-      );
-      final d2 = Uint64.fromBytes(
-        bytes,
-        endian: Endian.little,
-        offset: offset + 16,
-      );
-      final d3 = Uint64.fromBytes(
-        bytes,
-        endian: Endian.little,
-        offset: offset + 24,
-      );
+      final d1 = Uint64.fromBytes(bytes, endian: Endian.little, offset: offset + 8);
+      final d2 = Uint64.fromBytes(bytes, endian: Endian.little, offset: offset + 16);
+      final d3 = Uint64.fromBytes(bytes, endian: Endian.little, offset: offset + 24);
       return Uint256._(d3, d2, d1, d0);
     }
   }
@@ -261,28 +219,109 @@ class Uint256 implements Comparable<Uint256> {
 
   // ---- wrapping arithmetic operators ----
 
+  /// Flattened ripple-carry add: works directly on the raw 32-bit
+  /// `hi`/`lo` ints instead of routing every limb through
+  /// `Uint64.adc` (which itself allocates two intermediate `Uint64`s
+  /// and a tuple per call). Every intermediate here (`lo+lo+carry`,
+  /// max `2*(2^32-1)+1`) stays under 2^33 — comfortably native- *and*
+  /// double-safe — only one `Uint64` is built per output limb.
   Uint256 operator +(Uint256 other) {
-    final (s0, c1) = Uint64.adc(_d0, other._d0, Uint64.zero);
-    final (s1, c2) = Uint64.adc(_d1, other._d1, c1);
-    final (s2, c3) = Uint64.adc(_d2, other._d2, c2);
-    final (s3, _) = Uint64.adc(
-      _d3,
-      other._d3,
-      c3,
-    ); // top carry discarded: wrapping
-    return Uint256._(s3, s2, s1, s0);
+    var carry = 0;
+
+    var lo = _d0.lo + other._d0.lo + carry;
+    carry = lo >>> 32;
+    var hi = _d0.hi + other._d0.hi + carry;
+    carry = hi >>> 32;
+    final d0 = Uint64.fromParts(hi, lo);
+
+    lo = _d1.lo + other._d1.lo + carry;
+    carry = lo >>> 32;
+    hi = _d1.hi + other._d1.hi + carry;
+    carry = hi >>> 32;
+    final d1 = Uint64.fromParts(hi, lo);
+
+    lo = _d2.lo + other._d2.lo + carry;
+    carry = lo >>> 32;
+    hi = _d2.hi + other._d2.hi + carry;
+    carry = hi >>> 32;
+    final d2 = Uint64.fromParts(hi, lo);
+
+    lo = _d3.lo + other._d3.lo + carry;
+    carry = lo >>> 32;
+    hi = _d3.hi + other._d3.hi + carry; // top carry discarded: wrapping
+    final d3 = Uint64.fromParts(hi, lo);
+
+    return Uint256._(d3, d2, d1, d0);
   }
 
+  /// Flattened borrow-chain subtract — same rationale as `operator+`
+  /// above. Note this uses a plain 0/1 borrow flag (not `sbb`'s
+  /// all-ones-mask convention); the fast path here doesn't need a
+  /// maskable borrow for constant-time blending, just wrapping
+  /// subtraction, so the simpler flag keeps every step branch-light.
   Uint256 operator -(Uint256 other) {
-    final (r0, m1) = Uint64.sbb(_d0, other._d0, Uint64.zero);
-    final (r1, m2) = Uint64.sbb(_d1, other._d1, m1);
-    final (r2, m3) = Uint64.sbb(_d2, other._d2, m2);
-    final (r3, _) = Uint64.sbb(
-      _d3,
-      other._d3,
-      m3,
-    ); // top borrow discarded: wrapping
-    return Uint256._(r3, r2, r1, r0);
+    var borrow = 0;
+
+    var lo = _d0.lo - other._d0.lo - borrow;
+    if (lo < 0) {
+      lo += 0x100000000;
+      borrow = 1;
+    } else {
+      borrow = 0;
+    }
+    var hi = _d0.hi - other._d0.hi - borrow;
+    if (hi < 0) {
+      hi += 0x100000000;
+      borrow = 1;
+    } else {
+      borrow = 0;
+    }
+    final d0 = Uint64.fromParts(hi, lo);
+
+    lo = _d1.lo - other._d1.lo - borrow;
+    if (lo < 0) {
+      lo += 0x100000000;
+      borrow = 1;
+    } else {
+      borrow = 0;
+    }
+    hi = _d1.hi - other._d1.hi - borrow;
+    if (hi < 0) {
+      hi += 0x100000000;
+      borrow = 1;
+    } else {
+      borrow = 0;
+    }
+    final d1 = Uint64.fromParts(hi, lo);
+
+    lo = _d2.lo - other._d2.lo - borrow;
+    if (lo < 0) {
+      lo += 0x100000000;
+      borrow = 1;
+    } else {
+      borrow = 0;
+    }
+    hi = _d2.hi - other._d2.hi - borrow;
+    if (hi < 0) {
+      hi += 0x100000000;
+      borrow = 1;
+    } else {
+      borrow = 0;
+    }
+    final d2 = Uint64.fromParts(hi, lo);
+
+    lo = _d3.lo - other._d3.lo - borrow;
+    if (lo < 0) {
+      lo += 0x100000000;
+      borrow = 1;
+    } else {
+      borrow = 0;
+    }
+    hi = _d3.hi - other._d3.hi - borrow; // top borrow discarded: wrapping
+    if (hi < 0) hi += 0x100000000;
+    final d3 = Uint64.fromParts(hi, lo);
+
+    return Uint256._(d3, d2, d1, d0);
   }
 
   /// Multiply, keeping only the low 256 bits (wrapping). Row-scanning
@@ -312,22 +351,38 @@ class Uint256 implements Comparable<Uint256> {
   /// Any carry left over past output limb 3 represents overflow beyond
   /// 256 bits and is dropped, matching this operator's documented
   /// wrapping semantics.
+  /// Same row-scanning algorithm and the same 16 `Uint64.mac` calls,
+  /// in the same order, as the loop this replaces — unrolled onto
+  /// named locals purely to drop the `List<Uint64>.filled(4, ...)`
+  /// and the two `[a0,a1,a2,a3]`/`[b0,b1,b2,b3]` array-literal
+  /// allocations that were being rebuilt on every call. `mac` itself
+  /// still allocates internally; this only removes the *outer*
+  /// per-call scaffolding, not the widening-multiply cost.
   Uint256 operator *(Uint256 other) {
-    final acc = List<Uint64>.filled(4, Uint64.zero);
-    final a = [_d0, _d1, _d2, _d3];
-    final b = [other._d0, other._d1, other._d2, other._d3];
-    for (var i = 0; i < 4; i++) {
-      var carry = Uint64.zero;
-      for (var j = 0; j < 4 - i; j++) {
-        final k = i + j;
-        final (sum, newCarry) = Uint64.mac(acc[k], a[i], b[j], carry);
-        acc[k] = sum;
-        carry = newCarry;
-      }
-      // Any remaining `carry` here would land at limb `i + 4`, past the
-      // kept width — dropped, matching the wrapping semantics above.
-    }
-    return Uint256._(acc[3], acc[2], acc[1], acc[0]);
+    final a0 = _d0, a1 = _d1, a2 = _d2, a3 = _d3;
+    final b0 = other._d0, b1 = other._d1, b2 = other._d2, b3 = other._d3;
+    Uint64 c0 = Uint64.zero, c1 = Uint64.zero, c2 = Uint64.zero, c3 = Uint64.zero;
+    Uint64 carry;
+
+    // i = 0
+    (c0, carry) = Uint64.mac(c0, a0, b0, Uint64.zero);
+    (c1, carry) = Uint64.mac(c1, a0, b1, carry);
+    (c2, carry) = Uint64.mac(c2, a0, b2, carry);
+    (c3, _) = Uint64.mac(c3, a0, b3, carry); // carry past limb 3: dropped
+
+    // i = 1
+    (c1, carry) = Uint64.mac(c1, a1, b0, Uint64.zero);
+    (c2, carry) = Uint64.mac(c2, a1, b1, carry);
+    (c3, _) = Uint64.mac(c3, a1, b2, carry); // carry past limb 3: dropped
+
+    // i = 2
+    (c2, carry) = Uint64.mac(c2, a2, b0, Uint64.zero);
+    (c3, _) = Uint64.mac(c3, a2, b1, carry); // carry past limb 3: dropped
+
+    // i = 3
+    (c3, _) = Uint64.mac(c3, a3, b0, Uint64.zero); // carry past limb 3: dropped
+
+    return Uint256._(c3, c2, c1, c0);
   }
 
   Uint256 operator ~/(Uint256 other) => _divMod(other).quotient;
@@ -408,26 +463,14 @@ class Uint256 implements Comparable<Uint256> {
 
   // ---- bitwise operators ----
 
-  Uint256 operator &(Uint256 other) => Uint256._(
-    _d3 & other._d3,
-    _d2 & other._d2,
-    _d1 & other._d1,
-    _d0 & other._d0,
-  );
+  Uint256 operator &(Uint256 other) =>
+      Uint256._(_d3 & other._d3, _d2 & other._d2, _d1 & other._d1, _d0 & other._d0);
 
-  Uint256 operator |(Uint256 other) => Uint256._(
-    _d3 | other._d3,
-    _d2 | other._d2,
-    _d1 | other._d1,
-    _d0 | other._d0,
-  );
+  Uint256 operator |(Uint256 other) =>
+      Uint256._(_d3 | other._d3, _d2 | other._d2, _d1 | other._d1, _d0 | other._d0);
 
-  Uint256 operator ^(Uint256 other) => Uint256._(
-    _d3 ^ other._d3,
-    _d2 ^ other._d2,
-    _d1 ^ other._d1,
-    _d0 ^ other._d0,
-  );
+  Uint256 operator ^(Uint256 other) =>
+      Uint256._(_d3 ^ other._d3, _d2 ^ other._d2, _d1 ^ other._d1, _d0 ^ other._d0);
 
   Uint256 operator ~() => Uint256._(~_d3, ~_d2, ~_d1, ~_d0);
 

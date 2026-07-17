@@ -10,20 +10,6 @@ extension ExtHEX on List<int> {
 
 extension TAKE on List<Map<String, dynamic>> {
   List<Map<String, dynamic>> shuffleTake([int? total]) {
-    final shuffle = clone()..shuffle();
-    if (shuffle.isEmpty || iteration != 0) {
-      return shuffle.take(iteration).toList();
-    }
-    if (total != null) {
-      return shuffle.take(total).toList();
-    }
-    int max =
-        shuffle.length ~/
-        switch (native) {
-          true => 2,
-          false => 3,
-        };
-
-    return shuffle.take(IntUtils.min(IntUtils.max(max, 1), 5)).toList();
+    return this;
   }
 }
