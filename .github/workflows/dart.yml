@@ -17,10 +17,6 @@ jobs:
 
       - name: Install dependencies
         run: dart pub get --no-example
-
-      - name: Run tests Web
-        run: dart test ./test -p chrome --timeout=20m
-
       - name: Run tests Web
         run: dart test ./test -p chrome --timeout=20m -c dart2wasm
 
