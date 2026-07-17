@@ -6,6 +6,6 @@ import 'package:test/test.dart';
 
 void main() {
   test("Check native math", () {
-    // expect(useNativeWordMath, false);
+    expect(useNativeWordMath, false);
   });
 }

@@ -4,7 +4,7 @@ import 'word_math_native.dart' as native;
 
 const bool useNativeWordMath = bool.fromEnvironment(
   "BLOCKCHAIN_UTILS_NATIVE_MATH",
-  defaultValue: true,
+  defaultValue: false,
 );
 (Uint64 hi, Uint64 lo) widenMulImpl(Uint64 a, Uint64 b) {
   if (useNativeWordMath) return native.widenMulImpl(a, b);
