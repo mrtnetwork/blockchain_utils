@@ -7,7 +7,7 @@ import 'package:blockchain_utils/crypto/crypto/exception/exception.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
 import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/helper/helper.dart';
-import 'package:blockchain_utils/numbers/src/u64.dart';
+import 'package:blockchain_utils/numbers/src/u64/u64.dart';
 import 'package:blockchain_utils/utils/compare/hash_code.dart';
 import 'package:blockchain_utils/utils/equatable/equatable.dart';
 
@@ -27,13 +27,7 @@ class JubJubPoint extends BaseJubJubPoint<JubJubFr, JubJubPoint> {
   });
 
   factory JubJubPoint.fromAffinePoint(JubJubAffinePoint point) {
-    return JubJubPoint(
-      u: point.u,
-      v: point.v,
-      z: JubJubFq.one,
-      t1: point.u,
-      t2: point.v,
-    );
+    return JubJubPoint(u: point.u, v: point.v, z: JubJubFq.one, t1: point.u, t2: point.v);
   }
   factory JubJubPoint.fromBytes(List<int> bytes, {bool zip216Enabled = true}) {
     return JubJubPoint.fromAffinePoint(
@@ -75,23 +69,13 @@ class JubJubPoint extends BaseJubJubPoint<JubJubFr, JubJubPoint> {
         final b = (v + u) * point.vPlusU;
         final c = t1 * t2 * point.t2d;
         final d = (z * point.z).double();
-        return _JubjubCompletedPoint(
-          u: b - a,
-          v: b + a,
-          z: d + c,
-          t: d - c,
-        ).toExtended();
+        return _JubjubCompletedPoint(u: b - a, v: b + a, z: d + c, t: d - c).toExtended();
       case final JubJubAffineNielsPoint point:
         final a = (v - u) * point.vMinusU;
         final b = (v + u) * point.vPlusU;
         final c = t1 * t2 * point.t2d;
         final d = z.double();
-        return _JubjubCompletedPoint(
-          u: b - a,
-          v: b + a,
-          z: d + c,
-          t: d - c,
-        ).toExtended();
+        return _JubjubCompletedPoint(u: b - a, v: b + a, z: d + c, t: d - c).toExtended();
       case final JubJubPoint point:
         return this + point.toNiels();
       case final JubJubAffinePoint point:
@@ -140,23 +124,13 @@ class JubJubPoint extends BaseJubJubPoint<JubJubFr, JubJubPoint> {
         final b = (v + u) * point.vMinusU;
         final c = t1 * t2 * point.t2d;
         final d = (z * point.z).double();
-        return _JubjubCompletedPoint(
-          u: b - a,
-          v: b + a,
-          z: d - c,
-          t: d + c,
-        ).toExtended();
+        return _JubjubCompletedPoint(u: b - a, v: b + a, z: d - c, t: d + c).toExtended();
       case final JubJubAffineNielsPoint point:
         final a = (v - u) * point.vPlusU;
         final b = (v + u) * point.vMinusU;
         final c = t1 * t2 * point.t2d;
         final d = z.double();
-        return _JubjubCompletedPoint(
-          u: b - a,
-          v: b + a,
-          z: d - c,
-          t: d + c,
-        ).toExtended();
+        return _JubjubCompletedPoint(u: b - a, v: b + a, z: d - c, t: d + c).toExtended();
       case final JubJubPoint point:
         return this - point.toNiels();
       case final JubJubAffinePoint point:
@@ -213,20 +187,7 @@ class JubJubPoint extends BaseJubJubPoint<JubJubFr, JubJubPoint> {
 
   @override
   int recommendedWnafForNumScalars(int numScalars) {
-    const List<int> rec = <int>[
-      1,
-      3,
-      7,
-      20,
-      43,
-      120,
-      273,
-      563,
-      1630,
-      3128,
-      7933,
-      62569,
-    ];
+    const List<int> rec = <int>[1, 3, 7, 20, 43, 120, 273, 563, 1630, 3128, 7933, 62569];
 
     var ret = 4;
     for (final r in rec) {
@@ -300,10 +261,7 @@ class JubJubAffinePoint extends BaseJubJubAffinePoint<JubJubFr> with Equality {
     }
     return JubJubAffinePoint(u: point.u * zinv, v: point.v * zinv);
   }
-  factory JubJubAffinePoint.fromBytes(
-    List<int> bytes, {
-    bool zip216Enabled = false,
-  }) {
+  factory JubJubAffinePoint.fromBytes(List<int> bytes, {bool zip216Enabled = false}) {
     final b =
         bytes
             .exc(
@@ -423,8 +381,7 @@ class JubJubAffinePoint extends BaseJubJubAffinePoint<JubJubFr> with Equality {
   }
 }
 
-class JubJubNativePoint
-    extends BaseJubJubPoint<JubJubNativeFr, JubJubNativePoint> {
+class JubJubNativePoint extends BaseJubJubPoint<JubJubNativeFr, JubJubNativePoint> {
   final JubJubNativeFq u;
   final JubJubNativeFq v;
   final JubJubNativeFq z;
@@ -448,10 +405,7 @@ class JubJubNativePoint
       t2: point.v,
     );
   }
-  factory JubJubNativePoint.fromBytes(
-    List<int> bytes, {
-    bool zip216Enabled = true,
-  }) {
+  factory JubJubNativePoint.fromBytes(List<int> bytes, {bool zip216Enabled = true}) {
     return JubJubNativePoint.fromAffinePoint(
       JubJubAffineNativePoint.fromBytes(bytes, zip216Enabled: zip216Enabled),
     );
@@ -474,8 +428,7 @@ class JubJubNativePoint
       JubJubNativeFq v2 = v.square();
       final n =
           ((v2 - JubJubNativeFq.one()) *
-                  ((JubJubNativeFq.one() + JubJubNativeFq.edwardsD() * v2)
-                          .invert() ??
+                  ((JubJubNativeFq.one() + JubJubNativeFq.edwardsD() * v2).invert() ??
                       JubJubNativeFq.zero()))
               .sqrt()
               .sqrtOrNull();
@@ -567,12 +520,7 @@ class JubJubNativePoint
   @override
   JubJubNielsNativePoint toNiels() {
     final d2 = JubJubNativeFq.edwardsD2();
-    return JubJubNielsNativePoint(
-      vPlusU: v + u,
-      vMinusU: v - u,
-      z: z,
-      t2d: t1 * t2 * d2,
-    );
+    return JubJubNielsNativePoint(vPlusU: v + u, vMinusU: v - u, z: z, t2d: t1 * t2 * d2);
   }
 
   @override
@@ -656,20 +604,7 @@ class JubJubNativePoint
 
   @override
   int recommendedWnafForNumScalars(int numScalars) {
-    const List<int> rec = <int>[
-      1,
-      3,
-      7,
-      20,
-      43,
-      120,
-      273,
-      563,
-      1630,
-      3128,
-      7933,
-      62569,
-    ];
+    const List<int> rec = <int>[1, 3, 7, 20, 43, 120, 273, 563, 1630, 3128, 7933, 62569];
 
     var ret = 4;
     for (final r in rec) {
@@ -706,10 +641,7 @@ class JubJubAffineNativePoint extends BaseJubJubAffinePoint<JubJubNativeFr>
 
   JubJubAffineNativePoint({required this.u, required this.v});
   factory JubJubAffineNativePoint.identity() {
-    return JubJubAffineNativePoint(
-      u: JubJubNativeFq.zero(),
-      v: JubJubNativeFq.one(),
-    );
+    return JubJubAffineNativePoint(u: JubJubNativeFq.zero(), v: JubJubNativeFq.one());
   }
   factory JubJubAffineNativePoint.generator() {
     return JubJubAffineNativePoint.fromBytes(
@@ -763,8 +695,7 @@ class JubJubAffineNativePoint extends BaseJubJubAffinePoint<JubJubNativeFr>
 
     // u^2 = (v^2 - 1) / (1 + d*v^2)
     final denominator = (JubJubNativeFq.one() + JubJubNativeFq.edwardsD() * v2);
-    JubJubNativeFq invDenominator =
-        denominator.invert() ?? JubJubNativeFq.zero();
+    JubJubNativeFq invDenominator = denominator.invert() ?? JubJubNativeFq.zero();
     final u2 = (v2 - JubJubNativeFq.one()) * invDenominator;
     final u = u2.sqrt().sqrtOrNull();
     if (u == null) {

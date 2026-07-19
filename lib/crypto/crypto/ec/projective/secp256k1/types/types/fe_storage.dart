@@ -1,5 +1,5 @@
 import 'package:blockchain_utils/helper/extensions/extensions.dart';
-import 'package:blockchain_utils/numbers/src/u64.dart';
+import 'package:blockchain_utils/numbers/src/u64/u64.dart';
 
 abstract class BaseSecp256k1FeStorage extends Iterable<Uint64> {
   const BaseSecp256k1FeStorage();

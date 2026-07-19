@@ -1,5 +1,5 @@
 import 'package:blockchain_utils/helper/helper.dart';
-import 'package:blockchain_utils/numbers/src/u64.dart';
+import 'package:blockchain_utils/numbers/src/u64/u64.dart';
 import 'package:blockchain_utils/utils/utils.dart';
 
 abstract class BaseSecp256k1Scalar extends Iterable<Uint64>

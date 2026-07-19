@@ -1,6 +1,6 @@
 import 'package:blockchain_utils/crypto/crypto/ec/projective/secp256k1/types/types.dart';
 import 'package:blockchain_utils/numbers/src/i64.dart';
-import 'package:blockchain_utils/numbers/src/u64.dart';
+import 'package:blockchain_utils/numbers/src/u64/u64.dart';
 
 class Secp256k1Const {
   static const int secp256k1TagPubkeyOdd = 0x03;
@@ -18,9 +18,7 @@ class Secp256k1Const {
   static const Uint64 mask62 = Uint64.unsafe(1073741823, 4294967295);
   static const Uint64 high4Mask52 = Uint64.unsafe(983040, 0);
   static const Uint64 bit33Mask = Uint64.unsafe(16, 15632);
-  static const Int64 minosOne = Int64.unsafe(
-    Uint64.unsafe(4294967295, 4294967295),
-  );
+  static const Int64 minosOne = Int64.unsafe(Uint64.unsafe(4294967295, 4294967295));
   static const int constGroupSize = 5;
   static const int constTableSize = (1 << (constGroupSize - 1));
   static const int constGroup = ((129 + constGroupSize - 1) ~/ constGroupSize);
@@ -67,14 +65,13 @@ class Secp256k1Const {
         modulusInv: Uint64.unsafe(888275097, 2859945665),
       );
 
-  static const BaseSecp256k1ModinvSigned modeInvOne =
-      Secp256k1ModinvSignedConst([
-        Int64.one,
-        Int64.zero,
-        Int64.zero,
-        Int64.zero,
-        Int64.zero,
-      ]);
+  static const BaseSecp256k1ModinvSigned modeInvOne = Secp256k1ModinvSignedConst([
+    Int64.one,
+    Int64.zero,
+    Int64.zero,
+    Int64.zero,
+    Int64.zero,
+  ]);
 
   static const Secp256k1GeConst g7 = Secp256k1GeConst(
     x: Secp256k1FeConst.unsafe([

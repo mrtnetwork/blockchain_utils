@@ -3,7 +3,7 @@ import 'package:blockchain_utils/crypto/crypto/zcrypto/bls12_381/src/core.dart';
 import 'package:blockchain_utils/crypto/crypto/zcrypto/pasta/utils/utils.dart';
 import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/helper/extensions/extensions.dart';
-import 'package:blockchain_utils/numbers/src/u64.dart';
+import 'package:blockchain_utils/numbers/src/u64/u64.dart';
 import 'package:blockchain_utils/utils/equatable/equatable.dart';
 import 'package:blockchain_utils/utils/numbers/utils/bigint_utils.dart';
 
@@ -559,20 +559,7 @@ class Bls12Fp extends BlsField<Bls12Fp> with ConstantEquality<Bls12Fp> {
     t11 = tmp.$1;
     // final carry ignored
     // --- Montgomery reduction -------------------------------------------------
-    return Bls12Fp.montgomeryReduce(
-      t0,
-      t1,
-      t2,
-      t3,
-      t4,
-      t5,
-      t6,
-      t7,
-      t8,
-      t9,
-      t10,
-      t11,
-    );
+    return Bls12Fp.montgomeryReduce(t0, t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11);
   }
 
   Bls12Fp _sub(Bls12Fp rhs) {
@@ -809,8 +796,7 @@ class Bls12Fp extends BlsField<Bls12Fp> with ConstantEquality<Bls12Fp> {
     final x = limbs[0] | limbs[1] | limbs[2] | limbs[3] | limbs[4] | limbs[5];
 
     // --- compute mask for zero ----------------------------------------------
-    final mask =
-        (x == Uint64.zero) ? Uint64.zero : Uint64.max; // 0 // -1 = all bits set
+    final mask = (x == Uint64.zero) ? Uint64.zero : Uint64.max; // 0 // -1 = all bits set
 
     // --- apply mask to each limb ---------------------------------------------
     for (int i = 0; i < 6; i++) {
@@ -1023,10 +1009,7 @@ class Bls12NativeFp extends BlsField<Bls12NativeFp> with Equality {
     }
     return Bls12NativeFp.nP(r);
   }
-  factory Bls12NativeFp.sumOfProducts(
-    List<Bls12NativeFp> a,
-    List<Bls12NativeFp> b,
-  ) {
+  factory Bls12NativeFp.sumOfProducts(List<Bls12NativeFp> a, List<Bls12NativeFp> b) {
     assert(a.length == b.length);
     BigInt sum = BigInt.zero;
     for (int i = 0; i < a.length; i++) {
@@ -1035,11 +1018,7 @@ class Bls12NativeFp extends BlsField<Bls12NativeFp> with Equality {
     return Bls12NativeFp(sum);
   }
 
-  factory Bls12NativeFp.conditionalSelect(
-    Bls12NativeFp a,
-    Bls12NativeFp b,
-    bool choice,
-  ) {
+  factory Bls12NativeFp.conditionalSelect(Bls12NativeFp a, Bls12NativeFp b, bool choice) {
     return Bls12NativeFp.nP(choice ? b.v : a.v);
   }
 

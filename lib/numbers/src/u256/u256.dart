@@ -2,13 +2,16 @@ import 'dart:typed_data' show Endian;
 
 import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/numbers/src/exception/exception.dart';
+import 'package:blockchain_utils/numbers/src/i128.dart';
+import 'package:blockchain_utils/numbers/src/i32.dart';
+import 'package:blockchain_utils/numbers/src/i64.dart';
+import 'package:blockchain_utils/numbers/src/u128.dart';
+import 'package:blockchain_utils/numbers/src/u32.dart';
+import 'package:blockchain_utils/numbers/src/u64/u64.dart';
 
-import 'i128.dart';
-import 'i32.dart';
-import 'i64.dart';
-import 'u128.dart';
-import 'u32.dart';
-import 'u64.dart';
+import 'u256_mul/u256_math.dart';
+
+import 'u256_div/u256_div.dart';
 
 class Uint256 implements Comparable<Uint256> {
   final Uint64 _d3; // most significant 64 bits (bits 192..255)
@@ -37,6 +40,7 @@ class Uint256 implements Comparable<Uint256> {
   factory Uint256(int value) =>
       Uint256._(Uint64.zero, Uint64.zero, Uint64.zero, Uint64(value));
 
+  @pragma('vm:prefer-inline')
   factory Uint256.fromUint64(Uint64 value) =>
       Uint256._(Uint64.zero, Uint64.zero, Uint64.zero, value);
 
@@ -142,7 +146,7 @@ class Uint256 implements Comparable<Uint256> {
     var rem = this;
     final ten = Uint256(10);
     while (!rem.isZero) {
-      final qr = rem._divMod(ten);
+      final qr = divModImpl(rem, ten);
       digits.add(qr.remainder._d0.toString()); // remainder < 10: a single digit
       rem = qr.quotient;
     }
@@ -196,6 +200,7 @@ class Uint256 implements Comparable<Uint256> {
 
   // ---- properties ----
 
+  @pragma('vm:prefer-inline')
   bool get isZero => _d3.isZero && _d2.isZero && _d1.isZero && _d0.isZero;
   bool get isEven => _d0.isEven;
   bool get isOdd => _d0.isOdd;
@@ -203,19 +208,6 @@ class Uint256 implements Comparable<Uint256> {
   Uint64 get d2 => _d2;
   Uint64 get d1 => _d1;
   Uint64 get d0 => _d0;
-
-  Uint64 _limb(int index) {
-    switch (index) {
-      case 0:
-        return _d0;
-      case 1:
-        return _d1;
-      case 2:
-        return _d2;
-      default:
-        return _d3;
-    }
-  }
 
   // ---- wrapping arithmetic operators ----
 
@@ -225,29 +217,39 @@ class Uint256 implements Comparable<Uint256> {
   /// and a tuple per call). Every intermediate here (`lo+lo+carry`,
   /// max `2*(2^32-1)+1`) stays under 2^33 — comfortably native- *and*
   /// double-safe — only one `Uint64` is built per output limb.
+  ///
+  /// Carry is extracted via comparison (`lo > 0xFFFFFFFF`), not via
+  /// `>>> 32` — an earlier version used the shift and was broken on
+  /// dart2js: a value up to 33 bits wide gets truncated to 32 bits
+  /// *before* dart2js applies `>>>`, so shifting right by exactly 32
+  /// always yielded 0, silently dropping the carry bit itself and
+  /// breaking wraparound on any add that needed to carry out of a
+  /// limb (e.g. `1 + Uint256.max` no longer wrapped to `0`). This
+  /// comparison-based approach is the same technique `Uint64.operator+`
+  /// already uses safely — no truncate-then-shift step to lose the bit.
   Uint256 operator +(Uint256 other) {
     var carry = 0;
 
     var lo = _d0.lo + other._d0.lo + carry;
-    carry = lo >>> 32;
+    carry = lo > 0xFFFFFFFF ? 1 : 0;
     var hi = _d0.hi + other._d0.hi + carry;
-    carry = hi >>> 32;
+    carry = hi > 0xFFFFFFFF ? 1 : 0;
     final d0 = Uint64.fromParts(hi, lo);
 
     lo = _d1.lo + other._d1.lo + carry;
-    carry = lo >>> 32;
+    carry = lo > 0xFFFFFFFF ? 1 : 0;
     hi = _d1.hi + other._d1.hi + carry;
-    carry = hi >>> 32;
+    carry = hi > 0xFFFFFFFF ? 1 : 0;
     final d1 = Uint64.fromParts(hi, lo);
 
     lo = _d2.lo + other._d2.lo + carry;
-    carry = lo >>> 32;
+    carry = lo > 0xFFFFFFFF ? 1 : 0;
     hi = _d2.hi + other._d2.hi + carry;
-    carry = hi >>> 32;
+    carry = hi > 0xFFFFFFFF ? 1 : 0;
     final d2 = Uint64.fromParts(hi, lo);
 
     lo = _d3.lo + other._d3.lo + carry;
-    carry = lo >>> 32;
+    carry = lo > 0xFFFFFFFF ? 1 : 0;
     hi = _d3.hi + other._d3.hi + carry; // top carry discarded: wrapping
     final d3 = Uint64.fromParts(hi, lo);
 
@@ -324,122 +326,26 @@ class Uint256 implements Comparable<Uint256> {
     return Uint256._(d3, d2, d1, d0);
   }
 
-  /// Multiply, keeping only the low 256 bits (wrapping). Row-scanning
-  /// (operand-scanning) schoolbook multiply: for each limb `a[i]` of
-  /// `this`, walk every limb `b[j]` of `other` and accumulate
-  /// `a[i]*b[j]` into `acc[i+j]`, threading `carry` from `acc[i+j]` to
-  /// `acc[i+j+1]` via `Uint64.mac` — the same single-carry-chain pattern
-  /// `Uint64.operator*` itself uses one level down (multiply one operand
-  /// by a single digit of the other, adding into a result array with
-  /// carry propagating to the next position).
-  ///
-  /// This is deliberately *not* the "sum every `(i, j)` pair with
-  /// `i + j == k` into column `k`, then carry to column `k + 1`" Comba
-  /// layout: a column can have up to 4 nonzero terms, and their combined
-  /// carry-out doesn't fit in the single `Uint64` that layout carries
-  /// forward. A previous version of this operator got exactly that
-  /// wrong: it fed the *high*-word carry out of one term back into the
-  /// *next* term's low-word accumulation instead of keeping it at its
-  /// own weight, silently corrupting the result whenever a column had
-  /// more than one nonzero term (e.g. `2 * Uint256.max` came out as
-  /// `0xFFFF...FFFE` with the top three limbs dropped instead of
-  /// `Uint256.max - 1`). Row-scanning sidesteps the problem entirely:
-  /// each `mac` call's carry only ever needs to reach the *next* output
-  /// limb, one weight up, which is exactly what `Uint64.mac`'s
-  /// `(result, carryOut)` pair already guarantees is safe.
-  ///
-  /// Any carry left over past output limb 3 represents overflow beyond
-  /// 256 bits and is dropped, matching this operator's documented
-  /// wrapping semantics.
-  /// Same row-scanning algorithm and the same 16 `Uint64.mac` calls,
-  /// in the same order, as the loop this replaces — unrolled onto
-  /// named locals purely to drop the `List<Uint64>.filled(4, ...)`
-  /// and the two `[a0,a1,a2,a3]`/`[b0,b1,b2,b3]` array-literal
-  /// allocations that were being rebuilt on every call. `mac` itself
-  /// still allocates internally; this only removes the *outer*
-  /// per-call scaffolding, not the widening-multiply cost.
-  Uint256 operator *(Uint256 other) {
-    final a0 = _d0, a1 = _d1, a2 = _d2, a3 = _d3;
-    final b0 = other._d0, b1 = other._d1, b2 = other._d2, b3 = other._d3;
-    Uint64 c0 = Uint64.zero, c1 = Uint64.zero, c2 = Uint64.zero, c3 = Uint64.zero;
-    Uint64 carry;
+  /// Multiply, keeping only the low 256 bits (wrapping). The actual
+  /// row-scanning implementation lives in `u256_math/` and is
+  /// platform-split the same way `word_math` is: a fully-flattened
+  /// raw-int version on native (`u256_math_native.dart`, no `Uint64`
+  /// allocation at all until the final unpack) and a `Uint64.mac`-based
+  /// portable version on web (`u256_math_web.dart`). Both files
+  /// document the row-scanning-vs-Comba rationale and must stay
+  /// algorithmically identical to each other.
+  Uint256 operator *(Uint256 other) => mulImpl(this, other);
 
-    // i = 0
-    (c0, carry) = Uint64.mac(c0, a0, b0, Uint64.zero);
-    (c1, carry) = Uint64.mac(c1, a0, b1, carry);
-    (c2, carry) = Uint64.mac(c2, a0, b2, carry);
-    (c3, _) = Uint64.mac(c3, a0, b3, carry); // carry past limb 3: dropped
+  /// The actual division implementation lives in `u256_div/` and is
+  /// platform-split like `u256_math`/`word_math`: Knuth Algorithm D on
+  /// 32-bit digits, native-only (`u256_div_native.dart` — a handful
+  /// of word-level steps instead of 256 bit-level ones), with the
+  /// original 256-bit-serial algorithm kept as the web-safe fallback
+  /// (`u256_div_web.dart`, unchanged in substance from before this
+  /// split, just relocated).
+  Uint256 operator ~/(Uint256 other) => divModImpl(this, other).quotient;
 
-    // i = 1
-    (c1, carry) = Uint64.mac(c1, a1, b0, Uint64.zero);
-    (c2, carry) = Uint64.mac(c2, a1, b1, carry);
-    (c3, _) = Uint64.mac(c3, a1, b2, carry); // carry past limb 3: dropped
-
-    // i = 2
-    (c2, carry) = Uint64.mac(c2, a2, b0, Uint64.zero);
-    (c3, _) = Uint64.mac(c3, a2, b1, carry); // carry past limb 3: dropped
-
-    // i = 3
-    (c3, _) = Uint64.mac(c3, a3, b0, Uint64.zero); // carry past limb 3: dropped
-
-    return Uint256._(c3, c2, c1, c0);
-  }
-
-  Uint256 operator ~/(Uint256 other) => _divMod(other).quotient;
-
-  Uint256 operator %(Uint256 other) => _divMod(other).remainder;
-
-  ({Uint256 quotient, Uint256 remainder}) _divMod(Uint256 other) {
-    if (other.isZero) throw IntegerError.divisionByZero;
-    if (compareTo(other) < 0) return (quotient: Uint256.zero, remainder: this);
-    var quotient = Uint256.zero;
-    var remainder = Uint256.zero;
-    for (var i = 255; i >= 0; i--) {
-      remainder = remainder._shl1();
-      if (_bit(i) != 0) {
-        remainder = Uint256._(
-          remainder._d3,
-          remainder._d2,
-          remainder._d1,
-          remainder._d0 | Uint64.one,
-        );
-      }
-      if (remainder.compareTo(other) >= 0) {
-        remainder = remainder - other;
-        quotient = quotient._setBit(i);
-      }
-    }
-    return (quotient: quotient, remainder: remainder);
-  }
-
-  int _bit(int i) {
-    final limb = _limb(i ~/ 64);
-    final shift = i % 64;
-    return ((limb >> shift) & Uint64.one).isZero ? 0 : 1;
-  }
-
-  Uint256 _setBit(int i) {
-    final limbIndex = i ~/ 64;
-    final bitVal = Uint64.one << (i % 64);
-    switch (limbIndex) {
-      case 0:
-        return Uint256._(_d3, _d2, _d1, _d0 | bitVal);
-      case 1:
-        return Uint256._(_d3, _d2, _d1 | bitVal, _d0);
-      case 2:
-        return Uint256._(_d3, _d2 | bitVal, _d1, _d0);
-      default:
-        return Uint256._(_d3 | bitVal, _d2, _d1, _d0);
-    }
-  }
-
-  Uint256 _shl1() {
-    final newD3 = (_d3 << 1) | (_d2 >> 63);
-    final newD2 = (_d2 << 1) | (_d1 >> 63);
-    final newD1 = (_d1 << 1) | (_d0 >> 63);
-    final newD0 = _d0 << 1;
-    return Uint256._(newD3, newD2, newD1, newD0);
-  }
+  Uint256 operator %(Uint256 other) => divModImpl(this, other).remainder;
 
   // ---- overflow-checked arithmetic ----
 
@@ -520,6 +426,7 @@ class Uint256 implements Comparable<Uint256> {
   // ---- comparisons ----
 
   @override
+  @pragma('vm:prefer-inline')
   int compareTo(Uint256 other) {
     var cmp = _d3.compareTo(other._d3);
     if (cmp != 0) return cmp;

@@ -2,7 +2,7 @@ import 'package:blockchain_utils/crypto/crypto/zcrypto/bls12_381/src/fp.dart';
 import 'package:blockchain_utils/crypto/crypto/zcrypto/bls12_381/src/fp12.dart';
 import 'package:blockchain_utils/crypto/crypto/zcrypto/bls12_381/src/fp2.dart';
 import 'package:blockchain_utils/crypto/crypto/zcrypto/bls12_381/src/fp6.dart';
-import 'package:blockchain_utils/numbers/src/u64.dart';
+import 'package:blockchain_utils/numbers/src/u64/u64.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -141,8 +141,7 @@ void _testArithmetic() {
 
   expect(
     (aTransformed + bTransformed) * cTransformed.square(),
-    (cTransformed.square() * aTransformed) +
-        (cTransformed.square() * bTransformed),
+    (cTransformed.square() * aTransformed) + (cTransformed.square() * bTransformed),
   );
 
   expect(

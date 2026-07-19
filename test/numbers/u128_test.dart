@@ -4,7 +4,7 @@ import 'dart:typed_data' show Endian;
 import 'package:blockchain_utils/exception/exception/blockchain_utils.dart';
 import 'package:blockchain_utils/numbers/src/exception/exception.dart';
 import 'package:blockchain_utils/numbers/src/u128.dart';
-import 'package:blockchain_utils/numbers/src/u64.dart';
+import 'package:blockchain_utils/numbers/src/u64/u64.dart';
 import 'package:test/test.dart';
 
 import 'helpers/oracle.dart';
@@ -63,10 +63,7 @@ void main() {
       for (final v in interesting) {
         expect(Uint128.fromBigInt(v).toBigInt(), v);
       }
-      expect(
-        () => Uint128.fromBigInt(-BigInt.one),
-        throwsA(isA<ArgumentException>()),
-      );
+      expect(() => Uint128.fromBigInt(-BigInt.one), throwsA(isA<ArgumentException>()));
     });
 
     test('parseHex round-trips with toHexString', () {
@@ -83,14 +80,10 @@ void main() {
         expect(Uint128.parseDecimal(v.toString()).toBigInt(), v);
       }
       expect(
-        () =>
-            Uint128.parseDecimal((maxUnsigned(_bits) + BigInt.one).toString()),
+        () => Uint128.parseDecimal((maxUnsigned(_bits) + BigInt.one).toString()),
         throwsA(isA<IntegerError>()),
       );
-      expect(
-        () => Uint128.parseDecimal('-1'),
-        throwsA(isA<ArgumentException>()),
-      );
+      expect(() => Uint128.parseDecimal('-1'), throwsA(isA<ArgumentException>()));
     });
   });
 
@@ -119,11 +112,7 @@ void main() {
         for (final e in [Endian.big, Endian.little]) {
           final bytes = x.toBytes(e);
           expect(bytes.length, 16);
-          expect(
-            Uint128.fromBytes(bytes, endian: e).toBigInt(),
-            v,
-            reason: '$v / $e',
-          );
+          expect(Uint128.fromBytes(bytes, endian: e).toBigInt(), v, reason: '$v / $e');
         }
       }
       expect(
@@ -138,16 +127,8 @@ void main() {
       for (final (a, b) in pairs(interesting, interesting)) {
         final x = Uint128.fromBigInt(a);
         final y = Uint128.fromBigInt(b);
-        expect(
-          (x + y).toBigInt(),
-          wrapUnsigned(a + b, _bits),
-          reason: '$a + $b',
-        );
-        expect(
-          (x - y).toBigInt(),
-          wrapUnsigned(a - b, _bits),
-          reason: '$a - $b',
-        );
+        expect((x + y).toBigInt(), wrapUnsigned(a + b, _bits), reason: '$a + $b');
+        expect((x - y).toBigInt(), wrapUnsigned(a - b, _bits), reason: '$a - $b');
       }
     });
 
@@ -157,11 +138,7 @@ void main() {
         for (final (a, b) in pairs(interesting, interesting)) {
           final x = Uint128.fromBigInt(a);
           final y = Uint128.fromBigInt(b);
-          expect(
-            (x * y).toBigInt(),
-            wrapUnsigned(a * b, _bits),
-            reason: '$a * $b',
-          );
+          expect((x * y).toBigInt(), wrapUnsigned(a * b, _bits), reason: '$a * $b');
         }
       },
     );
@@ -172,36 +149,21 @@ void main() {
         final b = randomUnsigned(rnd, _bits);
         final x = Uint128.fromBigInt(a);
         final y = Uint128.fromBigInt(b);
-        expect(
-          (x + y).toBigInt(),
-          wrapUnsigned(a + b, _bits),
-          reason: '$a + $b',
-        );
-        expect(
-          (x - y).toBigInt(),
-          wrapUnsigned(a - b, _bits),
-          reason: '$a - $b',
-        );
-        expect(
-          (x * y).toBigInt(),
-          wrapUnsigned(a * b, _bits),
-          reason: '$a * $b',
-        );
+        expect((x + y).toBigInt(), wrapUnsigned(a + b, _bits), reason: '$a + $b');
+        expect((x - y).toBigInt(), wrapUnsigned(a - b, _bits), reason: '$a - $b');
+        expect((x * y).toBigInt(), wrapUnsigned(a * b, _bits), reason: '$a * $b');
       }
     });
 
-    test(
-      'division/modulo (interesting x interesting, skipping zero divisor)',
-      () {
-        for (final (a, b) in pairs(interesting, interesting)) {
-          if (b == BigInt.zero) continue;
-          final x = Uint128.fromBigInt(a);
-          final y = Uint128.fromBigInt(b);
-          expect((x ~/ y).toBigInt(), a ~/ b, reason: '$a ~/ $b');
-          expect((x % y).toBigInt(), a % b, reason: '$a % $b');
-        }
-      },
-    );
+    test('division/modulo (interesting x interesting, skipping zero divisor)', () {
+      for (final (a, b) in pairs(interesting, interesting)) {
+        if (b == BigInt.zero) continue;
+        final x = Uint128.fromBigInt(a);
+        final y = Uint128.fromBigInt(b);
+        expect((x ~/ y).toBigInt(), a ~/ b, reason: '$a ~/ $b');
+        expect((x % y).toBigInt(), a % b, reason: '$a % $b');
+      }
+    });
 
     test('division by zero throws', () {
       expect(() => Uint128.one ~/ Uint128.zero, throwsA(isA<IntegerError>()));
@@ -217,32 +179,20 @@ void main() {
 
         final sum = a + b;
         if (sum > maxUnsigned(_bits)) {
-          expect(
-            () => x.addChecked(y),
-            throwsA(isA<IntegerError>()),
-            reason: '$a + $b',
-          );
+          expect(() => x.addChecked(y), throwsA(isA<IntegerError>()), reason: '$a + $b');
         } else {
           expect(x.addChecked(y).toBigInt(), sum);
         }
 
         if (a < b) {
-          expect(
-            () => x.subChecked(y),
-            throwsA(isA<IntegerError>()),
-            reason: '$a - $b',
-          );
+          expect(() => x.subChecked(y), throwsA(isA<IntegerError>()), reason: '$a - $b');
         } else {
           expect(x.subChecked(y).toBigInt(), a - b);
         }
 
         final prod = a * b;
         if (prod > maxUnsigned(_bits)) {
-          expect(
-            () => x.mulChecked(y),
-            throwsA(isA<IntegerError>()),
-            reason: '$a * $b',
-          );
+          expect(() => x.mulChecked(y), throwsA(isA<IntegerError>()), reason: '$a * $b');
         } else {
           expect(x.mulChecked(y).toBigInt(), prod);
         }

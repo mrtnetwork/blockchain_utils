@@ -1,5 +1,5 @@
 import 'package:blockchain_utils/blockchain_utils.dart';
-import 'package:blockchain_utils/numbers/src/u64.dart';
+import 'package:blockchain_utils/numbers/src/u64/u64.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -196,9 +196,7 @@ void _testSqrtRatioAndAlt() {
   // (false, sqrt(rootOfUnity * num/div)), if num/div is nonsquare
   num = num * PallasNativeFp.rootOfUnity();
   expected =
-      toInv *
-      PallasNativeFp.rootOfUnity() *
-      PallasNativeFp(BigInt.from(5)).invert()!;
+      toInv * PallasNativeFp.rootOfUnity() * PallasNativeFp(BigInt.from(5)).invert()!;
 
   result = PallasNativeFp.sqrtRatio(num, div);
   isSquare = result.isSquare;

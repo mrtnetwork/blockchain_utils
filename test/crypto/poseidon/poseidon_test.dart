@@ -1,7 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'package:blockchain_utils/blockchain_utils.dart';
-import 'package:blockchain_utils/numbers/src/u64.dart';
+import 'package:blockchain_utils/numbers/src/u64/u64.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -29,9 +29,7 @@ void _permuteNative() {
     final inputs = JsonParser.valueEnsureAsList<String>(i.elementAt(0));
     final outputs = JsonParser.valueEnsureAsList<String>(i.elementAt(1));
     final state =
-        inputs
-            .map((e) => PallasNativeFp.fromBytes(BytesUtils.fromHexString(e)))
-            .toList();
+        inputs.map((e) => PallasNativeFp.fromBytes(BytesUtils.fromHexString(e))).toList();
     PoseidonUtils.permute(state, spec);
     final outputsFields =
         outputs
@@ -49,14 +47,10 @@ void _permute() {
     final inputs = JsonParser.valueEnsureAsList<String>(i.elementAt(0));
     final outputs = JsonParser.valueEnsureAsList<String>(i.elementAt(1));
     final state =
-        inputs
-            .map((e) => PallasFp.fromBytes(BytesUtils.fromHexString(e)))
-            .toList();
+        inputs.map((e) => PallasFp.fromBytes(BytesUtils.fromHexString(e))).toList();
     PoseidonUtils.permute(state, spec);
     final outputsFields =
-        outputs
-            .map((e) => PallasFp.fromBytes(BytesUtils.fromHexString(e)))
-            .toList();
+        outputs.map((e) => PallasFp.fromBytes(BytesUtils.fromHexString(e))).toList();
     for (var e in state.indexed) {
       expect(e.$2, outputsFields[e.$1]);
     }
@@ -75,13 +69,7 @@ void _mds() {
       return PallasFp.fromBytes64(bytes);
     },
   );
-  final mds = PoseidonUtils.generateMds(
-    grain,
-    size,
-    0,
-    PallasFp.one,
-    PallasFp.zero,
-  );
+  final mds = PoseidonUtils.generateMds(grain, size, 0, PallasFp.one, PallasFp.zero);
   for (int i = 0; i < size; i++) {
     for (int j = 0; j < size; j++) {
       final exp = i == j ? PallasFp.one : PallasFp.zero;
@@ -149,10 +137,7 @@ void _grain() {
     final List trys = i["try"];
     for (final i in trys) {
       final f = grain.nextFieldElement();
-      expect(
-        i,
-        BytesUtils.toHexString(f.toBytes().reversed.toList(), prefix: "0x"),
-      );
+      expect(i, BytesUtils.toHexString(f.toBytes().reversed.toList(), prefix: "0x"));
     }
   }
   for (final i in _grainWithoutRejectionTestVector) {
@@ -173,10 +158,7 @@ void _grain() {
     final List trys = i["try"];
     for (final i in trys) {
       final f = grain.nextFieldElementWithoutRejection();
-      expect(
-        i,
-        BytesUtils.toHexString(f.toBytes().reversed.toList(), prefix: "0x"),
-      );
+      expect(i, BytesUtils.toHexString(f.toBytes().reversed.toList(), prefix: "0x"));
     }
   }
 }
@@ -189,9 +171,7 @@ void _hashFp() {
     );
     final messages =
         inputs
-            .map(
-              (e) => PallasFp.fromBytes(BytesUtils.fromHexString(e).toList()),
-            )
+            .map((e) => PallasFp.fromBytes(BytesUtils.fromHexString(e).toList()))
             .toList();
     final p = P128Pow5T3Fp();
     final hasher = PoseidonHash<PallasFp>(p);
@@ -208,11 +188,7 @@ void _hashFpNative() {
     );
     final messages =
         inputs
-            .map(
-              (e) => PallasNativeFp.fromBytes(
-                BytesUtils.fromHexString(e).toList(),
-              ),
-            )
+            .map((e) => PallasNativeFp.fromBytes(BytesUtils.fromHexString(e).toList()))
             .toList();
     final p = P128Pow5T3NativeFp();
     final hasher = PoseidonHash<PallasNativeFp>(p);
@@ -260,15 +236,10 @@ void _hashFqWithConstants() {
 void _hashNativeFq() {
   for (final i in _hashFqTestVector) {
     final inputs = [i[0], i[1]];
-    final output = VestaNativeFq.fromBytes(
-      BytesUtils.fromHexString(i.elementAt(2)),
-    );
+    final output = VestaNativeFq.fromBytes(BytesUtils.fromHexString(i.elementAt(2)));
     final messages =
         inputs
-            .map(
-              (e) =>
-                  VestaNativeFq.fromBytes(BytesUtils.fromHexString(e).toList()),
-            )
+            .map((e) => VestaNativeFq.fromBytes(BytesUtils.fromHexString(e).toList()))
             .toList();
     final p = P128Pow5T3NativeFq();
     final hasher = PoseidonHash<VestaNativeFq>(p);
@@ -464,9 +435,7 @@ const List<Map<String, dynamic>> _grainTestVector = [
     "t": 4,
     "r_f": 16,
     "r_p": 4,
-    "try": [
-      "0x1facd0789b57ee1b1cab8de7840805f1c0060a872f0f822795a25f1ac4e65a9b",
-    ],
+    "try": ["0x1facd0789b57ee1b1cab8de7840805f1c0060a872f0f822795a25f1ac4e65a9b"],
   },
   {
     "sbox": 0,
@@ -560,9 +529,7 @@ const List<Map<String, dynamic>> _grainTestVector = [
     "t": 2,
     "r_f": 5,
     "r_p": 12,
-    "try": [
-      "0x1d8557f47e37b38067739e34eca34e2787e803137fe35fc5bd8d6711abe9938b",
-    ],
+    "try": ["0x1d8557f47e37b38067739e34eca34e2787e803137fe35fc5bd8d6711abe9938b"],
   },
   {
     "sbox": 0,
@@ -648,9 +615,7 @@ const List<Map<String, dynamic>> _grainTestVector = [
     "t": 8,
     "r_f": 8,
     "r_p": 18,
-    "try": [
-      "0x30ca557a089d91c777dcd2eeb00d7f9423a9dfd553d0cf1a422da31eb1927420",
-    ],
+    "try": ["0x30ca557a089d91c777dcd2eeb00d7f9423a9dfd553d0cf1a422da31eb1927420"],
   },
   {
     "sbox": 1,
@@ -720,9 +685,7 @@ const List<Map<String, dynamic>> _grainWithoutRejectionTestVector = [
     "t": 1446,
     "r_f": 6068,
     "r_p": 11052,
-    "try": [
-      "0x3d6c2a0760575146021dc43018fc0a11a7f6e5c5bacbf6f8e2c3aaf4d07d90f3",
-    ],
+    "try": ["0x3d6c2a0760575146021dc43018fc0a11a7f6e5c5bacbf6f8e2c3aaf4d07d90f3"],
   },
   {
     "sbox": 1,

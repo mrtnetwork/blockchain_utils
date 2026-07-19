@@ -4,9 +4,9 @@ import 'package:blockchain_utils/numbers/src/i128.dart';
 import 'package:blockchain_utils/numbers/src/i32.dart';
 import 'package:blockchain_utils/numbers/src/i64.dart';
 import 'package:blockchain_utils/numbers/src/u128.dart';
-import 'package:blockchain_utils/numbers/src/u256.dart';
+import 'package:blockchain_utils/numbers/src/u256/u256.dart';
 import 'package:blockchain_utils/numbers/src/u32.dart';
-import 'package:blockchain_utils/numbers/src/u64.dart';
+import 'package:blockchain_utils/numbers/src/u64/u64.dart';
 import 'package:test/test.dart';
 
 import 'helpers/oracle.dart';
@@ -143,8 +143,7 @@ void main() {
   group('conversion matrix completeness', () {
     test('every type exposes a converter to all 6 sibling types', () {
       for (final t in types) {
-        final expected =
-            types.map((e) => e.name).where((n) => n != t.name).toSet();
+        final expected = types.map((e) => e.name).where((n) => n != t.name).toSet();
         expect(t.converters.keys.toSet(), expected, reason: t.name);
       }
     });
@@ -155,15 +154,11 @@ void main() {
     () {
       for (final src in types) {
         final values = <BigInt>{
-          ...(src.signed
-              ? interestingSigned(src.bits)
-              : interestingUnsigned(src.bits)),
+          ...(src.signed ? interestingSigned(src.bits) : interestingUnsigned(src.bits)),
         };
         for (var i = 0; i < 40; i++) {
           values.add(
-            src.signed
-                ? randomSigned(rnd, src.bits)
-                : randomUnsigned(rnd, src.bits),
+            src.signed ? randomSigned(rnd, src.bits) : randomUnsigned(rnd, src.bits),
           );
         }
 
@@ -176,15 +171,9 @@ void main() {
               final source = src.build(v);
               final dynamic result = convert(source);
               final expected =
-                  target.signed
-                      ? v.toSigned(target.bits)
-                      : v.toUnsigned(target.bits);
+                  target.signed ? v.toSigned(target.bits) : v.toUnsigned(target.bits);
               final BigInt actual = (result as dynamic).toBigInt() as BigInt;
-              expect(
-                actual,
-                expected,
-                reason: '${src.name}($v).to${target.name}()',
-              );
+              expect(actual, expected, reason: '${src.name}($v).to${target.name}()');
             }
           });
         }

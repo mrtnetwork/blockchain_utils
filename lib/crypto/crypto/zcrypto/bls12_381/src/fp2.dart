@@ -1,7 +1,7 @@
 import 'package:blockchain_utils/crypto/crypto/ec/core/field.dart';
 import 'package:blockchain_utils/crypto/crypto/zcrypto/bls12_381/src/fp.dart';
 import 'package:blockchain_utils/crypto/crypto/zcrypto/pasta/utils/utils.dart';
-import 'package:blockchain_utils/numbers/src/u64.dart';
+import 'package:blockchain_utils/numbers/src/u64/u64.dart';
 import 'package:blockchain_utils/utils/equatable/equatable.dart';
 
 /// Implements arithmetic over the quadratic extension field Fp2.
@@ -37,13 +37,11 @@ class Bls12Fp2 with Equality implements CryptoField<Bls12Fp2> {
 
   /// Add two Fp2 elements
   @override
-  Bls12Fp2 operator +(Bls12Fp2 rhs) =>
-      Bls12Fp2(c0: c0 + rhs.c0, c1: c1 + rhs.c1);
+  Bls12Fp2 operator +(Bls12Fp2 rhs) => Bls12Fp2(c0: c0 + rhs.c0, c1: c1 + rhs.c1);
 
   /// Subtract two Fp2 elements
   @override
-  Bls12Fp2 operator -(Bls12Fp2 rhs) =>
-      Bls12Fp2(c0: c0 - rhs.c0, c1: c1 - rhs.c1);
+  Bls12Fp2 operator -(Bls12Fp2 rhs) => Bls12Fp2(c0: c0 - rhs.c0, c1: c1 - rhs.c1);
 
   /// Multiply two Fp2 elements
   @override
@@ -73,8 +71,7 @@ class Bls12Fp2 with Equality implements CryptoField<Bls12Fp2> {
   bool isZero() => c0.isZero() && c1.isZero();
 
   bool lexicographicallyLargest() =>
-      c1.lexicographicallyLargest() ||
-      (c1.isZero() && c0.lexicographicallyLargest());
+      c1.lexicographicallyLargest() || (c1.isZero() && c0.lexicographicallyLargest());
 
   /// Inverse in Fp2
   @override
@@ -187,17 +184,11 @@ class Bls12NativeFp2 with Equality implements CryptoField<Bls12NativeFp2> {
     final b = Bls12NativeFp2.b();
     return b + b + b;
   }
-  static final _zero = Bls12NativeFp2(
-    c0: Bls12NativeFp.zero(),
-    c1: Bls12NativeFp.zero(),
-  );
+  static final _zero = Bls12NativeFp2(c0: Bls12NativeFp.zero(), c1: Bls12NativeFp.zero());
 
   /// Zero element
   factory Bls12NativeFp2.zero() => _zero;
-  static final _one = Bls12NativeFp2(
-    c0: Bls12NativeFp.one(),
-    c1: Bls12NativeFp.zero(),
-  );
+  static final _one = Bls12NativeFp2(c0: Bls12NativeFp.one(), c1: Bls12NativeFp.zero());
 
   /// One element
   factory Bls12NativeFp2.one() => _one;
@@ -244,8 +235,7 @@ class Bls12NativeFp2 with Equality implements CryptoField<Bls12NativeFp2> {
   bool isZero() => c0.isZero() && c1.isZero();
 
   bool lexicographicallyLargest() =>
-      c1.lexicographicallyLargest() ||
-      (c1.isZero() && c0.lexicographicallyLargest());
+      c1.lexicographicallyLargest() || (c1.isZero() && c0.lexicographicallyLargest());
 
   /// Inverse in Fp2
   @override

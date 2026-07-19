@@ -7,7 +7,7 @@
 import 'dart:math';
 import 'package:blockchain_utils/blockchain_utils.dart';
 import 'package:blockchain_utils/numbers/src/i64.dart';
-import 'package:blockchain_utils/numbers/src/u64.dart';
+import 'package:blockchain_utils/numbers/src/u64/u64.dart';
 import 'package:test/test.dart';
 
 import 'test_constants.dart';
@@ -100,9 +100,7 @@ void _signed62ToUint16(List<int> out, Secp256k1ModinvSigned ind) {
   }
   for (i = 0; i < 256; ++i) {
     out[i >> 4] |=
-        (((((ind[i ~/ 62]) >> (i % 62)) & Int64.one) << (i & 15))
-            .toUint32()
-            .toInt()) &
+        (((((ind[i ~/ 62]) >> (i % 62)) & Int64.one) << (i & 15)).toUint32().toInt()) &
         BinaryOps.mask16;
   }
 }
@@ -122,8 +120,7 @@ void _uint16ToSigned62(Secp256k1ModinvSigned out, List<int> ind) {
   int i;
   for (i = 0; i < 256; ++i) {
     out[i ~/ 62] =
-        out[i ~/ 62] |
-        (Int64(((ind[i >> 4]) >> (i & 15))) & Int64.one) << (i % 62);
+        out[i ~/ 62] | (Int64(((ind[i >> 4]) >> (i & 15))) & Int64.one) << (i % 62);
   }
 }
 
@@ -154,10 +151,7 @@ Uint64 _modinv2p64(Uint64 x) {
 }
 
 void _testSqrt() {
-  Secp256k1Fe ns = Secp256k1Fe(),
-      x = Secp256k1Fe(),
-      s = Secp256k1Fe(),
-      t = Secp256k1Fe();
+  Secp256k1Fe ns = Secp256k1Fe(), x = Secp256k1Fe(), s = Secp256k1Fe(), t = Secp256k1Fe();
   Secp256k1.secp256k1FeSetInt(x, 0);
   Secp256k1.secp256k1FeSqr(s, x);
   for (int i = 0; i < 10; i++) {
@@ -188,8 +182,7 @@ void _testSquart(Secp256k1Fe a, Secp256k1Fe? k) {
     Secp256k1.secp256k1FeNormalize(r1);
     Secp256k1.secp256k1FeNormalize(r2);
     expect(
-      Secp256k1.secp256k1FeIsZero(r1) == 1 ||
-          Secp256k1.secp256k1FeIsZero(r2) == 1,
+      Secp256k1.secp256k1FeIsZero(r1) == 1 || Secp256k1.secp256k1FeIsZero(r2) == 1,
       true,
     );
   }
@@ -302,9 +295,7 @@ void _testInverseField(Secp256k1Fe? out, Secp256k1Fe x, int v) {
 }
 
 void _testInverseScalar(Secp256k1Scalar? out, BaseSecp256k1Scalar x, int v) {
-  Secp256k1Scalar l = Secp256k1Scalar(),
-      r = Secp256k1Scalar(),
-      t = Secp256k1Scalar();
+  Secp256k1Scalar l = Secp256k1Scalar(), r = Secp256k1Scalar(), t = Secp256k1Scalar();
   Secp256k1ScalarConst secp256k1ScalarOne = Secp256k1ScalarConst.constants(
     BigInt.zero,
     BigInt.zero,

@@ -4,11 +4,11 @@ import 'package:blockchain_utils/exception/exception/blockchain_utils.dart';
 import 'package:blockchain_utils/numbers/src/exception/exception.dart';
 import 'package:blockchain_utils/numbers/src/i128.dart';
 import 'package:blockchain_utils/numbers/src/u128.dart';
-import 'package:blockchain_utils/numbers/src/u256.dart';
+import 'package:blockchain_utils/numbers/src/u256/u256.dart';
 import 'package:blockchain_utils/numbers/src/u32.dart';
 
 import 'i32.dart';
-import 'u64.dart';
+import 'u64/u64.dart';
 
 const int _signBit64 = 0x80000000; // sign bit, within the hi 32-bit limb
 
@@ -81,9 +81,7 @@ class Int64 implements Comparable<Int64> {
         details: {"value": s},
       );
     }
-    final mag = Uint64.parseDecimal(
-      digits,
-    ); // throws on bad chars or u64 overflow
+    final mag = Uint64.parseDecimal(digits); // throws on bad chars or u64 overflow
     const minMag = Uint64.unsafe(_signBit64, 0); // 2^63
     if (negative) {
       if (mag > minMag) throw IntegerError.overflow;
@@ -107,8 +105,7 @@ class Int64 implements Comparable<Int64> {
   int toInt() {
     final negative = isNegative;
     final magnitudeBits = negative ? ((~_bits) + Uint64.one) : _bits;
-    final mag =
-        magnitudeBits.toInt(); // throws if too large for a double-safe int
+    final mag = magnitudeBits.toInt(); // throws if too large for a double-safe int
     return negative ? -mag : mag;
   }
 
@@ -119,8 +116,7 @@ class Int64 implements Comparable<Int64> {
     if (isZero) return '0';
     if (isNegative) {
       final mag =
-          (~_bits) +
-          Uint64.one; // correct even at Int64.min: wraps to itself, i.e. 2^63
+          (~_bits) + Uint64.one; // correct even at Int64.min: wraps to itself, i.e. 2^63
       return '-${mag.toString()}';
     }
     return _bits.toString();
@@ -130,11 +126,8 @@ class Int64 implements Comparable<Int64> {
   /// `Uint64.toBytes`, so this just delegates.
   List<int> toBytes([Endian endian = Endian.big]) => _bits.toBytes(endian);
 
-  static Int64 fromBytes(
-    List<int> bytes, {
-    Endian endian = Endian.big,
-    int offset = 0,
-  }) => Int64._(Uint64.fromBytes(bytes, endian: endian, offset: offset));
+  static Int64 fromBytes(List<int> bytes, {Endian endian = Endian.big, int offset = 0}) =>
+      Int64._(Uint64.fromBytes(bytes, endian: endian, offset: offset));
 
   // ---- properties ----
 
@@ -207,8 +200,7 @@ class Int64 implements Comparable<Int64> {
 
   Int64 addChecked(Int64 other) {
     final overflow =
-        isNegative == other.isNegative &&
-        (this + other).isNegative != isNegative;
+        isNegative == other.isNegative && (this + other).isNegative != isNegative;
     final r = this + other;
     if (overflow) throw IntegerError.overflow;
     return r;

@@ -1,5 +1,5 @@
 import 'package:blockchain_utils/numbers/src/exception/exception.dart';
-import 'package:blockchain_utils/numbers/src/u64.dart';
+import 'package:blockchain_utils/numbers/src/u64/u64.dart';
 
 const int _signMask = -0x8000000000000000;
 const int _mask32 = 0xFFFFFFFF;

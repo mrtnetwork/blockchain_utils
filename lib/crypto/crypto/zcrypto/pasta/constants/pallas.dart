@@ -1,6 +1,6 @@
 import 'package:blockchain_utils/crypto/crypto/zcrypto/pasta/fields/native/fp.dart';
 import 'package:blockchain_utils/crypto/crypto/zcrypto/pasta/fields/pallas_fp.dart';
-import 'package:blockchain_utils/numbers/src/u64.dart';
+import 'package:blockchain_utils/numbers/src/u64/u64.dart';
 
 class PallasFPConst {
   static const int S = 32;

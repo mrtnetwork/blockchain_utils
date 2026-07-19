@@ -6,11 +6,10 @@ import 'package:blockchain_utils/crypto/crypto/zcrypto/pasta/utils/utils.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
 import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/helper/extensions/extensions.dart';
-import 'package:blockchain_utils/numbers/src/u64.dart';
+import 'package:blockchain_utils/numbers/src/u64/u64.dart';
 import 'package:blockchain_utils/utils/equatable/equatable.dart';
 
-class PallasFp extends PastaFieldElement<PallasFp>
-    with ConstantEquality<PallasFp> {
+class PallasFp extends PastaFieldElement<PallasFp> with ConstantEquality<PallasFp> {
   final List<Uint64> limbs;
   const PallasFp.unsafe(this.limbs);
   PallasFp(List<Uint64> limbs)
@@ -48,26 +47,10 @@ class PallasFp extends PastaFieldElement<PallasFp>
 
     final tmp = PallasFp(tmpLimbs);
     Uint64 borrow = Uint64.zero;
-    (_, borrow) = Uint64.sbb(
-      tmp.limbs[0],
-      PallasFPConst.modulus.limbs[0],
-      Uint64.zero,
-    );
-    (_, borrow) = Uint64.sbb(
-      tmp.limbs[1],
-      PallasFPConst.modulus.limbs[1],
-      borrow,
-    );
-    (_, borrow) = Uint64.sbb(
-      tmp.limbs[2],
-      PallasFPConst.modulus.limbs[2],
-      borrow,
-    );
-    (_, borrow) = Uint64.sbb(
-      tmp.limbs[3],
-      PallasFPConst.modulus.limbs[3],
-      borrow,
-    );
+    (_, borrow) = Uint64.sbb(tmp.limbs[0], PallasFPConst.modulus.limbs[0], Uint64.zero);
+    (_, borrow) = Uint64.sbb(tmp.limbs[1], PallasFPConst.modulus.limbs[1], borrow);
+    (_, borrow) = Uint64.sbb(tmp.limbs[2], PallasFPConst.modulus.limbs[2], borrow);
+    (_, borrow) = Uint64.sbb(tmp.limbs[3], PallasFPConst.modulus.limbs[3], borrow);
     bool isValid = borrow != Uint64.zero;
     if (!isValid) {
       throw ArgumentException.invalidOperationArguments(
@@ -263,11 +246,7 @@ class PallasFp extends PastaFieldElement<PallasFp>
     // So we AND each modulus limb with borrow to conditionally add modulus.
 
     // Add modulus if borrow mask is nonzero
-    var a0 = Uint64.adc(
-      d0,
-      PallasFPConst.modulus.limbs[0] & borrow,
-      Uint64.zero,
-    );
+    var a0 = Uint64.adc(d0, PallasFPConst.modulus.limbs[0] & borrow, Uint64.zero);
     d0 = a0.$1;
     var carry = a0.$2;
 
@@ -330,8 +309,7 @@ class PallasFp extends PastaFieldElement<PallasFp>
     final Uint64 orAll = limbs[0] | limbs[1] | limbs[2] | limbs[3];
 
     // ((orAll == 0) ? 1 : 0) - 1  →  0 or -1
-    Uint64 mask =
-        ((orAll == Uint64.zero ? Uint64.one : Uint64.zero) - Uint64.one);
+    Uint64 mask = ((orAll == Uint64.zero ? Uint64.one : Uint64.zero) - Uint64.one);
 
     return PallasFp([d0 & mask, d1 & mask, d2 & mask, d3 & mask]);
   }
@@ -511,11 +489,7 @@ class PallasFp extends PastaFieldElement<PallasFp>
   }
 
   factory PallasFp.fromRaw(List<Uint64> limbs) {
-    limbs = limbs.exc(
-      length: 4,
-      operation: "fromRaw",
-      reason: "Invalid limbs length.",
-    );
+    limbs = limbs.exc(length: 4, operation: "fromRaw", reason: "Invalid limbs length.");
     // Create PallasFp element from raw limbs
     PallasFp tmp = PallasFp(limbs);
     // Convert to Montgomery form

@@ -1,5 +1,5 @@
 import 'package:blockchain_utils/blockchain_utils.dart';
-import 'package:blockchain_utils/numbers/src/u64.dart';
+import 'package:blockchain_utils/numbers/src/u64/u64.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -164,9 +164,7 @@ void _subtraction() {
   tmp = JubJubNativeFq.zero();
   tmp -= l;
 
-  JubJubNativeFq tmp2 = JubJubNativeFq.fromBytes(
-    JubJubFqConst.modulus.toBytes(),
-  );
+  JubJubNativeFq tmp2 = JubJubNativeFq.fromBytes(JubJubFqConst.modulus.toBytes());
   tmp2 -= l;
 
   expect(tmp, tmp2);
@@ -292,12 +290,9 @@ void _constants() {
     JubJubNativeFq.one(),
   );
   expect(
-    JubJubNativeFq.fromBytes(JubJubFq.rootOfUnity.toBytes()).powVartime([
-      BigInt.one << JubJubFqConst.S,
-      BigInt.zero,
-      BigInt.zero,
-      BigInt.zero,
-    ]),
+    JubJubNativeFq.fromBytes(
+      JubJubFq.rootOfUnity.toBytes(),
+    ).powVartime([BigInt.one << JubJubFqConst.S, BigInt.zero, BigInt.zero, BigInt.zero]),
     JubJubNativeFq.one(),
   );
   expect(

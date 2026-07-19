@@ -1,5 +1,5 @@
 import 'package:blockchain_utils/blockchain_utils.dart';
-import 'package:blockchain_utils/numbers/src/u64.dart';
+import 'package:blockchain_utils/numbers/src/u64/u64.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -465,8 +465,7 @@ void _testBatchNormalize() {
   }
 
   // Expected affine form
-  final expected =
-      v.map((p) => JubJubAffinePoint.fromExtendedPoint(p)).toList();
+  final expected = v.map((p) => JubJubAffinePoint.fromExtendedPoint(p)).toList();
 
   // result0: using ExtendedPoint.batchNormalize
   final result0 = List.generate(
@@ -507,14 +506,8 @@ void _assoc() {
 }
 
 void _extendedNielsPointIdentity() {
-  expect(
-    JubJubNielsPoint.identity().vPlusU,
-    JubJubPoint.identity().toNiels().vPlusU,
-  );
-  expect(
-    JubJubNielsPoint.identity().vMinusU,
-    JubJubPoint.identity().toNiels().vMinusU,
-  );
+  expect(JubJubNielsPoint.identity().vPlusU, JubJubPoint.identity().toNiels().vPlusU);
+  expect(JubJubNielsPoint.identity().vMinusU, JubJubPoint.identity().toNiels().vMinusU);
   expect(JubJubNielsPoint.identity().z, JubJubPoint.identity().toNiels().z);
   expect(JubJubNielsPoint.identity().t2d, JubJubPoint.identity().toNiels().t2d);
 }

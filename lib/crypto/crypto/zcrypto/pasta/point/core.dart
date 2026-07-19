@@ -8,7 +8,7 @@ import 'package:blockchain_utils/crypto/crypto/zcrypto/pasta/fields/pallas_fp.da
 import 'package:blockchain_utils/crypto/crypto/zcrypto/pasta/fields/vesta_fq.dart';
 import 'package:blockchain_utils/crypto/crypto/exception/exception.dart';
 import 'package:blockchain_utils/helper/extensions/extensions.dart';
-import 'package:blockchain_utils/numbers/src/u64.dart';
+import 'package:blockchain_utils/numbers/src/u64/u64.dart';
 import 'package:blockchain_utils/utils/compare/hash_code.dart';
 import 'package:blockchain_utils/utils/equatable/equatable.dart';
 import 'package:blockchain_utils/utils/binary/utils.dart';
@@ -48,11 +48,7 @@ class PastaCurveParams<F extends PastaFieldElement<F>> with Equality {
   final F a;
   final F b;
   final PastaCurveName name;
-  const PastaCurveParams({
-    required this.a,
-    required this.b,
-    required this.name,
-  });
+  const PastaCurveParams({required this.a, required this.b, required this.name});
   static const PastaCurveParams<PallasFp> pallas = PastaCurveParams<PallasFp>(
     a: PallasFp.unsafe([Uint64.zero, Uint64.zero, Uint64.zero, Uint64.zero]),
     b: PallasFp.unsafe([
@@ -109,22 +105,21 @@ class PastaCurveParams<F extends PastaFieldElement<F>> with Equality {
     name: PastaCurveName.isoVesta,
   );
 
-  static const PastaCurveParams<PallasFp> isoPallas =
-      PastaCurveParams<PallasFp>(
-        a: PallasFp.unsafe([
-          Uint64.unsafe(2143670928, 2008746206),
-          Uint64.unsafe(2466841170, 3474071816),
-          Uint64.unsafe(1240874997, 3658565051),
-          Uint64.unsafe(476925704, 1899491548),
-        ]),
-        b: PallasFp.unsafe([
-          Uint64.unsafe(4159841400, 4294962237),
-          Uint64.unsafe(2799616852, 870396827),
-          Uint64.unsafe(4294967295, 4294966618),
-          Uint64.unsafe(1073741823, 4294967295),
-        ]),
-        name: PastaCurveName.isoPallas,
-      );
+  static const PastaCurveParams<PallasFp> isoPallas = PastaCurveParams<PallasFp>(
+    a: PallasFp.unsafe([
+      Uint64.unsafe(2143670928, 2008746206),
+      Uint64.unsafe(2466841170, 3474071816),
+      Uint64.unsafe(1240874997, 3658565051),
+      Uint64.unsafe(476925704, 1899491548),
+    ]),
+    b: PallasFp.unsafe([
+      Uint64.unsafe(4159841400, 4294962237),
+      Uint64.unsafe(2799616852, 870396827),
+      Uint64.unsafe(4294967295, 4294966618),
+      Uint64.unsafe(1073741823, 4294967295),
+    ]),
+    name: PastaCurveName.isoPallas,
+  );
   static const PastaCurveParams<VestaFq> isoVesta = PastaCurveParams<VestaFq>(
     a: VestaFq.unsafe([
       Uint64.unsafe(3818772284, 3858374752),
@@ -392,8 +387,7 @@ abstract class PastaPoint<
   }
 
   @override
-  int get hashCode =>
-      HashCodeGenerator.generateHashCode([x, y, z, curveParams]);
+  int get hashCode => HashCodeGenerator.generateHashCode([x, y, z, curveParams]);
   @override
   int recommendedWnafForNumScalars(int numScalars) {
     // Copied from bls12_381::g1
@@ -450,10 +444,7 @@ abstract class PastaAffinePoint<
   const PastaAffinePoint({required this.x, required this.y});
   P toCurve();
   P from({required BASE x, required BASE y, required BASE z});
-  PastaAffinePoint<SCALAR, BASE, P> affineFrom({
-    required BASE x,
-    required BASE y,
-  });
+  PastaAffinePoint<SCALAR, BASE, P> affineFrom({required BASE x, required BASE y});
   P identity();
   P conditionalSelectFrom({required P a, required P b, required bool choice});
   @override

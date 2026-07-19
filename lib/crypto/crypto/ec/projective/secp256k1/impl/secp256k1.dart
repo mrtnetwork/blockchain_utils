@@ -16,7 +16,7 @@ import 'package:blockchain_utils/numbers/src/i128.dart';
 import 'package:blockchain_utils/numbers/src/i64.dart';
 import 'package:blockchain_utils/numbers/src/u128.dart';
 import 'package:blockchain_utils/numbers/src/u32.dart';
-import 'package:blockchain_utils/numbers/src/u64.dart';
+import 'package:blockchain_utils/numbers/src/u64/u64.dart';
 import 'package:blockchain_utils/utils/binary/utils.dart';
 
 /// A Dart port of [Bitcoin Core's secp256k1 library](https://github.com/bitcoin-core/secp256k1/tree/master),
@@ -197,14 +197,9 @@ class Secp256k1 {
         .toInt;
   }
 
-  static void secp256k1FeMul(
-    Secp256k1Fe r,
-    BaseSecp256k1Fe a,
-    BaseSecp256k1Fe b,
-  ) {
+  static void secp256k1FeMul(Secp256k1Fe r, BaseSecp256k1Fe a, BaseSecp256k1Fe b) {
     void verifyBits(Uint64 x, int n) => _verifyBits(x, n, "secp256k1FeMul");
-    void verifyBits128(MutableUint128 x, int n) =>
-        _verifyBits128(x, n, "secp256k1FeMul");
+    void verifyBits128(MutableUint128 x, int n) => _verifyBits128(x, n, "secp256k1FeMul");
     _cond(r != b, "secp256k1FeMul");
     _cond(a != b, "secp256k1FeMul");
     MutableUint128 c = MutableUint128(), d = MutableUint128();
@@ -385,8 +380,7 @@ class Secp256k1 {
 
   static void secp256k1FeSqr(Secp256k1Fe r, BaseSecp256k1Fe a) {
     void verifyBits(Uint64 x, int n) => _verifyBits(x, n, "secp256k1FeSqr");
-    void verifyBits128(MutableUint128 x, int n) =>
-        _verifyBits128(x, n, "secp256k1FeSqr");
+    void verifyBits128(MutableUint128 x, int n) => _verifyBits128(x, n, "secp256k1FeSqr");
     MutableUint128 c = MutableUint128(), d = MutableUint128();
     Uint64 a0 = a[0], a1 = a[1], a2 = a[2], a3 = a[3], a4 = a[4];
     Uint64 t3, t4, tx, u0;
@@ -620,10 +614,7 @@ class Secp256k1 {
     secp256k1U128AccumU64(t, Secp256k1Const.secp256k1NH2 & mask);
     r[2] = secp256k1U128ToU64(t);
     secp256k1U128Rshift(t, 64);
-    r[3] =
-        secp256k1U128ToU64(t) +
-        (a[3] >> 1) +
-        (Secp256k1Const.secp256k1NH3 & mask);
+    r[3] = secp256k1U128ToU64(t) + (a[3] >> 1) + (Secp256k1Const.secp256k1NH3 & mask);
   }
 
   static void secp256k1ScalarMul512(
@@ -828,10 +819,7 @@ class Secp256k1 {
     secp256k1U128AccumU64(c128, p3);
     r[3] = secp256k1U128ToU64(c128);
     c = secp256k1U128HiU64(c128);
-    secp256k1ScalarReduce(
-      r,
-      (c + Uint64(secp256k1ScalarCheckOverflow(r))).toInt(),
-    );
+    secp256k1ScalarReduce(r, (c + Uint64(secp256k1ScalarCheckOverflow(r))).toInt());
   }
 
   static void secp256k1ScalarSetInt(Secp256k1Scalar r, int v) {
@@ -850,21 +838,12 @@ class Secp256k1 {
   ) {
     secp256k1ScalarVerify(a);
     _cond(count > 0 && count <= 32, "secp256k1ScalarGetBitsLimb32");
-    _cond(
-      (offset + count - 1) >> 6 == offset >> 6,
-      "secp256k1ScalarGetBitsLimb32",
-    );
-    final n =
-        (a[offset >> 6] >> (offset & 0x3F)) &
-        (Uint64(0xFFFFFFFF) >> (32 - count));
+    _cond((offset + count - 1) >> 6 == offset >> 6, "secp256k1ScalarGetBitsLimb32");
+    final n = (a[offset >> 6] >> (offset & 0x3F)) & (Uint64(0xFFFFFFFF) >> (32 - count));
     return n.toUint32();
   }
 
-  static Uint32 secp256k1ScalarGetBitsVar(
-    BaseSecp256k1Scalar a,
-    int offset,
-    int count,
-  ) {
+  static Uint32 secp256k1ScalarGetBitsVar(BaseSecp256k1Scalar a, int offset, int count) {
     secp256k1ScalarVerify(a);
     _cond(count > 0 && count <= 32, "secp256k1ScalarGetBitsVar");
     _cond(offset + count <= 256, "secp256k1ScalarGetBitsVar");
@@ -952,8 +931,7 @@ class Secp256k1 {
 
   static void secp256k1ScalarNegate(Secp256k1Scalar r, BaseSecp256k1Scalar a) {
     Uint64 nonzero =
-        (Secp256k1Const.secp256k1n3 *
-            (secp256k1ScalarIsZero(a) == 0).toUint64());
+        (Secp256k1Const.secp256k1n3 * (secp256k1ScalarIsZero(a) == 0).toUint64());
     MutableUint128 t = MutableUint128();
     secp256k1ScalarVerify(a);
     secp256k1U128FromU64(t, ~a[0]);
@@ -1039,8 +1017,7 @@ class Secp256k1 {
     secp256k1ScalarVerify(a);
     secp256k1ScalarVerify(b);
     final n =
-        ((a[0] ^ b[0]) | (a[1] ^ b[1]) | (a[2] ^ b[2]) | (a[3] ^ b[3])) ==
-        Uint64.zero;
+        ((a[0] ^ b[0]) | (a[1] ^ b[1]) | (a[2] ^ b[2]) | (a[3] ^ b[3])) == Uint64.zero;
     return n.toInt;
   }
 
@@ -1088,19 +1065,13 @@ class Secp256k1 {
     secp256k1ScalarCaddBit(
       r,
       0,
-      ((l[(shift - 1) >> 6] >> ((shift - 1) & 0x3f)) & Uint64.one)
-          .toInt32()
-          .toInt(),
+      ((l[(shift - 1) >> 6] >> ((shift - 1) & 0x3f)) & Uint64.one).toInt32().toInt(),
     );
 
     secp256k1ScalarVerify(r);
   }
 
-  static void secp256k1ScalarCmov(
-    Secp256k1Scalar r,
-    BaseSecp256k1Scalar a,
-    int flag,
-  ) {
+  static void secp256k1ScalarCmov(Secp256k1Scalar r, BaseSecp256k1Scalar a, int flag) {
     Uint64 mask0, mask1;
     int vflag = flag;
     secp256k1ScalarVerify(a);
@@ -1112,10 +1083,7 @@ class Secp256k1 {
     r[3] = (r[3] & mask0) | (a[3] & mask1);
   }
 
-  static void secp256k1ScalarFromSigned62(
-    Secp256k1Scalar r,
-    Secp256k1ModinvSigned a,
-  ) {
+  static void secp256k1ScalarFromSigned62(Secp256k1Scalar r, Secp256k1ModinvSigned a) {
     Uint64 a0 = a[0].toUint64(),
         a1 = a[1].toUint64(),
         a2 = a[2].toUint64(),
@@ -1136,10 +1104,7 @@ class Secp256k1 {
     secp256k1ScalarVerify(r);
   }
 
-  static void secp256k1ScalarToSigned62(
-    Secp256k1ModinvSigned r,
-    BaseSecp256k1Scalar a,
-  ) {
+  static void secp256k1ScalarToSigned62(Secp256k1ModinvSigned r, BaseSecp256k1Scalar a) {
     final Uint64 m62 = Secp256k1Const.mask62;
     Uint64 a0 = a[0], a1 = a[1], a2 = a[2], a3 = a[3];
     secp256k1ScalarVerify(a);
@@ -1168,10 +1133,7 @@ class Secp256k1 {
     _cond(secp256k1ScalarCheckOverflow(r) == 0, 'secp256k1ScalarVerify');
   }
 
-  static void secp256k1ScalarInverseVar(
-    Secp256k1Scalar r,
-    BaseSecp256k1Scalar x,
-  ) {
+  static void secp256k1ScalarInverseVar(Secp256k1Scalar r, BaseSecp256k1Scalar x) {
     Secp256k1ModinvSigned s = Secp256k1ModinvSigned();
     secp256k1ScalarVerify(x);
     secp256k1ScalarToSigned62(s, x);
@@ -1255,8 +1217,7 @@ class Secp256k1 {
     Int64 factor,
   ) {
     int i;
-    Secp256k1ModinvSigned am = Secp256k1ModinvSigned(),
-        bm = Secp256k1ModinvSigned();
+    Secp256k1ModinvSigned am = Secp256k1ModinvSigned(), bm = Secp256k1ModinvSigned();
     secp256k1Modinv64Mul62(am, a, alen, Int64.one);
     secp256k1Modinv64Mul62(bm, b, 5, factor);
     for (i = 0; i < 4; ++i) {
@@ -1346,23 +1307,13 @@ class Secp256k1 {
     );
   }
 
-  static void secp256k1I128Det(
-    MutableInt128 r,
-    Int64 a,
-    Int64 b,
-    Int64 c,
-    Int64 d,
-  ) {
+  static void secp256k1I128Det(MutableInt128 r, Int64 a, Int64 b, Int64 c, Int64 d) {
     Int128 ad = (a.toInt128() * d.toInt128());
     Int128 bc = (b.toInt128() * c.toInt128());
     r.assign(ad - bc);
   }
 
-  static int secp256k1Modinv64DetCheckPow2(
-    Secp256k1ModinvTrans t,
-    int n,
-    int abs,
-  ) {
+  static int secp256k1Modinv64DetCheckPow2(Secp256k1ModinvTrans t, int n, int abs) {
     MutableInt128 a = MutableInt128();
     secp256k1I128Det(a, t.u, t.v, t.q, t.r);
     if (secp256k1I128CheckPow2(a, n, 1).toBool) {
@@ -1405,18 +1356,12 @@ class Secp256k1 {
       g = (g >> 1);
       u = (u << 1);
       v = (v << 1);
-      _cond(
-        zeta >= Int64(-591) && zeta <= Int64(591),
-        "secp256k1Modinv64Divsteps59",
-      );
+      _cond(zeta >= Int64(-591) && zeta <= Int64(591), "secp256k1Modinv64Divsteps59");
     }
 
     t.fillU64(u, v, q, r);
 
-    _cond(
-      secp256k1Modinv64DetCheckPow2(t, 65, 0).toBool,
-      "secp256k1Modinv64Divsteps59",
-    );
+    _cond(secp256k1Modinv64DetCheckPow2(t, 65, 0).toBool, "secp256k1Modinv64Divsteps59");
 
     return zeta;
   }
@@ -1448,20 +1393,11 @@ class Secp256k1 {
       if (i == 0) break;
       _cond((f & Uint64.one) == Uint64.one, "secp256k1Modinv64Divsteps62Var");
       _cond((g & Uint64.one) == Uint64.one, "secp256k1Modinv64Divsteps62Var");
-      _cond(
-        (u * f0 + v * g0) == (f << (62 - i)),
-        "secp256k1Modinv64Divsteps62Var",
-      );
-      _cond(
-        (q * f0 + r * g0) == (g << (62 - i)),
-        "secp256k1Modinv64Divsteps62Var",
-      );
+      _cond((u * f0 + v * g0) == (f << (62 - i)), "secp256k1Modinv64Divsteps62Var");
+      _cond((q * f0 + r * g0) == (g << (62 - i)), "secp256k1Modinv64Divsteps62Var");
 
       /// Bounds on eta that follow from the bounds on iteration count (max 12*62 divsteps).
-      _cond(
-        eta >= Int64(-745) && eta <= Int64(745),
-        "secp256k1Modinv64Divsteps62Var",
-      );
+      _cond(eta >= Int64(-745) && eta <= Int64(745), "secp256k1Modinv64Divsteps62Var");
 
       /// If eta is negative, negate it and replace f,g with g,-f.
       if (eta.isNegative) {
@@ -1536,22 +1472,10 @@ class Secp256k1 {
 
       /// We're done once we've done 62 posdivsteps.
       if (i == 0) break;
-      _cond(
-        (f & Uint64.one) == Uint64.one,
-        "secp256k1Modinv64Posdivsteps62var",
-      );
-      _cond(
-        (g & Uint64.one) == Uint64.one,
-        "secp256k1Modinv64Posdivsteps62var",
-      );
-      _cond(
-        (u * f0 + v * g0) == f << (62 - i),
-        "secp256k1Modinv64Posdivsteps62var",
-      );
-      _cond(
-        (q * f0 + r * g0) == g << (62 - i),
-        "secp256k1Modinv64Posdivsteps62var",
-      );
+      _cond((f & Uint64.one) == Uint64.one, "secp256k1Modinv64Posdivsteps62var");
+      _cond((g & Uint64.one) == Uint64.one, "secp256k1Modinv64Posdivsteps62var");
+      _cond((u * f0 + v * g0) == f << (62 - i), "secp256k1Modinv64Posdivsteps62var");
+      _cond((q * f0 + r * g0) == g << (62 - i), "secp256k1Modinv64Posdivsteps62var");
 
       /// If eta is negative, negate it and replace f,g with g,f.
       if (eta < Int64.zero) {
@@ -1652,15 +1576,11 @@ class Secp256k1 {
     /// Correct md,me so that t*[d,e]+modulus*[md,me] has 62 zero bottom bits.
     md =
         ((md.toUint64() -
-                (((modinfo.modulusInv * secp256k1I128ToU64(cd)) +
-                        md.toUint64()) &
-                    m62)))
+                (((modinfo.modulusInv * secp256k1I128ToU64(cd)) + md.toUint64()) & m62)))
             .toInt64();
     me =
         ((me.toUint64() -
-                (((modinfo.modulusInv * secp256k1I128ToU64(ce)) +
-                        me.toUint64()) &
-                    m62)))
+                (((modinfo.modulusInv * secp256k1I128ToU64(ce)) + me.toUint64()) & m62)))
             .toInt64();
 
     /// Update the beginning of computation for t*[d,e]+modulus*[md,me] now md,me are known.
@@ -1668,15 +1588,9 @@ class Secp256k1 {
     secp256k1I128AccumMul(ce, modinfo.modulus[0], me);
 
     /// Verify that the low 62 bits of the computation are indeed zero, and then throw them away.
-    _cond(
-      (secp256k1I128ToU64(cd) & m62) == Uint64.zero,
-      "secp256k1Modinv64UpdateDe62",
-    );
+    _cond((secp256k1I128ToU64(cd) & m62) == Uint64.zero, "secp256k1Modinv64UpdateDe62");
     secp256k1I128Rshift(cd, 62);
-    _cond(
-      (secp256k1I128ToU64(ce) & m62) == Uint64.zero,
-      "secp256k1Modinv64UpdateDe62",
-    );
+    _cond((secp256k1I128ToU64(ce) & m62) == Uint64.zero, "secp256k1Modinv64UpdateDe62");
     secp256k1I128Rshift(ce, 62);
 
     /// Compute limb 1 of t*[d,e]+modulus*[md,me], and store it as output limb 0 (= down shift).
@@ -1776,15 +1690,9 @@ class Secp256k1 {
     secp256k1I128Mul(cg, q, f0);
     secp256k1I128AccumMul(cg, r, g0);
     // /// Verify that the bottom 62 bits of the result are zero, and then throw them away.
-    _cond(
-      (secp256k1I128ToU64(cf) & m62) == Uint64.zero,
-      "secp256k1Modinv64UpdateFg62",
-    );
+    _cond((secp256k1I128ToU64(cf) & m62) == Uint64.zero, "secp256k1Modinv64UpdateFg62");
     secp256k1I128Rshift(cf, 62);
-    _cond(
-      (secp256k1I128ToU64(cg) & m62) == Uint64.zero,
-      "secp256k1Modinv64UpdateFg62",
-    );
+    _cond((secp256k1I128ToU64(cg) & m62) == Uint64.zero, "secp256k1Modinv64UpdateFg62");
     secp256k1I128Rshift(cg, 62);
     // /// Compute limb 1 of t*[f,g], and store it as output limb 0 (= down shift).
     secp256k1I128AccumMul(cf, u, f1);
@@ -1880,10 +1788,7 @@ class Secp256k1 {
     g[len - 1] = secp256k1I128ToI64(cg);
   }
 
-  static void secp256k1Modinv64(
-    Secp256k1ModinvSigned x,
-    Secp256k1ModinvInfo modinfo,
-  ) {
+  static void secp256k1Modinv64(Secp256k1ModinvSigned x, Secp256k1ModinvInfo modinfo) {
     /// Start with d=0, e=1, f=modulus, g=x, zeta=-1.
     Secp256k1ModinvSigned d = Secp256k1ModinvSigned();
     Secp256k1ModinvSigned e = Secp256k1Const.modeInvOne.clone();
@@ -1896,25 +1801,14 @@ class Secp256k1 {
     for (i = 0; i < 10; ++i) {
       /// Compute transition matrix and new zeta after 59 divsteps.
       Secp256k1ModinvTrans t = Secp256k1ModinvTrans();
-      zeta = secp256k1Modinv64Divsteps59(
-        zeta,
-        f[0].toUint64(),
-        g[0].toUint64(),
-        t,
-      );
+      zeta = secp256k1Modinv64Divsteps59(zeta, f[0].toUint64(), g[0].toUint64(), t);
 
       /// Update d,e using that transition matrix.
       secp256k1Modinv64UpdateDe62(d, e, t, modinfo);
 
       /// Update f,g using that transition matrix.
       _cond(
-        secp256k1Modinv64MulCmp62(
-              f,
-              5,
-              modinfo.modulus,
-              Secp256k1Const.minosOne,
-            ) >
-            0,
+        secp256k1Modinv64MulCmp62(f, 5, modinfo.modulus, Secp256k1Const.minosOne) > 0,
         "secp256k1Modinv64",
       );
       _cond(
@@ -1922,13 +1816,7 @@ class Secp256k1 {
         "secp256k1Modinv64",
       );
       _cond(
-        secp256k1Modinv64MulCmp62(
-              g,
-              5,
-              modinfo.modulus,
-              Secp256k1Const.minosOne,
-            ) >
-            0,
+        secp256k1Modinv64MulCmp62(g, 5, modinfo.modulus, Secp256k1Const.minosOne) > 0,
         "secp256k1Modinv64",
       );
       _cond(
@@ -1938,13 +1826,7 @@ class Secp256k1 {
 
       secp256k1Modinv64UpdateFg62(f, g, t);
       _cond(
-        secp256k1Modinv64MulCmp62(
-              f,
-              5,
-              modinfo.modulus,
-              Secp256k1Const.minosOne,
-            ) >
-            0,
+        secp256k1Modinv64MulCmp62(f, 5, modinfo.modulus, Secp256k1Const.minosOne) > 0,
         "secp256k1Modinv64",
       );
 
@@ -1954,13 +1836,7 @@ class Secp256k1 {
       );
 
       _cond(
-        secp256k1Modinv64MulCmp62(
-              g,
-              5,
-              modinfo.modulus,
-              Secp256k1Const.minosOne,
-            ) >
-            0,
+        secp256k1Modinv64MulCmp62(g, 5, modinfo.modulus, Secp256k1Const.minosOne) > 0,
         "secp256k1Modinv64",
       );
 
@@ -2017,10 +1893,7 @@ class Secp256k1 {
     x.set(d);
   }
 
-  static void secp256k1Modinv64Var(
-    Secp256k1ModinvSigned x,
-    Secp256k1ModinvInfo modinfo,
-  ) {
+  static void secp256k1Modinv64Var(Secp256k1ModinvSigned x, Secp256k1ModinvInfo modinfo) {
     Secp256k1ModinvSigned d = Secp256k1ModinvSigned();
     Secp256k1ModinvSigned e = Secp256k1Const.modeInvOne.clone();
 
@@ -2037,12 +1910,7 @@ class Secp256k1 {
     while (true) {
       /// Compute transition matrix and new eta after 62 divsteps.
       Secp256k1ModinvTrans t = Secp256k1ModinvTrans();
-      eta = secp256k1Modinv64Divsteps62Var(
-        eta,
-        f[0].toUint64(),
-        g[0].toUint64(),
-        t,
-      );
+      eta = secp256k1Modinv64Divsteps62Var(eta, f[0].toUint64(), g[0].toUint64(), t);
 
       /// Update d,e using that transition matrix.
       secp256k1Modinv64UpdateDe62(d, e, t, modinfo);
@@ -2103,13 +1971,7 @@ class Secp256k1 {
       );
 
       _cond(
-        secp256k1Modinv64MulCmp62(
-              g,
-              len,
-              modinfo.modulus,
-              Secp256k1Const.minosOne,
-            ) >
-            0,
+        secp256k1Modinv64MulCmp62(g, len, modinfo.modulus, Secp256k1Const.minosOne) > 0,
         "secp256k1Modinv64Var",
       );
 
@@ -2157,8 +2019,7 @@ class Secp256k1 {
                     Int64.zero,
                   ) ==
                   0 &&
-              secp256k1Modinv64MulCmp62(f, len, modinfo.modulus, Int64.one) ==
-                  0),
+              secp256k1Modinv64MulCmp62(f, len, modinfo.modulus, Int64.one) == 0),
       "secp256k1Modinv64Var",
     );
 
@@ -2193,10 +2054,7 @@ class Secp256k1 {
       "secp256k1Jacobi64MaybeVar",
     );
 
-    _cond(
-      (g[0] | g[1] | g[2] | g[3] | g[4]) != Int64.zero,
-      "secp256k1Jacobi64MaybeVar",
-    );
+    _cond((g[0] | g[1] | g[2] | g[3] | g[4]) != Int64.zero, "secp256k1Jacobi64MaybeVar");
 
     for (count = 0; count < 12; ++count) {
       /// Compute transition matrix and new eta after 62 posdivsteps.
@@ -2285,11 +2143,7 @@ class Secp256k1 {
     return 0;
   }
 
-  static void secp256k1GeSetGejZinv(
-    Secp256k1Ge r,
-    Secp256k1Gej a,
-    BaseSecp256k1Fe zi,
-  ) {
+  static void secp256k1GeSetGejZinv(Secp256k1Ge r, Secp256k1Gej a, BaseSecp256k1Fe zi) {
     Secp256k1Fe zi2 = Secp256k1Fe();
     Secp256k1Fe zi3 = Secp256k1Fe();
     _cond(a.infinity == 0, "secp256k1GeSetGejZinv");
@@ -2300,11 +2154,7 @@ class Secp256k1 {
     r.setInfinity(a.infinity);
   }
 
-  static void secp256k1GeSetGeZinv(
-    Secp256k1Ge r,
-    BaseSecp256k1Ge a,
-    BaseSecp256k1Fe zi,
-  ) {
+  static void secp256k1GeSetGeZinv(Secp256k1Ge r, BaseSecp256k1Ge a, BaseSecp256k1Fe zi) {
     Secp256k1Fe zi2 = Secp256k1Fe();
     Secp256k1Fe zi3 = Secp256k1Fe();
     _cond(a.infinity == 0, "secp256k1GeSetGeZinv");
@@ -2316,11 +2166,7 @@ class Secp256k1 {
     r.setInfinity(a.infinity);
   }
 
-  static void secp256k1GeSetXy(
-    Secp256k1Ge r,
-    BaseSecp256k1Fe x,
-    BaseSecp256k1Fe y,
-  ) {
+  static void secp256k1GeSetXy(Secp256k1Ge r, BaseSecp256k1Fe x, BaseSecp256k1Fe y) {
     r.setInfinity(0);
     r.fillX(x);
     r.fillY(y);
@@ -2347,11 +2193,7 @@ class Secp256k1 {
     secp256k1GeSetXy(r, a.x, a.y);
   }
 
-  static void secp256k1GeSetAllGej(
-    List<Secp256k1Ge> r,
-    List<Secp256k1Gej> a,
-    int len,
-  ) {
+  static void secp256k1GeSetAllGej(List<Secp256k1Ge> r, List<Secp256k1Gej> a, int len) {
     Secp256k1Fe u = Secp256k1Fe();
     int i;
     for (i = 0; i < len; i++) {
@@ -2582,11 +2424,7 @@ class Secp256k1 {
     secp256k1FeNegate(r.y, r.y, 2);
   }
 
-  static void secp256k1GejDoubleVar(
-    Secp256k1Gej r,
-    Secp256k1Gej a,
-    Secp256k1Fe? rzr,
-  ) {
+  static void secp256k1GejDoubleVar(Secp256k1Gej r, Secp256k1Gej a, Secp256k1Fe? rzr) {
     /// For secp256k1, 2Q is infinity if and only if Q is infinity. This is because if 2Q = infinity,
     ///  Q must equal -Q, or that Q.y == -(Q.y), or Q.y is 0. For a point on y^2 = x^3 + 7 to have
     ///  y=0, x^3 must be -7 mod p. However, -7 has no cube root mod p.
@@ -2847,11 +2685,7 @@ class Secp256k1 {
     secp256k1FeAdd(r.y, h3);
   }
 
-  static void secp256k1GejAddGe(
-    Secp256k1Gej r,
-    Secp256k1Gej a,
-    BaseSecp256k1Ge b,
-  ) {
+  static void secp256k1GejAddGe(Secp256k1Gej r, Secp256k1Gej a, BaseSecp256k1Ge b) {
     /// Operations: 7 mul, 5 sqr, 21 add/cmov/half/mul_int/negate/normalizes_to_zero
     Secp256k1Fe zz = Secp256k1Fe(),
         u1 = Secp256k1Fe(),
@@ -2934,10 +2768,7 @@ class Secp256k1 {
     Secp256k1Fe neg = Secp256k1Fe();
     Secp256k1GeStorage adds = Secp256k1GeStorage();
     Secp256k1Scalar d = Secp256k1Scalar();
-    List<Uint32> recoded = List.filled(
-      (Secp256k1Const.combBits + 31) >> 5,
-      Uint32.zero,
-    );
+    List<Uint32> recoded = List.filled((Secp256k1Const.combBits + 31) >> 5, Uint32.zero);
     int first = 1, i;
 
     /// Compute the scalar d = (gn + ctx->scalarOffset).
@@ -2963,8 +2794,7 @@ class Secp256k1 {
       for (block = 0; block < combBlocks; ++block) {
         int bits = 0, sign, abs, index, tooth;
         for (tooth = 0; tooth < combTeeth; ++tooth) {
-          int bitdata =
-              secp256k1Rotr32(recoded[bitPos >> 5], bitPos & 0x1f).toInt();
+          int bitdata = secp256k1Rotr32(recoded[bitPos >> 5], bitPos & 0x1f).toInt();
 
           /// Clear the bit at position tooth, but sssh, don't tell clang.
           int vmask = (~(1 << tooth)).toUnsigned(32);
@@ -3108,15 +2938,9 @@ class Secp256k1 {
     return secp256k1FeIsSquareVar(c);
   }
 
-  static int secp256k1GeXFracOnCurveVar(
-    BaseSecp256k1Fe xn,
-    BaseSecp256k1Fe xd,
-  ) {
+  static int secp256k1GeXFracOnCurveVar(BaseSecp256k1Fe xn, BaseSecp256k1Fe xd) {
     Secp256k1Fe r = Secp256k1Fe(), t = Secp256k1Fe();
-    _cond(
-      secp256k1FeNormalizesToZeroVar(xd) == 0,
-      "secp256k1GeXFracOnCurveVar",
-    );
+    _cond(secp256k1FeNormalizesToZeroVar(xd) == 0, "secp256k1GeXFracOnCurveVar");
 
     secp256k1FeMul(r, xd, xn);
     secp256k1FeSqr(t, xn);
@@ -3281,10 +3105,7 @@ class Secp256k1 {
       return 1;
     }
     secp256k1FeToSigned62(s, tmp);
-    jac = secp256k1Jacobi64MaybeVar(
-      s,
-      Secp256k1Const.secp256k1ConstModinfoFe.clone(),
-    );
+    jac = secp256k1Jacobi64MaybeVar(s, Secp256k1Const.secp256k1ConstModinfoFe.clone());
     if (jac == 0) {
       Secp256k1Fe dummy = Secp256k1Fe();
       ret = secp256k1FeSqrt(dummy, tmp);
@@ -3459,10 +3280,7 @@ class Secp256k1 {
     r[4] *= a64;
   }
 
-  static void secp256k1FeImplFromStorage(
-    Secp256k1Fe r,
-    BaseSecp256k1FeStorage a,
-  ) {
+  static void secp256k1FeImplFromStorage(Secp256k1Fe r, BaseSecp256k1FeStorage a) {
     r[0] = a[0] & Secp256k1Const.mask52;
     r[1] = a[0] >> 52 | ((a[1] << 12) & Secp256k1Const.mask52);
     r[2] = a[1] >> 40 | ((a[2] << 24) & Secp256k1Const.mask52);
@@ -3535,10 +3353,7 @@ class Secp256k1 {
     r[4] = t4;
   }
 
-  static void secp256k1FeToSigned62(
-    Secp256k1ModinvSigned r,
-    BaseSecp256k1Fe a,
-  ) {
+  static void secp256k1FeToSigned62(Secp256k1ModinvSigned r, BaseSecp256k1Fe a) {
     final Uint64 m62 = Secp256k1Const.mask62;
     final Uint64 a0 = a[0], a1 = a[1], a2 = a[2], a3 = a[3], a4 = a[4];
 
@@ -3739,23 +3554,15 @@ class Secp256k1 {
     return ((a[0] | a[1] | a[2] | a[3] | a[4]) == Uint64.zero).toInt;
   }
 
-  static void ecmultConstTableGetGe(
-    Secp256k1Ge r,
-    List<BaseSecp256k1Ge> pre,
-    int n,
-  ) {
+  static void ecmultConstTableGetGe(Secp256k1Ge r, List<BaseSecp256k1Ge> pre, int n) {
     int m = 0;
 
     /// If the top bit of n is 0, we want the negation.
     int negative = ((n) >> (Secp256k1Const.constGroupSize - 1)) ^ 1;
-    int index =
-        ((-negative) ^ n) & ((1 << (Secp256k1Const.constGroupSize - 1)) - 1);
+    int index = ((-negative) ^ n) & ((1 << (Secp256k1Const.constGroupSize - 1)) - 1);
     Secp256k1Fe negY = Secp256k1Fe();
     _cond(n < (1 << Secp256k1Const.constGroupSize), "ecmultConstTableGetGe");
-    _cond(
-      index < (1 << (Secp256k1Const.constGroupSize - 1)),
-      "ecmultConstTableGetGe",
-    );
+    _cond(index < (1 << (Secp256k1Const.constGroupSize - 1)), "ecmultConstTableGetGe");
 
     r.fillX(pre[m].x);
     r.fillY(pre[m].y);
@@ -3774,9 +3581,7 @@ class Secp256k1 {
     BaseSecp256k1Scalar q,
   ) {
     /// The offset to add to s1 and s2 to make them non-negative. Equal to 2^128.
-    Secp256k1Scalar s = Secp256k1Scalar(),
-        v1 = Secp256k1Scalar(),
-        v2 = Secp256k1Scalar();
+    Secp256k1Scalar s = Secp256k1Scalar(), v1 = Secp256k1Scalar(), v2 = Secp256k1Scalar();
     List<Secp256k1Ge> preA = List.generate(
       Secp256k1Const.constTableSize,
       (_) => Secp256k1Ge(),
@@ -3861,13 +3666,7 @@ class Secp256k1 {
       (_) => Secp256k1Fe(),
     );
 
-    secp256k1ECmultOddMultiplesTable(
-      Secp256k1Const.constTableSize,
-      pre,
-      zr,
-      globalz,
-      a,
-    );
+    secp256k1ECmultOddMultiplesTable(Secp256k1Const.constTableSize, pre, zr, globalz, a);
     secp256k1GeTableSetGlobalz(Secp256k1Const.constTableSize, pre, zr);
   }
 
@@ -4005,10 +3804,7 @@ class Secp256k1 {
       final isOdd = secp256k1FeIsOdd(y);
       if ((pub[0] == Secp256k1Const.secp256k1TagPubkeyHybridEven ||
               pub[0] == Secp256k1Const.secp256k1TagPubkeyHybridOdd) &&
-          isOdd !=
-              ((pub[0] == Secp256k1Const.secp256k1TagPubkeyHybridOdd)
-                  ? 1
-                  : 0)) {
+          isOdd != ((pub[0] == Secp256k1Const.secp256k1TagPubkeyHybridOdd) ? 1 : 0)) {
         return false;
       }
       return secp256k1GeIsValidVar(elem) == 1;

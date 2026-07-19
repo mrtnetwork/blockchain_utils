@@ -1,5 +1,5 @@
 import 'package:blockchain_utils/crypto/crypto/ec/projective/secp256k1/types/types.dart';
-import 'package:blockchain_utils/numbers/src/u64.dart';
+import 'package:blockchain_utils/numbers/src/u64/u64.dart';
 
 const List<List<Secp256k1GeStorageConst>> secp256K1Table = [
   [

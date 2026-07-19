@@ -5,11 +5,10 @@ import 'package:blockchain_utils/crypto/crypto/zcrypto/jubjub/fields/native.dart
 import 'package:blockchain_utils/crypto/crypto/zcrypto/pasta/utils/utils.dart';
 import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/helper/extensions/extensions.dart';
-import 'package:blockchain_utils/numbers/src/u64.dart';
+import 'package:blockchain_utils/numbers/src/u64/u64.dart';
 import 'package:blockchain_utils/utils/numbers/utils/bigint_utils.dart';
 
-abstract class JubJubPrimeField<F extends JubJubPrimeField<F>>
-    extends CryptoField<F> {
+abstract class JubJubPrimeField<F extends JubJubPrimeField<F>> extends CryptoField<F> {
   const JubJubPrimeField();
   List<int> toBytes();
   List<bool> toBits() {
@@ -29,8 +28,7 @@ abstract class JubJubPrimeField<F extends JubJubPrimeField<F>>
   List<bool> charBits();
 }
 
-abstract class JubJubField<F extends JubJubField<F>>
-    extends JubJubPrimeField<F> {
+abstract class JubJubField<F extends JubJubField<F>> extends JubJubPrimeField<F> {
   const JubJubField();
   @override
   List<bool> charBits() {
@@ -38,8 +36,7 @@ abstract class JubJubField<F extends JubJubField<F>>
   }
 }
 
-abstract class JubJubScalar<F extends JubJubScalar<F>>
-    extends JubJubPrimeField<F> {
+abstract class JubJubScalar<F extends JubJubScalar<F>> extends JubJubPrimeField<F> {
   const JubJubScalar();
   @override
   List<bool> charBits() {
@@ -164,11 +161,7 @@ class JubJubFr extends JubJubScalar<JubJubFr> {
       ),
     );
     Uint64 borrowMask = Uint64.zero;
-    var temp = Uint64.sbb(
-      tmp.limbs[0],
-      JubJubFrConst.modulus.limbs[0],
-      borrowMask,
-    );
+    var temp = Uint64.sbb(tmp.limbs[0], JubJubFrConst.modulus.limbs[0], borrowMask);
     borrowMask = temp.$2;
     temp = Uint64.sbb(tmp.limbs[1], JubJubFrConst.modulus.limbs[1], borrowMask);
     borrowMask = temp.$2;
@@ -203,12 +196,7 @@ class JubJubFr extends JubJubScalar<JubJubFr> {
   }
 
   factory JubJubFr.from(Uint64 val) {
-    return JubJubFr([
-      val,
-      Uint64.zero,
-      Uint64.zero,
-      Uint64.zero,
-    ]).mul(JubJubFr.r2);
+    return JubJubFr([val, Uint64.zero, Uint64.zero, Uint64.zero]).mul(JubJubFr.r2);
   }
 
   factory JubJubFr.fromRaw(List<Uint64> val) {
@@ -343,10 +331,7 @@ class JubJubFr extends JubJubScalar<JubJubFr> {
 
   JubJubFr sub(JubJubFr rhs) {
     final x0 = limbs[0], x1 = limbs[1], x2 = limbs[2], x3 = limbs[3];
-    final y0 = rhs.limbs[0],
-        y1 = rhs.limbs[1],
-        y2 = rhs.limbs[2],
-        y3 = rhs.limbs[3];
+    final y0 = rhs.limbs[0], y1 = rhs.limbs[1], y2 = rhs.limbs[2], y3 = rhs.limbs[3];
 
     var t = Uint64.sbb(x0, y0, Uint64.zero);
     Uint64 d0 = t.$1;
@@ -384,10 +369,7 @@ class JubJubFr extends JubJubScalar<JubJubFr> {
 
   JubJubFr mul(JubJubFr rhs) {
     final x0 = limbs[0], x1 = limbs[1], x2 = limbs[2], x3 = limbs[3];
-    final y0 = rhs.limbs[0],
-        y1 = rhs.limbs[1],
-        y2 = rhs.limbs[2],
-        y3 = rhs.limbs[3];
+    final y0 = rhs.limbs[0], y1 = rhs.limbs[1], y2 = rhs.limbs[2], y3 = rhs.limbs[3];
 
     var t = Uint64.mac(Uint64.zero, x0, y0, Uint64.zero);
     Uint64 r0 = t.$1;
@@ -669,12 +651,7 @@ class JubJubFq extends JubJubField<JubJubFq> {
   static JubJubFq one = JubJubFq.r;
 
   factory JubJubFq.from(Uint64 val) {
-    return JubJubFq([
-      val,
-      Uint64.zero,
-      Uint64.zero,
-      Uint64.zero,
-    ]).mul(JubJubFq.r2);
+    return JubJubFq([val, Uint64.zero, Uint64.zero, Uint64.zero]).mul(JubJubFq.r2);
   }
 
   static const JubJubFq edwardsD = JubJubFq.unsafe([
@@ -784,11 +761,7 @@ class JubJubFq extends JubJubField<JubJubFq> {
     );
 
     Uint64 borrowMask = Uint64.zero;
-    var temp = Uint64.sbb(
-      tmp.limbs[0],
-      JubJubFqConst.modulus.limbs[0],
-      borrowMask,
-    );
+    var temp = Uint64.sbb(tmp.limbs[0], JubJubFqConst.modulus.limbs[0], borrowMask);
     borrowMask = temp.$2;
     temp = Uint64.sbb(tmp.limbs[1], JubJubFqConst.modulus.limbs[1], borrowMask);
     borrowMask = temp.$2;
@@ -931,11 +904,7 @@ class JubJubFq extends JubJubField<JubJubFq> {
     Uint64 d3 = t.$1;
     borrow = t.$2;
 
-    var a = Uint64.adc(
-      d0,
-      JubJubFqConst.modulus.limbs[0] & borrow,
-      Uint64.zero,
-    );
+    var a = Uint64.adc(d0, JubJubFqConst.modulus.limbs[0] & borrow, Uint64.zero);
     d0 = a.$1;
     Uint64 carry = a.$2;
 
@@ -1257,8 +1226,7 @@ class JubJubFq extends JubJubField<JubJubFq> {
       rootOfUnity: JubJubFq.rootOfUnity,
       s: JubJubFqConst.S,
       one: JubJubFq.r,
-      conditionalSelect:
-          (a, b, choice) => JubJubFq.conditionalSelect(a, b, choice),
+      conditionalSelect: (a, b, choice) => JubJubFq.conditionalSelect(a, b, choice),
     );
   }
 

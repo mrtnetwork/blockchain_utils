@@ -6,9 +6,9 @@ import 'package:blockchain_utils/numbers/src/exception/exception.dart';
 import 'i32.dart';
 import 'i64.dart';
 import 'u128.dart';
-import 'u256.dart';
+import 'u256/u256.dart';
 import 'u32.dart';
-import 'u64.dart';
+import 'u64/u64.dart';
 
 const int _signBit32 = 0x80000000; // top bit of the top 32-bit word
 
@@ -64,13 +64,8 @@ class Int128 implements Comparable<Int128> {
         details: {"value": s},
       );
     }
-    final mag = Uint128.parseDecimal(
-      digits,
-    ); // throws on bad chars or u128 overflow
-    const minMag = Uint128.unsafe(
-      Uint64.unsafe(_signBit32, 0),
-      Uint64.zero,
-    ); // 2^127
+    final mag = Uint128.parseDecimal(digits); // throws on bad chars or u128 overflow
+    const minMag = Uint128.unsafe(Uint64.unsafe(_signBit32, 0), Uint64.zero); // 2^127
     if (negative) {
       if (mag > minMag) throw IntegerError.overflow;
       if (mag == minMag) return Int128.min;
@@ -177,8 +172,7 @@ class Int128 implements Comparable<Int128> {
 
   Int128 addChecked(Int128 other) {
     final overflow =
-        isNegative == other.isNegative &&
-        (this + other).isNegative != isNegative;
+        isNegative == other.isNegative && (this + other).isNegative != isNegative;
     final r = this + other;
     if (overflow) throw IntegerError.overflow;
     return r;

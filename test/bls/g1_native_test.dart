@@ -1,5 +1,5 @@
 import 'package:blockchain_utils/blockchain_utils.dart';
-import 'package:blockchain_utils/numbers/src/u64.dart';
+import 'package:blockchain_utils/numbers/src/u64/u64.dart';
 import 'package:test/test.dart';
 import 'fp_test.dart';
 
@@ -32,8 +32,7 @@ void _testMulByX() {
 
   expect(generator.mulByX(), generator * x);
 
-  final point =
-      G1NativeProjective.generator() * JubJubNativeFq(BigInt.from(42));
+  final point = G1NativeProjective.generator() * JubJubNativeFq(BigInt.from(42));
   expect(point.mulByX(), point * x);
 }
 
@@ -84,16 +83,12 @@ void _testClearCofactor() {
 
   final clearedPoint = point.clearCofactor();
   expect(clearedPoint.isOnCurve(), true);
-  expect(
-    G1NativeAffinePoint.fromProjective(clearedPoint).isTorsionFree(),
-    true,
-  );
+  expect(G1NativeAffinePoint.fromProjective(clearedPoint).isTorsionFree(), true);
 
   // in BLS12-381 the cofactor in G1 can be
   // cleared multiplying by (1-x)
   final hEff =
-      JubJubNativeFq(BigInt.one) +
-      JubJubNativeFq(BigInt.parse("15132376222941642752"));
+      JubJubNativeFq(BigInt.one) + JubJubNativeFq(BigInt.parse("15132376222941642752"));
   expect(point.clearCofactor(), point * hEff);
 }
 
@@ -105,14 +100,8 @@ void _testProjectiveNegationAndSubtraction() {
 
 void _testAffineNegationAndSubtraction() {
   final a = G1NativeAffinePoint.generator();
-  expect(
-    G1NativeProjective.fromAffine(a) + (-a),
-    G1NativeProjective.identity(),
-  );
-  expect(
-    G1NativeProjective.fromAffine(a) + (-a),
-    G1NativeProjective.fromAffine(a) - a,
-  );
+  expect(G1NativeProjective.fromAffine(a) + (-a), G1NativeProjective.identity());
+  expect(G1NativeProjective.fromAffine(a) + (-a), G1NativeProjective.fromAffine(a) - a);
 }
 
 void _testProjectiveScalarMultiplication() {
@@ -519,10 +508,7 @@ void _testProjectiveToAffine() {
 
   final c = G1NativeProjective(x: a.x * z, y: a.y * z, z: z);
 
-  expect(
-    G1NativeAffinePoint.fromProjective(c),
-    G1NativeAffinePoint.generator(),
-  );
+  expect(G1NativeAffinePoint.fromProjective(c), G1NativeAffinePoint.generator());
 }
 
 void _testProjectivePointEquality() {
@@ -596,11 +582,7 @@ void _isOnCurve() {
       ]).toNative();
 
   final gen = G1NativeAffinePoint.generator();
-  G1NativeProjective test = G1NativeProjective(
-    x: gen.x * z,
-    y: gen.y * z,
-    z: z,
-  );
+  G1NativeProjective test = G1NativeProjective(x: gen.x * z, y: gen.y * z, z: z);
 
   expect((test.isOnCurve()), true);
 

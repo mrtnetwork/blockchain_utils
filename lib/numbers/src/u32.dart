@@ -6,8 +6,8 @@ import 'package:blockchain_utils/numbers/src/i128.dart';
 import 'package:blockchain_utils/numbers/src/i32.dart';
 import 'package:blockchain_utils/numbers/src/i64.dart';
 import 'package:blockchain_utils/numbers/src/u128.dart';
-import 'package:blockchain_utils/numbers/src/u256.dart';
-import 'package:blockchain_utils/numbers/src/u64.dart';
+import 'package:blockchain_utils/numbers/src/u256/u256.dart';
+import 'package:blockchain_utils/numbers/src/u64/u64.dart';
 
 const int _mask32 = 0xFFFFFFFF;
 const int _mask16 = 0xFFFF;
@@ -56,9 +56,7 @@ class Uint32 implements Comparable<Uint32> {
 
   static Uint32 parseHex(String s) {
     final hex = (s.startsWith('0x') || s.startsWith('0X')) ? s.substring(2) : s;
-    if (hex.isEmpty ||
-        hex.length > 8 ||
-        !RegExp(r'^[0-9a-fA-F]+$').hasMatch(hex)) {
+    if (hex.isEmpty || hex.length > 8 || !RegExp(r'^[0-9a-fA-F]+$').hasMatch(hex)) {
       throw ArgumentException.invalidOperationArguments(
         "parseHex",
         reason: 'invalid hex literal.',
@@ -120,19 +118,12 @@ class Uint32 implements Comparable<Uint32> {
     return out;
   }
 
-  static Uint32 fromBytes(
-    List<int> bytes, {
-    Endian endian = Endian.big,
-    int offset = 0,
-  }) {
+  static Uint32 fromBytes(List<int> bytes, {Endian endian = Endian.big, int offset = 0}) {
     if (offset < 0 || bytes.length - offset < 4) {
       throw ArgumentException.invalidOperationArguments(
         "Uint32.fromBytes",
         reason: 'Need at least 4 bytes from offset.',
-        details: {
-          "offset": offset.toString(),
-          "length": bytes.length.toString(),
-        },
+        details: {"offset": offset.toString(), "length": bytes.length.toString()},
       );
     }
     int v;
@@ -162,8 +153,7 @@ class Uint32 implements Comparable<Uint32> {
 
   // ---- wrapping arithmetic operators ----
 
-  Uint32 operator +(Uint32 other) =>
-      Uint32._((_value + other._value) & _mask32);
+  Uint32 operator +(Uint32 other) => Uint32._((_value + other._value) & _mask32);
 
   Uint32 operator -(Uint32 other) {
     var v = _value - other._value;
@@ -180,8 +170,7 @@ class Uint32 implements Comparable<Uint32> {
     final aLo = a & _mask16, aHi = (a >>> 16) & _mask16;
     final bLo = b & _mask16, bHi = (b >>> 16) & _mask16;
     final lo = aLo * bLo; // < 2^32, safe
-    final cross =
-        (aLo * bHi + aHi * bLo) & _mask16; // terms < 2^32, sum < 2^33, safe
+    final cross = (aLo * bHi + aHi * bLo) & _mask16; // terms < 2^32, sum < 2^33, safe
     final result = (lo + (cross << 16)) & _mask32; // both terms < 2^32, safe
     return Uint32._(result);
   }
@@ -229,8 +218,7 @@ class Uint32 implements Comparable<Uint32> {
 
   Uint32 operator |(Uint32 other) => Uint32._(_value | other._value);
 
-  Uint32 operator ^(Uint32 other) =>
-      Uint32._((_value ^ other._value) & _mask32);
+  Uint32 operator ^(Uint32 other) => Uint32._((_value ^ other._value) & _mask32);
 
   Uint32 operator ~() => Uint32._(_mask32 - _value);
 

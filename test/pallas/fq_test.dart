@@ -5,7 +5,7 @@ import 'package:blockchain_utils/crypto/crypto/zcrypto/pasta/point/core.dart';
 import 'package:blockchain_utils/crypto/crypto/zcrypto/pasta/point/pallas.dart';
 import 'package:blockchain_utils/crypto/crypto/zcrypto/pasta/point/vesta.dart';
 import 'package:blockchain_utils/crypto/crypto/zcrypto/pasta/utils/utils.dart';
-import 'package:blockchain_utils/numbers/src/u64.dart';
+import 'package:blockchain_utils/numbers/src/u64/u64.dart';
 import 'package:blockchain_utils/utils/utils.dart';
 import 'package:test/test.dart';
 
@@ -167,8 +167,7 @@ void _testSqrtRatioAndAlt() {
 
   // (false, sqrt(ROOT_OF_UNITY * num/div)), if num/div is nonsquare
   num = num * VestaFq.rootOfUnity;
-  expected =
-      VestaFq.twoInv * VestaFq.rootOfUnity * VestaFq.from(Uint64(5)).invert()!;
+  expected = VestaFq.twoInv * VestaFq.rootOfUnity * VestaFq.from(Uint64(5)).invert()!;
 
   result = VestaFq.sqrtRatio(num, div);
   isSquare = result.isSquare;

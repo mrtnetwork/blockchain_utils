@@ -1,5 +1,5 @@
 import 'package:blockchain_utils/blockchain_utils.dart';
-import 'package:blockchain_utils/numbers/src/u64.dart';
+import 'package:blockchain_utils/numbers/src/u64/u64.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -108,10 +108,7 @@ void _isoMapIdentity() {
   final e = (r * -VestaFq.one) + r;
   expect(e.isOnCurve(), true);
   expect(e.isIdentity(), true);
-  final p = PastaUtils.isoMap(
-    p: (e.x, e.y, e.z),
-    iso: PallasFPConst.isogenyConstants,
-  );
+  final p = PastaUtils.isoMap(p: (e.x, e.y, e.z), iso: PallasFPConst.isogenyConstants);
   final pallas = PallasPoint(x: p.$1, y: p.$2, z: p.$3);
   expect(pallas.isOnCurve(), true);
   expect(pallas.isIdentity(), true);
@@ -140,10 +137,7 @@ void _isoMap() {
       Uint64.parseHex("0x3af37975b0933125"),
     ]),
   );
-  final p = PastaUtils.isoMap(
-    p: (r.x, r.y, r.z),
-    iso: PallasFPConst.isogenyConstants,
-  );
+  final p = PastaUtils.isoMap(p: (r.x, r.y, r.z), iso: PallasFPConst.isogenyConstants);
   final point = PallasPoint(x: p.$1, y: p.$2, z: p.$3);
   expect(
     BytesUtils.toHexString(p.$1.toBytes().reversed.toList()),
@@ -240,10 +234,7 @@ void _testSqrtRatioAndAlt() {
 
   // (false, sqrt(rootOfUnity * num/div)), if num/div is nonsquare
   num = num * PallasFp.rootOfUnity;
-  expected =
-      PallasFp.twoInv *
-      PallasFp.rootOfUnity *
-      PallasFp.from(Uint64(5)).invert()!;
+  expected = PallasFp.twoInv * PallasFp.rootOfUnity * PallasFp.from(Uint64(5)).invert()!;
 
   result = PallasFp.sqrtRatio(num, div);
   isSquare = result.isSquare;

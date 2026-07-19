@@ -1,5 +1,5 @@
 import 'package:blockchain_utils/blockchain_utils.dart';
-import 'package:blockchain_utils/numbers/src/u64.dart';
+import 'package:blockchain_utils/numbers/src/u64/u64.dart';
 import 'package:test/expect.dart';
 import 'package:test/scaffolding.dart';
 
@@ -77,9 +77,7 @@ void _serializationConsistency() {
   ];
 
   final gen =
-      JubJubAffineNativePoint.fromBytes(
-        _fullGeneratorNative.toBytes(),
-      ).mulByCofactor();
+      JubJubAffineNativePoint.fromBytes(_fullGeneratorNative.toBytes()).mulByCofactor();
   var p = gen;
   for (int i = 0; i < v.length; i++) {
     final pBytes = BytesUtils.fromHexString(v[i]);
@@ -298,9 +296,7 @@ void _findEightTorsion() {
   }
 }
 
-final _fullGeneratorNative = JubJubAffineNativePoint.fromBytes(
-  _fullGenerator.toBytes(),
-);
+final _fullGeneratorNative = JubJubAffineNativePoint.fromBytes(_fullGenerator.toBytes());
 final _fullGenerator = JubJubAffinePoint(
   u: JubJubFq.fromRaw([
     Uint64.parseHex("0xe4b3d35df1a7adfe"),
@@ -446,9 +442,7 @@ final _eightTorsion = <JubJubAffinePoint>[
 ];
 
 final _eightTorsionNative =
-    _eightTorsion
-        .map((e) => JubJubAffineNativePoint.fromBytes(e.toBytes()))
-        .toList();
+    _eightTorsion.map((e) => JubJubAffineNativePoint.fromBytes(e.toBytes())).toList();
 
 void _testBatchNormalize() {
   // Construct initial point
@@ -485,8 +479,7 @@ void _testBatchNormalize() {
   }
 
   // Expected affine form
-  final expected =
-      v.map((p) => JubJubAffineNativePoint.fromExtendedPoint(p)).toList();
+  final expected = v.map((p) => JubJubAffineNativePoint.fromExtendedPoint(p)).toList();
 
   // result0: using ExtendedPoint.batchNormalize
   final result0 = List.generate(
@@ -522,12 +515,8 @@ void _assoc() {
       ).mulByCofactor();
   expect(p.isOnCurve(), true);
 
-  final n =
-      (p * JubJubNativeFr(BigInt.from(1000))) *
-      JubJubNativeFr(BigInt.from(3938));
-  final n2 =
-      p *
-      (JubJubNativeFr(BigInt.from(1000)) * JubJubNativeFr(BigInt.from(3938)));
+  final n = (p * JubJubNativeFr(BigInt.from(1000))) * JubJubNativeFr(BigInt.from(3938));
+  final n2 = p * (JubJubNativeFr(BigInt.from(1000)) * JubJubNativeFr(BigInt.from(3938)));
   expect(n, n2);
   // expect(p*JubJubFr.from(BigInt.from(1000))*JubJubFr.from(BigInt.from(3938)),(p*JubJubFr.from(BigInt.from(1000))*JubJubFr.from(BigInt.from(3938)));
 }
@@ -541,10 +530,7 @@ void _extendedNielsPointIdentity() {
     JubJubNielsNativePoint.identity().vMinusU,
     JubJubNativePoint.identity().toNiels().vMinusU,
   );
-  expect(
-    JubJubNielsNativePoint.identity().z,
-    JubJubNativePoint.identity().toNiels().z,
-  );
+  expect(JubJubNielsNativePoint.identity().z, JubJubNativePoint.identity().toNiels().z);
   expect(
     JubJubNielsNativePoint.identity().t2d,
     JubJubNativePoint.identity().toNiels().t2d,

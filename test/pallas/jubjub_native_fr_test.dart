@@ -1,5 +1,5 @@
 import 'package:blockchain_utils/blockchain_utils.dart';
-import 'package:blockchain_utils/numbers/src/u64.dart';
+import 'package:blockchain_utils/numbers/src/u64/u64.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -96,9 +96,7 @@ void _subtraction() {
   tmp = JubJubNativeFr.zero();
   tmp -= largest;
 
-  JubJubNativeFr tmp2 = JubJubNativeFr.fromBytes(
-    JubJubFrConst.modulus.toBytes(),
-  );
+  JubJubNativeFr tmp2 = JubJubNativeFr.fromBytes(JubJubFrConst.modulus.toBytes());
   tmp2 -= largest;
 
   expect(tmp, tmp2);
@@ -107,10 +105,7 @@ void _subtraction() {
 void _negation() {
   JubJubNativeFr tmp = -largest;
 
-  expect(
-    tmp.toBytes(),
-    JubJubFr([1, 0, 0, 0].map((e) => Uint64(e)).toList()).toBytes(),
-  );
+  expect(tmp.toBytes(), JubJubFr([1, 0, 0, 0].map((e) => Uint64(e)).toList()).toBytes());
 
   tmp = -JubJubNativeFr.zero();
   expect(tmp, JubJubNativeFr.zero());

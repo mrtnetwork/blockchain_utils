@@ -7,7 +7,7 @@ import 'package:blockchain_utils/crypto/crypto/zcrypto/pasta/utils/utils.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
 import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/helper/extensions/extensions.dart';
-import 'package:blockchain_utils/numbers/src/u64.dart';
+import 'package:blockchain_utils/numbers/src/u64/u64.dart';
 
 class PallasPoint extends PastaPoint<VestaFq, PallasFp, PallasPoint> {
   const PallasPoint({required super.x, required super.y, required super.z});
@@ -98,11 +98,7 @@ class PallasPoint extends PastaPoint<VestaFq, PallasFp, PallasPoint> {
   );
 
   @override
-  PallasPoint from({
-    required PallasFp x,
-    required PallasFp y,
-    required PallasFp z,
-  }) {
+  PallasPoint from({required PallasFp x, required PallasFp y, required PallasFp z}) {
     return PallasPoint(x: x, y: y, z: z);
   }
 
@@ -143,13 +139,9 @@ class PallasPoint extends PastaPoint<VestaFq, PallasFp, PallasPoint> {
   }
 }
 
-class PallasAffinePoint
-    extends PastaAffinePoint<VestaFq, PallasFp, PallasPoint> {
+class PallasAffinePoint extends PastaAffinePoint<VestaFq, PallasFp, PallasPoint> {
   const PallasAffinePoint({required super.x, required super.y});
-  static const identity_ = PallasAffinePoint(
-    x: PallasFp.zero,
-    y: PallasFp.zero,
-  );
+  static const identity_ = PallasAffinePoint(x: PallasFp.zero, y: PallasFp.zero);
 
   static const generator_ = PallasAffinePoint(
     x: PallasFp.unsafe([
@@ -233,11 +225,7 @@ class PallasAffinePoint
   }
 
   @override
-  PallasPoint from({
-    required PallasFp x,
-    required PallasFp y,
-    required PallasFp z,
-  }) {
+  PallasPoint from({required PallasFp x, required PallasFp y, required PallasFp z}) {
     return PallasPoint(x: x, y: y, z: z);
   }
 

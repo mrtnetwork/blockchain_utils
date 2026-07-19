@@ -7,7 +7,7 @@ import 'package:blockchain_utils/crypto/crypto/zcrypto/pasta/fields/vesta_fq.dar
 import 'package:blockchain_utils/crypto/crypto/zcrypto/poseidon/src/exception.dart';
 import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/helper/helper.dart';
-import 'package:blockchain_utils/numbers/src/u64.dart';
+import 'package:blockchain_utils/numbers/src/u64/u64.dart';
 
 class MdsGenerateResult<F extends PastaFieldElement<F>> {
   final List<List<F>> mds;
@@ -445,8 +445,7 @@ class PoseidonUtils {
         if (value == null) {
           throw ArgumentException.invalidOperationArguments(
             "poseidonSponge",
-            reason:
-                "Invalid State: this operation is not permitted in the current mode",
+            reason: "Invalid State: this operation is not permitted in the current mode",
           );
         }
         state[i] = state[i] + value;
@@ -516,10 +515,7 @@ class PoseidonUtils {
     }
 
     // Compute inverse MDS
-    List<List<F>> mdsInv = List.generate(
-      t,
-      (_) => List.generate(t, (_) => zero),
-    );
+    List<List<F>> mdsInv = List.generate(t, (_) => List.generate(t, (_) => zero));
 
     F lagrange(List<F> arr, int j, F x) {
       final xj = arr[j];
@@ -542,16 +538,13 @@ class PoseidonUtils {
     for (int i = 0; i < t; i++) {
       for (int j = 0; j < t; j++) {
         mdsInv[i][j] =
-            (xs[j] - negYs[i]) *
-            lagrange(xs, j, negYs[i]) *
-            lagrange(negYs, i, xs[j]);
+            (xs[j] - negYs[i]) * lagrange(xs, j, negYs[i]) * lagrange(negYs, i, xs[j]);
       }
     }
     return MdsGenerateResult(mds: mds, mdsInv: mdsInv);
   }
 
-  static MdsGenerateResult<F>
-  generateConstants<F extends PastaFieldElement<F>>({
+  static MdsGenerateResult<F> generateConstants<F extends PastaFieldElement<F>>({
     required F Function(List<int> bytes) fromBytes,
     required F zero,
     required F one,
@@ -574,11 +567,7 @@ class PoseidonUtils {
       return List<F>.generate(width, (i) => grain.nextFieldElement());
     });
     final mds = generateMds<F>(grain, width, secureMds, one, zero);
-    return MdsGenerateResult(
-      mds: mds.mds,
-      mdsInv: mds.mdsInv,
-      constants: roundConstants,
-    );
+    return MdsGenerateResult(mds: mds.mds, mdsInv: mds.mdsInv, constants: roundConstants);
   }
 }
 
@@ -636,11 +625,9 @@ abstract class PoseidonSpec<F extends PastaFieldElement<F>> {
     int width = 3,
   }) {
     final mdsValid =
-        constants.mds.length == width &&
-        constants.mds.every((e) => e.length == 3);
+        constants.mds.length == width && constants.mds.every((e) => e.length == 3);
     final mdsInvValid =
-        constants.mdsInv.length == width &&
-        constants.mdsInv.every((e) => e.length == 3);
+        constants.mdsInv.length == width && constants.mdsInv.every((e) => e.length == 3);
     final constantsValid = constants.constants.length == constantLength;
     return mdsInvValid && mdsValid && constantsValid;
   }
@@ -673,16 +660,10 @@ class Sponge<F extends PastaFieldElement<F>> {
   SpongeMode<F> _mode;
   final PoseidonSpec<F> spec;
   int get rate => spec.rate();
-  Sponge._({
-    required this.spec,
-    required SpongeMode<F> mode,
-    required List<F> state,
-  }) : _mode = mode,
-       _state = state;
-  factory Sponge({
-    required F initialCapacityElement,
-    required PoseidonSpec<F> state,
-  }) {
+  Sponge._({required this.spec, required SpongeMode<F> mode, required List<F> state})
+    : _mode = mode,
+      _state = state;
+  factory Sponge({required F initialCapacityElement, required PoseidonSpec<F> state}) {
     final rate = state.rate();
     final F zero = state.zero();
     final constants = state.constants;

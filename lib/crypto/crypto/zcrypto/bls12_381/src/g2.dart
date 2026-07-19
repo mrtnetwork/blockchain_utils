@@ -7,7 +7,7 @@ import 'package:blockchain_utils/crypto/crypto/zcrypto/jubjub/fields/native.dart
 import 'package:blockchain_utils/crypto/crypto/exception/exception.dart';
 import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/helper/extensions/extensions.dart';
-import 'package:blockchain_utils/numbers/src/u64.dart';
+import 'package:blockchain_utils/numbers/src/u64/u64.dart';
 import 'package:blockchain_utils/utils/binary/utils.dart';
 import 'package:blockchain_utils/utils/compare/hash_code.dart';
 import 'package:blockchain_utils/utils/equatable/equatable.dart';
@@ -20,11 +20,7 @@ class G2Projective extends Bls12Point<G2Projective> {
   final Bls12Fp2 z;
   const G2Projective({required this.x, required this.y, required this.z});
 
-  factory G2Projective.conditionalSelect(
-    G2Projective a,
-    G2Projective b,
-    bool choice,
-  ) {
+  factory G2Projective.conditionalSelect(G2Projective a, G2Projective b, bool choice) {
     return G2Projective(
       x: Bls12Fp2.conditionalSelect(a.x, b.x, choice),
       y: Bls12Fp2.conditionalSelect(a.y, b.y, choice),
@@ -84,11 +80,7 @@ class G2Projective extends Bls12Point<G2Projective> {
     return G2Projective(
       x: affine.x,
       y: affine.y,
-      z: Bls12Fp2.conditionalSelect(
-        Bls12Fp2.one,
-        Bls12Fp2.zero,
-        affine.infinity,
-      ),
+      z: Bls12Fp2.conditionalSelect(Bls12Fp2.one, Bls12Fp2.zero, affine.infinity),
     );
   }
 
@@ -339,11 +331,7 @@ class G2Projective extends Bls12Point<G2Projective> {
     final x = this.x * zinv;
     final y = this.y * zinv;
     final tmp = G2AffinePoint(x: x, y: y, infinity: false);
-    return G2AffinePoint.conditionalSelect(
-      tmp,
-      G2AffinePoint.identity,
-      zinv.isZero(),
-    );
+    return G2AffinePoint.conditionalSelect(tmp, G2AffinePoint.identity, zinv.isZero());
   }
 
   @override
@@ -369,11 +357,7 @@ class G2AffinePoint extends Bls12AffinePoint<G2Projective> with Equality {
   final Bls12Fp2 x;
   final Bls12Fp2 y;
   final bool infinity;
-  const G2AffinePoint({
-    required this.x,
-    required this.y,
-    required this.infinity,
-  });
+  const G2AffinePoint({required this.x, required this.y, required this.infinity});
   factory G2AffinePoint._fromUncompressedBytes(List<int> bytes) {
     bytes = bytes.exc(
       length: 192,
@@ -515,11 +499,7 @@ class G2AffinePoint extends Bls12AffinePoint<G2Projective> with Equality {
     );
   }
 
-  factory G2AffinePoint.conditionalSelect(
-    G2AffinePoint a,
-    G2AffinePoint b,
-    bool choice,
-  ) {
+  factory G2AffinePoint.conditionalSelect(G2AffinePoint a, G2AffinePoint b, bool choice) {
     return G2AffinePoint(
       x: Bls12Fp2.conditionalSelect(a.x, b.x, choice),
       y: Bls12Fp2.conditionalSelect(a.y, b.y, choice),
@@ -580,11 +560,7 @@ class G2AffinePoint extends Bls12AffinePoint<G2Projective> with Equality {
     final x = p.x * zInv;
     final y = p.y * zInv;
     final tmp = G2AffinePoint(x: x, y: y, infinity: false);
-    return G2AffinePoint.conditionalSelect(
-      tmp,
-      G2AffinePoint.identity,
-      zInv.isZero(),
-    );
+    return G2AffinePoint.conditionalSelect(tmp, G2AffinePoint.identity, zInv.isZero());
   }
 
   @override
@@ -650,11 +626,7 @@ class G2AffinePoint extends Bls12AffinePoint<G2Projective> with Equality {
 
     // Set lexicographically largest Y flag (3rd MSB),
     // but only if not infinity
-    res[0] |= IntUtils.ctSelectInt(
-      0,
-      1 << 5,
-      (!infinity) & y.lexicographicallyLargest(),
-    );
+    res[0] |= IntUtils.ctSelectInt(0, 1 << 5, (!infinity) & y.lexicographicallyLargest());
 
     return res;
   }
@@ -729,11 +701,7 @@ class G2NativeProjective extends Bls12NativePoint<G2NativeProjective> {
   final Bls12NativeFp2 z;
   G2NativeProjective({required this.x, required this.y, required this.z});
 
-  G2NativeProjective copyWith({
-    Bls12NativeFp2? x,
-    Bls12NativeFp2? y,
-    Bls12NativeFp2? z,
-  }) {
+  G2NativeProjective copyWith({Bls12NativeFp2? x, Bls12NativeFp2? y, Bls12NativeFp2? z}) {
     return G2NativeProjective(x: x ?? this.x, y: y ?? this.y, z: z ?? this.z);
   }
 
@@ -805,9 +773,7 @@ class G2NativeProjective extends Bls12NativePoint<G2NativeProjective> {
 
   /// Creates a G2 point from bytes without checking curve or subgroup validity.
   factory G2NativeProjective.fromBytesUnchecked(List<int> bytes) {
-    return G2NativeProjective.fromAffine(
-      G2NativeAffinePoint.fromBytesUnchecked(bytes),
-    );
+    return G2NativeProjective.fromAffine(G2NativeAffinePoint.fromBytesUnchecked(bytes));
   }
 
   /// simple double-and-add implementation of point multiplication
@@ -1027,8 +993,7 @@ class G2NativeProjective extends Bls12NativePoint<G2NativeProjective> {
   /// Checks whether the point satisfies the BLS12-381 curve equation in projective form.
   bool isOnCurve() {
     // Y^2 * Z = X^3 + b * Z^3
-    return (y.square() * z) ==
-            (x.square() * x + z.square() * z * Bls12NativeFp2.b()) ||
+    return (y.square() * z) == (x.square() * x + z.square() * z * Bls12NativeFp2.b()) ||
         z.isZero();
   }
 
@@ -1068,11 +1033,7 @@ class G2NativeAffinePoint extends Bls12NativeAffinePoint<G2NativeProjective>
   final Bls12NativeFp2 x;
   final Bls12NativeFp2 y;
   final bool infinity;
-  G2NativeAffinePoint({
-    required this.x,
-    required this.y,
-    required this.infinity,
-  });
+  G2NativeAffinePoint({required this.x, required this.y, required this.infinity});
   factory G2NativeAffinePoint._fromUncompressedBytes(List<int> bytes) {
     bytes = bytes.exc(
       length: 192,
@@ -1343,11 +1304,7 @@ class G2NativeAffinePoint extends Bls12NativeAffinePoint<G2NativeProjective>
 
     // Set lexicographically largest Y flag (3rd MSB),
     // but only if not infinity
-    res[0] |= IntUtils.ctSelectInt(
-      0,
-      1 << 5,
-      (!infinity) & y.lexicographicallyLargest(),
-    );
+    res[0] |= IntUtils.ctSelectInt(0, 1 << 5, (!infinity) & y.lexicographicallyLargest());
 
     return res;
   }

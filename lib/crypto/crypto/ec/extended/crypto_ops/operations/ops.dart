@@ -6,7 +6,7 @@ import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/helper/extensions/extensions.dart';
 import 'package:blockchain_utils/numbers/src/i32.dart';
 import 'package:blockchain_utils/numbers/src/i64.dart';
-import 'package:blockchain_utils/numbers/src/u64.dart';
+import 'package:blockchain_utils/numbers/src/u64/u64.dart';
 import 'package:blockchain_utils/utils/binary/utils.dart';
 
 import '../const/const.dart';
@@ -911,16 +911,7 @@ class CryptoOps {
         f8g6_19 +
         f9g5_38;
     Int64 h5 =
-        f0g5 +
-        f1g4 +
-        f2g3 +
-        f3g2 +
-        f4g1 +
-        f5g0 +
-        f6g9_19 +
-        f7g8_19 +
-        f8g7_19 +
-        f9g6_19;
+        f0g5 + f1g4 + f2g3 + f3g2 + f4g1 + f5g0 + f6g9_19 + f7g8_19 + f8g7_19 + f9g6_19;
     Int64 h6 =
         f0g6 +
         f1g5_2 +
@@ -932,30 +923,10 @@ class CryptoOps {
         f7g9_38 +
         f8g8_19 +
         f9g7_38;
-    Int64 h7 =
-        f0g7 +
-        f1g6 +
-        f2g5 +
-        f3g4 +
-        f4g3 +
-        f5g2 +
-        f6g1 +
-        f7g0 +
-        f8g9_19 +
-        f9g8_19;
+    Int64 h7 = f0g7 + f1g6 + f2g5 + f3g4 + f4g3 + f5g2 + f6g1 + f7g0 + f8g9_19 + f9g8_19;
     Int64 h8 =
-        f0g8 +
-        f1g7_2 +
-        f2g6 +
-        f3g5_2 +
-        f4g4 +
-        f5g3_2 +
-        f6g2 +
-        f7g1_2 +
-        f8g0 +
-        f9g9_38;
-    Int64 h9 =
-        f0g9 + f1g8 + f2g7 + f3g6 + f4g5 + f5g4 + f6g3 + f7g2 + f8g1 + f9g0;
+        f0g8 + f1g7_2 + f2g6 + f3g5_2 + f4g4 + f5g3_2 + f6g2 + f7g1_2 + f8g0 + f9g9_38;
+    Int64 h9 = f0g9 + f1g8 + f2g7 + f3g6 + f4g5 + f5g4 + f6g3 + f7g2 + f8g1 + f9g0;
     Int64 carry0;
     Int64 carry1;
     Int64 carry2;
@@ -1207,11 +1178,7 @@ class CryptoOps {
     s[31] ^= (feIsnegative(x) << 7) & 0xFF;
   }
 
-  static void geSub(
-    GroupElementP1P1 r,
-    GroupElementP3 p,
-    GroupElementCached q,
-  ) {
+  static void geSub(GroupElementP1P1 r, GroupElementP3 p, GroupElementCached q) {
     final FieldElement t0 = FieldElement();
     feAdd(r.x, p.y, p.x);
     feSub(r.y, p.y, p.x);
@@ -1309,15 +1276,7 @@ class CryptoOps {
     s4 = (a0 * b4 + a1 * b3 + a2 * b2 + a3 * b1 + a4 * b0);
     s5 = (a0 * b5 + a1 * b4 + a2 * b3 + a3 * b2 + a4 * b1 + a5 * b0);
     s6 = (a0 * b6 + a1 * b5 + a2 * b4 + a3 * b3 + a4 * b2 + a5 * b1 + a6 * b0);
-    s7 =
-        (a0 * b7 +
-            a1 * b6 +
-            a2 * b5 +
-            a3 * b4 +
-            a4 * b3 +
-            a5 * b2 +
-            a6 * b1 +
-            a7 * b0);
+    s7 = (a0 * b7 + a1 * b6 + a2 * b5 + a3 * b4 + a4 * b3 + a5 * b2 + a6 * b1 + a7 * b0);
     s8 =
         (a0 * b8 +
             a1 * b7 +
@@ -1406,14 +1365,7 @@ class CryptoOps {
             a9 * b6 +
             a10 * b5 +
             a11 * b4);
-    s16 =
-        (a5 * b11 +
-            a6 * b10 +
-            a7 * b9 +
-            a8 * b8 +
-            a9 * b7 +
-            a10 * b6 +
-            a11 * b5);
+    s16 = (a5 * b11 + a6 * b10 + a7 * b9 + a8 * b8 + a9 * b7 + a10 * b6 + a11 * b5);
     s17 = (a6 * b11 + a7 * b10 + a8 * b9 + a9 * b8 + a10 * b7 + a11 * b6);
     s18 = (a7 * b11 + a8 * b10 + a9 * b9 + a10 * b8 + a11 * b7);
     s19 = (a8 * b11 + a9 * b10 + a10 * b9 + a11 * b8);
@@ -1876,19 +1828,10 @@ class CryptoOps {
     s3 = c3 + (a0 * b3 + a1 * b2 + a2 * b1 + a3 * b0);
     s4 = c4 + (a0 * b4 + a1 * b3 + a2 * b2 + a3 * b1 + a4 * b0);
     s5 = c5 + (a0 * b5 + a1 * b4 + a2 * b3 + a3 * b2 + a4 * b1 + a5 * b0);
-    s6 =
-        c6 +
-        (a0 * b6 + a1 * b5 + a2 * b4 + a3 * b3 + a4 * b2 + a5 * b1 + a6 * b0);
+    s6 = c6 + (a0 * b6 + a1 * b5 + a2 * b4 + a3 * b3 + a4 * b2 + a5 * b1 + a6 * b0);
     s7 =
         c7 +
-        (a0 * b7 +
-            a1 * b6 +
-            a2 * b5 +
-            a3 * b4 +
-            a4 * b3 +
-            a5 * b2 +
-            a6 * b1 +
-            a7 * b0);
+        (a0 * b7 + a1 * b6 + a2 * b5 + a3 * b4 + a4 * b3 + a5 * b2 + a6 * b1 + a7 * b0);
     s8 =
         c8 +
         (a0 * b8 +
@@ -1981,14 +1924,7 @@ class CryptoOps {
             a9 * b6 +
             a10 * b5 +
             a11 * b4);
-    s16 =
-        (a5 * b11 +
-            a6 * b10 +
-            a7 * b9 +
-            a8 * b8 +
-            a9 * b7 +
-            a10 * b6 +
-            a11 * b5);
+    s16 = (a5 * b11 + a6 * b10 + a7 * b9 + a8 * b8 + a9 * b7 + a10 * b6 + a11 * b5);
     s17 = (a6 * b11 + a7 * b10 + a8 * b9 + a9 * b8 + a10 * b7 + a11 * b6);
     s18 = (a7 * b11 + a8 * b10 + a9 * b9 + a10 * b8 + a11 * b7);
     s19 = (a8 * b11 + a9 * b10 + a10 * b9 + a11 * b8);
@@ -2416,11 +2352,7 @@ class CryptoOps {
     }
   }
 
-  static void geMsub(
-    GroupElementP1P1 r,
-    GroupElementP3 p,
-    GroupElementPrecomp q,
-  ) {
+  static void geMsub(GroupElementP1P1 r, GroupElementP3 p, GroupElementPrecomp q) {
     final FieldElement t0 = FieldElement();
     feAdd(r.x, p.y, p.x);
     feSub(r.y, p.y, p.x);
@@ -3019,11 +2951,7 @@ class CryptoOps {
     s[31] ^= feIsnegative(x) << 7;
   }
 
-  static void geAdd(
-    GroupElementP1P1 r,
-    GroupElementP3 p,
-    GroupElementCached q,
-  ) {
+  static void geAdd(GroupElementP1P1 r, GroupElementP3 p, GroupElementCached q) {
     final FieldElement t0 = FieldElement();
     feAdd(r.x, p.y, p.x);
     feSub(r.y, p.y, p.x);
@@ -3074,11 +3002,7 @@ class CryptoOps {
     fe0(h.t);
   }
 
-  static void geMadd(
-    GroupElementP1P1 r,
-    GroupElementP3 p,
-    GroupElementPrecomp q,
-  ) {
+  static void geMadd(GroupElementP1P1 r, GroupElementP3 p, GroupElementPrecomp q) {
     final FieldElement t0 = FieldElement();
     feAdd(r.x, p.y, p.x);
     feSub(r.y, p.y, p.x);
@@ -3104,11 +3028,7 @@ class CryptoOps {
     feCopy(r.z, p.z);
   }
 
-  static void gePrecompCmov(
-    GroupElementPrecomp t,
-    GroupElementPrecomp u,
-    int b,
-  ) {
+  static void gePrecompCmov(GroupElementPrecomp t, GroupElementPrecomp u, int b) {
     feCmov(t.yplusx, u.yplusx, b);
     feCmov(t.yminusx, u.yminusx, b);
     feCmov(t.xy2d, u.xy2d, b);
@@ -3412,19 +3332,10 @@ class CryptoOps {
     s3 = c3 - (a0 * b3 + a1 * b2 + a2 * b1 + a3 * b0);
     s4 = c4 - (a0 * b4 + a1 * b3 + a2 * b2 + a3 * b1 + a4 * b0);
     s5 = c5 - (a0 * b5 + a1 * b4 + a2 * b3 + a3 * b2 + a4 * b1 + a5 * b0);
-    s6 =
-        c6 -
-        (a0 * b6 + a1 * b5 + a2 * b4 + a3 * b3 + a4 * b2 + a5 * b1 + a6 * b0);
+    s6 = c6 - (a0 * b6 + a1 * b5 + a2 * b4 + a3 * b3 + a4 * b2 + a5 * b1 + a6 * b0);
     s7 =
         c7 -
-        (a0 * b7 +
-            a1 * b6 +
-            a2 * b5 +
-            a3 * b4 +
-            a4 * b3 +
-            a5 * b2 +
-            a6 * b1 +
-            a7 * b0);
+        (a0 * b7 + a1 * b6 + a2 * b5 + a3 * b4 + a4 * b3 + a5 * b2 + a6 * b1 + a7 * b0);
     s8 =
         c8 -
         (a0 * b8 +
@@ -3517,14 +3428,7 @@ class CryptoOps {
             a9 * b6 +
             a10 * b5 +
             a11 * b4);
-    s16 =
-        -(a5 * b11 +
-            a6 * b10 +
-            a7 * b9 +
-            a8 * b8 +
-            a9 * b7 +
-            a10 * b6 +
-            a11 * b5);
+    s16 = -(a5 * b11 + a6 * b10 + a7 * b9 + a8 * b8 + a9 * b7 + a10 * b6 + a11 * b5);
     s17 = -(a6 * b11 + a7 * b10 + a8 * b9 + a9 * b8 + a10 * b7 + a11 * b6);
     s18 = -(a7 * b11 + a8 * b10 + a9 * b9 + a10 * b8 + a11 * b7);
     s19 = -(a8 * b11 + a9 * b10 + a10 * b9 + a11 * b8);
@@ -4992,8 +4896,7 @@ class CryptoOps {
     if (r == null) {
       throw CryptoException.failed(
         "geDoubleScalarMultPrecompPointVar",
-        reason:
-            "Both scalars are zero; result undefined without identity support.",
+        reason: "Both scalars are zero; result undefined without identity support.",
       );
     }
 
@@ -5070,8 +4973,7 @@ class CryptoOps {
     if (r == null) {
       throw CryptoException.failed(
         "geTripleScalarMultBasePointVar",
-        reason:
-            "Both scalars are zero; result undefined without identity support.",
+        reason: "Both scalars are zero; result undefined without identity support.",
       );
     }
 
@@ -5131,8 +5033,7 @@ class CryptoOps {
     if (r == null) {
       throw CryptoException.failed(
         "geDoubleScalarMultBasePointVar",
-        reason:
-            "All scalars are zero; result undefined without identity support.",
+        reason: "All scalars are zero; result undefined without identity support.",
       );
     }
 
@@ -5204,8 +5105,7 @@ class CryptoOps {
     if (r == null) {
       throw CryptoException.failed(
         "geTripleScalarMultPrecompPointVar",
-        reason:
-            "All scalars are zero; result undefined without identity support.",
+        reason: "All scalars are zero; result undefined without identity support.",
       );
     }
 

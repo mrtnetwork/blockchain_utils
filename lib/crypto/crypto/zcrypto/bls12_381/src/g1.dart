@@ -6,7 +6,7 @@ import 'package:blockchain_utils/crypto/crypto/zcrypto/jubjub/fields/native.dart
 import 'package:blockchain_utils/crypto/crypto/exception/exception.dart';
 import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/helper/extensions/extensions.dart';
-import 'package:blockchain_utils/numbers/src/u64.dart';
+import 'package:blockchain_utils/numbers/src/u64/u64.dart';
 import 'package:blockchain_utils/utils/binary/utils.dart';
 import 'package:blockchain_utils/utils/compare/hash_code.dart';
 import 'package:blockchain_utils/utils/equatable/equatable.dart';
@@ -21,11 +21,7 @@ class G1Projective extends Bls12Point<G1Projective> {
   G1Projective copyWith({Bls12Fp? x, Bls12Fp? y, Bls12Fp? z}) =>
       G1Projective(x: x ?? this.x, y: y ?? this.y, z: z ?? this.z);
 
-  factory G1Projective.conditionalSelect(
-    G1Projective a,
-    G1Projective b,
-    bool choice,
-  ) {
+  factory G1Projective.conditionalSelect(G1Projective a, G1Projective b, bool choice) {
     return G1Projective(
       x: Bls12Fp.conditionalSelect(a.x, b.x, choice),
       y: Bls12Fp.conditionalSelect(a.y, b.y, choice),
@@ -262,11 +258,7 @@ class G1Projective extends Bls12Point<G1Projective> {
     final x = this.x * zinv;
     final y = this.y * zinv;
     final tmp = G1AffinePoint(x: x, y: y, infinity: false);
-    return G1AffinePoint.conditionalSelect(
-      tmp,
-      G1AffinePoint.identity,
-      zinv.isZero(),
-    );
+    return G1AffinePoint.conditionalSelect(tmp, G1AffinePoint.identity, zinv.isZero());
   }
 
   @override
@@ -292,11 +284,7 @@ class G1AffinePoint extends Bls12AffinePoint<G1Projective> with Equality {
   final Bls12Fp x;
   final Bls12Fp y;
   final bool infinity;
-  const G1AffinePoint({
-    required this.x,
-    required this.y,
-    required this.infinity,
-  });
+  const G1AffinePoint({required this.x, required this.y, required this.infinity});
   factory G1AffinePoint._fromUncompressedBytes(List<int> bytes) {
     bytes = bytes.exc(
       length: 96,
@@ -337,8 +325,7 @@ class G1AffinePoint extends Bls12AffinePoint<G1Projective> with Equality {
     xBytes[0] &= 31;
     final x = Bls12Fp.fromBytes(xBytes);
 
-    final infinity =
-        infinityFlagSet & compressionFlagSet & (!sortFlagSet) & x.isZero();
+    final infinity = infinityFlagSet & compressionFlagSet & (!sortFlagSet) & x.isZero();
     if (infinity) return G1AffinePoint.identity;
     final l = ((x.square() * x) + Bls12Fp.b).sqrt();
     if (!l.isSquare) {
@@ -387,22 +374,14 @@ class G1AffinePoint extends Bls12AffinePoint<G1Projective> with Equality {
     );
   }
 
-  factory G1AffinePoint.conditionalSelect(
-    G1AffinePoint a,
-    G1AffinePoint b,
-    bool choice,
-  ) {
+  factory G1AffinePoint.conditionalSelect(G1AffinePoint a, G1AffinePoint b, bool choice) {
     return G1AffinePoint(
       x: Bls12Fp.conditionalSelect(a.x, b.x, choice),
       y: Bls12Fp.conditionalSelect(a.y, b.y, choice),
       infinity: IntUtils.ctSelectBool(a.infinity, b.infinity, choice),
     );
   }
-  static const identity = G1AffinePoint(
-    x: Bls12Fp.zero,
-    y: Bls12Fp.one,
-    infinity: true,
-  );
+  static const identity = G1AffinePoint(x: Bls12Fp.zero, y: Bls12Fp.one, infinity: true);
   static const G1AffinePoint generator = G1AffinePoint(
     x: Bls12Fp.unsafe([
       Uint64.unsafe(1555269520, 4250078230),
@@ -428,11 +407,7 @@ class G1AffinePoint extends Bls12AffinePoint<G1Projective> with Equality {
     final x = p.x * zInv;
     final y = p.y * zInv;
     final tmp = G1AffinePoint(x: x, y: y, infinity: false);
-    return G1AffinePoint.conditionalSelect(
-      tmp,
-      G1AffinePoint.identity,
-      zInv.isZero(),
-    );
+    return G1AffinePoint.conditionalSelect(tmp, G1AffinePoint.identity, zInv.isZero());
   }
 
   @override
@@ -540,11 +515,8 @@ class G1NativeProjective extends Bls12NativePoint<G1NativeProjective> {
   final Bls12NativeFp y;
   final Bls12NativeFp z;
   G1NativeProjective({required this.x, required this.y, required this.z});
-  G1NativeProjective copyWith({
-    Bls12NativeFp? x,
-    Bls12NativeFp? y,
-    Bls12NativeFp? z,
-  }) => G1NativeProjective(x: x ?? this.x, y: y ?? this.y, z: z ?? this.z);
+  G1NativeProjective copyWith({Bls12NativeFp? x, Bls12NativeFp? y, Bls12NativeFp? z}) =>
+      G1NativeProjective(x: x ?? this.x, y: y ?? this.y, z: z ?? this.z);
 
   factory G1NativeProjective.conditionalSelect(
     G1NativeProjective a,
@@ -596,9 +568,7 @@ class G1NativeProjective extends Bls12NativePoint<G1NativeProjective> {
 
   /// Creates a G1 point from bytes without checking curve or subgroup validity.
   factory G1NativeProjective.fromBytesUnchecked(List<int> bytes) {
-    return G1NativeProjective.fromAffine(
-      G1NativeAffinePoint.fromBytesUnchecked(bytes),
-    );
+    return G1NativeProjective.fromAffine(G1NativeAffinePoint.fromBytesUnchecked(bytes));
   }
 
   G1NativeProjective _multiply(List<int> by) {
@@ -745,11 +715,7 @@ class G1NativeProjective extends Bls12NativePoint<G1NativeProjective> {
         z3 = z3 * t4;
         z3 = z3 + t0;
         final tmp = G1NativeProjective(x: x3, y: y3, z: z3);
-        return G1NativeProjective.conditionalSelect(
-          tmp,
-          this,
-          rhs.isIdentity(),
-        );
+        return G1NativeProjective.conditionalSelect(tmp, this, rhs.isIdentity());
     }
 
     throw CryptoException.operationNotSupported;
@@ -775,8 +741,7 @@ class G1NativeProjective extends Bls12NativePoint<G1NativeProjective> {
   /// Checks whether the point satisfies the BLS12-381 curve equation in projective form.
   bool isOnCurve() {
     // Y^2 * Z = X^3 + b * Z^3
-    return (y.square() * z) ==
-            (x.square() * x + z.square() * z * Bls12NativeFp.b()) ||
+    return (y.square() * z) == (x.square() * x + z.square() * z * Bls12NativeFp.b()) ||
         z.isZero();
   }
 
@@ -816,11 +781,7 @@ class G1NativeAffinePoint extends Bls12NativeAffinePoint<G1NativeProjective>
   final Bls12NativeFp x;
   final Bls12NativeFp y;
   final bool infinity;
-  G1NativeAffinePoint({
-    required this.x,
-    required this.y,
-    required this.infinity,
-  });
+  G1NativeAffinePoint({required this.x, required this.y, required this.infinity});
   factory G1NativeAffinePoint._fromUncompressedBytes(List<int> bytes) {
     bytes = bytes.exc(
       length: 96,
@@ -861,8 +822,7 @@ class G1NativeAffinePoint extends Bls12NativeAffinePoint<G1NativeProjective>
     xBytes[0] &= 31;
     final x = Bls12NativeFp.fromBytes(xBytes);
 
-    final infinity =
-        infinityFlagSet & compressionFlagSet & (!sortFlagSet) & x.isZero();
+    final infinity = infinityFlagSet & compressionFlagSet & (!sortFlagSet) & x.isZero();
     if (infinity) return G1NativeAffinePoint.identity();
     final l = ((x.square() * x) + Bls12NativeFp.b()).sqrt();
     if (!l.isSquare) {
@@ -988,11 +948,7 @@ class G1NativeAffinePoint extends Bls12NativeAffinePoint<G1NativeProjective>
   }
 
   G1NativeAffinePoint _endomorphism() {
-    return G1NativeAffinePoint(
-      x: x * Bls12NativeFp.beta(),
-      y: y,
-      infinity: infinity,
-    );
+    return G1NativeAffinePoint(x: x * Bls12NativeFp.beta(), y: y, infinity: infinity);
   }
 
   /// Converts this affine point to its projective representation.
@@ -1013,11 +969,7 @@ class G1NativeAffinePoint extends Bls12NativeAffinePoint<G1NativeProjective>
 
   List<int> _toCompressed() {
     final res =
-        Bls12NativeFp.conditionalSelect(
-          x,
-          Bls12NativeFp.zero(),
-          infinity,
-        ).toBytes();
+        Bls12NativeFp.conditionalSelect(x, Bls12NativeFp.zero(), infinity).toBytes();
     res[0] |= 1 << 7;
     // Is this point at infinity? If so, set the second-most significant bit.
     res[0] |= IntUtils.ctSelectInt(0, 1 << 6, infinity);
@@ -1031,16 +983,8 @@ class G1NativeAffinePoint extends Bls12NativeAffinePoint<G1NativeProjective>
 
   List<int> _toUncompressed() {
     final res = [
-      ...Bls12NativeFp.conditionalSelect(
-        x,
-        Bls12NativeFp.zero(),
-        infinity,
-      ).toBytes(),
-      ...Bls12NativeFp.conditionalSelect(
-        y,
-        Bls12NativeFp.zero(),
-        infinity,
-      ).toBytes(),
+      ...Bls12NativeFp.conditionalSelect(x, Bls12NativeFp.zero(), infinity).toBytes(),
+      ...Bls12NativeFp.conditionalSelect(y, Bls12NativeFp.zero(), infinity).toBytes(),
     ];
     res[0] |= IntUtils.ctSelectInt(0, 1 << 6, infinity);
     return res;

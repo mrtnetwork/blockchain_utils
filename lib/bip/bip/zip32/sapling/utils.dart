@@ -4,7 +4,7 @@ import 'package:blockchain_utils/crypto/crypto/zcrypto/jubjub/point/core.dart';
 import 'package:blockchain_utils/crypto/crypto/zcrypto/jubjub/point/extended.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
 import 'package:blockchain_utils/helper/extensions/extensions.dart';
-import 'package:blockchain_utils/numbers/src/u64.dart';
+import 'package:blockchain_utils/numbers/src/u64/u64.dart';
 
 class SaplingKeyUtils {
   static const String saplingInternalPersonalization = "Zcash_SaplingInt";
@@ -31,10 +31,8 @@ class SaplingKeyUtils {
     return JubJubNativeFr.fromBytes(hash);
   }
 
-  static E? groupHash<
-    SCALAR extends JubJubScalar<SCALAR>,
-    E extends BaseJubJubPoint<SCALAR, E>
-  >({
+  static E?
+  groupHash<SCALAR extends JubJubScalar<SCALAR>, E extends BaseJubJubPoint<SCALAR, E>>({
     required List<int> tag,
     required List<int> personalization,
     required E Function(List<int> bytes) fromBytes,
@@ -216,8 +214,7 @@ class SaplingKeyUtils {
     ]),
   );
 
-  static JubJubAffineNativePoint
-  get spendAuthGeneratorNative => JubJubAffineNativePoint(
+  static JubJubAffineNativePoint get spendAuthGeneratorNative => JubJubAffineNativePoint(
     u: JubJubNativeFq.nP(
       BigInt.parse(
         "4139425550610461525665941076812662132363359224232624900223172373014329534291",
@@ -262,8 +259,7 @@ class SaplingKeyUtils {
     ]),
   );
 
-  static JubJubAffineNativePoint
-  get bindingGeneratorNative => JubJubAffineNativePoint(
+  static JubJubAffineNativePoint get bindingGeneratorNative => JubJubAffineNativePoint(
     u: JubJubNativeFq.nP(
       BigInt.parse(
         "47042227020334719030310671629496501061777616454137182971856918820250544653111",

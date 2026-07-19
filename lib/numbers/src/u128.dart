@@ -6,9 +6,9 @@ import 'package:blockchain_utils/numbers/src/exception/exception.dart';
 import 'i128.dart';
 import 'i32.dart';
 import 'i64.dart';
-import 'u256.dart';
+import 'u256/u256.dart';
 import 'u32.dart';
-import 'u64.dart';
+import 'u64/u64.dart';
 
 class Uint128 implements Comparable<Uint128> {
   final Uint64 _hi;
@@ -154,28 +154,17 @@ class Uint128 implements Comparable<Uint128> {
       throw ArgumentException.invalidOperationArguments(
         "Uint128.fromBytes",
         reason: 'Need at least 16 bytes from offset.',
-        details: {
-          "offset": offset.toString(),
-          "length": bytes.length.toString(),
-        },
+        details: {"offset": offset.toString(), "length": bytes.length.toString()},
       );
     }
 
     if (endian == Endian.big) {
       final hi = Uint64.fromBytes(bytes, endian: Endian.big, offset: offset);
-      final lo = Uint64.fromBytes(
-        bytes,
-        endian: Endian.big,
-        offset: offset + 8,
-      );
+      final lo = Uint64.fromBytes(bytes, endian: Endian.big, offset: offset + 8);
       return Uint128._(hi, lo);
     } else {
       final lo = Uint64.fromBytes(bytes, endian: Endian.little, offset: offset);
-      final hi = Uint64.fromBytes(
-        bytes,
-        endian: Endian.little,
-        offset: offset + 8,
-      );
+      final hi = Uint64.fromBytes(bytes, endian: Endian.little, offset: offset + 8);
       return Uint128._(hi, lo);
     }
   }
@@ -208,8 +197,7 @@ class Uint128 implements Comparable<Uint128> {
   /// same decomposition `Uint64.operator*` itself uses one level down.
   Uint128 operator *(Uint128 other) {
     final (mHi, mLo) = Uint64.widenMul(_lo, other._lo);
-    final cross =
-        (_hi * other._lo) + (_lo * other._hi); // both already mod 2^64
+    final cross = (_hi * other._lo) + (_lo * other._hi); // both already mod 2^64
     final hi = mHi + cross;
     return Uint128._(hi, mLo);
   }
@@ -275,14 +263,11 @@ class Uint128 implements Comparable<Uint128> {
 
   // ---- bitwise operators ----
 
-  Uint128 operator &(Uint128 other) =>
-      Uint128._(_hi & other._hi, _lo & other._lo);
+  Uint128 operator &(Uint128 other) => Uint128._(_hi & other._hi, _lo & other._lo);
 
-  Uint128 operator |(Uint128 other) =>
-      Uint128._(_hi | other._hi, _lo | other._lo);
+  Uint128 operator |(Uint128 other) => Uint128._(_hi | other._hi, _lo | other._lo);
 
-  Uint128 operator ^(Uint128 other) =>
-      Uint128._(_hi ^ other._hi, _lo ^ other._lo);
+  Uint128 operator ^(Uint128 other) => Uint128._(_hi ^ other._hi, _lo ^ other._lo);
 
   Uint128 operator ~() => Uint128._(~_hi, ~_lo);
 

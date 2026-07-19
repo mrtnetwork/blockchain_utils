@@ -1,5 +1,5 @@
 import 'package:blockchain_utils/crypto/crypto/zcrypto/jubjub/fields/field.dart';
-import 'package:blockchain_utils/numbers/src/u64.dart';
+import 'package:blockchain_utils/numbers/src/u64/u64.dart';
 
 class JubJubFrConst {
   static const int bits = 252;

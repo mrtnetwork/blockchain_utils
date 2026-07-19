@@ -7,7 +7,7 @@ import 'package:blockchain_utils/crypto/crypto/zcrypto/pasta/utils/utils.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
 import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/helper/helper.dart';
-import 'package:blockchain_utils/numbers/src/u64.dart';
+import 'package:blockchain_utils/numbers/src/u64/u64.dart';
 
 class VestaPoint extends PastaPoint<PallasFp, VestaFq, VestaPoint> {
   const VestaPoint({required super.x, required super.y, required super.z});
@@ -71,11 +71,7 @@ class VestaPoint extends PastaPoint<PallasFp, VestaFq, VestaPoint> {
   factory VestaPoint.fromBytes(List<int> bytes) {
     return VestaAffinePoint.fromBytes(bytes).toCurve();
   }
-  static const identity_ = VestaPoint(
-    x: VestaFq.zero,
-    y: VestaFq.zero,
-    z: VestaFq.zero,
-  );
+  static const identity_ = VestaPoint(x: VestaFq.zero, y: VestaFq.zero, z: VestaFq.zero);
   static const generator_ = VestaPoint(
     x: VestaFq.unsafe([
       Uint64.unsafe(823897220, 4),
@@ -98,11 +94,7 @@ class VestaPoint extends PastaPoint<PallasFp, VestaFq, VestaPoint> {
     return generator_;
   }
   @override
-  VestaPoint from({
-    required VestaFq x,
-    required VestaFq y,
-    required VestaFq z,
-  }) {
+  VestaPoint from({required VestaFq x, required VestaFq y, required VestaFq z}) {
     return VestaPoint(x: x, y: y, z: z);
   }
 
@@ -230,11 +222,7 @@ class VestaAffinePoint extends PastaAffinePoint<PallasFp, VestaFq, VestaPoint> {
   }
 
   @override
-  VestaPoint from({
-    required VestaFq x,
-    required VestaFq y,
-    required VestaFq z,
-  }) {
+  VestaPoint from({required VestaFq x, required VestaFq y, required VestaFq z}) {
     return VestaPoint(x: x, y: y, z: z);
   }
 

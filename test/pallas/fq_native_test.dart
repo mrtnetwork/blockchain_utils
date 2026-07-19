@@ -1,5 +1,5 @@
 import 'package:blockchain_utils/blockchain_utils.dart';
-import 'package:blockchain_utils/numbers/src/u64.dart';
+import 'package:blockchain_utils/numbers/src/u64/u64.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -138,8 +138,7 @@ void _testSqrtRatioAndAlt() {
   var num = VestaNativeFq.twoInv().square();
   var div = VestaNativeFq(BigInt.from(25));
   var divInverse = div.invert();
-  var expected =
-      VestaNativeFq.twoInv() * VestaNativeFq(BigInt.from(5)).invert()!;
+  var expected = VestaNativeFq.twoInv() * VestaNativeFq(BigInt.from(5)).invert()!;
 
   var result = VestaNativeFq.sqrtRatio(num, div);
   var isSquare = result.isSquare;

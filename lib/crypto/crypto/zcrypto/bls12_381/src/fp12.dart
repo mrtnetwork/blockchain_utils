@@ -1,7 +1,7 @@
 import 'package:blockchain_utils/crypto/crypto/zcrypto/bls12_381/src/fp.dart';
 import 'package:blockchain_utils/crypto/crypto/zcrypto/bls12_381/src/fp2.dart';
 import 'package:blockchain_utils/crypto/crypto/zcrypto/bls12_381/src/fp6.dart';
-import 'package:blockchain_utils/numbers/src/u64.dart';
+import 'package:blockchain_utils/numbers/src/u64/u64.dart';
 import 'package:blockchain_utils/utils/equatable/equatable.dart';
 
 /// Quadratic extension field GF(p¹²) over GF(p⁶), represented as c0 + c1·w with w² = v.
@@ -78,11 +78,9 @@ class Bls12Fp12 with Equality {
   }
 
   /// Operations
-  Bls12Fp12 operator +(Bls12Fp12 rhs) =>
-      Bls12Fp12(c0: c0 + rhs.c0, c1: c1 + rhs.c1);
+  Bls12Fp12 operator +(Bls12Fp12 rhs) => Bls12Fp12(c0: c0 + rhs.c0, c1: c1 + rhs.c1);
 
-  Bls12Fp12 operator -(Bls12Fp12 rhs) =>
-      Bls12Fp12(c0: c0 - rhs.c0, c1: c1 - rhs.c1);
+  Bls12Fp12 operator -(Bls12Fp12 rhs) => Bls12Fp12(c0: c0 - rhs.c0, c1: c1 - rhs.c1);
 
   Bls12Fp12 operator -() => Bls12Fp12(c0: -c0, c1: -c1);
 
@@ -154,11 +152,7 @@ class Bls12NativeFp12 with Equality {
 
   /// one element
   factory Bls12NativeFp12.one() => _one;
-  Bls12NativeFp12 mulBy014(
-    Bls12NativeFp2 c0,
-    Bls12NativeFp2 c1,
-    Bls12NativeFp2 c4,
-  ) {
+  Bls12NativeFp12 mulBy014(Bls12NativeFp2 c0, Bls12NativeFp2 c1, Bls12NativeFp2 c4) {
     // aa = this.c0 * (c0 + c1*u)
     final aa = this.c0.mulBy01(c0, c1);
 

@@ -1,5 +1,5 @@
 import 'package:blockchain_utils/blockchain_utils.dart';
-import 'package:blockchain_utils/numbers/src/u64.dart';
+import 'package:blockchain_utils/numbers/src/u64/u64.dart';
 import 'package:test/test.dart';
 import 'fp2_test.dart';
 import 'g1_native_test.dart';
@@ -40,11 +40,7 @@ void _testCommutativeScalarSubgroupMultiplication() {
   var g2P = G2NativeProjective.generator();
 
   // By reference. In subfunction to avoid unnecessary copies.
-  void byRef(
-    G2NativeAffinePoint g2A,
-    G2NativeProjective g2P,
-    JubJubNativeFq a,
-  ) {
+  void byRef(G2NativeAffinePoint g2A, G2NativeProjective g2P, JubJubNativeFq a) {
     expect(g2A * a, g2A * a);
     expect(g2P * a, g2P * a);
   }
@@ -52,20 +48,12 @@ void _testCommutativeScalarSubgroupMultiplication() {
   byRef(g2A, g2P, a);
 
   // Mixed
-  void groupRef(
-    G2NativeAffinePoint g2A,
-    G2NativeProjective g2P,
-    JubJubNativeFq a,
-  ) {
+  void groupRef(G2NativeAffinePoint g2A, G2NativeProjective g2P, JubJubNativeFq a) {
     expect(g2A * a, g2A * a);
     expect(g2P * a, g2P * a);
   }
 
-  void scalarRef(
-    G2NativeAffinePoint g2A,
-    G2NativeProjective g2P,
-    JubJubNativeFq a,
-  ) {
+  void scalarRef(G2NativeAffinePoint g2A, G2NativeProjective g2P, JubJubNativeFq a) {
     expect(g2A * a, g2A * a);
     expect(g2P * a, g2P * a);
   }
@@ -235,10 +223,7 @@ void _testClearCofactor() {
   var clearedPoint = point.clearCofactor();
 
   expect(clearedPoint.isOnCurve(), true);
-  expect(
-    G2NativeAffinePoint.fromProjective(clearedPoint).isTorsionFree(),
-    true,
-  );
+  expect(G2NativeAffinePoint.fromProjective(clearedPoint).isTorsionFree(), true);
 
   var generator = G2NativeProjective.generator();
   expect(generator.clearCofactor().isOnCurve(), true);
@@ -285,14 +270,8 @@ void _testClearCofactor() {
 
 void _testAffineNegationAndSubtraction() {
   final a = G2NativeAffinePoint.generator();
-  expect(
-    G2NativeProjective.fromAffine(a) + (-a),
-    G2NativeProjective.identity(),
-  );
-  expect(
-    G2NativeProjective.fromAffine(a) + (-a),
-    G2NativeProjective.fromAffine(a) - a,
-  );
+  expect(G2NativeProjective.fromAffine(a) + (-a), G2NativeProjective.identity());
+  expect(G2NativeProjective.fromAffine(a) + (-a), G2NativeProjective.fromAffine(a) - a);
 }
 
 void _testProjectiveScalarMultiplication() {
@@ -638,10 +617,7 @@ void _testProjectiveToAffine() {
 
   final c = G2NativeProjective(x: a.x * z, y: a.y * z, z: z);
 
-  expect(
-    G2NativeAffinePoint.fromProjective(c),
-    G2NativeAffinePoint.generator(),
-  );
+  expect(G2NativeAffinePoint.fromProjective(c), G2NativeAffinePoint.generator());
 }
 
 void _testAffinePointEquality() {

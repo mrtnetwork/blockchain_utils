@@ -1,7 +1,7 @@
 @TestOn("!vm")
 library;
 
-import 'package:blockchain_utils/numbers/src/word_math/word_math.dart';
+import 'package:blockchain_utils/numbers/src/u64/word_math/word_math.dart';
 import 'package:test/test.dart';
 
 void main() {

@@ -1,6 +1,6 @@
 import 'package:blockchain_utils/crypto/crypto/zcrypto/bls12_381/src/fp.dart';
 import 'package:blockchain_utils/crypto/crypto/zcrypto/bls12_381/src/fp2.dart';
-import 'package:blockchain_utils/numbers/src/u64.dart';
+import 'package:blockchain_utils/numbers/src/u64/u64.dart';
 import 'package:blockchain_utils/utils/equatable/equatable.dart';
 
 /// Cubic extension field GF(p⁶) over GF(p²), represented as c0 + c1·v + c2·v² with v³ = u + 1.
@@ -17,16 +17,8 @@ class Bls12Fp6 with Equality {
       c2: Bls12Fp2.conditionalSelect(a.c2, b.c2, choice),
     );
   }
-  static const zero = Bls12Fp6(
-    c0: Bls12Fp2.zero,
-    c1: Bls12Fp2.zero,
-    c2: Bls12Fp2.zero,
-  );
-  static const one = Bls12Fp6(
-    c0: Bls12Fp2.one,
-    c1: Bls12Fp2.zero,
-    c2: Bls12Fp2.zero,
-  );
+  static const zero = Bls12Fp6(c0: Bls12Fp2.zero, c1: Bls12Fp2.zero, c2: Bls12Fp2.zero);
+  static const one = Bls12Fp6(c0: Bls12Fp2.one, c1: Bls12Fp2.zero, c2: Bls12Fp2.zero);
 
   factory Bls12Fp6.fromFp(Bls12Fp f) =>
       Bls12Fp6(c0: Bls12Fp2.from(f), c1: Bls12Fp2.zero, c2: Bls12Fp2.zero);
@@ -47,15 +39,11 @@ class Bls12Fp6 with Equality {
   Bls12Fp6 operator *(Bls12Fp6 rhs) => mulInterleaved(rhs);
 
   /// Multiply by quadratic nonresidue v
-  Bls12Fp6 mulByNonresidue() =>
-      Bls12Fp6(c0: c2.mulByNonresidue(), c1: c0, c2: c1);
+  Bls12Fp6 mulByNonresidue() => Bls12Fp6(c0: c2.mulByNonresidue(), c1: c0, c2: c1);
 
   /// Multiply by Bls12Fp2 element only in position c1
-  Bls12Fp6 mulBy1(Bls12Fp2 rhsC1) => Bls12Fp6(
-    c0: (c2 * rhsC1).mulByNonresidue(),
-    c1: c0 * rhsC1,
-    c2: c1 * rhsC1,
-  );
+  Bls12Fp6 mulBy1(Bls12Fp2 rhsC1) =>
+      Bls12Fp6(c0: (c2 * rhsC1).mulByNonresidue(), c1: c0 * rhsC1, c2: c1 * rhsC1);
 
   /// Multiply by Bls12Fp2 elements in positions c0 and c1
   Bls12Fp6 mulBy01(Bls12Fp2 rhsC0, Bls12Fp2 rhsC1) {
@@ -223,11 +211,8 @@ class Bls12NativeFp6 with Equality {
     c1: Bls12NativeFp2.zero(),
     c2: Bls12NativeFp2.zero(),
   );
-  factory Bls12NativeFp6.fromFp2(Bls12NativeFp2 f) => Bls12NativeFp6(
-    c0: f,
-    c1: Bls12NativeFp2.zero(),
-    c2: Bls12NativeFp2.zero(),
-  );
+  factory Bls12NativeFp6.fromFp2(Bls12NativeFp2 f) =>
+      Bls12NativeFp6(c0: f, c1: Bls12NativeFp2.zero(), c2: Bls12NativeFp2.zero());
 
   /// check zero
   bool isZero() => c0.isZero() && c1.isZero() && c2.isZero();
@@ -248,11 +233,8 @@ class Bls12NativeFp6 with Equality {
       Bls12NativeFp6(c0: c2.mulByNonresidue(), c1: c0, c2: c1);
 
   /// Multiply by Bls12NativeFp2 element only in position c1
-  Bls12NativeFp6 mulBy1(Bls12NativeFp2 rhsC1) => Bls12NativeFp6(
-    c0: (c2 * rhsC1).mulByNonresidue(),
-    c1: c0 * rhsC1,
-    c2: c1 * rhsC1,
-  );
+  Bls12NativeFp6 mulBy1(Bls12NativeFp2 rhsC1) =>
+      Bls12NativeFp6(c0: (c2 * rhsC1).mulByNonresidue(), c1: c0 * rhsC1, c2: c1 * rhsC1);
 
   /// Multiply by Bls12NativeFp2 elements in positions c0 and c1
   Bls12NativeFp6 mulBy01(Bls12NativeFp2 rhsC0, Bls12NativeFp2 rhsC1) {

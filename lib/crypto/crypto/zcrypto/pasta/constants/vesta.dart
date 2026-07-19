@@ -1,6 +1,6 @@
 import 'package:blockchain_utils/crypto/crypto/zcrypto/pasta/fields/native/fq.dart';
 import 'package:blockchain_utils/crypto/crypto/zcrypto/pasta/fields/vesta_fq.dart';
-import 'package:blockchain_utils/numbers/src/u64.dart';
+import 'package:blockchain_utils/numbers/src/u64/u64.dart';
 
 class VestaFQConst {
   static const int S = 32;

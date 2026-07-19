@@ -6,11 +6,10 @@ import 'package:blockchain_utils/crypto/crypto/zcrypto/pasta/utils/utils.dart';
 import 'package:blockchain_utils/crypto/quick_crypto.dart';
 import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/helper/extensions/extensions.dart';
-import 'package:blockchain_utils/numbers/src/u64.dart';
+import 'package:blockchain_utils/numbers/src/u64/u64.dart';
 import 'package:blockchain_utils/utils/equatable/equatable.dart';
 
-class VestaFq extends PastaFieldElement<VestaFq>
-    with ConstantEquality<VestaFq> {
+class VestaFq extends PastaFieldElement<VestaFq> with ConstantEquality<VestaFq> {
   final List<Uint64> limbs;
   const VestaFq.unsafe(this.limbs);
   VestaFq(List<Uint64> limbs)
@@ -261,26 +260,10 @@ class VestaFq extends PastaFieldElement<VestaFq>
 
     // Constant-time check: tmp < modulus
     Uint64 borrow = Uint64.zero;
-    (_, borrow) = Uint64.sbb(
-      tmp.limbs[0],
-      VestaFQConst.modulus.limbs[0],
-      Uint64.zero,
-    );
-    (_, borrow) = Uint64.sbb(
-      tmp.limbs[1],
-      VestaFQConst.modulus.limbs[1],
-      borrow,
-    );
-    (_, borrow) = Uint64.sbb(
-      tmp.limbs[2],
-      VestaFQConst.modulus.limbs[2],
-      borrow,
-    );
-    (_, borrow) = Uint64.sbb(
-      tmp.limbs[3],
-      VestaFQConst.modulus.limbs[3],
-      borrow,
-    );
+    (_, borrow) = Uint64.sbb(tmp.limbs[0], VestaFQConst.modulus.limbs[0], Uint64.zero);
+    (_, borrow) = Uint64.sbb(tmp.limbs[1], VestaFQConst.modulus.limbs[1], borrow);
+    (_, borrow) = Uint64.sbb(tmp.limbs[2], VestaFQConst.modulus.limbs[2], borrow);
+    (_, borrow) = Uint64.sbb(tmp.limbs[3], VestaFQConst.modulus.limbs[3], borrow);
     bool isValid = borrow != Uint64.zero;
     if (!isValid) {
       throw ArgumentException.invalidOperationArguments(
@@ -384,11 +367,7 @@ class VestaFq extends PastaFieldElement<VestaFq>
     borrow = s3.$2;
 
     // Step 2: if underflow occurred, add modulus
-    var a0 = Uint64.adc(
-      d0,
-      VestaFQConst.modulus.limbs[0] & borrow,
-      Uint64.zero,
-    );
+    var a0 = Uint64.adc(d0, VestaFQConst.modulus.limbs[0] & borrow, Uint64.zero);
     d0 = a0.$1;
     var carry = a0.$2;
 

@@ -6,7 +6,7 @@
 
 import 'dart:math';
 import 'package:blockchain_utils/crypto/crypto/ec/projective/secp256k1/secp256k1.dart';
-import 'package:blockchain_utils/numbers/src/u64.dart';
+import 'package:blockchain_utils/numbers/src/u64/u64.dart';
 import 'package:test/test.dart';
 import 'tools.dart';
 
@@ -143,12 +143,9 @@ void _testFeMull(Secp256k1Fe a, Secp256k1Fe b, int useSqr) {
   Secp256k1.secp256k1FeGetB32(b32, bn);
   Secp256k1.secp256k1FeGetB32(c32, c);
   for (i = 0; i < 16; ++i) {
-    a16[i] = (a32[31 - 2 * i] + (a32[30 - 2 * i].toUnsigned(16) << 8))
-        .toUnsigned(16);
-    b16[i] = (b32[31 - 2 * i] + (b32[30 - 2 * i].toUnsigned(16) << 8))
-        .toUnsigned(16);
-    c16[i] = (c32[31 - 2 * i] + (c32[30 - 2 * i].toUnsigned(16) << 8))
-        .toUnsigned(16);
+    a16[i] = (a32[31 - 2 * i] + (a32[30 - 2 * i].toUnsigned(16) << 8)).toUnsigned(16);
+    b16[i] = (b32[31 - 2 * i] + (b32[30 - 2 * i].toUnsigned(16) << 8)).toUnsigned(16);
+    c16[i] = (c32[31 - 2 * i] + (c32[30 - 2 * i].toUnsigned(16) << 8)).toUnsigned(16);
   }
 
   // /* Compute T = A * B in LE 16x uint16_t format. */
@@ -269,18 +266,14 @@ void _testSqrt(Secp256k1Fe a, Secp256k1Fe? k) {
     Secp256k1.secp256k1FeNormalize(r1);
     Secp256k1.secp256k1FeNormalize(r2);
     expect(
-      Secp256k1.secp256k1FeIsZero(r1) == 1 ||
-          Secp256k1.secp256k1FeIsZero(r2) == 1,
+      Secp256k1.secp256k1FeIsZero(r1) == 1 || Secp256k1.secp256k1FeIsZero(r2) == 1,
       true,
     );
   }
 }
 
 void _sqrt() {
-  Secp256k1Fe ns = Secp256k1Fe(),
-      x = Secp256k1Fe(),
-      s = Secp256k1Fe(),
-      t = Secp256k1Fe();
+  Secp256k1Fe ns = Secp256k1Fe(), x = Secp256k1Fe(), s = Secp256k1Fe(), t = Secp256k1Fe();
   int i;
 
   /* Check sqrt(0) is 0 */

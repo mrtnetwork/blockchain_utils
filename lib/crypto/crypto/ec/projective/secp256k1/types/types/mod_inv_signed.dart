@@ -1,7 +1,7 @@
 import 'package:blockchain_utils/crypto/crypto/exception/exception.dart';
 import 'package:blockchain_utils/helper/extensions/extensions.dart';
 import 'package:blockchain_utils/numbers/src/i64.dart';
-import 'package:blockchain_utils/numbers/src/u64.dart';
+import 'package:blockchain_utils/numbers/src/u64/u64.dart';
 import 'package:blockchain_utils/utils/equatable/equatable.dart';
 
 abstract class BaseSecp256k1ModinvSigned extends Iterable<Int64> with Equality {
@@ -61,29 +61,19 @@ abstract class BaseSecp256k1ModinvInfo<B extends BaseSecp256k1ModinvSigned>
     with Equality {
   final B modulus;
   final Uint64 modulusInv;
-  const BaseSecp256k1ModinvInfo({
-    required this.modulus,
-    required this.modulusInv,
-  });
+  const BaseSecp256k1ModinvInfo({required this.modulus, required this.modulusInv});
 
   @override
   List<dynamic> get variables => [modulus, modulusInv];
 }
 
-class Secp256k1ModinvInfo
-    extends BaseSecp256k1ModinvInfo<Secp256k1ModinvSigned> {
-  const Secp256k1ModinvInfo({
-    required super.modulus,
-    required super.modulusInv,
-  });
+class Secp256k1ModinvInfo extends BaseSecp256k1ModinvInfo<Secp256k1ModinvSigned> {
+  const Secp256k1ModinvInfo({required super.modulus, required super.modulusInv});
 }
 
 class Secp256k1ModinvInfoConst
     extends BaseSecp256k1ModinvInfo<Secp256k1ModinvSignedConst> {
-  const Secp256k1ModinvInfoConst({
-    required super.modulus,
-    required super.modulusInv,
-  });
+  const Secp256k1ModinvInfoConst({required super.modulus, required super.modulusInv});
 
   Secp256k1ModinvInfo clone() =>
       Secp256k1ModinvInfo(modulus: modulus.clone(), modulusInv: modulusInv);

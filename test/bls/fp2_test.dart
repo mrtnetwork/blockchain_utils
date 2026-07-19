@@ -1,6 +1,6 @@
 import 'package:blockchain_utils/crypto/crypto/zcrypto/bls12_381/src/fp.dart';
 import 'package:blockchain_utils/crypto/crypto/zcrypto/bls12_381/src/fp2.dart';
-import 'package:blockchain_utils/numbers/src/u64.dart';
+import 'package:blockchain_utils/numbers/src/u64/u64.dart';
 import 'package:test/test.dart';
 
 import 'fp_test.dart';
@@ -616,6 +616,5 @@ void _testEquality() {
 }
 
 extension Bls12FpToNative on Bls12Fp2 {
-  Bls12NativeFp2 toNative() =>
-      Bls12NativeFp2(c0: c0.toNative(), c1: c1.toNative());
+  Bls12NativeFp2 toNative() => Bls12NativeFp2(c0: c0.toNative(), c1: c1.toNative());
 }

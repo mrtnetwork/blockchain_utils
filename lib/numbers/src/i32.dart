@@ -5,9 +5,9 @@ import 'package:blockchain_utils/numbers/src/exception/exception.dart';
 import 'package:blockchain_utils/numbers/src/i128.dart';
 import 'package:blockchain_utils/numbers/src/i64.dart';
 import 'package:blockchain_utils/numbers/src/u128.dart';
-import 'package:blockchain_utils/numbers/src/u256.dart';
+import 'package:blockchain_utils/numbers/src/u256/u256.dart';
 import 'package:blockchain_utils/numbers/src/u32.dart';
-import 'package:blockchain_utils/numbers/src/u64.dart';
+import 'package:blockchain_utils/numbers/src/u64/u64.dart';
 import 'package:blockchain_utils/utils/utils.dart';
 
 const int _signBit32 = 0x80000000;
@@ -30,8 +30,7 @@ class Int32 implements Comparable<Int32> {
 
   /// Raw bit-pattern constructor — [bits] must already be in
   /// `[0, 0xFFFFFFFF]`. Prefer [Int32.new] for arbitrary Dart ints.
-  const Int32.unsafe(this._bits)
-    : assert(_bits >= 0 && _bits <= BinaryOps.mask32);
+  const Int32.unsafe(this._bits) : assert(_bits >= 0 && _bits <= BinaryOps.mask32);
 
   /// Builds from a plain Dart [int] (positive or negative), truncating to
   /// 32 bits like a `wrapping` cast. [value] must itself be a normal,
@@ -39,19 +38,15 @@ class Int32 implements Comparable<Int32> {
   /// already come from a wider fixed-width type).
   factory Int32(int value) {
     if (value >= 0) return Int32._(value & BinaryOps.mask32);
-    var v =
-        value % 0x100000000; // Dart's % is non-negative for a positive divisor.
+    var v = value % 0x100000000; // Dart's % is non-negative for a positive divisor.
     return Int32._(v & BinaryOps.mask32);
   }
 
-  factory Int32.fromBigInt(BigInt value) =>
-      Int32._(value.toUnsigned(32).toInt());
+  factory Int32.fromBigInt(BigInt value) => Int32._(value.toUnsigned(32).toInt());
 
   static Int32 parseHex(String s) {
     final hex = (s.startsWith('0x') || s.startsWith('0X')) ? s.substring(2) : s;
-    if (hex.isEmpty ||
-        hex.length > 8 ||
-        !RegExp(r'^[0-9a-fA-F]+$').hasMatch(hex)) {
+    if (hex.isEmpty || hex.length > 8 || !RegExp(r'^[0-9a-fA-F]+$').hasMatch(hex)) {
       throw ArgumentException.invalidOperationArguments(
         "parseHex",
         reason: 'invalid hex literal.',
@@ -76,9 +71,7 @@ class Int32 implements Comparable<Int32> {
     // A valid i32 magnitude has at most 10 digits ("2147483648"); rejecting
     // longer strings up front means int.parse below never sees more digits
     // than that, so it stays exact on web.
-    if (digits.isEmpty ||
-        digits.length > 10 ||
-        !RegExp(r'^[0-9]+$').hasMatch(digits)) {
+    if (digits.isEmpty || digits.length > 10 || !RegExp(r'^[0-9]+$').hasMatch(digits)) {
       throw ArgumentException.invalidOperationArguments(
         "parseDecimal",
         reason: 'Invalid decimal literal.',
@@ -130,19 +123,12 @@ class Int32 implements Comparable<Int32> {
     return out;
   }
 
-  static Int32 fromBytes(
-    List<int> bytes, {
-    Endian endian = Endian.big,
-    int offset = 0,
-  }) {
+  static Int32 fromBytes(List<int> bytes, {Endian endian = Endian.big, int offset = 0}) {
     if (offset < 0 || bytes.length - offset < 4) {
       throw ArgumentException.invalidOperationArguments(
         "Int32.fromBytes",
         reason: 'Need at least 4 bytes from offset.',
-        details: {
-          "offset": offset.toString(),
-          "length": bytes.length.toString(),
-        },
+        details: {"offset": offset.toString(), "length": bytes.length.toString()},
       );
     }
     int v;
@@ -173,8 +159,7 @@ class Int32 implements Comparable<Int32> {
 
   // ---- wrapping arithmetic operators ----
 
-  Int32 operator +(Int32 other) =>
-      Int32._((_bits + other._bits) & BinaryOps.mask32);
+  Int32 operator +(Int32 other) => Int32._((_bits + other._bits) & BinaryOps.mask32);
 
   Int32 operator -(Int32 other) {
     var v = _bits - other._bits;
@@ -194,10 +179,8 @@ class Int32 implements Comparable<Int32> {
     final bLo = b & BinaryOps.mask16, bHi = (b >>> 16) & BinaryOps.mask16;
     final lo = aLo * bLo; // < 2^32, safe
     final cross =
-        (aLo * bHi + aHi * bLo) &
-        BinaryOps.mask16; // terms < 2^32, sum < 2^33, safe
-    final result =
-        (lo + (cross << 16)) & BinaryOps.mask32; // both terms < 2^32, safe
+        (aLo * bHi + aHi * bLo) & BinaryOps.mask16; // terms < 2^32, sum < 2^33, safe
+    final result = (lo + (cross << 16)) & BinaryOps.mask32; // both terms < 2^32, safe
     return Int32._(result);
   }
 
@@ -263,8 +246,7 @@ class Int32 implements Comparable<Int32> {
 
   Int32 operator |(Int32 other) => Int32._(_bits | other._bits);
 
-  Int32 operator ^(Int32 other) =>
-      Int32._((_bits ^ other._bits) & BinaryOps.mask32);
+  Int32 operator ^(Int32 other) => Int32._((_bits ^ other._bits) & BinaryOps.mask32);
 
   Int32 operator ~() => Int32._(BinaryOps.mask32 - _bits);
 

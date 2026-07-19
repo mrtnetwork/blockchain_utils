@@ -1,5 +1,5 @@
 import 'package:blockchain_utils/blockchain_utils.dart';
-import 'package:blockchain_utils/numbers/src/u64.dart';
+import 'package:blockchain_utils/numbers/src/u64/u64.dart';
 import 'package:test/expect.dart';
 import 'package:test/scaffolding.dart';
 
@@ -98,15 +98,11 @@ void _testMultiMillerLoop() {
 
   final a5 = G1NativeAffinePoint.fromProjective(
     G1NativeAffinePoint.generator() *
-        JubJubFq.fromRaw(
-          [323, 32, 3, 1].toBigInt(),
-        ).toNative().invert()!.square(),
+        JubJubFq.fromRaw([323, 32, 3, 1].toBigInt()).toNative().invert()!.square(),
   );
   final b5 = G2NativeAffinePoint.fromProjective(
     G2NativeAffinePoint.generator() *
-        JubJubFq.fromRaw(
-          [4, 2, 2, 9099].toBigInt(),
-        ).toNative().invert()!.square(),
+        JubJubFq.fromRaw([4, 2, 2, 9099].toBigInt()).toNative().invert()!.square(),
   );
 
   final b1Prepared = G2NativePrepared.fromG2(b1);
@@ -166,12 +162,8 @@ void _testBilinearity() {
   final c = a * b;
 
   // Group elements
-  final g = G1NativeAffinePoint.fromProjective(
-    G1NativeAffinePoint.generator() * a,
-  );
-  final h = G2NativeAffinePoint.fromProjective(
-    G2NativeAffinePoint.generator() * b,
-  );
+  final g = G1NativeAffinePoint.fromProjective(G1NativeAffinePoint.generator() * a);
+  final h = G2NativeAffinePoint.fromProjective(G2NativeAffinePoint.generator() * b);
 
   final p = Bls12PairingUtils.pairing(g, h);
 
@@ -184,10 +176,7 @@ void _testBilinearity() {
   );
 
   // Bilinearity checks
-  expect(
-    p,
-    Bls12PairingUtils.pairing(expected, G2NativeAffinePoint.generator()),
-  );
+  expect(p, Bls12PairingUtils.pairing(expected, G2NativeAffinePoint.generator()));
   expect(
     p,
     (Bls12PairingUtils.pairing(
