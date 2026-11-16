@@ -1,3 +1,30 @@
+## 8.0.0
+
+- BREAKING: dual backend architecture. Pure Dart is still the default, with an
+  optional zero-dependency Rust backend (FFI on native, WASM on web) behind one
+  typed API: `blockchainUtils.api.*` (`hash`, `signing`, `secp256k1`,
+  `secp256r1`, `ed25519`, `blockCipher`, `aed`, `streamCipher`,
+  `keyDerivation`, `muSig2`, `frost`, `dkls23`, `jubjub`, `pallas`, `vesta`,
+  `g1/g2`, `bn254G1/bn254G2`, `ristretto`, `x25519`, `monero`, `hw`,
+  `sapling`, `orchard`, `merkle`, `rng`, ...). `QuickCrypto` helpers now
+  delegate to the active backend.
+- Added `blockchain_utils_connector` dependency. Shared types (`BuBytes`,
+  `SecretBytes`, `BuHashApi`, `BuError`, `BuConfig`, Monero scan types, ...)
+  moved there; imports of internal paths may need updating.
+- Added `blockchainUtils.setRustApi()` (FFI `libraryPath` / WASM `wasmGlueUrl` +
+  `wasmModuleUrl`), `setDartApi()`, `setApi()`, and a one-way `seal()` latch
+  that blocks later backend swaps.
+- Added Rust-only Groth16 verification (BLS12-381 / BN254, e.g. Sui zkLogin) via
+  `blockchainUtils.groth16`. Throws `unsupported` on the pure-Dart backend
+  (no Dart pairing implementation).
+- Unified native capability gating via `Bu.backendInfo` / `BuBuildFeature`
+  (`groth16`, `zcashSapling`, `zcashOrchard`, `monero`, `hw`, `solanaZk`, ...).
+  Optional domains fail closed with `BuError`.
+- Hardware-wallet flow is API-driven (`HwApi`, `HwCatalog`,
+  `hwReadinessFor` / `isSupportedByHw`) with Rust `hw` message codecs
+  (APDU / Trezor / UR / PSBT). Status: simulation-tested only, not yet
+  verified with real devices.
+
 ## 7.1.0
 
 - Replaced `BigInt` with optimized `Uint64` arithmetic across CryptoOps, Secp256k1, JubJub, BLS12-381, and Pasta curves.
