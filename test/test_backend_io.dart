@@ -93,54 +93,74 @@ Future<String> ensureRustCrate({
   bool cloneIfMissing = false,
 }) async {
   final target = dir ?? rustCrateDir();
-  if (rustCrateExists(target)) return target;
-  if (!cloneIfMissing) {
-    final env = Platform.environment['BU_RUST_CRATE'];
-    throw StateError(
-      'Rust crate not found at $target. '
-      '${env == null ? 'Set BU_RUST_CRATE to a blockchain-utils checkout, or ' : ''}'
-      're-run with BU_BUILD=ffi to download $kOfficialRustRepo automatically.',
-    );
-  }
-  final d = Directory(target);
-  if (d.existsSync() && d.listSync().isNotEmpty) {
-    throw StateError(
-      'Rust crate directory $target exists but has no Cargo.toml. Remove '
-      'it, or set BU_RUST_CRATE to a blockchain-utils checkout, to allow '
-      'downloading $kOfficialRustRepo.',
-    );
-  }
-  await d.parent.create(recursive: true);
-  if (d.existsSync()) d.deleteSync(recursive: true);
-  final archive = File('${d.parent.path}/.blockchain-utils.tar.gz');
-  final stage = Directory('${d.parent.path}/.blockchain-utils-extract');
-  try {
-    await _downloadFile(
-      kOfficialRustTarball,
-      archive.path,
-    ).timeout(const Duration(minutes: 10), onTimeout: () {
-      throw StateError('Download timed out: $kOfficialRustTarball.');
-    });
-    if (stage.existsSync()) stage.deleteSync(recursive: true);
-    await stage.create(recursive: true);
-    await _run('tar', ['-xzf', archive.path, '-C', stage.path]);
-    final entries = stage.listSync();
-    if (entries.length != 1 || entries.single is! Directory) {
+  if (!rustCrateExists(target)) {
+    if (!cloneIfMissing) {
+      final env = Platform.environment['BU_RUST_CRATE'];
       throw StateError(
-        'Unexpected tarball layout in $kOfficialRustTarball.',
+        'Rust crate not found at $target. '
+        '${env == null ? 'Set BU_RUST_CRATE to a blockchain-utils checkout, or ' : ''}'
+        're-run with BU_BUILD=ffi to download $kOfficialRustRepo automatically.',
       );
     }
-    await (entries.single as Directory).rename(target);
-  } finally {
-    if (archive.existsSync()) archive.deleteSync();
-    if (stage.existsSync()) stage.deleteSync(recursive: true);
+    final d = Directory(target);
+    if (d.existsSync() && d.listSync().isNotEmpty) {
+      throw StateError(
+        'Rust crate directory $target exists but has no Cargo.toml. Remove '
+        'it, or set BU_RUST_CRATE to a blockchain-utils checkout, to allow '
+        'downloading $kOfficialRustRepo.',
+      );
+    }
+    await d.parent.create(recursive: true);
+    if (d.existsSync()) d.deleteSync(recursive: true);
+    final archive = File('${d.parent.path}/.blockchain-utils.tar.gz');
+    final stage = Directory('${d.parent.path}/.blockchain-utils-extract');
+    try {
+      await _downloadFile(
+        kOfficialRustTarball,
+        archive.path,
+      ).timeout(const Duration(minutes: 10), onTimeout: () {
+        throw StateError('Download timed out: $kOfficialRustTarball.');
+      });
+      if (stage.existsSync()) stage.deleteSync(recursive: true);
+      await stage.create(recursive: true);
+      await _run('tar', ['-xzf', archive.path, '-C', stage.path]);
+      final entries = stage.listSync();
+      if (entries.length != 1 || entries.single is! Directory) {
+        throw StateError(
+          'Unexpected tarball layout in $kOfficialRustTarball.',
+        );
+      }
+      await (entries.single as Directory).rename(target);
+    } finally {
+      if (archive.existsSync()) archive.deleteSync();
+      if (stage.existsSync()) stage.deleteSync(recursive: true);
+    }
+    if (!rustCrateExists(target)) {
+      throw StateError(
+        'Download succeeded but $target/Cargo.toml is still missing.',
+      );
+    }
   }
-  if (!rustCrateExists(target)) {
-    throw StateError(
-      'Download succeeded but $target/Cargo.toml is still missing.',
-    );
-  }
+  _detachWorkspace(target);
   return target;
+}
+
+/// Appends an empty `[workspace]` table to the crate manifest when it has
+/// none, so cargo never treats an ancestor `Cargo.toml` (e.g. a stray one at
+/// the Dart package root, or the repo root above a nested checkout) as this
+/// build's workspace root. This is exactly what cargo itself suggests
+/// (`add [workspace] to the package manifest`) and is a no-op for
+/// standalone builds; a manifest that already declares `[workspace...]` is
+/// left untouched.
+void _detachWorkspace(String crateDir) {
+  final manifest = File('$crateDir/Cargo.toml');
+  final text = manifest.readAsStringSync();
+  if (RegExp(r'^\s*\[workspace(\s|\])', multiLine: true).hasMatch(text)) {
+    return;
+  }
+  manifest.writeAsStringSync(
+    '${text.endsWith('\n') ? text : '$text\n'}\n[workspace]\n',
+  );
 }
 
 /// Cargo target dir honoring `CARGO_TARGET_DIR`, else `<crate>/target`.

@@ -1,5 +1,4 @@
 import 'package:blockchain_utils/blockchain_utils.dart';
-import 'package:blockchain_utils/log.dart';
 import 'package:test/expect.dart';
 import 'package:test/scaffolding.dart';
 
@@ -7,67 +6,65 @@ import '../../utils.dart';
 
 void unifiedSpendKeyTest() {
   test("ZCash UFVK/UFSK", () {
-    Logg.def(() {
-      final network = ZcashNetwork.mainnet;
-      final context = DefaultZCryptoContext();
-      final vector = _testVector.clone()..shuffle();
-      for (final t in vector.shuffleTake()) {
-        final test = _TestVector.fromJson(t);
-        final usk = UnifiedSpendingKey.fromSeed(
-          context: context,
-          seedBytes: test.rootSeed,
-          network: network,
-          accountIndex: Bip32KeyIndex.hardenIndex(test.account),
-        );
+    final network = ZcashNetwork.mainnet;
+    final context = DefaultZCryptoContext();
+    final vector = _testVector.clone()..shuffle();
+    for (final t in vector.shuffleTake()) {
+      final test = _TestVector.fromJson(t);
+      final usk = UnifiedSpendingKey.fromSeed(
+        context: context,
+        seedBytes: test.rootSeed,
+        network: network,
+        accountIndex: Bip32KeyIndex.hardenIndex(test.account),
+      );
 
-        final dIndex = DiversifierIndex.from(test.diversifierIndex);
+      final dIndex = DiversifierIndex.from(test.diversifierIndex);
 
-        final encodee = usk.encodeUnifiedSpeningKeyBytes();
-        final decode = UnifiedSpendingKey.fromUnifiedSpendKeyBytes(
-          uskBytes: encodee,
-          network: network,
+      final encodee = usk.encodeUnifiedSpeningKeyBytes();
+      final decode = UnifiedSpendingKey.fromUnifiedSpendKeyBytes(
+        uskBytes: encodee,
+        network: network,
+        context: context,
+      );
+      final ufvk = decode.toUnifiedFullViewingKey();
+      UnifiedDerivedAddress addr;
+      try {
+        addr = ufvk.address(
+          index: dIndex,
           context: context,
+          request: UnifiedAddressRequest(
+            orchard: test.orchardRawAddr != null,
+            sapling: test.saplingRawAddr != null,
+            transparent: test.p2pkhBytes != null || test.p2shBytes != null,
+            transparentAddressType:
+                test.p2pkhBytes == null
+                    ? TransparentAddressRequestType.p2sh
+                    : TransparentAddressRequestType.p2pkh,
+          ),
         );
-        final ufvk = decode.toUnifiedFullViewingKey();
-        UnifiedDerivedAddress addr;
-        try {
-          addr = ufvk.address(
-            index: dIndex,
-            context: context,
-            request: UnifiedAddressRequest(
-              orchard: test.orchardRawAddr != null,
-              sapling: test.saplingRawAddr != null,
-              transparent: test.p2pkhBytes != null || test.p2shBytes != null,
-              transparentAddressType:
-                  test.p2pkhBytes == null
-                      ? TransparentAddressRequestType.p2sh
-                      : TransparentAddressRequestType.p2pkh,
-            ),
-          );
-        } catch (e) {
-          continue;
-        }
-        // return;
-        final sapling = test.saplingRawAddr;
-        if (sapling != null) {
-          expect(sapling, addr.sapling?.data);
-        }
-        final p2pkh = test.p2pkhBytes;
-        if (p2pkh != null) {
-          expect(p2pkh, addr.transparent?.receiver.data);
-        }
-        final orchardRawAddr = test.orchardRawAddr;
-        if (orchardRawAddr != null) {
-          expect(orchardRawAddr, addr.orchard?.data);
-        }
-        final p2sh = test.p2shBytes;
-        if (p2sh != null) {
-          expect(p2sh, addr.transparent?.receiver.data);
-        }
-        if (test.unknownBytes != null) continue;
-        expect(addr.address, test.unifiedAddr);
+      } catch (e) {
+        continue;
       }
-    }, "rust");
+      // return;
+      final sapling = test.saplingRawAddr;
+      if (sapling != null) {
+        expect(sapling, addr.sapling?.data);
+      }
+      final p2pkh = test.p2pkhBytes;
+      if (p2pkh != null) {
+        expect(p2pkh, addr.transparent?.receiver.data);
+      }
+      final orchardRawAddr = test.orchardRawAddr;
+      if (orchardRawAddr != null) {
+        expect(orchardRawAddr, addr.orchard?.data);
+      }
+      final p2sh = test.p2shBytes;
+      if (p2sh != null) {
+        expect(p2sh, addr.transparent?.receiver.data);
+      }
+      if (test.unknownBytes != null) continue;
+      expect(addr.address, test.unifiedAddr);
+    }
   });
 
   /// 11965

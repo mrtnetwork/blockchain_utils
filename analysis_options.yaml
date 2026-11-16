@@ -8,6 +8,14 @@
 # The following line activates a set of recommended lints for Flutter apps,
 # packages, and plugins designed to encourage good coding practices.
 include: package:lints/recommended.yaml
+
+analyzer:
+  errors:
+    # The connector is consumed from git until it is published to pub.dev
+    # (see pubspec.yaml). Downgrade that single publish-time warning so it
+    # never fails `dart analyze` in CI; every other warning stays fatal.
+    invalid_dependency: ignore
+
 linter:
   # The lint rules applied to this project can be customized in the
   # section below to disable rules from the `package:flutter_lints/flutter.yaml`
