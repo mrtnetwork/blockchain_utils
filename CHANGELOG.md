@@ -6,7 +6,10 @@
   `secp256r1`, `ed25519`, `blockCipher`, `aed`, `streamCipher`,
   `keyDerivation`, `muSig2`, `frost`, `dkls23`, `jubjub`, `pallas`, `vesta`,
   `g1/g2`, `bn254G1/bn254G2`, `ristretto`, `x25519`, `monero`, `hw`,
-  `sapling`, `orchard`, `merkle`, `rng`, ...). `QuickCrypto` helpers now
+  `sapling`, `orchard`, `merkle`, `rng`, ...). When the Rust backend is set,
+  all high-level APIs route through Rust: `QuickCrypto`, key / curve /
+  signing implementations, ciphers, KDFs, digests, and protocol helpers
+  execute in Rust instead of Dart. `QuickCrypto` helpers now
   delegate to the active backend.
 - Added `blockchain_utils_connector` dependency. Shared types (`BuBytes`,
   `SecretBytes`, `BuHashApi`, `BuError`, `BuConfig`, Monero scan types, ...)
@@ -15,7 +18,9 @@
   `wasmModuleUrl`), `setDartApi()`, `setApi()`, and a one-way `seal()` latch
   that blocks later backend swaps.
 - Added Rust-only Groth16 verification (BLS12-381 / BN254, e.g. Sui zkLogin) via
-  `blockchainUtils.groth16`. Throws `unsupported` on the pure-Dart backend
+  `blockchainUtils.groth16`. Rust backend lives at
+  [mrtnetwork/blockchain-utils](https://github.com/mrtnetwork/blockchain-utils).
+  Throws `unsupported` on the pure-Dart backend
   (no Dart pairing implementation).
 - Unified native capability gating via `Bu.backendInfo` / `BuBuildFeature`
   (`groth16`, `zcashSapling`, `zcashOrchard`, `monero`, `hw`, `solanaZk`, ...).

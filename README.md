@@ -3,7 +3,7 @@
 Pure-Dart cryptography + blockchain toolkit with an optional Rust backend behind one typed API.
 
 - **Dual backend, one API:** pure Dart by default, Rust (`FFI` on VM, `WASM` in browser) for speed. Switch at runtime with `blockchainUtils.setRustApi()` / `setDartApi()`. All crypto goes through `blockchainUtils.api.*`.
-- **Zero-dependency Rust core:** `no_std`-compatible, constant-time primitives, built from `Cargo.toml` in this repo. Dart FFI and wasm-bindgen glue are generated from `blockchain_utils_connector` (`tool/build_backends.dart`).
+- **Zero-dependency Rust core:** `no_std`-compatible, constant-time primitives, maintained at [mrtnetwork/blockchain-utils](https://github.com/mrtnetwork/blockchain-utils). Dart FFI and wasm-bindgen glue are generated from `blockchain_utils_connector` (`tool/build_backends.dart`).
 - **Cross-platform:** iOS, Android, Web, Linux, Windows, macOS.
 - **No external crypto dependencies** in the Dart core.
 
@@ -11,7 +11,7 @@ Inspired in part by [bip_utils](https://github.com/ebellocchia/bip_utils), [pyth
 
 > Legacy docs/tests for the old pure-Dart-only releases live in git history and in
 > [mrtnetwork/blockchain_utils](https://github.com/mrtnetwork/blockchain_utils) before the dual-backend rewrite.
-> If you are migrating from `<=6.x`, read [Breaking changes](#breaking-changes) first.
+> If you are migrating from `<8.0.0`, read [Breaking changes](#breaking-changes) first.
 
 ## Quick start
 
@@ -66,7 +66,7 @@ Notes:
 
 - `blockchainUtils.backend` exposes the raw `Bu` instance (escape hatch; prefer `api.*`).
 - `blockchainUtils.groth16` is **Rust-only** (no pure-Dart pairing). It throws `BuError` on the Dart backend.
-- `QuickCrypto.generateRandom` can be routed through the backend RNG with `randomFromBackend: true` (default in `setRustApi`).
+- `QuickCrypto.generateRandom` can be routed through the backend RNG with `randomFromBackend: true` (default in `setRustApi`). When the Rust backend is set, all high-level APIs (`QuickCrypto`, keys, signing, ciphers, hashes, KDFs, protocol helpers) run through Rust.
 
 ## Breaking changes
 
