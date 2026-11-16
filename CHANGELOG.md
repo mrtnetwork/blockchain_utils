@@ -6,7 +6,7 @@
   `secp256r1`, `ed25519`, `blockCipher`, `aed`, `streamCipher`,
   `keyDerivation`, `muSig2`, `frost`, `dkls23`, `jubjub`, `pallas`, `vesta`,
   `g1/g2`, `bn254G1/bn254G2`, `ristretto`, `x25519`, `monero`, `hw`,
-  `sapling`, `orchard`, `merkle`, `rng`, ...). When the Rust backend is set,
+  `sapling`, `orchard`, `merkle`, `rng`, ..). When the Rust backend is set,
   all high-level APIs route through Rust: `QuickCrypto`, key / curve /
   signing implementations, ciphers, KDFs, digests, and protocol helpers
   execute in Rust instead of Dart. `QuickCrypto` helpers now

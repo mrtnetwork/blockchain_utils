@@ -129,7 +129,7 @@ class ChaCha20 implements BuStreamCipher {
   ///   (0 for no counter, 16 bytes if a counter is included in the nonce).
   ///
   /// Throws:
-  /// - [ArgumentException] if the destination is shorter than the source,
+  /// - [BuError] if the destination is shorter than the source,
   ///   or if the nonce length is invalid.
   @override
   BuBytes process(

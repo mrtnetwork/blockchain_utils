@@ -63,7 +63,12 @@ void main() {
         });
       });
 
-      group('native backends', () {
+      // Needs both implementations (Dart + native): skip on the pure-Dart
+      // backend instead of crashing on `blockchainUtils.backend!`.
+      group('native backends',
+          skip: blockchainUtils.hasNativeBackend
+              ? null
+              : 'native backend not active', () {
         test('secp256k1 native', () {
           final api = NativeSecp256k1CurveApi(
             blockchainUtils.backend!.curves.secp256k1(),

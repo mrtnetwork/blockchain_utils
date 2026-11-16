@@ -15,7 +15,7 @@ class Scrypt {
   late final int p;
 
   /// Creates a [Scrypt] instance with CPU/memory cost [n], block size [r],
-  /// and parallelization [p]. Throws [ArgumentException] if the parameters
+  /// and parallelization [p]. Throws [BuError] if the parameters
   /// are out of range or [n] isn't a power of 2.
   Scrypt(this.n, this.r, this.p) {
     if (p <= 0) {

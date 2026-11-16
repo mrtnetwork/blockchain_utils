@@ -3,9 +3,9 @@ import 'package:blockchain_utils/exception/exception/core_errors.dart';
 import 'package:blockchain_utils_connector/blockchain_utils_connector.dart';
 
 /// Shared argument checks for API validation wrappers.
-/// Throws [ArgumentException] on bad caller input.
+/// Throws [BuError] on bad caller input.
 abstract final class ApiValidate {
-  /// Requires [data] to be exactly [expected] bytes, throws [ArgumentException] otherwise.
+  /// Requires [data] to be exactly [expected] bytes, throws [BuError] otherwise.
   static void length(
     List<int> data,
     int expected, {
@@ -22,7 +22,7 @@ abstract final class ApiValidate {
     }
   }
 
-  /// Runs [run] for operation [op], rethrows [ArgumentException]/[CryptoException], wraps the rest in [CryptoException].
+  /// Runs [run] for operation [op], rethrows [BuError]/[CryptoException], wraps the rest in [CryptoException].
   static T call<T>(String op, T Function() run) {
     try {
       return run();
@@ -33,7 +33,7 @@ abstract final class ApiValidate {
     }
   }
 
-  /// Requires [data] length to be one of [allowed], throws [ArgumentException] otherwise.
+  /// Requires [data] length to be one of [allowed], throws [BuError] otherwise.
   static void oneOfLengths(
     List<int> data,
     List<int> allowed, {
@@ -50,7 +50,7 @@ abstract final class ApiValidate {
     }
   }
 
-  /// Requires [digestLength] to be non-negative and within [min]/[max], throws [ArgumentException] otherwise.
+  /// Requires [digestLength] to be non-negative and within [min]/[max], throws [BuError] otherwise.
   static void digestLength(
     int digestLength, {
     int? max,
@@ -72,7 +72,7 @@ abstract final class ApiValidate {
     // }
   }
 
-  /// Requires [data] to be non-empty, throws [ArgumentException] if empty.
+  /// Requires [data] to be non-empty, throws [BuError] if empty.
   static void nonEmpty(
     List<int> data, {
     required String operation,
@@ -87,7 +87,7 @@ abstract final class ApiValidate {
     }
   }
 
-  /// Requires ML-DSA [level] to be 44, 65, or 87, throws [ArgumentException] otherwise.
+  /// Requires ML-DSA [level] to be 44, 65, or 87, throws [BuError] otherwise.
   static void levelMlDsa(int level, String operation) {
     if (level != 44 && level != 65 && level != 87) {
       throw CoreErrors.invalidOperationArguments(

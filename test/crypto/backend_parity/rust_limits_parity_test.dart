@@ -111,22 +111,18 @@ void rustLimitsParityTest() {
     });
 
     group('hkdf', () {
-      for (final entry in {
-        'sha256': QuickCrypto.hkdfDeriveSha256,
-        'sha512': QuickCrypto.hkdfDeriveSha512,
-      }.entries) {
+      for (final entry
+          in {
+            'sha256': QuickCrypto.hkdfDeriveSha256,
+            'sha512': QuickCrypto.hkdfDeriveSha512,
+          }.entries) {
         for (final infoLen in [0, 10, 10 * 1024]) {
           test('${entry.key} info $infoLen B matches', () {
             final ikm = List<int>.filled(22, 0x0b);
             final salt = List<int>.generate(13, (i) => i);
             final info = bytes(infoLen);
             final expected = withDartBackend(
-              () => entry.value(
-                ikm: ikm,
-                length: 64,
-                salt: salt,
-                info: info,
-              ),
+              () => entry.value(ikm: ikm, length: 64, salt: salt, info: info),
             );
             final actual = entry.value(
               ikm: ikm,
@@ -178,23 +174,6 @@ void rustLimitsParityTest() {
   });
 }
 
-void main() async {
-  // Browser (L4-style): select the WASM backend. VM: cargo-build the FFI
-  // library when missing (same pattern as test/one_shot_test.dart).
-  if (!bool.fromEnvironment('dart.library.io')) {
-    // Page URL mirrors the test path (test/crypto/backend_parity/), so the
-    // glue must be addressed relative to test/wasm_assets/.
-    const config = BuTestConfig(
-      backend: BuTestBackend.wasm,
-      wasmGlueUrl: '../../wasm_assets/bu.js',
-    );
-    BlockchainUtilsTestApi.configure(config);
-    await BlockchainUtilsTestApi.initWasmBrowser(config);
-  } else {
-    await BlockchainUtilsTestApi.ensureBackend();
-  }
-  BlockchainUtilsTestApi.runTest(
-    rustLimitsParityTest,
-    'Rust limits parity',
-  );
+void main() {
+  BlockchainUtilsTestApi.runTest(rustLimitsParityTest, 'Rust limits parity');
 }

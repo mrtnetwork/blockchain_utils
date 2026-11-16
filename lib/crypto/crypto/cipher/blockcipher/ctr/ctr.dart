@@ -32,7 +32,7 @@ class CTR implements BuAesCtr {
   }
 
   /// Sets the cipher and (optionally) resets the counter to [iv].
-  /// Throws [ArgumentException] if [iv]'s length isn't the block size.
+  /// Throws [BuError] if [iv]'s length isn't the block size.
   CTR _setCipher(BuBlockCipher cipher, List<int>? iv) {
     _cipher = null;
 

@@ -25,7 +25,7 @@ class BitcoinSignerUtils {
   /// The tweak is applied to the negation of the secret key, and the result is adjusted based on
   /// the parity of the corresponding public key.
   ///
-  /// Throws [ArgumentException] if [secret] or [tapTweakHash] is not a
+  /// Throws [BuError] if [secret] or [tapTweakHash] is not a
   /// 32-byte array, and [CryptoSignException] if the tweaked key cannot
   /// be derived.
   static List<int> calculatePrivateTweak(
@@ -193,7 +193,8 @@ class BitcoinKeySigner
     int retries = 0;
     while (lengthR == 33) {
       if (retries++ >= maxDerRetryAttempts) {
-        throw BuError(DefaultErrorType.invalidLength,
+        throw BuError(
+          DefaultErrorType.invalidLength,
           "Cannot produce minimal-length DER signature.",
           details: {"retries": retries.toString()},
         );

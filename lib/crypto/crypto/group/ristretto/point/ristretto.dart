@@ -104,7 +104,7 @@ class RistrettoPoint extends ECPoint<Ed25519Fr, RistrettoPoint>
   }
 
   /// Decodes a RistrettoPoint from its compressed [bytes] encoding.
-  /// Throws [ArgumentException] if the encoding is invalid.
+  /// Throws [BuError] if the encoding is invalid.
   factory RistrettoPoint.fromBytes(List<int> bytes) {
     if (bytes.length != 32) {
       throw CoreErrors.invalidOperationArguments(

@@ -193,6 +193,46 @@ class BlockchainUtilsTestApi {
     _inited = true;
   }
 
+  /// Attaches the env-selected backend WITHOUT forcing a cargo build
+  /// (unlike [ensureBackend]): uses the FFI library when it is already
+  /// built, otherwise falls back to the pure-Dart backend.
+  ///
+  /// Parity suites are explicitly null-tolerant (Dart oracle vs whatever is
+  /// attached, plus direct-codec assertions), so a standalone run works with
+  /// zero build setup: without a `.so` it runs the Dart-only checks instead
+  /// of failing the whole file. Prints which mode runs.
+  static Future<void> ensureBackendIfBuilt([BuTestConfig? config]) async {
+    if (_inited) return;
+    final c = _resolve(config);
+    if (c.backend == BuTestBackend.wasm) {
+      throw UnsupportedError(
+        'wasm backend needs a browser: run '
+        '`dart test -p chrome test/...backend_parity...` '
+        '(or call BlockchainUtilsTestApi.initWasmBrowser on web).',
+      );
+    }
+    if (c.backend == BuTestBackend.ffi) {
+      String? path = c.ffiLibraryPath;
+      try {
+        path ??= backend_io.defaultFfiLibraryPath(profile: c.ffiProfile);
+        if (!backend_io.ffiLibraryExists(path)) path = null;
+      } on UnsupportedError {
+        path = c.ffiLibraryPath;
+      }
+      if (path != null) {
+        c.applyTo(blockchainUtils, resolvedFfiPath: path);
+      } else {
+        // ignore: avoid_print
+        print('[parity] no FFI library built; running Dart-only checks '
+            '(build with BU_BUILD=ffi for the native comparison)');
+        blockchainUtils.setDartApi();
+      }
+    } else {
+      c.applyTo(blockchainUtils);
+    }
+    _inited = true;
+  }
+
   /// Browser entry point: loads the WASM glue/module from [config] (defaults
   /// `wasm_assets/bu.js` + auto-located `bu_bg.wasm`, served by `dart test`
   /// from `test/wasm_assets/`) and selects the Rust backend. Web only.

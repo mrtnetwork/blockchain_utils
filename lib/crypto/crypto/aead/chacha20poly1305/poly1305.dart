@@ -19,7 +19,7 @@ class Poly1305 {
 
   /// Creates a Poly1305 instance keyed with the 32-byte [key].
   ///
-  /// Throws [ArgumentException] if [key] is not 32 bytes.
+  /// Throws [BuError] if [key] is not 32 bytes.
   Poly1305(List<int> key) {
     if (key.length != 32) {
       throw CoreErrors.invalidOperationArguments(

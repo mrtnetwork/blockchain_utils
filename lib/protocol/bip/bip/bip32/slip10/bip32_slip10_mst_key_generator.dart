@@ -67,7 +67,7 @@ class _Bip32Slip10MstKeyGenerator {
   /// containing private key bytes and chain code bytes.
   ///
   /// Throws:
-  /// - [ArgumentException]: If the seed length is not valid.
+  /// - [BuError]: If the seed length is not valid.
   ///
   static Bip32MasterKey generateFromSeed(
     List<int> seedBytes,
@@ -110,7 +110,7 @@ class Bip32Slip10Ed25519MstKeyGenerator implements IBip32MstKeyGenerator {
   /// containing private key bytes and chain code bytes.
   ///
   /// Throws:
-  /// - [ArgumentException]: If the seed length is not valid.
+  /// - [BuError]: If the seed length is not valid.
   ///
   @override
   Bip32MasterKey generateFromSeed(List<int> seedBytes) {
@@ -129,7 +129,7 @@ class Bip32Slip10Nist256p1MstKeyGenerator implements IBip32MstKeyGenerator {
   /// containing private key bytes and chain code bytes.
   ///
   /// Throws:
-  /// - [ArgumentException]: If the seed length is not valid.
+  /// - [BuError]: If the seed length is not valid.
   ///
   @override
   Bip32MasterKey generateFromSeed(List<int> seedBytes) {
@@ -148,7 +148,7 @@ class Bip32Slip10Secp256k1MstKeyGenerator extends IBip32MstKeyGenerator {
   /// containing private key bytes and chain code bytes.
   ///
   /// Throws:
-  /// - [ArgumentException]: If the seed length is not valid.
+  /// - [BuError]: If the seed length is not valid.
   ///
   @override
   Bip32MasterKey generateFromSeed(List<int> seedBytes) {

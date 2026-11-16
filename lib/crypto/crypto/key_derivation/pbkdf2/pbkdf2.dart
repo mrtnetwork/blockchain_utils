@@ -10,7 +10,7 @@ class PBKDF2 {
   /// Derives a [length]-byte key from [mac] (a keyed HMAC constructor)
   /// using [salt] over [iterations] rounds.
   ///
-  /// Throws [ArgumentException] if [length] is negative or [iterations]
+  /// Throws [BuError] if [length] is negative or [iterations]
   /// is less than 1.
   static BuBytes deriveKey({
     required CbHashFunc mac,

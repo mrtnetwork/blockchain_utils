@@ -67,7 +67,7 @@ class BytesUtils {
   /// Decodes a hex string (with an optional `0x` prefix) into bytes.
   ///
   /// [paddingZero] left-pads a zero when the string has odd length.
-  /// Throws [ArgumentException] on an invalid hex string.
+  /// Throws [BuError] on an invalid hex string.
   static BuBytes fromHexString(String hexStr, {bool paddingZero = false}) {
     try {
       String hexString = StringUtils.strip0x(hexStr);

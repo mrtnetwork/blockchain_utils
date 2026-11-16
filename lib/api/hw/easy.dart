@@ -35,13 +35,12 @@ extension EasyHwApiX on HwApi {
     return conf;
   }
 
-  /// Connector coin id for [coin], or throws [ArgumentException] when the
+  /// Connector coin id for [coin], or throws [BuError] when the
   /// coin has no HW flow (unknown SLIP44 / unsupported curve variant).
   int hwCoinIdFor(CryptoCoins coin) {
     final conf = _bipConf(coin, 'hwCoinIdFor');
-    final purpose = Bip32KeyIndex.unhardenIndex(
-      coin.proposal.purpose.index,
-    ).index;
+    final purpose =
+        Bip32KeyIndex.unhardenIndex(coin.proposal.purpose.index).index;
     final id = hwCoinIdForSlip44(
       slip44: conf.coinIdx,
       type: conf.type,
@@ -70,9 +69,8 @@ extension EasyHwApiX on HwApi {
   /// contains the account level, e.g. BTC `0'/0/0`, Tezos `0'/0'`).
   String defaultHwPath(CryptoCoins coin) {
     final conf = _bipConf(coin, 'defaultHwPath');
-    final purpose = Bip32KeyIndex.unhardenIndex(
-      coin.proposal.purpose.index,
-    ).index;
+    final purpose =
+        Bip32KeyIndex.unhardenIndex(coin.proposal.purpose.index).index;
     return "m/$purpose'/${conf.coinIdx}'/${conf.defPath}";
   }
 

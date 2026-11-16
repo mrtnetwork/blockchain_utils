@@ -16,7 +16,7 @@ class CardanoShelley {
   /// Parameters:
   /// - `bipObj`: The Cip1852 Bip44 object used to initialize the wallet.
   ///
-  /// Throws an `ArgumentException` if the provided Bip object is not a Cip1852 instance.
+  /// Throws an [BuError] if the provided Bip object is not a Cip1852 instance.
   factory CardanoShelley.fromCip1852Object(Cip1852 bip) {
     return CardanoShelley(bip, __deriveStakingKeys(bip));
   }
@@ -27,7 +27,7 @@ class CardanoShelley {
   /// - `bip`: The Bip44 Bip object for the wallet's address keys.
   /// - `bipSk`: The Bip44 Bip object for the wallet's staking keys.
   ///
-  /// Throws an `ArgumentException` if the provided Bip object is below the account level or if `bipSk` is not at the address index level.
+  /// Throws an [BuError] if the provided Bip object is below the account level or if `bipSk` is not at the address index level.
   factory CardanoShelley(Bip44Base bip, Bip44Base bipSk) {
     if (bip.level.value < Bip44Levels.account.value) {
       throw CoreErrors.invalidOperationArguments(

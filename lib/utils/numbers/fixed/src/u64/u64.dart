@@ -182,7 +182,7 @@ class Uint64 implements Comparable<Uint64> {
 
   /// Parses an 8-byte unsigned integer directly into hi/lo limbs
   ///
-  /// Throws [ArgumentException] if there are fewer than 8 bytes available starting
+  /// Throws [BuError] if there are fewer than 8 bytes available starting
   /// at [offset].
   static Uint64 fromBytes(
     List<int> bytes, {

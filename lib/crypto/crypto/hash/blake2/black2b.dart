@@ -331,7 +331,7 @@ class BLAKE2b implements SerializableHash<Blake2State> {
   /// - [config]: Optional configuration for BLAKE2b (e.g., key, salt, personalization).
   ///
   /// Throws:
-  /// - An [ArgumentException] if the provided [digestLength] is out of the valid range.
+  /// - An [BuError] if the provided [digestLength] is out of the valid range.
   BLAKE2b({int digestLength = 64, Blake2Config? config}) {
     if (digestLength < 1 || digestLength > _digestLength) {
       throw CoreErrors.invalidOperationArguments(

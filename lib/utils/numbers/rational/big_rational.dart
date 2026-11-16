@@ -69,7 +69,7 @@ class BigRational with Equality {
   /// double). Fractional values keep their exact binary value as
   /// numerator/denominator.
   ///
-  /// Throws [ArgumentException] for NaN and infinities.
+  /// Throws [BuError] for NaN and infinities.
   factory BigRational.fromDouble(double value) {
     if (value.isNaN || value.isInfinite) {
       throw CoreErrors.invalidOperationArguments(

@@ -68,19 +68,21 @@ void hashFf1ParityTest() {
       'xxh256': () => blockchainUtils.api.hash.xxHash(bitLength: 256),
       'shake128': () => blockchainUtils.api.hash.shake128(),
       'shake256': () => blockchainUtils.api.hash.shake256(),
-      'hmac-sha256': () =>
-          blockchainUtils.api.hash.hmacSha256(List<int>.filled(32, 0x0b)),
-      'hmac-sha384': () =>
-          blockchainUtils.api.hash.hmacSha384(List<int>.filled(32, 0x0b)),
-      'hmac-sha512': () =>
-          blockchainUtils.api.hash.hmacSha512(List<int>.filled(32, 0x0b)),
+      'hmac-sha256':
+          () => blockchainUtils.api.hash.hmacSha256(List<int>.filled(32, 0x0b)),
+      'hmac-sha384':
+          () => blockchainUtils.api.hash.hmacSha384(List<int>.filled(32, 0x0b)),
+      'hmac-sha512':
+          () => blockchainUtils.api.hash.hmacSha512(List<int>.filled(32, 0x0b)),
     };
 
     for (final entry in algos.entries) {
       for (final len in [0, 10, 10 * 1024]) {
         test('${entry.key} input $len B matches', () {
           final msg = bytes(len);
-          final expected = withDartBackend(() => digestOnce(entry.value(), msg));
+          final expected = withDartBackend(
+            () => digestOnce(entry.value(), msg),
+          );
           final actual = digestOnce(entry.value(), msg);
           expect(
             actual.toHex(),
@@ -93,8 +95,9 @@ void hashFf1ParityTest() {
 
     test('keccakF1600 matches', () {
       final state = bytes(200, 9);
-      final expected =
-          withDartBackend(() => QuickCrypto.keccakF1600(BuBytes.from(state)));
+      final expected = withDartBackend(
+        () => QuickCrypto.keccakF1600(BuBytes.from(state)),
+      );
       final actual = QuickCrypto.keccakF1600(BuBytes.from(state));
       expect(
         actual.toHex(),
@@ -116,48 +119,59 @@ void hashFf1ParityTest() {
       for (final radix in [10, 16]) {
         for (final len in [10, 19, 100]) {
           for (final tweakLen in [0, 3]) {
-            test('radix $radix len $len tweak $tweakLen B roundtrip matches',
-                () {
-              final key = List<int>.generate(16, (i) => (i * 11 + 2) & 0xff);
-              final pt = digits(len, radix);
-              final tweak = digits(tweakLen, 256, 9);
-              final dartCt = dartFf1.encrypt(
-                key: key,
-                radix: radix,
-                pt: pt,
-                tweak: tweak,
-              );
-              final native = tryNativeFf1();
-              if (native == null) {
-                // No native backend (pure-Dart run): lock the API wiring
-                // against the direct class instead.
-                final direct = FF1Flexible(radix: radix, aes: QuickCrypto.aesInstance(key))
-                    .encrypt(FlexibleNumeralString(pt), tweak: tweak);
-                expect(dartCt.toHex(), direct.digits.toHex());
-              } else {
-                final nativeCt = native
-                    .encrypt(key: key, radix: radix, pt: pt, tweak: tweak)
-                    .unwrapOrThrowCryptoError()
-                    .asBytes;
-                expect(
-                  nativeCt.toHex(),
-                  dartCt.toHex(),
-                  reason: 'ff1 radix=$radix len=$len must match Dart backend',
+            test(
+              'radix $radix len $len tweak $tweakLen B roundtrip matches',
+              () {
+                final key = List<int>.generate(16, (i) => (i * 11 + 2) & 0xff);
+                final pt = digits(len, radix);
+                final tweak = digits(tweakLen, 256, 9);
+                final dartCt = dartFf1.encrypt(
+                  key: key,
+                  radix: radix,
+                  pt: pt,
+                  tweak: tweak,
                 );
-                final nativePt = native
-                    .decrypt(key: key, radix: radix, ct: nativeCt, tweak: tweak)
-                    .unwrapOrThrowCryptoError()
-                    .asBytes;
-                expect(nativePt.toHex(), pt.toHex());
-              }
-              final dartPt = dartFf1.decrypt(
-                key: key,
-                radix: radix,
-                ct: dartCt,
-                tweak: tweak,
-              );
-              expect(dartPt.toHex(), pt.toHex());
-            });
+                final native = tryNativeFf1();
+                if (native == null) {
+                  // No native backend (pure-Dart run): lock the API wiring
+                  // against the direct class instead.
+                  final direct = FF1Flexible(
+                    radix: radix,
+                    aes: QuickCrypto.aesInstance(key),
+                  ).encrypt(FlexibleNumeralString(pt), tweak: tweak);
+                  expect(dartCt.toHex(), direct.digits.toHex());
+                } else {
+                  final nativeCt =
+                      native
+                          .encrypt(key: key, radix: radix, pt: pt, tweak: tweak)
+                          .unwrapOrThrowCryptoError()
+                          .asBytes;
+                  expect(
+                    nativeCt.toHex(),
+                    dartCt.toHex(),
+                    reason: 'ff1 radix=$radix len=$len must match Dart backend',
+                  );
+                  final nativePt =
+                      native
+                          .decrypt(
+                            key: key,
+                            radix: radix,
+                            ct: nativeCt,
+                            tweak: tweak,
+                          )
+                          .unwrapOrThrowCryptoError()
+                          .asBytes;
+                  expect(nativePt.toHex(), pt.toHex());
+                }
+                final dartPt = dartFf1.decrypt(
+                  key: key,
+                  radix: radix,
+                  ct: dartCt,
+                  tweak: tweak,
+                );
+                expect(dartPt.toHex(), pt.toHex());
+              },
+            );
           }
         }
       }
@@ -172,31 +186,37 @@ void hashFf1ParityTest() {
           test('bytes $len tweak $tweakLen B roundtrip matches', () {
             final key = List<int>.generate(16, (i) => (i * 11 + 2) & 0xff);
             final pt = List<int>.generate(
-                len, (i) => (((i * 13 + 5) & 0xff) | (i == 0 ? 0x80 : 0)));
+              len,
+              (i) => (((i * 13 + 5) & 0xff) | (i == 0 ? 0x80 : 0)),
+            );
             final tweak = digits(tweakLen, 256, 9);
-            final dartCt =
-                dartFf1.encryptBinary(key: key, pt: pt, tweak: tweak);
+            final dartCt = dartFf1.encryptBinary(
+              key: key,
+              pt: pt,
+              tweak: tweak,
+            );
             final native = tryNativeFf1();
             if (native == null) {
-              final direct = FF1Binary(aes: QuickCrypto.aesInstance(key)).encrypt(
-                BinaryNumeralString(pt),
-                tweak: tweak,
-              );
+              final direct = FF1Binary(
+                aes: QuickCrypto.aesInstance(key),
+              ).encrypt(BinaryNumeralString(pt), tweak: tweak);
               expect(dartCt.toHex(), direct.data.toHex());
             } else {
-              final nativeCt = native
-                  .encryptBinary(key: key, pt: pt, tweak: tweak)
-                  .unwrapOrThrowCryptoError()
-                  .asBytes;
+              final nativeCt =
+                  native
+                      .encryptBinary(key: key, pt: pt, tweak: tweak)
+                      .unwrapOrThrowCryptoError()
+                      .asBytes;
               expect(
                 nativeCt.toHex(),
                 dartCt.toHex(),
                 reason: 'ff1-binary len=$len must match Dart backend',
               );
-              final nativePt = native
-                  .decryptBinary(key: key, ct: nativeCt, tweak: tweak)
-                  .unwrapOrThrowCryptoError()
-                  .asBytes;
+              final nativePt =
+                  native
+                      .decryptBinary(key: key, ct: nativeCt, tweak: tweak)
+                      .unwrapOrThrowCryptoError()
+                      .asBytes;
               expect(nativePt.toHex(), pt.toHex());
             }
             final dartPt = dartFf1.decryptBinary(
@@ -212,17 +232,6 @@ void hashFf1ParityTest() {
   });
 }
 
-void main() async {
-  // Browser (L4-style): select the WASM backend. VM: cargo-build FFI as needed.
-  if (!bool.fromEnvironment('dart.library.io')) {
-    const config = BuTestConfig(
-      backend: BuTestBackend.wasm,
-      wasmGlueUrl: '../../wasm_assets/bu.js',
-    );
-    BlockchainUtilsTestApi.configure(config);
-    await BlockchainUtilsTestApi.initWasmBrowser(config);
-  } else {
-    await BlockchainUtilsTestApi.ensureBackend();
-  }
+void main() {
   BlockchainUtilsTestApi.runTest(hashFf1ParityTest, 'Hash+FF1 parity');
 }

@@ -307,7 +307,7 @@ class BigintUtils {
   /// Parses a dynamic value [number] into a BigInt.
   ///
   /// Throws:
-  /// - [ArgumentException] if the input value cannot be parsed into a BigInt.
+  /// - [BuError] if the input value cannot be parsed into a BigInt.
   ///
   static BigInt parse(dynamic number, {bool allowHex = true}) {
     if (number is BigInt) return number;
