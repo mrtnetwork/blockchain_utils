@@ -33,7 +33,7 @@ jobs:
         uses: dart-lang/setup-dart@v1
 
       - name: Install dependencies
-        run: dart pub get
+        run: dart pub get --no-example
 
       - name: Analyze
         run: dart analyze
@@ -69,7 +69,7 @@ jobs:
           workspaces: "rust-crate -> target"
 
       - name: Install dependencies
-        run: dart pub get
+        run: dart pub get --no-example
 
       - name: Analyze
         run: dart analyze
@@ -92,7 +92,7 @@ jobs:
         uses: dart-lang/setup-dart@v1
 
       - name: Install dependencies
-        run: dart pub get
+        run: dart pub get --no-example
 
       - name: Chrome wrapper (no-sandbox)
         run: |
@@ -146,7 +146,7 @@ jobs:
           cargo install wasm-bindgen-cli --version "$VER" --locked
 
       - name: Install dependencies
-        run: dart pub get
+        run: dart pub get --no-example
 
       - name: Build WASM assets into test/wasm_assets
         # --force: always rebuild from the checked-out sources (never trust
