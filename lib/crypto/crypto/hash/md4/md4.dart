@@ -14,7 +14,7 @@ class MD4 implements SerializableHash<SH1State> {
   /// Parameters:
   /// - [data]: The input data for which the MD4 hash is computed.
   ///
-  static List<int> hash(List<int> data) {
+  static BuBytes hash(List<int> data) {
     /// Create an MD4 hash object.
     final h = MD4();
 
@@ -41,6 +41,7 @@ class MD4 implements SerializableHash<SH1State> {
   final List<int> _currentChunk = List<int>.filled(16, 0);
 
   bool _finished = false;
+  bool _cleaned = false;
 
   final _iv = const [0x67452301, 0xefcdab89, 0x98badcfe, 0x10325476];
 
@@ -71,6 +72,7 @@ class MD4 implements SerializableHash<SH1State> {
     BinaryOps.zero(_currentChunk);
     _buffer.clear();
     reset();
+    _cleaned = true;
   }
 
   void _init() {
@@ -112,8 +114,8 @@ class MD4 implements SerializableHash<SH1State> {
 
   @override
   /// Computes the MD4 hash digest and returns it as a `List<int>`.
-  List<int> digest() {
-    final out = List<int>.filled(getDigestLength, 0);
+  BuBytes digest() {
+    final out = BuBytes.fill(getDigestLength, 0);
     finish(out);
     return out;
   }
@@ -123,7 +125,8 @@ class MD4 implements SerializableHash<SH1State> {
   /// Parameters:
   /// - [out]: The buffer where the hash digest will be stored.
   @override
-  Hash finish(List<int> out) {
+  MD4 finish(List<int> out) {
+    _ensureAlive("MD4.finish", _cleaned, null);
     if (!_finished) {
       _finalize();
       _iterate();
@@ -156,7 +159,8 @@ class MD4 implements SerializableHash<SH1State> {
   }
 
   @override
-  Hash reset() {
+  MD4 reset() {
+    _ensureAlive("MD4.reset", _cleaned, null);
     _init();
     _finished = false;
     _lengthInBytes = 0;
@@ -169,7 +173,8 @@ class MD4 implements SerializableHash<SH1State> {
   /// - [savedState]: The saved state to restore the hash computation from.
   ///
   @override
-  SerializableHash restoreState(SH1State savedState) {
+  MD4 restoreState(SH1State savedState) {
+    _ensureAlive("MD4.restoreState", _cleaned, null);
     _buffer.clear();
     _buffer.addAll(savedState.buffer);
     _state.setAll(0, savedState.state);
@@ -185,6 +190,7 @@ class MD4 implements SerializableHash<SH1State> {
   /// - A [SH1State] object containing the saved state of the hash computation.
   @override
   SH1State saveState() {
+    _ensureAlive("MD4.saveState", _cleaned, null);
     return SH1State(
       buffer: _buffer.clone(),
       length: _lengthInBytes,
@@ -198,10 +204,8 @@ class MD4 implements SerializableHash<SH1State> {
   /// - [data]: The input data to be included in the hash computation.
   ///
   @override
-  Hash update(List<int> data) {
-    if (_finished) {
-      throw CryptoException.failed("MD4.update", reason: "State was finished.");
-    }
+  MD4 update(List<int> data) {
+    _ensureAlive("MD4.update", _cleaned, _finished);
     _lengthInBytes += data.length;
     _buffer.addAll(data.asBytes);
     _iterate();

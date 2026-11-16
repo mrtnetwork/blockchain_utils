@@ -1,17 +1,19 @@
 import 'package:blockchain_utils/utils/equatable/equatable.dart';
 
+/// A half-open `[start, end)` range that is both comparable and iterable.
 abstract class ComparableRange<T> with Iterable<T>, Equality {
   final T start;
   final T end;
   const ComparableRange(this.start, this.end);
 }
 
+/// [ComparableRange] over Dart [int]s.
 class ComparableIntRange extends ComparableRange<int> {
   ComparableIntRange(super.start, super.end);
   @override
   bool contains(Object? element) {
     return switch (element) {
-      final int p => p >= start && p <= end,
+      final int p => p >= start && p < end,
       _ => false,
     };
   }
@@ -30,12 +32,13 @@ class ComparableIntRange extends ComparableRange<int> {
   }
 }
 
+/// [ComparableRange] over [BigInt]s.
 class ComparableBigIntRange extends ComparableRange<BigInt> {
   ComparableBigIntRange(super.start, super.end);
   @override
   bool contains(Object? element) {
     return switch (element) {
-      final BigInt p => p >= start && p <= end,
+      final BigInt p => p >= start && p < end,
       _ => false,
     };
   }

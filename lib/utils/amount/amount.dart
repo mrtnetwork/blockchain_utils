@@ -1,2 +1,1 @@
-export 'amount/amount.dart';
-export 'amount/exception.dart';
+export 'package:blockchain_utils/utils/amount/src/amount.dart';

@@ -24,7 +24,7 @@ class SHA224 extends SHA256 {
   }
 
   /// Computes the SHA224 hash of the provided data.
-  static List<int> hash(List<int> data) {
+  static BuBytes hash(List<int> data) {
     final h = SHA224();
     h.update(data);
     final digest = h.digest();

@@ -21,6 +21,7 @@ class SHA256 implements SerializableHash<SHA256State> {
   int _bufferLength = 0;
   int _bytesHashed = 0;
   bool _finished = false;
+  bool _cleaned = false;
 
   // Rest of your class implementation goes here...
   void _initState() {
@@ -40,9 +41,7 @@ class SHA256 implements SerializableHash<SHA256State> {
   /// - [data]: The Containing the data to be hashed.
   @override
   SerializableHash update(List<int> data, {int? length}) {
-    if (_finished) {
-      throw CryptoException.failed("SHA.update", reason: "State was finished.");
-    }
+    _ensureAlive("update", _cleaned, _finished);
     int dataLength = length ?? data.length;
     int dataPos = 0;
     _bytesHashed += dataLength;
@@ -80,6 +79,7 @@ class SHA256 implements SerializableHash<SHA256State> {
   ///
   @override
   SerializableHash finish(List<int> out) {
+    _ensureAlive("finish", _cleaned, null);
     if (!_finished) {
       final bytesHashed = _bytesHashed;
       final left = _bufferLength;
@@ -107,8 +107,8 @@ class SHA256 implements SerializableHash<SHA256State> {
 
   /// Generates the final hash digest by assembling and returning the hash state.
   @override
-  List<int> digest() {
-    final out = List<int>.filled(getDigestLength, 0);
+  BuBytes digest() {
+    final out = BuBytes.fill(getDigestLength, 0);
     finish(out);
     return out;
   }
@@ -118,6 +118,7 @@ class SHA256 implements SerializableHash<SHA256State> {
   /// Returns the current instance of the hash algorithm with the initial stat
   @override
   SerializableHash reset() {
+    _ensureAlive("reset", _cleaned, null);
     _initState();
     _bufferLength = 0;
     _bytesHashed = 0;
@@ -132,6 +133,7 @@ class SHA256 implements SerializableHash<SHA256State> {
     BinaryOps.zero(_buffer);
     BinaryOps.zero(_temp);
     reset();
+    _cleaned = true;
   }
 
   /// Restores the hash computation state from a previously saved state.
@@ -141,6 +143,7 @@ class SHA256 implements SerializableHash<SHA256State> {
   ///
   @override
   SerializableHash restoreState(SHA256State savedState) {
+    _ensureAlive("restoreState", _cleaned, null);
     _state.setAll(0, savedState.state);
     _bufferLength = savedState.bufferLength;
     if (savedState.buffer != null) {
@@ -154,12 +157,7 @@ class SHA256 implements SerializableHash<SHA256State> {
   /// Saves the current hash computation state into a serializable state object.
   @override
   SHA256State saveState() {
-    if (_finished) {
-      throw CryptoException.failed(
-        "SHA.saveState",
-        reason: "State was finished.",
-      );
-    }
+    _ensureAlive("saveState", _cleaned, _finished);
     return SHA256State(
       state: _state.clone(),
       buffer: _bufferLength > 0 ? _buffer.clone() : null,
@@ -181,7 +179,7 @@ class SHA256 implements SerializableHash<SHA256State> {
     savedState.bytesHashed = 0;
   }
 
-  final _k = const [
+  static const _k = [
     0x428a2f98,
     0x71374491,
     0xb5c0fbcf,
@@ -314,7 +312,7 @@ class SHA256 implements SerializableHash<SHA256State> {
   }
 
   /// Computes the SHA-256 hash of the provided data.
-  static List<int> hash(List<int> data) {
+  static BuBytes hash(List<int> data) {
     final h = SHA256();
     h.update(data);
     final digest = h.digest();
@@ -323,7 +321,8 @@ class SHA256 implements SerializableHash<SHA256State> {
   }
 }
 
-class SHA256State implements HashState {
+/// Serializable snapshot of an in-progress SHA-256 computation.
+class SHA256State extends HashState {
   final List<int> state;
   final List<int>? buffer;
   int bufferLength;

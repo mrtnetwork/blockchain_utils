@@ -1,0 +1,191 @@
+import 'package:blockchain_utils/crypto/crypto/group/pasta/fields/pallas_fp.dart';
+import 'package:blockchain_utils/exception/exception/core_errors.dart';
+import 'package:blockchain_utils/crypto/crypto/group/pasta/fields/vesta_fq.dart';
+import 'package:blockchain_utils/crypto/crypto/group/pasta/point/core.dart';
+import 'package:blockchain_utils/exception/exceptions.dart';
+import 'package:blockchain_utils/helper/extensions/extensions.dart';
+import 'package:blockchain_utils/utils/numbers/fixed/src/u64/u64.dart';
+
+/// A point on the isogenous curve used to compute the Vesta SSWU
+/// hash-to-curve map, in projective coordinates.
+class VestaIsoPoint extends PastaPoint<PallasFp, VestaFq, VestaIsoPoint> {
+  const VestaIsoPoint({required super.x, required super.y, required super.z});
+  factory VestaIsoPoint.fromAffine(VestaIsoAffinePoint point) {
+    return point.toCurve();
+  }
+
+  factory VestaIsoPoint.fromBytes(List<int> bytes) {
+    return VestaIsoAffinePoint.fromBytes(bytes).toCurve();
+  }
+  static const identity_ = VestaIsoPoint(
+    x: VestaFq.zero,
+    y: VestaFq.zero,
+    z: VestaFq.zero,
+  );
+
+  @override
+  VestaIsoPoint from({
+    required VestaFq x,
+    required VestaFq y,
+    required VestaFq z,
+  }) {
+    return VestaIsoPoint(x: x, y: y, z: z);
+  }
+
+  /// Mask form of point select: returns [b] iff [bit] == 1, else [a].
+  /// [bit] is a 0/1 [Uint64] (never a `bool`).
+  static VestaIsoPoint conditionalSelectMask(
+    VestaIsoPoint a,
+    VestaIsoPoint b,
+    Uint64 bit,
+  ) => VestaIsoPoint(
+    x: VestaFq.conditionalSelectMask(a.x, b.x, bit),
+    y: VestaFq.conditionalSelectMask(a.y, b.y, bit),
+    z: VestaFq.conditionalSelectMask(a.z, b.z, bit),
+  );
+
+  @override
+  VestaIsoPoint selectMask(VestaIsoPoint other, Uint64 bit) =>
+      VestaIsoPoint.conditionalSelectMask(this, other, bit);
+
+  @override
+  VestaIsoPoint identity() {
+    return identity_;
+  }
+
+  @override
+  VestaIsoPoint generator() {
+    throw CoreErrors.cryptoOperationNotSupported;
+  }
+
+  @override
+  final PastaCurveParams<VestaFq> curveParams = PastaCurveParams.isoVesta;
+
+  @override
+  VestaIsoAffinePoint toAffine() {
+    final zInv = z.invert();
+    if (zInv == null) {
+      return VestaIsoAffinePoint.identity_;
+    }
+    final zInv2 = zInv.square();
+    final x = this.x * zInv2;
+    final zInv3 = zInv2 * zInv;
+    final y = this.y * zInv3;
+    return VestaIsoAffinePoint(x: x, y: y);
+  }
+
+  @override
+  VestaIsoPoint endo() {
+    throw CoreErrors.cryptoOperationNotSupported;
+  }
+
+  @override
+  VestaIsoPoint clearCofactor() {
+    return this;
+  }
+}
+
+/// [VestaIsoPoint] in affine coordinates.
+class VestaIsoAffinePoint
+    extends PastaAffinePoint<PallasFp, VestaFq, VestaIsoPoint> {
+  const VestaIsoAffinePoint({required super.x, required super.y});
+  static const identity_ = VestaIsoAffinePoint(
+    x: VestaFq.zero,
+    y: VestaFq.zero,
+  );
+
+  factory VestaIsoAffinePoint.conditionalSelect(
+    VestaIsoAffinePoint a,
+    VestaIsoAffinePoint b,
+    bool choice,
+  ) {
+    return VestaIsoAffinePoint(
+      x: VestaFq.conditionalSelect(a.x, b.x, choice),
+      y: VestaFq.conditionalSelect(a.y, b.y, choice),
+    );
+  }
+  factory VestaIsoAffinePoint.fromBytes(List<int> bytes) {
+    if (bytes.length != 32) {
+      throw CoreErrors.invalidOperationArguments(
+        "VestaIsoAffinePoint",
+        name: "bytes",
+        reason: "Invalid point bytes length.",
+      );
+    }
+    final tmp = bytes.clone();
+    final ySign = (tmp[31] >> 7) & 1;
+    tmp[31] &= 0x7F;
+    final x = VestaFq.fromBytes(tmp);
+    if (x.isZero() && ySign == 0) {
+      return identity_;
+    }
+    final x3 = x.square() * x;
+    final rhs = (x3 + PastaCurveParams.isoVesta.b);
+    final y = rhs.sqrt();
+    if (!y.isSquare) {
+      throw CoreErrors.invalidOperationArguments(
+        "VestaIsoAffinePoint",
+        name: "bytes",
+        reason: "Invalid point bytes.",
+      );
+    }
+
+    final sign = y.result.isOdd() ? 1 : 0;
+
+    final flip = (ySign ^ sign) == 1;
+    final yFinal = flip ? -y.result : y.result;
+    return VestaIsoAffinePoint(x: x, y: yFinal);
+  }
+
+  @override
+  PastaAffinePoint<PallasFp, VestaFq, VestaIsoPoint> affineFrom({
+    required VestaFq x,
+    required VestaFq y,
+  }) {
+    return VestaIsoAffinePoint(x: x, y: y);
+  }
+
+  @override
+  VestaIsoPoint conditionalSelectFrom({
+    required VestaIsoPoint a,
+    required VestaIsoPoint b,
+    required bool choice,
+  }) {
+    return VestaIsoPoint(
+      x: VestaFq.conditionalSelect(a.x, b.x, choice),
+      y: VestaFq.conditionalSelect(a.y, b.y, choice),
+      z: VestaFq.conditionalSelect(a.z, b.z, choice),
+    );
+  }
+
+  @override
+  VestaIsoPoint from({
+    required VestaFq x,
+    required VestaFq y,
+    required VestaFq z,
+  }) {
+    return VestaIsoPoint(x: x, y: y, z: z);
+  }
+
+  @override
+  VestaIsoPoint identity() {
+    return VestaIsoPoint.identity_;
+  }
+
+  @override
+  VestaIsoPoint toCurve() {
+    return VestaIsoPoint(
+      x: x,
+      y: y,
+      z: VestaFq.conditionalSelect(VestaFq.one, VestaFq.zero, isIdentity()),
+    );
+  }
+
+  @override
+  VestaIsoAffinePoint generator() {
+    throw CoreErrors.cryptoOperationNotSupported;
+  }
+
+  @override
+  final PastaCurveParams<VestaFq> curveParams = PastaCurveParams.isoVesta;
+}

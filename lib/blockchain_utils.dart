@@ -2,65 +2,46 @@
 /// for working with various aspects of blockchain and cryptocurrency technologies.
 library;
 
-/// Export for Base32 encoding and decoding utilities.
-export 'base32/base32.dart';
-
-/// Export for Base58 encoding and decoding utilities.
-export 'base58/base58.dart';
-
-/// Export for Bech32 encoding and decoding utilities.
-export 'bech32/bech32.dart';
-
-/// Export for Base64 encoding and decoding utilities.
-export 'base64/base64.dart';
-
-/// Export for CBOR (Concise Binary Object Representation) utilities.
-export 'cbor/cbor.dart';
-
 /// Export for various cryptographic functions and utilities.
-export 'crypto/crypto/crypto.dart';
+export 'package:blockchain_utils/crypto/crypto/crypto.dart';
 
 /// Export for quick cryptographic operations.
-export 'crypto/quick_crypto.dart';
-
-/// Export for hexadecimal encoding and decoding utilities.
-export 'hex/hex.dart';
-
-/// Export for tools related to managing secret wallets.
-export 'secret_wallet/src/web3_storage_defination.dart';
-
-/// Export for SS58 (Substrate/Polkadot/Stash encoding) utilities.
-export 'ss58/ss58.dart';
+export 'package:blockchain_utils/crypto/quick_crypto.dart';
 
 /// Export for UUID (Universally Unique Identifier) generation and manipulation.
-export 'uuid/uuid.dart';
+export 'package:blockchain_utils/utils/utils.dart';
 
-export 'signer/signer.dart';
-
-export 'bip/bip.dart';
-
-/// Exports utility functions related to numeric, bytes and strings.
-export 'utils/utils.dart';
-
-/// Exports utility functions related to numbers operations.
-export 'utils/numbers/numbers.dart';
+export 'package:blockchain_utils/chain/signer/signer.dart';
 
 /// Exceptions
-export 'exception/exceptions.dart';
+export 'package:blockchain_utils/exception/exceptions.dart';
 
-export 'utils/compare/compare.dart';
+export 'package:blockchain_utils/helper/helper.dart';
 
-export 'layout/layout.dart';
+export 'package:blockchain_utils/service/service.dart';
 
-export 'helper/helper.dart';
+export 'package:blockchain_utils/chain/networks.dart';
 
-export 'service/service.dart';
+export 'package:blockchain_utils/encoding/encoding.dart';
 
-export 'proto/proto.dart';
-export 'networks/networks.dart';
+export 'package:blockchain_utils/serialization/identifier.dart';
 
-export 'secret_wallet/secret_wallet.dart';
+export 'package:blockchain_utils/protocol/protocol.dart';
+export 'package:blockchain_utils_connector/blockchain_utils_connector.dart'
+    show
+        BuSerializableHash,
+        BuBytes,
+        BuAead,
+        SecretBytes,
+        SecretState,
+        BuHashApi,
+        BuError,
+        BuErrorType,
+        DefaultErrorType,
+        BuMoneroApi,
+        BuMoneroScanAccount,
+        BuMoneroScanOutput,
+        BuMoneroUnlockMatch,
+        BuConfig;
 
-export 'utf8/utf8.dart';
-
-export 'serialization/identifier.dart';
+export 'package:blockchain_utils/api/api.dart';

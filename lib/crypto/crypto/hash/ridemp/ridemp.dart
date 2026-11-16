@@ -8,7 +8,7 @@ class RIPEMD320 extends _RIPEMD<RIPEMD320> {
   RIPEMD320() : super(40 ~/ 4);
 
   /// Computes the RIPEMD-320 hash of the provided data.
-  static List<int> hash(List<int> data) {
+  static BuBytes hash(List<int> data) {
     final h = RIPEMD320();
     h.update(data);
     final digest = h.digest();
@@ -25,7 +25,7 @@ class RIPEMD256 extends _RIPEMD<RIPEMD256> {
   RIPEMD256() : super(32 ~/ 4);
 
   /// Computes the RIPEMD-256 hash of the provided data.
-  static List<int> hash(List<int> data) {
+  static BuBytes hash(List<int> data) {
     final h = RIPEMD256();
     h.update(data);
     final digest = h.digest();
@@ -42,7 +42,7 @@ class RIPEMD160 extends _RIPEMD<RIPEMD160> {
   RIPEMD160() : super(20 ~/ 4);
 
   /// Computes the RIPEMD-160 hash of the provided data.
-  static List<int> hash(List<int> data) {
+  static BuBytes hash(List<int> data) {
     final h = RIPEMD160();
     h.update(data);
     final digest = h.digest();
@@ -59,7 +59,7 @@ class RIPEMD128 extends _RIPEMD<RIPEMD128> {
   RIPEMD128() : super(16 ~/ 4);
 
   /// Computes the RIPEMD-128 hash of the provided data.
-  static List<int> hash(List<int> data) {
+  static BuBytes hash(List<int> data) {
     final h = RIPEMD128();
     h.update(data);
     final digest = h.digest();
@@ -85,6 +85,8 @@ class _RIPEMD<T extends _RIPEMD<T>> implements SerializableHash<SH1State> {
 
   bool _finished = false;
 
+  bool _cleaned = false;
+
   /// Clean up the internal state and reset hash object to its initial state.
   @override
   void clean() {
@@ -92,10 +94,11 @@ class _RIPEMD<T extends _RIPEMD<T>> implements SerializableHash<SH1State> {
     BinaryOps.zero(_currentChunk);
     _buffer.clear();
     reset();
+    _cleaned = true;
   }
 
   void _init() {
-    final state = _RidempUtils.readState(getDigestLength);
+    final state = _RipemdUtils.readState(getDigestLength);
     _state.setAll(0, state);
   }
 
@@ -103,15 +106,15 @@ class _RIPEMD<T extends _RIPEMD<T>> implements SerializableHash<SH1State> {
   @override
   void cleanSavedState(SH1State savedState) {
     savedState.buffer = List.empty();
-    final state = _RidempUtils.readState(getDigestLength);
+    final state = _RipemdUtils.readState(getDigestLength);
     savedState.state = state;
     savedState.length = 0;
   }
 
   /// Generates the final hash digest by assembling and returning the hash state.`.
   @override
-  List<int> digest() {
-    final out = List<int>.filled(getDigestLength, 0);
+  BuBytes digest() {
+    final out = BuBytes.fill(getDigestLength, 0);
     finish(out);
     return out;
   }
@@ -123,6 +126,7 @@ class _RIPEMD<T extends _RIPEMD<T>> implements SerializableHash<SH1State> {
   ///
   @override
   T finish(List<int> out) {
+    _ensureAlive("RIPEMD.finish", _cleaned, null);
     if (!_finished) {
       _finalize();
       _iterate();
@@ -165,6 +169,7 @@ class _RIPEMD<T extends _RIPEMD<T>> implements SerializableHash<SH1State> {
   /// Returns the current instance of the hash algorithm with the initial stat
   @override
   T reset() {
+    _ensureAlive("RIPEMD.reset", _cleaned, null);
     _init();
     _finished = false;
     _lengthInBytes = 0;
@@ -177,19 +182,21 @@ class _RIPEMD<T extends _RIPEMD<T>> implements SerializableHash<SH1State> {
   /// - [savedState]: The saved state to restore.
   ///
   @override
-  SerializableHash restoreState(SH1State savedState) {
+  T restoreState(SH1State savedState) {
+    _ensureAlive("RIPEMD.restoreState", _cleaned, null);
     _buffer.clear();
     _buffer.addAll(savedState.buffer);
     _state.setAll(0, savedState.state);
     _lengthInBytes = savedState.length;
     _iterate();
     _finished = false;
-    return this;
+    return this as T;
   }
 
   /// Saves the current hash computation state into a serializable state object.
   @override
   SH1State saveState() {
+    _ensureAlive("RIPEMD.saveState", _cleaned, null);
     return SH1State(
       buffer: _buffer.clone(),
       length: _lengthInBytes,
@@ -204,12 +211,7 @@ class _RIPEMD<T extends _RIPEMD<T>> implements SerializableHash<SH1State> {
   ///
   @override
   T update(List<int> data) {
-    if (_finished) {
-      throw CryptoException.failed(
-        "RIPEMD.update",
-        reason: "State was finished.",
-      );
-    }
+    _ensureAlive("RIPEMD.update", _cleaned, _finished);
     _lengthInBytes += data.length;
     _buffer.addAll(data.asBytes);
     _iterate();
@@ -260,7 +262,7 @@ class _RIPEMD<T extends _RIPEMD<T>> implements SerializableHash<SH1State> {
 
     for (int i = 0; i < 64; i++) {
       int t = BinaryOps.add32(al, chunk[_zl[i]]);
-      t = BinaryOps.add32(t, _RidempUtils.T(i, bl, cl, dl));
+      t = BinaryOps.add32(t, _RipemdUtils.T(i, bl, cl, dl));
       t = BinaryOps.rotl32(t, _sl[i]);
       al = dl;
       dl = cl;
@@ -268,7 +270,7 @@ class _RIPEMD<T extends _RIPEMD<T>> implements SerializableHash<SH1State> {
       bl = t;
 
       t = BinaryOps.add32(ar, chunk[_zr[i]]);
-      t = BinaryOps.add32(t, _RidempUtils.t64(i, br, cr, dr));
+      t = BinaryOps.add32(t, _RipemdUtils.t64(i, br, cr, dr));
       t = BinaryOps.rotl32(t, _sr[i]);
       ar = dr;
       dr = cr;
@@ -300,7 +302,7 @@ class _RIPEMD<T extends _RIPEMD<T>> implements SerializableHash<SH1State> {
 
     for (int i = 0; i < 80; i++) {
       int t = BinaryOps.add32(al, chunk[_zl[i]]);
-      t = BinaryOps.add32(t, _RidempUtils.T(i, bl, cl, dl));
+      t = BinaryOps.add32(t, _RipemdUtils.T(i, bl, cl, dl));
       t = BinaryOps.rotl32(t, _sl[i]);
       t = BinaryOps.add32(t, el);
       al = el;
@@ -310,7 +312,7 @@ class _RIPEMD<T extends _RIPEMD<T>> implements SerializableHash<SH1State> {
       bl = t;
 
       t = BinaryOps.add32(ar, chunk[_zr[i]]);
-      t = BinaryOps.add32(t, _RidempUtils.t80(i, br, cr, dr));
+      t = BinaryOps.add32(t, _RipemdUtils.t80(i, br, cr, dr));
       t = BinaryOps.rotl32(t, _sr[i]);
       t = BinaryOps.add32(t, er);
       ar = er;
@@ -374,7 +376,7 @@ class _RIPEMD<T extends _RIPEMD<T>> implements SerializableHash<SH1State> {
 
     for (int i = 0; i < 64; i++) {
       int t = BinaryOps.add32(al, chunk[_zl[i]]);
-      t = BinaryOps.add32(t, _RidempUtils.T(i, bl, cl, dl));
+      t = BinaryOps.add32(t, _RipemdUtils.T(i, bl, cl, dl));
       t = BinaryOps.rotl32(t, _sl[i]);
       al = dl;
       dl = cl;
@@ -382,7 +384,7 @@ class _RIPEMD<T extends _RIPEMD<T>> implements SerializableHash<SH1State> {
       bl = t;
 
       t = BinaryOps.add32(ar, chunk[_zr[i]]);
-      t = BinaryOps.add32(t, _RidempUtils.t64(i, br, cr, dr));
+      t = BinaryOps.add32(t, _RipemdUtils.t64(i, br, cr, dr));
       t = BinaryOps.rotl32(t, _sr[i]);
       ar = dr;
       dr = cr;
@@ -439,7 +441,7 @@ class _RIPEMD<T extends _RIPEMD<T>> implements SerializableHash<SH1State> {
 
     for (int i = 0; i < 80; i++) {
       int t = BinaryOps.add32(al, chunk[_zl[i]]);
-      t = BinaryOps.add32(t, _RidempUtils.T(i, bl, cl, dl));
+      t = BinaryOps.add32(t, _RipemdUtils.T(i, bl, cl, dl));
       t = BinaryOps.rotl32(t, _sl[i]);
       t = BinaryOps.add32(t, el);
       al = el;
@@ -449,7 +451,7 @@ class _RIPEMD<T extends _RIPEMD<T>> implements SerializableHash<SH1State> {
       bl = t;
 
       t = BinaryOps.add32(ar, chunk[_zr[i]]);
-      t = (t + _RidempUtils.t80(i, br, cr, dr));
+      t = (t + _RipemdUtils.t80(i, br, cr, dr));
       t = BinaryOps.rotl32(t, _sr[i]);
       t = BinaryOps.add32(t, er);
       ar = er;
@@ -467,7 +469,7 @@ class _RIPEMD<T extends _RIPEMD<T>> implements SerializableHash<SH1State> {
     _state[0] = t;
   }
 
-  final List<int> _zl = const [
+  static const List<int> _zl = [
     0,
     1,
     2,
@@ -550,7 +552,7 @@ class _RIPEMD<T extends _RIPEMD<T>> implements SerializableHash<SH1State> {
     13,
   ];
 
-  final List<int> _zr = const [
+  static const List<int> _zr = [
     5,
     14,
     7,
@@ -633,7 +635,7 @@ class _RIPEMD<T extends _RIPEMD<T>> implements SerializableHash<SH1State> {
     11,
   ];
 
-  final List<int> _sl = const [
+  static const List<int> _sl = [
     11,
     14,
     15,
@@ -715,7 +717,7 @@ class _RIPEMD<T extends _RIPEMD<T>> implements SerializableHash<SH1State> {
     5,
     6,
   ];
-  final List<int> _sr = const [
+  static const List<int> _sr = [
     8,
     9,
     9,
@@ -799,7 +801,8 @@ class _RIPEMD<T extends _RIPEMD<T>> implements SerializableHash<SH1State> {
   ];
 }
 
-class _RidempUtils {
+/// RIPEMD round functions, constants, and initial state vectors.
+class _RipemdUtils {
   static int F(int x, int y, int z) {
     return x ^ y ^ z;
   }

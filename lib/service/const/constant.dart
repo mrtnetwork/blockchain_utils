@@ -14,4 +14,9 @@ class ServiceConst {
   static const Map<String, String> defaultPostHeaders = {
     'Content-Type': 'application/json',
   };
+
+  /// Default headers for HTTP POST requests, indicating JSON content.
+  static const Map<String, String> defaultCborHeaders = {
+    'Content-Type': 'application/cbor',
+  };
 }

@@ -2,16 +2,20 @@ import 'package:blockchain_utils/blockchain_utils.dart';
 import 'package:test/expect.dart';
 import 'package:test/scaffolding.dart';
 
-import '../../quick_hex.dart';
+import '../../utils.dart';
+
+void ff1Test() {
+  test("FF1", _ff1);
+}
 
 void main() {
-  test("FF1", _ff1);
+  BlockchainUtilsTestApi.runTest(ff1Test, "Ff1");
 }
 
 void _ff1() {
   for (final t in _testVector.shuffleTake()) {
     final i = _TestVector.fromJson(t);
-    final aes = AES(i.key);
+    final aes = QuickCrypto.aesInstance(i.key);
     final ff = FF1Flexible(radix: i.radix, aes: aes);
     FlexibleNumeralString enc = ff.encrypt(
       FlexibleNumeralString(i.pt),
@@ -29,8 +33,9 @@ void _ff1() {
     final i = _TestVector.fromJson(t.$2);
     final binary = i.binary;
     if (binary == null) continue;
-    final aes = AES(i.key);
-    final ff = FF1Binary(aes: aes, radix: i.radix);
+    final aes = QuickCrypto.aesInstance(i.key);
+    assert(i.radix == 2);
+    final ff = FF1Binary(aes: aes);
     BinaryNumeralString enc = ff.encrypt(
       BinaryNumeralString(binary.pt),
       tweak: i.tweak,

@@ -1,7 +1,8 @@
 import 'package:blockchain_utils/serialization/identifier.dart';
 import 'package:test/test.dart';
 
-void main() {
+import '../utils.dart';
+void serializationSerializationTest() {
   test("serialization identifier", () {
     expect(
       BlockchainUtilsSerializationIdentifier.values
@@ -18,3 +19,8 @@ void main() {
     );
   });
 }
+
+void main() {
+  BlockchainUtilsTestApi.runTest(serializationSerializationTest, "Serialization");
+}
+

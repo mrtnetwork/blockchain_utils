@@ -1,0 +1,68 @@
+import 'package:blockchain_utils/encoding/cbor/core/cbor.dart';
+import 'package:blockchain_utils/encoding/cbor/core/tags.dart';
+import 'package:blockchain_utils/encoding/cbor/utils/cbor_utils.dart';
+import 'package:blockchain_utils/encoding/cbor/utils/dynamic_bytes.dart';
+import 'package:blockchain_utils/helper/helper.dart';
+
+import 'package:blockchain_utils_connector/blockchain_utils_connector.dart';
+
+/// A class representing a CBOR (Concise Binary Object Representation) Bigint value.
+class CborBigIntValue extends CborNumeric<BigInt> {
+  /// Specifies whether the CBOR length encoding should be canonical or non-canonical.
+  /// For bignum values, this only affects the value `0`:
+  /// - In canonical form, zero is encoded with a 0-byte length.
+  /// - In non-canonical form, zero is encoded with a 1-byte length (`0x00`).
+  final CborLengthEncoding encoding;
+
+  /// Constructor for creating a CborBigIntValue instance with the provided parameters.
+  /// It accepts the BigInt value.
+  const CborBigIntValue(
+    super.value, {
+    this.encoding = CborLengthEncoding.canonical,
+  });
+
+  factory CborBigIntValue.decode(List<int> bytes) {
+    return CborUtils.decodeCbor(bytes);
+  }
+
+  /// Encode the value into CBOR bytes
+  @override
+  BuBytes encode() {
+    final bytes = CborBytesTracker();
+    BigInt v = value;
+    if (v.isNegative) {
+      bytes.pushTags(CborTags.negBigInt);
+      v = ~v;
+    } else {
+      bytes.pushTags(CborTags.posBigInt);
+    }
+    BuBytes toBytes = BuBytes.empty();
+    if (v == BigInt.zero) {
+      if (encoding == CborLengthEncoding.nonCanonical) {
+        toBytes.add(0);
+      }
+    } else {
+      toBytes = v.toBeBytes();
+    }
+    bytes.pushInt(MajorTags.byteString, toBytes.length);
+    bytes.pushBytes(toBytes);
+    return bytes.buffer();
+  }
+
+  /// value as bigint
+  @override
+  BigInt toBigInt() {
+    return value;
+  }
+
+  /// value as int
+  @override
+  int toInt() {
+    return value.toInt();
+  }
+
+  @override
+  String toString() {
+    return "CborBigIntValue($value)";
+  }
+}

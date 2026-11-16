@@ -26,7 +26,7 @@ class ServiceProviderUtils {
         return JsonParser.valueAsString(
           ecodeResponse(body: object, encoding: ServiceReponseEncoding.string),
         );
-      } catch (_) {
+      } catch (e) {
         return null;
       }
     }();
@@ -105,38 +105,76 @@ class ServiceProviderUtils {
     }
   }
 
+  /// Attempts JSON decode. Never throws — reports success/failure explicitly
+  /// so callers don't have to infer "was this real JSON" from exceptions.
+  static ({bool ok, Object? value}) _tryJsonDecode(String body) {
+    try {
+      return (ok: true, value: StringUtils.toJson(body));
+    } catch (_) {
+      return (ok: false, value: null);
+    }
+  }
+
+  /// For `.string` encoding: guarantees a `String` comes out, always.
+  /// - If [raw] is a JSON string literal (e.g. `"hi"` or `"\"nested\""`),
+  ///   unwrap it to the plain Dart string.
+  /// - Otherwise, or if decode produced a non-String (num/bool/map/list),
+  ///   return [raw] untouched — never leak a non-string type here.
+  static String _asStringResult(String raw) {
+    final decoded = _tryJsonDecode(raw);
+    if (decoded.ok && decoded.value is String) {
+      return decoded.value as String;
+    }
+    return raw;
+  }
+
   /// Parses a response bytes into a result of type `T`.
-  static Object? encodeBytesResponse({
+  static Object? _encodeBytesResponse({
     required List<int> bytes,
     required ServiceReponseEncoding encoding,
   }) {
     switch (encoding) {
       case ServiceReponseEncoding.binary:
         return bytes;
+      case ServiceReponseEncoding.string:
+        return _asStringResult(StringUtils.decode(bytes)); // same guarantee
       default:
-        return ecodeStringResponse(
-          body: StringUtils.decode(bytes),
-          encoding: encoding,
-        );
+        final decode = StringUtils.decodeJson(bytes);
+        switch (encoding) {
+          case ServiceReponseEncoding.map:
+            return JsonParser.valueAsMap<Map<String, dynamic>?>(decode);
+          case ServiceReponseEncoding.listOfMap:
+            return JsonParser.valueAsList<List<Map<String, dynamic>>?>(decode);
+          default:
+            return decode;
+        }
     }
   }
 
   /// Parses a response string into a result of type `T`.
-  static Object? ecodeStringResponse({
+  static Object? _ecodeStringResponse({
     required String body,
     required ServiceReponseEncoding encoding,
   }) {
     switch (encoding) {
       case ServiceReponseEncoding.binary:
         return StringUtils.encode(body);
+
       case ServiceReponseEncoding.string:
-        return body;
-      case ServiceReponseEncoding.map:
-        return StringUtils.toJson<Map<String, dynamic>>(body);
-      case ServiceReponseEncoding.listOfMap:
-        return StringUtils.toJson<List<Map<String, dynamic>>>(body);
+        return _asStringResult(body); // ALWAYS a String, never StringJson
+
       case ServiceReponseEncoding.json:
-        return StringUtils.toJson(body);
+        final decoded = _tryJsonDecode(body);
+        return decoded.ok ? decoded.value : body;
+
+      case ServiceReponseEncoding.map:
+        final decoded = _tryJsonDecode(body);
+        return JsonParser.valueAsMap<Map<String, dynamic>?>(decoded.value);
+      case ServiceReponseEncoding.listOfMap:
+        final decoded = _tryJsonDecode(body);
+        return JsonParser.valueAsList<List<Map<String, dynamic>>?>(
+          decoded.value,
+        );
     }
   }
 
@@ -147,9 +185,9 @@ class ServiceProviderUtils {
   }) {
     switch (body) {
       case List<int> bytes:
-        return encodeBytesResponse(bytes: bytes, encoding: encoding);
+        return _encodeBytesResponse(bytes: bytes, encoding: encoding);
       case String body:
-        return ecodeStringResponse(body: body, encoding: encoding);
+        return _ecodeStringResponse(body: body, encoding: encoding);
       default:
         switch (encoding) {
           case ServiceReponseEncoding.binary:
@@ -171,5 +209,27 @@ class ServiceProviderUtils {
       return ServiceConst.defaultError;
     }
     return "The request failed with status code $statusCode.";
+  }
+
+  static String joinPathWithRoot(List<String> parts, {String separator = '/'}) {
+    if (parts.isEmpty) return '';
+
+    final isAbsolute = RegExp(r'^[\\/]').hasMatch(parts.first);
+
+    final normalized = parts
+        .where((e) => e.trim().isNotEmpty)
+        .map(
+          (e) => e
+              .replaceAll(RegExp(r'[\\/]'), separator)
+              .replaceAll(
+                RegExp(
+                  '^${RegExp.escape(separator)}+|${RegExp.escape(separator)}+\$',
+                ),
+                '',
+              ),
+        )
+        .join(separator);
+
+    return isAbsolute ? '$separator$normalized' : normalized;
   }
 }

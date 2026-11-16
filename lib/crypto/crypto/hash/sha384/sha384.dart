@@ -33,7 +33,7 @@ class SHA384 extends SHA512 {
   }
 
   /// Computes the SHA-384 hash of the provided data.
-  static List<int> hash(List<int> data) {
+  static BuBytes hash(List<int> data) {
     final h = SHA384();
     h.update(data);
     final digest = h.digest();

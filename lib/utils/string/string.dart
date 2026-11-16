@@ -1,37 +1,41 @@
-import 'dart:convert' show ascii, utf8, JsonEncoder, jsonEncode, jsonDecode;
-import 'package:blockchain_utils/base58/base58_base.dart';
-import 'package:blockchain_utils/base64/base64.dart';
+import 'package:blockchain_utils/encoding/base58/src/base58_base.dart';
+import 'package:blockchain_utils/exception/exception/core_errors.dart';
+import 'package:blockchain_utils/encoding/base64/base64.dart';
 import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/helper/extensions/extensions.dart';
-import 'package:blockchain_utils/utf8/utf8.dart';
-import 'package:blockchain_utils/utils/binary/utils.dart';
+import 'package:blockchain_utils/encoding/json/json.dart';
+import 'package:blockchain_utils/encoding/utf8/utf8.dart';
+import 'package:blockchain_utils/utils/binary/src/utils.dart';
 import 'package:blockchain_utils/utils/json/json.dart';
+import 'package:blockchain_utils_connector/blockchain_utils_connector.dart';
 
-/// An enumeration representing different string encoding options.
+/// String encoding schemes supported by [StringUtils.encode]/[StringUtils.decode].
 enum StringEncoding {
-  /// The ASCII encoding option.
-  /// This encoding represents characters using the ASCII character set,
-  /// which uses 7-bit encoding and supports a limited character range.
+  /// 7-bit ASCII.
   ascii,
 
-  /// The UTF-8 encoding option.
-  /// This encoding represents characters using the Unicode Transformation Format (UTF-8),
-  /// which is a variable-length character encoding that supports a wide range of characters,
-  /// including those from various languages and symbols.
+  /// UTF-8.
   utf8,
 
-  /// The base64 encoding option
+  /// Base64, standard alphabet.
   base64,
+
+  /// Base64, URL-safe alphabet.
   base64UrlSafe,
 
+  /// Base58.
   base58,
+
+  /// Base58 with an appended checksum.
   base58Check,
 
+  /// Hexadecimal.
   hex,
 }
 
 /// A utility class for working with strings and common string operations.
 class StringUtils {
+  /// Whether [input] contains only valid Base58 characters.
   static bool isBase58(String input) {
     final RegExp base58Regex = RegExp(
       r'^[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]+$',
@@ -39,6 +43,7 @@ class StringUtils {
     return base58Regex.hasMatch(input);
   }
 
+  /// Whether [input] contains only valid Base64 characters.
   static bool isBase64(String input, {bool validatePadding = true}) {
     final RegExp base64Regex = RegExp(r'^[A-Za-z0-9+/=]+$');
     final hasMatch = base64Regex.hasMatch(input);
@@ -49,6 +54,8 @@ class StringUtils {
     return false;
   }
 
+  /// Whether [v] is a valid (even-length) hex string, with an optional
+  /// `0x` prefix. If [lengthInBytes] is given, also checks the decoded length.
   static bool isHexBytes(String v, {int? lengthInBytes}) {
     assert(lengthInBytes == null || lengthInBytes >= 0);
     int start = 0;
@@ -78,12 +85,14 @@ class StringUtils {
     return true;
   }
 
-  static bool ixHexaDecimalNumber(String v) {
+  /// Whether [v] is a valid hexadecimal number, with an optional `0x` prefix.
+  static bool isHexadecimalNumber(String v) {
     final RegExp hexaDecimalRegex = RegExp(r'^(0x|0X)?[0-9A-Fa-f]+$');
     return hexaDecimalRegex.hasMatch(v);
   }
 
-  static List<int> toBytes(String v) {
+  /// Decodes [v] as hex if it looks like a hex string, otherwise UTF-8 encodes it.
+  static BuBytes toBytes(String v) {
     if (isHexBytes(v)) {
       return BytesUtils.fromHexString(v);
     } else {
@@ -91,7 +100,8 @@ class StringUtils {
     }
   }
 
-  static List<int>? tryToBytes(String? v) {
+  /// Like [toBytes], but returns null instead of throwing (or if [v] is null).
+  static BuBytes? tryToBytes(String? v) {
     if (v == null) return null;
     try {
       return toBytes(v);
@@ -112,7 +122,7 @@ class StringUtils {
     return value;
   }
 
-  /// add the '0x' prefix to a hexadecimal string if it exists.
+  /// Adds a `0x` prefix to [value], unless it already has one.
   static String add0x(String value) {
     if (value.toLowerCase().startsWith("0x")) {
       return value;
@@ -120,11 +130,8 @@ class StringUtils {
     return "0x$value";
   }
 
-  /// Encodes the given [value] string into a list of bytes using the specified [type].
-  ///
-  /// The [type] parameter determines the encoding type to use, with UTF-8 being the default.
-  /// Returns a list of bytes representing the encoded string.
-  static List<int> encode(
+  /// Encodes [value] into bytes using [encoding] (UTF-8 by default).
+  static BuBytes encode(
     String value, {
     StringEncoding encoding = StringEncoding.utf8,
     bool validateB64Padding = true,
@@ -135,7 +142,6 @@ class StringUtils {
       switch (encoding) {
         case StringEncoding.utf8:
           final bytes = UTF8Encoder.encode(value);
-          assert(BytesUtils.bytesEqual(bytes, utf8.encode(value)));
           return bytes;
         case StringEncoding.base64:
         case StringEncoding.base64UrlSafe:
@@ -147,46 +153,50 @@ class StringUtils {
         case StringEncoding.base58:
           return Base58Decoder.decode(value, base58alphabets);
         case StringEncoding.base58Check:
-          return Base58Decoder.checkDecode(value, base58alphabets);
+          return Base58Decoder.decodeWithChecksum(value, base58alphabets);
         case StringEncoding.hex:
           return BytesUtils.fromHexString(value);
         case StringEncoding.ascii:
           final encode = ASCIIEncoder.encode(value);
-          assert(BytesUtils.bytesEqual(encode, ascii.encode(value)));
           return encode;
       }
     } catch (e) {
-      throw ArgumentException.invalidOperationArguments(
+      throw CoreErrors.invalidOperationArguments(
         "encode",
         name: "value",
-        reason: "Failed to encode strong to ${encoding.name} bytes",
+        reason: "Failed to encode string to ${encoding.name} bytes",
       );
     }
   }
 
   /// Encodes a JSON-serializable [json] object into a list of bytes.
-  static List<int> encodeJson(
+  static BuBytes encodeJson(
     Object json, {
     String? indent,
     bool toStringEncodable = false,
     Object? Function(dynamic)? toEncodable,
+    JsonEncodeOptions? options,
   }) {
-    final value = fromJson(
+    if (toEncodable == null && toStringEncodable) {
+      toEncodable = (e) => e.toString();
+    }
+
+    return JsonCodec.jsonEncodeBytes(
       json,
       indent: indent,
-      toStringEncodable: toStringEncodable,
+      options: options,
       toEncodable: toEncodable,
     );
-    return encode(value);
   }
 
   /// Attempts to encode a JSON-serializable [json] object into a list of bytes,
   /// returning null if the conversion to JSON string fails.
-  static List<int>? tryEncodeJson(
+  static BuBytes? tryEncodeJson(
     Object? json, {
     String? indent,
     bool toStringEncodable = false,
     Object? Function(dynamic)? toEncodable,
+    JsonEncodeOptions? options,
   }) {
     if (json == null) return null;
     try {
@@ -195,17 +205,16 @@ class StringUtils {
         indent: indent,
         toEncodable: toEncodable,
         toStringEncodable: toStringEncodable,
+        options: options,
       );
     } catch (_) {
       return null;
     }
   }
 
-  /// Encodes the given [value] string into a list of bytes using the specified [type] if possible.
-  ///
-  /// The [type] parameter determines the encoding type to use, with UTF-8 being the default.
-  /// Returns a list of bytes representing the encoded string.
-  static List<int>? tryEncode(
+  /// Like [encode], but returns null instead of throwing on failure
+  /// (or if [value] is null).
+  static BuBytes? tryEncode(
     String? value, {
     StringEncoding encoding = StringEncoding.utf8,
     bool validateB64Padding = true,
@@ -226,10 +235,7 @@ class StringUtils {
     }
   }
 
-  /// Decodes a list of bytes [value] into a string using the specified [type].
-  ///
-  /// The [type] parameter determines the decoding type to use, with UTF-8 being the default.
-  /// Returns the decoded string.
+  /// Decodes [value] into a string using [encoding] (UTF-8 by default).
   static String decode(
     List<int> value, {
     StringEncoding encoding = StringEncoding.utf8,
@@ -258,7 +264,7 @@ class StringUtils {
         case StringEncoding.base58:
           return Base58Encoder.encode(value, base58alphabets);
         case StringEncoding.base58Check:
-          return Base58Encoder.checkEncode(value, base58alphabets);
+          return Base58Encoder.encodeWithChecksum(value, base58alphabets);
         case StringEncoding.hex:
           return BytesUtils.toHexString(value);
         case StringEncoding.ascii:
@@ -270,7 +276,7 @@ class StringUtils {
           return decode;
       }
     } catch (e) {
-      throw ArgumentException.invalidOperationArguments(
+      throw CoreErrors.invalidOperationArguments(
         "decode",
         name: "value",
         reason: "Failed to decode bytes as ${encoding.name}",
@@ -279,12 +285,13 @@ class StringUtils {
   }
 
   /// Decodes a list of bytes [value] into a JSON object of type [T].
-  static T decodeJson<T extends Object>(
+  static T decodeJson<T extends Object?>(
     List<int> value, {
     Object? Function(Object?, Object?)? reviver,
+    JsonDecodeOptions? options,
   }) {
     final toString = decode(value);
-    return toJson<T>(toString, reviver: reviver);
+    return toJson<T>(toString, reviver: reviver, options: options);
   }
 
   /// Attempts to decode a list of bytes [value] into a JSON object of type [T],
@@ -292,15 +299,13 @@ class StringUtils {
   static T? tryDecodeJson<T extends Object>(
     List<int> value, {
     Object? Function(Object?, Object?)? reviver,
+    JsonDecodeOptions? options,
   }) {
     final toString = tryDecode(value);
-    return tryToJson<T>(toString, reviver: reviver);
+    return tryToJson<T>(toString, reviver: reviver, options: options);
   }
 
-  /// Decodes a list of bytes [value] into a string using the specified [type] if possible.
-  ///
-  /// The [type] parameter determines the decoding type to use, with UTF-8 being the default.
-  /// Returns the decoded string.
+  /// Like [decode], but returns null instead of throwing (or if [value] is null).
   static String? tryDecode(
     List<int>? value, {
     StringEncoding encoding = StringEncoding.utf8,
@@ -330,14 +335,17 @@ class StringUtils {
     String? indent,
     bool toStringEncodable = false,
     Object? Function(dynamic)? toEncodable,
+    JsonEncodeOptions? options,
   }) {
     if (toStringEncodable) {
       toEncodable ??= (c) => c.toString();
     }
-    if (indent != null) {
-      return JsonEncoder.withIndent(indent, toEncodable).convert(data);
-    }
-    return jsonEncode(data, toEncodable: toEncodable);
+    return JsonCodec.jsonEncode(
+      data,
+      toEncodable: toEncodable,
+      options: options,
+      indent: indent,
+    );
   }
 
   /// Converts a JSON-encoded string to a Dart object represented as a Map.
@@ -347,28 +355,33 @@ class StringUtils {
   static T toJson<T extends Object?>(
     Object? data, {
     Object? Function(Object?, Object?)? reviver,
+    JsonDecodeOptions? options,
   }) {
     if (data is! String) {
       try {
         return JsonParser.valueAs<T>(data);
       } catch (_) {
-        throw ArgumentException.invalidOperationArguments(
+        throw CoreErrors.invalidOperationArguments(
           "toJson",
           name: "data",
           reason: "Invalid data encountered during JSON conversion.",
         );
       }
     }
-    final decode = jsonDecode(data, reviver: reviver);
+    final decode = JsonCodec.jsonDecode(
+      data,
+      reviver: reviver,
+      options: options,
+    );
     try {
       return JsonParser.valueAs<T>(decode);
-    } on JsonParserError {
+    } on BuError {
       rethrow;
     } catch (_) {
-      throw ArgumentException.invalidOperationArguments(
+      throw CoreErrors.invalidOperationArguments(
         "toJson",
         name: "data",
-        reason: "Failed to casting json as $T.",
+        reason: "Failed to cast json to $T.",
       );
     }
   }
@@ -381,13 +394,16 @@ class StringUtils {
     String? indent,
     bool toStringEncodable = false,
     Object? Function(dynamic)? toEncodable,
+    JsonEncodeOptions? options,
   }) {
+    if (data == null) return null;
     try {
       return fromJson(
-        data!,
+        data,
         indent: indent,
         toStringEncodable: toStringEncodable,
         toEncodable: toEncodable,
+        options: options,
       );
     } catch (e) {
       return null;
@@ -401,28 +417,32 @@ class StringUtils {
   static T? tryToJson<T extends Object?>(
     Object? data, {
     Object? Function(Object?, Object?)? reviver,
+    JsonDecodeOptions? options,
   }) {
     if (data == null) return null;
     try {
-      return toJson<T>(data, reviver: reviver);
+      return toJson<T>(data, reviver: reviver, options: options);
     } catch (_) {
       return null;
     }
   }
 
+  /// Whether [a] and [b] represent the same hex value (case/`0x`-prefix insensitive).
   static bool hexEqual(String a, String b) {
     return normalizeHex(a) == normalizeHex(b);
   }
 
+  /// Lowercases [hexString] and normalizes its `0x` prefix per [with0x].
   static String _normalizeHex(String hexString, {bool with0x = false}) {
     final hex = strip0x(hexString.toLowerCase());
     if (with0x) return add0x(hex);
     return hex;
   }
 
+  /// Like [_normalizeHex], but validates [hexString] first.
   static String normalizeHex(String hexString, {bool with0x = false}) {
     if (!isHexBytes(hexString)) {
-      throw ArgumentException.invalidOperationArguments(
+      throw CoreErrors.invalidOperationArguments(
         "normalizeHex",
         name: "hexString",
         reason: "Invalid hex string.",
@@ -431,6 +451,8 @@ class StringUtils {
     return _normalizeHex(hexString, with0x: with0x);
   }
 
+  /// Converts snake_case/kebab-case [input] to camelCase (or PascalCase if
+  /// [capitalizeFirst] is true).
   static String snakeToCamel(String input, {required bool capitalizeFirst}) {
     if (input.isEmpty) return input;
     final parts =
@@ -446,21 +468,10 @@ class StringUtils {
     return buf.toString();
   }
 
+  /// Capitalizes or lowercases the first letter of [word] (see comment below
+  /// for how all-caps acronyms are handled).
   static String _capitalizeWord(String word, {required bool capitalize}) {
     if (word.isEmpty) return word;
-
-    // Proto enum values are conventionally SCREAMING_SNAKE_CASE, so a
-    // word like "UNSPECIFIED" arrives here fully uppercase. If we only
-    // touched the first letter (as you'd do for a word that's *already*
-    // mixed-case, e.g. preserving a genuine acronym), every snake_case
-    // segment after the first would stay shouting - "UNSPECIFIED" not
-    // "Unspecified" - which breaks camelCase entirely.
-    //
-    // Heuristic: if the word is all-uppercase (and more than one letter,
-    // so single-letter words/initials aren't affected), lowercase the
-    // tail before re-capitalizing the first letter. Otherwise (already
-    // mixed-case, e.g. a deliberate acronym like "ID" mid-word in a
-    // genuinely camelCase source), leave the tail untouched.
     final isShouting = word.length > 1 && word == word.toUpperCase();
     final tail =
         isShouting ? word.substring(1).toLowerCase() : word.substring(1);
@@ -469,6 +480,7 @@ class StringUtils {
     return '$first$tail';
   }
 
+  /// Converts camelCase/PascalCase [input] to snake_case.
   static String camelToSnake(String input) {
     if (input.isEmpty) return input;
 
@@ -500,9 +512,15 @@ class StringUtils {
     return buf.toString();
   }
 
+  /// Whether [ch] is an uppercase letter.
   static bool _isUpper(String ch) =>
       ch != ch.toLowerCase() && ch == ch.toUpperCase();
+
+  /// Whether [ch] is a lowercase letter.
   static bool _isLower(String ch) =>
       ch != ch.toUpperCase() && ch == ch.toLowerCase();
-  static bool _isDigit(String ch) => ch.codeUnitAt(0) ^ 0x30 <= 9; // '0'-'9'
+
+  /// Whether [ch] is an ASCII digit '0'-'9'.
+  static bool _isDigit(String ch) =>
+      ch.length == 1 && ((ch.codeUnitAt(0) ^ 0x30) <= 9);
 }

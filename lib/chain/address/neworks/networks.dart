@@ -1,0 +1,33 @@
+/// Address encoder/decoder library for blockchain addresses from public keys.
+library;
+
+export 'package:blockchain_utils/chain/address/neworks/others/substrate_addr.dart';
+export 'package:blockchain_utils/chain/address/neworks/others/icx_addr.dart';
+export 'package:blockchain_utils/chain/address/neworks/others/one_addr.dart';
+export 'package:blockchain_utils/chain/address/neworks/others/ergo.dart';
+export 'package:blockchain_utils/chain/address/neworks/others/egld_addr.dart';
+export 'package:blockchain_utils/chain/address/neworks/others/eos_addr.dart';
+export 'package:blockchain_utils/chain/address/neworks/others/avax_addr.dart';
+export 'package:blockchain_utils/chain/address/neworks/others/icp.dart';
+export 'package:blockchain_utils/chain/address/neworks/others/algo_addr.dart';
+export 'package:blockchain_utils/chain/address/neworks/others/xmr_addr.dart';
+export 'package:blockchain_utils/chain/address/neworks/others/eth_addr.dart';
+export 'package:blockchain_utils/chain/address/neworks/others/inj_addr.dart';
+export 'package:blockchain_utils/chain/address/neworks/others/zil_addr.dart';
+export 'package:blockchain_utils/chain/address/neworks/others/xtz_addr.dart';
+export 'package:blockchain_utils/chain/address/neworks/others/xlm_addr.dart';
+export 'package:blockchain_utils/chain/address/neworks/others/neo_addr.dart';
+export 'package:blockchain_utils/chain/address/neworks/others/fil_addr.dart';
+export 'package:blockchain_utils/chain/address/neworks/others/aptos_addr.dart';
+export 'package:blockchain_utils/chain/address/neworks/others/atom_addr.dart';
+export 'package:blockchain_utils/chain/address/neworks/others/trx_addr.dart';
+export 'package:blockchain_utils/chain/address/neworks/others/okex_addr.dart';
+export 'package:blockchain_utils/chain/address/neworks/others/xrp_addr.dart';
+export 'package:blockchain_utils/chain/address/neworks/others/near_addr.dart';
+export 'package:blockchain_utils/chain/address/neworks/others/nano_addr.dart';
+export 'package:blockchain_utils/chain/address/neworks/others/bch_addr_converter.dart';
+export 'package:blockchain_utils/chain/address/neworks/others/ton_addr.dart';
+export 'package:blockchain_utils/chain/address/neworks/others/sol_addr.dart';
+export 'package:blockchain_utils/chain/address/neworks/others/sui.dart';
+export 'package:blockchain_utils/chain/address/neworks/ada/ada.dart';
+export 'package:blockchain_utils/chain/address/neworks/zcash/zcash.dart';

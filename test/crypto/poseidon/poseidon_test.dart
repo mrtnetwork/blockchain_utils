@@ -1,45 +1,28 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'package:blockchain_utils/blockchain_utils.dart';
-import 'package:blockchain_utils/numbers/src/u64/u64.dart';
+import 'package:blockchain_utils/utils/numbers/fixed/src/u64/u64.dart';
 import 'package:test/test.dart';
 
-void main() {
+import '../../utils.dart';
+
+void poseidonTest() {
   // return;
   group("poseidon", () {
     test("Hash Fq constants", _hashFqWithConstants);
     test("Hash Fq", _hashFq);
-    test("Hash Fq Native", _hashNativeFq);
     test("Grain", _grain);
     test("Mds", _mds);
-    test("Mds native", _mdsNative);
     test("Hash Fp", _hashFp);
-    test("Hash native Fp", _hashFpNative);
     test("Permute Fp", _permute);
-    test("Permute native Fp", _permuteNative);
     _testConstants();
-    _testConstantsNative();
-    _testConstantsNativeFq();
   });
 }
 
-void _permuteNative() {
-  final spec = P128Pow5T3NativeFp();
-  for (final i in _poseidon) {
-    final inputs = JsonParser.valueEnsureAsList<String>(i.elementAt(0));
-    final outputs = JsonParser.valueEnsureAsList<String>(i.elementAt(1));
-    final state =
-        inputs.map((e) => PallasNativeFp.fromBytes(BytesUtils.fromHexString(e))).toList();
-    PoseidonUtils.permute(state, spec);
-    final outputsFields =
-        outputs
-            .map((e) => PallasNativeFp.fromBytes(BytesUtils.fromHexString(e)))
-            .toList();
-    for (var e in state.indexed) {
-      expect(e.$2, outputsFields[e.$1]);
-    }
-  }
+void main() {
+  BlockchainUtilsTestApi.runTest(poseidonTest, "Poseidon");
 }
+
 
 void _permute() {
   final spec = P128Pow5T3Fp();
@@ -47,10 +30,14 @@ void _permute() {
     final inputs = JsonParser.valueEnsureAsList<String>(i.elementAt(0));
     final outputs = JsonParser.valueEnsureAsList<String>(i.elementAt(1));
     final state =
-        inputs.map((e) => PallasFp.fromBytes(BytesUtils.fromHexString(e))).toList();
+        inputs
+            .map((e) => PallasFp.fromBytes(BytesUtils.fromHexString(e)))
+            .toList();
     PoseidonUtils.permute(state, spec);
     final outputsFields =
-        outputs.map((e) => PallasFp.fromBytes(BytesUtils.fromHexString(e))).toList();
+        outputs
+            .map((e) => PallasFp.fromBytes(BytesUtils.fromHexString(e)))
+            .toList();
     for (var e in state.indexed) {
       expect(e.$2, outputsFields[e.$1]);
     }
@@ -69,7 +56,13 @@ void _mds() {
       return PallasFp.fromBytes64(bytes);
     },
   );
-  final mds = PoseidonUtils.generateMds(grain, size, 0, PallasFp.one, PallasFp.zero);
+  final mds = PoseidonUtils.generateMds(
+    grain,
+    size,
+    0,
+    PallasFp.one,
+    PallasFp.zero,
+  );
   for (int i = 0; i < size; i++) {
     for (int j = 0; j < size; j++) {
       final exp = i == j ? PallasFp.one : PallasFp.zero;
@@ -84,38 +77,6 @@ void _mds() {
   }
 }
 
-void _mdsNative() {
-  final int size = 3;
-  final Grain<PallasNativeFp> grain = Grain(
-    sbox: SboxType.pow,
-    fromBytes: (bytes) {
-      if (bytes.length == 32) return PallasNativeFp.fromBytes(bytes);
-      return PallasNativeFp.fromBytes64(bytes);
-    },
-    t: size,
-    rF: 8,
-    rP: 86,
-  );
-  final mds = PoseidonUtils.generateMds(
-    grain,
-    size,
-    0,
-    PallasNativeFp.one(),
-    PallasNativeFp.zero(),
-  );
-  for (int i = 0; i < size; i++) {
-    for (int j = 0; j < size; j++) {
-      final exp = i == j ? PallasNativeFp.one() : PallasNativeFp.zero();
-      // final result = [0, 1, 2].fold(PallasFp.zero, (acc, k) => acc + (mds.$1.fields[i][k] * mds.$2.fields[k][j]));
-      // assert(exp == result);
-      PallasNativeFp sum = PallasNativeFp.zero();
-      for (int k = 0; k < size; k++) {
-        sum = sum + (mds.mds[i][k] * mds.mdsInv[k][j]);
-      }
-      expect(exp, sum);
-    }
-  }
-}
 
 void _grain() {
   //
@@ -137,7 +98,10 @@ void _grain() {
     final List trys = i["try"];
     for (final i in trys) {
       final f = grain.nextFieldElement();
-      expect(i, BytesUtils.toHexString(f.toBytes().reversed.toList(), prefix: "0x"));
+      expect(
+        i,
+        BytesUtils.toHexString(f.toBytes().reversed.toList(), prefix: "0x"),
+      );
     }
   }
   for (final i in _grainWithoutRejectionTestVector) {
@@ -158,7 +122,10 @@ void _grain() {
     final List trys = i["try"];
     for (final i in trys) {
       final f = grain.nextFieldElementWithoutRejection();
-      expect(i, BytesUtils.toHexString(f.toBytes().reversed.toList(), prefix: "0x"));
+      expect(
+        i,
+        BytesUtils.toHexString(f.toBytes().reversed.toList(), prefix: "0x"),
+      );
     }
   }
 }
@@ -171,7 +138,9 @@ void _hashFp() {
     );
     final messages =
         inputs
-            .map((e) => PallasFp.fromBytes(BytesUtils.fromHexString(e).toList()))
+            .map(
+              (e) => PallasFp.fromBytes(BytesUtils.fromHexString(e).toList()),
+            )
             .toList();
     final p = P128Pow5T3Fp();
     final hasher = PoseidonHash<PallasFp>(p);
@@ -180,22 +149,6 @@ void _hashFp() {
   }
 }
 
-void _hashFpNative() {
-  for (final i in _testVector) {
-    final inputs = JsonParser.valueEnsureAsList<String>(i.elementAt(0));
-    final output = PallasNativeFp.fromBytes(
-      BytesUtils.fromHexString(JsonParser.valueAs<String>(i.elementAt(1))),
-    );
-    final messages =
-        inputs
-            .map((e) => PallasNativeFp.fromBytes(BytesUtils.fromHexString(e).toList()))
-            .toList();
-    final p = P128Pow5T3NativeFp();
-    final hasher = PoseidonHash<PallasNativeFp>(p);
-    final result = hasher.hash(messages);
-    expect(result, output);
-  }
-}
 
 void _hashFq() {
   for (final i in _hashFqTestVector) {
@@ -233,21 +186,6 @@ void _hashFqWithConstants() {
   }
 }
 
-void _hashNativeFq() {
-  for (final i in _hashFqTestVector) {
-    final inputs = [i[0], i[1]];
-    final output = VestaNativeFq.fromBytes(BytesUtils.fromHexString(i.elementAt(2)));
-    final messages =
-        inputs
-            .map((e) => VestaNativeFq.fromBytes(BytesUtils.fromHexString(e).toList()))
-            .toList();
-    final p = P128Pow5T3NativeFq();
-    final hasher = PoseidonHash<VestaNativeFq>(p);
-    final result = hasher.hash(messages);
-    expect(result, output);
-  }
-}
-
 void _testConstants() {
   test("generate constant", () {
     final r = PoseidonUtils.generateConstants(
@@ -273,74 +211,6 @@ void _testConstants() {
       }
     }
     final mdsInv = _PoseidonFPConstants.mdsInv;
-    for (final i in r.mdsInv.indexed) {
-      final exp = mdsInv.elementAt(i.$1);
-      for (final fp in i.$2.indexed) {
-        expect(exp.elementAt(fp.$1).toBytes(), fp.$2.toBytes());
-      }
-    }
-  });
-}
-
-void _testConstantsNative() {
-  test("generate constant", () {
-    final r = PoseidonUtils.generateConstants(
-      fromBytes: (bytes) {
-        if (bytes.length == 32) return PallasNativeFp.fromBytes(bytes);
-        return PallasNativeFp.fromBytes64(bytes);
-      },
-      zero: PallasNativeFp.zero(),
-      one: PallasNativeFp.one(),
-    );
-    final rounts = _PoseidonFPConstants.roundConstants;
-    for (final i in r.constants.indexed) {
-      final exp = rounts.elementAt(i.$1);
-      for (final fp in i.$2.indexed) {
-        expect(exp.elementAt(fp.$1).toBytes(), fp.$2.toBytes());
-      }
-    }
-    final mds = _PoseidonFPConstants.mds;
-    for (final i in r.mds.indexed) {
-      final exp = mds.elementAt(i.$1);
-      for (final fp in i.$2.indexed) {
-        expect(exp.elementAt(fp.$1).toBytes(), fp.$2.toBytes());
-      }
-    }
-    final mdsInv = _PoseidonFPConstants.mdsInv;
-    for (final i in r.mdsInv.indexed) {
-      final exp = mdsInv.elementAt(i.$1);
-      for (final fp in i.$2.indexed) {
-        expect(exp.elementAt(fp.$1).toBytes(), fp.$2.toBytes());
-      }
-    }
-  });
-}
-
-void _testConstantsNativeFq() {
-  test("generate constant", () {
-    final r = PoseidonUtils.generateConstants(
-      fromBytes: (bytes) {
-        if (bytes.length == 32) return VestaNativeFq.fromBytes(bytes);
-        return VestaNativeFq.fromBytes64(bytes);
-      },
-      zero: VestaNativeFq.zero(),
-      one: VestaNativeFq.one(),
-    );
-    final rounts = _PoseidonFQConstants.roundConstants;
-    for (final i in r.constants.indexed) {
-      final exp = rounts.elementAt(i.$1);
-      for (final fp in i.$2.indexed) {
-        expect(exp.elementAt(fp.$1).toBytes(), fp.$2.toBytes());
-      }
-    }
-    final mds = _PoseidonFQConstants.mds;
-    for (final i in r.mds.indexed) {
-      final exp = mds.elementAt(i.$1);
-      for (final fp in i.$2.indexed) {
-        expect(exp.elementAt(fp.$1).toBytes(), fp.$2.toBytes());
-      }
-    }
-    final mdsInv = _PoseidonFQConstants.mdsInv;
     for (final i in r.mdsInv.indexed) {
       final exp = mdsInv.elementAt(i.$1);
       for (final fp in i.$2.indexed) {
@@ -435,7 +305,9 @@ const List<Map<String, dynamic>> _grainTestVector = [
     "t": 4,
     "r_f": 16,
     "r_p": 4,
-    "try": ["0x1facd0789b57ee1b1cab8de7840805f1c0060a872f0f822795a25f1ac4e65a9b"],
+    "try": [
+      "0x1facd0789b57ee1b1cab8de7840805f1c0060a872f0f822795a25f1ac4e65a9b",
+    ],
   },
   {
     "sbox": 0,
@@ -529,7 +401,9 @@ const List<Map<String, dynamic>> _grainTestVector = [
     "t": 2,
     "r_f": 5,
     "r_p": 12,
-    "try": ["0x1d8557f47e37b38067739e34eca34e2787e803137fe35fc5bd8d6711abe9938b"],
+    "try": [
+      "0x1d8557f47e37b38067739e34eca34e2787e803137fe35fc5bd8d6711abe9938b",
+    ],
   },
   {
     "sbox": 0,
@@ -615,7 +489,9 @@ const List<Map<String, dynamic>> _grainTestVector = [
     "t": 8,
     "r_f": 8,
     "r_p": 18,
-    "try": ["0x30ca557a089d91c777dcd2eeb00d7f9423a9dfd553d0cf1a422da31eb1927420"],
+    "try": [
+      "0x30ca557a089d91c777dcd2eeb00d7f9423a9dfd553d0cf1a422da31eb1927420",
+    ],
   },
   {
     "sbox": 1,
@@ -685,7 +561,9 @@ const List<Map<String, dynamic>> _grainWithoutRejectionTestVector = [
     "t": 1446,
     "r_f": 6068,
     "r_p": 11052,
-    "try": ["0x3d6c2a0760575146021dc43018fc0a11a7f6e5c5bacbf6f8e2c3aaf4d07d90f3"],
+    "try": [
+      "0x3d6c2a0760575146021dc43018fc0a11a7f6e5c5bacbf6f8e2c3aaf4d07d90f3",
+    ],
   },
   {
     "sbox": 1,

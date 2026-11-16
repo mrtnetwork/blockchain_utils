@@ -1,7 +1,8 @@
 import 'package:blockchain_utils/blockchain_utils.dart';
 import 'package:test/test.dart';
 
-void main() {
+import '../../utils.dart';
+void sinsemillaTest() {
   const bool native = bool.fromEnvironment('dart.library.io');
   group("Sinsemilla", () {
     test("test vector", _testV);
@@ -10,8 +11,12 @@ void main() {
   });
 }
 
+void main() {
+  BlockchainUtilsTestApi.runTest(sinsemillaTest, "Sinsemilla");
+}
+
+
 void _testDomainHash() {
-  _testSinseMillaNative();
   final sinsemillaS = _testSinseMilla();
   for (final t in _testVector) {
     final i = _TestVector.fromJson(t);
@@ -25,7 +30,7 @@ void _testDomainHash() {
 void _testV() {
   for (final t in _testVector) {
     final i = _TestVector.fromJson(t);
-    final s = HashDomainNative.fromDomain(i.domain);
+    final s = HashDomain.fromDomain(i.domain);
     final r = s.hashToPoint(i.msg);
     final toBytes = r?.toBytes();
     expect(toBytes, i.point);
@@ -136,30 +141,15 @@ void _test() {
 }
 
 List<PallasPoint> _testSinseMilla() {
-  final constants = HashDomainNative.generateSinsemillaSConstants();
+  final constants = SinsemillaConst.sPoints;
   List<PallasPoint> sinsemillaS = [];
   for (int j = 0; j < constants.length; j++) {
     final hash = PallasPoint.hashToCurve(
       domainPrefix: "z.cash:SinsemillaS",
       message: j.toU32LeBytes(),
     );
-    final s = PallasPoint.fromBytes(constants[j].toBytes());
     sinsemillaS.add(hash);
-    expect(s, hash);
-  }
-  return sinsemillaS;
-}
-
-List<PallasNativePoint> _testSinseMillaNative() {
-  final constants = HashDomainNative.generateSinsemillaSConstants();
-  List<PallasNativePoint> sinsemillaS = [];
-  for (int j = 0; j < constants.length; j++) {
-    final hash = PallasNativePoint.hashToCurve(
-      domainPrefix: "z.cash:SinsemillaS",
-      message: j.toU32LeBytes(),
-    );
     expect(constants[j], hash);
-    sinsemillaS.add(hash);
   }
   return sinsemillaS;
 }

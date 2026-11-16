@@ -10,7 +10,7 @@ class MD5 implements SerializableHash<SH1State> {
 
   /// Computes the MD5 hash of the provided [data] and returns the 128-bit (16-byte)
   /// MD5 message digest.
-  static List<int> hash(List<int> data) {
+  static BuBytes hash(List<int> data) {
     final h = MD5();
     h.update(data);
     final digest = h.digest();
@@ -28,6 +28,7 @@ class MD5 implements SerializableHash<SH1State> {
   final List<int> _currentChunk = List<int>.filled(16, 0);
 
   bool _finished = false;
+  bool _cleaned = false;
 
   final _iv = const [0x67452301, 0xefcdab89, 0x98badcfe, 0x10325476];
 
@@ -38,6 +39,7 @@ class MD5 implements SerializableHash<SH1State> {
     BinaryOps.zero(_currentChunk);
     _buffer.clear();
     reset();
+    _cleaned = true;
   }
 
   void _init() {
@@ -101,8 +103,8 @@ class MD5 implements SerializableHash<SH1State> {
 
   /// Generates the final hash digest by assembling and returning the hash state.
   @override
-  List<int> digest() {
-    final out = List<int>.filled(getDigestLength, 0);
+  BuBytes digest() {
+    final out = BuBytes.fill(getDigestLength, 0);
     finish(out);
     return out;
   }
@@ -112,7 +114,8 @@ class MD5 implements SerializableHash<SH1State> {
   /// Parameters:
   ///   - [out]: In which the hash digest is stored.
   @override
-  Hash finish(List<int> out) {
+  MD5 finish(List<int> out) {
+    _ensureAlive("MD5.finish", _cleaned, null);
     if (!_finished) {
       _finalize();
       _iterate();
@@ -155,7 +158,8 @@ class MD5 implements SerializableHash<SH1State> {
   ///
   /// Returns the current instance of the hash algorithm with the initial stat
   @override
-  Hash reset() {
+  MD5 reset() {
+    _ensureAlive("MD5.reset", _cleaned, null);
     _init();
     _finished = false;
     _lengthInBytes = 0;
@@ -168,7 +172,8 @@ class MD5 implements SerializableHash<SH1State> {
   /// - [savedState]: The saved state to restore.
   ///
   @override
-  SerializableHash restoreState(SH1State savedState) {
+  MD5 restoreState(SH1State savedState) {
+    _ensureAlive("MD5.restoreState", _cleaned, null);
     _buffer.clear();
     _buffer.addAll(savedState.buffer);
     _state.setAll(0, savedState.state);
@@ -181,6 +186,7 @@ class MD5 implements SerializableHash<SH1State> {
   /// Saves the current hash computation state into a serializable state object.
   @override
   SH1State saveState() {
+    _ensureAlive("MD5.saveState", _cleaned, null);
     return SH1State(
       buffer: _buffer.clone(),
       length: _lengthInBytes,
@@ -195,9 +201,7 @@ class MD5 implements SerializableHash<SH1State> {
   ///
   @override
   MD5 update(List<int> data) {
-    if (_finished) {
-      throw CryptoException.failed("MD5.update", reason: "State was finished.");
-    }
+    _ensureAlive("MD5.update", _cleaned, _finished);
     _lengthInBytes += data.length;
     _buffer.addAll(data.asBytes);
     _iterate();

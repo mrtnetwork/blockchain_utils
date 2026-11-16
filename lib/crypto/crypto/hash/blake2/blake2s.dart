@@ -1,118 +1,12 @@
 part of 'package:blockchain_utils/crypto/crypto/hash/hash.dart';
 
-/// Configuration class for the Blake2b hash function.
-class Blake2sConfig {
-  /// The key used in the hash function, if provided.
-  final List<int>? key;
-
-  /// A salt value for customizing the hash.
-  final List<int>? salt;
-
-  /// A custom personalization string.
-  final List<int>? personalization;
-  // Configuration for the tree structure, if applicable.
-  final Blake2sTree? tree;
-
-  const Blake2sConfig({this.key, this.salt, this.personalization, this.tree});
-
-  Blake2sConfig copyWith({
-    List<int>? key,
-    List<int>? salt,
-    List<int>? personalization,
-    Blake2sTree? tree,
-  }) {
-    return Blake2sConfig(
-      key: key ?? this.key,
-      salt: salt ?? this.salt,
-      personalization: personalization ?? this.personalization,
-      tree: tree ?? this.tree,
-    );
-  }
-}
-
-/// Configuration for the tree structure in Blake2b.
-class Blake2sTree {
-  final int nodeOffset;
-
-  /// The fanout value for the tree structure.
-  final int fanout;
-
-  /// The maximum depth of the tree.
-  final int maxDepth;
-
-  /// The size of the leaf nodes in the tree.
-  final int leafSize;
-
-  /// The depth of the current node in the tree.
-  final int nodeDepth;
-
-  /// The length of the inner digest.
-  final int innerDigestLength;
-
-  /// Indicates whether this is the last node in the tree.
-  final bool lastNode;
-
-  const Blake2sTree({
-    required this.fanout,
-    required this.maxDepth,
-    required this.leafSize,
-    required this.nodeDepth,
-    required this.innerDigestLength,
-    required this.lastNode,
-    required this.nodeOffset,
-  });
-}
-
-class Blake2sState implements HashState {
-  /// The state vector of the hash function.
-  List<int> state;
-
-  /// The buffer of the hash function.
-  List<int> buffer;
-
-  /// The length of data currently stored in the buffer.
-  int bufferLength;
-
-  /// The counter values used by the hash function.
-  List<int> ctr;
-
-  /// The flags used by the hash function.
-  List<int> flag;
-
-  /// Indicates whether the hash function represents the last node in a tree.
-  bool lastNode;
-
-  /// The padded key used by the hash function, if any.
-  List<int>? paddedKey;
-
-  /// The initial state of the hash function.
-  List<int> initialState;
-
-  /// Creates a new instance of the Blake2sState class with the provided values.
-  Blake2sState({
-    required this.state,
-    required this.buffer,
-    required this.bufferLength,
-    required this.ctr,
-    required this.flag,
-    required this.lastNode,
-    this.paddedKey,
-    required this.initialState,
-  });
-}
-
 /// Implementation of the BLAKE2s hash function that implements the SerializableHash interface.
-class BLAKE2s implements SerializableHash<Blake2sState> {
+class BLAKE2s implements SerializableHash<Blake2State> {
   final int _blockSize = 64; // 64 bytes
   final int _digestLength = 32; // max digest
   final int _keyLength = 32;
-  final int _saltLength = 8;
-  final int _personalizationLength = 8;
-  final int _maxFanout = 255;
-  final int _maxMaxDepth = 255;
-  final int _maxLeafSize = 4294967295;
-  final int _maxNodeOffset = 281474976710655;
-  final List<int> _iv = const [
+  bool _cleaned = false;
+  static const List<int> _iv = [
     0x6a09e667,
     0xbb67ae85,
     0x3c6ef372,
@@ -122,7 +16,7 @@ class BLAKE2s implements SerializableHash<Blake2sState> {
     0x1f83d9ab,
     0x5be0cd19,
   ];
-  late final List<int> _state = List<int>.from(_iv, growable: false);
+  final List<int> _state = List<int>.from(_iv, growable: false);
   final List<int> _buffer = List<int>.filled(64, 0);
   int _bufferLength = 0;
   final List<int> _ctr = List<int>.filled(2, 0);
@@ -131,10 +25,10 @@ class BLAKE2s implements SerializableHash<Blake2sState> {
   bool _finished = false;
   List<int>? _paddedKey;
   List<int> _initialState = [];
-  static List<int> hash(
+  static BuBytes hash(
     List<int> data, [
     int digestLength = 32,
-    Blake2sConfig? config,
+    Blake2Config? config,
   ]) {
     final h = BLAKE2s(digestLength: digestLength, config: config);
     h.update(data);
@@ -151,16 +45,15 @@ class BLAKE2s implements SerializableHash<Blake2sState> {
   ///
   /// Throws:
   /// - An [ArgumentException] if the provided [digestLength] is out of the valid range.
-  BLAKE2s({int digestLength = 32, Blake2sConfig? config}) {
+  BLAKE2s({int digestLength = 32, Blake2Config? config}) {
     if (digestLength < 1 || digestLength > _digestLength) {
-      throw ArgumentException.invalidOperationArguments(
+      throw CoreErrors.invalidOperationArguments(
         "BLAKE2s",
         name: "digestLength",
-        reason: "Incorrect diest length.",
+        reason: "Incorrect digest length.",
       );
     }
-    getDigestLength = digestLength;
-    config = _validateConfig(config);
+    _getDigestLength = digestLength;
     int klength = 0;
     if (config != null && config.key != null) {
       klength = config.key!.length;
@@ -168,23 +61,22 @@ class BLAKE2s implements SerializableHash<Blake2sState> {
 
     int fanout = 1;
     int maxDepth = 1;
-    final tree = config?.tree;
-    if (tree != null) {
-      fanout = tree.fanout;
-      maxDepth = tree.maxDepth;
+    if (config != null) {
+      fanout = config.fanout;
+      maxDepth = config.maxDepth;
     }
 
     _state[0] ^=
         (getDigestLength | (klength << 8) | (fanout << 16) | (maxDepth << 24));
 
-    if (tree != null) {
-      final nofHi = (tree.nodeOffset ~/ 0x100000000) & BinaryOps.mask32;
-      final nofLo = tree.nodeOffset & BinaryOps.mask32;
-      _state[1] ^= tree.leafSize;
+    if (config != null) {
+      final nofHi = (config.nodeOffset ~/ 0x100000000) & BinaryOps.mask32;
+      final nofLo = config.nodeOffset & BinaryOps.mask32;
+      _state[1] ^= config.leafSize;
       _state[2] ^= nofLo;
       _state[3] ^=
-          nofHi | (tree.nodeDepth << 16) | (tree.innerDigestLength << 24);
-      _lastNode = tree.lastNode;
+          nofHi | (config.nodeDepth << 16) | (config.innerDigestLength << 24);
+      _lastNode = config.lastNode;
     }
     final salt = config?.salt;
     if (salt != null) {
@@ -207,6 +99,7 @@ class BLAKE2s implements SerializableHash<Blake2sState> {
   }
   @override
   BLAKE2s reset() {
+    _ensureAlive("BLAKE2s.reset", _cleaned, null);
     _state.setAll(0, _initialState);
     if (_paddedKey != null) {
       _buffer.setAll(0, _paddedKey!);
@@ -220,97 +113,9 @@ class BLAKE2s implements SerializableHash<Blake2sState> {
     return this;
   }
 
-  Blake2sConfig? _validateConfig(Blake2sConfig? config) {
-    if (config == null) return config;
-    final tree = config.tree;
-    List<int>? key = config.key?.clone();
-    List<int>? salt = config.salt?.clone();
-    List<int>? personalization = config.personalization?.clone();
-    if (key != null && key.length > _keyLength) {
-      throw ArgumentException.invalidOperationArguments(
-        "Blake2sConfig",
-        name: "key",
-        reason: "Incorrect key length.",
-      );
-    }
-    if (salt != null) {
-      if (salt.length > _saltLength) {
-        throw ArgumentException.invalidOperationArguments(
-          "Blake2sConfig",
-          name: "salt",
-          reason: "Incorrect salt length.",
-        );
-      }
-      if (salt.length != _saltLength) {
-        salt = List.filled(_saltLength, 0)..setAll(0, salt);
-      }
-    }
-    if (personalization != null) {
-      if (personalization.length > _personalizationLength) {
-        throw ArgumentException.invalidOperationArguments(
-          "Blake2sConfig",
-          name: "personalization",
-          reason: "Incorrect personalization length.",
-        );
-      }
-      if (personalization.length != _personalizationLength) {
-        personalization = List.filled(_personalizationLength, 0)
-          ..setAll(0, personalization);
-      }
-    }
-    if (tree != null) {
-      if (tree.fanout < 0 || tree.fanout > _maxFanout) {
-        throw ArgumentException.invalidOperationArguments(
-          "Blake2sTree",
-          name: "fanout",
-          reason: "Incorrect fanout.",
-        );
-      }
-      if (tree.maxDepth < 0 || tree.maxDepth > _maxMaxDepth) {
-        throw ArgumentException.invalidOperationArguments(
-          "Blake2sTree",
-          name: "depth",
-          reason: "Incorrect depth.",
-        );
-      }
-      if (tree.leafSize < 0 || tree.leafSize > _maxLeafSize) {
-        throw ArgumentException.invalidOperationArguments(
-          "Blake2sTree",
-          name: "leafSize",
-          reason: "Incorrect leaf size.",
-        );
-      }
-      if (tree.innerDigestLength < 0 ||
-          tree.innerDigestLength > _digestLength) {
-        throw ArgumentException.invalidOperationArguments(
-          "Blake2sTree",
-          name: "innerDigestLength",
-          reason: "Incorrect inner digest length",
-        );
-      }
-      if (tree.nodeOffset < 0 || tree.nodeOffset > _maxNodeOffset) {
-        throw ArgumentException.invalidOperationArguments(
-          "Blake2sTree",
-          name: "nodeOffset",
-          reason: "Incorrect node offset.",
-        );
-      }
-    }
-    return Blake2sConfig(
-      key: key,
-      personalization: personalization,
-      salt: salt,
-      tree: tree,
-    );
-  }
-
   @override
   BLAKE2s update(List<int> data, {int? length}) {
-    if (_finished) {
-      throw const CryptoException(
-        "blake2s: can't update because hash was finished.",
-      );
-    }
+    _ensureAlive("BLAKE2s.update", _cleaned, _finished);
 
     final int left = _blockSize - _bufferLength;
     int dataPos = 0;
@@ -354,6 +159,7 @@ class BLAKE2s implements SerializableHash<Blake2sState> {
 
   @override
   BLAKE2s finish(List<int> out) {
+    _ensureAlive("BLAKE2s.finish", _cleaned, null);
     if (!_finished) {
       for (int i = _bufferLength; i < _blockSize; i++) {
         _buffer[i] = 0;
@@ -379,8 +185,8 @@ class BLAKE2s implements SerializableHash<Blake2sState> {
   }
 
   @override
-  List<int> digest() {
-    final List<int> out = List<int>.filled(getDigestLength, 0);
+  BuBytes digest() {
+    final BuBytes out = BuBytes.fill(getDigestLength, 0);
     finish(out);
     return out;
   }
@@ -390,14 +196,14 @@ class BLAKE2s implements SerializableHash<Blake2sState> {
     BinaryOps.zero(_state);
     BinaryOps.zero(_buffer);
     _initialState = [];
-    if (_paddedKey != null) {
-      BinaryOps.zero(_paddedKey!);
-    }
+    BinaryOps.tryZero(_paddedKey);
+    _paddedKey = null;
     _bufferLength = 0;
     BinaryOps.zero(_ctr);
     BinaryOps.zero(_flag);
     _lastNode = false;
     _finished = false;
+    _cleaned = true;
   }
 
   void _processBlock(int length) {
@@ -1592,7 +1398,7 @@ class BLAKE2s implements SerializableHash<Blake2sState> {
   }
 
   @override
-  void cleanSavedState(Blake2sState savedState) {
+  void cleanSavedState(Blake2State savedState) {
     BinaryOps.zero(savedState.state);
     BinaryOps.zero(savedState.buffer);
     BinaryOps.zero(savedState.initialState);
@@ -1610,11 +1416,13 @@ class BLAKE2s implements SerializableHash<Blake2sState> {
 
   @override
   int get getBlockSize => _blockSize;
-
+  int _getDigestLength = 32;
   @override
-  late final int getDigestLength;
+  int get getDigestLength => _getDigestLength;
   @override
-  BLAKE2s restoreState(Blake2sState savedState) {
+  BLAKE2s restoreState(Blake2State savedState) {
+    _ensureAlive("BLAKE2s.restoreState", _cleaned, null);
+    _getDigestLength = savedState.digestLength;
     _state.setAll(0, savedState.state);
     _buffer.setAll(0, savedState.buffer);
     _bufferLength = savedState.bufferLength;
@@ -1625,19 +1433,20 @@ class BLAKE2s implements SerializableHash<Blake2sState> {
       BinaryOps.zero(_paddedKey!);
     }
     _paddedKey = savedState.paddedKey?.clone();
-    _initialState.setAll(0, savedState.initialState);
+    _initialState = savedState.initialState.clone();
     return this;
   }
 
   @override
-  Blake2sState saveState() {
+  Blake2State saveState() {
+    _ensureAlive("BLAKE2s.saveState", _cleaned, _finished);
     if (_finished) {
-      throw CryptoException.failed(
+      throw CoreErrors.cryptoFailed(
         "Blake2sState.saveState",
         reason: "State was finished.",
       );
     }
-    return Blake2sState(
+    return Blake2State(
       state: _state.clone(),
       buffer: _buffer.clone(),
       bufferLength: _bufferLength,
@@ -1646,6 +1455,7 @@ class BLAKE2s implements SerializableHash<Blake2sState> {
       lastNode: _lastNode,
       paddedKey: _paddedKey?.clone(),
       initialState: _initialState.clone(),
+      digestLength: getDigestLength,
     );
   }
 }

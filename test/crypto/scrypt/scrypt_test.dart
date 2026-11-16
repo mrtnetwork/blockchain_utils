@@ -1,20 +1,25 @@
-import 'package:blockchain_utils/crypto/crypto/scrypt/scrypt.dart';
+import 'package:blockchain_utils/blockchain_utils.dart';
 import 'package:test/test.dart';
-import '../../quick_hex.dart';
-import 'package:blockchain_utils/utils/utils.dart';
-
 import 'test_vector.dart';
 
-void main() {
+import '../../utils.dart';
+
+void scryptTest() {
   test("scrypt", () {
     for (final i in testVector.shuffleTake()) {
-      final s = Scrypt(i["n"], i["r"], i["p"]);
-      final derive = s.derive(
+      final d = QuickCrypto.scryptDerive(
         BytesUtils.fromHexString(i["password"]),
         BytesUtils.fromHexString(i["salt"]),
-        32,
+        dkLen: 32,
+        n: i["n"],
+        r: i["r"],
+        p: i["p"],
       );
-      expect(derive.toHex(), i["hash"]);
+      expect(d.toHex(), i["hash"]);
     }
   });
+}
+
+void main() {
+  BlockchainUtilsTestApi.runTest(scryptTest, "Scrypt");
 }

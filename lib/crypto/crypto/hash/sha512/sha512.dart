@@ -23,6 +23,8 @@ class SHA512 implements SerializableHash<SHA512State> {
   int _bytesHashed = 0;
   bool _finished = false;
 
+  bool _cleaned = false;
+
   void _initState() {
     _stateHi[0] = 0x6a09e667;
     _stateHi[1] = 0xbb67ae85;
@@ -46,6 +48,7 @@ class SHA512 implements SerializableHash<SHA512State> {
   /// Resets the hash computation to its initial state.
   @override
   SerializableHash reset() {
+    _ensureAlive("reset", _cleaned, null);
     _initState();
     _bufferLength = 0;
     _bytesHashed = 0;
@@ -60,6 +63,7 @@ class SHA512 implements SerializableHash<SHA512State> {
     BinaryOps.zero(_tempHi);
     BinaryOps.zero(_tempLo);
     reset();
+    _cleaned = true;
   }
 
   /// Updates the hash computation with the given data.
@@ -68,12 +72,7 @@ class SHA512 implements SerializableHash<SHA512State> {
   /// - [data]: Containing the data to be hashed.
   @override
   SerializableHash update(List<int> data, {int? length}) {
-    if (_finished) {
-      throw CryptoException.failed(
-        "SHA512.update",
-        reason: "State was finished.",
-      );
-    }
+    _ensureAlive("update", _cleaned, _finished);
     int dataPos = 0;
     int dataLength = length ?? data.length;
     _bytesHashed += dataLength;
@@ -125,6 +124,7 @@ class SHA512 implements SerializableHash<SHA512State> {
   ///   - [out]: In which the hash digest is stored.
   @override
   SerializableHash finish(List<int> out) {
+    _ensureAlive("finish", _cleaned, null);
     if (!_finished) {
       final bytesHashed = _bytesHashed;
       final left = _bufferLength;
@@ -157,8 +157,8 @@ class SHA512 implements SerializableHash<SHA512State> {
   ///
   /// Returns the Containing the computed hash digest.
   @override
-  List<int> digest() {
-    final out = List<int>.filled(getDigestLength, 0);
+  BuBytes digest() {
+    final out = BuBytes.fill(getDigestLength, 0);
     finish(out);
     return out;
   }
@@ -167,12 +167,7 @@ class SHA512 implements SerializableHash<SHA512State> {
 
   @override
   SHA512State saveState() {
-    if (_finished) {
-      throw CryptoException.failed(
-        "SHA512.saveState",
-        reason: "State was finished.",
-      );
-    }
+    _ensureAlive("saveState", _cleaned, _finished);
     return SHA512State(
       stateHi: _stateHi.clone(),
       stateLo: _stateLo.clone(),
@@ -189,6 +184,7 @@ class SHA512 implements SerializableHash<SHA512State> {
   ///
   @override
   SerializableHash restoreState(SHA512State savedState) {
+    _ensureAlive("restoreState", _cleaned, null);
     _stateHi.setAll(0, savedState.stateHi);
     _stateLo.setAll(0, savedState.stateLo);
     _bufferLength = savedState.bufferLength;
@@ -214,7 +210,7 @@ class SHA512 implements SerializableHash<SHA512State> {
     savedState.bytesHashed = 0;
   }
 
-  final _k = const [
+  static const _k = [
     0x428a2f98,
     0xd728ae22,
     0x71374491,
@@ -875,7 +871,7 @@ class SHA512 implements SerializableHash<SHA512State> {
   }
 
   /// Computes the SHA-512 hash of the provided data.
-  static List<int> hash(List<int> data) {
+  static BuBytes hash(List<int> data) {
     final h = SHA512();
     h.update(data);
     final digest = h.digest();
@@ -885,7 +881,7 @@ class SHA512 implements SerializableHash<SHA512State> {
 }
 
 /// The `SHA512State` class represents the state of a SHA-512 hash calculation.
-class SHA512State implements HashState {
+class SHA512State extends HashState {
   final List<int> stateHi;
   final List<int> stateLo;
   final List<int>? buffer;

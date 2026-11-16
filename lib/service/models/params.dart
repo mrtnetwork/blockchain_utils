@@ -1,9 +1,13 @@
-import 'package:blockchain_utils/cbor/serialization/serialization.dart';
+import 'dart:async';
+
+import 'package:blockchain_utils/encoding/cbor/cbor.dart';
 import 'package:blockchain_utils/exception/exceptions.dart';
-import 'package:blockchain_utils/networks/types/network.dart';
+import 'package:blockchain_utils/chain/types/network.dart';
+import 'package:blockchain_utils/serialization/identifier.dart';
 import 'package:blockchain_utils/service/utils/utils.dart';
 import 'package:blockchain_utils/utils/json/extension/json.dart';
 import 'package:blockchain_utils/utils/string/string.dart';
+import 'package:blockchain_utils_connector/blockchain_utils_connector.dart';
 
 /// Supported HTTP verbs as they appear inside `option (google.api.http) = { ... }`.
 enum RequestMethod {
@@ -30,7 +34,7 @@ enum RequestMethod {
     return values.firstWhere(
       (e) => e.name == name,
       orElse:
-          () => throw ItemNotFoundException(name: "RequestMethod", value: name),
+          () => throw BuError(DefaultErrorType.notFound, "No matching RequestMethod found for the given value. $name", details: {"name": "RequestMethod", "value": name?.toString()}),
     );
   }
 
@@ -39,7 +43,7 @@ enum RequestMethod {
       (e) => e.value == value,
       orElse:
           () =>
-              throw ItemNotFoundException(name: "RequestMethod", value: value),
+              throw BuError(DefaultErrorType.notFound, "No matching RequestMethod found for the given value. $value", details: {"name": "RequestMethod", "value": value?.toString()}),
     );
   }
 }
@@ -58,7 +62,7 @@ enum ServiceResponseType {
   static ServiceResponseType fromValue(int? value) {
     return values.firstWhere(
       (e) => e.value == value,
-      orElse: () => throw ItemNotFoundException(name: "ServiceResponseType"),
+      orElse: () => throw BuError(DefaultErrorType.notFound, "No matching ServiceResponseType found for the given value. null"),
     );
   }
 }
@@ -69,7 +73,7 @@ sealed class BaseServiceResponse {
   const BaseServiceResponse({required this.statusCode, required this.type});
   E cast<E extends BaseServiceResponse>() {
     if (this is! E) {
-      throw CastFailedException<E>(value: this);
+      throw BuError(DefaultErrorType.castFailed, "Failed to cast value", details: {"expected": "E", "value": runtimeType.toString()});
     }
     return this as E;
   }
@@ -78,7 +82,10 @@ sealed class BaseServiceResponse {
 abstract class BaseServiceSuccessRespose extends BaseServiceResponse {
   const BaseServiceSuccessRespose({super.statusCode = 200})
     : super(type: ServiceResponseType.success);
-  T toEncodingResponse<T>(ServiceReponseEncoding encoding);
+  T toEncodingResponse<T>(
+    ServiceReponseEncoding encoding, {
+    CbEncodingErr<T>? onErr,
+  });
 
   Map<String, dynamic>? tryToJson() {
     try {
@@ -91,15 +98,40 @@ abstract class BaseServiceSuccessRespose extends BaseServiceResponse {
   }
 }
 
+typedef CbEncodingErr<T> =
+    T? Function(Object? response, ServiceReponseEncoding encoding);
+
 class ServiceSuccessRespose extends BaseServiceSuccessRespose {
   final Object? response;
-  const ServiceSuccessRespose({super.statusCode = 200, required this.response});
+  final ServiceReponseEncoding? encoding;
+  const ServiceSuccessRespose({
+    super.statusCode = 200,
+    required this.response,
+    this.encoding,
+  });
 
   @override
-  T toEncodingResponse<T>(ServiceReponseEncoding encoding) {
-    return JsonParser.valueAs<T>(
-      ServiceProviderUtils.ecodeResponse(body: response, encoding: encoding),
-    );
+  T toEncodingResponse<T>(
+    ServiceReponseEncoding encoding, {
+    CbEncodingErr<T>? onErr,
+  }) {
+    try {
+      if (encoding == this.encoding) {
+        return JsonParser.valueAs<T>(response);
+      }
+      final encode = ServiceProviderUtils.ecodeResponse(
+        body: response,
+        encoding: encoding,
+      );
+      return JsonParser.valueAs<T>(encode);
+    } catch (_) {
+      if (onErr != null) {
+        final response = onErr(this.response, encoding);
+        if (response != null) return response;
+      }
+
+      rethrow;
+    }
   }
 }
 
@@ -260,7 +292,7 @@ enum ServiceReponseEncoding {
   static ServiceReponseEncoding fromValue(int? value) {
     return values.firstWhere(
       (e) => e.value == value,
-      orElse: () => throw ItemNotFoundException(name: "ServiceReponseEncoding"),
+      orElse: () => throw BuError(DefaultErrorType.notFound, "No matching ServiceReponseEncoding found for the given value. null"),
     );
   }
 }
@@ -351,19 +383,17 @@ abstract class BaseServiceRequestParams extends IServiceRequestParams {
           body: response,
           encoding: responseEncoding,
         ),
+        encoding: responseEncoding,
       );
-    } catch (_) {}
-
-    throw RPCError(
-      message: "Parsing response failed.",
-      request: toJson(),
-      relatedNetwork: network,
-      statusCode: statusCode,
-      details: {
-        "encoding": responseEncoding.name,
-        "response": response.runtimeType.toString(),
-      },
-    );
+    } catch (e) {
+      throw RPCError(
+        message: "Unexpected service response.",
+        request: toJson(),
+        relatedNetwork: network,
+        statusCode: statusCode,
+        details: {"encoding": responseEncoding.name, "error": e.toString()},
+      );
+    }
   }
 
   RPCError _error(BaseServiceErrorResponse response) {
@@ -384,12 +414,16 @@ abstract class BaseServiceRequestParams extends IServiceRequestParams {
   T toEncodingResponse<T>(
     BaseServiceResponse response, {
     ServiceReponseEncoding? encoding,
+    CbEncodingErr<T>? onEncodingErr,
   }) {
     return switch (response) {
       BaseServiceErrorResponse() => throw _error(response),
       BaseServiceSuccessRespose() => () {
         try {
-          return response.toEncodingResponse(encoding ?? responseEncoding);
+          return response.toEncodingResponse(
+            encoding ?? responseEncoding,
+            onErr: onEncodingErr,
+          );
         } catch (e) {
           throw RPCError(
             message: "Parsing response failed.",
@@ -435,6 +469,76 @@ abstract class BaseSubscribtionEvent<IDENTIFIER> extends CborTagSerializable {
   IDENTIFIER get id;
 }
 
+/// Ad-hoc request params for custom service calls.
+///
+/// Unlike [BaseServiceRequestParams] (built for chain JSON-RPC providers
+/// with response decoding, status codes and CBOR persistence), this is a
+/// plain holder for one-off calls such as prover / JWT-issuer endpoints or
+/// any custom per-chain call: a [Uri] endpoint, HTTP [headers], a
+/// [RequestMethod] and an optional raw [BuBytes] body.
+class CustomServiceParams with CborTagSerializable {
+  final Map<String, String> headers;
+  final RequestMethod requestMethod;
+  final BuBytes? body;
+  final Uri path;
+  final ServiceReponseEncoding responseEncoding;
+  CustomServiceParams({
+    required this.path,
+    required this.responseEncoding,
+    this.headers = const {},
+    this.requestMethod = RequestMethod.post,
+    this.body,
+  });
+
+  factory CustomServiceParams.deserialize({List<int>? bytes, CborObject? obj}) {
+    final values = CborTagSerializable.decodeTaggedValue(
+      identifier: BlockchainUtilsSerializationIdentifier.customServiceParams,
+      cborBytes: bytes,
+      cborObject: obj,
+    );
+    final body = values.rawValueAt<List<int>?>(2);
+    return CustomServiceParams(
+      headers: values
+          .mapAt<CborStringValue, CborStringValue>(0)
+          .map((k, v) => MapEntry(k.value, v.value)),
+      requestMethod: RequestMethod.fromValue(values.rawValueAt(1)),
+      body: body == null ? null : BuBytes.immutable(body),
+      path: Uri.parse(values.rawValueAt<String>(3)),
+      responseEncoding: ServiceReponseEncoding.fromValue(values.rawValueAt(4)),
+    );
+  }
+
+  CustomServiceParams copyWith({
+    Map<String, String>? headers,
+    RequestMethod? requestMethod,
+    BuBytes? body,
+    Uri? path,
+  }) {
+    return CustomServiceParams(
+      headers: headers ?? this.headers,
+      requestMethod: requestMethod ?? this.requestMethod,
+      body: body ?? this.body,
+      path: path ?? this.path,
+      responseEncoding: responseEncoding,
+    );
+  }
+
+  @override
+  BlockchainUtilsSerializationIdentifier get serializationIdentifier =>
+      BlockchainUtilsSerializationIdentifier.customServiceParams;
+
+  @override
+  List<CborObject?> get serializationItems => [
+    CborMapValue.definite(
+      headers.map((k, v) => MapEntry(CborStringValue(k), CborStringValue(v))),
+    ),
+    requestMethod.value.toCbor(),
+    body?.toCborBytes(),
+    path.toString().toCbor(),
+    responseEncoding.value.toCbor(),
+  ];
+}
+
 abstract class BaseServiceSubscribtionRequest<
   IDENTIFIER,
   SERVICERESPONSE,
@@ -456,8 +560,8 @@ abstract class IServiceRequest<
   SERVICERESPONSE,
   PARAMS extends IServiceRequestParams
 > {
-  PARAMS buildRequest(int requestID);
-  RESULT onResonse(SERVICERESPONSE result);
+  FutureOr<PARAMS> buildRequest(int requestID);
+  RESULT onResponse(SERVICERESPONSE result);
 }
 
 abstract class BaseServiceRequest<
@@ -469,7 +573,7 @@ abstract class BaseServiceRequest<
   const BaseServiceRequest();
   abstract final RequestMethod requestMethod;
   @override
-  RESULT onResonse(SERVICERESPONSE result) {
+  RESULT onResponse(SERVICERESPONSE result) {
     return JsonParser.valueAs<RESULT>(result);
   }
 }
@@ -481,7 +585,7 @@ abstract class IGRPCServiceRequest<
     implements IServiceRequest<RESULT, List<int>, PARAMS> {
   const IGRPCServiceRequest();
   @override
-  RESULT onResonse(List<int> result);
+  RESULT onResponse(List<int> result);
 }
 
 enum ServiceProtocol {
@@ -501,7 +605,7 @@ enum ServiceProtocol {
   static ServiceProtocol fromValue(int? value) {
     return values.firstWhere(
       (e) => e.id == value,
-      orElse: () => throw ItemNotFoundException(),
+      orElse: () => throw BuError(DefaultErrorType.notFound, "No matching item found for the given value. null"),
     );
   }
 
@@ -634,6 +738,13 @@ abstract mixin class IServiceProvider<
     GRPCPARAM params, {
     Duration? timeout,
   });
+
+  // Future<BaseServiceSuccessRespose> onCustomRequest(
+  //   CustomServiceParams params, {
+  //   Duration? timeout,
+  // }) {
+  //   throw UnimplementedError();
+  // }
 }
 
 abstract class BaseGRPCServiceRequestParams extends IServiceRequestParams {

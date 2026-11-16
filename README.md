@@ -1,173 +1,239 @@
 # blockchain_utils
 
-Discover a versatile and powerful cryptographic toolkit, carefully crafted in pure Dart to serve developers, businesses, and blockchain enthusiasts across multiple platforms. This package offers a wide array of essential features, including encoding/decoding for various data formats, support for numerous blockchain addresses, robust cryptographic algorithms, mnemonic management, and more – all without relying on external dependencies. Whether you're securing private keys, interacting with blockchain networks, or ensuring data integrity, this cross-platform solution simplifies your crypto journey. Experience a comprehensive set of tools designed to meet your diverse encoding, cryptography, and blockchain needs on iOS, Android, the web, Linux, and beyond.
+Pure-Dart cryptography + blockchain toolkit with an optional Rust backend behind one typed API.
 
-This comprehensive package has been shaped by the influence of several key sources, culminating in its development for Dart.
+- **Dual backend, one API:** pure Dart by default, Rust (`FFI` on VM, `WASM` in browser) for speed. Switch at runtime with `blockchainUtils.setRustApi()` / `setDartApi()`. All crypto goes through `blockchainUtils.api.*`.
+- **Zero-dependency Rust core:** `no_std`-compatible, constant-time primitives, built from `Cargo.toml` in this repo. Dart FFI and wasm-bindgen glue are generated from `blockchain_utils_connector` (`tool/build_backends.dart`).
+- **Cross-platform:** iOS, Android, Web, Linux, Windows, macOS.
+- **No external crypto dependencies** in the Dart core.
 
-- python [bip_utils](https://github.com/ebellocchia/bip_utils)
-- python [ecdsa](https://github.com/tlsfuzzer/python-ecdsa)
-- rust [schnorrkel](https://github.com/w3f/schnorrkel)
-- js [stablelib](https://github.com/StableLib/stablelib)
-- rust [strobe](https://github.com/rozbb/strobe-rs)
+Inspired in part by [bip_utils](https://github.com/ebellocchia/bip_utils), [python-ecdsa](https://github.com/tlsfuzzer/python-ecdsa), [schnorrkel](https://github.com/w3f/schnorrkel), [stablelib](https://github.com/StableLib/stablelib), [strobe](https://github.com/rozbb/strobe-rs).
 
-## Features
+> Legacy docs/tests for the old pure-Dart-only releases live in git history and in
+> [mrtnetwork/blockchain_utils](https://github.com/mrtnetwork/blockchain_utils) before the dual-backend rewrite.
+> If you are migrating from `<=6.x`, read [Breaking changes](#breaking-changes) first.
 
-**Encoding and Decoding:**
+## Quick start
 
-1. **Base32 Encoding/Decoding:** Represent binary data with custom character sets for various encoding needs.
+```dart
+import 'package:blockchain_utils/blockchain_utils.dart';
 
-2. **SS58 Encoding/Decoding:** Encode Substrate-based blockchain addresses and public keys in a compact and human-readable format.
+void main() {
+  // Default: pure-Dart backend. Nothing to init.
+  final digest = QuickCrypto.sha256Hash([1, 2, 3]);
+  print(digest.toHex());
+}
+```
 
-3. **Base58 and Base58 XMR Encoding/Decoding:** Efficiently encode binary data, with Base58 XMR tailored for Monero addresses.
+Use the typed backend API instead of static helpers when you care which backend runs:
 
-4. **Base58Check Encoding/Decoding:** Supports checksum creation and verification in blockchain-related data.
+```dart
+final api = blockchainUtils.api;
+final h = api.hash.sha256()
+  ..update([1, 2, 3]);
+final digest = h.digest().asBytes;
+h.clean();
+```
 
-5. **Bech32 Encoding/Decoding:** Including Bech32 for Bitcoin Cash (BCH) and Bech32 SegWit addresses, offering improved error detection and readability for blockchain addresses.
+### Rust backend (FFI on VM, WASM on web)
 
-6. **Hex Encoding/Decoding:** Encode binary data as hexadecimal and decode it back.
+```dart
+import 'package:blockchain_utils/blockchain_utils.dart';
 
-7. **Web3 Secret Storage Definition:** Securely store and manage private keys using the Web3 Secret Storage format.
+Future<void> main() async {
+  // Native VM: loads the platform dynamic library.
+  // Web: loads wasm-bindgen glue (default `wasm_assets/bu.js`).
+  // Await WASM module load first on web (see BlockchainUtilsTestApi.initWasmBrowser).
+  blockchainUtils.setRustApi();
+  print(blockchainUtils.hasNativeBackend); // true
 
-8. **UUIDv4 Generation:** Generate random UUIDs (Universally Unique Identifiers) following the UUIDv4 standard.
+  final sig = blockchainUtils.api.signing.secp256k1.sign(
+    privateKey: privateKeyBytes,
+    messageHash: hash32,
+  );
+}
+```
 
-**Blockchain Address Encoding/Decoding:**
+Lock the backend at startup in production apps so injected code cannot swap it:
 
-- Zilliqa (ZIL)
-- Tezos (XTZ)
-- Ripple (XRP)
-- Monero (XMR)
-- Substrate address
-- Solana (SOL)
-- P2WPKH
-- P2TR
-- P2SH
-- Bitcoin Cash P2PKH
-- Harmony (ONE)
-- OKEx
-- Neo
-- NEAR
-- Nano
-- Injective
-- ICON
-- Filecoin
-- Ethereum
-- Ergo
-- EOS
-- Elrond
-- AVAX
-- Atom
-- Aptos
-- Algorand
-- Ada Shelley
-- Ada Byron
-- Ton
+```dart
+blockchainUtils.setRustApi(seal: true);
+// or: blockchainUtils.setDartApi(seal: true);
+// or: blockchainUtils.setApi(myApi, seal: true);
+```
 
-**Binary Data:**
+Notes:
 
-9. **CBOR Encoding/Decoding:** Compact representation of structured data with cross-language compatibility.
+- `blockchainUtils.backend` exposes the raw `Bu` instance (escape hatch; prefer `api.*`).
+- `blockchainUtils.groth16` is **Rust-only** (no pure-Dart pairing). It throws `BuError` on the Dart backend.
+- `QuickCrypto.generateRandom` can be routed through the backend RNG with `randomFromBackend: true` (default in `setRustApi`).
 
-**Cryptographic Algorithms:**
+## Breaking changes
 
-10. **Cryptographic Algorithms and Operations:**
-    - AES (Advanced Encryption Standard)
-    - ChaCha
-    - ChaCha20Poly1305
-    - CRC32 (Cyclic Redundancy Check)
-    - CTR mode (Counter mode)
-    - ECB mode (Electronic Codebook mode)
-    - GCM (Galois/Counter Mode)
-    - HMAC (Hash-based Message Authentication Code)
-    - PBKDF2 (Password-Based Key Derivation Function 2)
-    - Poly1305
-    - scrypt (Password-based Key Derivation Function)
-    - XModem CRC
-    - Blake2b
-    - Keccak
-    - MD4 (Message Digest 4)
-    - MD5 (Message Digest 5)
-    - Rijndael (AES)
-    - SHA (Secure Hash Algorithm)
-    - SHA224
-    - SHA256
-    - SHA384
-    - SHA512
-    - XXhash
+If you come from the old pure-Dart-only `blockchain_utils` releases:
 
-   These algorithms provide a wide range of cryptographic functions, including encryption, decryption, message authentication, hashing, and more, to enhance security and data integrity in applications.
+1. **Dual backend is the architecture now.** Crypto no longer lives only in static Dart classes. The supported entry point is `blockchainUtils.api.*` (`hash`, `signing`, `secp256k1`, `blockCipher`, `aed`, `keyDerivation`, `monero`, `sapling`, `orchard`, `merkle`, `hw`, `rng`, ...). `QuickCrypto` helpers delegate to the active backend.
+2. **Connector split.** Shared types (`BuBytes`, `SecretBytes`, `BuHashApi`, `BuError`, `BuConfig`, Monero scan types, ...) now come from `blockchain_utils_connector`. Imports of internal paths may need updating.
+3. **`BigInt` replaced by fixed `Uint64` arithmetic** in CryptoOps, Secp256k1, JubJub, BLS12-381, Pasta curves (v7). Faster, but low-level numeric APIs changed.
+4. **CBOR is strict.** No migration/fallback for old payloads. `CborListValue` / `CborMapValue` constructors renamed (`fixedLength` -> `definite`, `dynamicLength` -> `indefinite`) and only accept `CborValue`. Nullable fields use `rawValueAt<T?>`, not `maybeRawValueAt` / `maybeObjectAt`.
+5. **`SecretWallet` renamed** to `Web3SecretStorageDefinitionV3` (encrypt/decrypt bytes, Ethereum keystore compatible).
+6. **Hex / hashing fast paths changed** (performance rewrite); behavior is identical but do not depend on internal functions.
+7. **Rust-only features throw on Dart.** Groth16 verification (BLS12-381 / BN254, e.g. Sui zkLogin) requires `setRustApi()`; the Dart backend throws `unsupported`.
+8. **Backend sealing.** New `seal()` one-way latch blocks later `setApi` / `setRustApi` / `setDartApi`. Tests never seal.
+9. **Minimum SDK `>=3.7.0`**, unified service/provider architecture, constant-time private-key and signing paths (except secp256r1), ported Bitcoin secp256k1.
+10. **Hardware-wallet flow is API-driven** (`HwApi`, `HwCatalog`, readiness tables) with Rust `hw` message codecs (APDU / Trezor / UR / PSBT); transport stays injected (`USB-HID/BLE/NFC` native, WebHID/WebUSB on web). Currently **simulation-tested only — not verified with real devices**.
 
-**Protocols:**
+## Backend support
 
-11. **Strobe Protocol:** A framework for cryptographic protocols, providing simplicity and compatibility for a variety of devices.
+Same typed API on both backends unless noted.
 
-**Zero-Knowledge Proofs:**
+| Area | Pure Dart (default) | Rust (`setRustApi`) |
+|---|---|---|
+| Hash, HMAC, XOFs | ✅ | ✅ (faster) |
+| Curves / signing (secp256k1, secp256r1, Ed25519, BLS, ML-DSA, RedDSA, sr25519) | ✅ | ✅ (constant-time, faster) |
+| Ciphers / AEAD / KDF / RNG | ✅ | ✅ |
+| MuSig2 / FROST / DKLs23 | ✅ | ✅ |
+| Sapling / Orchard / Merkle | ✅ | ✅ |
+| Monero helpers / RingCT | ✅ | ✅ |
+| Hardware-wallet codecs | ✅ | ✅ |
+| Groth16 prove/verify (BLS12-381, BN254) | ❌ throws `unsupported` | ✅ (needs `groth16` / `groth16-prover` features) |
+| `blockchainUtils.backend` (`Bu`) | `null` | active instance |
 
-12. **Merlin Transcript:** A STROBE-based transcript construction for zero-knowledge proofs.
+Build flavors: default = `std + halo2 + groth16 + ffi + monero`; `no_std + alloc` supported; `--features multicore` for parallel MSM/FFT prove; `--target web` glue for browsers (`tool/build_backends.dart --wasm`).
 
-**Schnorrkel-based Cryptography:**
+## Supported tables
 
-13. **Schnorrkel-based Cryptographic Operations:** Includes Schnorrkel for signing, verification, key management, and more.
+Legend: ✅ supported on both backends unless a note says Rust-only.
 
-**Blockchain Support:**
+### Hash / MAC / XOF
 
-14. **BIP39 Mnemonic Generation and Management:** Generate BIP39-compliant mnemonic phrases and manage cryptographic keys derived from them.
+| Primitive | Notes |
+|---|---|
+| SHA-1, SHA-224, SHA-256, SHA-384, SHA-512, SHA-512/256 | streaming via `api.hash.*` |
+| SHA-3 (224/256/384/512), SHAKE128, SHAKE256 | variable digest supported |
+| Keccak + `keccakF1600` | |
+| BLAKE2b / BLAKE2s | keyed, salt, personalization |
+| MD4, MD5 | legacy interop only |
+| RIPEMD-128/160/256/320, `hash160` | |
+| HMAC-SHA-256/384/512 | |
+| XXHash (64/128/256), CRC16/CRC32/XModem | checksums |
+| Poseidon (BN254, circomlib-compatible), Poseidon Orchard, Sinsemilla commit/short-commit, Pedersen hash, `pseudoRando` | Zcash / zkLogin paths |
 
-15. **Substrate Key, Address, and Coin Management:** Efficiently manage keys and addresses in Substrate-based blockchains.
+### Ciphers / AEAD / KDF / RNG
 
-16. **Monero Key, Address, and Coin Management:** Handle Monero cryptocurrency with support for key management, address derivation, and Monero mnemonics.
+| Primitive | Notes |
+|---|---|
+| AES (ECB, CBC, CTR), paddings | via `api.blockCipher` |
+| ChaCha20, XChaCha20, XSalsa20-Poly1305, ChaCha20-Poly1305, AES-GCM | via `api.aed` / `api.streamCipher` |
+| FF1 (format-preserving), F4Jumble | |
+| PBKDF2 (SHA-256/512), scrypt, HKDF | via `api.keyDerivation` |
+| X25519, ECDH helpers | |
+| Fortuna-seeded RNG (`api.rng`, `QuickCrypto.generateRandom`) | `randomFromBackend` opt-in on Rust |
+| JWT, Strobe, Merlin transcripts | `crypto/protocol` |
 
-17. **BIP32 Multi-Curve Key Derivation and Address Management:** Derive keys across multiple cryptographic curves with BIP32 compliance.
+### Curves and signing
 
-18. **SLIP10 Key Derivation and Management:** Advanced key derivation capabilities.
+| Scheme | Sign / verify | Curve arithmetic |
+|---|---|---|
+| secp256k1 ECDSA + Schnorr (incl. BIP-340, MuSig2, FROST) | ✅ | ✅ |
+| secp256r1 (P-256) ECDSA | ✅ | ✅ |
+| Ed25519 / Ed25519-kholaw, Ristretto, X25519 | ✅ | ✅ |
+| sr25519 (Schnorrkel), VRF sign/verify | ✅ | ✅ |
+| BLS12-381 (min-pubkey / min-sig), EIP-2333/2334 | ✅ | G1/G2 ✅ |
+| BN254 G1/G2 | ✅ (verify paths) | ✅ |
+| JubJub + RedJubJub (RedDSA) | ✅ | ✅ |
+| Pallas/Vesta + RedPallas, Pasta IPA | ✅ | ✅ |
+| ML-DSA-65 (+ NEP-649 paths for NEAR) | ✅ | — |
+| DKLs23 threshold ECDSA | ✅ | — |
 
-19. **BIP38 Secure Paper Wallets:** Encrypt private keys to safeguard cryptocurrency assets.
+Chain transaction signers: Bitcoin (ECDSA/Schnorr, incl. BCH Schnorr), Litecoin, Dogecoin, Dash, BSV, Ethereum/EVM, Tron, Solana, XRP (ECDSA/Ed25519), Cardano, Cosmos-style chains, Substrate (ECDSA/Ed25519/sr25519).
 
-20. **BIP44 Key, Address, and Coin Management:** Manage keys, derive addresses, and handle various coins in compliance with the BIP44 standard.
+### Threshold / multi-party / ZK helpers
 
-21. **BIP49 Key, Address, and Coin Management:** Similar to BIP44, with compliance to the BIP49 standard.
+| Protocol | Dart | Rust |
+|---|---|---|
+| MuSig2 (nonce / aggregate / sign / verify) | ✅ | ✅ |
+| FROST (secp256k1 + Ed25519) | ✅ | ✅ |
+| DKLs23 threshold ECDSA | ✅ | ✅ |
+| Groth16 verifier (BLS12-381, BN254) | ❌ | ✅ |
+| Halo2 core (Pasta IPA) for Orchard path | ✅ | ✅ |
+| Sapling + Orchard notes/nullifiers/commitments, Merkle trees | ✅ | ✅ |
+| Solana ZK (ElGamal / proofs, via `solana_zk`) | ✅ | ✅ |
 
-22. **BIP84 Key, Address, and Coin Management:** Manage keys, derive addresses, and handle various coins, complying with the BIP84 standard.
+### Encodings
 
-23. **BIP86 Key, Address, and Coin Management:** Manage keys, derive addresses, and handle various coins, complying with the BIP84 standard.
+| Codec |
+|---|
+| Hex, Base32, Base58 (+Base58-XMR), Base58Check, Base64, Base64-URL |
+| Bech32 / Bech32m, SegWit Bech32, CashAddr (BCH) |
+| SS58 (Substrate) |
+| DER, CBOR (definite/indefinite, tags, bigfloat/bigint/datetime), JSON, UTF-8, double codec |
+| Layout / buffer reader-writer, Proto codec (+ google well-known types) |
+| UUIDv4, Web3 Secret Storage V3, WIF, BIP38 paper wallets |
 
-24. **Electrum Mnemonic V1 and V2 with Key and Address Management:** Support for both Electrum Mnemonic V1 and V2, including SegWit and Standard transactions.
+### Addresses
 
-26. **TonMnemonic:** Support for Ton mnemonics has been added, enabling creation, validation, and seed generation.
+Bitcoin `P2PKH / P2SH / P2WPKH / P2TR`, BCH CashAddr, Litecoin/Doge/Dash/BSV variants, Ethereum/EVM (incl. checksummed), Tron, Solana, XRP (classic + X-address), Cardano Shelley/Byron (enterprise/base/reward/pointer), Cosmos/Injective/THOR-style Bech32, Substrate SS58, Polkadot/Kusama-compatible, NEAR (incl. implicit), Nano, Algorand, Aptos (incl. secp256k1/secp256r1/multikey/multi-Ed25519), Sui (secp256k1/secp256r1/Ed25519/multisig), Stellar (incl. contract), Ton, Ripple, Tezos (`tz1/tz2/tz3`), Monero (standard/integrated/subaddress), Zcash transparent + shielded (see below), Filecoin, EOS, Elrond/MultiversX, Avalanche, Harmony ONE, OKEx, Neo, ICON, Ergo, Zilliqa, plus SLIP-173 / Bech32 HRP tables.
 
-These features make your package a comprehensive solution for encoding, cryptography, blockchain management, BIP39 mnemonic support, and diverse blockchain address encoding and decoding needs.
+### HD wallets / mnemonics / derivation
 
-25. **Sign and Verification:** Implements classes for signing and verifying transaction digests.
+| Standard | Support |
+|---|---|
+| BIP-39 (generation, validation, seed, 12/15/18/21/24 words, passphrases, multi-language) | ✅ |
+| BIP-32 (multi-curve: secp256k1, secp256r1, Ed25519, sr25519 flows) | ✅ |
+| SLIP-10, SLIP-32, SLIP-44 registry | ✅ |
+| BIP-44 / BIP-49 / BIP-84 / BIP-86 account hierarchies + coin configs (hundreds of coins) | ✅ |
+| Electrum V1 / V2 (segwit + standard) | ✅ |
+| Monero mnemonic (25-word, seed, subaddresses) + Monero keys/addresses | ✅ |
+| Algorand mnemonic | ✅ |
+| Ton mnemonic + Ton addresses/keys | ✅ |
+| Cardano (Icarus/Ledger-style) + Shelley/Byron addresses | ✅ |
+| ZIP-32 (Sapling/Orchard HD), Unified viewing/spending keys | ✅ |
+| EIP-2333/2334 (BLS), NEP-649 (ML-DSA/NEAR) | ✅ |
+| Substrate (mini-secret/seed, sr25519/ed25519/ecdsa derive) | ✅ |
 
-- Bitcoin (ECDSA, Schnorr)
-- BitcoinCash (EDDSA)
-- Dogecoin (EDDSA)
-- Litecoin (EDDSA)
-- Dash (EDDSA)
-- BSV (EDDSA)
-- Ethereum (EDDSA)
-- Tron (EDDSA)
-- Solana (EDDSA)
-- XRP (EDDSA, ECDSA)
-- Solana (EDDSA, EDDSA Khalow)
+### Zcash
 
-26. **MuSig2 Operation:**
+Transparent (`P2PKH/P2SH`), Sapling (addresses, notes, nullifiers, viewing/spending keys), Orchard (notes, actions, IVK/OVK, viewing/spending keys), Unified Addresses (UA with receivers), Unified Spending/Viewing/Incoming-Viewing keys (`USK/UFVK/UIVK`), F4Jumble, RedJubJub/RedPallas (RedDSA) signatures, Sinsemilla + Pedersen hashes, Merkle bridges, ZIP-32 derivation.
 
-- Signing and verification
-- Nonce generation
-- Aggregate public key computation
-- Aggregate nonce computation
+### Hardware wallets
 
-**Example: Explore Our Toolkit**
+> Status: simulation-tested only. HW message codecs, readiness tables (`HwCatalog`,
+> `hwReadinessFor` / `isSupportedByHw`), and signing flows are currently validated
+> against simulated transports and fixtures — **not yet tested with real devices**.
+> Expect gaps before using this with real funds.
 
-Discover the capabilities of our comprehensive crypto and blockchain toolkit through interactive tests. Visit our [test page](https://github.com/mrtnetwork/blockchain_utils/tree/main/test) to access thousands of examples, showcasing pure Dart's cross-platform functionality. Learn encoding, cryptography, address management, mnemonics, and more.
+Message codecs (no transport in core): APDU, Trezor protobuf, Uniform Resources (UR), PSBT, unified `HardwareWallet` interface. Transports are injected: USB-HID/BLE/NFC natively, WebHID/WebUSB on web.
+
+Supported families (see `HwCatalog.devices()` / per-coin `hwSupport` rows; readiness varies by coin/variant — query `hwReadinessFor` / `isSupportedByHw`):
+
+Ledger (Nano S Plus, Nano X, Flex, Stax) · Trezor (Model One, Model T, Safe 3/5/7) · KeepKey · OneKey · BitBox02 · Passport · Keystone 3/Pro · Coldcard Q · Jade QR.
+
+Coin flows include BTC (legacy/segwit/taproot), ETH/EVM, TRX, XRP, ATOM, FIL (secp), XTZ (`tz1/tz2/tz3`), SOL, APT, SUI (Ed25519), NEAR, XLM, DOT (SLIP), ADA (Icarus), ZEC transparent. Shielded Zcash and Monero multi-round protocols have no generic HW flow.
+
+Check support offline (no device needed):
+
+```dart
+hwReadinessFor(coin: CryptoCoins.bitcoin, device: BuHwKind.ledgerNanoX.id);
+isSupportedByHw(coin: CryptoCoins.ethereum, device: BuHwKind.trezorModelT.id);
+HwCatalog.coinsFor(BuHwKind.ledgerNanoX);
+```
+
+### Services / utils
+
+Chain service abstractions with a single provider architecture (`service/`), gRPC helpers, amount conversion (human <-> base units), BIP coin config registry, address key validators, constant-time helpers, `Uint64` fixed arithmetic with web/native variants.
+
+## Examples and tests
+
+- `test/` holds thousands of vectors/examples across encodings, crypto, addresses, mnemonics, signers, Sapling/Orchard, and HW codecs.
+- `example/` is a Flutter demo (Android/iOS/Web/Linux/macOS/Windows) wiring backend selection, including WASM glue config for web.
 
 ## Contributing
 
-Contributions are welcome! Please follow these guidelines:
+- Fork, branch, make focused changes, ensure tests pass, open a PR with a clear description.
+- New crypto must land in **both** backends (or explicitly document Rust-only, like Groth16) with test vectors.
+- This package is not released with migration shims for old serialized payloads; CBOR and key formats are strict by design.
 
-- Fork the repository and create a new branch.
-- Make your changes and ensure tests pass.
-- Submit a pull request with a detailed description of your changes.
+## Issues
 
-## Feature requests and bugs #
-
-Please file feature requests and bugs in the issue tracker.
+File feature requests and bugs in the issue tracker.

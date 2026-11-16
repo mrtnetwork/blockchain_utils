@@ -1,132 +1,179 @@
 import 'package:blockchain_utils/helper/extensions/extensions.dart';
-import 'package:blockchain_utils/utils/binary/utils.dart';
-import 'package:blockchain_utils/utils/json/exception/exception.dart';
-import 'package:blockchain_utils/utils/numbers/utils/bigint_utils.dart';
-import 'package:blockchain_utils/utils/numbers/utils/int_utils.dart';
+import 'package:blockchain_utils/exception/exception/core_errors.dart';
+import 'package:blockchain_utils/utils/binary/src/utils.dart';
+import 'package:blockchain_utils/utils/numbers/numbers.dart';
 import 'package:blockchain_utils/utils/string/string.dart';
+import 'package:blockchain_utils_connector/blockchain_utils_connector.dart';
 
+/// Converts loosely-typed JSON-decoded values (num/String/List/Map/etc.)
+/// into strongly-typed Dart values, and detects a generic type parameter's
+/// runtime shape via the `is T` trick used throughout this class.
 class JsonParser {
+  static const _buBytes = BuBytes.unsafe([]);
+
+  /// Whether T is nullable.
   static bool _isNull<T extends Object?>() {
     if (null is T) return true;
     return false;
   }
 
+  /// Whether T is `dynamic`/`Object?`.
   static bool isDynamic<T extends Object?>() {
     return Object is T;
   }
 
+  /// Whether T is `double`.
   static bool _isDouble<T extends Object?>() {
     return 3.14 is T;
   }
 
+  /// Whether T is `String`.
   static bool isString<T extends Object?>() {
     return '' is T;
   }
 
+  /// Whether T is `int`.
   static bool _isInt<T extends Object?>() {
     return 0 is T;
   }
 
+  /// Whether T is `num` (accepts both `int` and `double`).
   static bool _isNum<T extends Object?>() {
     return 0 is T && 0.0 is T;
   }
 
+  /// Whether T is `BigInt`.
   static bool _isBigInt<T extends Object?>() {
     return BigInt.zero is T;
   }
 
+  /// Whether T is `bool`.
   static bool _isBool<T extends Object?>() {
     return true is T;
   }
 
+  /// Whether T is `List<dynamic>`.
   static bool isList<T extends Object?>() {
     return <dynamic>[] is T;
   }
 
+  /// Whether T is `List<String>`.
   static bool _isListString<T extends Object?>() {
     return <String>[] is T;
   }
 
+  /// Whether T is `List<int>`.
   static bool _isListInt<T extends Object?>() {
     return <int>[] is T;
   }
 
+  static bool _isBuBytes<T extends Object?>() {
+    return _buBytes is T;
+  }
+
+  /// Whether T is `List<BigInt>`.
   static bool _isListBigInt<T extends Object?>() {
     return <BigInt>[] is T;
   }
 
+  /// Whether T is `List<double>`.
   static bool _isListDouble<T extends Object?>() {
     return <double>[] is T;
   }
 
+  /// Whether T is `List<bool>`.
   static bool _isListBool<T extends Object?>() {
     return <bool>[] is T;
   }
 
+  /// Whether T is `List<List<int>>`.
   static bool _isListOfListInt<T extends Object?>() {
     return <List<int>>[] is T;
   }
 
+  /// Whether T is `List<List<List<int>>>`.
   static bool _isListOfListOfListInt<T extends Object?>() {
     return <List<List<int>>>[] is T;
   }
 
+  /// Whether T is `List<List<List<int>>>`.
+  static bool _isListOfBytes<T extends Object?>() {
+    return <BuBytes>[] is T;
+  }
+
+  /// Whether T is `Map<dynamic, dynamic>`.
   static bool isMap<T extends Object?>() {
     return <dynamic, dynamic>{} is T;
   }
 
+  /// Whether T is `Map<String, dynamic>`.
   static bool isMapStringDynamic<T extends Object?>() {
     return <String, dynamic>{} is T;
   }
 
+  /// Whether T is `List<Map<dynamic, dynamic>>`.
   static bool _isListOfMap<T extends Object?>() {
     return <Map<dynamic, dynamic>>[] is T;
   }
 
+  /// Whether T is `List<Map<String, dynamic>>`.
   static bool isListOfMapStringDynamic<T extends Object?>() {
     return <Map<String, dynamic>>[] is T;
   }
 
+  /// Whether T is `List<Map<String, String>>`.
   static bool _isListOfMapStringString<T extends Object?>() {
     return <Map<String, String>>[] is T;
   }
 
+  /// Whether T is `Map<String, String>`.
   static bool _isMapStringString<T extends Object?>() {
     return <String, String>{} is T;
   }
 
-  //
+  /// Whether T is `Set<dynamic>`.
   static bool _isSet<T extends Object?>() {
     return <dynamic>{} is T;
   }
 
+  /// Whether T is `Set<int>`.
   static bool _isSetInt<T extends Object?>() {
     return <int>{} is T;
   }
 
+  /// Whether T is `Set<String>`.
   static bool _isSetString<T extends Object?>() {
     return <String>{} is T;
   }
 
+  /// Coerces [value] (int/String/hex/decimal string) to a [BigInt].
   static T valueAsBigInt<T extends BigInt?>(
     Object? value, {
     bool allowHex = false,
     bool? sign,
+    bool allowDecimals = false,
   }) {
-    final v = (() {
+    final T v = (() {
       if (value is T) {
         return value;
       }
       if (value == null && _isNull<T>()) return null as T;
       final toBigint = BigintUtils.tryParse(value, allowHex: allowHex);
       if (toBigint == null) {
-        throw JsonParserError("Failed to parse value as bigint.");
+        if (allowDecimals && value is String) {
+          final decode = BigRational.tryParse(value);
+          if (decode != null) return decode.toBigInt() as T;
+        } else if (value is double && value == value.truncateToDouble()) {
+          final decode = BigRational.tryParse(value.toString());
+          if (decode != null) return decode.toBigInt() as T;
+        }
+        throw CoreErrors.jsonWrongType("Failed to parse value as bigint.");
       }
       return toBigint as T;
     }());
     if (v == null) return v;
     if (sign != null && !sign && v.isNegative) {
-      throw JsonParserError(
+      throw CoreErrors.jsonWrongType(
         "Invalid unsigned bigint.",
         details: {"value": v.toString()},
       );
@@ -134,6 +181,7 @@ class JsonParser {
     return v;
   }
 
+  /// Coerces [value] (num/String/hex string) to an [int].
   static T valueAsInt<T extends int?>(
     Object? value, {
     bool allowHex = false,
@@ -144,7 +192,7 @@ class JsonParser {
 
     int? parse(num v) {
       if (v is int) return v;
-      if (allowDouble == true) return v.toInt();
+      if (allowDouble) return v.toInt();
       if (!allowDouble && v == v.truncateToDouble()) {
         return v.toInt();
       }
@@ -166,7 +214,7 @@ class JsonParser {
 
     final toInt = IntUtils.tryParse(value, allowHex: allowHex);
     if (toInt == null) {
-      throw JsonParserError(
+      throw CoreErrors.jsonWrongType(
         "Failed to parse value as int.",
         details: {"value": value.toString()},
       );
@@ -174,6 +222,7 @@ class JsonParser {
     return toInt as T;
   }
 
+  /// Coerces [value] (num/String/hex string) to a [num].
   static T valueAsNum<T extends num?>(
     Object? value, {
     bool allowHex = false,
@@ -194,7 +243,7 @@ class JsonParser {
     }
     final toInt = IntUtils.tryParse(value, allowHex: allowHex);
     if (toInt == null) {
-      throw JsonParserError(
+      throw CoreErrors.jsonWrongType(
         "Failed to parse value as num.",
         details: {"value": value.toString()},
       );
@@ -202,6 +251,7 @@ class JsonParser {
     return toInt as T;
   }
 
+  /// Coerces [value] (num/String) to a [double].
   static T valueAsDouble<T extends double?>(Object? value) {
     if (value is T) return value;
     if (value == null && _isNull<T>()) return null as T;
@@ -213,9 +263,10 @@ class JsonParser {
       final v = double.tryParse(value);
       if (v != null) return v as T;
     }
-    throw JsonParserError("Failed to parse value as double.");
+    throw CoreErrors.jsonWrongType("Failed to parse value as double.");
   }
 
+  /// Coerces [value] to a [String] — decodes byte lists, optionally JSON-encodes lists/maps.
   static T valueAsString<T extends String?>(
     Object? value, {
     bool allowJson = false,
@@ -243,11 +294,12 @@ class JsonParser {
       }
     }
     if (value is! String) {
-      throw JsonParserError("Failed to parse value as string.");
+      throw CoreErrors.jsonWrongType("Failed to parse value as string.");
     }
     return value as T;
   }
 
+  /// Coerces [value] (bool or "true"/"false" string) to a [bool].
   static T valueAsBool<T extends bool?>(Object? value) {
     if (value is T) return value;
     if (value == null && _isNull<T>()) return null as T;
@@ -259,14 +311,14 @@ class JsonParser {
       if (boolStr == 'false') return false as T;
     }
 
-    throw JsonParserError("Failed to parse value as boolean.");
+    throw CoreErrors.jsonWrongType("Failed to parse value as boolean.");
   }
 
+  /// Coerces [value] to a byte list — accepts a raw byte [List], a hex or
+  /// [encoding]-decoded [String], or (with [allowJson]) a JSON-encoded list/map.
   static T valueAsBytes<T extends List<int>?>(
     Object? value, {
     bool allowHex = true,
-
-    /// string encoding
     StringEncoding? encoding,
     bool allowJson = false,
   }) {
@@ -275,30 +327,31 @@ class JsonParser {
       try {
         return value.cast<int>().asBytes as T;
       } catch (_) {
-        throw JsonParserError("Failed to parse value as bytes.");
+        throw CoreErrors.jsonWrongType("Failed to parse value as bytes.");
       }
     }
 
     if (value is String) {
-      if (allowHex && StringUtils.isHexBytes(value)) {
+      if (encoding != null) {
+        final toBytes = StringUtils.tryEncode(value, encoding: encoding);
+        if (toBytes != null) return toBytes as T;
+      }
+      if (allowHex && encoding != StringEncoding.hex) {
         final toBytes = BytesUtils.tryFromHexString(value);
         if (toBytes != null) return toBytes as T;
       }
-      if (encoding != null) {
-        final toBytes = StringUtils.tryEncode(value, encoding: encoding);
-
-        if (toBytes != null) return toBytes as T;
-        throw JsonParserError("Failed to parse value as bytes.");
-      }
+      throw CoreErrors.jsonWrongType("Failed to parse value as bytes.");
     }
     if (allowJson && (value is List || value is Map)) {
       final toBytes = StringUtils.tryEncodeJson(value);
       if (toBytes != null) return toBytes as T;
     }
 
-    throw JsonParserError("Failed to parse value as bytes.");
+    throw CoreErrors.jsonWrongType("Failed to parse value as bytes.");
   }
 
+  /// Coerces [value] to a `Map<String, dynamic>` or `Map<String, String>`,
+  /// matching whichever T actually is.
   static T valueAsMap<T extends Map?>(Object? value) {
     if (value is T) return value;
     if (value == null && _isNull<T>()) return null as T;
@@ -311,9 +364,10 @@ class JsonParser {
         return valueEnsureAsMap<String, String>(value) as T;
       }
     }
-    throw JsonParserError("Failed to parse value as map.");
+    throw CoreErrors.jsonWrongType("Failed to parse value as map.");
   }
 
+  /// Coerces [value] to whichever concrete `List<...>` shape T is.
   static T valueAsList<T extends List?>(Object? value) {
     if (value is T) return value;
     if (value == null && _isNull<T>()) return null as T;
@@ -335,13 +389,18 @@ class JsonParser {
         return valueEnsureAsList<Map<String, dynamic>>(value) as T;
       } else if (_isListOfMapStringString<T>()) {
         return valueEnsureAsList<Map<String, String>>(value) as T;
+      } else if (_isListOfListInt<T>()) {
+        return valueEnsureAsList<List<int>>(value) as T;
+      } else if (_isListOfBytes<T>()) {
+        return valueEnsureAsList<BuBytes>(value) as T;
       } else if (_isListOfListOfListInt<T>()) {
         return valueEnsureAsList<List<List<int>>>(value) as T;
       }
     }
-    throw JsonParserError("Failed to parse value as map.");
+    throw CoreErrors.jsonWrongType("Failed to parse value as $T.");
   }
 
+  /// Coerces [value] to whichever concrete `Set<...>` shape T is.
   static T valueAsSet<T extends Set?>(Object? value) {
     if (value is T) return value;
     if (value == null && _isNull<T>()) return null as T;
@@ -353,18 +412,20 @@ class JsonParser {
         return valueEnsureAsSet<int>(value) as T;
       }
     }
-    throw JsonParserError("Failed to parse value as set.");
+    throw CoreErrors.jsonWrongType("Failed to parse value as set.");
   }
 
+  /// Casts [value] to `Map<KK, VV>`, rebuilding it if it isn't already one.
   static Map<KK, VV> valueEnsureAsMap<KK, VV>(Object? value) {
     if (value is Map<KK, VV>) return value;
     try {
       return Map<KK, VV>.from(value as Map);
     } catch (_) {
-      throw JsonParserError("Failed to parse value as map.");
+      throw CoreErrors.jsonWrongType("Failed to parse value as map.");
     }
   }
 
+  /// Casts [value] to `List<T>`, converting each element if needed.
   static List<T> valueEnsureAsList<T>(Object? value) {
     if (value is List<T>) return value;
     try {
@@ -398,33 +459,50 @@ class JsonParser {
                 .toList()
                 .cast<T>();
           }
-          if (_isListOfListInt()) {
+          if (_isListOfListInt<T>()) {
             return value
                 .map((e) => valueEnsureAsList<List<int>>(e))
                 .toList()
                 .cast<T>();
           }
+          if (_isListOfBytes<T>()) {
+            final result =
+                value.map((e) => valueEnsureAsList<BuBytes>(e)).toList();
+            return result.cast<T>();
+          }
+          if (_isBuBytes<T>()) {
+            final result =
+                value
+                    .map((e) => valueEnsureAsList<int>(e))
+                    .map((e) => e.asBytes)
+                    .toList();
+            return result.cast<T>();
+          }
+
           return value.map((e) => valueAs<T>(e)).toList();
         }
       } catch (_) {}
       return List<T>.from(value);
     } catch (e) {
-      throw JsonParserError(
+      throw CoreErrors.jsonWrongType(
         "Failed to parse object as list<$T>",
         details: {"error": e.toString()},
       );
     }
   }
 
+  /// Casts [value] to `Set<T>`, rebuilding it if it isn't already one.
   static Set<T> valueEnsureAsSet<T>(Object? value) {
     if (value is Set<T>) return value;
     try {
       return Set<T>.from(value as Iterable);
     } catch (_) {
-      throw JsonParserError("Failed to parse object as set<$T>");
+      throw CoreErrors.jsonWrongType("Failed to parse object as set<$T>");
     }
   }
 
+  /// Central dispatcher: coerces [value] to whichever concrete type T is
+  /// (num/String/List/Map/Set/etc.), by inspecting T's runtime shape.
   static T valueAs<T extends Object?>(
     Object? value, {
     bool? allowHex,
@@ -442,7 +520,7 @@ class JsonParser {
       if (_isNull<T>()) return null as T;
     }
     if (value == null) {
-      throw JsonParserError("Failed to parse value as $T");
+      throw CoreErrors.jsonWrongType("Failed to parse value as $T");
     }
     if (value is T) return value as T;
     if (isDynamic<T>()) {
@@ -479,6 +557,13 @@ class JsonParser {
             as T;
       }
       return valueAsList<List<int>>(value) as T;
+    } else if (_isBuBytes<T>()) {
+      return valueAsBytes<BuBytes>(
+            value,
+            allowHex: allowHex ?? true,
+            encoding: encoding,
+          )
+          as T;
     } else if (_isListBigInt<T>()) {
       return valueAsList<List<BigInt>>(value) as T;
     } else if (_isListBool<T>()) {
@@ -494,9 +579,10 @@ class JsonParser {
     } else if (_isListOfListOfListInt<T>()) {
       return valueEnsureAsList<List<List<int>>>(value) as T;
     }
-    throw JsonParserError("Failed to parse object as $T");
+    throw CoreErrors.jsonWrongType("Failed to parse object as $T");
   }
 
+  /// Coerces [value] to `VV` via [valueAs], then applies [parse] to build a `T`.
   static T valueTo<T extends Object?, VV extends Object?>({
     required Object? value,
     required T Function(VV v) parse,
@@ -518,28 +604,52 @@ class JsonParser {
   }
 }
 
+/// Typed field lookup/coercion helpers for JSON-decoded maps.
 extension ExtJSONHelper<K, V> on Map<K, V> {
+  String _normalizeKey(String key) {
+    return key
+        .replaceAll('_', '')
+        .replaceAll('-', '')
+        .replaceAll(' ', '')
+        .toLowerCase();
+  }
+
+  /// Looks up [key] (optionally falling back to its snake_case/camelCase
+  /// form), returning [onMissing]'s result or throwing if absent.
   Object? _checkItem<T extends Object?>(
     K key,
     T Function()? onMissing,
-    bool acceptSnakeCase,
-    bool acceptCamelCase,
+    bool normalizeKeys,
   ) {
     V? value = this[key];
-    if (value == null && key is String) {
-      if (acceptSnakeCase) {
-        value = this[StringUtils.camelToSnake(key)];
-      } else if (acceptCamelCase) {
-        value = this[StringUtils.snakeToCamel(key, capitalizeFirst: false)];
+
+    if (value != null) return value;
+
+    if (normalizeKeys && key is String) {
+      final normalizedKey = _normalizeKey(key);
+
+      for (final entry in entries) {
+        final key = entry.key;
+        if (key is String && _normalizeKey(key) == normalizedKey) {
+          value = entry.value;
+          break;
+        }
       }
     }
+
     if (value != null) return value;
     if (JsonParser._isNull<T>()) return value;
     if (onMissing != null) return onMissing();
-    if (!containsKey(key)) throw JsonParserError("Missing key: '$key'.");
-    throw JsonParserError("Null value for key: '$key'.");
+
+    if (!containsKey(key)) {
+      throw CoreErrors.jsonKeyNotFound(key);
+    }
+
+    throw BuError(DefaultErrorType.badJson,"Null value for key: '$key'.");
   }
 
+  /// Tries each of [keys] in order, returning the first one present
+  /// (parsed via [parse]).
   E oneOf<E, T>({
     required List<K> keys,
     required E Function(K key, T e) parse,
@@ -549,68 +659,64 @@ extension ExtJSONHelper<K, V> on Map<K, V> {
       if (result != null) return result;
     }
     if (null is E) return null as E;
-    throw JsonParserError(
+    throw BuError(DefaultErrorType.notFound,
       'No matching key found.',
       details: {'keys': keys.join(", "), 'data': toString()},
     );
   }
 
+  /// Throws if [key] isn't present in this map.
   void ensureKeyExists(K key) {
     if (containsKey(key)) return;
-    throw JsonParserError("Missing key: '$key'.");
+    throw CoreErrors.jsonKeyNotFound(key);
   }
 
+  /// Whether [key] is present and its value isn't null.
   bool hasValue(K key) {
     final value = this[key];
     return value != null;
   }
 
+  /// Reads [key] and coerces it to a BigInt.
   T valueAsBigInt<T extends BigInt?>(
     K key, {
     bool allowHex = false,
-    T Function(JsonParserError err)? onError,
+    T Function(BuError err)? onError,
     T Function()? onMissing,
     bool? sign,
+    bool allowDecimals = false,
 
-    /// Also accepts the snake_case or camel_case version of [key] when looking up JSON fields.
     /// Only applicable when [K] is `String`.
-    bool acceptSnakeCase = false,
-    bool acceptCamelCase = false,
+    bool normalizeKeyLookup = false,
   }) {
     try {
-      final value = _checkItem<T>(
-        key,
-        onMissing,
-        acceptSnakeCase,
-        acceptCamelCase,
-      );
+      final value = _checkItem<T>(key, onMissing, normalizeKeyLookup);
       if (value == null) return value as T;
-      return JsonParser.valueAsBigInt<T>(value, allowHex: allowHex, sign: sign);
-    } on JsonParserError catch (e) {
+      return JsonParser.valueAsBigInt<T>(
+        value,
+        allowHex: allowHex,
+        sign: sign,
+        allowDecimals: allowDecimals,
+      );
+    } on BuError catch (e) {
       if (onError != null) return onError(e);
-      rethrow;
+      throw CoreErrors.jsonErrorWithKey(e, key);
     }
   }
 
+  /// Reads [key] and coerces it to an int.
   T valueAsInt<T extends int?>(
     K key, {
     bool allowHex = false,
     bool allowDouble = false,
-    T Function(JsonParserError err)? onError,
+    T Function(BuError err)? onError,
     T Function()? onMissing,
 
-    /// Also accepts the snake_case or camel_case version of [key] when looking up JSON fields.
     /// Only applicable when [K] is `String`.
-    bool acceptSnakeCase = false,
-    bool acceptCamelCase = false,
+    bool normalizeKeyLookup = false,
   }) {
     try {
-      final value = _checkItem<T>(
-        key,
-        onMissing,
-        acceptSnakeCase,
-        acceptCamelCase,
-      );
+      final value = _checkItem<T>(key, onMissing, normalizeKeyLookup);
       if (value == null) return value as T;
 
       return JsonParser.valueAsInt<T>(
@@ -618,31 +724,25 @@ extension ExtJSONHelper<K, V> on Map<K, V> {
         allowDouble: allowDouble,
         allowHex: allowHex,
       );
-    } on JsonParserError catch (e) {
+    } on BuError catch (e) {
       if (onError != null) return onError(e);
-      rethrow;
+      throw CoreErrors.jsonErrorWithKey(e, key);
     }
   }
 
+  /// Reads [key] and coerces it to a num.
   T valueAsNum<T extends num?>(
     K key, {
     bool allowHex = false,
     bool allowDouble = false,
-    T Function(JsonParserError err)? onError,
+    T Function(BuError err)? onError,
     T Function()? onMissing,
 
-    /// Also accepts the snake_case or camel_case version of [key] when looking up JSON fields.
     /// Only applicable when [K] is `String`.
-    bool acceptSnakeCase = false,
-    bool acceptCamelCase = false,
+    bool normalizeKeyLookup = false,
   }) {
     try {
-      final value = _checkItem<T>(
-        key,
-        onMissing,
-        acceptSnakeCase,
-        acceptCamelCase,
-      );
+      final value = _checkItem<T>(key, onMissing, normalizeKeyLookup);
       if (value == null) return value as T;
 
       return JsonParser.valueAsNum<T>(
@@ -650,58 +750,46 @@ extension ExtJSONHelper<K, V> on Map<K, V> {
         allowDouble: allowDouble,
         allowHex: allowHex,
       );
-    } on JsonParserError catch (e) {
+    } on BuError catch (e) {
       if (onError != null) return onError(e);
-      rethrow;
+      throw CoreErrors.jsonErrorWithKey(e, key);
     }
   }
 
+  /// Reads [key] and coerces it to a double.
   T valueAsDouble<T extends double?>(
     K key, {
-    T Function(JsonParserError err)? onError,
+    T Function(BuError err)? onError,
     T Function()? onMissing,
 
-    /// Also accepts the snake_case or camel_case version of [key] when looking up JSON fields.
     /// Only applicable when [K] is `String`.
-    bool acceptSnakeCase = false,
-    bool acceptCamelCase = false,
+    bool normalizeKeyLookup = false,
   }) {
     try {
-      final value = _checkItem<T>(
-        key,
-        onMissing,
-        acceptSnakeCase,
-        acceptCamelCase,
-      );
+      final value = _checkItem<T>(key, onMissing, normalizeKeyLookup);
       if (value == null) return value as T;
 
       return JsonParser.valueAsDouble<T>(value);
-    } on JsonParserError catch (e) {
+    } on BuError catch (e) {
       if (onError != null) return onError(e);
-      rethrow;
+      throw CoreErrors.jsonErrorWithKey(e, key);
     }
   }
 
+  /// Reads [key] and coerces it to a String.
   T valueAsString<T extends String?>(
     K key, {
-    T Function(JsonParserError err)? onError,
+    T Function(BuError err)? onError,
     T Function()? onMissing,
     bool allowJson = false,
     bool allowHexEncoding = false,
     StringEncoding? bytesEncoding = StringEncoding.utf8,
 
-    /// Also accepts the snake_case or camel_case version of [key] when looking up JSON fields.
     /// Only applicable when [K] is `String`.
-    bool acceptSnakeCase = false,
-    bool acceptCamelCase = false,
+    bool normalizeKeyLookup = false,
   }) {
     try {
-      final value = _checkItem<T>(
-        key,
-        onMissing,
-        acceptSnakeCase,
-        acceptCamelCase,
-      );
+      final value = _checkItem<T>(key, onMissing, normalizeKeyLookup);
       if (value == null) return value as T;
 
       return JsonParser.valueAsString<T>(
@@ -710,37 +798,32 @@ extension ExtJSONHelper<K, V> on Map<K, V> {
         allowHexEncoding: allowHexEncoding,
         bytesEncoding: bytesEncoding,
       );
-    } on JsonParserError catch (e) {
+    } on BuError catch (e) {
       if (onError != null) return onError(e);
-      rethrow;
+      throw CoreErrors.jsonErrorWithKey(e, key);
     }
   }
 
+  /// Reads [key] and coerces it to a bool.
   T valueAsBool<T extends bool?>(
     K key, {
-    T Function(JsonParserError err)? onError,
+    T Function(BuError err)? onError,
     T Function()? onMissing,
 
-    /// Also accepts the snake_case or camel_case version of [key] when looking up JSON fields.
     /// Only applicable when [K] is `String`.
-    bool acceptSnakeCase = false,
-    bool acceptCamelCase = false,
+    bool normalizeKeyLookup = false,
   }) {
     try {
-      final value = _checkItem<T>(
-        key,
-        onMissing,
-        acceptSnakeCase,
-        acceptCamelCase,
-      );
+      final value = _checkItem<T>(key, onMissing, normalizeKeyLookup);
       if (value == null) return value as T;
       return JsonParser.valueAsBool<T>(value);
-    } on JsonParserError catch (e) {
+    } on BuError catch (e) {
       if (onError != null) return onError(e);
-      rethrow;
+      throw CoreErrors.jsonErrorWithKey(e, key);
     }
   }
 
+  /// Reads [key] and coerces it to bytes.
   T valueAsBytes<T extends List<int>?>(
     K key, {
     bool allowHex = true,
@@ -748,19 +831,12 @@ extension ExtJSONHelper<K, V> on Map<K, V> {
     bool allowJson = false,
     T Function()? onMissing,
 
-    /// Also accepts the snake_case or camel_case version of [key] when looking up JSON fields.
     /// Only applicable when [K] is `String`.
-    bool acceptSnakeCase = false,
-    bool acceptCamelCase = false,
-    T Function(JsonParserError err)? onError,
+    bool normalizeKeyLookup = false,
+    T Function(BuError err)? onError,
   }) {
     try {
-      final value = _checkItem<T>(
-        key,
-        onMissing,
-        acceptSnakeCase,
-        acceptCamelCase,
-      );
+      final value = _checkItem<T>(key, onMissing, normalizeKeyLookup);
       if (value == null) return value as T;
 
       return JsonParser.valueAsBytes<T>(
@@ -769,161 +845,126 @@ extension ExtJSONHelper<K, V> on Map<K, V> {
         encoding: encoding,
         allowJson: allowJson,
       );
-    } on JsonParserError catch (e) {
+    } on BuError catch (e) {
       if (onError != null) return onError(e);
-      rethrow;
+      throw CoreErrors.jsonErrorWithKey(e, key);
     }
   }
 
+  /// Reads [key] and coerces it to a Map.
   T valueAsMap<T extends Map?>(
     K key, {
-    T Function(JsonParserError err)? onError,
+    T Function(BuError err)? onError,
     T Function()? onMissing,
 
-    /// Also accepts the snake_case or camel_case version of [key] when looking up JSON fields.
     /// Only applicable when [K] is `String`.
-    bool acceptSnakeCase = false,
-    bool acceptCamelCase = false,
+    bool normalizeKeyLookup = false,
   }) {
     try {
-      final value = _checkItem<T>(
-        key,
-        onMissing,
-        acceptSnakeCase,
-        acceptCamelCase,
-      );
+      final value = _checkItem<T>(key, onMissing, normalizeKeyLookup);
       if (value == null) return value as T;
 
       return JsonParser.valueAsMap<T>(value);
-    } on JsonParserError catch (e) {
+    } on BuError catch (e) {
       if (onError != null) return onError(e);
-      rethrow;
+      throw CoreErrors.jsonErrorWithKey(e, key);
     }
   }
 
+  /// Reads [key] and coerces it to a List.
   T valueAsList<T extends List?>(
     K key, {
-    T Function(JsonParserError err)? onError,
+    T Function(BuError err)? onError,
     T Function()? onMissing,
 
-    /// Also accepts the snake_case or camel_case version of [key] when looking up JSON fields.
     /// Only applicable when [K] is `String`.
-    bool acceptSnakeCase = false,
-    bool acceptCamelCase = false,
+    bool normalizeKeyLookup = false,
   }) {
     try {
-      final value = _checkItem<T>(
-        key,
-        onMissing,
-        acceptSnakeCase,
-        acceptCamelCase,
-      );
+      final value = _checkItem<T>(key, onMissing, normalizeKeyLookup);
       if (value == null) return value as T;
       return JsonParser.valueAsList<T>(value);
-    } on JsonParserError catch (e) {
+    } on BuError catch (e) {
       if (onError != null) return onError(e);
-      rethrow;
+      throw CoreErrors.jsonErrorWithKey(e, key);
     }
   }
 
+  /// Reads [key] and coerces it to a Set.
   T valueAsSet<T extends Set?>(
     K key, {
-    T Function(JsonParserError err)? onError,
+    T Function(BuError err)? onError,
     T Function()? onMissing,
 
-    /// Also accepts the snake_case or camel_case version of [key] when looking up JSON fields.
     /// Only applicable when [K] is `String`.
-    bool acceptSnakeCase = false,
-    bool acceptCamelCase = false,
+    bool normalizeKeyLookup = false,
   }) {
     try {
-      final value = _checkItem<T>(
-        key,
-        onMissing,
-        acceptSnakeCase,
-        acceptCamelCase,
-      );
+      final value = _checkItem<T>(key, onMissing, normalizeKeyLookup);
       if (value == null) return value as T;
 
       return JsonParser.valueAsSet<T>(value);
-    } on JsonParserError catch (e) {
+    } on BuError catch (e) {
       if (onError != null) return onError(e);
-      rethrow;
+      throw CoreErrors.jsonErrorWithKey(e, key);
     }
   }
 
+  /// Reads [key] and casts it to `Map<KK, VV>`.
   Map<KK, VV> valueEnsureAsMap<KK, VV>(
     K key, {
-    Map<KK, VV> Function(JsonParserError err)? onError,
+    Map<KK, VV> Function(BuError err)? onError,
     Map<KK, VV> Function()? onMissing,
 
-    /// Also accepts the snake_case or camel_case version of [key] when looking up JSON fields.
     /// Only applicable when [K] is `String`.
-    bool acceptSnakeCase = false,
-    bool acceptCamelCase = false,
+    bool normalizeKeyLookup = false,
   }) {
     try {
-      final value = _checkItem<Map>(
-        key,
-        onMissing,
-        acceptSnakeCase,
-        acceptCamelCase,
-      );
+      final value = _checkItem<Map>(key, onMissing, normalizeKeyLookup);
       return JsonParser.valueEnsureAsMap<KK, VV>(value);
-    } on JsonParserError catch (e) {
+    } on BuError catch (e) {
       if (onError != null) return onError(e);
-      rethrow;
+      throw CoreErrors.jsonErrorWithKey(e, key);
     }
   }
 
+  /// Reads [key] and casts it to `List<T>`.
   List<T> valueEnsureAsList<T>(
     K key, {
-    List<T> Function(JsonParserError err)? onError,
+    List<T> Function(BuError err)? onError,
     List<T> Function()? onMissing,
 
-    /// Also accepts the snake_case or camel_case version of [key] when looking up JSON fields.
     /// Only applicable when [K] is `String`.
-    bool acceptSnakeCase = false,
-    bool acceptCamelCase = false,
+    bool normalizeKeyLookup = false,
   }) {
     try {
-      final value = _checkItem<List>(
-        key,
-        onMissing,
-        acceptSnakeCase,
-        acceptCamelCase,
-      );
+      final value = _checkItem<List>(key, onMissing, normalizeKeyLookup);
       return JsonParser.valueEnsureAsList<T>(value);
-    } on JsonParserError catch (e) {
+    } on BuError catch (e) {
       if (onError != null) return onError(e);
-      rethrow;
+      throw CoreErrors.jsonErrorWithKey(e, key);
     }
   }
 
+  /// Reads [key] and casts it to `Set<T>`.
   Set<T> valueEnsureAsSet<T>(
     K key, {
-    Set<T> Function(JsonParserError err)? onError,
+    Set<T> Function(BuError err)? onError,
     Set<T> Function()? onMissing,
 
-    /// Also accepts the snake_case or camel_case version of [key] when looking up JSON fields.
     /// Only applicable when [K] is `String`.
-    bool acceptSnakeCase = false,
-    bool acceptCamelCase = false,
+    bool normalizeKeyLookup = false,
   }) {
     try {
-      final value = _checkItem<Set>(
-        key,
-        onMissing,
-        acceptSnakeCase,
-        acceptCamelCase,
-      );
+      final value = _checkItem<Set>(key, onMissing, normalizeKeyLookup);
       return JsonParser.valueEnsureAsSet<T>(value);
-    } on JsonParserError catch (e) {
+    } on BuError catch (e) {
       if (onError != null) return onError(e);
-      rethrow;
+      throw CoreErrors.jsonErrorWithKey(e, key);
     }
   }
 
+  /// Reads [key] and coerces it to whichever concrete type T is.
   T valueAs<T extends Object?>(
     K key, {
     bool? allowHex,
@@ -931,12 +972,10 @@ extension ExtJSONHelper<K, V> on Map<K, V> {
     bool asBytes = false,
     T Function()? onMissing,
 
-    /// Also accepts the snake_case or camel_case version of [key] when looking up JSON fields.
     /// Only applicable when [K] is `String`.
-    bool acceptSnakeCase = false,
-    bool acceptCamelCase = false,
+    bool normalizeKeyLookup = false,
 
-    T Function(JsonParserError err)? onError,
+    T Function(BuError err)? onError,
   }) {
     assert(
       (allowHex == null && encoding == null) || asBytes,
@@ -944,12 +983,7 @@ extension ExtJSONHelper<K, V> on Map<K, V> {
     );
 
     try {
-      final value = _checkItem<T>(
-        key,
-        onMissing,
-        acceptSnakeCase,
-        acceptCamelCase,
-      );
+      final value = _checkItem<T>(key, onMissing, normalizeKeyLookup);
       if (value == null) return null as T;
       return JsonParser.valueAs(
         value,
@@ -957,12 +991,13 @@ extension ExtJSONHelper<K, V> on Map<K, V> {
         asBytes: asBytes,
         encoding: encoding,
       );
-    } on JsonParserError catch (e) {
+    } on BuError catch (e) {
       if (onError != null) return onError(e);
-      rethrow;
+      throw CoreErrors.jsonErrorWithKey(e, key);
     }
   }
 
+  /// Reads [key], coerces it to `VV`, then applies [parse] to build a `T`.
   T valueTo<T extends Object?, VV extends Object?>({
     required K key,
     required T Function(VV v) parse,
@@ -970,28 +1005,29 @@ extension ExtJSONHelper<K, V> on Map<K, V> {
     StringEncoding? encoding,
     bool asBytes = false,
     T Function()? onMissing,
-    T Function(JsonParserError err)? onError,
+    T Function(BuError err)? onError,
 
-    /// Also accepts the snake_case version of [key] when looking up JSON fields.
     /// Only applicable when [K] is `String`.
-    bool acceptSnakeCase = false,
-    bool acceptCamelCase = false,
+    bool normalizeKeyLookup = false,
   }) {
     try {
       V? value = this[key];
-      if (value == null && key is String) {
-        if (acceptSnakeCase) {
-          value = this[StringUtils.camelToSnake(key)];
-        } else if (acceptCamelCase) {
-          value = this[StringUtils.snakeToCamel(key, capitalizeFirst: false)];
+      if (value == null && normalizeKeyLookup && key is String) {
+        final normalizedKey = _normalizeKey(key);
+        for (final entry in entries) {
+          final key = entry.key;
+          if (key is String && _normalizeKey(key) == normalizedKey) {
+            value = entry.value;
+            break;
+          }
         }
       }
       if (value == null) {
         if (JsonParser._isNull<VV>()) return parse(null as VV);
         if (JsonParser._isNull<T>()) return null as T;
         if (onMissing != null) return onMissing();
-        if (!containsKey(key)) throw JsonParserError("Missing key: '$key'.");
-        throw JsonParserError("Null value for key: '$key'.");
+        if (!containsKey(key)) throw CoreErrors.jsonKeyNotFound(key);
+        throw BuError(DefaultErrorType.badJson,"Null value for key: '$key'.");
       }
       return JsonParser.valueTo(
         value: value,
@@ -1000,14 +1036,16 @@ extension ExtJSONHelper<K, V> on Map<K, V> {
         asBytes: asBytes,
         encoding: encoding,
       );
-    } on JsonParserError catch (e) {
+    } on BuError catch (e) {
       if (onError != null) return onError(e);
-      rethrow;
+      throw CoreErrors.jsonErrorWithKey(e, key);
     }
   }
 }
 
+/// Case-insensitive key lookup for string-keyed maps.
 extension ExtCaseInsensitiveMapExtension<V> on Map<String, V> {
+  /// Whether this map has a non-null value for [key], ignoring case.
   bool hasValueForKeyIgnoreCase(String key) {
     final normalizedKey = key.toLowerCase();
 

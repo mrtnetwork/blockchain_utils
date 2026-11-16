@@ -1,11 +1,15 @@
 import 'dart:typed_data';
+import 'package:blockchain_utils/exception/exception/core_errors.dart';
 
 import 'package:blockchain_utils/exception/exceptions.dart';
 import 'package:blockchain_utils/helper/extensions/extensions.dart';
-import 'package:blockchain_utils/utils/binary/binary_operation.dart';
+import 'package:blockchain_utils/utils/binary/src/binary_operation.dart';
+
+import 'package:blockchain_utils_connector/blockchain_utils_connector.dart';
 import 'package:blockchain_utils/utils/string/string.dart';
 
 class BigintUtils {
+  /// Returns the larger of [a] and [b].
   static BigInt max(BigInt a, BigInt b) {
     return a.compareTo(b) > 0 ? a : b;
   }
@@ -16,7 +20,7 @@ class BigintUtils {
   /// values whose top bit would otherwise be misread as a sign bit.
   static int bitlengthInBytes(BigInt value, {bool sign = false}) {
     if (value.isNegative && !sign) {
-      throw ArgumentException.invalidOperationArguments(
+      throw CoreErrors.invalidOperationArguments(
         'bitlengthInBytes',
         name: 'value',
         reason: 'Negative value requires sign: true.',
@@ -28,7 +32,7 @@ class BigintUtils {
     return (bits + 7) ~/ 8;
   }
 
-  /// Calculates the modular multiplicative inverse of 'a' modulo 'm'.
+  /// Calculates the modular multiplicative inverse of [a] modulo [m].
   static BigInt inverseMod(BigInt a, BigInt m) {
     if (a == BigInt.zero) {
       // 'a' has no inverse; return 0.
@@ -66,19 +70,18 @@ class BigintUtils {
     }
   }
 
+  /// Expands [value] into individual bits, LSB first.
   static List<bool> toBinaryBool(BigInt value, {int? bitLength}) {
     bitLength ??= bitlengthInBytes(value) * 8;
-    // Make sure we have exactly 64 bits
     final bits = List<bool>.filled(bitLength, false);
 
     for (int i = 0; i < bitLength; i++) {
-      // Check if the i-th bit is set
       bits[i] = value & (BigInt.one << i) != BigInt.zero;
     }
     return bits;
   }
 
-  /// Divides a BigInt value by a specified radix and returns both the quotient and the remainder.
+  /// Divides [value] by [radix], returning (quotient, remainder).
   static (BigInt, BigInt) divmod(BigInt value, int radix) {
     final div = value ~/ BigInt.from(radix);
     final mod = value % BigInt.from(radix);
@@ -87,22 +90,22 @@ class BigintUtils {
 
   /// Converts a BigInt to a byte list with the given length and byte order.
   /// Pass [sign] = true to encode negative values as two's complement.
-  static List<int> toBytes(
+  static BuBytes toBytes(
     BigInt val, {
     int? length,
     Endian byteOrder = Endian.big,
     bool sign = false,
   }) {
     if (val.isNegative && !sign) {
-      throw ArgumentException.invalidOperationArguments(
+      throw CoreErrors.invalidOperationArguments(
         'toBytes',
         name: 'val',
         reason: 'Negative value requires sign: true.',
       );
     }
 
-    // Size against the magnitude, but with the same `sign` convention
-    // that will actually be used to encode — this is the fix.
+    // Size the encoding against the magnitude, using the same `sign`
+    // convention that will actually be used to encode.
     length ??= bitlengthInBytes(
       val.isNegative ? (-val - BigInt.one) : val,
       sign: sign,
@@ -115,41 +118,66 @@ class BigintUtils {
     }
 
     if (unsigned.bitLength > length * 8) {
-      throw ArgumentException.invalidOperationArguments(
+      throw CoreErrors.invalidOperationArguments(
         'toBytes',
         name: 'length',
         reason: 'Value does not fit in $length byte(s).',
       );
     }
 
-    final byteList = List<int>.filled(length, 0);
+    final byteList = BuBytes.zero(length);
     for (var i = 0; i < length; i++) {
       byteList[length - i - 1] = (unsigned & BinaryOps.maskBig8).toInt();
       unsigned >>= 8;
     }
 
-    return byteOrder == Endian.little ? byteList.reversed.toList() : byteList;
+    return byteOrder == Endian.little ? byteList.reverse() : byteList;
   }
 
   /// Converts a list of bytes to a BigInt, considering byte order and sign.
+  ///
+  /// [offset] specifies the starting index within [bytes] to read from.
+  /// [length] specifies how many bytes to read (defaults to the rest of the list).
   static BigInt fromBytes(
     List<int> bytes, {
+    int offset = 0,
+    int? length,
     Endian byteOrder = Endian.big,
     bool sign = false,
   }) {
-    if (bytes.isEmpty) return BigInt.zero;
-    final BigInt byte256 = BigInt.from(256);
+    final int len = length ?? (bytes.length - offset);
 
-    final ordered =
-        byteOrder == Endian.little ? bytes.reversed.toList() : bytes;
-
-    BigInt result = BigInt.zero;
-    for (final b in ordered) {
-      result = result * byte256 + BigInt.from(b);
+    if (offset < 0 || len < 0 || offset + len > bytes.length) {
+      throw CoreErrors.invalidOperationArguments(
+        'fromBytes',
+        name: 'offset',
+        reason:
+            'Invalid offset/length: offset=$offset, length=$len, bytes.length=${bytes.length}.',
+      );
     }
 
-    if (sign && (ordered[0] & 0x80) != 0) {
-      result -= BigInt.one << (ordered.length * 8);
+    if (len == 0) return BigInt.zero;
+    final BigInt byte256 = BigInt.from(256);
+
+    BigInt result = BigInt.zero;
+    int firstByte;
+
+    if (byteOrder == Endian.little) {
+      // Most significant byte is the last one in the range; walk backwards
+      // from there without ever materializing a reversed copy.
+      firstByte = bytes[offset + len - 1];
+      for (var i = offset + len - 1; i >= offset; i--) {
+        result = result * byte256 + BigInt.from(bytes[i]);
+      }
+    } else {
+      firstByte = bytes[offset];
+      for (var i = offset; i < offset + len; i++) {
+        result = result * byte256 + BigInt.from(bytes[i]);
+      }
+    }
+
+    if (sign && (firstByte & 0x80) != 0) {
+      result -= BigInt.one << (len * 8);
     }
 
     return result;
@@ -157,64 +185,121 @@ class BigintUtils {
 
   static BigInt fromBytes8(
     List<int> bytes, {
+    int offset = 0,
     Endian byteOrder = Endian.big,
     bool sign = false,
   }) {
-    _checkLength(bytes, 1, 'fromBytes8');
-    return fromBytes(bytes, byteOrder: byteOrder, sign: sign);
+    _checkLength(bytes, 1, 'fromBytes8', offset: offset);
+    return fromBytes(
+      bytes,
+      offset: offset,
+      length: 1,
+      byteOrder: byteOrder,
+      sign: sign,
+    );
   }
 
   static BigInt fromBytes16(
     List<int> bytes, {
+    int offset = 0,
     Endian byteOrder = Endian.big,
     bool sign = false,
   }) {
-    _checkLength(bytes, 2, 'fromBytes16');
-    return fromBytes(bytes, byteOrder: byteOrder, sign: sign);
+    _checkLength(bytes, 2, 'fromBytes16', offset: offset);
+    return fromBytes(
+      bytes,
+      offset: offset,
+      length: 2,
+      byteOrder: byteOrder,
+      sign: sign,
+    );
   }
 
   static BigInt fromBytes32(
     List<int> bytes, {
+    int offset = 0,
     Endian byteOrder = Endian.big,
     bool sign = false,
   }) {
-    _checkLength(bytes, 4, 'fromBytes32');
-    return fromBytes(bytes, byteOrder: byteOrder, sign: sign);
+    _checkLength(bytes, 4, 'fromBytes32', offset: offset);
+    return fromBytes(
+      bytes,
+      offset: offset,
+      length: 4,
+      byteOrder: byteOrder,
+      sign: sign,
+    );
   }
 
   static BigInt fromBytes64(
     List<int> bytes, {
+    int offset = 0,
     Endian byteOrder = Endian.big,
     bool sign = false,
   }) {
-    _checkLength(bytes, 8, 'fromBytes64');
-    return fromBytes(bytes, byteOrder: byteOrder, sign: sign);
+    _checkLength(bytes, 8, 'fromBytes64', offset: offset);
+    return fromBytes(
+      bytes,
+      offset: offset,
+      length: 8,
+      byteOrder: byteOrder,
+      sign: sign,
+    );
   }
 
   static BigInt fromBytes128(
     List<int> bytes, {
+    int offset = 0,
     Endian byteOrder = Endian.big,
     bool sign = false,
   }) {
-    _checkLength(bytes, 16, 'fromBytes128');
-    return fromBytes(bytes, byteOrder: byteOrder, sign: sign);
+    _checkLength(bytes, 16, 'fromBytes128', offset: offset);
+    return fromBytes(
+      bytes,
+      offset: offset,
+      length: 16,
+      byteOrder: byteOrder,
+      sign: sign,
+    );
   }
 
   static BigInt fromBytes256(
     List<int> bytes, {
+    int offset = 0,
     Endian byteOrder = Endian.big,
     bool sign = false,
   }) {
-    _checkLength(bytes, 32, 'fromBytes256');
-    return fromBytes(bytes, byteOrder: byteOrder, sign: sign);
+    _checkLength(bytes, 32, 'fromBytes256', offset: offset);
+    return fromBytes(
+      bytes,
+      offset: offset,
+      length: 32,
+      byteOrder: byteOrder,
+      sign: sign,
+    );
   }
 
-  static void _checkLength(List<int> bytes, int expected, String method) {
-    if (bytes.length != expected) {
-      throw ArgumentException.invalidOperationArguments(
+  static void _checkLength(
+    List<int> bytes,
+    int expected,
+    String method, {
+    int offset = 0,
+  }) {
+    if (offset < 0 || offset > bytes.length) {
+      throw CoreErrors.invalidOperationArguments(
+        method,
+        name: 'offset',
+        reason:
+            'Offset $offset is out of range for a list of length ${bytes.length}.',
+      );
+    }
+    final available = bytes.length - offset;
+    if (available < expected) {
+      throw CoreErrors.invalidOperationArguments(
         method,
         name: 'bytes',
-        reason: 'Expected exactly $expected byte(s), got ${bytes.length}.',
+        reason:
+            'Expected at least $expected byte(s) starting at offset $offset, got $available.',
       );
     }
   }
@@ -234,7 +319,7 @@ class BigintUtils {
       }
       if (parse != null) return parse;
     }
-    throw ArgumentException.invalidOperationArguments(
+    throw CoreErrors.invalidOperationArguments(
       "parse",
       name: "number",
       reason: "Failed to parse value as BigInt",
@@ -246,13 +331,22 @@ class BigintUtils {
     if (number == null) return null;
     try {
       return parse(number, allowHex: allowHex);
-    } on ArgumentException {
+    } on BuError catch (e) {
+      if (e.type != DefaultErrorType.invalidArgument) rethrow;
       return null;
     }
   }
 
-  static List<int> variableNatEncode(BigInt val) {
-    BigInt num = val & BinaryOps.maskBig32;
+  /// LEB128-style variable-length encoding of a non-negative [val].
+  static BuBytes variableNatEncode(BigInt val) {
+    if (val.isNegative) {
+      throw CoreErrors.invalidOperationArguments(
+        "variableNatEncode",
+        name: "val",
+        reason: "Negative value cannot be nat-encoded.",
+      );
+    }
+    BigInt num = val;
     List<int> output = [(num & BinaryOps.maskBig8).toInt() & 0x7F];
     num ~/= BigInt.from(128);
     while (num > BigInt.zero) {
@@ -260,16 +354,17 @@ class BigintUtils {
       num ~/= BigInt.from(128);
     }
     output = output.reversed.toList();
-    return output;
+    return BuBytes(output);
   }
 
+  /// Decodes a value encoded by [variableNatEncode], returning (value, bytesRead).
   static (BigInt, int) variableNatDecode(List<int> bytes) {
     BigInt output = BigInt.zero;
     int bytesRead = 0;
     for (final byte in bytes) {
       output = (output << 7) | BigInt.from(byte & 0x7F);
       if (output > BinaryOps.maxU64) {
-        throw ArgumentException.invalidOperationArguments(
+        throw CoreErrors.invalidOperationArguments(
           "variableNatDecode",
           name: "bytes",
           reason: "The variable size exceeds the limit for nat decode.",
@@ -280,29 +375,30 @@ class BigintUtils {
         return (output, bytesRead);
       }
     }
-    throw ArgumentException.invalidOperationArguments(
+    throw CoreErrors.invalidOperationArguments(
       "variableNatDecode",
       name: "bytes",
       reason: "Invalid nat encode bytes.",
     );
   }
 
+  /// Splits a 256-bit unsigned [number] into four 64-bit limbs.
   static List<BigInt> splitU256ToU64Parts(
     BigInt number, {
     Endian order = Endian.big,
   }) {
     if (number.isNegative || number.bitLength > 256) {
       if (number.isNegative) {
-        throw ArgumentException.invalidOperationArguments(
+        throw CoreErrors.invalidOperationArguments(
           "splitU256ToU64Parts",
           name: "number",
           reason: "Invalid unsigned integer.",
         );
       }
-      throw ArgumentException.invalidOperationArguments(
+      throw CoreErrors.invalidOperationArguments(
         "splitU256ToU64Parts",
         name: "number",
-        reason: "Number is to large.",
+        reason: "Number is too large.",
       );
     }
 
@@ -321,12 +417,13 @@ class BigintUtils {
     }
   }
 
+  /// Reassembles a 256-bit value from four 64-bit limbs (see [splitU256ToU64Parts]).
   static BigInt combineU256FromU64Parts(
     List<BigInt> parts, {
     Endian order = Endian.big,
   }) {
     if (parts.length != 4) {
-      throw ArgumentException.invalidOperationArguments(
+      throw CoreErrors.invalidOperationArguments(
         "combineU256FromU64Parts",
         name: "number",
         reason: "Invalid parts length.",
@@ -348,6 +445,7 @@ class BigintUtils {
     return result;
   }
 
+  /// Branchless select: returns [b] if [choice] else [a].
   static BigInt ctSelectBigInt(BigInt a, BigInt b, bool choice) {
     final mask = choice ? BigInt.from(-1) : BigInt.zero; // 0 or -1
     final s = a ^ (mask & (a ^ b));
@@ -355,7 +453,7 @@ class BigintUtils {
     return s;
   }
 
-  // /// Add With Carry: returns (sumLow, carryHigh)
+  /// Add-with-carry: `a + b + carry`, returning [sumLow, carryHigh].
   static List<BigInt> adc(BigInt a, BigInt b, BigInt carry) {
     final BigInt sum = a + b + carry;
     assert(sum <= BinaryOps.maxU128);
@@ -366,6 +464,7 @@ class BigintUtils {
     return [low, high];
   }
 
+  /// Subtract-with-borrow: `a - b - borrow`, returning [diffLow, diffHigh].
   static List<BigInt> sbb(BigInt a, BigInt b, BigInt borrow) {
     final s = b + (borrow >> 63);
     assert(s <= BinaryOps.maxU128);
@@ -376,6 +475,7 @@ class BigintUtils {
     return [low, high];
   }
 
+  /// Multiply-accumulate: `a + b*c + carry`, returning [resultLow, resultHigh].
   static List<BigInt> mac(BigInt a, BigInt b, BigInt c, BigInt carry) {
     final BigInt prod = a + (b * c) + carry;
     assert(prod <= BinaryOps.maxU128);

@@ -1,0 +1,20 @@
+# blockchain_utils test configuration.
+#
+# Backends (see test/test_backend.dart):
+#   BU_BACKEND=dart                                  # pure Dart, no build
+#   BU_BACKEND=ffi [BU_LIB_PATH=...] [BU_FFI_PROFILE=release]
+#   BU_BACKEND=ffi BU_BUILD=ffi                      # cargo-build the .so if missing (release)
+#   dart tool/build_backends.dart --ffi [--profile debug|release]   # prebuild FFI (default: release)
+#   dart tool/build_backends.dart --wasm [--force]            # rebuild test/wasm_assets
+#
+# Runners (all four backends; each prints a `[one-shot] backend=...` banner):
+#   BU_BACKEND=dart dart test test/one_shot_test.dart              # L1 VM, pure Dart
+#   BU_BACKEND=ffi dart test test/one_shot_test.dart               # L3 VM, FFI (default)
+#   CHROME_EXECUTABLE=<wrapper> dart test -p chrome test/one_shot_browser_dart_test.dart  # L2 browser, pure Dart
+#   CHROME_EXECUTABLE=<wrapper> dart test -p chrome test/one_shot_browser_wasm_test.dart  # L4 browser, Rust WASM
+#   CHROME_EXECUTABLE=<wrapper> dart test -p chrome test/browser_wasm_test.dart           # WASM smoke only
+
+# Browser suites get extra headroom (wasm init + slower execution).
+tags:
+  wasm:
+    timeout: 5x

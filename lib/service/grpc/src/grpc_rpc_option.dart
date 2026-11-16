@@ -1,4 +1,4 @@
-import 'package:blockchain_utils/blockchain_utils.dart';
+import 'package:blockchain_utils/service/models/params.dart';
 
 /// One path segment of a `google.api.http` path template.
 ///

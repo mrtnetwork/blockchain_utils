@@ -16,6 +16,7 @@ class SHA1 implements SerializableHash<SH1State> {
   final List<int> _currentChunk = List<int>.filled(16, 0);
 
   bool _finished = false;
+  bool _cleaned = false;
 
   /// Clean up the internal state and reset hash object to its initial state.
   @override
@@ -25,9 +26,10 @@ class SHA1 implements SerializableHash<SH1State> {
     BinaryOps.zero(_currentChunk);
     _buffer.clear();
     reset();
+    _cleaned = true;
   }
 
-  final _iv = const [
+  static const _iv = [
     0x67452301,
     0xEFCDAB89,
     0x98BADCFE,
@@ -50,8 +52,8 @@ class SHA1 implements SerializableHash<SH1State> {
 
   /// Generates the final hash digest by assembling and returning the hash state.
   @override
-  List<int> digest() {
-    final out = List<int>.filled(getDigestLength, 0);
+  BuBytes digest() {
+    final out = BuBytes.fill(getDigestLength, 0);
     finish(out);
     return out;
   }
@@ -62,7 +64,8 @@ class SHA1 implements SerializableHash<SH1State> {
   ///   - [out]: In which the hash digest is stored.
   ///
   @override
-  Hash finish(List<int> out) {
+  SHA1 finish(List<int> out) {
+    _ensureAlive("SHA1.finish", _cleaned, null);
     if (!_finished) {
       _finalize();
       _iterate();
@@ -159,6 +162,7 @@ class SHA1 implements SerializableHash<SH1State> {
   /// Returns the current instance of the hash algorithm with the initial stat
   @override
   SHA1 reset() {
+    _ensureAlive("SHA1.reset", _cleaned, null);
     _init();
     _finished = false;
     _lengthInBytes = 0;
@@ -172,7 +176,8 @@ class SHA1 implements SerializableHash<SH1State> {
   ///
   /// Returns the current instance of the hash algorithm with the restored state.
   @override
-  SerializableHash restoreState(SH1State savedState) {
+  SHA1 restoreState(SH1State savedState) {
+    _ensureAlive("SHA1.restoreState", _cleaned, null);
     _buffer.clear();
     _buffer.addAll(savedState.buffer);
     _state.setAll(0, savedState.state);
@@ -185,6 +190,7 @@ class SHA1 implements SerializableHash<SH1State> {
   /// Saves the current hash computation state into a serializable state object.
   @override
   SH1State saveState() {
+    _ensureAlive("SHA1.saveState", _cleaned, null);
     return SH1State(
       buffer: _buffer.clone(),
       length: _lengthInBytes,
@@ -198,12 +204,8 @@ class SHA1 implements SerializableHash<SH1State> {
   /// - [data]: Containing the data to be hashed.
   @override
   SHA1 update(List<int> data) {
-    if (_finished) {
-      throw CryptoException.failed(
-        "SHA1.update",
-        reason: "State was finished.",
-      );
-    }
+    _ensureAlive("SHA1.update", _cleaned, _finished);
+
     _lengthInBytes += data.length;
     _buffer.addAll(data.asBytes);
     _iterate();
@@ -228,7 +230,7 @@ class SHA1 implements SerializableHash<SH1State> {
   }
 
   /// Computes the SHA1 hash of the provided data.
-  static List<int> hash(List<int> data) {
+  static BuBytes hash(List<int> data) {
     final h = SHA1();
     h.update(data);
     final digest = h.digest();
@@ -238,7 +240,7 @@ class SHA1 implements SerializableHash<SH1State> {
 }
 
 /// The [SH1State] class represents the state of the SHA-1 hash algorithm.
-class SH1State implements HashState {
+class SH1State extends HashState {
   SH1State({required this.buffer, required this.length, required this.state});
 
   /// The buffer storing data to be hashed.

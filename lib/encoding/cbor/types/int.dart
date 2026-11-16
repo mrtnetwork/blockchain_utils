@@ -1,0 +1,57 @@
+import 'package:blockchain_utils/encoding/cbor/core/cbor.dart';
+import 'package:blockchain_utils/encoding/cbor/utils/cbor_utils.dart';
+import 'package:blockchain_utils/encoding/cbor/utils/dynamic_bytes.dart';
+import 'package:blockchain_utils/encoding/cbor/core/tags.dart';
+import 'package:blockchain_utils/helper/helper.dart';
+
+import 'package:blockchain_utils_connector/blockchain_utils_connector.dart';
+
+/// A class representing a CBOR (Concise Binary Object Representation) int value.
+class CborIntValue extends CborNumeric<int> {
+  /// Constructor for creating a CborIntValue instance with the provided parameters.
+  /// It accepts the int value.
+  const CborIntValue(super.value);
+
+  factory CborIntValue.decode(List<int> bytes) {
+    return CborUtils.decodeCbor(bytes);
+  }
+
+  /// Encode the value into CBOR bytes
+  @override
+  BuBytes encode() {
+    final bytes = CborBytesTracker();
+    if (value.bitLength > 31 && value.isNegative) {
+      final value = (~BigInt.parse(this.value.toString()));
+      if (!value.isSafeInt()) {
+        throw BuError(DefaultErrorType.invalidLength,
+          "Value is too large for encoding as CborInteger",
+          details: {"value": this.value.toString()},
+        );
+      }
+      bytes.pushInt(MajorTags.negInt, value.toInt());
+    } else {
+      bytes.pushInt(
+        value.isNegative ? MajorTags.negInt : MajorTags.posInt,
+        value.isNegative ? ~value : value,
+      );
+    }
+    return bytes.buffer();
+  }
+
+  /// value as bigint
+  @override
+  BigInt toBigInt() {
+    return BigInt.from(value);
+  }
+
+  /// value as int
+  @override
+  int toInt() {
+    return value;
+  }
+
+  @override
+  String toString() {
+    return "CborIntValue($value)";
+  }
+}

@@ -1,4 +1,4 @@
-import 'package:blockchain_utils/utils/binary/binary_operation.dart';
+import 'package:blockchain_utils/utils/binary/src/binary_operation.dart';
 
 /// A utility class for generating consistent and efficient hash codes
 /// for collections and objects.
@@ -38,7 +38,10 @@ class HashCodeGenerator {
     return hash;
   }
 
-  static int generateHashCodeNew(Object? object, {bool sorting = false}) {
+  /// Recursively hashes [object], including [Map]s and [Iterable]s.
+  /// With [sorting], map entries/elements are hashed in a canonical
+  /// (hash-code) order first, so the result doesn't depend on iteration order.
+  static int generateDeepHashCode(Object? object, {bool sorting = false}) {
     int hash = 12;
 
     if (object == null) {
@@ -53,10 +56,10 @@ class HashCodeGenerator {
       }
       for (final entry in entries) {
         hash =
-            (hash ^ generateHashCodeNew(entry.key, sorting: sorting)) &
+            (hash ^ generateDeepHashCode(entry.key, sorting: sorting)) &
             BinaryOps.mask32;
         hash =
-            (hash ^ generateHashCodeNew(entry.value, sorting: sorting)) &
+            (hash ^ generateDeepHashCode(entry.value, sorting: sorting)) &
             BinaryOps.mask32;
       }
     } else if (object is Iterable) {
@@ -68,7 +71,7 @@ class HashCodeGenerator {
       }
       for (final element in elements) {
         hash =
-            (hash ^ generateHashCodeNew(element, sorting: sorting)) &
+            (hash ^ generateDeepHashCode(element, sorting: sorting)) &
             BinaryOps.mask32;
       }
     } else {

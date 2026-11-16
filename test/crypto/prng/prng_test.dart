@@ -1,7 +1,8 @@
 import 'package:blockchain_utils/blockchain_utils.dart';
 import 'package:test/test.dart';
 
-void main() {
+import '../../utils.dart';
+void prngTest() {
   test("Prng", () {
     for (int i = 0; i < 100; i++) {
       final entropy = QuickCrypto.generateRandom();
@@ -19,3 +20,8 @@ void main() {
     }
   });
 }
+
+void main() {
+  BlockchainUtilsTestApi.runTest(prngTest, "Prng");
+}
+

@@ -33,7 +33,7 @@ class SHA512256 extends SHA512 {
   }
 
   /// Computes the SHA-512/256 hash of the provided data.
-  static List<int> hash(List<int> data) {
+  static BuBytes hash(List<int> data) {
     final h = SHA512256();
     h.update(data);
     final digest = h.digest();

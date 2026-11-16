@@ -1,0 +1,9 @@
+export 'package:blockchain_utils/chain/address/neworks/networks.dart';
+export 'package:blockchain_utils/chain/address/protocol/p2pkh_addr.dart';
+export 'package:blockchain_utils/chain/address/protocol/p2sh_addr.dart';
+export 'package:blockchain_utils/chain/address/protocol/p2tr_addr.dart';
+export 'package:blockchain_utils/chain/address/protocol/p2wpkh_addr.dart';
+export 'package:blockchain_utils/chain/address/types/decoder.dart';
+export 'package:blockchain_utils/chain/address/types/encoder.dart';
+export 'package:blockchain_utils/chain/address/utils/addr_dec_utils.dart';
+export 'package:blockchain_utils/chain/address/utils/addr_key_validator.dart';

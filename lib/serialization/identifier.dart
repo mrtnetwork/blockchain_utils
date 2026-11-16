@@ -1,5 +1,4 @@
-import 'package:blockchain_utils/cbor/serialization/cbor/tag.dart';
-import 'package:blockchain_utils/exception/exception/blockchain_utils.dart';
+import 'package:blockchain_utils_connector/blockchain_utils_connector.dart';
 
 /// 12000
 enum BlockchainUtilsSerializationIdentifier implements SerializationIdentifier {
@@ -17,6 +16,12 @@ enum BlockchainUtilsSerializationIdentifier implements SerializationIdentifier {
   stellarNetwork(11012),
   xrplNetwork(11013),
   zcashNetwork(11014),
+  nearNetwork(11015),
+  algorandNetwork(11016),
+  hederaNetwork(11017),
+  icpNetwork(11018),
+  filecoinNetwork(11019),
+  tezosNetwork(11020),
 
   argumentException(11101),
   stateException(11102),
@@ -24,12 +29,13 @@ enum BlockchainUtilsSerializationIdentifier implements SerializationIdentifier {
   casting(11104),
   rpcError(11105),
   base58Error(11106),
+  base58ChecksumError(11137),
 
   bech32Error(11107),
   addressConverterError(11108),
   bip32KeyError(11109),
   bip32PathError(11110),
-  bip44DepthError(11111),
+  bip44Error(11111),
   zip32Error(11112),
   electrumError(11113),
   mnemonicError(11114),
@@ -44,6 +50,7 @@ enum BlockchainUtilsSerializationIdentifier implements SerializationIdentifier {
   protoError(11123),
   secretStorageError(11124),
   ss58Error(11125),
+  ss58FormatError(11141),
   utf8Error(11126),
   base64Error(11127),
   cborSerializationError(11128),
@@ -51,7 +58,14 @@ enum BlockchainUtilsSerializationIdentifier implements SerializationIdentifier {
   jsonParserError(11130),
   mnemonic(11131),
   pedersenHashError(11132),
-  integerError(11133);
+  integerError(11133),
+  base32Error(11134),
+  uuidError(11135),
+  hexError(11136),
+  bytesError(11138),
+  secretBytesError(11139),
+  jsonError(11140),
+  customServiceParams(11142);
 
   @override
   final int id;
@@ -62,8 +76,9 @@ enum BlockchainUtilsSerializationIdentifier implements SerializationIdentifier {
       (e) => e.id == value,
       orElse:
           () =>
-              throw ItemNotFoundException(
-                name: "BlockchainUtilsSerializationIdentifier",
+              throw BuError(
+                DefaultErrorType.notFound,
+                "No matching BlockchainUtilsSerializationIdentifier found for the given value. null",
               ),
     );
   }

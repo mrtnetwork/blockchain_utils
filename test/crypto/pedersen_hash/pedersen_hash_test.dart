@@ -1,16 +1,19 @@
 import 'package:blockchain_utils/blockchain_utils.dart';
 import 'package:test/test.dart';
 
-import '../../quick_hex.dart';
+import '../../utils.dart';
+
+void pedersenHashTest() {
+  _test();
+}
 
 void main() {
-  _test();
+  BlockchainUtilsTestApi.runTest(pedersenHashTest, "Pedersen Hash");
 }
 
 void _test() {
   test("Pedersen hash", () {
     final pedersen = PedersenHash();
-    final pedersenNative = PedersenHashNative();
     for (final json in _testVector.shuffleTake()) {
       final i = _TestVector.fromJson(json);
       final inputBits = i.inputBits.map((e) => e == 0 ? false : true).toList();
@@ -23,34 +26,6 @@ void _test() {
           true,
         );
         final hash = pedersen.hash(
-          personalization: i.personalization,
-          inputBits: inputBits.skip(6).toList(),
-        );
-        final affine = hash.toAffine();
-        expect(
-          StringUtils.hexEqual(
-            BytesUtils.toHexString(affine.u.toBytes().reversed.toList()),
-            i.u,
-          ),
-          true,
-        );
-        expect(
-          StringUtils.hexEqual(
-            BytesUtils.toHexString(affine.v.toBytes().reversed.toList()),
-            i.v,
-          ),
-          true,
-        );
-      }
-      {
-        expect(
-          CompareUtils.iterableIsEqual(
-            i.personalization.getBits(),
-            inputBits.sublist(0, 6),
-          ),
-          true,
-        );
-        final hash = pedersenNative.hash(
           personalization: i.personalization,
           inputBits: inputBits.skip(6).toList(),
         );

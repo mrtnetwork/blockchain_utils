@@ -199,3 +199,67 @@ final List<Map<String, dynamic>> testVector = [
         "2575347cb3e0155b1ec792338f05dfbb3fb8315e9e4a5248b8edf82d7ae1a1664a535509941f4a00eb62d5dc2cba9132461eae48630c13cfdbfd9726ea",
   },
 ];
+const List<Map<String, dynamic>> ecbTestVector = [
+  {
+    "key": "0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c",
+    "plain": "d7727a8ec6fdb7e0acda0f9b",
+    "enc": "64b85ee9922619c8f7ff72cc12177f11",
+    "type": "pkcs7",
+  },
+  {
+    "key": "0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c",
+    "plain": "38fc9cc797c11b85ca21023cc1acf34e10",
+    "enc": "86043c4c73b416c5bab39fcd34f53956e50531a4ce81425e5c49907d32b7585c",
+    "type": "pkcs7",
+  },
+  {
+    "key": "0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c",
+    "plain": "decce068bd4e327542d9ddd8a6b66c6f92c5b0bf2ce3",
+    "enc": "872e2c736cc8cc9b37521578db5dbc9247451c7933737c0493b8ba7d24e7acc3",
+    "type": "pkcs7",
+  },
+  {
+    "key": "0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c",
+    "plain": "9f516f2df9a5405fb84b4a1fa179e0cb0a0e9b2372c19ca96721d0",
+    "enc": "be30e146f38eb7b8db4a44497a6f253ac4b2575c3ddb4ded7ecc1f2e4485a2bb",
+    "type": "pkcs7",
+  },
+  {
+    "key": "0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c",
+    "plain": "a48ba5d07e8b6cd2eabc5143d36e663cd5d07c1ce434d613aee919199c50dfa8",
+    "enc":
+        "a2bc932b3d48c2208c44a84ec1b27a88eae785541b50076a2051b82d080cbec5ef80fe952b3c1d7a8cb136bc3198da82",
+    "type": "pkcs7",
+  },
+  {
+    "key": "0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c",
+    "plain": "98f03dc36334fa3e5293403a",
+    "enc": "0bc0795f401a3c6e10662a6f70ad11f2",
+    "type": "iso7816",
+  },
+  {
+    "key": "0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c",
+    "plain": "36cb145b16caf073650df8cfdeb938c8e0",
+    "enc": "728295144f5ab277da4a9ab02315b8f9ce6984910142db93bafb82ec55443abb",
+    "type": "iso7816",
+  },
+  {
+    "key": "0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c",
+    "plain": "7607828fa090c80b997d9d3eee64024d52b517fe53ab",
+    "enc": "30f693652a52b809c71eb08d6126be46217d3757e1670fda0ccc6a3449e45479",
+    "type": "iso7816",
+  },
+  {
+    "key": "0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c",
+    "plain": "185489918a0eae9ae7244c6ae46c627993514ae66065623ea5f6f4",
+    "enc": "aabe81708b80975550c1dd847ab818815aac668b6b00270ac89d1c139376bb6f",
+    "type": "iso7816",
+  },
+  {
+    "key": "0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c",
+    "plain": "b1bcf0271821499df5d674a487d2a05371c74c891c394fd5c734d9d85677be7e",
+    "enc":
+        "a9164de7da018d8516a79792c87338b24ca5c5c5a6857e146465c27b8245a650918167f11b8dc7e4da8874cd3f4d33bf",
+    "type": "iso7816",
+  },
+];

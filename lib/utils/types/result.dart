@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:blockchain_utils/exception/exception/core_errors.dart';
 
 import 'package:blockchain_utils/exception/exceptions.dart';
 
@@ -33,6 +34,7 @@ sealed class Result<T extends Object?, E extends Object?> {
   R foldOne<R extends Object?>(R Function(T? value, E? error) f);
 }
 
+/// The success case of a [Result].
 class Ok<T extends Object?, E extends Object?> extends Result<T, E> {
   final T value;
 
@@ -49,7 +51,7 @@ class Ok<T extends Object?, E extends Object?> extends Result<T, E> {
 
   @override
   E unwrapErr() {
-    throw StateException.badState("unwrap", reason: "Called unwrapErr() on Ok");
+    throw CoreErrors.badState("unwrap", reason: "Called unwrapErr() on Ok");
   }
 
   @override
@@ -86,7 +88,7 @@ class Ok<T extends Object?, E extends Object?> extends Result<T, E> {
   }) {
     if (onOk == null) {
       if (null is R) return null as R;
-      throw ArgumentException.invalidOperationArguments(
+      throw CoreErrors.invalidOperationArguments(
         "fold",
         reason: "onOk handler is required when R is non-nullable",
       );
@@ -108,8 +110,8 @@ class Ok<T extends Object?, E extends Object?> extends Result<T, E> {
 
   @override
   FutureOr<Result<U, E>> mapAsync<U>(FutureOr<U> Function(T value) f) async {
-    final reslt = await f(value);
-    return Ok(reslt);
+    final result = await f(value);
+    return Ok(result);
   }
 
   @override
@@ -118,6 +120,7 @@ class Ok<T extends Object?, E extends Object?> extends Result<T, E> {
   }
 }
 
+/// The error case of a [Result].
 class Err<T extends Object?, E extends Object?> extends Result<T, E> {
   final E error;
 
@@ -131,7 +134,7 @@ class Err<T extends Object?, E extends Object?> extends Result<T, E> {
 
   @override
   T unwrap() {
-    throw StateException.badState(
+    throw CoreErrors.badState(
       "unwrap",
       reason: "Called unwrap() on Err: $error",
     );
@@ -174,7 +177,7 @@ class Err<T extends Object?, E extends Object?> extends Result<T, E> {
   }) {
     if (onErr == null) {
       if (null is R) return null as R;
-      throw ArgumentException.invalidOperationArguments(
+      throw CoreErrors.invalidOperationArguments(
         "fold",
         reason: "onErr handler is required when R is non-nullable",
       );

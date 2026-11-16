@@ -1,18 +1,21 @@
-import 'package:blockchain_utils/crypto/crypto/crypto.dart';
-import '../../quick_hex.dart';
+import 'package:blockchain_utils/crypto/quick_crypto.dart';
+import 'package:blockchain_utils_connector/blockchain_utils_connector.dart';
+
 import 'package:blockchain_utils/utils/utils.dart';
 import 'package:test/test.dart';
 
 import 'test_vector.dart';
 
-void main() {
+import '../../utils.dart';
+
+void chacha20Poly1305Test() {
   test("chacha poly 1305 test", () {
     for (final i in testVector.shuffleTake()) {
       final plaintext = BytesUtils.fromHexString(i["plain_text"]);
       final assocData = BytesUtils.fromHexString(i["assoc_data"]);
       final key = BytesUtils.fromHexString(i["key"]);
       final nonce = BytesUtils.fromHexString(i["nonce"]);
-      final chacha = ChaCha20Poly1305(key);
+      final chacha = QuickCrypto.chacha20Poly1305Instance(key);
       final encrypt = chacha.encrypt(
         nonce,
         plaintext,
@@ -22,7 +25,7 @@ void main() {
       final tag = encrypt.sublist(encrypt.length - chacha.tagLength);
       expect(result.toHex(), i["encrypt"]);
       expect(tag.toHex(), i["tag"]);
-      final decryptor = ChaCha20Poly1305(key);
+      final decryptor = QuickCrypto.chacha20Poly1305Instance(key);
       final decrypt = decryptor.decrypt(
         nonce,
         encrypt,
@@ -34,13 +37,13 @@ void main() {
       final plaintext = BytesUtils.fromHexString(i["plain_text"]);
       final key = BytesUtils.fromHexString(i["key"]);
       final nonce = BytesUtils.fromHexString(i["nonce"]);
-      final chacha = ChaCha20Poly1305(key);
+      final chacha = QuickCrypto.chacha20Poly1305Instance(key);
       final encrypt = chacha.encrypt(nonce, plaintext);
       final result = encrypt.sublist(0, encrypt.length - chacha.tagLength);
       final tag = encrypt.sublist(encrypt.length - chacha.tagLength);
       expect(result.toHex(), i["encrypt"]);
       expect(tag.toHex(), i["tag"]);
-      final decryptor = ChaCha20Poly1305(key);
+      final decryptor = QuickCrypto.chacha20Poly1305Instance(key);
       final decrypt = decryptor.decrypt(nonce, encrypt);
       expect(decrypt?.toHex(), i["plain_text"]);
     }
@@ -48,9 +51,11 @@ void main() {
 
   test("Chacha with seek bytes", () {
     List<int> xor(List<int> pt, List<int> key, List<int> nonce, int seek) {
-      final dest = List<int>.filled(pt.length, 0);
-      ChaCha20.streamXOR(key, nonce, pt, dest, seekBytes: seek);
-      return dest;
+      final dst = BuBytes.fill(pt.length, 0);
+      QuickCrypto.chacha20Instance(
+        key,
+      ).process(pt, nonce: nonce, dst: dst, seekBytes: seek);
+      return dst;
     }
 
     for (final i in testVectorChacha20WithSeekBytes) {
@@ -67,4 +72,8 @@ void main() {
       expect(d2, afterSink2);
     }
   });
+}
+
+void main() {
+  BlockchainUtilsTestApi.runTest(chacha20Poly1305Test, "Chacha20 Poly1305");
 }

@@ -1,11 +1,11 @@
-import 'package:blockchain_utils/crypto/crypto/x25519/x25519.dart';
-import 'package:blockchain_utils/utils/binary/utils.dart';
+import 'package:blockchain_utils/blockchain_utils.dart';
 import 'package:test/test.dart';
 
-import '../../quick_hex.dart';
 import 'test_vector.dart';
 
-void main() {
+import '../../utils.dart';
+
+void x25519Test() {
   group("X25519", () {
     test("generate keypair", () {
       for (final i in testVector.shuffleTake()) {
@@ -29,4 +29,8 @@ void main() {
       }
     });
   });
+}
+
+void main() {
+  BlockchainUtilsTestApi.runTest(x25519Test, "X25519");
 }

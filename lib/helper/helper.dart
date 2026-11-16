@@ -1,1 +1,1 @@
-export 'extensions/extensions.dart';
+export 'package:blockchain_utils/helper/extensions/extensions.dart';

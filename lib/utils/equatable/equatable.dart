@@ -1,11 +1,13 @@
 import 'package:blockchain_utils/utils/compare/compare.dart';
 import 'package:blockchain_utils/utils/compare/hash_code.dart';
 
+/// Mixin that derives `==`/`hashCode` from [variables] (deep, order-sensitive).
 abstract mixin class Equality {
+  /// Deep-equality check that also handles [List]s and [Map]s element-wise.
   static bool deepEqual(Object? a, Object? b) {
-    if (a == null || b == null) return false;
-    if (a == b) return true;
     if (identical(a, b)) return true;
+    if (a == b) return true;
+    if (a == null || b == null) return false;
     if (a is List && b is List) {
       return CompareUtils.iterableIsEqual(a, b);
     }
@@ -35,6 +37,8 @@ abstract mixin class Equality {
   }
 }
 
+/// Like [Equality], but `==`/`hashCode` are derived from [parts] instead of
+/// every field, letting a class exclude some fields from comparison.
 abstract mixin class PartialEquality implements Equality {
   @override
   List<dynamic> get variables => [];
@@ -68,7 +72,6 @@ abstract mixin class ConstantEquality<T extends ConstantEquality<T>> {
   List<List<int>> get secretFields => [];
 
   bool constantEquality(T other) {
-    assert(secretFields.isNotEmpty);
     return CompareUtils.iterableConstantTime(secretFields, other.secretFields);
   }
 

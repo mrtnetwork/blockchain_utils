@@ -1,250 +1,90 @@
 import 'package:blockchain_utils/blockchain_utils.dart';
 import 'package:test/test.dart';
 
-void main() {
+import '../utils.dart';
+
+void _expectRoundTrip(BuError error) {
+  final decode = BuErrorCodec.decode(bytes: error.toCborBytes());
+  expect(decode.type, error.type);
+  expect(decode.message, error.message);
+  expect(decode.details, error.details);
+}
+
+void serializationTest() {
   test("exception serialization.", () {
-    {
-      final error = ArgumentException.invalidOperationArguments(
+    _expectRoundTrip(
+      CoreErrors.invalidOperationArguments(
         "salam",
         reason: "error",
         details: {"alu": "1"},
         name: "2",
-      );
-      final deserialize = IException.deserialize(
-        bytes: error.toCbor().encode(),
-      );
-      expect(error, deserialize);
-    }
-    {
-      final error = StateException.badState(
-        "salam",
-        reason: "error",
-        details: {"alu": 1},
-        name: "2",
-      );
-      final deserialize = IException.deserialize(
-        bytes: error.toCbor().encode(),
-      );
-      expect(error, deserialize);
-    }
-    {
-      final error = ItemNotFoundException(
-        message: "message",
-        value: 12,
-        details: {"alu": "1"},
-        name: "2",
-      );
-      final deserialize = IException.deserialize(
-        bytes: error.toCbor().encode(),
-      );
-      expect(error, deserialize);
-    }
-    {
-      final error = CastFailedException(
-        message: "message",
-        value: 12,
+      ),
+    );
+    _expectRoundTrip(CoreErrors.badState("salam", reason: "error"));
+    _expectRoundTrip(
+      const BuError(
+        DefaultErrorType.notFound,
+        "No matching item found for the given value. 12",
+      ),
+    );
+    _expectRoundTrip(
+      const BuError(
+        DefaultErrorType.castFailed,
+        "Failed to cast value",
+        details: {"expected": "int", "value": "String"},
+      ),
+    );
+    _expectRoundTrip(
+      const BuError(
+        DefaultErrorType.invalidChecksum,
+        "Invalid checksum.",
         details: {"1": "1"},
-      );
-      final deserialize = IException.deserialize(
-        bytes: error.toCbor().encode(),
-      );
-      expect(error, deserialize);
-    }
-    {
-      final error = RPCError(
-        message: "message",
-        errorCode: 12,
-        request: {"r1": "1"},
+      ),
+    );
+    _expectRoundTrip(
+      const BuError(
+        DefaultErrorType.badBase64,
+        "Invalid Base64 string.",
         details: {"1": "1"},
-      );
-      final deserialize = IException.deserialize(
-        bytes: error.toCbor().encode(),
-      );
-      expect(error, deserialize);
-    }
+      ),
+    );
+    _expectRoundTrip(
+      const BuError(DefaultErrorType.badBech32, "error", details: {"1": "1"}),
+    );
+    _expectRoundTrip(
+      CoreErrors.addressValidationFailed(reason: "error", details: {"1": "1"}),
+    );
+    _expectRoundTrip(
+      const BuError(
+        DefaultErrorType.invalidArgument,
+        "error",
+        details: {"1": "1"},
+      ),
+    );
+    _expectRoundTrip(CoreErrors.cryptoFailed("op", reason: "error"));
+    _expectRoundTrip(CoreErrors.signVerificationFailed);
+    _expectRoundTrip(CoreErrors.integerDivisionByZero);
+    _expectRoundTrip(CoreErrors.integerOverflow);
+    _expectRoundTrip(CoreErrors.web3UnsupportedBackupContent);
+    _expectRoundTrip(CoreErrors.web3WrongBackupPassword);
+    _expectRoundTrip(CoreErrors.mnemonicInvalidChecksum);
+    _expectRoundTrip(CoreErrors.jsonFailed("reason", value: 1));
+    _expectRoundTrip(CoreErrors.jsonCycleError([1]));
+    _expectRoundTrip(CoreErrors.saplingFailed("derive", reason: "bad"));
+    _expectRoundTrip(
+      CoreErrors.zcashInvalidKeyData("Sapling spending", reason: "bad"),
+    );
+    _expectRoundTrip(CoreErrors.incorrectTagValue(tag: [1, 2]));
     {
-      final error = RPCError(
-        message: "message",
-        errorCode: 12,
-        request: {"r1": "1"},
-        details: {
-          "1": "1",
-          "c":
-              {
-                "c1": 1,
-                "c2": 2,
-                "l": {"l1": "l1"},
-              }.toString(),
-        },
-      );
-      final deserialize = IException.deserialize(
-        bytes: error.toCbor().encode(),
-      );
-      expect(error, deserialize);
-    }
-    {
-      final error = Base58ChecksumError(details: {"1": "1"});
-      final deserialize = IException.deserialize(
-        bytes: error.toCbor().encode(),
-      );
-      expect(error, deserialize);
-    }
-    {
-      final error = B64ConverterException(details: {"1": "1"});
-      final deserialize = IException.deserialize(
-        bytes: error.toCbor().encode(),
-      );
-      expect(error, deserialize);
-    }
-    {
-      final error = Bech32Error("error", details: {"1": "1"});
-      final deserialize = IException.deserialize(
-        bytes: error.toCbor().encode(),
-      );
-      expect(error, deserialize);
-    }
-
-    {
-      final error = AddressConverterException("error", details: {"1": "1"});
-      final deserialize = IException.deserialize(
-        bytes: error.toCbor().encode(),
-      );
-      expect(error, deserialize);
-    }
-    {
-      final error = Bip44DepthError("error", details: {"1": "1"});
-      final deserialize = IException.deserialize(
-        bytes: error.toCbor().encode(),
-      );
-      expect(error, deserialize);
-    }
-    {
-      final error = Bip32KeyError("error", details: {"1": "1", "2": "s"});
-      final deserialize = IException.deserialize(
-        bytes: error.toCbor().encode(),
-      );
-      expect(error, deserialize);
-    }
-    {
-      final error = Zip32Error("error", details: {"1": "1", "2": "s"});
-      final deserialize = IException.deserialize(
-        bytes: error.toCbor().encode(),
-      );
-      expect(error, deserialize);
-    }
-    {
-      final error = ElectrumException("error");
-      final deserialize = IException.deserialize(
-        bytes: error.toCbor().encode(),
-      );
-      expect(error, deserialize);
-    }
-    {
-      final error = MnemonicException("error", details: {"mn": "a"});
-      final deserialize = IException.deserialize(
-        bytes: error.toCbor().encode(),
-      );
-      expect(error, deserialize);
-    }
-    {
-      final error = MoneroKeyError("error", details: {"mn": "a"});
-      final deserialize = IException.deserialize(
-        bytes: error.toCbor().encode(),
-      );
-      expect(error, deserialize);
-    }
-    {
-      final error = SubstrateKeyError("error", details: {"mn": "a"});
-      final deserialize = IException.deserialize(
-        bytes: error.toCbor().encode(),
-      );
-      expect(error, deserialize);
-    }
-    {
-      final error = SubstratePathError("error", details: {"mn": "a"});
-      final deserialize = IException.deserialize(
-        bytes: error.toCbor().encode(),
-      );
-      expect(error, deserialize);
-    }
-    {
-      final error = ZcashKeyEncodingError("error", details: {"mn": "a"});
-      final deserialize = IException.deserialize(
-        bytes: error.toCbor().encode(),
-      );
-      expect(error, deserialize);
-    }
-    {
-      final error = CborException("error", details: {"mn": "a"});
-      final deserialize = IException.deserialize(
-        bytes: error.toCbor().encode(),
-      );
-      expect(error, deserialize);
-    }
-    {
-      final error = CborSerializableException("error", details: {"mn": "a"});
-      final deserialize = IException.deserialize(
-        bytes: error.toCbor().encode(),
-      );
-      expect(error, deserialize);
-    }
-    {
-      final error = CryptoException("error", details: {"mn": "a"});
-      final deserialize = IException.deserialize(
-        bytes: error.toCbor().encode(),
-      );
-      expect(error, deserialize);
-    }
-    {
-      final error = LayoutException("error", details: {"mn": "a"});
-      final deserialize = IException.deserialize(
-        bytes: error.toCbor().encode(),
-      );
-      expect(error, deserialize);
-    }
-    {
-      final error = ProtoException("error", details: {"mn": "a"});
-      final deserialize = IException.deserialize(
-        bytes: error.toCbor().encode(),
-      );
-      expect(error, deserialize);
-    }
-    {
-      final error =
-          Web3SecretStorageDefinationV3Exception.unsuportedBackupContent;
-      final deserialize = IException.deserialize(
-        bytes: error.toCbor().encode(),
-      );
-      expect(error, deserialize);
-    }
-    {
-      final error = SS58ChecksumError("error", details: {"d1": "d"});
-      final deserialize = IException.deserialize(
-        bytes: error.toCbor().encode(),
-      );
-      expect(error, deserialize);
-    }
-    {
-      final error = Utf8Exception("error", details: {"d1": "d"});
-      final deserialize = IException.deserialize(
-        bytes: error.toCbor().encode(),
-      );
-      expect(error, deserialize);
-    }
-
-    {
-      final error = AmountConverterException("error", details: {"d1": "d"});
-      final deserialize = IException.deserialize(
-        bytes: error.toCbor().encode(),
-      );
-      expect(error, deserialize);
-    }
-    {
-      final error = JsonParserError("error", details: {"d1": "d"});
-      final deserialize = IException.deserialize(
-        bytes: error.toCbor().encode(),
-      );
-      expect(error, deserialize);
+      final ids = DefaultErrorType.values.map((e) => e.id);
+      expect(ids.toSet().length, DefaultErrorType.values.length);
+      for (final id in ids) {
+        expect(id > 258, equals(true));
+      }
     }
   });
+}
+
+void main() {
+  BlockchainUtilsTestApi.runTest(serializationTest, "Serialization");
 }

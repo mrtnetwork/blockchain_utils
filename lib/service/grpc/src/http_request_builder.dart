@@ -1,6 +1,6 @@
-import 'package:blockchain_utils/exception/exception/blockchain_utils.dart';
+import 'package:blockchain_utils/exception/exception/core_errors.dart';
 import 'package:blockchain_utils/service/models/params.dart';
-import 'grpc_rpc_option.dart';
+import 'package:blockchain_utils/service/grpc/src/grpc_rpc_option.dart';
 
 /// The resolved request.
 class HttpRequestSpec {
@@ -109,7 +109,7 @@ class HttpRequestBuilder {
       final fieldPath = seg.fieldPath!;
       final value = _extractAndRemove(remaining, fieldPath);
       if (value == null) {
-        throw ArgumentException.invalidOperationArguments(
+        throw CoreErrors.invalidOperationArguments(
           "HttpRequestBuilder.build",
           reason:
               'Path template requires field "$fieldPath" but it was not found '

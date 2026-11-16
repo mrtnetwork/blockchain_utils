@@ -1,0 +1,69 @@
+import 'package:blockchain_utils/protocol/bip/bip/bip32/bip32_key_net_ver.dart';
+import 'package:blockchain_utils/protocol/bip/bip/conf/core/coin_conf.dart';
+import 'package:blockchain_utils/protocol/bip/coin_conf/models/coin_conf.dart';
+import 'package:blockchain_utils/protocol/bip/coin_conf/models/coins_name.dart';
+import 'package:blockchain_utils/crypto/crypto/keys/types/types.dart';
+
+/// A class representing the configuration for a Substrate-based cryptocurrency.
+class SubstrateCoinConf implements CoinConfig<SubstrateCoinConf> {
+  /// Coin names and symbols
+  @override
+  final CoinNames coinNames;
+
+  /// Address format identifier
+  final int ss58Format;
+
+  /// Constructor for creating a SubstrateCoinConf instance.
+  ///
+  /// It initializes the Substrate cryptocurrency's coin names and symbols [coinNames]
+  /// and the SS58 address format identifier [ss58Format].
+  const SubstrateCoinConf({
+    required this.coinNames,
+    required this.ss58Format,
+    required this.addressEncoder,
+    required this.type,
+    required this.chainType,
+  });
+
+  /// Factory method to create a SubstrateCoinConf from a generic CoinConf.
+  ///
+  /// This method takes a generic `CoinConf` instance and extracts the coin names
+  /// and SS58 address format information to create a `SubstrateCoinConf`.
+  factory SubstrateCoinConf.fromCoinConf({
+    required CoinConf coinConf,
+    required CbAddrEncoder<SubstrateCoinConf> addressEncode,
+    required CryptoKeyType type,
+    required ChainType chainType,
+  }) {
+    return SubstrateCoinConf(
+      coinNames: coinConf.coinName,
+      ss58Format: coinConf.params.addrSs58Format!,
+      addressEncoder: addressEncode,
+      type: type,
+      chainType: chainType,
+    );
+  }
+
+  @override
+  final CryptoKeyType type;
+
+  @override
+  final ChainType chainType;
+
+  @override
+  bool get hasExtendedKeys => false;
+
+  @override
+  bool get hasWif => false;
+
+  @override
+  final Bip32KeyNetVersions? keyNetVer = null;
+  @override
+  final List<int>? wifNetVer = null;
+
+  @override
+  final CbAddrEncoder<SubstrateCoinConf> addressEncoder;
+
+  @override
+  DefaultHdKeyDerivator? get defaultHdKeyDerivator => null;
+}

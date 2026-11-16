@@ -1,0 +1,71 @@
+import 'package:blockchain_utils/crypto/crypto/cipher/stream_cipher/chacha/chacha.dart';
+import 'package:blockchain_utils/crypto/crypto/prng/src/rng.dart';
+import 'package:blockchain_utils/helper/extensions/extensions.dart';
+import 'package:blockchain_utils/utils/binary/src/binary_operation.dart';
+
+import 'package:blockchain_utils_connector/blockchain_utils_connector.dart';
+
+/// A [Rng] backed by ChaCha20 in counter mode (RFC 8439-style), buffering
+/// output 4 blocks (256 bytes) at a time.
+class ChaCha20Rng with Rng {
+  /// Selects an independent output stream from the same seed.
+  final int streamId;
+  /// The underlying cipher, keyed with a 32-byte seed.
+  final ChaCha20 chacha;
+  ChaCha20Rng(List<int> seed, {this.streamId = 0}) : chacha = ChaCha20(seed);
+  List<int> _buffer = List<int>.filled(256, 0);
+  int _bufferOffset = 256; // force refill on first use
+
+  /// Counts 64-byte ChaCha20 blocks generated so far (the block counter fed
+  /// into the cipher's nonce/counter field).
+  int _blockCounter = 0;
+
+  /// Internal refill of 4 ChaCha blocks (256 bytes)
+  void _refill() {
+    final out = BuBytes.fill(256, 0);
+    final nonce = [..._blockCounter.toU64LeBytes(), ...streamId.toU64LeBytes()];
+    final zeros = List<int>.filled(256, 0);
+    chacha.process(zeros, nonce: nonce, dst: out, nonceInplaceCounterLength: 8);
+
+    _buffer = out;
+    _bufferOffset = 0;
+    _blockCounter += 4;
+  }
+
+  /// Returns [length] bytes from the RNG
+  @override
+  BuBytes nextBytes(int length) {
+    final out = BuBytes.fill(length, 0);
+    int written = 0;
+
+    // Internally, always consume a multiple of 4 bytes
+    final fil =
+        length + ((4 - (length % 4)) % 4); // round up to nearest multiple of 4
+
+    while (written < fil) {
+      if (_bufferOffset >= _buffer.length) {
+        _refill();
+      }
+
+      final remainingInBuffer = _buffer.length - _bufferOffset;
+      final take = remainingInBuffer.clamp(0, fil - written);
+
+      // Only copy bytes that fit into output array
+      final toCopy = (written + take <= length) ? take : (length - written);
+      if (toCopy > 0) {
+        out.setRange(written, written + toCopy, _buffer, _bufferOffset);
+      }
+
+      _bufferOffset += take;
+      written += take;
+    }
+
+    return out;
+  }
+
+  /// Zeroes the cipher state and output buffer.
+  void clean() {
+    chacha.clean();
+    BinaryOps.tryZero(_buffer);
+  }
+}

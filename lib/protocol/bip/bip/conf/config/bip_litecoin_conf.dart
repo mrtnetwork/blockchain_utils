@@ -1,0 +1,78 @@
+import 'package:blockchain_utils/protocol/bip/bip/bip32/bip32_key_data.dart';
+import 'package:blockchain_utils/protocol/bip/bip/bip32/bip32_key_net_ver.dart';
+import 'package:blockchain_utils/protocol/bip/bip/conf/config/bip_coin_conf.dart';
+import 'package:blockchain_utils/protocol/bip/bip/conf/core/coin_conf.dart';
+import 'package:blockchain_utils/crypto/crypto/keys/types/types.dart';
+import 'package:blockchain_utils/protocol/bip/coin_conf/models/coins_name.dart';
+import 'package:blockchain_utils_connector/blockchain_utils_connector.dart';
+
+/// A class representing the configuration for Litecoin (LTC) based on the BIP framework.
+class BipLitecoinConf extends BaseBipCoinConfig<BipLitecoinConf> {
+  /// Configuration properties specific to Litecoin.
+  final Bip32KeyNetVersions altKeyNetVer;
+  final bool useDeprAddress;
+  final bool useAltKeyNetVer;
+
+  /// Constructor for BipLitecoinConf.
+  const BipLitecoinConf({
+    required super.coinNames,
+    required super.coinIdx,
+    required super.chainType,
+    required super.defPath,
+    required super.keyNetVer,
+    required super.wifNetVer,
+    required super.type,
+    required super.addressEncoder,
+    required this.altKeyNetVer,
+    this.useAltKeyNetVer = false,
+    this.useDeprAddress = false,
+    super.purpose,
+    this.hwSupport = const [],
+  });
+
+  /// Hardware-wallet support claims, one entry per (device, variant) pair.
+  /// Resolve with `hwFor(hwSupport, variant)`; empty = unknown.
+  final List<HwVariantSupport> hwSupport;
+
+  /// Overrides the 'keyNetVer' getter to use the alternate key network version
+  /// when the 'usAltKeyNetVer' flag is set to true.
+  @override
+  Bip32KeyNetVersions get keyNetVer =>
+      useAltKeyNetVer ? altKeyNetVer : super.keyNetVer;
+  @override
+  /// Creates a copy of the BipLitecoinConf object with optional properties updated.
+  BipLitecoinConf copy({
+    CoinNames? coinNames,
+    int? coinIdx,
+    ChainType? chainType,
+    String? defPath,
+    Bip32KeyNetVersions? keyNetVer,
+    Bip32KeyNetVersions? altKeyNetVer,
+    List<int>? wifNetVer,
+    CryptoKeyType? type,
+    CbAddrEncoder<BipLitecoinConf>? addressEncoder,
+    bool? useAltKeyNetVer,
+    bool? useDeprAddress,
+    Bip32KeyIndex? purpose,
+    List<HwVariantSupport>? hwSupport,
+  }) {
+    return BipLitecoinConf(
+      coinNames: coinNames ?? this.coinNames,
+      coinIdx: coinIdx ?? this.coinIdx,
+      chainType: chainType ?? this.chainType,
+      defPath: defPath ?? this.defPath,
+      keyNetVer: keyNetVer ?? this.keyNetVer,
+      wifNetVer: wifNetVer ?? this.wifNetVer,
+      type: type ?? this.type,
+      addressEncoder: addressEncoder ?? this.addressEncoder,
+      altKeyNetVer: altKeyNetVer ?? this.altKeyNetVer,
+      useAltKeyNetVer: useAltKeyNetVer ?? this.useAltKeyNetVer,
+      useDeprAddress: useDeprAddress ?? this.useDeprAddress,
+      purpose: purpose ?? this.purpose,
+      hwSupport: hwSupport ?? this.hwSupport,
+    );
+  }
+
+  @override
+  DefaultHdKeyDerivator? get defaultHdKeyDerivator => null;
+}

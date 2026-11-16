@@ -1,11 +1,12 @@
-import 'package:blockchain_utils/crypto/crypto/crc32/crc32.dart';
+import 'package:blockchain_utils/crypto/crypto/checksum/crc32/crc32.dart';
 import 'package:blockchain_utils/utils/utils.dart';
 import 'package:test/test.dart';
 
-import '../../quick_hex.dart';
 import 'test_vector.dart';
 
-void main() {
+import '../../utils.dart';
+
+void crc32Test() {
   test("crc test", () {
     final crc = Crc32();
     for (final i in testVector.shuffleTake()) {
@@ -13,4 +14,8 @@ void main() {
       expect(result, i["crc32"]);
     }
   });
+}
+
+void main() {
+  BlockchainUtilsTestApi.runTest(crc32Test, "Crc32");
 }

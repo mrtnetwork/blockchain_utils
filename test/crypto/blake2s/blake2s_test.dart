@@ -1,21 +1,60 @@
 import 'package:blockchain_utils/blockchain_utils.dart';
+import 'package:blockchain_utils_connector/blockchain_utils_connector.dart';
 import 'package:test/test.dart';
 
-void main() {
+import '../../utils.dart';
+
+void blake2sTest() {
   group("blake2s", () {
     _test();
     _update();
     _reset();
+    _state();
+  });
+}
+
+void main() {
+  BlockchainUtilsTestApi.runTest(blake2sTest, "Blake2s");
+}
+
+void _state() {
+  test("blake2s state", () {
+    final k = QuickCrypto.blake2sInstance(
+      digestLength: 28,
+      config: Blake2Config.blake2s(
+        salt: QuickCrypto.generateRandom(length: 8),
+        personalization: QuickCrypto.generateRandom(length: 8),
+        fanout: 2,
+        leafSize: 1,
+        maxDepth: 3,
+        nodeDepth: 4,
+        nodeOffset: 1,
+      ),
+    );
+    k.update([0, 0]);
+    final r = k.saveState();
+    final digest = k.digest();
+    expect(k.digest(), digest);
+    k.reset();
+    k.update([0, 0]);
+    expect(k.digest(), digest);
+
+    k.clean();
+    expect(() => k.reset(), buErrorOrCryptoException);
+
+    final g = QuickCrypto.blake2sInstance(digestLength: 28);
+    g.restoreState(r);
+    expect(g.digest(), digest);
   });
 }
 
 void _reset() {
   test("Reset state", () {
-    final b = BLAKE2b(
-      config: Blake2bConfig(
-        salt: QuickCrypto.generateRandom(8),
-        personalization: QuickCrypto.generateRandom(8),
-        key: QuickCrypto.generateRandom(32),
+    final b = QuickCrypto.blake2sInstance(
+      config: Blake2Config.blake2s(
+        salt: QuickCrypto.generateRandom(length: 8),
+        personalization: QuickCrypto.generateRandom(length: 8),
+        key: QuickCrypto.generateRandom(length: 32),
       ),
     );
     final input = QuickCrypto.generateRandom();
@@ -31,11 +70,11 @@ void _reset() {
 
 void _update() {
   test("Update state", () {
-    final b = BLAKE2b(
-      config: Blake2bConfig(
-        salt: QuickCrypto.generateRandom(8),
-        personalization: QuickCrypto.generateRandom(8),
-        key: QuickCrypto.generateRandom(32),
+    BuHash b = QuickCrypto.blake2sInstance(
+      config: Blake2Config.blake2s(
+        salt: QuickCrypto.generateRandom(length: 8),
+        personalization: QuickCrypto.generateRandom(length: 8),
+        key: QuickCrypto.generateRandom(length: 32),
       ),
     );
     List<int> buffer = List.generate(256, (i) => i & BinaryOps.mask8);
@@ -43,7 +82,7 @@ void _update() {
       b.update([i]);
     }
     final hash = b.digest();
-    b.reset();
+    b = b.reset();
     b.update(buffer);
     expect(hash, b.digest());
   });
@@ -52,29 +91,30 @@ void _update() {
 void _test() {
   test("TestVecotr", () {
     for (final i in _testVecotor) {
-      final treeJ = i["tree"];
-      Blake2sTree? tree =
-          treeJ == null
-              ? null
-              : Blake2sTree(
-                fanout: treeJ["fanout"],
-                maxDepth: treeJ["maxDepth"],
-                leafSize: treeJ["leafSize"],
-                nodeDepth: treeJ["nodeDepth"],
-                innerDigestLength: treeJ["innerDigestLength"],
-                lastNode: true,
-                nodeOffset: treeJ["nodeOffset"],
-              );
-
-      final config = Blake2sConfig(
-        tree: tree,
+      final Map<String, dynamic> treeJ = i["tree"] ?? {};
+      final config = Blake2Config.blake2s(
+        fanout: treeJ["fanout"] ?? 1,
+        maxDepth: treeJ["maxDepth"] ?? 1,
+        leafSize: treeJ["leafSize"] ?? 0,
+        nodeDepth: treeJ["nodeDepth"] ?? 0,
+        innerDigestLength: treeJ["innerDigestLength"] ?? 0,
+        lastNode: treeJ.isEmpty ? false : true,
+        nodeOffset: treeJ["nodeOffset"] ?? 0,
+        // tree: tree,
         key: BytesUtils.tryFromHexString(i["keyHex"]),
         personalization: BytesUtils.tryFromHexString(i["personHex"]),
         salt: BytesUtils.tryFromHexString(i["saltHex"]),
       );
-      final b = BLAKE2s(digestLength: i["digestSize"], config: config);
+      final b = QuickCrypto.blake2sInstance(
+        digestLength: i["digestSize"],
+        config: config,
+      );
       b.update(BytesUtils.fromHexString(i["inputHex"]));
-      expect(b.digest(), BytesUtils.fromHexString(i["outputHex"]));
+      expect(
+        b.digest(),
+        BytesUtils.fromHexString(i["outputHex"]),
+        reason: i.toString(),
+      );
     }
   });
 }

@@ -1,12 +1,11 @@
-import 'package:blockchain_utils/cbor/cbor.dart';
-import 'package:blockchain_utils/networks/types/network.dart';
-import 'package:blockchain_utils/utils/utils.dart';
-import 'exception.dart';
-import 'package:blockchain_utils/serialization/identifier.dart';
+import 'package:blockchain_utils/encoding/cbor/cbor.dart';
+import 'package:blockchain_utils/chain/types/network.dart';
+import 'package:blockchain_utils/utils/equatable/equatable.dart';
+import 'package:blockchain_utils/utils/string/string.dart';
+import 'package:blockchain_utils_connector/blockchain_utils_connector.dart';
 
 /// An exception class representing errors that occur during RPC (Remote Procedure Call) communication.
-class RPCError extends IException {
-  @override
+class RPCError extends BuError with CborTagSerializable, Equality {
   final BlockchainNetwork? relatedNetwork;
 
   /// The error code associated with the RPC error.
@@ -31,14 +30,13 @@ class RPCError extends IException {
     this.errorCode,
     this.request,
     this.jsonRpcErrpr,
-    Map<String, String?>? details,
-
+    super.details,
     this.statusCode,
-  }) : super(message, details: details);
+  }) : super(DefaultErrorType.network, message);
 
   factory RPCError.deserialize({List<int>? bytes, CborObject? object}) {
     final values = CborTagSerializable.decodeTaggedValue(
-      identifier: BlockchainUtilsSerializationIdentifier.rpcError,
+      identifier: DefaultErrorType.network,
       cborBytes: bytes,
       cborObject: object,
     );
@@ -82,12 +80,15 @@ class RPCError extends IException {
   }
 
   @override
-  SerializationIdentifier get serializationIdentifier =>
-      BlockchainUtilsSerializationIdentifier.rpcError;
+  SerializationIdentifier get serializationIdentifier => type;
 
   @override
   List<CborObject?> get serializationItems => [
-    ...super.serializationItems,
+    super.message.toCbor(),
+    switch (details) {
+      null => CborNullValue(),
+      Map<String, String?> value => value.toCbor(),
+    },
     errorCode?.toCbor(),
     switch (request) {
       null => CborNullValue(),

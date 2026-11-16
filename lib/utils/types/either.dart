@@ -1,3 +1,5 @@
+/// Holds one of two possible types: a [Left] (conventionally, an error) or
+/// a [Right] (conventionally, a success value).
 sealed class Either<L, R> {
   const Either();
 
@@ -18,6 +20,7 @@ sealed class Either<L, R> {
   });
 }
 
+/// The "left" case of an [Either].
 final class Left<L, R> extends Either<L, R> {
   final L value;
   const Left(this.value);
@@ -50,6 +53,7 @@ final class Left<L, R> extends Either<L, R> {
   }
 }
 
+/// The "right" case of an [Either].
 final class Right<L, R> extends Either<L, R> {
   final R value;
   const Right(this.value);

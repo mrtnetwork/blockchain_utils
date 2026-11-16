@@ -1,0 +1,77 @@
+[package]
+name = "blockchain-utils"
+version = "0.1.0"
+edition = "2021"
+authors = ["blockchain-utils contributors"]
+description = "Pure no_std, zero-dependency cryptographic and blockchain utilities with constant-time primitives"
+license = "MIT OR Apache-2.0"
+repository = ""
+readme = "README.md"
+
+keywords = ["crypto", "blockchain", "no_std", "wasm", "constant-time"]
+categories = ["cryptography", "no-std", "wasm"]
+
+[lib]
+# `rlib` always. `cdylib` for Dart/native `.so` (needs `std`, e.g. `--features ffi`).
+crate-type = ["rlib", "cdylib"]
+
+[features]
+# Host/default builds use `std`. Pure `no_std`: `--no-default-features --features alloc`.
+default = ["std", "halo2", "groth16", "ffi", "monero"]
+alloc = []
+# Optional std (required for wasm-bindgen builds)
+std = ["alloc"]
+# C ABI exports for Dart FFI (no impact on core crypto modules)
+ffi = ["std"]
+# Monero RingCT helpers (Bulletproofs+ prove/verify); needs alloc only.
+monero = ["alloc"]
+# wasm-bindgen exports for Dart web connector (`connector::wasm`)
+wasm = ["std", "dep:wasm-bindgen", "dep:js-sys"]
+# Groth16 verifier (BLS12-381); prover later via groth16-prover
+groth16 = ["alloc"]
+groth16-prover = ["groth16"]
+# Parallel MSM/FFT for native prove (OS threads). Not for wasm32; enable: --features multicore
+multicore = ["std"]
+# Halo2 core (Pasta IPA + transcript) for Orchard path
+halo2 = ["alloc"]
+# Hardware-wallet message codecs (APDU / Trezor proto / UR / PSBT) + unified
+# `HardwareWallet` interface. Pure `no_std` + `alloc`, zero dependencies.
+# Transport (USB-HID/BLE/NFC) stays behind `hw::Transport` trait, injected by
+# `ffi` (hidapi) or `wasm` (WebHID/WebUSB). Nothing in `hw` touches hardware.
+hw = ["alloc"]
+
+[dependencies]
+# Core: zero required deps. Optional only under `wasm`.
+wasm-bindgen = { version = "=0.2.92", optional = true, default-features = false }
+js-sys = { version = "=0.3.69", optional = true }
+
+[dev-dependencies]
+# Comparison oracles only (never linked into the library): vendored official
+# Orchard circuit + proofs to test our zero-dep verifier against.
+# orchard = { path = "../rust/orchard-0.15.5", version = "0.15", default-features = false, features = ["circuit", "std", "test-dependencies"] }
+# Test-only helpers for hand-rolled multi-action vectors (never in lib).
+incrementalmerkletree = "0.8"
+rand_core = "0.6"
+pasta_curves = "0.5"
+subtle = "2"
+group = "0.13"
+
+[profile.dev]
+panic = "abort"
+
+[profile.release]
+lto = true
+codegen-units = 1
+opt-level = 3
+panic = "abort"
+
+[profile.bench]
+lto = true
+codegen-units = 1
+
+[profile.fast]
+inherits = "release"
+lto = false
+codegen-units = 4
+opt-level = 3
+
