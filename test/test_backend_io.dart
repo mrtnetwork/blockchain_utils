@@ -344,8 +344,9 @@ String _wasmArtifactName(String crateDir) {
       r'^\s*name\s*=\s*"([^"]+)"',
       multiLine: true,
     ).firstMatch(manifest);
-    if (pkgName != null)
+    if (pkgName != null) {
       return '${pkgName.group(1)!.replaceAll('-', '_')}.wasm';
+    }
   } catch (_) {}
   return 'blockchain_utils.wasm';
 }

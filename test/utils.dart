@@ -74,13 +74,12 @@ extension TAKE on List<Map<String, dynamic>> {
   List<Map<String, dynamic>> shuffleTake([int? total]) {
     final t = total ?? TestThrottle.vectorTake;
     if (t == null) return this;
-    return take(t).toList();
+    final shuffle = clone()..shuffle();
+    return shuffle.take(t).toList();
   }
 }
 
-final Matcher buErrorOrCryptoException = throwsA(
-  anyOf(isA<BuError>(), isA<BuError>()),
-);
+final Matcher buErrorOrCryptoException = throwsA(isA<BuError>());
 final Matcher throwsArgumentException = throwsA(isA<BuError>());
 
 enum TestApi {
@@ -317,40 +316,3 @@ class BlockchainUtilsTestApi {
     if (onNative != null) onNative(blockchainUtils.api);
   }
 }
-
-// class BlockchainUtilsTestApi2 {
-//   static bool _inited = false;
-//   static void _init() {
-//     // return;
-//     if (_inited) return;
-//     initIo(
-//       libraryPath:
-//           "/home/mohsen/Documents/packages/rust/blockchain-utils/target/release/libblockchain_utils.so",
-//     );
-//     blockchainUtils.setApi(
-//       DefaultBlockchainUtilsApi(
-//         hash: NativeHashApi(Connector.instance.hash),
-//         ed25519: NativeEd25519CurveApi(Connector.instance.curves!.ed25519()),
-//         secp256k1: DartSecp256k1CurveApi(),
-//         secp256r1: DartSecp256r1ProjectiveCurveApi(),
-//         blockCipher: NativeBlockCipherApi(Connector.instance.blockCipher),
-//         signing: DefaultBlockchainUtilsSigningApi(
-//           secp256k1: NativeSecp256k1SigningApi(
-//             Connector.instance.secp256k1Signing!,
-//           ),
-//         ),
-//         aed: NativeAEDApi(Connector.instance.aead),
-//         streamCipher: DartStreamCipherApi(),
-//         keyDerivation: NativeKeyDerivationApi(),
-//       ),
-//       // NativeBlockchainUtilsApi(hash: NativeHashApi(Connector.instance.hash)),
-//     );
-//     _inited = true;
-//   }
-
-//   static void runTest(Function fn, String name) {
-//     _init();
-
-//     fn();
-//   }
-// }

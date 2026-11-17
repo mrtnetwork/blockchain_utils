@@ -10,7 +10,7 @@ import '../../../utils.dart';
 
 void bip44Test() {
   test("bip44", () {
-    final vector = testVector.shuffleTake(10);
+    final vector = testVector.shuffleTake();
 
     for (final i in vector) {
       final seed = BytesUtils.fromHexString(i["seed"]);

@@ -107,6 +107,33 @@ jobs:
           dart test -p chrome test/one_shot_browser_dart_test.dart
           --timeout=20m
 
+  dart-web-wasm-suite:
+    name: Dart backend (browser, dart2wasm, portable word math)
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Dart
+        uses: dart-lang/setup-dart@v1
+
+      - name: Install dependencies
+        run: dart pub get --no-example
+
+      - name: Chrome wrapper (no-sandbox)
+        run: |
+          printf '#!/bin/sh\nexec /usr/bin/google-chrome --no-sandbox "$@"\n' \
+            > /tmp/chrome-nosandbox.sh
+          chmod +x /tmp/chrome-nosandbox.sh
+
+      - name: Run browser tests (pure Dart, dart2wasm)
+        env:
+          CHROME_EXECUTABLE: /tmp/chrome-nosandbox.sh
+        run: >
+          dart test -p chrome -c dart2wasm test/one_shot_browser_dart_test.dart
+          --timeout=20m
+
   dart-web-wasm:
     name: Dart backend (browser, dart2wasm + native word math)
     runs-on: ubuntu-latest

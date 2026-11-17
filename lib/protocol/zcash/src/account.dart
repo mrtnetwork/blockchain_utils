@@ -297,27 +297,30 @@ class ZcashAccount {
   /// Returns the Orchard ZIP32 component, or throws if missing.
   Zip32Orchard getOrchard() {
     final orchard = this.orchard;
-    if (orchard == null)
+    if (orchard == null) {
       throw BuError(DefaultErrorType.invalidArgument, "Missing Orchard key.");
+    }
     return orchard;
   }
 
   /// Returns the Sapling ZIP32 component, or throws if missing.
   Zip32Sapling getSapling() {
     final sapling = this.sapling;
-    if (sapling == null)
+    if (sapling == null) {
       throw BuError(DefaultErrorType.invalidArgument, "Missing Sapling key.");
+    }
     return sapling;
   }
 
   /// Returns the Transparent BIP32 component, or throws if missing.
   Bip32Base getTransparent() {
     final transparent = this.transparent;
-    if (transparent == null)
+    if (transparent == null) {
       throw BuError(
         DefaultErrorType.invalidArgument,
         "Missing transaparent key.",
       );
+    }
     return transparent;
   }
 

@@ -11,7 +11,7 @@ import '../../../utils.dart';
 
 void cip1852Test() {
   test("cip1852", () {
-    final vector = testVector.shuffleTake(3);
+    final vector = testVector.shuffleTake();
     for (final i in vector) {
       final seed = BytesUtils.fromHexString(i["seed"]);
       final cip = Cip1852.fromSeed(seed, Cip1852Coins.cardanoIcarus);

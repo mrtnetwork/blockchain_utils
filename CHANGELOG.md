@@ -29,6 +29,8 @@
   `hwReadinessFor` / `isSupportedByHw`) with Rust `hw` message codecs
   (APDU / Trezor / UR / PSBT). Status: simulation-tested only, not yet
   verified with real devices.
+- BREAKING: all legacy exception classes removed; every error is now `BuError`
+  with a typed `BuErrorType` / `DefaultErrorType`.
 
 ## 7.1.0
 

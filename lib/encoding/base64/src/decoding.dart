@@ -266,11 +266,12 @@ class B64Decoder {
     }
 
     if (validatePadding) {
-      if (!isPadded)
+      if (!isPadded) {
         throw const BuError(
           DefaultErrorType.badBase64,
           "Invalid Base64 string.",
         );
+      }
     } else if (!isPadded) {
       final missing = (4 - data.length % 4) % 4;
       data = data.padRight(data.length + missing, '=');

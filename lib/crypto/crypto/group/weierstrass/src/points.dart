@@ -280,12 +280,13 @@ class Secp256k1Point
 
   @override
   T cast<T extends ECPoint<Secp256k1Fr, Secp256k1Point>>() {
-    if (this is! T)
+    if (this is! T) {
       throw BuError(
         DefaultErrorType.castFailed,
         "Failed to cast value",
         details: {"expected": "T", "value": runtimeType.toString()},
       );
+    }
     return this as T;
   }
 
@@ -690,12 +691,13 @@ class Secp256r1Point
 
   @override
   T cast<T extends ECPoint<Secp256r1Fr, Secp256r1Point>>() {
-    if (this is! T)
+    if (this is! T) {
       throw BuError(
         DefaultErrorType.castFailed,
         "Failed to cast value",
         details: {"expected": "T", "value": runtimeType.toString()},
       );
+    }
     return this as T;
   }
 

@@ -82,6 +82,7 @@ If you come from the old pure-Dart-only `blockchain_utils` releases:
 8. **Backend sealing.** New `seal()` one-way latch blocks later `setApi` / `setRustApi` / `setDartApi`. Tests never seal.
 9. **Minimum SDK `>=3.7.0`**, unified service/provider architecture, constant-time private-key and signing paths (except secp256r1), ported Bitcoin secp256k1.
 10. **Hardware-wallet flow is API-driven** (`HwApi`, `HwCatalog`, readiness tables) with Rust `hw` message codecs (APDU / Trezor / UR / PSBT); transport stays injected (`USB-HID/BLE/NFC` native, WebHID/WebUSB on web). Currently **simulation-tested only — not verified with real devices**.
+11. **All legacy exception classes removed — every error is `BuError`.** Per-domain `*Exception` types are gone; all failures (both backends, all APIs) throw `BuError` with a typed `BuErrorType` / `DefaultErrorType` (`invalidState`, `unsupported`, `invalidArgument`, …). Update `catch` clauses and `on` filters accordingly.
 
 ## Backend support
 

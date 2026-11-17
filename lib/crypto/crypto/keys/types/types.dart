@@ -164,12 +164,13 @@ abstract class ISignature with Equality {
 
   /// Casts this signature to a specific subtype, or throws.
   T cast<T extends ISignature>() {
-    if (this is! T)
+    if (this is! T) {
       throw BuError(
         DefaultErrorType.castFailed,
         "Failed to cast value",
         details: {"expected": "T", "value": runtimeType.toString()},
       );
+    }
     return this as T;
   }
 }

@@ -189,12 +189,13 @@ abstract class ZUnifiedReceiver extends VariantLayoutSerializable
   String get variantName => type.name;
 
   T cast<T extends ZUnifiedReceiver>() {
-    if (this is! T)
+    if (this is! T) {
       throw BuError(
         DefaultErrorType.castFailed,
         "Failed to cast value",
         details: {"expected": "T", "value": runtimeType.toString()},
       );
+    }
     return this as T;
   }
 

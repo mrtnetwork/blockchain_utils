@@ -12,7 +12,7 @@ import '../../../utils.dart';
 
 void v2Test() {
   test("test legacy", () {
-    for (final i in testVector.shuffleTake(2)) {
+    for (final i in testVector.shuffleTake()) {
       final seed = BytesUtils.fromHexString(i["seed"]);
       final elc = ElectrumV2Standard.fromSeed(seed);
       final prv = WifEncoder.encode(
@@ -46,7 +46,7 @@ void v2Test() {
     }
   });
   test("segwit", () {
-    for (final i in segwitTestVector.shuffleTake(2)) {
+    for (final i in segwitTestVector.shuffleTake()) {
       final seed = BytesUtils.fromHexString(i["seed"]);
       final elc = ElectrumV2Segwit.fromSeed(seed);
       final prv = WifEncoder.encode(
