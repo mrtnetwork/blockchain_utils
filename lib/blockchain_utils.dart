@@ -42,6 +42,7 @@ export 'package:blockchain_utils_connector/blockchain_utils_connector.dart'
         BuMoneroScanAccount,
         BuMoneroScanOutput,
         BuMoneroUnlockMatch,
-        BuConfig;
+        BuConfig,
+        BuBuildFeature;
 
 export 'package:blockchain_utils/api/api.dart';

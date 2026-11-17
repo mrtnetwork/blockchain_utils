@@ -1,3 +1,7 @@
+## 8.0.1
+
+- Updated `blockchain_utils_connector` to `^0.1.1` (BuErrorType `isValid` fix).
+
 ## 8.0.0
 
 - BREAKING: dual backend architecture. Pure Dart is still the default, with an
