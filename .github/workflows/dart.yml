@@ -154,6 +154,34 @@ jobs:
           done
           echo 'word-math check never completed'; exit 1
 
+  dart-web-wasm-full-math:
+    name: Dart backend (browser, dart2wasm full suite, native word math)
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Dart
+        uses: dart-lang/setup-dart@v1
+
+      - name: Install dependencies
+        run: dart pub get --no-example
+
+      - name: Chrome wrapper (no-sandbox)
+        run: |
+          printf '#!/bin/sh\nexec /usr/bin/google-chrome --no-sandbox "$@"\n' \
+            > /tmp/chrome-nosandbox.sh
+          chmod +x /tmp/chrome-nosandbox.sh
+
+      - name: Run full browser suite (pure Dart, dart2wasm, native word math)
+        env:
+          CHROME_EXECUTABLE: /tmp/chrome-nosandbox.sh
+        run: >
+          dart test -p chrome -c dart2wasm
+          test/one_shot_browser_dart_native_math_test.dart
+          --timeout=20m
+
   wasm-web:
     name: Rust WASM backend (browser)
     runs-on: ubuntu-latest

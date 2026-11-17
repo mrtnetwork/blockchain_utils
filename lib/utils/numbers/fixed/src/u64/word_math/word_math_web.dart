@@ -9,9 +9,22 @@ const bool useNativeWordMath = bool.fromEnvironment(
   defaultValue: false,
 );
 
+/// Test-only runtime override for [useNativeWordMath]. `dart test` cannot
+/// forward `--define` to browser compilations, so the full browser suite
+/// cannot set the compile-time flag above; the native-math browser entry
+/// (`test/one_shot_browser_dart_native_math_test.dart`) sets this to `true`
+/// to run the whole suite through the native implementations. Never set
+/// in shipped code: on dart2js the native math is wrong (doubles), so this
+/// must only ever be forced on dart2wasm, where 64-bit ints are real.
+bool? debugForceNativeWordMath;
+
+/// Effective backend switch: runtime override wins, else the compile-time
+/// [useNativeWordMath] flag.
+bool get _nativeMathEnabled => debugForceNativeWordMath ?? useNativeWordMath;
+
 /// `a * b` as a 128-bit result split into (high, low) 64-bit halves.
 (Uint64 hi, Uint64 lo) widenMulImpl(Uint64 a, Uint64 b) {
-  if (useNativeWordMath) return native.widenMulImpl(a, b);
+  if (_nativeMathEnabled) return native.widenMulImpl(a, b);
   return Uint64.widenMulPortable(a, b);
 }
 
@@ -181,7 +194,7 @@ int _trimLen(List<int> d, int len) {
 
 /// Unsigned 64-bit division: `a ~/ b` and `a % b`.
 ({Uint64 quotient, Uint64 remainder}) divModImpl(Uint64 a, Uint64 b) {
-  if (useNativeWordMath) return native.divModImpl(a, b);
+  if (_nativeMathEnabled) return native.divModImpl(a, b);
   if (b.isZero) throw CoreErrors.integerDivisionByZero;
   if (a.compareTo(b) < 0) return (quotient: Uint64.zero, remainder: a);
 
