@@ -16,7 +16,12 @@ abstract class ECPoint<
 
   /// Casts this point to [T], throwing [CastFailedException] on mismatch.
   T cast<T extends ECPoint<SCALAR, POINT>>() {
-    if (this is! T) throw BuError(DefaultErrorType.castFailed, "Failed to cast value", details: {"expected": "T", "value": runtimeType.toString()});
+    if (this is! T)
+      throw BuError(
+        DefaultErrorType.castFailed,
+        "Failed to cast value",
+        details: {"expected": "T", "value": runtimeType.toString()},
+      );
     return this as T;
   }
 }

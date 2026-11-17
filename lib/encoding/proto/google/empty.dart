@@ -34,10 +34,7 @@ class ProtoGoogleEmpty extends IProtoMessage {
   }
 
   factory ProtoGoogleEmpty.deserialize(List<int> bytes) {
-    ProtoBufferDecoder.decode(
-      bytes: bytes,
-      messageConfig: protoConfigStatic(),
-    );
+    ProtoBufferDecoder.decode(bytes: bytes, messageConfig: protoConfigStatic());
     return const ProtoGoogleEmpty();
   }
 }

@@ -14,7 +14,11 @@ class ProtoGoogleRpcStatus extends IProtoMessage {
   /// Additional error details (`google.protobuf.Any` list).
   final List<ProtoGoogleAny> details;
 
-  const ProtoGoogleRpcStatus({this.code, this.message, this.details = const []});
+  const ProtoGoogleRpcStatus({
+    this.code,
+    this.message,
+    this.details = const [],
+  });
 
   @override
   ProtoMessageConfig protoConfig() => protoConfigStatic();

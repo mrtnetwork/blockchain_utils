@@ -71,7 +71,8 @@ class CardanoByronLegacyBip32 extends Bip32Base<CardanoByronLegacyBip32> {
 
     if (!isPublic) {
       if (!index.isHardened && !isPublicDerivationSupported) {
-        throw const BuError(DefaultErrorType.unsupported,
+        throw const BuError(
+          DefaultErrorType.unsupported,
           'Private child derivation with not-hardened index is not supported',
         );
       }
@@ -97,10 +98,14 @@ class CardanoByronLegacyBip32 extends Bip32Base<CardanoByronLegacyBip32> {
 
     // Check if supported
     if (!isPublicDerivationSupported) {
-      throw const BuError(DefaultErrorType.unsupported,'Public child derivation is not supported');
+      throw const BuError(
+        DefaultErrorType.unsupported,
+        'Public child derivation is not supported',
+      );
     }
     if (index.isHardened) {
-      throw const BuError(DefaultErrorType.unsupported,
+      throw const BuError(
+        DefaultErrorType.unsupported,
         "Public child derivation cannot be used to create an hardened child key",
       );
     }

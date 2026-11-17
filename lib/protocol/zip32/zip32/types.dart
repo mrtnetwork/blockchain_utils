@@ -29,14 +29,24 @@ enum ZcashProtocol {
   static ZcashProtocol fromValue(int? value) {
     return values.firstWhere(
       (e) => e.value == value,
-      orElse: () => throw BuError(DefaultErrorType.notFound, "No matching ZcashProtocol found for the given value. null"),
+      orElse:
+          () =>
+              throw BuError(
+                DefaultErrorType.notFound,
+                "No matching ZcashProtocol found for the given value. null",
+              ),
     );
   }
 
   static ZcashProtocol fromName(String? name) {
     return values.firstWhere(
       (e) => e.name == name,
-      orElse: () => throw BuError(DefaultErrorType.notFound, "No matching ZcashProtocol found for the given value. null"),
+      orElse:
+          () =>
+              throw BuError(
+                DefaultErrorType.notFound,
+                "No matching ZcashProtocol found for the given value. null",
+              ),
     );
   }
 }
@@ -97,7 +107,10 @@ class DiversifierIndex with Equality implements Comparable<DiversifierIndex> {
         return DiversifierIndex(key);
       }
     }
-    throw BuError(DefaultErrorType.invalidLength,"DiversifierIndex increment overflowed.");
+    throw BuError(
+      DefaultErrorType.invalidLength,
+      "DiversifierIndex increment overflowed.",
+    );
   }
 
   /// Attempts to increment the index; returns null if overflow occurs.
@@ -194,7 +207,11 @@ abstract class IncomingViewingKey<ADDR extends ShieldAddress> with Equality {
 
   T cast<T extends IncomingViewingKey>() {
     if (this is! T) {
-      throw BuError(DefaultErrorType.castFailed, "Failed to cast value", details: {"expected": "T", "value": runtimeType.toString()});
+      throw BuError(
+        DefaultErrorType.castFailed,
+        "Failed to cast value",
+        details: {"expected": "T", "value": runtimeType.toString()},
+      );
     }
     return this as T;
   }
@@ -266,7 +283,11 @@ abstract class DiversifiableFullViewingKey<
     >
   >() {
     if (this is! T) {
-      throw BuError(DefaultErrorType.castFailed, "Failed to cast value", details: {"expected": "T", "value": runtimeType.toString()});
+      throw BuError(
+        DefaultErrorType.castFailed,
+        "Failed to cast value",
+        details: {"expected": "T", "value": runtimeType.toString()},
+      );
     }
     return this as T;
   }

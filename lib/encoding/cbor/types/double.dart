@@ -21,7 +21,8 @@ class CborFloatValue extends CborObject<double> {
   CborFloatValue.from16BytesFloat(super.value)
     : _decodFloatType = FloatLength.bytes16 {
     if (!FloatUtils.isLessThan(value, FloatLength.bytes16)) {
-      throw BuError(DefaultErrorType.invalidLength,
+      throw BuError(
+        DefaultErrorType.invalidLength,
         "Float value overflows 16-bit encoding.",
         details: {"value": value.toString()},
       );
@@ -32,7 +33,8 @@ class CborFloatValue extends CborObject<double> {
   CborFloatValue.from32BytesFloat(super.value)
     : _decodFloatType = FloatLength.bytes32 {
     if (!FloatUtils.isLessThan(value, FloatLength.bytes32)) {
-      throw BuError(DefaultErrorType.invalidLength,
+      throw BuError(
+        DefaultErrorType.invalidLength,
         "Float value overflows 32-bit encoding.",
         details: {"value": value.toString()},
       );

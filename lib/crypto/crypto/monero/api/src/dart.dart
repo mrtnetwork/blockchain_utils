@@ -6,7 +6,9 @@ import 'package:blockchain_utils_connector/blockchain_utils_connector.dart';
 /// [BuError] -- use the native (Rust) implementation
 /// ([NativeMoneroApi]) via `setRustApi`.
 Never _unsupported(String op) =>
-    throw BuError(DefaultErrorType.unsupported, 'Monero.$op is not implemented in pure Dart; use the Rust (native) API.',
+    throw BuError(
+      DefaultErrorType.unsupported,
+      'Monero.$op is not implemented in pure Dart; use the Rust (native) API.',
     );
 
 /// [MoneroApi] stub: all operations throw [UnsupportedError].

@@ -21,9 +21,7 @@ void jwtTest() {
     expect(jwt.signature, isNull);
     // Single-element audiences serialize back as a plain string
     // (long-standing `toJson` behavior, unchanged here).
-    final payloadSingle = _b64(
-      '{"iss":"wc","sub":"s","aud":"a","exp":1}',
-    );
+    final payloadSingle = _b64('{"iss":"wc","sub":"s","aud":"a","exp":1}');
     expect(jwt.serialize(), '$header.$payloadSingle');
   });
 

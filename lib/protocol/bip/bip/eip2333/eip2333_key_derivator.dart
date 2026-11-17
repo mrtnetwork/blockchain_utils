@@ -106,7 +106,10 @@ class Eip2333KeyDerivator implements IEip2333ChildKeyDerivator {
   /// `derive_child_SK`.
   static BigInt deriveChildSk(BigInt parentSk, int index) {
     if (index < 0 || index > Eip2333Const.maxIndex) {
-      throw const BuError(DefaultErrorType.invalidArgument,'Invalid child index.');
+      throw const BuError(
+        DefaultErrorType.invalidArgument,
+        'Invalid child index.',
+      );
     }
     final compressed = parentSkToLamportPk(parentSk, index);
     return hkdfModR(compressed);
@@ -115,7 +118,10 @@ class Eip2333KeyDerivator implements IEip2333ChildKeyDerivator {
   /// `derive_master_SK`.
   static BigInt deriveMasterSk(List<int> seed) {
     if (seed.length < Eip2333Const.seedMinByteLen) {
-      throw const BuError(DefaultErrorType.invalidLength,'Invalid seed length.');
+      throw const BuError(
+        DefaultErrorType.invalidLength,
+        'Invalid seed length.',
+      );
     }
     return hkdfModR(seed);
   }
@@ -128,7 +134,10 @@ class Eip2333KeyDerivator implements IEip2333ChildKeyDerivator {
     required Eip2333PrivateKey parent,
     required Eip2333KeyIndex index,
   }) {
-    throw const BuError(DefaultErrorType.unsupported,'Public child derivation is not supported');
+    throw const BuError(
+      DefaultErrorType.unsupported,
+      'Public child derivation is not supported',
+    );
   }
 
   @override

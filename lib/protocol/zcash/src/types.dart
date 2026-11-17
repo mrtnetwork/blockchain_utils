@@ -66,7 +66,8 @@ enum Typecode implements Comparable<Typecode> {
     return values.firstWhere(
       (e) => e.code == code,
       orElse: () {
-        throw BuError(DefaultErrorType.invalidAddress,
+        throw BuError(
+          DefaultErrorType.invalidAddress,
           "Ivalid zcash unified address typecode.",
           details: {"typecode": code.toString()},
         );
@@ -188,7 +189,12 @@ abstract class ZUnifiedReceiver extends VariantLayoutSerializable
   String get variantName => type.name;
 
   T cast<T extends ZUnifiedReceiver>() {
-    if (this is! T) throw BuError(DefaultErrorType.castFailed, "Failed to cast value", details: {"expected": "T", "value": runtimeType.toString()});
+    if (this is! T)
+      throw BuError(
+        DefaultErrorType.castFailed,
+        "Failed to cast value",
+        details: {"expected": "T", "value": runtimeType.toString()},
+      );
     return this as T;
   }
 
@@ -320,7 +326,10 @@ class ReceiverUnknown extends ZUnifiedReceiver {
   }) {
     if (typeCode > ZcashEncodingUtils.maxTypeCodeValue ||
         typeCode < Typecode.unknown.code) {
-      throw BuError(DefaultErrorType.invalidArgument,"Invalid zcash address typecode.");
+      throw BuError(
+        DefaultErrorType.invalidArgument,
+        "Invalid zcash address typecode.",
+      );
     }
     return ReceiverUnknown._(data: data, typeCode: typeCode, mode: mode);
   }
@@ -379,7 +388,12 @@ enum ZcashNetwork {
   static ZcashNetwork fromValue(int? value) {
     return values.firstWhere(
       (e) => e.value == value,
-      orElse: () => throw BuError(DefaultErrorType.notFound, "No matching ZcashNetwork found for the given value. null"),
+      orElse:
+          () =>
+              throw BuError(
+                DefaultErrorType.notFound,
+                "No matching ZcashNetwork found for the given value. null",
+              ),
     );
   }
 

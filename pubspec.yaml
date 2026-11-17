@@ -16,19 +16,12 @@ environment:
 
 
 dependencies:
-  # GitHub source of truth until the connector is published to pub.dev;
-  # switch to a hosted `blockchain_utils_connector: ^x.y.z` before publishing.
-  blockchain_utils_connector:
-    git:
-      url: https://github.com/mrtnetwork/blockchain_utils_connector
+  blockchain_utils_connector: ^0.1.0
   
 dev_dependencies:
   lints: ^6.0.0
   test: ^1.26.3
   flutter_lints: ^6.0.0
-  # pointycastle: ^4.0.0
-# For information on the generic Dart part of this file, see the
-# following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter packages.
 flutter:

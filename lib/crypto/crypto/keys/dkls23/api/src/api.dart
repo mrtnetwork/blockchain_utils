@@ -115,12 +115,7 @@ class ValidatedDkls23KeysApi implements Dkls23KeysApi {
         reason: 'need 2 <= t <= n',
       );
     }
-    ApiValidate.length(
-      seeds,
-      n * 32,
-      operation: '$_tag.dkg',
-      name: 'seeds',
-    );
+    ApiValidate.length(seeds, n * 32, operation: '$_tag.dkg', name: 'seeds');
     return ApiValidate.call(
       '$_tag.dkg',
       () => inner.dkg(curve: curve, sid: sid, n: n, t: t, seeds: seeds),
@@ -135,12 +130,7 @@ class ValidatedDkls23KeysApi implements Dkls23KeysApi {
     required List<int> sharesBlob,
     required List<int> seeds,
   }) {
-    ApiValidate.length(
-      msgHash,
-      32,
-      operation: '$_tag.sign',
-      name: 'msgHash',
-    );
+    ApiValidate.length(msgHash, 32, operation: '$_tag.sign', name: 'msgHash');
     if (sid.isEmpty) {
       throw CoreErrors.invalidOperationArguments(
         '$_tag.sign',
@@ -200,18 +190,8 @@ class ValidatedDkls23KeysApi implements Dkls23KeysApi {
     required List<int> msgHash,
     required List<int> signature,
   }) {
-    ApiValidate.length(
-      groupPk,
-      33,
-      operation: '$_tag.verify',
-      name: 'groupPk',
-    );
-    ApiValidate.length(
-      msgHash,
-      32,
-      operation: '$_tag.verify',
-      name: 'msgHash',
-    );
+    ApiValidate.length(groupPk, 33, operation: '$_tag.verify', name: 'groupPk');
+    ApiValidate.length(msgHash, 32, operation: '$_tag.verify', name: 'msgHash');
     ApiValidate.length(
       signature,
       64,
@@ -270,12 +250,7 @@ class ValidatedDkls23KeysApi implements Dkls23KeysApi {
 
   @override
   BuBytes xOnly({required Dkls23Curve curve, required List<int> groupPk}) {
-    ApiValidate.length(
-      groupPk,
-      33,
-      operation: '$_tag.xOnly',
-      name: 'groupPk',
-    );
+    ApiValidate.length(groupPk, 33, operation: '$_tag.xOnly', name: 'groupPk');
     return ApiValidate.call(
       '$_tag.xOnly',
       () => inner.xOnly(curve: curve, groupPk: groupPk),

@@ -40,7 +40,9 @@ abstract class FrostEngine<P, S> {
   S polynomialInterpolateConstant(List<(S, S)> points);
 
   /// Canonical commitment-list encoding, id-sorted (Section 4.3).
-  List<int> encodeGroupCommitmentList(List<FrostEngineCommitment<P>> commitments);
+  List<int> encodeGroupCommitmentList(
+    List<FrostEngineCommitment<P>> commitments,
+  );
 
   /// Participant ids in commitment-list order.
   List<int> participantsFromCommitmentList(

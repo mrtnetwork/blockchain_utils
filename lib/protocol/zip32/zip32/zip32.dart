@@ -48,7 +48,7 @@ class Zip32 {
           context: context,
         );
       default:
-        throw BuError(DefaultErrorType.unsupported,"Unsupported zip32 coin.");
+        throw BuError(DefaultErrorType.unsupported, "Unsupported zip32 coin.");
     }
   }
   factory Zip32.fromSpendKey({
@@ -71,7 +71,7 @@ class Zip32 {
           context: context,
         );
       default:
-        throw BuError(DefaultErrorType.unsupported,"Unsupported zip32 coin.");
+        throw BuError(DefaultErrorType.unsupported, "Unsupported zip32 coin.");
     }
   }
 
@@ -94,7 +94,7 @@ class Zip32 {
           context: context,
         );
       default:
-        throw BuError(DefaultErrorType.unsupported,"Unsupported zip32 coin.");
+        throw BuError(DefaultErrorType.unsupported, "Unsupported zip32 coin.");
     }
   }
 
@@ -105,7 +105,8 @@ class Zip32 {
 
   Zip32 get purpose {
     if (!isLevel(Bip44Levels.master)) {
-      throw BuError(DefaultErrorType.invalidArgument,
+      throw BuError(
+        DefaultErrorType.invalidArgument,
         "Current depth (${zip32.depth.toInt()}) is not suitable for deriving purpose",
       );
     }
@@ -129,7 +130,8 @@ class Zip32 {
 
   Zip32 get coin {
     if (!isLevel(Bip44Levels.purpose)) {
-      throw BuError(DefaultErrorType.invalidArgument,
+      throw BuError(
+        DefaultErrorType.invalidArgument,
         "Current depth (${zip32.depth.toInt()}) is not suitable for deriving coin",
       );
     }
@@ -145,7 +147,8 @@ class Zip32 {
 
   Zip32 account(int accIndex) {
     if (!isLevel(Bip44Levels.coin)) {
-      throw BuError(DefaultErrorType.invalidArgument,
+      throw BuError(
+        DefaultErrorType.invalidArgument,
         "Current depth (${zip32.depth.toInt()}) is not suitable for deriving account",
       );
     }

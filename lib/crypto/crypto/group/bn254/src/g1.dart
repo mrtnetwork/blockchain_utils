@@ -65,11 +65,7 @@ class Bn254G1Projective {
     return Bn254G1Projective(
       x: affine.x,
       y: affine.y,
-      z: Bn254Fp.conditionalSelect(
-        Bn254Fp.one,
-        Bn254Fp.zero,
-        affine.infinity,
-      ),
+      z: Bn254Fp.conditionalSelect(Bn254Fp.one, Bn254Fp.zero, affine.infinity),
     );
   }
 
@@ -171,8 +167,7 @@ class Bn254G1Projective {
 
   Bn254G1Projective operator -(Bn254G1Projective rhs) => this + (-rhs);
 
-  Bn254G1Projective operator -() =>
-      Bn254G1Projective(x: x, y: -y, z: z);
+  Bn254G1Projective operator -() => Bn254G1Projective(x: x, y: -y, z: z);
 
   Bn254G1Projective operator *(Bn254Fr rhs) => multiply(rhs.toBytes().toList());
 

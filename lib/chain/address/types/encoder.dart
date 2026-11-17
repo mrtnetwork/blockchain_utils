@@ -1,4 +1,3 @@
-
 /// An abstract class for encoding blockchain addresses.
 ///
 /// Implementations must throw [AddressConverterException] when the

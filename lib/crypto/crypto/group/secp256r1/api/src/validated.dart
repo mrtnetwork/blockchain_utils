@@ -16,8 +16,7 @@ class ValidatedSecp256r1CurveApi extends ValidatedCurveApi
       throw CoreErrors.invalidOperationArguments(
         op,
         name: 'point',
-        reason:
-            'expected $pointLen or $uncompressedLen bytes, got ${p.length}',
+        reason: 'expected $pointLen or $uncompressedLen bytes, got ${p.length}',
       );
     }
   }

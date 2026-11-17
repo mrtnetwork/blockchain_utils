@@ -173,7 +173,8 @@ abstract final class BaseHashDomain<
   }
 }
 
-abstract /// Shared behaviour for Sinsemilla commitment domains.
+abstract
+/// Shared behaviour for Sinsemilla commitment domains.
 class BaseCommitDomain<
   SCALAR extends PastaFieldElement<SCALAR>,
   BASE extends PastaFieldElement<BASE>,
@@ -200,7 +201,8 @@ class BaseCommitDomain<
   }
 }
 
-final /// A Sinsemilla hash domain over the Pallas curve.
+final
+/// A Sinsemilla hash domain over the Pallas curve.
 class HashDomain
     extends BaseHashDomain<VestaFq, PallasFp, PallasPoint, PallasAffinePoint> {
   HashDomain({required super.q, required super.sinsemillaS});

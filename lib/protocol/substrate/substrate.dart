@@ -17,4 +17,3 @@ export 'package:blockchain_utils/protocol/substrate/keys/substrate_keys.dart';
 
 /// Export statement for Substrate path components.
 export 'package:blockchain_utils/protocol/substrate/path/substrate_path.dart';
-

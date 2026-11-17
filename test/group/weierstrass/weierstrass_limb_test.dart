@@ -21,14 +21,10 @@ List<int> _le32(BigInt v) {
 
 /// Field prime / group order, derived from the fields themselves
 /// (`-1 mod m` serializes as `m - 1`): no external constants needed.
-final BigInt _p1k =
-    _be((-Secp256k1Fp.one).toBytes()) + BigInt.one;
-final BigInt _n1k =
-    _be((-Secp256k1Fr.one).toBytes()) + BigInt.one;
-final BigInt _p2r =
-    _be((-Secp256r1Fp.one).toBytes()) + BigInt.one;
-final BigInt _n2r =
-    _be((-Secp256r1Fr.one).toBytes()) + BigInt.one;
+final BigInt _p1k = _be((-Secp256k1Fp.one).toBytes()) + BigInt.one;
+final BigInt _n1k = _be((-Secp256k1Fr.one).toBytes()) + BigInt.one;
+final BigInt _p2r = _be((-Secp256r1Fp.one).toBytes()) + BigInt.one;
+final BigInt _n2r = _be((-Secp256r1Fr.one).toBytes()) + BigInt.one;
 
 void main() {
   group('Weierstrass limb fields (Pasta-style 4xUint64 Montgomery)', () {
@@ -106,7 +102,10 @@ void main() {
                     _le32(_n2r - BigInt.one),
                     endian: Endian.little,
                   ) +
-                  Secp256r1Fr.fromBytes(_le32(BigInt.one), endian: Endian.little))
+                  Secp256r1Fr.fromBytes(
+                    _le32(BigInt.one),
+                    endian: Endian.little,
+                  ))
               .toBytes(endian: Endian.big),
         ),
         BigInt.zero,
@@ -141,10 +140,14 @@ void main() {
         h(t.toCompressed()),
         '02f9308a019258c31049344f85f89d5229b531c845836f99b08601f113bce036f9',
       );
-      final s3 = Secp256k1Fr.fromBytes(_le32(BigInt.from(3)), endian: Endian.little);
+      final s3 = Secp256k1Fr.fromBytes(
+        _le32(BigInt.from(3)),
+        endian: Endian.little,
+      );
       expect(g * s3 == t, true);
       expect(
-        (g * Secp256k1Fr.fromBytes(_le32(BigInt.zero), endian: Endian.little)).isIdentity(),
+        (g * Secp256k1Fr.fromBytes(_le32(BigInt.zero), endian: Endian.little))
+            .isIdentity(),
         true,
       );
       final comp = g.toCompressed();
@@ -173,7 +176,10 @@ void main() {
         Secp256r1Point.fromCompressed(g.toCompressed().toList()) == g,
         true,
       );
-      final s7 = Secp256r1Fr.fromBytes(_le32(BigInt.from(7)), endian: Endian.little);
+      final s7 = Secp256r1Fr.fromBytes(
+        _le32(BigInt.from(7)),
+        endian: Endian.little,
+      );
       final m7 = g * s7;
       expect(
         h(m7.toCompressed()),
@@ -184,7 +190,11 @@ void main() {
     test('Field edges: zero/one/double/select/bytes', () {
       // zero / one / double
       expect(Secp256k1Fp.zero.isZero(), true);
-      expect(Secp256k1Fp.one == Secp256k1Fp.fromBytes(_le32(BigInt.one), endian: Endian.little), true);
+      expect(
+        Secp256k1Fp.one ==
+            Secp256k1Fp.fromBytes(_le32(BigInt.one), endian: Endian.little),
+        true,
+      );
       expect(Secp256k1Fp.zero + Secp256k1Fp.zero == Secp256k1Fp.zero, true);
       expect(Secp256k1Fp.zero.double() == Secp256k1Fp.zero, true);
       final two = Secp256k1Fp.one + Secp256k1Fp.one;
@@ -192,7 +202,10 @@ void main() {
       expect(two.double() == two + two, true);
       // conditionalSelect
       final a = Secp256k1Fp.fromBytes(_le32(BigInt.one), endian: Endian.little);
-      final b = Secp256k1Fp.fromBytes(_le32(BigInt.from(2)), endian: Endian.little);
+      final b = Secp256k1Fp.fromBytes(
+        _le32(BigInt.from(2)),
+        endian: Endian.little,
+      );
       expect(Secp256k1Fp.conditionalSelect(a, b, false) == a, true);
       expect(Secp256k1Fp.conditionalSelect(a, b, true) == b, true);
       // invert zero -> null, sqrt zero -> (0,true)
@@ -201,9 +214,17 @@ void main() {
       expect(sz.isSquare, true);
       expect(sz.result.isZero(), true);
       // non-square: 3 is non-residue for k1 (legendre -1)? check flag, don't enforce
-      final ns = Secp256k1Fp.fromBytes(_le32(BigInt.from(3)), endian: Endian.little).sqrt();
+      final ns =
+          Secp256k1Fp.fromBytes(
+            _le32(BigInt.from(3)),
+            endian: Endian.little,
+          ).sqrt();
       expect(
-        ns.result.square() == Secp256k1Fp.fromBytes(_le32(BigInt.from(3)), endian: Endian.little) ||
+        ns.result.square() ==
+                Secp256k1Fp.fromBytes(
+                  _le32(BigInt.from(3)),
+                  endian: Endian.little,
+                ) ||
             !ns.isSquare,
         true,
       );
@@ -252,8 +273,14 @@ void main() {
       );
       // scalar sub wrap: 0-1 == n-1
       final n1 = _n1k;
-      final zm = Secp256k1Fr.fromBytes(_le32(BigInt.zero), endian: Endian.little);
-      final om = Secp256k1Fr.fromBytes(_le32(BigInt.one), endian: Endian.little);
+      final zm = Secp256k1Fr.fromBytes(
+        _le32(BigInt.zero),
+        endian: Endian.little,
+      );
+      final om = Secp256k1Fr.fromBytes(
+        _le32(BigInt.one),
+        endian: Endian.little,
+      );
       expect(_be((zm - om).toBytes(endian: Endian.big)), n1 - BigInt.one);
       expect(_be((om + om).toBytes(endian: Endian.big)), BigInt.two);
       expect((om * om) == om, true);
@@ -272,10 +299,16 @@ void main() {
       expect((g1 + (-g1)).isIdentity(), true);
       expect(g1.double() == g1 + g1, true);
       // mul by 1 / n-1
-      final one = Secp256k1Fr.fromBytes(_le32(BigInt.one), endian: Endian.little);
+      final one = Secp256k1Fr.fromBytes(
+        _le32(BigInt.one),
+        endian: Endian.little,
+      );
       expect(g1 * one == g1, true);
       final n1 = _n1k;
-      final nm1 = Secp256k1Fr.fromBytes(_le32(n1 - BigInt.one), endian: Endian.little);
+      final nm1 = Secp256k1Fr.fromBytes(
+        _le32(n1 - BigInt.one),
+        endian: Endian.little,
+      );
       expect(g1 * nm1 == -g1, true);
       // scalar-mult self-consistency (k1): distributivity + on-curve.
       for (final sb in [
@@ -324,7 +357,15 @@ void main() {
       expect((g2 + (-g2)).isIdentity(), true);
       expect(g2.double() == g2 + g2, true);
       final n2 = _n2r;
-      expect(g2 * Secp256r1Fr.fromBytes(_le32(n2 - BigInt.one), endian: Endian.little) == -g2, true);
+      expect(
+        g2 *
+                Secp256r1Fr.fromBytes(
+                  _le32(n2 - BigInt.one),
+                  endian: Endian.little,
+                ) ==
+            -g2,
+        true,
+      );
       expect(
         () => Secp256r1Point.fromCompressed([0x05, ...List.filled(32, 0)]),
         throwsA(anything),

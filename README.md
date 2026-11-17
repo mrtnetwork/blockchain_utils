@@ -226,7 +226,7 @@ Chain service abstractions with a single provider architecture (`service/`), gRP
 ## Examples and tests
 
 - `test/` holds thousands of vectors/examples across encodings, crypto, addresses, mnemonics, signers, Sapling/Orchard, and HW codecs.
-- `example/` is a Flutter demo (Android/iOS/Web/Linux/macOS/Windows) wiring backend selection, including WASM glue config for web.
+- `example/blockchain_utils_example.dart` is a minimal pure-Dart sample (hash + BIP-39/BIP-44).
 
 ## Contributing
 

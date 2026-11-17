@@ -645,7 +645,7 @@ extension ExtJSONHelper<K, V> on Map<K, V> {
       throw CoreErrors.jsonKeyNotFound(key);
     }
 
-    throw BuError(DefaultErrorType.badJson,"Null value for key: '$key'.");
+    throw BuError(DefaultErrorType.badJson, "Null value for key: '$key'.");
   }
 
   /// Tries each of [keys] in order, returning the first one present
@@ -659,7 +659,8 @@ extension ExtJSONHelper<K, V> on Map<K, V> {
       if (result != null) return result;
     }
     if (null is E) return null as E;
-    throw BuError(DefaultErrorType.notFound,
+    throw BuError(
+      DefaultErrorType.notFound,
       'No matching key found.',
       details: {'keys': keys.join(", "), 'data': toString()},
     );
@@ -1027,7 +1028,7 @@ extension ExtJSONHelper<K, V> on Map<K, V> {
         if (JsonParser._isNull<T>()) return null as T;
         if (onMissing != null) return onMissing();
         if (!containsKey(key)) throw CoreErrors.jsonKeyNotFound(key);
-        throw BuError(DefaultErrorType.badJson,"Null value for key: '$key'.");
+        throw BuError(DefaultErrorType.badJson, "Null value for key: '$key'.");
       }
       return JsonParser.valueTo(
         value: value,

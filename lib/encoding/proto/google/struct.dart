@@ -43,9 +43,7 @@ class ProtoGoogleValue extends IProtoMessage {
 
   factory ProtoGoogleValue.fromDynamic(Object? value) {
     if (value == null) {
-      return const ProtoGoogleValue(
-        nullValue: ProtoGoogleNullValue.nullValue,
-      );
+      return const ProtoGoogleValue(nullValue: ProtoGoogleNullValue.nullValue);
     }
     if (value is bool) return ProtoGoogleValue(boolValue: value);
     if (value is num) return ProtoGoogleValue(numberValue: value.toDouble());
@@ -64,7 +62,10 @@ class ProtoGoogleValue extends IProtoMessage {
         ),
       );
     }
-    throw BuError(DefaultErrorType.unsupported,"Unsupported google.protobuf.Value: $value.");
+    throw BuError(
+      DefaultErrorType.unsupported,
+      "Unsupported google.protobuf.Value: $value.",
+    );
   }
 
   Object? toDynamic() {
@@ -133,7 +134,9 @@ class ProtoGoogleValue extends IProtoMessage {
       nullValue:
           json['null_value'] == null
               ? null
-              : ProtoGoogleNullValue.fromValue(json['null_value'] is int ? json['null_value'] : 0),
+              : ProtoGoogleNullValue.fromValue(
+                json['null_value'] is int ? json['null_value'] : 0,
+              ),
       numberValue: (json['number_value'] as num?)?.toDouble(),
       stringValue: json['string_value'],
       boolValue: json['bool_value'],
@@ -244,9 +247,7 @@ class ProtoGoogleListValue extends IProtoMessage {
         values: [for (final e in json) ProtoGoogleValue.fromDynamic(e)],
       );
     }
-    return ProtoGoogleListValue.fromJson(
-      (json as Map).cast<String, dynamic>(),
-    );
+    return ProtoGoogleListValue.fromJson((json as Map).cast<String, dynamic>());
   }
 
   factory ProtoGoogleListValue.deserialize(List<int> bytes) {
@@ -258,9 +259,7 @@ class ProtoGoogleListValue extends IProtoMessage {
       values:
           decode
               .getListOrNull<List<int>>(1)
-              ?.map(
-                (b) => ProtoGoogleValue.deserialize(b),
-              )
+              ?.map((b) => ProtoGoogleValue.deserialize(b))
               .toList() ??
           [],
     );
@@ -298,9 +297,7 @@ class ProtoGoogleStruct extends IProtoMessage {
   Map<String, dynamic> toJson({
     ProtoJsonConfig config = DefaultProtoJsonConfig.defaultConfig,
   }) {
-    return {
-      'fields': fields.map((k, v) => MapEntry(k, v.toJson())),
-    };
+    return {'fields': fields.map((k, v) => MapEntry(k, v.toJson()))};
   }
 
   /// Canonical JSON is the raw object itself.
@@ -316,8 +313,7 @@ class ProtoGoogleStruct extends IProtoMessage {
     if (fields is Map) {
       return ProtoGoogleStruct(
         fields: fields.map(
-          (k, v) =>
-              MapEntry(k.toString(), ProtoGoogleValue.fromDynamicJson(v)),
+          (k, v) => MapEntry(k.toString(), ProtoGoogleValue.fromDynamicJson(v)),
         ),
       );
     }
@@ -333,9 +329,7 @@ class ProtoGoogleStruct extends IProtoMessage {
         ),
       );
     }
-    return ProtoGoogleStruct.fromJson(
-      (json as Map).cast<String, dynamic>(),
-    );
+    return ProtoGoogleStruct.fromJson((json as Map).cast<String, dynamic>());
   }
 
   factory ProtoGoogleStruct.deserialize(List<int> bytes) {
@@ -347,8 +341,7 @@ class ProtoGoogleStruct extends IProtoMessage {
       fields: decode.getMapField<String, ProtoGoogleValue>(
         fieldNumber: 1,
         keyMapper: (k) => k.toString(),
-        valueMapper:
-            (v) => ProtoGoogleValue.deserialize((v as List<int>)),
+        valueMapper: (v) => ProtoGoogleValue.deserialize((v as List<int>)),
       ),
     );
   }

@@ -1137,7 +1137,8 @@ class Bip44Conf {
     type: CryptoKeyType.ed25519,
     addressEncoder:
         (params, config) =>
-            throw BuError(DefaultErrorType.unsupported,
+            throw BuError(
+              DefaultErrorType.unsupported,
               "Address derivation is not supported using coinConfig. Please use the Monero class instead.",
             ),
   );
@@ -1153,7 +1154,8 @@ class Bip44Conf {
     type: CryptoKeyType.secp256k1,
     addressEncoder:
         (params, config) =>
-            throw BuError(DefaultErrorType.unsupported,
+            throw BuError(
+              DefaultErrorType.unsupported,
               "Address derivation is not supported using coinConfig. Please use the Monero class instead.",
             ),
   );
@@ -1194,7 +1196,8 @@ class Bip44Conf {
     wifNetVer: null,
     type: CryptoKeyType.secp256k1,
     addressEncoder: (params, config) {
-      throw BuError(DefaultErrorType.invalidArgument,
+      throw BuError(
+        DefaultErrorType.invalidArgument,
         "Secp256k1 keys cannot derive implicit NEAR addresses; use a named account.",
       );
     },
@@ -1209,7 +1212,8 @@ class Bip44Conf {
     wifNetVer: null,
     type: CryptoKeyType.ed25519,
     addressEncoder: (params, config) {
-      throw BuError(DefaultErrorType.invalidAddress,
+      throw BuError(
+        DefaultErrorType.invalidAddress,
         "Hedera account IDs are assigned on-chain; derive the key then create or import the account.",
       );
     },
@@ -1225,7 +1229,8 @@ class Bip44Conf {
     wifNetVer: null,
     type: CryptoKeyType.secp256k1,
     addressEncoder: (params, config) {
-      throw BuError(DefaultErrorType.invalidAddress,
+      throw BuError(
+        DefaultErrorType.invalidAddress,
         "Hedera account IDs are assigned on-chain; derive the key then create or import the account.",
       );
     },
@@ -1832,7 +1837,8 @@ class Bip44Conf {
     type: CryptoKeyType.ed25519,
     addressEncoder:
         (params, config) =>
-            throw BuError(DefaultErrorType.unsupported,
+            throw BuError(
+              DefaultErrorType.unsupported,
               "Address derivation is not supported using coinConfig. Please use TonAddrEncoder class instead.",
             ),
     hwSupport: HwVariants.ton,
@@ -1847,7 +1853,8 @@ class Bip44Conf {
     type: CryptoKeyType.ed25519,
     addressEncoder:
         (params, config) =>
-            throw BuError(DefaultErrorType.unsupported,
+            throw BuError(
+              DefaultErrorType.unsupported,
               "Address derivation is not supported using coinConfig. Please use TonAddrEncoder class instead.",
             ),
   );

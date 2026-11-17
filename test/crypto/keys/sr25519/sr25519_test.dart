@@ -47,7 +47,10 @@ void sr25519KeysTest() {
         ),
         isTrue,
       );
-      expect(IPublicKey.isValidBytes(pub.keyBytes, CryptoKeyType.sr25519), isTrue);
+      expect(
+        IPublicKey.isValidBytes(pub.keyBytes, CryptoKeyType.sr25519),
+        isTrue,
+      );
       expect(SR25519PublicKey.isValidBytes(pub.keyBytes), isTrue);
       expect(IPublicKey.fromBytes(pub.keyBytes, CryptoKeyType.sr25519), pub);
       // Public fromBytes round trip.
@@ -55,10 +58,7 @@ void sr25519KeysTest() {
       // Private dispatch through IPrivateKey + round trip through toBytes.
       final viaIface = IPrivateKey.fromBytes(sk, CryptoKeyType.sr25519);
       expect(viaIface, isA<SR25519PrivateKey>());
-      expect(
-        (viaIface as SR25519PrivateKey).publicKey,
-        priv.publicKey,
-      );
+      expect((viaIface as SR25519PrivateKey).publicKey, priv.publicKey);
       expect(SR25519PrivateKey.isValidBytes(sk), isTrue);
       final back = SR25519PrivateKey.fromBytes(priv.toBytes());
       expect(back.publicKey, priv.publicKey);
@@ -93,10 +93,7 @@ void sr25519KeysTest() {
       final priv = SR25519PrivateKey.fromBytes(sk);
       final context = _bytes(0xC0, 8);
       final message = _bytes(0xA0, 48);
-      final params = SR25519SigningParams(
-        context: context,
-        message: message,
-      );
+      final params = SR25519SigningParams(context: context, message: message);
       final sig = priv.sign(params);
       expect(
         priv.publicKey.verify(

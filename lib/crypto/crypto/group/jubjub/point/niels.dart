@@ -47,6 +47,7 @@ class JubJubNielsPoint extends BaseJubJubNielsPoint<JubJubFr> with Equality {
       t2d: JubJubFq.conditionalSelect(a.t2d, b.t2d, choice),
     );
   }
+
   /// Mask form of [conditionalSelect]: [bit] is a 0/1 [Uint64] (never a
   /// `bool`), so scalar-multiplication selects stay straight-line.
   factory JubJubNielsPoint.conditionalSelectMask(
@@ -134,6 +135,7 @@ class JubJubAffineNielsPoint extends BaseJubJubNielsPoint<JubJubFr>
       t2d: JubJubFq.conditionalSelect(a.t2d, b.t2d, choice),
     );
   }
+
   /// Mask form of [conditionalSelect]: [bit] is a 0/1 [Uint64] (never a
   /// `bool`), so scalar-multiplication selects stay straight-line.
   factory JubJubAffineNielsPoint.conditionalSelectMask(

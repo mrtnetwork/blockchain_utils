@@ -297,21 +297,27 @@ class ZcashAccount {
   /// Returns the Orchard ZIP32 component, or throws if missing.
   Zip32Orchard getOrchard() {
     final orchard = this.orchard;
-    if (orchard == null) throw BuError(DefaultErrorType.invalidArgument,"Missing Orchard key.");
+    if (orchard == null)
+      throw BuError(DefaultErrorType.invalidArgument, "Missing Orchard key.");
     return orchard;
   }
 
   /// Returns the Sapling ZIP32 component, or throws if missing.
   Zip32Sapling getSapling() {
     final sapling = this.sapling;
-    if (sapling == null) throw BuError(DefaultErrorType.invalidArgument,"Missing Sapling key.");
+    if (sapling == null)
+      throw BuError(DefaultErrorType.invalidArgument, "Missing Sapling key.");
     return sapling;
   }
 
   /// Returns the Transparent BIP32 component, or throws if missing.
   Bip32Base getTransparent() {
     final transparent = this.transparent;
-    if (transparent == null) throw BuError(DefaultErrorType.invalidArgument,"Missing transaparent key.");
+    if (transparent == null)
+      throw BuError(
+        DefaultErrorType.invalidArgument,
+        "Missing transaparent key.",
+      );
     return transparent;
   }
 
@@ -430,7 +436,8 @@ class ZcashAccount {
     final orchard = this.orchard;
     final transparent = this.transparent;
     if (sapling == null || orchard == null || transparent == null) {
-      throw BuError(DefaultErrorType.invalidKeyData,
+      throw BuError(
+        DefaultErrorType.invalidKeyData,
         "Unified spending key is incomplete: Sapling, Orchard, and Transparent keys are required.",
       );
     }

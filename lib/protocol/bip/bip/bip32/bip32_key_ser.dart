@@ -146,7 +146,10 @@ class Bip32DeserializedKey with SecretState {
       if (_keyBytes.length !=
           Ed25519KeysConst.pubKeyByteLen +
               Ed25519KeysConst.pubKeyPrefix.length) {
-        throw BuError(DefaultErrorType.badPublicKey,"Invalid bip32 public key bytes.");
+        throw BuError(
+          DefaultErrorType.badPublicKey,
+          "Invalid bip32 public key bytes.",
+        );
       }
       return BuBytes(_keyBytes.sublist(Ed25519KeysConst.pubKeyPrefix.length));
     }
@@ -167,7 +170,10 @@ class Bip32KeyDeserializer {
       if (pubKey.length !=
           Ed25519KeysConst.pubKeyByteLen +
               Ed25519KeysConst.pubKeyPrefix.length) {
-        throw BuError(DefaultErrorType.badPublicKey,"Invalid bip32 public key bytes.");
+        throw BuError(
+          DefaultErrorType.badPublicKey,
+          "Invalid bip32 public key bytes.",
+        );
       }
       return BuBytes(pubKey.sublist(Ed25519KeysConst.pubKeyPrefix.length));
     }
@@ -194,20 +200,32 @@ class Bip32KeyDeserializer {
     // [version(4)] + depth(1) + fingerprint(4) + index(4) + chain code(32)
     final keyDataOffset = skipLen + 41;
     if (serKeyBytes.length <= keyDataOffset) {
-      throw BuError(DefaultErrorType.invalidLength,'Invalid extended key length.');
+      throw BuError(
+        DefaultErrorType.invalidLength,
+        'Invalid extended key length.',
+      );
     }
     final keyPrefixByte = serKeyBytes[keyDataOffset];
 
     if (isPublic) {
       if (serKeyBytes.length != pubLen) {
-        throw BuError(DefaultErrorType.badPublicKey,'Invalid extended public key.');
+        throw BuError(
+          DefaultErrorType.badPublicKey,
+          'Invalid extended public key.',
+        );
       }
     } else {
       if (!validPrivLen) {
-        throw BuError(DefaultErrorType.badPrivateKey,'Invalid extended private key.');
+        throw BuError(
+          DefaultErrorType.badPrivateKey,
+          'Invalid extended private key.',
+        );
       }
       if (keyPrefixByte != 0x00) {
-        throw BuError(DefaultErrorType.badPrivateKey,'Invalid extended private key prefix.');
+        throw BuError(
+          DefaultErrorType.badPrivateKey,
+          'Invalid extended private key prefix.',
+        );
       }
     }
 
@@ -259,10 +277,16 @@ class Bip32KeyDeserializer {
       } else if (BytesUtils.bytesEqual(keyNetVerGot, keyNetVer.private)) {
         return false;
       } else {
-        throw const BuError(DefaultErrorType.invalidArgument, 'Incorrect extended key net version.');
+        throw const BuError(
+          DefaultErrorType.invalidArgument,
+          'Incorrect extended key net version.',
+        );
       }
     }
-    throw BuError(DefaultErrorType.invalidLength,'Invalid extended key length.');
+    throw BuError(
+      DefaultErrorType.invalidLength,
+      'Invalid extended key length.',
+    );
   }
 
   /// Get back key parts from serialized key bytes.
@@ -294,7 +318,10 @@ class Bip32KeyDeserializer {
     // If private key, the first byte shall be zero and shall be removed
     if (!isPublic) {
       if (keyBytes[0] != 0) {
-        throw BuError(DefaultErrorType.badPrivateKey,'Incorrect extended private key.');
+        throw BuError(
+          DefaultErrorType.badPrivateKey,
+          'Incorrect extended private key.',
+        );
       }
       keyBytes = keyBytes.sublist(1);
     }

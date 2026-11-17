@@ -95,7 +95,9 @@ class _XXHash64 {
 
     int q = 0;
     while (q + 8 <= tailLen) {
-      h = _p1 * _rotl(h ^ (_p1 * _rotl(_p2 * _readLE64(tail, q), 31)), 27) + _p4;
+      h =
+          _p1 * _rotl(h ^ (_p1 * _rotl(_p2 * _readLE64(tail, q), 31)), 27) +
+          _p4;
       q += 8;
     }
     if (q + 4 <= tailLen) {

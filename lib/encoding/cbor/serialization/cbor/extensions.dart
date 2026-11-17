@@ -9,7 +9,8 @@ extension ExtCborBigint on BigInt {
 
   CborSafeIntValue toSafeIntCbor() {
     if ((isNegative && this < BinaryOps.minInt64) || this > BinaryOps.maxU64) {
-      throw BuError(DefaultErrorType.invalidLength,
+      throw BuError(
+        DefaultErrorType.invalidLength,
         "Invalid integer value.",
         details: {"reason": "Value is too large for type int."},
       );

@@ -37,7 +37,12 @@ enum BlockchainNetwork {
   static BlockchainNetwork fromIdentifier(int? value) {
     return values.firstWhere(
       (e) => e.identifier.id == value,
-      orElse: () => throw BuError(DefaultErrorType.notFound, "No matching BlockchainNetwork found for the given value. null"),
+      orElse:
+          () =>
+              throw BuError(
+                DefaultErrorType.notFound,
+                "No matching BlockchainNetwork found for the given value. null",
+              ),
     );
   }
 }

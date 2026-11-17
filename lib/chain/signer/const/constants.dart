@@ -11,10 +11,8 @@ class CryptoSignerConst {
   static const int ecdsaSignatureWithRecoveryIdLength =
       ecdsaSignatureLength + ecdsaRecoveryIdLength;
 
-  static final EdwardsLimbPoint generatorED25519 =
-      EdwardsLimbPoint.generator_;
-  static final Secp256k1Point generatorSecp256k1 =
-      Secp256k1Point.generator_;
+  static final EdwardsLimbPoint generatorED25519 = EdwardsLimbPoint.generator_;
+  static final Secp256k1Point generatorSecp256k1 = Secp256k1Point.generator_;
 
   static const String tronSignMessagePrefix = '\u0019TRON Signed Message:\n';
   static const ethPersonalSignPrefix = '\u0019Ethereum Signed Message:\n';

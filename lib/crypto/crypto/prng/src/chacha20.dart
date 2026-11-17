@@ -10,6 +10,7 @@ import 'package:blockchain_utils_connector/blockchain_utils_connector.dart';
 class ChaCha20Rng with Rng {
   /// Selects an independent output stream from the same seed.
   final int streamId;
+
   /// The underlying cipher, keyed with a 32-byte seed.
   final ChaCha20 chacha;
   ChaCha20Rng(List<int> seed, {this.streamId = 0}) : chacha = ChaCha20(seed);

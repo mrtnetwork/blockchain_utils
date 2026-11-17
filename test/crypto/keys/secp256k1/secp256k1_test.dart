@@ -12,10 +12,7 @@ void _checkPubBase(Secp256k1PublicKey pub) {
   expect(pub.toBytes(), pub.keyBytes);
   expect(pub.toBytes(mode: CryptoKeyEncoding.base), pub.keyBytes);
   expect(
-    Secp256k1PublicKey.isValidKeyEncoding(
-      pub.keyBytes,
-      CryptoKeyEncoding.base,
-    ),
+    Secp256k1PublicKey.isValidKeyEncoding(pub.keyBytes, CryptoKeyEncoding.base),
     isTrue,
   );
   expect(
@@ -62,10 +59,7 @@ void secp256k1KeysTest() {
       // Private dispatch through IPrivateKey.
       final viaIface = IPrivateKey.fromBytes(sk, CryptoKeyType.secp256k1);
       expect(viaIface, isA<Secp256k1PrivateKey>());
-      expect(
-        (viaIface as Secp256k1PrivateKey).publicKey,
-        priv.publicKey,
-      );
+      expect((viaIface as Secp256k1PrivateKey).publicKey, priv.publicKey);
       // Private round trip through toBytes.
       final back = Secp256k1PrivateKey.fromBytes(priv.toBytes());
       expect(back.publicKey, priv.publicKey);

@@ -34,6 +34,9 @@ class Bip39WordsListFinder<BIP39LANG extends Bip39LanguagesBase>
         continue;
       }
     }
-    throw BuError(DefaultErrorType.invalidMnemonic,"Unsuported mnemonic language.");
+    throw BuError(
+      DefaultErrorType.invalidMnemonic,
+      "Unsuported mnemonic language.",
+    );
   }
 }

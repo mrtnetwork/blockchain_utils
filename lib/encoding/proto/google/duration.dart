@@ -34,8 +34,11 @@ class ProtoGoogleDuration extends IProtoMessage {
     final s = seconds ?? BigInt.zero;
     final n = nanos ?? 0;
     if (n == 0) return '${s}s';
-    final frac =
-        n.abs().toString().padLeft(9, '0').replaceAll(RegExp(r'0+$'), '');
+    final frac = n
+        .abs()
+        .toString()
+        .padLeft(9, '0')
+        .replaceAll(RegExp(r'0+$'), '');
     final sign = (s.isNegative || n < 0) ? '-' : '';
     return '$sign${s.abs()}.$frac'
         's';
@@ -44,7 +47,10 @@ class ProtoGoogleDuration extends IProtoMessage {
   /// Parses the canonical `"3.000001s"` form into `(seconds, nanos)`.
   static ({BigInt seconds, int nanos}) parseDurationString(Object? value) {
     if (value == null) {
-      throw BuError(DefaultErrorType.invalidArgument,"Cannot parse null duration string.");
+      throw BuError(
+        DefaultErrorType.invalidArgument,
+        "Cannot parse null duration string.",
+      );
     }
     var text = (value as String).trim();
     if (text.endsWith('s')) text = text.substring(0, text.length - 1);
@@ -71,10 +77,7 @@ class ProtoGoogleDuration extends IProtoMessage {
 
   static ProtoGoogleDuration fromString(Object? value) {
     final parsed = parseDurationString(value);
-    return ProtoGoogleDuration(
-      seconds: parsed.seconds,
-      nanos: parsed.nanos,
-    );
+    return ProtoGoogleDuration(seconds: parsed.seconds, nanos: parsed.nanos);
   }
 
   @override
@@ -93,8 +96,7 @@ class ProtoGoogleDuration extends IProtoMessage {
   }) {
     final seconds = json['seconds'];
     return ProtoGoogleDuration(
-      seconds:
-          seconds == null ? null : BigInt.parse(seconds.toString()),
+      seconds: seconds == null ? null : BigInt.parse(seconds.toString()),
       nanos: JsonParser.valueAsInt<int?>(json['nanos']),
     );
   }
@@ -102,9 +104,7 @@ class ProtoGoogleDuration extends IProtoMessage {
   /// Parses either the field map or the canonical `"3.000001s"` string form.
   factory ProtoGoogleDuration.fromDynamic(Object? json) {
     if (json is String) return ProtoGoogleDuration.fromString(json);
-    return ProtoGoogleDuration.fromJson(
-      (json as Map).cast<String, dynamic>(),
-    );
+    return ProtoGoogleDuration.fromJson((json as Map).cast<String, dynamic>());
   }
 
   factory ProtoGoogleDuration.deserialize(List<int> bytes) {

@@ -289,7 +289,10 @@ class UnifiedIncomingViewingKey {
       );
       // return ;
     } catch (_) {
-      throw BuError(DefaultErrorType.invalidArgument,"Invalid sapling Diversifier index.");
+      throw BuError(
+        DefaultErrorType.invalidArgument,
+        "Invalid sapling Diversifier index.",
+      );
     }
   }
 
@@ -346,7 +349,10 @@ class UnifiedIncomingViewingKey {
     }
     final bipIndex = index.toBip32Index();
     if (bipIndex == null) {
-      throw BuError(DefaultErrorType.invalidArgument,"Invalid transparent child index.");
+      throw BuError(
+        DefaultErrorType.invalidArgument,
+        "Invalid transparent child index.",
+      );
     }
     final child = transparent.childKey(bipIndex);
     final receiver = switch (transparentAddressType) {
@@ -387,7 +393,10 @@ class UnifiedIncomingViewingKey {
     try {
       return _address(index: index, request: request);
     } on BuError {
-      throw BuError(DefaultErrorType.invalidArgument,"Invalid sapling Diversifier index.");
+      throw BuError(
+        DefaultErrorType.invalidArgument,
+        "Invalid sapling Diversifier index.",
+      );
     }
   }
 
@@ -405,7 +414,10 @@ class UnifiedIncomingViewingKey {
         j = j.tryIncrement();
       }
     }
-    throw BuError(DefaultErrorType.invalidKeyData,"Diversifier index space exhausted.");
+    throw BuError(
+      DefaultErrorType.invalidKeyData,
+      "Diversifier index space exhausted.",
+    );
   }
 
   /// Returns the default unified address for this account using the specified request configuration.
@@ -435,7 +447,10 @@ class UnifiedIncomingViewingKey {
   Bip32Slip10Secp256k1 getTransparent() {
     final transparent = this.transparent;
     if (transparent == null) {
-      throw BuError(DefaultErrorType.invalidArgument,"Transparent key missing.");
+      throw BuError(
+        DefaultErrorType.invalidArgument,
+        "Transparent key missing.",
+      );
     }
     return transparent;
   }
@@ -444,7 +459,7 @@ class UnifiedIncomingViewingKey {
   SaplingIncomingViewingKey getSapling() {
     final sapling = this.sapling;
     if (sapling == null) {
-      throw BuError(DefaultErrorType.invalidArgument,"Sapling key missing.");
+      throw BuError(DefaultErrorType.invalidArgument, "Sapling key missing.");
     }
     return sapling;
   }
@@ -453,7 +468,7 @@ class UnifiedIncomingViewingKey {
   OrchardIncomingViewingKey getOrchard() {
     final orchard = this.orchard;
     if (orchard == null) {
-      throw BuError(DefaultErrorType.invalidArgument,"Orchard key missing.");
+      throw BuError(DefaultErrorType.invalidArgument, "Orchard key missing.");
     }
     return orchard;
   }
@@ -468,7 +483,10 @@ class UnifiedIncomingViewingKey {
     final saplingRequired = request.saplingRequired;
     if (sapling == null && !saplingRequired) return null;
     if (sapling == null) {
-      throw BuError(DefaultErrorType.invalidArgument,"Sapling key required but missing.");
+      throw BuError(
+        DefaultErrorType.invalidArgument,
+        "Sapling key required but missing.",
+      );
     }
     try {
       final addr = sapling.addressAt(index);
@@ -480,7 +498,10 @@ class UnifiedIncomingViewingKey {
       rethrow;
     } catch (_) {
       if (!saplingRequired) return null;
-      throw BuError(DefaultErrorType.invalidArgument,"Invalid sapling Diversifier index.");
+      throw BuError(
+        DefaultErrorType.invalidArgument,
+        "Invalid sapling Diversifier index.",
+      );
     }
   }
 
@@ -494,7 +515,10 @@ class UnifiedIncomingViewingKey {
     final orchardRequired = request.orchardRequired;
     if (orchard == null && !orchardRequired) return null;
     if (orchard == null) {
-      throw BuError(DefaultErrorType.invalidArgument,"Orchard key required but missing.");
+      throw BuError(
+        DefaultErrorType.invalidArgument,
+        "Orchard key required but missing.",
+      );
     }
     final addr = orchard.addressAt(index);
     return ReceiverOrchard(
@@ -513,12 +537,18 @@ class UnifiedIncomingViewingKey {
     final transparentRequired = request.transparentRequired;
     if (transparent == null && !transparentRequired) return null;
     if (transparent == null) {
-      throw BuError(DefaultErrorType.invalidArgument,"Transparent key required but missing.");
+      throw BuError(
+        DefaultErrorType.invalidArgument,
+        "Transparent key required but missing.",
+      );
     }
     final bipIndex = index.toBip32Index();
     if (bipIndex == null) {
       if (!transparentRequired) return null;
-      throw BuError(DefaultErrorType.invalidArgument,"Invalid transparent child index.");
+      throw BuError(
+        DefaultErrorType.invalidArgument,
+        "Invalid transparent child index.",
+      );
     }
     final child = transparent.childKey(bipIndex);
     final receiver = switch (request.transparentAddressType) {
@@ -557,25 +587,40 @@ class UnifiedIncomingViewingKey {
 
     // Must have at least one shielded key
     if (!hasSapling && !hasOrchard) {
-      throw BuError(DefaultErrorType.invalidArgument,"Unified address requires Sapling or Orchard key.");
+      throw BuError(
+        DefaultErrorType.invalidArgument,
+        "Unified address requires Sapling or Orchard key.",
+      );
     }
 
     // Request must allow at least one shielded type
     if (!request.orchardAllowed && !request.saplingAllowed) {
-      throw BuError(DefaultErrorType.invalidKeyData,"Request disallows all shielded receivers.");
+      throw BuError(
+        DefaultErrorType.invalidKeyData,
+        "Request disallows all shielded receivers.",
+      );
     }
 
     // Required receiver checks
     if (request.saplingRequired && !hasSapling) {
-      throw BuError(DefaultErrorType.invalidArgument,"Sapling key required but missing.");
+      throw BuError(
+        DefaultErrorType.invalidArgument,
+        "Sapling key required but missing.",
+      );
     }
 
     if (request.orchardRequired && !hasOrchard) {
-      throw BuError(DefaultErrorType.invalidArgument,"Orchard key required but missing.");
+      throw BuError(
+        DefaultErrorType.invalidArgument,
+        "Orchard key required but missing.",
+      );
     }
 
     if (request.transparentRequired && !hasTransparent) {
-      throw BuError(DefaultErrorType.invalidArgument,"Transparent key required but missing.");
+      throw BuError(
+        DefaultErrorType.invalidArgument,
+        "Transparent key required but missing.",
+      );
     }
   }
 

@@ -25,15 +25,10 @@ void main() {
       final back = FrostSecp256k1PrivateKey.fromBytes(key.toBytes());
       expect(back.publicKey, key.publicKey);
       expect(back.secretKeys.length, 2);
-      final pkBack = FrostSecp256k1PublicKey.fromBytes(
-        key.publicKey.toBytes(),
-      );
+      final pkBack = FrostSecp256k1PublicKey.fromBytes(key.publicKey.toBytes());
       expect(pkBack, key.publicKey);
       expect(
-        IPublicKey.fromBytes(
-          key.publicKey.toBytes(),
-          CryptoKeyType.frostK1,
-        ),
+        IPublicKey.fromBytes(key.publicKey.toBytes(), CryptoKeyType.frostK1),
         key.publicKey,
       );
 
@@ -154,13 +149,21 @@ void main() {
       final msg = 'frost-k1-validate'.codeUnits;
       expect(
         () => key.sign(
-          FrostSigningParams(message: msg, subset: [0], randomness: bytes(0xC0, 64)),
+          FrostSigningParams(
+            message: msg,
+            subset: [0],
+            randomness: bytes(0xC0, 64),
+          ),
         ),
         throwsA(anything),
       );
       expect(
         () => key.sign(
-          FrostSigningParams(message: msg, subset: [0, 9], randomness: bytes(0xC1, 128)),
+          FrostSigningParams(
+            message: msg,
+            subset: [0, 9],
+            randomness: bytes(0xC1, 128),
+          ),
         ),
         throwsA(anything),
       );
@@ -176,10 +179,14 @@ void main() {
     });
 
     test('Frost Ed25519: fromSecretKeys seeds threshold, sign, verify', () {
-      final key = FrostEd25519PrivateKey.fromSecretKeys([
-        ED25519PrivateKey.fromBytes(bytes(0x11, 32)),
-        ED25519PrivateKey.fromBytes(bytes(0x22, 32)),
-      ], threshold: 2, coefficients: bytes(0x33, 64));
+      final key = FrostEd25519PrivateKey.fromSecretKeys(
+        [
+          ED25519PrivateKey.fromBytes(bytes(0x11, 32)),
+          ED25519PrivateKey.fromBytes(bytes(0x22, 32)),
+        ],
+        threshold: 2,
+        coefficients: bytes(0x33, 64),
+      );
       expect(key.type, CryptoKeyType.frostEd25519);
       expect(key.publicKey.threshold, 2);
       final back = FrostEd25519PrivateKey.fromBytes(key.toBytes());
@@ -250,11 +257,15 @@ void main() {
     });
 
     test('Frost Ed25519 2-of-3: every pair signs', () {
-      final key = FrostEd25519PrivateKey.fromSecretKeys([
-        ED25519PrivateKey.fromBytes(bytes(0xD1, 32)),
-        ED25519PrivateKey.fromBytes(bytes(0xD2, 32)),
-        ED25519PrivateKey.fromBytes(bytes(0xD3, 32)),
-      ], threshold: 2, coefficients: bytes(0xD4, 96));
+      final key = FrostEd25519PrivateKey.fromSecretKeys(
+        [
+          ED25519PrivateKey.fromBytes(bytes(0xD1, 32)),
+          ED25519PrivateKey.fromBytes(bytes(0xD2, 32)),
+          ED25519PrivateKey.fromBytes(bytes(0xD3, 32)),
+        ],
+        threshold: 2,
+        coefficients: bytes(0xD4, 96),
+      );
       final msg = 'frost-ed-2of3'.codeUnits;
       for (final pair in [
         [0, 1],
@@ -284,11 +295,15 @@ void main() {
     });
 
     test('Frost Ed25519 threshold signature verifies as plain Ed25519', () {
-      final key = FrostEd25519PrivateKey.fromSecretKeys([
-        ED25519PrivateKey.fromBytes(bytes(0x11, 32)),
-        ED25519PrivateKey.fromBytes(bytes(0x22, 32)),
-        ED25519PrivateKey.fromBytes(bytes(0x33, 32)),
-      ], threshold: 3, coefficients: bytes(0x44, 192));
+      final key = FrostEd25519PrivateKey.fromSecretKeys(
+        [
+          ED25519PrivateKey.fromBytes(bytes(0x11, 32)),
+          ED25519PrivateKey.fromBytes(bytes(0x22, 32)),
+          ED25519PrivateKey.fromBytes(bytes(0x33, 32)),
+        ],
+        threshold: 3,
+        coefficients: bytes(0x44, 192),
+      );
       final msg = 'frost-ed-3of3'.codeUnits;
       final sig = key.sign(
         FrostSigningParams(
@@ -310,10 +325,7 @@ void main() {
       final plainSig = ED25519Signature.fromBytes(sig.toBytes());
       expect(
         groupKey.verify(
-          Ed25519VerifyingParams(
-            Ed25519SigningParams(message: msg),
-            plainSig,
-          ),
+          Ed25519VerifyingParams(Ed25519SigningParams(message: msg), plainSig),
         ),
         isTrue,
       );
@@ -324,19 +336,14 @@ void main() {
       expect(rebuilt.aggKey, groupKey);
       expect(
         key.publicKey.verify(
-          FrostVerifyingParams(
-            message: 'nope'.codeUnits,
-            signature: sig,
-          ),
+          FrostVerifyingParams(message: 'nope'.codeUnits, signature: sig),
         ),
         isFalse,
       );
       key.dispose();
     });
 
-    test(
-        'Frost secp256k1 2-of-3 threshold signature verifies at backend',
-        () {
+    test('Frost secp256k1 2-of-3 threshold signature verifies at backend', () {
       final key = FrostSecp256k1PrivateKey.fromSecretKeys(
         [
           Secp256k1PrivateKey.fromBytes(bytes(0x51, 32)),
@@ -360,16 +367,13 @@ void main() {
         ),
         isTrue,
       );
-      final memberKeys =
-          key.publicKey.members!.map((m) => m.key).toList();
+      final memberKeys = key.publicKey.members!.map((m) => m.key).toList();
       final rebuilt = FrostSecp256k1PublicKey.aggPublicKeys(
         memberKeys,
         threshold: 2,
       );
       expect(rebuilt.aggKey, key.publicKey.aggKey);
-      final groupKey = Secp256k1PublicKey.fromBytes(
-        rebuilt.aggKey.toBytes(),
-      );
+      final groupKey = Secp256k1PublicKey.fromBytes(rebuilt.aggKey.toBytes());
       final frost = blockchainUtils.api.frost;
       expect(
         frost.k1Verify(

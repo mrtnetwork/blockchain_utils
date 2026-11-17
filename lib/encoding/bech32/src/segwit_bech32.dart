@@ -22,7 +22,8 @@ class SegwitBech32Encoder extends Bech32EncoderBase {
   static String encode(String hrp, int witVer, List<int> witProg) {
     if (witVer < SegwitBech32Const.witnessVerBech32 ||
         witVer > SegwitBech32Const.witnessVerMaxVal) {
-      throw BuError(DefaultErrorType.invalidLength,
+      throw BuError(
+        DefaultErrorType.invalidLength,
         'Invalid bech32 format.',
         details: {
           'reason':
@@ -59,14 +60,16 @@ class SegwitBech32Decoder extends Bech32DecoderBase {
     final data = decoded.$2;
 
     if (hrp != null && hrp != hrpGot) {
-      throw BuError(DefaultErrorType.badBech32,
+      throw BuError(
+        DefaultErrorType.badBech32,
         'Incorrect bech32 hrp.',
         details: {'expected': hrp, 'hrp': hrpGot},
       );
     }
 
     if (data.isEmpty) {
-      throw const BuError(DefaultErrorType.badBech32,
+      throw const BuError(
+        DefaultErrorType.badBech32,
         'Invalid bech32 format.',
         details: {'reason': 'empty data payload'},
       );
@@ -75,7 +78,8 @@ class SegwitBech32Decoder extends Bech32DecoderBase {
 
     if (convData.length < SegwitBech32Const.witnessProgMinByteLen ||
         convData.length > SegwitBech32Const.witnessProgMaxByteLen) {
-      throw BuError(DefaultErrorType.invalidLength,
+      throw BuError(
+        DefaultErrorType.invalidLength,
         'Invalid bech32 format.',
         details: {
           'reason': 'witness program length ${convData.length} out of range',
@@ -85,7 +89,8 @@ class SegwitBech32Decoder extends Bech32DecoderBase {
 
     final witVer = data[0];
     if (witVer > SegwitBech32Const.witnessVerMaxVal) {
-      throw BuError(DefaultErrorType.invalidLength,
+      throw BuError(
+        DefaultErrorType.invalidLength,
         'Invalid bech32 format.',
         details: {
           'reason':
@@ -98,7 +103,8 @@ class SegwitBech32Decoder extends Bech32DecoderBase {
         !SegwitBech32Const.witnessVerZeroDataByteLen.contains(
           convData.length,
         )) {
-      throw BuError(DefaultErrorType.invalidLength,
+      throw BuError(
+        DefaultErrorType.invalidLength,
         'Invalid bech32 format.',
         details: {
           'reason':

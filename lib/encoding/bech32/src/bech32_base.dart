@@ -106,7 +106,8 @@ class Bech32Decoder extends Bech32DecoderBase {
       (hrp, data) => Bech32Utils.verifyChecksum(hrp, data, encoding),
     );
     if (hrp != decoded.$1) {
-      throw BuError(DefaultErrorType.badBech32,
+      throw BuError(
+        DefaultErrorType.badBech32,
         'Incorrect bech32 hrp.',
         details: {'expected': hrp, 'hrp': decoded.$1},
       );

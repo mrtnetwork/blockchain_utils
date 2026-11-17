@@ -81,7 +81,8 @@ abstract class CborObject<T extends Object?> with Equality {
       if (unknownType != null) {
         return unknownType(value);
       }
-      throw BuError(DefaultErrorType.notFound,
+      throw BuError(
+        DefaultErrorType.notFound,
         "cbor encoder not found for type ${value.runtimeType}",
       );
     }();
@@ -99,7 +100,11 @@ abstract class CborObject<T extends Object?> with Equality {
 
   E cast<E extends CborObject>() {
     if (this is E) return this as E;
-    throw BuError(DefaultErrorType.castFailed, "Failed to cast value", details: {"expected": "E", "value": runtimeType.toString()});
+    throw BuError(
+      DefaultErrorType.castFailed,
+      "Failed to cast value",
+      details: {"expected": "E", "value": runtimeType.toString()},
+    );
   }
 }
 
@@ -142,7 +147,11 @@ enum CborIterableEncodingType {
     return values.firstWhere(
       (e) => e.name == name,
       orElse:
-          () => throw const BuError(DefaultErrorType.invalidArgument,"Invalid iterable encoding type."),
+          () =>
+              throw const BuError(
+                DefaultErrorType.invalidArgument,
+                "Invalid iterable encoding type.",
+              ),
     );
   }
 }
@@ -162,7 +171,11 @@ enum CborLengthEncoding {
     return values.firstWhere(
       (e) => e.name == name,
       orElse:
-          () => throw const BuError(DefaultErrorType.invalidLength,"Invalid CBOR length encoding type."),
+          () =>
+              throw const BuError(
+                DefaultErrorType.invalidLength,
+                "Invalid CBOR length encoding type.",
+              ),
     );
   }
 }

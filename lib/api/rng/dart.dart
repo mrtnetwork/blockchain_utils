@@ -10,7 +10,9 @@ class DartRngApi implements RngApi {
   /// Creates a pure-Dart RNG backend; every method throws [BuError].
   const DartRngApi();
 
-  static BuError _un(String op) => BuError(DefaultErrorType.unsupported, 'DartRngApi.$op: pure-Dart backend has no global RNG; '
+  static BuError _un(String op) => BuError(
+    DefaultErrorType.unsupported,
+    'DartRngApi.$op: pure-Dart backend has no global RNG; '
     'use NativeRngApi via blockchainUtils.setRustApi().',
   );
 

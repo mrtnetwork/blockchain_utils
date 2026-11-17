@@ -30,10 +30,14 @@ void quickCryptoScopedTest() {
 
     test('blake2b keyed matches direct helper', () {
       final key = List<int>.filled(32, 7);
-      final viaScoped = QuickCrypto.blake2b((h) {
-        h.update([9, 9, 9]);
-        return h.digest().toHex();
-      }, digestLength: 32, config: Blake2Config.blake2b(key: key));
+      final viaScoped = QuickCrypto.blake2b(
+        (h) {
+          h.update([9, 9, 9]);
+          return h.digest().toHex();
+        },
+        digestLength: 32,
+        config: Blake2Config.blake2b(key: key),
+      );
       expect(
         viaScoped,
         QuickCrypto.blake2b256Hash([9, 9, 9], key: key).toHex(),
@@ -97,7 +101,10 @@ void quickCryptoScopedTest() {
     test('chacha20 stream roundtrip', () {
       final key = List<int>.filled(32, 9);
       final nonce = List<int>.filled(12, 0);
-      final ct = QuickCrypto.chacha20(key, (c) => c.process([1, 2, 3], nonce: nonce));
+      final ct = QuickCrypto.chacha20(
+        key,
+        (c) => c.process([1, 2, 3], nonce: nonce),
+      );
       final pt = QuickCrypto.chacha20(key, (c) => c.process(ct, nonce: nonce));
       expect(pt.toList(), [1, 2, 3]);
     });

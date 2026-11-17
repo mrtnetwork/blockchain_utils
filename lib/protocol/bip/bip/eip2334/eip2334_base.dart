@@ -107,13 +107,15 @@ abstract class Eip2334Base<EIP2334 extends Eip2334Base<EIP2334>>
     if (node.isPublicOnly) {
       if (depth < Eip2334Levels.account.value ||
           depth > Eip2334Levels.signing.value) {
-        throw BuError(DefaultErrorType.invalidArgument,
+        throw BuError(
+          DefaultErrorType.invalidArgument,
           "Depth of the public-only Eip2334 object ($depth) is below account level or beyond signing level",
         );
       }
     } else {
       if (depth < 0 || depth > Eip2334Levels.signing.value) {
-        throw BuError(DefaultErrorType.invalidArgument,
+        throw BuError(
+          DefaultErrorType.invalidArgument,
           "Depth of the Eip2334 object ($depth) is invalid or beyond signing level",
         );
       }
@@ -136,7 +138,10 @@ abstract class Eip2334Base<EIP2334 extends Eip2334Base<EIP2334>>
   /// [Eip2334PrivateKey] privatekey
   Eip2334PrivateKey get privateKey {
     if (eip2333.isPublicOnly) {
-      throw const BuError(DefaultErrorType.invalidArgument,"The Eip2333Bls object is public-only");
+      throw const BuError(
+        DefaultErrorType.invalidArgument,
+        "The Eip2333Bls object is public-only",
+      );
     }
     return Eip2334PrivateKey(eip2333.privateKey, coinConf);
   }

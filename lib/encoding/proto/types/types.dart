@@ -41,7 +41,8 @@ enum ProtoWireType {
       (e) => e.value == type,
       orElse:
           () =>
-              throw BuError(DefaultErrorType.invalidArgument,
+              throw BuError(
+                DefaultErrorType.invalidArgument,
                 "Invalid or unsupported wire type.",
                 details: {"wiretype": type.toString()},
               ),
@@ -84,7 +85,8 @@ enum ProtoWireType {
     final int wireType = tag & 0x07;
     final type = ProtoWireType.fromValue(wireType);
     if (expected != null && type != expected) {
-      throw BuError(DefaultErrorType.badProto,
+      throw BuError(
+        DefaultErrorType.badProto,
         "Mismatch wire type.",
         details: {
           "expected": expected.value.toString(),
@@ -93,7 +95,8 @@ enum ProtoWireType {
       );
     }
     if (expectedTag != null && fieldId != expectedTag) {
-      throw BuError(DefaultErrorType.badProto,
+      throw BuError(
+        DefaultErrorType.badProto,
         "Mismatch tag.",
         details: {
           "expected": expectedTag.toString(),
@@ -453,7 +456,8 @@ enum ProtoSyntax {
       (e) => e.syntax == value,
       orElse:
           () =>
-              throw BuError(DefaultErrorType.unsupported,
+              throw BuError(
+                DefaultErrorType.unsupported,
                 "Unsupported proto syntax.",
                 details: {"syntax": value},
               ),
@@ -521,13 +525,15 @@ abstract class ProtoOption with Equality {
         case String():
           return ProtoOptionString(name: name, value: value);
         default:
-          throw BuError(DefaultErrorType.unsupported,
+          throw BuError(
+            DefaultErrorType.unsupported,
             "Unsupported google http proto option.",
             details: {"name": name},
           );
       }
     } catch (e) {
-      throw BuError(DefaultErrorType.invalidArgument,
+      throw BuError(
+        DefaultErrorType.invalidArgument,
         "Failed to google http proto option.",
         details: {"name": name, "value": value?.runtimeType.toString()},
       );
@@ -673,7 +679,10 @@ class ProtoOptionHttp extends ProtoOption {
         path: data.valueAs("get"),
       );
     }
-    throw BuError(DefaultErrorType.invalidArgument,"Unexpected google http option params.");
+    throw BuError(
+      DefaultErrorType.invalidArgument,
+      "Unexpected google http option params.",
+    );
   }
 
   @override

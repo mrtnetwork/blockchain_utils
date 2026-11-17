@@ -37,6 +37,9 @@ class ElectrumV1WordsListFinder
         continue;
       }
     }
-    throw BuError(DefaultErrorType.invalidMnemonic,"Unsuported mnemonic language.");
+    throw BuError(
+      DefaultErrorType.invalidMnemonic,
+      "Unsuported mnemonic language.",
+    );
   }
 }

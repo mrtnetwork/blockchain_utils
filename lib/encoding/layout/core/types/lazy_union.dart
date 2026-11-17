@@ -30,7 +30,8 @@ class LazyVariantModel<T> {
   int getIndex(Map<String, dynamic> source) {
     final index = this.index ?? onRequestIndex?.call(source);
     if (index == null) {
-      throw BuError(DefaultErrorType.invalidArgument,
+      throw BuError(
+        DefaultErrorType.invalidArgument,
         "Failed to determine layout index.",
         details: {"property": property},
       );
@@ -88,7 +89,8 @@ class LazyUnion extends Layout<Map<String, dynamic>> {
     if (_defaultLayout != null) {
       return _defaultLayout!;
     }
-    throw BuError(DefaultErrorType.invalidArgument,
+    throw BuError(
+      DefaultErrorType.invalidArgument,
       "Failed to determine variant layout.",
       details: {
         "property": property,
@@ -106,7 +108,8 @@ class LazyUnion extends Layout<Map<String, dynamic>> {
     final discr = discriminator.decode(bytes, offset: offset);
     final clo = _registry[discr.value] ?? _defaultLayout;
     if (clo == null) {
-      throw BuError(DefaultErrorType.invalidArgument,
+      throw BuError(
+        DefaultErrorType.invalidArgument,
         "Failed to determine variant layout.",
         details: {
           "property": property,
@@ -134,7 +137,8 @@ class LazyUnion extends Layout<Map<String, dynamic>> {
   }) {
     final vlo = _defaultGetSourceVariant(source);
     if (vlo == null) {
-      throw BuError(DefaultErrorType.invalidArgument,
+      throw BuError(
+        DefaultErrorType.invalidArgument,
         "Failed to determine variant layout.",
         details: {"property": property, "source": source.toString()},
       );
@@ -146,7 +150,10 @@ class LazyUnion extends Layout<Map<String, dynamic>> {
   void _addVariant(List<LazyVariantModel> variants) {
     final dup = variants.map((e) => e.index).toSet();
     if (dup.length != variants.length) {
-      throw BuError(DefaultErrorType.invalidArgument,"Duplicate variant layout detected.");
+      throw BuError(
+        DefaultErrorType.invalidArgument,
+        "Duplicate variant layout detected.",
+      );
     }
     final defaultVariant = variants.firstWhereNullable((e) => e.index == null);
     if (defaultVariant != null) {
@@ -243,7 +250,8 @@ class LazyVariantLayout extends Layout<Map<String, dynamic>> {
     );
     assert(contentOffset >= 0, "span cannot be negative.");
     if (!source.containsKey(property)) {
-      throw BuError(DefaultErrorType.invalidArgument,
+      throw BuError(
+        DefaultErrorType.invalidArgument,
         "variant data missing.",
         details: {"property": property},
       );

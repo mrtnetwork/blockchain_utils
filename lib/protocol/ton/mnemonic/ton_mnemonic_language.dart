@@ -25,7 +25,10 @@ class TonMnemonicLanguages implements Bip39Languages {
       case TonMnemonicLanguages.english:
         return Bip32WorList.bip39WordList(Bip39Languages.english);
       default:
-        throw const BuError(DefaultErrorType.unsupported,"Unsupported mnemonic language.");
+        throw const BuError(
+          DefaultErrorType.unsupported,
+          "Unsupported mnemonic language.",
+        );
     }
   }
 

@@ -190,7 +190,12 @@ class ZcashConf {
   ZIP32CoinConfig fromNetwork(ZcashNetwork network) {
     return _configs.firstWhere(
       (e) => e.network == network,
-      orElse: () => throw BuError(DefaultErrorType.notFound, "No matching item found for the given value. $network.name"),
+      orElse:
+          () =>
+              throw BuError(
+                DefaultErrorType.notFound,
+                "No matching item found for the given value. $network.name",
+              ),
     );
   }
 

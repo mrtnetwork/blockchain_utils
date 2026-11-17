@@ -20,7 +20,8 @@ class Cip1852Conf {
     wifNetVer: null,
     addressEncoder:
         (params, config) =>
-            throw BuError(DefaultErrorType.unsupported,
+            throw BuError(
+              DefaultErrorType.unsupported,
               "Address derivation is not supported using coinConfig. Please use the CardanoShelley class instead.",
             ),
     type: CryptoKeyType.ed25519Kholaw,
@@ -38,7 +39,8 @@ class Cip1852Conf {
     wifNetVer: null,
     addressEncoder:
         (params, config) =>
-            throw BuError(DefaultErrorType.unsupported,
+            throw BuError(
+              DefaultErrorType.unsupported,
               "Address derivation is not supported using coinConfig. Please use the CardanoShelley class instead.",
             ),
     type: CryptoKeyType.ed25519Kholaw,
@@ -56,7 +58,8 @@ class Cip1852Conf {
     type: CryptoKeyType.ed25519Kholaw,
     addressEncoder:
         (params, config) =>
-            throw BuError(DefaultErrorType.unsupported,
+            throw BuError(
+              DefaultErrorType.unsupported,
               "Address derivation is not supported using coinConfig. Please use the CardanoShelley class instead.",
             ),
   );
@@ -72,7 +75,8 @@ class Cip1852Conf {
     type: CryptoKeyType.ed25519Kholaw,
     addressEncoder:
         (params, config) =>
-            throw BuError(DefaultErrorType.unsupported,
+            throw BuError(
+              DefaultErrorType.unsupported,
               "Address derivation is not supported using coinConfig. Please use the CardanoShelley class instead.",
             ),
   );

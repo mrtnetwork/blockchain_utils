@@ -41,17 +41,13 @@ class NativeMerkleApi implements MerkleApi {
   /// Restores context [id] from exported [blob]; throws [CryptoException] on native failure.
   @override
   void insertChainState(int id, {required List<int> blob}) {
-    api
-        .insertChainState(id, blob: blob)
-        .unwrapOrThrowCryptoError();
+    api.insertChainState(id, blob: blob).unwrapOrThrowCryptoError();
   }
 
   /// Appends `leaves` (len/32) to tree [kind] in context [id]; throws [CryptoException] on native failure.
   @override
   void updateState(int id, {required int kind, required List<int> leaves}) {
-    api
-        .updateState(id, kind: kind, leaves: leaves)
-        .unwrapOrThrowCryptoError();
+    api.updateState(id, kind: kind, leaves: leaves).unwrapOrThrowCryptoError();
   }
 
   /// Absorbs level-16 subtree [root32] at [start] for [kind] in context [id]; throws [CryptoException] on native failure.
@@ -70,9 +66,7 @@ class NativeMerkleApi implements MerkleApi {
   /// Merges exported [blob] into tree [kind] in context [id]; throws [CryptoException] on native failure.
   @override
   void mergeState(int id, {required int kind, required List<int> blob}) {
-    api
-        .mergeState(id, kind: kind, blob: blob)
-        .unwrapOrThrowCryptoError();
+    api.mergeState(id, kind: kind, blob: blob).unwrapOrThrowCryptoError();
   }
 
   /// Snapshots context [id] under [checkpointId]; throws [CryptoException] on native failure.

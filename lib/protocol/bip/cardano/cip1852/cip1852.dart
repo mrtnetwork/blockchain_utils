@@ -55,7 +55,8 @@ class Cip1852 extends Bip44Base<Cip1852> {
   @override
   Cip1852 get purpose {
     if (!isLevel(Bip44Levels.master)) {
-      throw BuError(DefaultErrorType.invalidArgument,
+      throw BuError(
+        DefaultErrorType.invalidArgument,
         "Current depth (${bip32.depth.toInt()}) is not suitable for deriving purpose",
       );
     }
@@ -66,7 +67,8 @@ class Cip1852 extends Bip44Base<Cip1852> {
   @override
   Cip1852 get coin {
     if (!isLevel(Bip44Levels.purpose)) {
-      throw BuError(DefaultErrorType.invalidArgument,
+      throw BuError(
+        DefaultErrorType.invalidArgument,
         "Current depth (${bip32.depth.toInt()}) is not suitable for deriving coin",
       );
     }
@@ -81,7 +83,8 @@ class Cip1852 extends Bip44Base<Cip1852> {
   @override
   Cip1852 account(int accIndex) {
     if (!isLevel(Bip44Levels.coin)) {
-      throw BuError(DefaultErrorType.invalidArgument,
+      throw BuError(
+        DefaultErrorType.invalidArgument,
         "Current depth (${bip32.depth.toInt()}) is not suitable for deriving account",
       );
     }
@@ -95,7 +98,8 @@ class Cip1852 extends Bip44Base<Cip1852> {
   @override
   Cip1852 change(Bip44Changes changeType) {
     if (!isLevel(Bip44Levels.account)) {
-      throw BuError(DefaultErrorType.invalidArgument,
+      throw BuError(
+        DefaultErrorType.invalidArgument,
         "Current depth (${bip32.depth.toInt()}) is not suitable for deriving change",
       );
     }
@@ -110,7 +114,8 @@ class Cip1852 extends Bip44Base<Cip1852> {
   @override
   Cip1852 addressIndex(int addressIndex) {
     if (!isLevel(Bip44Levels.change)) {
-      throw BuError(DefaultErrorType.invalidArgument,
+      throw BuError(
+        DefaultErrorType.invalidArgument,
         "Current depth (${bip32.depth.toInt()}) is not suitable for deriving address",
       );
     }

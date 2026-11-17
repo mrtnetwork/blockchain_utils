@@ -138,10 +138,7 @@ extension ExtCborMapExtensions on CborMapValue {
     try {
       return JsonParser.valueEnsureAsMap<T, E>(value);
     } catch (_) {
-      throw CoreErrors.castingFailed<Map<T, E>>(
-        value,
-        operation: name,
-      );
+      throw CoreErrors.castingFailed<Map<T, E>>(value, operation: name);
     }
   }
 }
@@ -167,9 +164,7 @@ extension ExtCborListExtensions on CborIterableObject {
 
       return list.value.cast<T>();
     } catch (_) {
-      throw CoreErrors.castingFailed<T>(
-        value.elementAtOrNull(index)?.value,
-      );
+      throw CoreErrors.castingFailed<T>(value.elementAtOrNull(index)?.value);
     }
   }
 
@@ -179,9 +174,7 @@ extension ExtCborListExtensions on CborIterableObject {
       final CborMapValue mapValue = value.elementAt(index) as CborMapValue;
       return mapValue.value.cast<K, V>();
     } catch (_) {
-      throw CoreErrors.castingFailed<Map<K, V>>(
-        value.elementAtOrNull(index),
-      );
+      throw CoreErrors.castingFailed<Map<K, V>>(value.elementAtOrNull(index));
     }
   }
 
@@ -190,9 +183,7 @@ extension ExtCborListExtensions on CborIterableObject {
       final CborMapValue mapValue = objectAt(index);
       return mapValue.toDartMap<K, V>(JsonParser.valueAs, JsonParser.valueAs);
     } catch (e) {
-      throw CoreErrors.castingFailed<Map<K, V>>(
-        value.elementAtOrNull(index),
-      );
+      throw CoreErrors.castingFailed<Map<K, V>>(value.elementAtOrNull(index));
     }
   }
 
@@ -205,9 +196,7 @@ extension ExtCborListExtensions on CborIterableObject {
         (e) => JsonParser.valueAs<V>(e.getValue()),
       );
     } catch (s) {
-      throw CoreErrors.castingFailed<Map<K, V>>(
-        value.elementAtOrNull(index),
-      );
+      throw CoreErrors.castingFailed<Map<K, V>>(value.elementAtOrNull(index));
     }
   }
 
@@ -227,9 +216,7 @@ extension ExtCborListExtensions on CborIterableObject {
       }
       return JsonParser.valueAs<T>(obj.value);
     } catch (_) {
-      throw CoreErrors.castingFailed<T>(
-        value.elementAtOrNull(index)?.value,
-      );
+      throw CoreErrors.castingFailed<T>(value.elementAtOrNull(index)?.value);
     }
   }
 
@@ -246,9 +233,7 @@ extension ExtCborListExtensions on CborIterableObject {
       }
       return obj as T;
     } catch (_) {
-      throw CoreErrors.castingFailed<T>(
-        value.elementAtOrNull(index)?.value,
-      );
+      throw CoreErrors.castingFailed<T>(value.elementAtOrNull(index)?.value);
     }
   }
 
@@ -258,9 +243,7 @@ extension ExtCborListExtensions on CborIterableObject {
     final CborObject obj = value.elementAt(index);
     if (obj == const CborNullValue()) return null;
     if (obj is T) return mapper(obj);
-    throw CoreErrors.castingFailed<T>(
-      value.elementAtOrNull(index),
-    );
+    throw CoreErrors.castingFailed<T>(value.elementAtOrNull(index));
   }
 
   /// Attempt to transform the raw value at [index] using [mapper], or return null.
@@ -271,9 +254,7 @@ extension ExtCborListExtensions on CborIterableObject {
       if (obj == const CborNullValue()) return null;
       return mapper(obj.value as T);
     } catch (_) {
-      throw CoreErrors.castingFailed<T>(
-        value.elementAtOrNull(index),
-      );
+      throw CoreErrors.castingFailed<T>(value.elementAtOrNull(index));
     }
   }
 
@@ -289,7 +270,8 @@ extension ExtCborListExtensions on CborIterableObject {
 
   CborListValue<T> sublist<T extends CborObject>(int start, [int? end]) {
     if (start >= value.length || (end != null && end >= value.length)) {
-      throw BuError(DefaultErrorType.invalidLength,
+      throw BuError(
+        DefaultErrorType.invalidLength,
         'Index out of bounds.',
         details: {
           'length': value.length.toString(),
@@ -307,10 +289,7 @@ extension ExtCborTagExtensions on CborTagValue {
   /// Extract the tag's inner CBOR value as type [T], or throw if mismatched.
   T asValue<T extends CborObject>({String? operation}) {
     if (value is! T) {
-      throw CoreErrors.castingFailed<T>(
-        value,
-        operation: operation,
-      );
+      throw CoreErrors.castingFailed<T>(value, operation: operation);
     }
     return value as T;
   }
@@ -324,10 +303,7 @@ extension ExtCborHelper on CborObject {
 
   T as<T extends CborObject>({String? operation}) {
     if (this is! T) {
-      throw CoreErrors.castingFailed<T>(
-        value,
-        operation: operation,
-      );
+      throw CoreErrors.castingFailed<T>(value, operation: operation);
     }
     return this as T;
   }

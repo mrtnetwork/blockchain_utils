@@ -38,10 +38,11 @@ class ADAByronAddrTypes {
     return values.firstWhere(
       (element) => element.value == value.value,
       orElse:
-          () => throw CoreErrors.addressValidationFailed(
-            reason: "Invalid ADA Byron address type.",
-            details: {"got": value.value.toString()},
-          ),
+          () =>
+              throw CoreErrors.addressValidationFailed(
+                reason: "Invalid ADA Byron address type.",
+                details: {"got": value.value.toString()},
+              ),
     );
   }
 
@@ -53,10 +54,11 @@ class ADAByronAddrTypes {
     return values.firstWhere(
       (element) => element.value == value,
       orElse:
-          () => throw CoreErrors.addressValidationFailed(
-            reason: "Invalid ADA Byron address type.",
-            details: {"got": value.toString()},
-          ),
+          () =>
+              throw CoreErrors.addressValidationFailed(
+                reason: "Invalid ADA Byron address type.",
+                details: {"got": value.toString()},
+              ),
     );
   }
 
@@ -397,9 +399,7 @@ class AdaByronAddrDecoder implements BlockchainAddressDecoder<BuBytes> {
   }) {
     final decAddr = ADAByronAddr.decode(addr);
     if (addrType != null && decAddr.payload.type != addrType) {
-      throw CoreErrors.addressValidationFailed(
-        reason: "Invalid address type",
-      );
+      throw CoreErrors.addressValidationFailed(reason: "Invalid address type");
     }
     if (network != null) {
       if (decAddr.payload.attrs.networkMagic != network.protocolMagic) {

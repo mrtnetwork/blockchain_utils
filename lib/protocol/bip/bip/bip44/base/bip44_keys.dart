@@ -129,7 +129,10 @@ class Bip44PrivateKey {
   String toWif({CryptoKeyEncoding pubKeyMode = CryptoKeyEncoding.base}) {
     final wifNetVer = coinConf.wifNetVer;
     if (wifNetVer == null) {
-      throw BuError(DefaultErrorType.invalidArgument,"Missing coin wif confing.");
+      throw BuError(
+        DefaultErrorType.invalidArgument,
+        "Missing coin wif confing.",
+      );
     }
 
     return privKey.toBytes().useValue(

@@ -26,10 +26,7 @@ String defaultWasmOutDir() {
   throw UnsupportedError('defaultWasmOutDir needs the Dart VM.');
 }
 
-Future<void> ensureRustCrate({
-  String? dir,
-  bool cloneIfMissing = false,
-}) {
+Future<void> ensureRustCrate({String? dir, bool cloneIfMissing = false}) {
   throw UnsupportedError('ensureRustCrate needs the Dart VM.');
 }
 

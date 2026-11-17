@@ -265,10 +265,7 @@ class FrostSecp256k1 implements FrostEngine<Secp256k1Point, Secp256k1Fr> {
       }
     }
     try {
-      return _lagrangeFr(
-        [for (final id in ids) _idFr(id)],
-        _idFr(xi),
-      );
+      return _lagrangeFr([for (final id in ids) _idFr(id)], _idFr(xi));
     } on BuError {
       rethrow;
     } catch (_) {
@@ -647,9 +644,7 @@ class FrostSecp256k1 implements FrostEngine<Secp256k1Point, Secp256k1Fr> {
   }
 
   @override
-  Secp256k1Fr secretShareCombine(
-    List<FrostEngineShare<Secp256k1Fr>> shares,
-  ) {
+  Secp256k1Fr secretShareCombine(List<FrostEngineShare<Secp256k1Fr>> shares) {
     if (shares.length < 2) {
       throw CoreErrors.invalidOperationArguments(
         'secretShareCombine',
@@ -832,12 +827,7 @@ class FrostSecp256k1 implements FrostEngine<Secp256k1Point, Secp256k1Fr> {
     while (true) {
       final rand = QuickCrypto.generateRandom(length: 32);
       k = _frUnchecked(
-        _taggedHash('BIP0340/nonce', [
-          ...t,
-          ...p.toXOnly(),
-          ...msg,
-          ...rand,
-        ]),
+        _taggedHash('BIP0340/nonce', [...t, ...p.toXOnly(), ...msg, ...rand]),
       );
       if (k.isZero()) continue;
       final r = Secp256k1Point.generator_ * k;

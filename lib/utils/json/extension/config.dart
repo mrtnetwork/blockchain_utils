@@ -1,4 +1,3 @@
-
 import 'package:blockchain_utils/helper/extensions/extensions.dart';
 
 abstract class JsonifyConfig {

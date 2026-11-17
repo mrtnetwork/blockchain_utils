@@ -41,10 +41,11 @@ enum FriendlyAddressFlags {
     return values.firstWhere(
       (e) => e.flag == flag,
       orElse:
-          () => throw CoreErrors.addressValidationFailed(
-            reason: "Invalid TON address flags.",
-            details: {"got": flag?.toString()},
-          ),
+          () =>
+              throw CoreErrors.addressValidationFailed(
+                reason: "Invalid TON address flags.",
+                details: {"got": flag?.toString()},
+              ),
     );
   }
 }
@@ -152,9 +153,7 @@ class TonAddressUtils {
       final hash = BytesUtils.fromHexString(parts[1]);
       return DecodeAddressResult(hash: hash, workchain: workChain, flags: []);
     } catch (e) {
-      throw CoreErrors.addressValidationFailed(
-        details: {"address": address},
-      );
+      throw CoreErrors.addressValidationFailed(details: {"address": address});
     }
   }
 
@@ -191,9 +190,7 @@ class TonAddressUtils {
     } else if (tryRawAddress(address) case DecodeAddressResult result) {
       return result;
     } else {
-      throw CoreErrors.addressValidationFailed(
-        details: {"address": address},
-      );
+      throw CoreErrors.addressValidationFailed(details: {"address": address});
     }
   }
 

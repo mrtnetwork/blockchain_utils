@@ -113,14 +113,8 @@ void amountTest() {
         () => AmountConverter.btc.toUnit('1.123456789'),
         throwsA(isA<BuError>()),
       );
-      expect(
-        () => AmountConverter(decimals: 256),
-        throwsA(isA<BuError>()),
-      );
-      expect(
-        () => AmountConverter(decimals: -1),
-        throwsA(isA<BuError>()),
-      );
+      expect(() => AmountConverter(decimals: 256), throwsA(isA<BuError>()));
+      expect(() => AmountConverter(decimals: -1), throwsA(isA<BuError>()));
       expect(
         () => AmountConverter(decimals: 1, displayPrecision: -1),
         throwsA(isA<BuError>()),
@@ -132,18 +126,9 @@ void amountTest() {
     });
 
     test('Parsing invalid string throws', () {
-      expect(
-        () => AmountConverter.btc.toUnit('abc'),
-        throwsA(isA<BuError>()),
-      );
-      expect(
-        () => AmountConverter.btc.toUnit('1..'),
-        throwsA(isA<BuError>()),
-      );
-      expect(
-        () => AmountConverter.btc.toUnit('.1'),
-        throwsA(isA<BuError>()),
-      );
+      expect(() => AmountConverter.btc.toUnit('abc'), throwsA(isA<BuError>()));
+      expect(() => AmountConverter.btc.toUnit('1..'), throwsA(isA<BuError>()));
+      expect(() => AmountConverter.btc.toUnit('.1'), throwsA(isA<BuError>()));
     });
   });
 }

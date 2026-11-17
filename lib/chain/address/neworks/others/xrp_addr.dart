@@ -39,10 +39,11 @@ enum XRPAddressType {
     return values.firstWhere(
       (e) => e.value == value,
       orElse:
-          () => throw CoreErrors.addressValidationFailed(
-            reason: "Invalid XRP address type.",
-            details: {"got": value?.toString()},
-          ),
+          () =>
+              throw CoreErrors.addressValidationFailed(
+                reason: "Invalid XRP address type.",
+                details: {"got": value?.toString()},
+              ),
     );
   }
 
@@ -189,15 +190,11 @@ class XRPAddressUtils {
     );
     final int tagFlag = tagBytes[0];
     if (tagFlag != 0 && tagFlag != 1) {
-      throw CoreErrors.addressValidationFailed(
-        reason: "Invalid address tag.",
-      );
+      throw CoreErrors.addressValidationFailed(reason: "Invalid address tag.");
     }
     tagBytes = tagBytes.sublist(1);
     if (tagFlag == 0 && !BytesUtils.bytesEqual(tagBytes, List.filled(8, 0))) {
-      throw CoreErrors.addressValidationFailed(
-        reason: "Invalid address tag.",
-      );
+      throw CoreErrors.addressValidationFailed(reason: "Invalid address tag.");
     }
 
     int? tag;
@@ -409,9 +406,7 @@ class XrpXAddrDecoder implements BlockchainAddressDecoder<BuBytes> {
   BuBytes decodeAddr(String addr, {ChainType? chainType}) {
     final decode = XRPAddressUtils.decodeXAddress(addr);
     if (chainType != null && decode.chainType != chainType) {
-      throw CoreErrors.addressValidationFailed(
-        reason: "Mismatch chain type.",
-      );
+      throw CoreErrors.addressValidationFailed(reason: "Mismatch chain type.");
     }
     return decode.hash;
   }

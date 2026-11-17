@@ -117,22 +117,16 @@ class IcpAddrDecoder implements BlockchainAddressDecoder<ICPDecodedAddress> {
     if (normalized.length > IcpAddrConst.maxTextualLen ||
         normalized.length < IcpAddrConst.minTextualLen ||
         !RegExp(r'^[a-z2-7]+$').hasMatch(noDashes)) {
-      throw CoreErrors.addressValidationFailed(
-        details: {'address': addr},
-      );
+      throw CoreErrors.addressValidationFailed(details: {'address': addr});
     }
     late final List<int> decoded;
     try {
       decoded = Base32Decoder.decode(noDashes.toUpperCase());
     } catch (_) {
-      throw CoreErrors.addressValidationFailed(
-        details: {'address': addr},
-      );
+      throw CoreErrors.addressValidationFailed(details: {'address': addr});
     }
     if (decoded.length < IcpAddrConst.crcByteLen) {
-      throw CoreErrors.addressValidationFailed(
-        details: {'address': addr},
-      );
+      throw CoreErrors.addressValidationFailed(details: {'address': addr});
     }
 
     final List<int> checksum = decoded.sublist(0, IcpAddrConst.crcByteLen);
@@ -173,9 +167,7 @@ class IcpAddrDecoder implements BlockchainAddressDecoder<ICPDecodedAddress> {
     try {
       bytes = BytesUtils.fromHexString(addr);
     } catch (_) {
-      throw CoreErrors.addressValidationFailed(
-        details: {'address': addr},
-      );
+      throw CoreErrors.addressValidationFailed(details: {'address': addr});
     }
 
     if (bytes.length != IcpAddrConst.accountIdByteLen) {

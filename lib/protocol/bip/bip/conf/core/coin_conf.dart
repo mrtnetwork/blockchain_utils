@@ -45,12 +45,22 @@ enum ChainType {
     if (val is int) {
       return values.firstWhere(
         (e) => e.value == val,
-        orElse: () => throw BuError(DefaultErrorType.notFound, "No matching item found for the given value. $val"),
+        orElse:
+            () =>
+                throw BuError(
+                  DefaultErrorType.notFound,
+                  "No matching item found for the given value. $val",
+                ),
       );
     }
     return values.firstWhere(
       (e) => e.name == val,
-      orElse: () => throw BuError(DefaultErrorType.notFound, "No matching item found for the given value. $val"),
+      orElse:
+          () =>
+              throw BuError(
+                DefaultErrorType.notFound,
+                "No matching item found for the given value. $val",
+              ),
     );
   }
 }

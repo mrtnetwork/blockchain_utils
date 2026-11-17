@@ -60,7 +60,10 @@ class LayoutSerializationUtils {
   /// Throws [LayoutException] unless [length] bytes at [offset] exist.
   static void _requireAvailable(List<int> bytes, int offset, int length) {
     if (offset < 0 || length < 0 || offset + length > bytes.length) {
-      throw const BuError(DefaultErrorType.invalidLength,"Truncated layout bytes.");
+      throw const BuError(
+        DefaultErrorType.invalidLength,
+        "Truncated layout bytes.",
+      );
     }
   }
 
@@ -121,7 +124,8 @@ class LayoutSerializationUtils {
       byteOrder: Endian.little,
     );
     if (!value.isSafeInt()) {
-      throw BuError(DefaultErrorType.invalidLength,
+      throw BuError(
+        DefaultErrorType.invalidLength,
         "Failed to decode varint integer. Value is too large.",
       );
     }
@@ -143,7 +147,10 @@ class LayoutSerializationUtils {
       BinaryOps.writeUint32LE(i, bytes, 1);
       return bytes;
     } else {
-      throw BuError(DefaultErrorType.badCbor,"Failed to encode value as varint.");
+      throw BuError(
+        DefaultErrorType.badCbor,
+        "Failed to encode value as varint.",
+      );
     }
   }
 
@@ -165,7 +172,10 @@ class LayoutSerializationUtils {
   /// Encodes [value] (0 to 2^64-1) as a Bitcoin-style varint.
   static List<int> encodeVarintBigInt(BigInt value) {
     if (value < BigInt.zero || value > BinaryOps.maxU64) {
-      throw BuError(DefaultErrorType.badCbor,"Failed to encode value as varint.");
+      throw BuError(
+        DefaultErrorType.badCbor,
+        "Failed to encode value as varint.",
+      );
     }
     if (value < BigInt.from(253)) {
       return [value.toInt()];

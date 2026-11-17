@@ -10,8 +10,7 @@ import 'utils.dart';
 // generated from py_ecc.bn128).
 const _orderR =
     '30644e72e131a029b85045b68181585d2833e84879b9709143e1f593f0000001';
-const _s1 =
-    '000123456789abcdef0123456789abcdef0123456789abcdef0123456789abcd';
+const _s1 = '000123456789abcdef0123456789abcdef0123456789abcdef0123456789abcd';
 
 void main() {
   BlockchainUtilsTestApi.runTest(() {}, 'Bn254', onNative: bn254);
@@ -21,12 +20,8 @@ void bn254(BlockchainUtilsApi api) {
   final rng = ChaCha20Rng(List<int>.filled(32, 2));
   QuickCrypto.setupPRNG(rng);
   // Dart-vs-Rust: every CurveTest op runs on both backends and must agree.
-  Bn254G1CurveTest.generate(
-    apis: [DartBn254G1CurveApi(), api.bn254G1],
-  ).run();
-  Bn254G2CurveTest.generate(
-    apis: [DartBn254G2CurveApi(), api.bn254G2],
-  ).run();
+  Bn254G1CurveTest.generate(apis: [DartBn254G1CurveApi(), api.bn254G1]).run();
+  Bn254G2CurveTest.generate(apis: [DartBn254G2CurveApi(), api.bn254G2]).run();
 
   group('Bn254 vectors (py_ecc)', () {
     // Both backends must match the py_ecc oracle vectors.

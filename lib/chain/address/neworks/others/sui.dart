@@ -107,18 +107,13 @@ class SuiAddressUtils {
       paddingZero: address.length < 2,
     );
     if (bytes?.length != SuiAddrConst.addressBytesLength) {
-      throw CoreErrors.addressValidationFailed(
-        details: {"address": address},
-      );
+      throw CoreErrors.addressValidationFailed(details: {"address": address});
     }
     return bytes!;
   }
 
   /// Hashes key bytes with a scheme byte to derive an address.
-  static BuBytes hashKeyBytes({
-    required List<int> bytes,
-    required int scheme,
-  }) {
+  static BuBytes hashKeyBytes({required List<int> bytes, required int scheme}) {
     return QuickCrypto.blake2b256Hash([scheme, ...bytes]);
   }
 

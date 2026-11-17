@@ -69,10 +69,7 @@ void layoutNumericTest() {
       final layout = LayoutConst.u24(property: 'v');
       expect(layout.span, 3);
       expect(layout.deserialize(layout.serialize(0xABCDEF)).value, 0xABCDEF);
-      expect(
-        () => layout.serialize(0x1000000),
-        throwsA(isA<BuError>()),
-      );
+      expect(() => layout.serialize(0x1000000), throwsA(isA<BuError>()));
     });
 
     test('span wider than 7 bytes is rejected', () {
@@ -109,14 +106,8 @@ void layoutNumericTest() {
 
     test('u64 rejects negative and overflow', () {
       final layout = LayoutConst.u64(property: 'v');
-      expect(
-        () => layout.serialize(BigInt.from(-1)),
-        throwsA(isA<BuError>()),
-      );
-      expect(
-        () => layout.serialize(BigInt.one << 64),
-        throwsA(isA<BuError>()),
-      );
+      expect(() => layout.serialize(BigInt.from(-1)), throwsA(isA<BuError>()));
+      expect(() => layout.serialize(BigInt.one << 64), throwsA(isA<BuError>()));
     });
 
     test('i64 negative roundtrip', () {
@@ -145,10 +136,7 @@ void layoutNumericTest() {
       final u256 = LayoutConst.u256(property: 'v');
       final bigger = (BigInt.one << 255) - BigInt.one;
       expect(u256.deserialize(u256.serialize(bigger)).value, bigger);
-      expect(
-        () => u128.serialize(BigInt.one << 128),
-        throwsA(isA<BuError>()),
-      );
+      expect(() => u128.serialize(BigInt.one << 128), throwsA(isA<BuError>()));
     });
 
     test('i128 negative', () {
@@ -204,10 +192,7 @@ void layoutNumericTest() {
 
     test('compact int validates width on encode and decode', () {
       final layout = LayoutConst.compactIntU32(property: 'v');
-      expect(
-        () => layout.serialize(0x100000000),
-        throwsA(isA<BuError>()),
-      );
+      expect(() => layout.serialize(0x100000000), throwsA(isA<BuError>()));
       expect(
         () => layout.deserialize(
           LayoutConst.compactIntU48(property: 'x').serialize(0x100000000),
@@ -224,10 +209,7 @@ void layoutNumericTest() {
         layout.deserialize(layout.serialize(BigInt.zero)).value,
         BigInt.zero,
       );
-      expect(
-        () => layout.serialize(BigInt.one << 64),
-        throwsA(isA<BuError>()),
-      );
+      expect(() => layout.serialize(BigInt.one << 64), throwsA(isA<BuError>()));
     });
 
     test('compactBigintU128 and compactIntU48', () {
@@ -259,10 +241,7 @@ void layoutNumericTest() {
 
     test('varint rejects overflow and negatives', () {
       final layout = LayoutConst.varintU32Le(property: 'v');
-      expect(
-        () => layout.serialize(0x100000000),
-        throwsA(isA<BuError>()),
-      );
+      expect(() => layout.serialize(0x100000000), throwsA(isA<BuError>()));
       expect(() => layout.serialize(-1), throwsA(isA<BuError>()));
     });
 
@@ -298,10 +277,7 @@ void layoutNumericTest() {
 
     test('nat rejects negatives', () {
       const layout = NatLayout(property: 'v');
-      expect(
-        () => layout.serialize(BigInt.from(-1)),
-        throwsA(isA<BuError>()),
-      );
+      expect(() => layout.serialize(BigInt.from(-1)), throwsA(isA<BuError>()));
     });
 
     test('zarith vectors', () {
@@ -465,10 +441,7 @@ void layoutStructTupleSeqTest() {
         LayoutConst.u8(),
       ], property: 't');
       expect(() => layout.serialize([1]), throwsA(isA<BuError>()));
-      expect(
-        () => layout.serialize([1, 2, 3]),
-        throwsA(isA<BuError>()),
-      );
+      expect(() => layout.serialize([1, 2, 3]), throwsA(isA<BuError>()));
     });
 
     test('getSpan fixed and variable', () {
@@ -540,10 +513,7 @@ void layoutStructTupleSeqTest() {
         elementLayout: const NoneLayout(),
         property: 'v',
       );
-      expect(
-        () => layout.deserialize([1, 2, 3]),
-        throwsA(isA<BuError>()),
-      );
+      expect(() => layout.deserialize([1, 2, 3]), throwsA(isA<BuError>()));
       final remainder = RemainderListLayout<int?>(NoneLayout<int>());
       expect(() => remainder.deserialize([1]), throwsA(isA<BuError>()));
     });
@@ -888,10 +858,7 @@ void layoutOptionUnionTest() {
 
     test('unregistered variant name throws', () {
       final union = buildUnion();
-      expect(
-        () => union.serialize({'zzz': 1}),
-        throwsA(isA<BuError>()),
-      );
+      expect(() => union.serialize({'zzz': 1}), throwsA(isA<BuError>()));
     });
 
     test('signed discriminator rejected', () {
@@ -935,14 +902,8 @@ void layoutOptionUnionTest() {
         tagFor: (v) => v.length,
         property: 't',
       );
-      expect(
-        () => layout.deserialize([5, 1, 2]),
-        throwsA(isA<BuError>()),
-      );
-      expect(
-        () => layout.serialize([1, 2, 3]),
-        throwsA(isA<BuError>()),
-      );
+      expect(() => layout.deserialize([5, 1, 2]), throwsA(isA<BuError>()));
+      expect(() => layout.serialize([1, 2, 3]), throwsA(isA<BuError>()));
     });
   });
 
@@ -1017,10 +978,7 @@ void layoutOptionUnionTest() {
         ),
         throwsA(isA<BuError>()),
       );
-      expect(
-        () => buildLazy().serialize({'zzz': 1}),
-        throwsA(isA<BuError>()),
-      );
+      expect(() => buildLazy().serialize({'zzz': 1}), throwsA(isA<BuError>()));
     });
 
     test('missing index resolver throws', () {
@@ -1394,18 +1352,12 @@ void layoutBufferSerializationTest() {
         property: 'v',
       ).serialize(BigInt.one << 62);
       final reader = LayoutByteReader(bigScale);
-      expect(
-        () => reader.decodeScaleAsInteger(0),
-        throwsA(isA<BuError>()),
-      );
+      expect(() => reader.decodeScaleAsInteger(0), throwsA(isA<BuError>()));
       final bigVarint = LayoutSerializationUtils.encodeVarintBigInt(
         BigInt.one << 60,
       );
       final reader2 = LayoutByteReader(bigVarint);
-      expect(
-        () => reader2.decodeVarintAsInteger(0),
-        throwsA(isA<BuError>()),
-      );
+      expect(() => reader2.decodeVarintAsInteger(0), throwsA(isA<BuError>()));
     });
 
     test('writer grows and tracks', () {

@@ -474,7 +474,10 @@ class DartSr25519SigningApi implements Sr25519SigningApi {
         script.additionalData(StringUtils.encode("vrf:pk"), pkBytes);
       }
       if (nonce64.length != nonceLength) {
-        throw const BuError(DefaultErrorType.invalidLength,"invalid nonce length.");
+        throw const BuError(
+          DefaultErrorType.invalidLength,
+          "invalid nonce length.",
+        );
       }
       final nScalar = curveApi.scReduce(nonce64);
       final mult = curveApi.multBase(nScalar);

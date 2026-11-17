@@ -95,11 +95,7 @@ class NativeDkls23KeysApi implements Dkls23KeysApi {
     int? threshold,
   }) {
     return api
-        .aggKeys(
-          curve: _curve(curve),
-          membersConcat: members.asBytes,
-          n: n,
-        )
+        .aggKeys(curve: _curve(curve), membersConcat: members.asBytes, n: n)
         .unwrapOrThrowCryptoError()
         .asBytes;
   }

@@ -183,9 +183,7 @@ void main() {
         final factors = k1Engine.computeBindingFactors(groupPk, list, msg);
         for (final id in signerIds) {
           expect(
-            FrostEngineHex.encode(
-              k1Engine.serializeScalar(factors[id]!),
-            ),
+            FrostEngineHex.encode(k1Engine.serializeScalar(factors[id]!)),
             bindingFactorsHex[id],
           );
         }

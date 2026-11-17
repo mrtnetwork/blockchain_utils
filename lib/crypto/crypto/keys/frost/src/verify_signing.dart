@@ -108,10 +108,7 @@ abstract class IFrostSigningKey<
       }
       final keyShares = <FrostKeyShare>[
         for (var k = 0; k < subset.length; k++)
-          FrostKeyShare(
-            id: identifiers[subset[k]],
-            share: copies[k],
-          ),
+          FrostKeyShare(id: identifiers[subset[k]], share: copies[k]),
       ];
       // Threshold-only: explicit `t` passes through (Shamir shares);
       // null (additive) encodes as 0. The backend validates ranges.
@@ -119,9 +116,7 @@ abstract class IFrostSigningKey<
       if (curve == FrostCurve.secp256k1) {
         final groupPt = (vk.aggKey as Secp256k1PublicKey).keyBytes;
         final xs =
-            frost
-                .k1PrepareShares(shares: keyShares, threshold: th)
-                .toList();
+            frost.k1PrepareShares(shares: keyShares, threshold: th).toList();
         final nonces = <FrostNoncePair>[];
         final commitments = <FrostCommitment>[];
         for (var k = 0; k < subset.length; k++) {

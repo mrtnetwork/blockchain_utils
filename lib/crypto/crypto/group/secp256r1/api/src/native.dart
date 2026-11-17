@@ -7,7 +7,6 @@ class NativeSecp256r1CurveApi implements Secp256r1CurveApi {
 
   final BuSecp256r1CurveApi _api;
 
-
   @override
   int get pointLen => _api.pointLen; // 33
 
@@ -34,8 +33,7 @@ class NativeSecp256r1CurveApi implements Secp256r1CurveApi {
       _api.sub(a, b).unwrapOrThrowCryptoError();
 
   @override
-  BuBytes neg(List<int> point) =>
-      _api.neg(point).unwrapOrThrowCryptoError();
+  BuBytes neg(List<int> point) => _api.neg(point).unwrapOrThrowCryptoError();
 
   @override
   BuBytes scAdd(List<int> a, List<int> b) =>
@@ -50,20 +48,16 @@ class NativeSecp256r1CurveApi implements Secp256r1CurveApi {
       _api.scMul(a, b).unwrapOrThrowCryptoError();
 
   @override
-  BuBytes scNeg(List<int> s) =>
-      _api.scNeg(s).unwrapOrThrowCryptoError();
+  BuBytes scNeg(List<int> s) => _api.scNeg(s).unwrapOrThrowCryptoError();
 
   @override
-  BuBytes scReduce(List<int> s) =>
-      _api.scReduce(s).unwrapOrThrowCryptoError();
+  BuBytes scReduce(List<int> s) => _api.scReduce(s).unwrapOrThrowCryptoError();
 
   @override
-  BuBytes generator() =>
-      _api.generator().unwrapOrThrowCryptoError();
+  BuBytes generator() => _api.generator().unwrapOrThrowCryptoError();
 
   @override
-  BuBytes identity() =>
-      _api.identity().unwrapOrThrowCryptoError();
+  BuBytes identity() => _api.identity().unwrapOrThrowCryptoError();
 
   @override
   BuBytes mulAdd(List<int> s1, List<int> p1, List<int> s2, List<int> p2) =>

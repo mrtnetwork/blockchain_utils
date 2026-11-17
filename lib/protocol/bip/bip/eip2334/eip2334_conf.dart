@@ -58,7 +58,8 @@ class Eip2334Conf {
     defPath: '0/0',
     type: CryptoKeyType.bls12G1,
     addressEncoder: (params, config) {
-      throw BuError(DefaultErrorType.badPublicKey,
+      throw BuError(
+        DefaultErrorType.badPublicKey,
         "BLS validator keys have no addresses; use the 48-byte public key.",
       );
     },
@@ -71,7 +72,8 @@ class Eip2334Conf {
     defPath: '0/0',
     type: CryptoKeyType.bls12G1,
     addressEncoder: (params, config) {
-      throw BuError(DefaultErrorType.invalidAddress,
+      throw BuError(
+        DefaultErrorType.invalidAddress,
         "Tezos BLS keys address as tz4 via the Tezos address encoder, not here.",
       );
     },
@@ -84,7 +86,8 @@ class Eip2334Conf {
     defPath: '0/0',
     type: CryptoKeyType.bls12G1,
     addressEncoder: (params, config) {
-      throw BuError(DefaultErrorType.invalidAddress,
+      throw BuError(
+        DefaultErrorType.invalidAddress,
         "Filecoin BLS keys address as f3 via the Filecoin address encoder, not here.",
       );
     },

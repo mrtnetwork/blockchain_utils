@@ -183,7 +183,8 @@ class Bech32BaseUtils {
 
     for (final value in data) {
       if (value < 0 || (value >> fromBits) != 0) {
-        throw BuError(DefaultErrorType.badBech32,
+        throw BuError(
+          DefaultErrorType.badBech32,
           'Invalid bech32 data.',
           details: {'reason': 'value $value does not fit in $fromBits bits'},
         );
@@ -202,7 +203,8 @@ class Bech32BaseUtils {
       }
     } else if (bits >= fromBits ||
         ((acc << (toBits - bits)) & maxOutVal) != 0) {
-      throw const BuError(DefaultErrorType.badBech32,
+      throw const BuError(
+        DefaultErrorType.badBech32,
         'Invalid bech32 data.',
         details: {'reason': 'incomplete group or non-zero padding bits'},
       );
@@ -240,7 +242,8 @@ abstract class Bech32DecoderBase {
     bool Function(String hrp, List<int> data) verifyChecksum,
   ) {
     if (_isStringMixedCase(bechStr)) {
-      throw const BuError(DefaultErrorType.badBech32,
+      throw const BuError(
+        DefaultErrorType.badBech32,
         'Invalid bech32 format.',
         details: {'reason': 'mixed uppercase and lowercase characters'},
       );
@@ -250,7 +253,8 @@ abstract class Bech32DecoderBase {
 
     final sepPos = bechStr.lastIndexOf(sep);
     if (sepPos == -1) {
-      throw BuError(DefaultErrorType.badBech32,
+      throw BuError(
+        DefaultErrorType.badBech32,
         'Invalid bech32 format.',
         details: {'reason': 'missing separator "$sep"'},
       );
@@ -258,7 +262,8 @@ abstract class Bech32DecoderBase {
 
     final hrp = bechStr.substring(0, sepPos);
     if (hrp.isEmpty || StringUtils.encode(hrp).any((x) => x < 33 || x > 126)) {
-      throw const BuError(DefaultErrorType.badBech32,
+      throw const BuError(
+        DefaultErrorType.badBech32,
         'Invalid bech32 format.',
         details: {'reason': 'empty or invalid human-readable part'},
       );
@@ -271,7 +276,8 @@ abstract class Bech32DecoderBase {
     // checksumStrLen == 6. The original required checksumLen + 1 here,
     // which would incorrectly reject that vector.
     if (dataPart.length < checksumLen) {
-      throw const BuError(DefaultErrorType.invalidChecksum,
+      throw const BuError(
+        DefaultErrorType.invalidChecksum,
         'Invalid bech32 format.',
         details: {'reason': 'data part shorter than the checksum length'},
       );
@@ -286,7 +292,8 @@ abstract class Bech32DecoderBase {
     for (var i = 0; i < dataPart.length; i++) {
       final value = Bech32BaseConst.valueOf(dataPart.codeUnitAt(i));
       if (value == -1) {
-        throw BuError(DefaultErrorType.badBech32,
+        throw BuError(
+          DefaultErrorType.badBech32,
           'Invalid bech32 format.',
           details: {'reason': 'invalid character at index $i'},
         );
@@ -295,7 +302,8 @@ abstract class Bech32DecoderBase {
     }
 
     if (!verifyChecksum(hrp, intData)) {
-      throw const BuError(DefaultErrorType.invalidChecksum,
+      throw const BuError(
+        DefaultErrorType.invalidChecksum,
         'Invalid checksum.',
         details: {'reason': 'checksum verification failed'},
       );

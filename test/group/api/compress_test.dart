@@ -65,45 +65,49 @@ void main() {
 
       // Needs both implementations (Dart + native): skip on the pure-Dart
       // backend instead of crashing on `blockchainUtils.backend!`.
-      group('native backends',
-          skip: blockchainUtils.hasNativeBackend
-              ? null
-              : 'native backend not active', () {
-        test('secp256k1 native', () {
-          final api = NativeSecp256k1CurveApi(
-            blockchainUtils.backend!.curves.secp256k1(),
-          );
-          expect(api.uncompressedLen, 65);
-          final g = api.generator();
-          final u = api.uncompress(g);
-          expect(u.length, 65);
-          expect(api.compress(u), g);
-        });
+      group(
+        'native backends',
+        skip:
+            blockchainUtils.hasNativeBackend
+                ? null
+                : 'native backend not active',
+        () {
+          test('secp256k1 native', () {
+            final api = NativeSecp256k1CurveApi(
+              blockchainUtils.backend!.curves.secp256k1(),
+            );
+            expect(api.uncompressedLen, 65);
+            final g = api.generator();
+            final u = api.uncompress(g);
+            expect(u.length, 65);
+            expect(api.compress(u), g);
+          });
 
-        test('secp256r1 native', () {
-          final api = NativeSecp256r1CurveApi(
-            blockchainUtils.backend!.curves.secp256r1(),
-          );
-          final u = api.uncompress(api.generator());
-          expect(u.length, 65);
-          expect(api.compress(u), api.generator());
-        });
+          test('secp256r1 native', () {
+            final api = NativeSecp256r1CurveApi(
+              blockchainUtils.backend!.curves.secp256r1(),
+            );
+            final u = api.uncompress(api.generator());
+            expect(u.length, 65);
+            expect(api.compress(u), api.generator());
+          });
 
-        test('BLS native', () {
-          final g1 = NativeG1ProjectiveCurveApi(
-            blockchainUtils.backend!.curves.g1(),
-          );
-          final u1 = g1.uncompress(g1.generator());
-          expect(u1.length, 96);
-          expect(g1.compress(u1), g1.generator());
-          final g2 = NativeG2ProjectiveCurveApi(
-            blockchainUtils.backend!.curves.g2(),
-          );
-          final u2 = g2.uncompress(g2.generator());
-          expect(u2.length, 192);
-          expect(g2.compress(u2), g2.generator());
-        });
-      });
+          test('BLS native', () {
+            final g1 = NativeG1ProjectiveCurveApi(
+              blockchainUtils.backend!.curves.g1(),
+            );
+            final u1 = g1.uncompress(g1.generator());
+            expect(u1.length, 96);
+            expect(g1.compress(u1), g1.generator());
+            final g2 = NativeG2ProjectiveCurveApi(
+              blockchainUtils.backend!.curves.g2(),
+            );
+            final u2 = g2.uncompress(g2.generator());
+            expect(u2.length, 192);
+            expect(g2.compress(u2), g2.generator());
+          });
+        },
+      );
     },
   );
 }

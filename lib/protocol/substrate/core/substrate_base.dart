@@ -157,7 +157,8 @@ class Substrate with SecretState {
   SubstratePrvKey get priveKey {
     final priv = _priveKey;
     if (priv == null) {
-      throw const BuError(DefaultErrorType.invalidKeyData,
+      throw const BuError(
+        DefaultErrorType.invalidKeyData,
         'Public-only deterministic keys have no private half',
       );
     }
@@ -265,14 +266,18 @@ class Substrate with SecretState {
   /// Perform public child key derivation for the current context.
   Substrate _ckdPub(SubstratePathElem pathElem) {
     if (pathElem.isHard) {
-      throw const BuError(DefaultErrorType.unsupported,
+      throw const BuError(
+        DefaultErrorType.unsupported,
         "Public child derivation with hardened index is not supported.",
       );
     }
     if (publicKey.coinConf.type == CryptoKeyType.sr25519) {
       return _ckdPubSr25519(pathElem);
     }
-    throw BuError(DefaultErrorType.unsupported,"Public child derivation is not supported.");
+    throw BuError(
+      DefaultErrorType.unsupported,
+      "Public child derivation is not supported.",
+    );
   }
 
   @override

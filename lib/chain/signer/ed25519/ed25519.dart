@@ -92,11 +92,7 @@ class FrostEd25519Signer
     List<int>? subset,
     List<int>? randomness,
   }) {
-    final signature = signToEd(
-      digest,
-      subset: subset,
-      randomness: randomness,
-    );
+    final signature = signToEd(digest, subset: subset, randomness: randomness);
     return SignedContent(
       signature: signature,
       content: digest,

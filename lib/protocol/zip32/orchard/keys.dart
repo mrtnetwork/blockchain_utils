@@ -372,8 +372,7 @@ class OrchardSpendValidatingKey with Equality {
 class OrchardCommitIvkRandomness with Equality {
   final BuBytes _bytes;
 
-  OrchardCommitIvkRandomness._(BuBytes bytes)
-    : _bytes = bytes.asImmutableBytes;
+  OrchardCommitIvkRandomness._(BuBytes bytes) : _bytes = bytes.asImmutableBytes;
   static void _checkScalar(List<int> bytes, String operation) {
     if (!blockchainUtils.api.pallas.scCheck(bytes) ||
         BytesUtils.isZeroConst(bytes)) {
@@ -383,6 +382,7 @@ class OrchardCommitIvkRandomness with Equality {
       );
     }
   }
+
   factory OrchardCommitIvkRandomness.fromSpendKey(OrchardSpendingKey sk) {
     final scalar = blockchainUtils.api.pallas.scReduce64(
       PrfExpand.orchardRivk.apply(sk.sk),

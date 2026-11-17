@@ -55,7 +55,8 @@ enum NonDerivableCoins implements CryptoCoins<NonDerivableCoinConfig> {
     EncodeAddressDefaultParams params,
     NonDerivableCoinConfig config,
   ) {
-    throw BuError(DefaultErrorType.invalidAddress,
+    throw BuError(
+      DefaultErrorType.invalidAddress,
       "Non-derivable coins have no HD standard; import the key instead.",
     );
   }

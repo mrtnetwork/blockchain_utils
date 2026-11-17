@@ -1,6 +1,7 @@
 import 'package:blockchain_utils/utils/numbers/fixed/src/u64/u64.dart';
 import 'package:blockchain_utils/exception/exception/core_errors.dart';
-import 'package:blockchain_utils/utils/numbers/fixed/src/u64/word_math/word_math_native.dart' as native;
+import 'package:blockchain_utils/utils/numbers/fixed/src/u64/word_math/word_math_native.dart'
+    as native;
 
 /// Opts into real 64-bit-int math on the VM instead of the portable
 /// (web-safe) algorithms in this file.

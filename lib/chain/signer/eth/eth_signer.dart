@@ -166,8 +166,12 @@ class ETHVerifier extends ISignatureVerifier<ISecp256k1VerificationKey> {
     bool hashMessage = true,
   }) {
     if (signature.length != CryptoSignerConst.ecdsaSignatureLength &&
-        signature.length != CryptoSignerConst.ecdsaSignatureWithRecoveryIdLength) {
-      throw BuError(DefaultErrorType.invalidLength,"Invalid signature bytes length.");
+        signature.length !=
+            CryptoSignerConst.ecdsaSignatureWithRecoveryIdLength) {
+      throw BuError(
+        DefaultErrorType.invalidLength,
+        "Invalid signature bytes length.",
+      );
     }
     final hashDigest = hashMessage ? QuickCrypto.keccak256Hash(digest) : digest;
     return verifyKey.verify(

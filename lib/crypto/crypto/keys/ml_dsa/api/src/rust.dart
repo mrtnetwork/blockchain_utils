@@ -14,17 +14,17 @@ class NativeMLDSASigningApi implements MLDSASigningApi {
     // Key material is caller-supplied: fill from the platform RNG when
     // omitted so the native backend never depends on Rust-side generation.
     final s = (seed ?? QuickCrypto.generateRandom(length: 32)).asBytes;
-    final (pk, sk) = api
-        .keygen(level: level, seed: s)
-        .unwrapOrThrowCryptoError();
+    final (pk, sk) =
+        api.keygen(level: level, seed: s).unwrapOrThrowCryptoError();
     return (pk.asBytes, sk.asBytes);
   }
 
   @override
   BuBytes publicKeyFromSecret({int? level, required List<int> sk}) {
-    final pk = api
-        .publicKeyFromSecret(level: level, sk: sk.asBytes)
-        .unwrapOrThrowCryptoError();
+    final pk =
+        api
+            .publicKeyFromSecret(level: level, sk: sk.asBytes)
+            .unwrapOrThrowCryptoError();
     return pk.asBytes;
   }
 
@@ -39,15 +39,16 @@ class NativeMLDSASigningApi implements MLDSASigningApi {
     // FIPS `rnd` is caller-supplied: fill from the platform RNG when
     // omitted so the native backend never depends on Rust-side generation.
     final r = (rnd ?? QuickCrypto.generateRandom(length: 32)).asBytes;
-    final pk = api
-        .sign(
-          level: level,
-          sk: sk.asBytes,
-          message: message.asBytes,
-          rnd: r,
-          context: context?.asBytes,
-        )
-        .unwrapOrThrowCryptoError();
+    final pk =
+        api
+            .sign(
+              level: level,
+              sk: sk.asBytes,
+              message: message.asBytes,
+              rnd: r,
+              context: context?.asBytes,
+            )
+            .unwrapOrThrowCryptoError();
     return pk.asBytes;
   }
 

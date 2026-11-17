@@ -173,7 +173,10 @@ class Jwt {
   factory Jwt.deserialize(String jwt) {
     final parts = jwt.split('.');
     if (parts.length != 2) {
-      throw BuError(DefaultErrorType.invalidArgument,"Invalid serialized jwt.");
+      throw BuError(
+        DefaultErrorType.invalidArgument,
+        "Invalid serialized jwt.",
+      );
     }
     return Jwt(
       header: JwtHeader.fromJson(_decodeSegment(parts[0])),
@@ -187,7 +190,10 @@ class Jwt {
   factory Jwt.deserializeOidc(String jwt) {
     final parts = jwt.split('.');
     if (parts.length != 3) {
-      throw BuError(DefaultErrorType.invalidArgument,"Invalid serialized OIDC jwt.");
+      throw BuError(
+        DefaultErrorType.invalidArgument,
+        "Invalid serialized OIDC jwt.",
+      );
     }
     return Jwt(
       header: JwtHeader.fromJson(_decodeSegment(parts[0])),
@@ -238,7 +244,10 @@ class Jwt {
   String sign({required List<int> key, JwtSupportedAlgorithm? alg}) {
     alg ??= header.alg;
     if (alg == null) {
-      throw BuError(DefaultErrorType.invalidArgument,"Unknown signing algorithm.");
+      throw BuError(
+        DefaultErrorType.invalidArgument,
+        "Unknown signing algorithm.",
+      );
     }
     final signingInput = serialize();
 

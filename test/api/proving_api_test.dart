@@ -12,14 +12,8 @@ void main() {
     const empty = <int>[];
 
     test('every method throws BuError', () {
-      expect(
-        () => sapling.setSpendParams(empty),
-        throwsA(isA<BuError>()),
-      );
-      expect(
-        () => sapling.setOutputParams(empty),
-        throwsA(isA<BuError>()),
-      );
+      expect(() => sapling.setSpendParams(empty), throwsA(isA<BuError>()));
+      expect(() => sapling.setOutputParams(empty), throwsA(isA<BuError>()));
       expect(() => sapling.paramsFree(0), throwsA(isA<BuError>()));
       expect(
         () => sapling.prove(handle: 0, kind: 0, witness: empty),
@@ -29,10 +23,7 @@ void main() {
         () => sapling.verify(handle: 0, kind: 0, proof: empty, inputs: empty),
         throwsA(isA<BuError>()),
       );
-      expect(
-        () => orchard.pkNew(version: 1),
-        throwsA(isA<BuError>()),
-      );
+      expect(() => orchard.pkNew(version: 1), throwsA(isA<BuError>()));
       expect(() => orchard.pkFree(0), throwsA(isA<BuError>()));
 
       expect(

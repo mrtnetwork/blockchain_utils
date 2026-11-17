@@ -22,18 +22,15 @@ void doubleTest() {
         final decoded = DoubleCoder.fromBytes(DoubleCoder.toBytes(v));
         expect(decoded, v, reason: 'f64 $v');
       }
-      expect(DoubleCoder.fromBytes(DoubleCoder.toBytes(double.nan)).isNaN, isTrue);
+      expect(
+        DoubleCoder.fromBytes(DoubleCoder.toBytes(double.nan)).isNaN,
+        isTrue,
+      );
     });
 
     test('f64 big-endian bytes', () {
-      expect(
-        DoubleCoder.toBytes(1.0).toList(),
-        [0x3F, 0xF0, 0, 0, 0, 0, 0, 0],
-      );
-      expect(
-        DoubleCoder.fromBytes([0x3F, 0xF0, 0, 0, 0, 0, 0, 0]),
-        1.0,
-      );
+      expect(DoubleCoder.toBytes(1.0).toList(), [0x3F, 0xF0, 0, 0, 0, 0, 0, 0]);
+      expect(DoubleCoder.fromBytes([0x3F, 0xF0, 0, 0, 0, 0, 0, 0]), 1.0);
     });
 
     test('f64 endianness', () {
@@ -44,10 +41,7 @@ void doubleTest() {
     });
 
     test('f64 requires exactly 8 bytes', () {
-      expect(
-        () => DoubleCoder.fromBytes([1, 2, 3]),
-        throwsA(isA<BuError>()),
-      );
+      expect(() => DoubleCoder.fromBytes([1, 2, 3]), throwsA(isA<BuError>()));
       expect(
         () => DoubleCoder.fromBytes(List<int>.filled(7, 0)),
         throwsA(isA<BuError>()),
@@ -56,10 +50,7 @@ void doubleTest() {
         () => DoubleCoder.fromBytes(List<int>.filled(9, 0)),
         throwsA(isA<BuError>()),
       );
-      expect(
-        () => DoubleCoder.fromBytes([]),
-        throwsA(isA<BuError>()),
-      );
+      expect(() => DoubleCoder.fromBytes([]), throwsA(isA<BuError>()));
     });
   });
 
@@ -85,18 +76,12 @@ void doubleTest() {
     });
 
     test('f32 requires exactly 4 bytes', () {
-      expect(
-        () => FloatCoder.fromBytes([1, 2, 3]),
-        throwsA(isA<BuError>()),
-      );
+      expect(() => FloatCoder.fromBytes([1, 2, 3]), throwsA(isA<BuError>()));
       expect(
         () => FloatCoder.fromBytes(List<int>.filled(5, 0)),
         throwsA(isA<BuError>()),
       );
-      expect(
-        () => FloatCoder.fromBytes([]),
-        throwsA(isA<BuError>()),
-      );
+      expect(() => FloatCoder.fromBytes([]), throwsA(isA<BuError>()));
     });
   });
 }

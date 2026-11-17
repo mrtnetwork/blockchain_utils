@@ -99,14 +99,16 @@ class BchBech32Decoder extends Bech32DecoderBase {
       _BchBech32Utils.verifyChecksum,
     );
     if (hrp != null && decoded.$1 != hrp) {
-      throw BuError(DefaultErrorType.badBech32,
+      throw BuError(
+        DefaultErrorType.badBech32,
         'Incorrect bech32 hrp.',
         details: {'expected': hrp, 'hrp': decoded.$1},
       );
     }
     final convData = Bech32BaseUtils.convertFromBase32(decoded.$2);
     if (convData.isEmpty) {
-      throw const BuError(DefaultErrorType.badBech32,
+      throw const BuError(
+        DefaultErrorType.badBech32,
         'Invalid bech32 format.',
         details: {'reason': 'empty data payload'},
       );

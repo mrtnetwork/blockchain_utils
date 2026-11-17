@@ -11,7 +11,6 @@ class NativeVestaCurveApi implements VestaCurveApi {
   final BuVestaCurveApi _api;
   const NativeVestaCurveApi(this._api);
 
-
   @override
   int get pointLen => _api.pointLen;
 
@@ -38,8 +37,7 @@ class NativeVestaCurveApi implements VestaCurveApi {
       _api.sub(a, b).unwrapOrThrowCryptoError();
 
   @override
-  BuBytes neg(List<int> point) =>
-      _api.neg(point).unwrapOrThrowCryptoError();
+  BuBytes neg(List<int> point) => _api.neg(point).unwrapOrThrowCryptoError();
 
   @override
   BuBytes scAdd(List<int> a, List<int> b) =>
@@ -54,31 +52,26 @@ class NativeVestaCurveApi implements VestaCurveApi {
       _api.scMul(a, b).unwrapOrThrowCryptoError();
 
   @override
-  BuBytes scNeg(List<int> s) =>
-      _api.scNeg(s).unwrapOrThrowCryptoError();
+  BuBytes scNeg(List<int> s) => _api.scNeg(s).unwrapOrThrowCryptoError();
 
   @override
-  BuBytes scReduce(List<int> s) =>
-      _api.scReduce(s).unwrapOrThrowCryptoError();
+  BuBytes scReduce(List<int> s) => _api.scReduce(s).unwrapOrThrowCryptoError();
 
   @override
   BuBytes scReduce64(List<int> s) =>
       _api.scReduce64(s).unwrapOrThrowCryptoError();
 
   @override
-  BuBytes generator() =>
-      _api.generator().unwrapOrThrowCryptoError();
+  BuBytes generator() => _api.generator().unwrapOrThrowCryptoError();
 
   @override
-  BuBytes identity() =>
-      _api.identity().unwrapOrThrowCryptoError();
+  BuBytes identity() => _api.identity().unwrapOrThrowCryptoError();
 
   @override
   BuBytes mulAdd(List<int> s1, List<int> p1, List<int> s2, List<int> p2) =>
       _api.mulAdd(s1, p1, s2, p2).unwrapOrThrowCryptoError();
 
   @override
-  BuBytes hashToCurve(List<int> msg, {List<int>? dst}) => _api
-      .hashToCurve(msg, dst: dst)
-      .unwrapOrThrowCryptoError();
+  BuBytes hashToCurve(List<int> msg, {List<int>? dst}) =>
+      _api.hashToCurve(msg, dst: dst).unwrapOrThrowCryptoError();
 }

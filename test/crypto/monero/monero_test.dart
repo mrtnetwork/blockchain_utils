@@ -52,87 +52,67 @@ void moneroTest() {
       );
     });
 
-    test(
-      'verify monero_dart M1 vector',
-      () {
-        final proof = MoneroBpPlusProof.fromBlob(_hex(_m1Blob));
-        expect(proof.v.length, 1);
-        expect(proof.l.length, 6);
-        expect(blockchainUtils.api.monero.bpPlusVerify([proof]), true);
-      },
-      skip: native ? false : 'requires Rust (native) backend',
-    );
+    test('verify monero_dart M1 vector', () {
+      final proof = MoneroBpPlusProof.fromBlob(_hex(_m1Blob));
+      expect(proof.v.length, 1);
+      expect(proof.l.length, 6);
+      expect(blockchainUtils.api.monero.bpPlusVerify([proof]), true);
+    }, skip: native ? false : 'requires Rust (native) backend');
 
-    test(
-      'prove amounts roundtrip (M=1)',
-      () {
-        final gamma = List<int>.filled(32, 0)..[0] = 7;
-        final seed = List<int>.filled(32, 9);
-        final proof = blockchainUtils.api.monero.bpPlusProveAmounts(
-          amounts: [BigInt.zero],
-          gamma: [gamma],
-          seed: seed,
-        );
-        expect(proof.v.length, 1);
-        expect(blockchainUtils.api.monero.bpPlusVerify([proof]), true);
-      },
-      skip: native ? false : 'requires Rust (native) backend',
-    );
+    test('prove amounts roundtrip (M=1)', () {
+      final gamma = List<int>.filled(32, 0)..[0] = 7;
+      final seed = List<int>.filled(32, 9);
+      final proof = blockchainUtils.api.monero.bpPlusProveAmounts(
+        amounts: [BigInt.zero],
+        gamma: [gamma],
+        seed: seed,
+      );
+      expect(proof.v.length, 1);
+      expect(blockchainUtils.api.monero.bpPlusVerify([proof]), true);
+    }, skip: native ? false : 'requires Rust (native) backend');
 
-    test(
-      'prove amounts roundtrip (M=4)',
-      () {
-        final g1 = List<int>.filled(32, 0)..[0] = 7;
-        final g2 = List<int>.filled(32, 0)..[0] = 5;
-        final seed = List<int>.filled(32, 11);
-        final proof = blockchainUtils.api.monero.bpPlusProveAmounts(
-          amounts: [BigInt.zero, BigInt.from(5), BigInt.from(123456789)],
-          gamma: [g1, g2, g1],
-          seed: seed,
-        );
-        expect(proof.v.length, 3);
-        expect(proof.l.length, 8);
-        expect(blockchainUtils.api.monero.bpPlusVerify([proof]), true);
-      },
-      skip: native ? false : 'requires Rust (native) backend',
-    );
+    test('prove amounts roundtrip (M=4)', () {
+      final g1 = List<int>.filled(32, 0)..[0] = 7;
+      final g2 = List<int>.filled(32, 0)..[0] = 5;
+      final seed = List<int>.filled(32, 11);
+      final proof = blockchainUtils.api.monero.bpPlusProveAmounts(
+        amounts: [BigInt.zero, BigInt.from(5), BigInt.from(123456789)],
+        gamma: [g1, g2, g1],
+        seed: seed,
+      );
+      expect(proof.v.length, 3);
+      expect(proof.l.length, 8);
+      expect(blockchainUtils.api.monero.bpPlusVerify([proof]), true);
+    }, skip: native ? false : 'requires Rust (native) backend');
 
-    test(
-      'prove scalars roundtrip',
-      () {
-        final sv = List<int>.filled(32, 0)..[0] = 42;
-        final gamma = List<int>.filled(32, 0)..[0] = 3;
-        final seed = List<int>.filled(32, 13);
-        final proof = blockchainUtils.api.monero.bpPlusProveScalars(
-          sv: [sv],
-          gamma: [gamma],
-          seed: seed,
-        );
-        expect(blockchainUtils.api.monero.bpPlusVerify([proof]), true);
-      },
-      skip: native ? false : 'requires Rust (native) backend',
-    );
+    test('prove scalars roundtrip', () {
+      final sv = List<int>.filled(32, 0)..[0] = 42;
+      final gamma = List<int>.filled(32, 0)..[0] = 3;
+      final seed = List<int>.filled(32, 13);
+      final proof = blockchainUtils.api.monero.bpPlusProveScalars(
+        sv: [sv],
+        gamma: [gamma],
+        seed: seed,
+      );
+      expect(blockchainUtils.api.monero.bpPlusVerify([proof]), true);
+    }, skip: native ? false : 'requires Rust (native) backend');
 
-    test(
-      'tampered proof verifies false',
-      () {
-        final proof = MoneroBpPlusProof.fromBlob(_hex(_m1Blob));
-        final bad = List<int>.from(proof.d1)..[0] ^= 1;
-        final tampered = MoneroBpPlusProof(
-          v: proof.v,
-          a: proof.a,
-          a1: proof.a1,
-          b: proof.b,
-          r1: proof.r1,
-          s1: proof.s1,
-          d1: bad,
-          l: proof.l,
-          r: proof.r,
-        );
-        expect(blockchainUtils.api.monero.bpPlusVerify([tampered]), false);
-      },
-      skip: native ? false : 'requires Rust (native) backend',
-    );
+    test('tampered proof verifies false', () {
+      final proof = MoneroBpPlusProof.fromBlob(_hex(_m1Blob));
+      final bad = List<int>.from(proof.d1)..[0] ^= 1;
+      final tampered = MoneroBpPlusProof(
+        v: proof.v,
+        a: proof.a,
+        a1: proof.a1,
+        b: proof.b,
+        r1: proof.r1,
+        s1: proof.s1,
+        d1: bad,
+        l: proof.l,
+        r: proof.r,
+      );
+      expect(blockchainUtils.api.monero.bpPlusVerify([tampered]), false);
+    }, skip: native ? false : 'requires Rust (native) backend');
 
     test('malformed input throws', () {
       expect(
@@ -141,64 +121,60 @@ void moneroTest() {
       );
     });
 
-    test(
-      'unlockBatch rejects bad input before native call',
-      () {
-        final account = BuMoneroScanAccount(
-          viewSecret: List<int>.filled(32, 1),
-          spendPubs: [BuBytes(List<int>.filled(32, 2))],
-        );
-        final output = BuMoneroScanOutput(
-          outKey: List<int>.filled(32, 3),
-          txPub: List<int>.filled(32, 4),
-        );
-        expect(
-          () => blockchainUtils.api.monero
-              .unlockBatch(accounts: [], outputs: [output]),
-          throwsArgumentException,
-        );
-        expect(
-          () => blockchainUtils.api.monero
-              .unlockBatch(accounts: [account], outputs: []),
-          throwsArgumentException,
-        );
-        expect(
-          () => blockchainUtils.api.monero.unlockBatch(
-            accounts: [
-              BuMoneroScanAccount(
-                viewSecret: List<int>.filled(31, 1),
-                spendPubs: [BuBytes(List<int>.filled(32, 2))],
-              ),
-            ],
-            outputs: [output],
-          ),
-          throwsArgumentException,
-        );
-      },
-      skip: native ? false : 'requires Rust (native) backend',
-    );
-
-    test(
-      'unlockBatch synthetic scan crosses FFI with no match',
-      () {
-        final matches = blockchainUtils.api.monero.unlockBatch(
+    test('unlockBatch rejects bad input before native call', () {
+      final account = BuMoneroScanAccount(
+        viewSecret: List<int>.filled(32, 1),
+        spendPubs: [BuBytes(List<int>.filled(32, 2))],
+      );
+      final output = BuMoneroScanOutput(
+        outKey: List<int>.filled(32, 3),
+        txPub: List<int>.filled(32, 4),
+      );
+      expect(
+        () => blockchainUtils.api.monero.unlockBatch(
+          accounts: [],
+          outputs: [output],
+        ),
+        throwsArgumentException,
+      );
+      expect(
+        () => blockchainUtils.api.monero.unlockBatch(
+          accounts: [account],
+          outputs: [],
+        ),
+        throwsArgumentException,
+      );
+      expect(
+        () => blockchainUtils.api.monero.unlockBatch(
           accounts: [
             BuMoneroScanAccount(
-              viewSecret: List<int>.filled(32, 1),
+              viewSecret: List<int>.filled(31, 1),
               spendPubs: [BuBytes(List<int>.filled(32, 2))],
             ),
           ],
-          outputs: [
-            BuMoneroScanOutput(
-              outKey: List<int>.filled(32, 3),
-              txPub: List<int>.filled(32, 4),
-            ),
-          ],
-        );
-        expect(matches, isEmpty);
-      },
-      skip: native ? false : 'requires Rust (native) backend',
-    );
+          outputs: [output],
+        ),
+        throwsArgumentException,
+      );
+    }, skip: native ? false : 'requires Rust (native) backend');
+
+    test('unlockBatch synthetic scan crosses FFI with no match', () {
+      final matches = blockchainUtils.api.monero.unlockBatch(
+        accounts: [
+          BuMoneroScanAccount(
+            viewSecret: List<int>.filled(32, 1),
+            spendPubs: [BuBytes(List<int>.filled(32, 2))],
+          ),
+        ],
+        outputs: [
+          BuMoneroScanOutput(
+            outKey: List<int>.filled(32, 3),
+            txPub: List<int>.filled(32, 4),
+          ),
+        ],
+      );
+      expect(matches, isEmpty);
+    }, skip: native ? false : 'requires Rust (native) backend');
   });
 }
 

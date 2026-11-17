@@ -58,7 +58,10 @@ enum FloatLength {
         return v;
       }
     } catch (_) {}
-    throw BuError(DefaultErrorType.invalidLength,"Invalid float length index.");
+    throw BuError(
+      DefaultErrorType.invalidLength,
+      "Invalid float length index.",
+    );
   }
 }
 
@@ -219,13 +222,19 @@ class FloatUtils {
     switch (decodFloatType) {
       case FloatLength.bytes16:
         if (!isLessThan16) {
-          throw BuError(DefaultErrorType.badCbor,"Float value is larger than float16.");
+          throw BuError(
+            DefaultErrorType.badCbor,
+            "Float value is larger than float16.",
+          );
         }
         bytes = _encodeFloat16(endianness);
         break;
       case FloatLength.bytes32:
         if (!isLessThan32) {
-          throw BuError(DefaultErrorType.badCbor,"Float value is larger than float32.");
+          throw BuError(
+            DefaultErrorType.badCbor,
+            "Float value is larger than float32.",
+          );
         }
         bytes = _encodeFloat32(endianness);
         break;
@@ -239,7 +248,10 @@ class FloatUtils {
   /// Decodes a 16-bit float from [bytes] (big-endian) into a `double`.
   static double floatFromBytes16(List<int> bytes) {
     if (bytes.length != 2) {
-      throw BuError(DefaultErrorType.invalidArgument,"Invalid bytes for float16.");
+      throw BuError(
+        DefaultErrorType.invalidArgument,
+        "Invalid bytes for float16.",
+      );
     }
 
     final byteData = ByteData.sublistView(Uint8List.fromList(bytes));

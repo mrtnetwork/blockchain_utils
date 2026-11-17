@@ -75,7 +75,10 @@ class MnemonicWordsList {
   int getWordIdx(String word) {
     final index = _idxToWords.indexOf(word);
     if (index < 0) {
-      throw BuError(DefaultErrorType.invalidMnemonic,"Invalid mnemonic index.");
+      throw BuError(
+        DefaultErrorType.invalidMnemonic,
+        "Invalid mnemonic index.",
+      );
     }
     return index;
   }
@@ -94,7 +97,10 @@ abstract class MnemonicWordsListGetterBase<LANG extends MnemonicLanguages> {
   /// Loads the words list for a given language and verifies its length.
   MnemonicWordsList loadWordsList(LANG language, int wordsNum) {
     if (language.wordList.length != wordsNum) {
-      throw BuError(DefaultErrorType.invalidMnemonic,"Invalid mnemonic word list.");
+      throw BuError(
+        DefaultErrorType.invalidMnemonic,
+        "Invalid mnemonic word list.",
+      );
     }
     return MnemonicWordsList(language.wordList);
   }

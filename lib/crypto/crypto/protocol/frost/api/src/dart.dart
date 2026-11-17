@@ -44,9 +44,7 @@ class DartFrostApi implements FrostApi {
     );
   }
 
-  FrostEngineNonces<Secp256k1Point, Secp256k1Fr> _k1Nonces(
-    FrostNoncePair n,
-  ) {
+  FrostEngineNonces<Secp256k1Point, Secp256k1Fr> _k1Nonces(FrostNoncePair n) {
     return FrostEngineNonces<Secp256k1Point, Secp256k1Fr>(
       hidingNonce: k1.deserializeScalar(n.hiding),
       bindingNonce: k1.deserializeScalar(n.binding),

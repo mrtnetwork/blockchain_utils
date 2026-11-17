@@ -34,7 +34,10 @@ void aesCtrCbcTest() {
       final algs = PaddingAlgorithm.values.firstWhereNullable(
         (e) => e.name == i.valueAs("type"),
       );
-      final aes = QuickCrypto.aesEcbInstance(i.valueAsBytes("key"), padding: algs);
+      final aes = QuickCrypto.aesEcbInstance(
+        i.valueAsBytes("key"),
+        padding: algs,
+      );
       final List<int> plain = i.valueAsBytes("plain");
       final encrypt = aes.encrypt(plain);
       expect(encrypt, i.valueAsBytes("enc"));
@@ -43,7 +46,9 @@ void aesCtrCbcTest() {
     }
 
     for (int i = 0; i < 10; i++) {
-      final aes = QuickCrypto.aesEcbInstance(QuickCrypto.generateRandom(length: 32));
+      final aes = QuickCrypto.aesEcbInstance(
+        QuickCrypto.generateRandom(length: 32),
+      );
       final plain = QuickCrypto.generateRandom(length: i * 16);
       final enc = aes.encrypt(plain);
       final dec = aes.decrypt(enc);

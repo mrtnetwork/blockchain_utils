@@ -162,7 +162,12 @@ class MoneroBpPlusProof {
   static BuBytes pack(List<MoneroBpPlusProof> proofs) {
     final out = <int>[];
     void u32(int v) {
-      out.addAll([v & 0xff, (v >> 8) & 0xff, (v >> 16) & 0xff, (v >> 24) & 0xff]);
+      out.addAll([
+        v & 0xff,
+        (v >> 8) & 0xff,
+        (v >> 16) & 0xff,
+        (v >> 24) & 0xff,
+      ]);
     }
 
     u32(proofs.length);

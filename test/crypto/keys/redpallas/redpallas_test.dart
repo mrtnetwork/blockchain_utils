@@ -50,10 +50,7 @@ void redPallasKeysTest() {
       );
       final viaPriv = IPrivateKey.fromBytes(sk, CryptoKeyType.redPallasBinding);
       expect(viaPriv, isA<RedPallasBindingPrivateKey>());
-      expect(
-        (viaPriv as RedPallasBindingPrivateKey).publicKey,
-        priv.publicKey,
-      );
+      expect((viaPriv as RedPallasBindingPrivateKey).publicKey, priv.publicKey);
       expect(RedPallasBindingPrivateKey.isValidBytes(sk), isTrue);
       final back = RedPallasBindingPrivateKey.fromBytes(priv.toBytes());
       expect(back.publicKey, priv.publicKey);
@@ -90,20 +87,12 @@ void redPallasKeysTest() {
       );
       final viaPriv = IPrivateKey.fromBytes(sk, CryptoKeyType.redPallasSpend);
       expect(viaPriv, isA<RedPallasSpendPrivateKey>());
-      expect(
-        (viaPriv as RedPallasSpendPrivateKey).publicKey,
-        priv.publicKey,
-      );
+      expect((viaPriv as RedPallasSpendPrivateKey).publicKey, priv.publicKey);
       expect(RedPallasSpendPrivateKey.isValidBytes(sk), isTrue);
-      expect(
-        RedPallasSpendPrivateKey.fromScalar(sk).publicKey,
-        priv.publicKey,
-      );
+      expect(RedPallasSpendPrivateKey.fromScalar(sk).publicKey, priv.publicKey);
       expect(
         priv.randomize(r).publicKey,
-        RedPallasSpendPublicKey.fromBytes(
-          priv.publicKey.keyBytes,
-        ).randomize(r),
+        RedPallasSpendPublicKey.fromBytes(priv.publicKey.keyBytes).randomize(r),
       );
     });
 
@@ -133,10 +122,7 @@ void redPallasKeysTest() {
         RedPallasBindingPublicKey.fromBytes(bpriv.publicKey.keyBytes),
         bpriv.publicKey,
       );
-      expect(
-        RedPallasBindingPublicKey.fromBytes(identity),
-        bpriv.publicKey,
-      );
+      expect(RedPallasBindingPublicKey.fromBytes(identity), bpriv.publicKey);
     });
 
     test('invalid encodings', () {

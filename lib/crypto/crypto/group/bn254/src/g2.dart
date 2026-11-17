@@ -190,8 +190,7 @@ class Bn254G2Projective {
   bool isIdentity() => z.isZero();
 
   bool isOnCurve() {
-    return (y.square() * z) ==
-            (x.square() * x + z.square() * z * Bn254Fp2.b) ||
+    return (y.square() * z) == (x.square() * x + z.square() * z * Bn254Fp2.b) ||
         z.isZero();
   }
 

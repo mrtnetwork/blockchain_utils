@@ -812,11 +812,7 @@ class _JsonParser {
   _JsonParser(this.bytes, this.options, this.reviver);
 
   bool get isAtEnd => pos >= bytes.length;
-  BuError formatError([
-    String reason = "",
-    dynamic source,
-    int? offset,
-  ]) {
+  BuError formatError([String reason = "", dynamic source, int? offset]) {
     final sourceStr = source.toString();
     return CoreErrors.invalidOperationArguments(
       "jsonDecode",

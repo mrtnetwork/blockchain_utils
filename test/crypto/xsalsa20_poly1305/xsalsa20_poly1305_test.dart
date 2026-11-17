@@ -78,11 +78,7 @@ void xsalsa20Poly1305Test() {
       expect(() => box.encrypt(List.filled(12, 0), [1]), throwsA(anything));
       expect(() => box.decrypt(List.filled(12, 0), [1]), throwsA(anything));
       expect(
-        () => box.encrypt(
-          List.filled(24, 0),
-          [1],
-          associatedData: [2],
-        ),
+        () => box.encrypt(List.filled(24, 0), [1], associatedData: [2]),
         throwsA(anything),
       );
       expect(
@@ -111,12 +107,14 @@ void xsalsa20Poly1305Test() {
       expect(ct, isNot(equals(pt)));
       expect(cipher.process(ct, nonce: nonce).toList(), pt);
       // Seek consistency: split decryption matches one-shot.
-      final a = cipher
-          .process(ct.sublist(0, 100), nonce: nonce, seekBytes: 0)
-          .toList();
-      final b = cipher
-          .process(ct.sublist(100), nonce: nonce, seekBytes: 100)
-          .toList();
+      final a =
+          cipher
+              .process(ct.sublist(0, 100), nonce: nonce, seekBytes: 0)
+              .toList();
+      final b =
+          cipher
+              .process(ct.sublist(100), nonce: nonce, seekBytes: 100)
+              .toList();
       expect([...a, ...b], pt);
     });
 
@@ -179,11 +177,7 @@ void xsalsa20Poly1305Test() {
       expect(raw.toHex(), startsWith(testNonceHex));
       final alicePk = BytesUtils.fromHexString(alicePubHex);
       final bobSk = BytesUtils.fromHexString(bobSecretHex);
-      final open = SalsaBox.open(
-        raw,
-        peerPublicKey: alicePk,
-        secretKey: bobSk,
-      );
+      final open = SalsaBox.open(raw, peerPublicKey: alicePk, secretKey: bobSk);
       expect(open, isNotNull);
       expect(utf8.decode(open!), pyTonPlaintext);
       final aliceSk = BytesUtils.fromHexString(aliceSecretHex);
@@ -201,12 +195,13 @@ void xsalsa20Poly1305Test() {
     test("tampered box fails closed", () {
       final aliceSk = BytesUtils.fromHexString(aliceSecretHex);
       final bobPk = BytesUtils.fromHexString(bobPubHex);
-      final sealed = SalsaBox.seal(
-        utf8.encode("request"),
-        peerPublicKey: bobPk,
-        secretKey: aliceSk,
-        nonce: BytesUtils.fromHexString(testNonceHex),
-      ).toList();
+      final sealed =
+          SalsaBox.seal(
+            utf8.encode("request"),
+            peerPublicKey: bobPk,
+            secretKey: aliceSk,
+            nonce: BytesUtils.fromHexString(testNonceHex),
+          ).toList();
       sealed[sealed.length - 1] ^= 1;
       expect(
         SalsaBox.open(
@@ -423,11 +418,7 @@ void xsalsa20Poly1305Test() {
       expect(sealed.length, 24 + 3 + 16);
       expect(
         aed
-            .salsaBoxOpen(
-              sealed,
-              peerPublicKey: goodKey,
-              secretKey: goodKey,
-            )
+            .salsaBoxOpen(sealed, peerPublicKey: goodKey, secretKey: goodKey)
             ?.toList(),
         [1, 2, 3],
       );

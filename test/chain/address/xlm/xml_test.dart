@@ -34,10 +34,8 @@ void xmlTest() {
         "CA7QYNF7SOWQ3GLR2BGMZEHXAVIRZA4KVWLTJJFC7MGXUA74P7UJUWDA";
     final contractId = BytesUtils.fromHexString(contractIdHex);
     const vectors = {
-      0:
-          "WA7QYNF7SOWQ3GLR2BGMZEHXAVIRZA4KVWLTJJFC7MGXUA74P7UJUAAAAAAAAAAAAAWWC",
-      1:
-          "WA7QYNF7SOWQ3GLR2BGMZEHXAVIRZA4KVWLTJJFC7MGXUA74P7UJUAAAAAAAAAAAAEGHC",
+      0: "WA7QYNF7SOWQ3GLR2BGMZEHXAVIRZA4KVWLTJJFC7MGXUA74P7UJUAAAAAAAAAAAAAWWC",
+      1: "WA7QYNF7SOWQ3GLR2BGMZEHXAVIRZA4KVWLTJJFC7MGXUA74P7UJUAAAAAAAAAAAAEGHC",
     };
     const maxU64Str = "18446744073709551615";
     const maxU64Addr =
@@ -67,10 +65,7 @@ void xmlTest() {
       muxedId: BigInt.parse(maxU64Str),
     );
     expect(maxAddr, maxU64Addr);
-    expect(
-      XlmAddrDecoder().decode(maxAddr).accountId,
-      BigInt.parse(maxU64Str),
-    );
+    expect(XlmAddrDecoder().decode(maxAddr).accountId, BigInt.parse(maxU64Str));
 
     // A contract id is a hash, not an Ed25519 point: encoding must not
     // require a valid curve point.
@@ -100,8 +95,7 @@ void xmlTest() {
     // SEP-23 vector guards the shared muxed decode branch.
     const muxed =
         "MA7QYNF7SOWQ3GLR2BGMZEHXAVIRZA4KVWLTJJFC7MGXUA74P7UJUAAAAAAAAAAAACJUQ";
-    const base =
-        "GA7QYNF7SOWQ3GLR2BGMZEHXAVIRZA4KVWLTJJFC7MGXUA74P7UJVSGZ";
+    const base = "GA7QYNF7SOWQ3GLR2BGMZEHXAVIRZA4KVWLTJJFC7MGXUA74P7UJVSGZ";
     final decoded = XlmAddrDecoder().decode(muxed);
     expect(decoded.type, XlmAddrTypes.muxed);
     expect(decoded.accountId, BigInt.zero);

@@ -51,7 +51,10 @@ class OrchardZip32ChildKeyDerivator
     required OrchardExtendedFullViewKey? parent,
     required Bip32KeyIndex index,
   }) {
-    throw const BuError(DefaultErrorType.unsupported,'Public child derivation is not supported');
+    throw const BuError(
+      DefaultErrorType.unsupported,
+      'Public child derivation is not supported',
+    );
   }
 
   @override

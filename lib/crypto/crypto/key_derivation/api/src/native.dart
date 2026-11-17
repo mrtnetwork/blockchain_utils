@@ -15,7 +15,8 @@ class NativeKeyDerivationApi implements KeyDerivationApi {
     required int iterations,
     required int length,
   }) {
-    final result = BuKdf.pbkdf2(_bindings,
+    final result = BuKdf.pbkdf2(
+      _bindings,
       prf: BuKdfPrf.sha256,
       password: password,
       salt: salt,
@@ -32,7 +33,8 @@ class NativeKeyDerivationApi implements KeyDerivationApi {
     required int iterations,
     required int length,
   }) {
-    final result = BuKdf.pbkdf2(_bindings,
+    final result = BuKdf.pbkdf2(
+      _bindings,
       prf: BuKdfPrf.sha512,
       password: password,
       salt: salt,
@@ -51,7 +53,8 @@ class NativeKeyDerivationApi implements KeyDerivationApi {
     required int n,
     required int p,
   }) {
-    final result = BuKdf.scrypt(_bindings,
+    final result = BuKdf.scrypt(
+      _bindings,
       password: password,
       salt: salt,
       n: n,

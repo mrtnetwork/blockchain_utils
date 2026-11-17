@@ -374,7 +374,10 @@ class ZcashEncodingUtils {
 
   static Bip32Slip10Secp256k1 decodeBip44Fvk(List<int> bytes) {
     if (bytes.length != 65) {
-      throw BuError(DefaultErrorType.invalidLength,"Invalid transparent fvk bytes length.");
+      throw BuError(
+        DefaultErrorType.invalidLength,
+        "Invalid transparent fvk bytes length.",
+      );
     }
     return Bip32Slip10Secp256k1.fromPublicKey(
       bytes.sublist(Bip32KeyDataConst.chaincodeByteLen),
@@ -391,7 +394,10 @@ class ZcashEncodingUtils {
 
   static Bip32PublicKey decodeBip32Fvk(List<int> bytes) {
     if (bytes.length != 65) {
-      throw BuError(DefaultErrorType.invalidLength,"Invalid transparent fvk bytes length.");
+      throw BuError(
+        DefaultErrorType.invalidLength,
+        "Invalid transparent fvk bytes length.",
+      );
     }
     return Bip32PublicKey.fromBytes(
       bytes.sublist(Bip32KeyDataConst.chaincodeByteLen),

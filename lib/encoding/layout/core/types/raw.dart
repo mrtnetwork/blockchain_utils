@@ -57,7 +57,7 @@ class RawBytesLayout extends Layout<List<int>> {
       span = source.length;
     }
     if (span != source.length) {
-      throw BuError(DefaultErrorType.invalidLength,"Invalid source length.");
+      throw BuError(DefaultErrorType.invalidLength, "Invalid source length.");
     }
     writer.setAll(offset, source.sublist(0, span));
     if (length is ExternalLayout) {

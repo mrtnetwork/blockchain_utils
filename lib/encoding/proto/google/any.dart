@@ -181,7 +181,8 @@ class ProtoGoogleAny extends IProtoMessage {
   @override
   BuBytes toBuffer() {
     if (!isBinary) {
-      throw BuError(DefaultErrorType.invalidArgument,
+      throw BuError(
+        DefaultErrorType.invalidArgument,
         "Cannot encode Any to protobuf bytes because its value is not binary.",
       );
     }

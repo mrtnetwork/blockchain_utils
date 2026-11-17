@@ -6,7 +6,8 @@ import 'package:blockchain_utils/utils/binary/src/binary_operation.dart';
 
 import 'package:blockchain_utils_connector/blockchain_utils_connector.dart';
 
-import 'package:blockchain_utils/crypto/crypto/cipher/blockcipher/aes/aes_lib.dart' as aes_lib;
+import 'package:blockchain_utils/crypto/crypto/cipher/blockcipher/aes/aes_lib.dart'
+    as aes_lib;
 
 /// AES block cipher (128/192/256-bit keys), operating on single 16-byte
 /// blocks. Wrap in [CBC] or [CTR] for a mode of operation.

@@ -160,7 +160,8 @@ class MoneroAccount with SecretState {
   /// Get the private spend key of the Monero instance.
   ED25519MoneroPrivateKey get privateSpendKey {
     if (isWatchOnly) {
-      throw const BuError(DefaultErrorType.invalidKeyData,
+      throw const BuError(
+        DefaultErrorType.invalidKeyData,
         'Watch-only class does not have a private spend key',
       );
     }

@@ -54,7 +54,8 @@ class DynamicSizeLayout<T> extends Layout<T> {
     final subReader = LayoutByteReader(slice);
     final r = inner.decode(subReader, offset: 0);
     if (r.consumed != decode.value) {
-      throw BuError(DefaultErrorType.badLayout,
+      throw BuError(
+        DefaultErrorType.badLayout,
         'dynamic_size payload was not fully consumed',
         details: {
           'declared': decode.value.toString(),

@@ -40,20 +40,17 @@ void redJubJubKeysTest() {
         RedJubJubBindingPublicKey.isValidKeyEncoding,
         CryptoKeyType.redJubJubBinding,
       );
-      expect(RedJubJubBindingPublicKey.isValidBytes(priv.publicKey.keyBytes), isTrue);
+      expect(
+        RedJubJubBindingPublicKey.isValidBytes(priv.publicKey.keyBytes),
+        isTrue,
+      );
       expect(
         RedJubJubBindingPublicKey.fromBytes(priv.publicKey.keyBytes),
         priv.publicKey,
       );
-      final viaPriv = IPrivateKey.fromBytes(
-        sk,
-        CryptoKeyType.redJubJubBinding,
-      );
+      final viaPriv = IPrivateKey.fromBytes(sk, CryptoKeyType.redJubJubBinding);
       expect(viaPriv, isA<RedJubJubBindingPrivateKey>());
-      expect(
-        (viaPriv as RedJubJubBindingPrivateKey).publicKey,
-        priv.publicKey,
-      );
+      expect((viaPriv as RedJubJubBindingPrivateKey).publicKey, priv.publicKey);
       expect(RedJubJubBindingPrivateKey.isValidBytes(sk), isTrue);
       final back = RedJubJubBindingPrivateKey.fromBytes(priv.toBytes());
       expect(back.publicKey, priv.publicKey);
@@ -82,27 +79,22 @@ void redJubJubKeysTest() {
         RedJubJubSpendPublicKey.isValidKeyEncoding,
         CryptoKeyType.redJubJubSpend,
       );
-      expect(RedJubJubSpendPublicKey.isValidBytes(priv.publicKey.keyBytes), isTrue);
+      expect(
+        RedJubJubSpendPublicKey.isValidBytes(priv.publicKey.keyBytes),
+        isTrue,
+      );
       expect(
         RedJubJubSpendPublicKey.fromBytes(priv.publicKey.keyBytes),
         priv.publicKey,
       );
       final viaPriv = IPrivateKey.fromBytes(sk, CryptoKeyType.redJubJubSpend);
       expect(viaPriv, isA<RedJubJubSpendPrivateKey>());
-      expect(
-        (viaPriv as RedJubJubSpendPrivateKey).publicKey,
-        priv.publicKey,
-      );
+      expect((viaPriv as RedJubJubSpendPrivateKey).publicKey, priv.publicKey);
       expect(RedJubJubSpendPrivateKey.isValidBytes(sk), isTrue);
-      expect(
-        RedJubJubSpendPrivateKey.fromScalar(sk).publicKey,
-        priv.publicKey,
-      );
+      expect(RedJubJubSpendPrivateKey.fromScalar(sk).publicKey, priv.publicKey);
       expect(
         priv.randomize(r).publicKey,
-        RedJubJubSpendPublicKey.fromBytes(
-          priv.publicKey.keyBytes,
-        ).randomize(r),
+        RedJubJubSpendPublicKey.fromBytes(priv.publicKey.keyBytes).randomize(r),
       );
     });
 
@@ -132,10 +124,7 @@ void redJubJubKeysTest() {
         RedJubJubBindingPublicKey.fromBytes(bpriv.publicKey.keyBytes),
         bpriv.publicKey,
       );
-      expect(
-        RedJubJubBindingPublicKey.fromBytes(identity),
-        bpriv.publicKey,
-      );
+      expect(RedJubJubBindingPublicKey.fromBytes(identity), bpriv.publicKey);
     });
 
     test('invalid encodings', () {

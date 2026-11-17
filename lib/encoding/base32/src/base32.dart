@@ -9,7 +9,6 @@ library;
 import 'package:blockchain_utils_connector/blockchain_utils_connector.dart';
 import 'package:blockchain_utils/utils/string/string.dart';
 
-
 class Base32Alphabet {
   static const String cidBase32Alphabet = 'abcdefghijklmnopqrstuvwxyz234567';
   static const String standardAlphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
@@ -21,7 +20,9 @@ const int _bitsPerByte = 8;
 
 void _checkAlphabet(String alphabet) {
   if (alphabet.length != 32) {
-    throw BuError(DefaultErrorType.invalidLength, "Invalid Base32 string.",
+    throw BuError(
+      DefaultErrorType.invalidLength,
+      "Invalid Base32 string.",
       details: {
         "reason":
             "Base32 alphabet must be exactly 32 characters, got ${alphabet.length}.",
@@ -79,7 +80,9 @@ BuBytes _decodeRaw(String input, String alphabet) {
   }
   for (var i = dataLen; i < input.length; i++) {
     if (input[i] != _paddingChar) {
-      throw BuError(DefaultErrorType.badBase32, "Invalid Base32 string.",
+      throw BuError(
+        DefaultErrorType.badBase32,
+        "Invalid Base32 string.",
         details: {
           "reason":
               'Unexpected character "${input[i]}" after padding at index $i.',
@@ -92,7 +95,9 @@ BuBytes _decodeRaw(String input, String alphabet) {
   // anything else can't represent a whole number of bytes canonically.
   const validGroupRemainders = {0, 2, 4, 5, 7};
   if (!validGroupRemainders.contains(dataLen % 8)) {
-    throw BuError(DefaultErrorType.invalidLength, "Invalid Base32 string.",
+    throw BuError(
+      DefaultErrorType.invalidLength,
+      "Invalid Base32 string.",
       details: {
         "reason":
             'Invalid Base32 length: $dataLen data character(s) does not form a valid group.',
@@ -107,7 +112,9 @@ BuBytes _decodeRaw(String input, String alphabet) {
     final char = input[i];
     final value = reverse[char];
     if (value == null) {
-      throw BuError(DefaultErrorType.badBase32, "Invalid Base32 string.",
+      throw BuError(
+        DefaultErrorType.badBase32,
+        "Invalid Base32 string.",
         details: {"reason": 'Invalid Base32 character "$char" at index $i.'},
       );
     }
@@ -125,7 +132,9 @@ BuBytes _decodeRaw(String input, String alphabet) {
   if (bitCount > 0) {
     final leftoverMask = (1 << bitCount) - 1;
     if ((bitBuffer & leftoverMask) != 0) {
-      throw BuError(DefaultErrorType.badBase32, "Invalid Base32 string.",
+      throw BuError(
+        DefaultErrorType.badBase32,
+        "Invalid Base32 string.",
         details: {
           "reason": "Non-canonical Base32 encoding: nonzero padding bits.",
         },

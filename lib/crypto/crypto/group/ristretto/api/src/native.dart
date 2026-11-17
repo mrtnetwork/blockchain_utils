@@ -7,7 +7,6 @@ class NativeRistrettoCurveApi implements RistrettoCurveApi {
 
   final BuRistrettoCurveApi _api;
 
-
   @override
   int get pointLen => _api.pointLen;
 
@@ -34,8 +33,7 @@ class NativeRistrettoCurveApi implements RistrettoCurveApi {
       _api.sub(a, b).unwrapOrThrowCryptoError();
 
   @override
-  BuBytes neg(List<int> point) =>
-      _api.neg(point).unwrapOrThrowCryptoError();
+  BuBytes neg(List<int> point) => _api.neg(point).unwrapOrThrowCryptoError();
 
   @override
   BuBytes scAdd(List<int> a, List<int> b) =>
@@ -50,20 +48,16 @@ class NativeRistrettoCurveApi implements RistrettoCurveApi {
       _api.scMul(a, b).unwrapOrThrowCryptoError();
 
   @override
-  BuBytes scNeg(List<int> s) =>
-      _api.scNeg(s).unwrapOrThrowCryptoError();
+  BuBytes scNeg(List<int> s) => _api.scNeg(s).unwrapOrThrowCryptoError();
 
   @override
-  BuBytes scReduce(List<int> s) =>
-      _api.scReduce(s).unwrapOrThrowCryptoError();
+  BuBytes scReduce(List<int> s) => _api.scReduce(s).unwrapOrThrowCryptoError();
 
   @override
-  BuBytes generator() =>
-      _api.generator().unwrapOrThrowCryptoError();
+  BuBytes generator() => _api.generator().unwrapOrThrowCryptoError();
 
   @override
-  BuBytes identity() =>
-      _api.identity().unwrapOrThrowCryptoError();
+  BuBytes identity() => _api.identity().unwrapOrThrowCryptoError();
 
   @override
   BuBytes mulAdd(List<int> s1, List<int> p1, List<int> s2, List<int> p2) =>
@@ -71,16 +65,12 @@ class NativeRistrettoCurveApi implements RistrettoCurveApi {
 
   @override
   BuBytes pointFromEdwardBytes(List<int> edwards32) {
-    return _api
-        .pointFromEdwardBytes(edwards32)
-        .unwrapOrThrowCryptoError();
+    return _api.pointFromEdwardBytes(edwards32).unwrapOrThrowCryptoError();
   }
 
   @override
   BuBytes toEdwardBytes(List<int> ristretto32) {
-    return _api
-        .toEdwardBytes(ristretto32)
-        .unwrapOrThrowCryptoError();
+    return _api.toEdwardBytes(ristretto32).unwrapOrThrowCryptoError();
   }
 
   @override

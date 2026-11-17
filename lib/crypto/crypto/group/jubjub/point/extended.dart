@@ -279,6 +279,7 @@ class JubJubAffinePoint extends BaseJubJubAffinePoint<JubJubFr> with Equality {
   factory JubJubAffinePoint.identity() {
     return JubJubAffinePoint(u: JubJubFq.zero, v: JubJubFq.one);
   }
+
   /// Zcash JubJub generator, matching `jubjub::AffinePoint::generator`
   /// (zkcrypto): the point with the lowest positive v-coordinate and positive
   /// u-coordinate (compressed `0b00…00`).

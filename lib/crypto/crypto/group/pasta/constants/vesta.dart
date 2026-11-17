@@ -9,7 +9,6 @@ class VestaFQConst {
 
   static const Uint64 inv = Uint64.unsafe(2353457952, 4294967295);
 
-
   /// Constants used for computing the isogeny from IsoEq to Eq.
   static const List<VestaFq> isogenyConstants = [
     VestaFq.unsafe([

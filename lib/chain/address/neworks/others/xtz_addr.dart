@@ -106,8 +106,7 @@ class XtzAddrDecodedAddress {
                   : throw CoreErrors.addressBytesValidationFailed(
                     reason: "Invalid tezos address bytes length.",
                     details: {
-                      "expected":
-                          QuickCrypto.blake2b160DigestSize.toString(),
+                      "expected": QuickCrypto.blake2b160DigestSize.toString(),
                       "got": bytes.length.toString(),
                     },
                   ))
@@ -232,9 +231,7 @@ class XtzAddrEncoder implements BlockchainAddressEncoder {
       case XtzAddrPrefixes.kt1:
       case XtzAddrPrefixes.sr1:
       case XtzAddrPrefixes.epx1:
-        throw CoreErrors.addressValidationFailed(
-          reason: 'Unreachable',
-        );
+        throw CoreErrors.addressValidationFailed(reason: 'Unreachable');
     }
     final blakeBytes = QuickCrypto.blake2b160Hash(keyBytes);
     return Base58Encoder.encodeWithChecksum([

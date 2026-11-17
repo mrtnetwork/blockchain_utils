@@ -64,9 +64,7 @@ class BlsMinSigAggregateUtils {
   ///
   /// Throws if [publicKeys] is empty, or if any key is the identity
   /// point.
-  static G2Projective aggregatePublicKeys(
-    List<List<int>> publicKeys,
-  ) {
+  static G2Projective aggregatePublicKeys(List<List<int>> publicKeys) {
     if (publicKeys.isEmpty) {
       throw CoreErrors.cryptoFailed(
         "aggregatePublicKeys",
@@ -108,14 +106,8 @@ class BlsMinSigAggregateUtils {
     final hm = BlsHashToG1.hashToG1(message, dst: dst);
     // e(H(m), pk) * e(-sig, G2Gen) == 1  <=>  e(H(m), pk) == e(sig, G2Gen)
     final terms = <(G1AffinePoint, G2Prepared)>[
-      (
-        G1AffinePoint.fromBytes(hm.toBytes()),
-        G2Prepared.fromG2(pk.toAffine()),
-      ),
-      (
-        (-sig).toAffine(),
-        G2Prepared.fromG2(G2AffinePoint.generator),
-      ),
+      (G1AffinePoint.fromBytes(hm.toBytes()), G2Prepared.fromG2(pk.toAffine())),
+      ((-sig).toAffine(), G2Prepared.fromG2(G2AffinePoint.generator)),
     ];
     final ml = MultiMillerLoopBls12().multiMillerLoop(terms);
     return ml.finalExponentiation().isIdentity();
@@ -141,10 +133,7 @@ class BlsMinSigAggregateUtils {
     if (sig.isIdentity()) return false;
 
     final terms = <(G1AffinePoint, G2Prepared)>[
-      (
-        sig.toAffine(),
-        G2Prepared.fromG2(G2AffinePoint.generator),
-      ),
+      (sig.toAffine(), G2Prepared.fromG2(G2AffinePoint.generator)),
     ];
     for (var i = 0; i < publicKeys.length; i++) {
       final pk = G2Projective.fromBytes(publicKeys[i]);
@@ -213,7 +202,10 @@ class BlsMinSigAggregateUtils {
 
       // r_0 == 1 (skip a scalar mult on the first triple); every other
       // r_i is an independent ~256-bit random scalar.
-      final r = i == 0 ? null : JubJubFq.fromBytes64(QuickCrypto.generateRandom(length: 64));
+      final r =
+          i == 0
+              ? null
+              : JubJubFq.fromBytes64(QuickCrypto.generateRandom(length: 64));
 
       sigAcc = sigAcc + (r == null ? sig : sig * r);
       final hm = G1Projective.fromBytes(
@@ -265,16 +257,12 @@ class BlsMinPubkeyAggregateUtils {
       }
       acc = acc + p;
     }
-    return Bls12G1Signature(
-      G2Projective.fromBytesUnchecked(acc.toBytes()),
-    );
+    return Bls12G1Signature(G2Projective.fromBytesUnchecked(acc.toBytes()));
   }
 
   /// Aggregates public keys (G1 points) by point addition -- the
   /// "aggregate key generation" step for this scheme.
-  static G1Projective aggregatePublicKeys(
-    List<List<int>> publicKeys,
-  ) {
+  static G1Projective aggregatePublicKeys(List<List<int>> publicKeys) {
     if (publicKeys.isEmpty) {
       throw CoreErrors.cryptoFailed(
         "aggregatePublicKeys",
@@ -312,14 +300,9 @@ class BlsMinPubkeyAggregateUtils {
     final terms = <(G1AffinePoint, G2Prepared)>[
       (
         pk.toAffine(),
-        G2Prepared.fromG2(
-          G2AffinePoint.fromBytesUnchecked(hm.toBytes()),
-        ),
+        G2Prepared.fromG2(G2AffinePoint.fromBytesUnchecked(hm.toBytes())),
       ),
-      (
-        (-G1AffinePoint.generator),
-        G2Prepared.fromG2(sig.toAffine()),
-      ),
+      ((-G1AffinePoint.generator), G2Prepared.fromG2(sig.toAffine())),
     ];
     final ml = MultiMillerLoopBls12().multiMillerLoop(terms);
     return ml.finalExponentiation().isIdentity();
@@ -342,10 +325,7 @@ class BlsMinPubkeyAggregateUtils {
     if (sig.isIdentity()) return false;
 
     final terms = <(G1AffinePoint, G2Prepared)>[
-      (
-        G1Projective.generator.toAffine(),
-        G2Prepared.fromG2(sig.toAffine()),
-      ),
+      (G1Projective.generator.toAffine(), G2Prepared.fromG2(sig.toAffine())),
     ];
     for (var i = 0; i < publicKeys.length; i++) {
       final pk = G1Projective.fromBytes(publicKeys[i]);
@@ -387,7 +367,10 @@ class BlsMinPubkeyAggregateUtils {
 
       // r_0 == 1 (skip a scalar mult on the first triple); every other
       // r_i is an independent ~256-bit random scalar.
-      final r = i == 0 ? null : JubJubFq.fromBytes64(QuickCrypto.generateRandom(length: 64));
+      final r =
+          i == 0
+              ? null
+              : JubJubFq.fromBytes64(QuickCrypto.generateRandom(length: 64));
       final weightedPk = r == null ? pk : pk * r;
 
       sigAcc = sigAcc + (r == null ? sig : sig * r);
@@ -399,10 +382,7 @@ class BlsMinPubkeyAggregateUtils {
       ));
     }
 
-    terms.add((
-      G1AffinePoint.generator,
-      G2Prepared.fromG2(sigAcc.toAffine()),
-    ));
+    terms.add((G1AffinePoint.generator, G2Prepared.fromG2(sigAcc.toAffine())));
 
     final ml = MultiMillerLoopBls12().multiMillerLoop(terms);
     return ml.finalExponentiation().isIdentity();

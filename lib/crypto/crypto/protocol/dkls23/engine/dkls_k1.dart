@@ -41,8 +41,7 @@ class DklsK1Engine
   }
 
   @override
-  List<int> pointToCompressed(Secp256k1Point p) =>
-      List<int>.from(p.toBytes());
+  List<int> pointToCompressed(Secp256k1Point p) => List<int>.from(p.toBytes());
 
   @override
   List<int> pointXBytes(Secp256k1Point p) => List<int>.from(p.toXOnly());

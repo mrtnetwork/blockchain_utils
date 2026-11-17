@@ -23,7 +23,6 @@ void main() {
   BlockchainUtilsTestApi.runTest(poseidonTest, "Poseidon");
 }
 
-
 void _permute() {
   final spec = P128Pow5T3Fp();
   for (final i in _poseidon) {
@@ -76,7 +75,6 @@ void _mds() {
     }
   }
 }
-
 
 void _grain() {
   //
@@ -148,7 +146,6 @@ void _hashFp() {
     expect(result, output);
   }
 }
-
 
 void _hashFq() {
   for (final i in _hashFqTestVector) {

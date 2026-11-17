@@ -22,4 +22,3 @@ export 'package:blockchain_utils/protocol/bip/monero/monero_base.dart';
 
 /// Export statement for Monero subaddress components.
 export 'package:blockchain_utils/protocol/bip/monero/monero_subaddr.dart';
-

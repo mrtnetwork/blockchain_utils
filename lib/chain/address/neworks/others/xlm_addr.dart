@@ -114,9 +114,7 @@ class XlmAddrDecoder implements BlockchainAddressDecoder<BuBytes> {
 
     final type = XlmAddrTypes.fromTag(addrTypeGot);
     if (addrType != null && addrType != type) {
-      throw CoreErrors.addressValidationFailed(
-        reason: "Invalid address type.",
-      );
+      throw CoreErrors.addressValidationFailed(reason: "Invalid address type.");
     }
     AddrDecUtils.validateBytesLength(
       addrDecBytes,

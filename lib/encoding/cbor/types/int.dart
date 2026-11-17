@@ -23,7 +23,8 @@ class CborIntValue extends CborNumeric<int> {
     if (value.bitLength > 31 && value.isNegative) {
       final value = (~BigInt.parse(this.value.toString()));
       if (!value.isSafeInt()) {
-        throw BuError(DefaultErrorType.invalidLength,
+        throw BuError(
+          DefaultErrorType.invalidLength,
           "Value is too large for encoding as CborInteger",
           details: {"value": this.value.toString()},
         );

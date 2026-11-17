@@ -73,7 +73,10 @@ class Slip10Mldsa65Derivator implements ISlip10Mldsa65ChildDerivator {
     required Slip10MldsaPublicKey parent,
     required Bip32KeyIndex index,
   }) {
-    throw const BuError(DefaultErrorType.unsupported, 'Public child derivation is not supported');
+    throw const BuError(
+      DefaultErrorType.unsupported,
+      'Public child derivation is not supported',
+    );
   }
 
   @override

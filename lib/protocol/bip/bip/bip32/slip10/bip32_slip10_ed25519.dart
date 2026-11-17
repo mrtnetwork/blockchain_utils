@@ -47,7 +47,10 @@ class Bip32Slip10Ed25519 extends Bip32Base<Bip32Slip10Ed25519> {
 
     if (!isPublic) {
       if (!index.isHardened && !isPublicDerivationSupported) {
-        throw const BuError(DefaultErrorType.unsupported, 'Private child derivation with not-hardened index is not supported');
+        throw const BuError(
+          DefaultErrorType.unsupported,
+          'Private child derivation with not-hardened index is not supported',
+        );
       }
       final result = keyDerivator.deriveFromSecret(
         parent: privateKey,
@@ -67,7 +70,10 @@ class Bip32Slip10Ed25519 extends Bip32Base<Bip32Slip10Ed25519> {
         pubKey: null,
       );
     }
-    throw const BuError(DefaultErrorType.unsupported, 'Public child derivation is not supported');
+    throw const BuError(
+      DefaultErrorType.unsupported,
+      'Public child derivation is not supported',
+    );
   }
 
   /// Returns the curve type, ED25519.

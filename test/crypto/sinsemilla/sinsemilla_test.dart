@@ -2,6 +2,7 @@ import 'package:blockchain_utils/blockchain_utils.dart';
 import 'package:test/test.dart';
 
 import '../../utils.dart';
+
 void sinsemillaTest() {
   const bool native = bool.fromEnvironment('dart.library.io');
   group("Sinsemilla", () {
@@ -14,7 +15,6 @@ void sinsemillaTest() {
 void main() {
   BlockchainUtilsTestApi.runTest(sinsemillaTest, "Sinsemilla");
 }
-
 
 void _testDomainHash() {
   final sinsemillaS = _testSinseMilla();

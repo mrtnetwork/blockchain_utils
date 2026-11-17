@@ -3,7 +3,6 @@ library;
 
 import 'package:blockchain_utils_connector/blockchain_utils_connector.dart';
 
-
 /// Decodes UTF-8 bytes to a Dart String.
 class UTF8Decoder {
   /// Decodes [bytes] as UTF-8. A leading UTF-8 BOM (`EF BB BF`), if
@@ -51,7 +50,8 @@ class UTF8Decoder {
         codePoint = byte1 & 0x07;
       } else {
         if (!allowMalformed) {
-          throw BuError(DefaultErrorType.badUtf8,
+          throw BuError(
+            DefaultErrorType.badUtf8,
             'Invalid UTF-8 string.',
             details: {
               'reason':
@@ -67,7 +67,8 @@ class UTF8Decoder {
       final remaining = bytes.length - i - 1;
       if (remaining < expectedLength - 1) {
         if (!allowMalformed) {
-          throw BuError(DefaultErrorType.badUtf8,
+          throw BuError(
+            DefaultErrorType.badUtf8,
             'Invalid UTF-8 string.',
             details: {'reason': 'truncated sequence at index $i'},
           );
@@ -87,7 +88,8 @@ class UTF8Decoder {
 
       if (!validContinuation) {
         if (!allowMalformed) {
-          throw BuError(DefaultErrorType.badUtf8,
+          throw BuError(
+            DefaultErrorType.badUtf8,
             'Invalid UTF-8 string.',
             details: {'reason': 'invalid continuation byte at index $i'},
           );
@@ -116,7 +118,8 @@ class UTF8Decoder {
       final isSurrogate = codePoint >= 0xD800 && codePoint <= 0xDFFF;
       if (codePoint > 0x10FFFF || isOverlong || isSurrogate) {
         if (!allowMalformed) {
-          throw BuError(DefaultErrorType.badUtf8,
+          throw BuError(
+            DefaultErrorType.badUtf8,
             'Invalid UTF-8 string.',
             details: {'reason': 'invalid code point $codePoint at index $i'},
           );
@@ -166,7 +169,8 @@ class ASCIIDecoder {
       } else if (allowMalformed) {
         chars[i] = 0xFFFD;
       } else {
-        throw BuError(DefaultErrorType.badUtf8,
+        throw BuError(
+          DefaultErrorType.badUtf8,
           'Invalid ASCII string.',
           details: {
             'reason':

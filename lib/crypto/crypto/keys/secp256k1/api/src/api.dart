@@ -42,6 +42,7 @@ abstract interface class Secp256k1SigningApi {
     required IECDSASignature signature,
     List<int>? tapTweakHash,
   });
+
   /// Verifies BCH Schnorr [signature] over 32-byte [digest] with 33/65-byte [publicKey].
   /// Returns false if invalid; throws on malformed input.
   bool verifySchnorr({
@@ -57,6 +58,7 @@ abstract interface class Secp256k1SigningApi {
     required IECDSASignature signature,
     required List<int> publicKey,
   });
+
   /// Verifies Bitcoin signed-message [signature] over arbitrary [message] with 33/65-byte [publicKey].
   /// [messagePrefix] is the network magic prefix. Returns false if invalid; throws on malformed input.
   bool verifyMessageSignature({

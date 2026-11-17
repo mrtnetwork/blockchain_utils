@@ -55,10 +55,7 @@ abstract interface class HwApi {
   });
 
   /// Sign response bytes → signature bytes.
-  BuBytes parseSignResponse({
-    required int device,
-    required BuBytes response,
-  });
+  BuBytes parseSignResponse({required int device, required BuBytes response});
 
   /// Build request → [transport.exchange] → parse. USB devices only.
   Future<BuBytes> executeSign({
@@ -78,28 +75,16 @@ abstract interface class HwApi {
   });
 
   /// One `TxRequest` → `(requestType, requestIndex)` (-1 = absent).
-  (int, int) parseTxRequest({
-    required int device,
-    required BuBytes response,
-  });
+  (int, int) parseTxRequest({required int device, required BuBytes response});
 
   /// `TXFINISHED` signature bytes.
-  BuBytes txRequestSignature({
-    required int device,
-    required BuBytes response,
-  });
+  BuBytes txRequestSignature({required int device, required BuBytes response});
 
   /// `TXFINISHED` consensus-serialized transaction.
-  BuBytes txRequestSerialized({
-    required int device,
-    required BuBytes response,
-  });
+  BuBytes txRequestSerialized({required int device, required BuBytes response});
 
   /// `TxRequest` prev-tx hash (32 bytes).
-  BuBytes txRequestTxHash({
-    required int device,
-    required BuBytes response,
-  });
+  BuBytes txRequestTxHash({required int device, required BuBytes response});
 
   /// `TxAck` answering `TXMETA`.
   BuBytes txAckMeta({

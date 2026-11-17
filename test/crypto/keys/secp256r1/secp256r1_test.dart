@@ -15,10 +15,7 @@ void _checkPubBase(
   expect(pub.keyBytes.length, EcdsaKeysConst.pubKeyCompressedByteLen);
   expect(pub.toBytes(), pub.keyBytes);
   expect(pub.toBytes(mode: CryptoKeyEncoding.base), pub.keyBytes);
-  expect(
-    isValidEncoding(pub.keyBytes, CryptoKeyEncoding.base),
-    isTrue,
-  );
+  expect(isValidEncoding(pub.keyBytes, CryptoKeyEncoding.base), isTrue);
   expect(
     IPublicKey.isValidKeyEncoding(pub.keyBytes, type, CryptoKeyEncoding.base),
     isTrue,
@@ -28,10 +25,7 @@ void _checkPubBase(
   expect(IPublicKey.fromBytes(pub.keyBytes, type), pub);
   final uncompressed = pub.toBytes(mode: CryptoKeyEncoding.uncompressed);
   expect(uncompressed.length, EcdsaKeysConst.pubKeyUncompressedByteLen);
-  expect(
-    isValidEncoding(uncompressed, CryptoKeyEncoding.uncompressed),
-    isTrue,
-  );
+  expect(isValidEncoding(uncompressed, CryptoKeyEncoding.uncompressed), isTrue);
   // Uncompressed input decodes to the same key; storage stays compressed.
   expect(IPublicKey.fromBytes(uncompressed, type), pub);
   expect(IPublicKey.isValidBytes(uncompressed, type), isTrue);
@@ -54,10 +48,7 @@ void secp256r1KeysTest() {
       expect(pub, priv.publicKey);
       final viaIface = IPrivateKey.fromBytes(sk, CryptoKeyType.nist256p1);
       expect(viaIface, isA<Secp256r1PrivateKey>());
-      expect(
-        (viaIface as Secp256r1PrivateKey).publicKey,
-        priv.publicKey,
-      );
+      expect((viaIface as Secp256r1PrivateKey).publicKey, priv.publicKey);
       final back = Secp256r1PrivateKey.fromBytes(priv.toBytes());
       expect(back.publicKey, priv.publicKey);
       expect(Secp256r1PrivateKey.isValidBytes(sk), isTrue);
@@ -74,10 +65,7 @@ void secp256r1KeysTest() {
         SuiHybridSecp256r1PublicKey.isValidKeyEncoding,
         CryptoKeyType.nist256p1Hybrid,
       );
-      final viaIface = IPrivateKey.fromBytes(
-        sk,
-        CryptoKeyType.nist256p1Hybrid,
-      );
+      final viaIface = IPrivateKey.fromBytes(sk, CryptoKeyType.nist256p1Hybrid);
       expect(viaIface, isA<SuiHybridSecp256r1PrivateKey>());
       expect(
         (viaIface as SuiHybridSecp256r1PrivateKey).publicKey,

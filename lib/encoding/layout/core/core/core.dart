@@ -158,7 +158,8 @@ abstract class Layout<T> {
       final decodeBytes = decode(reader, offset: offset);
       return decodeBytes;
     } on RangeError catch (e) {
-      throw BuError(DefaultErrorType.invalidLength,
+      throw BuError(
+        DefaultErrorType.invalidLength,
         "Truncated layout bytes.",
         details: {"property": property, "reason": e.toString()},
       );

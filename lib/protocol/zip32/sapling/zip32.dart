@@ -32,7 +32,8 @@ class Zip32Sapling
   SaplingExtendedSpendingKey get privateKey {
     final prvKey = _privateKey;
     if (prvKey == null) {
-      throw const BuError(DefaultErrorType.invalidKeyData,
+      throw const BuError(
+        DefaultErrorType.invalidKeyData,
         'Public-only deterministic keys have no private half',
       );
     }

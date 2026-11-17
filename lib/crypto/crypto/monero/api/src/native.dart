@@ -76,13 +76,14 @@ class NativeMoneroApi implements MoneroApi {
     ApiValidate.length(seed, 32, operation: op, name: 'seed');
     final blob = ApiValidate.call(
       op,
-      () => api
-          .bpPlusProveAmounts(
-            amountsLe: amounts.map((e) => _amountLe(e, op)).toList(),
-            gamma: gamma.map((e) => e.asBytes).toList(),
-            seed: seed.asBytes,
-          )
-          .unwrapOrThrowCryptoError(),
+      () =>
+          api
+              .bpPlusProveAmounts(
+                amountsLe: amounts.map((e) => _amountLe(e, op)).toList(),
+                gamma: gamma.map((e) => e.asBytes).toList(),
+                seed: seed.asBytes,
+              )
+              .unwrapOrThrowCryptoError(),
     );
     return MoneroBpPlusProof.fromBlob(blob);
   }
@@ -106,13 +107,14 @@ class NativeMoneroApi implements MoneroApi {
     ApiValidate.length(seed, 32, operation: op, name: 'seed');
     final blob = ApiValidate.call(
       op,
-      () => api
-          .bpPlusProveScalars(
-            sv: sv.map((e) => e.asBytes).toList(),
-            gamma: gamma.map((e) => e.asBytes).toList(),
-            seed: seed.asBytes,
-          )
-          .unwrapOrThrowCryptoError(),
+      () =>
+          api
+              .bpPlusProveScalars(
+                sv: sv.map((e) => e.asBytes).toList(),
+                gamma: gamma.map((e) => e.asBytes).toList(),
+                seed: seed.asBytes,
+              )
+              .unwrapOrThrowCryptoError(),
     );
     return MoneroBpPlusProof.fromBlob(blob);
   }
@@ -138,21 +140,38 @@ class NativeMoneroApi implements MoneroApi {
       );
     }
     for (var i = 0; i < accounts.length; i++) {
-      ApiValidate.length(accounts[i].viewSecret, 32,
-          operation: op, name: 'accounts[$i].viewSecret');
+      ApiValidate.length(
+        accounts[i].viewSecret,
+        32,
+        operation: op,
+        name: 'accounts[$i].viewSecret',
+      );
       for (var j = 0; j < accounts[i].spendPubs.length; j++) {
-        ApiValidate.length(accounts[i].spendPubs[j], 32,
-            operation: op, name: 'accounts[$i].spendPubs[$j]');
+        ApiValidate.length(
+          accounts[i].spendPubs[j],
+          32,
+          operation: op,
+          name: 'accounts[$i].spendPubs[$j]',
+        );
       }
     }
     for (var i = 0; i < outputs.length; i++) {
       final o = outputs[i];
-      ApiValidate.length(o.outKey, 32, operation: op, name: 'outputs[$i].outKey');
+      ApiValidate.length(
+        o.outKey,
+        32,
+        operation: op,
+        name: 'outputs[$i].outKey',
+      );
       ApiValidate.length(o.txPub, 32, operation: op, name: 'outputs[$i].txPub');
       final additional = o.additionalPub;
       if (additional != null) {
-        ApiValidate.length(additional, 32,
-            operation: op, name: 'outputs[$i].additionalPub');
+        ApiValidate.length(
+          additional,
+          32,
+          operation: op,
+          name: 'outputs[$i].additionalPub',
+        );
       }
       final viewTag = o.viewTag;
       if (viewTag != null && (viewTag < 0 || viewTag > 255)) {
@@ -173,9 +192,10 @@ class NativeMoneroApi implements MoneroApi {
     }
     return ApiValidate.call(
       op,
-      () => api
-          .unlockBatch(accounts: accounts, outputs: outputs)
-          .unwrapOrThrowCryptoError(),
+      () =>
+          api
+              .unlockBatch(accounts: accounts, outputs: outputs)
+              .unwrapOrThrowCryptoError(),
     );
   }
 

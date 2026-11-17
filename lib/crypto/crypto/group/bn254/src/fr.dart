@@ -25,7 +25,7 @@ class Bn254Fr with ConstantEquality<Bn254Fr> {
   final List<Uint64> limbs;
   const Bn254Fr.unsafe(this.limbs);
   Bn254Fr(List<Uint64> limbs)
-      : limbs = limbs.exc(length: 4, operation: 'Bn254Fr').immutable;
+    : limbs = limbs.exc(length: 4, operation: 'Bn254Fr').immutable;
 
   static const zero = Bn254Fr.unsafe([
     Uint64.zero,
@@ -232,6 +232,5 @@ class Bn254Fr with ConstantEquality<Bn254Fr> {
   }
 
   @override
-  bool constantEquality(Bn254Fr other) =>
-      Uint64.ctEquals(limbs, other.limbs);
+  bool constantEquality(Bn254Fr other) => Uint64.ctEquals(limbs, other.limbs);
 }

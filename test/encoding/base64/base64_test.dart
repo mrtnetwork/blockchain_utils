@@ -82,10 +82,7 @@ void base64Test() {
     });
 
     test('decode with default validatePadding:true rejects unpadded input', () {
-      expect(
-        () => B64Decoder.decode('Zg'),
-        throwsA(isA<BuError>()),
-      );
+      expect(() => B64Decoder.decode('Zg'), throwsA(isA<BuError>()));
     });
   });
 
@@ -173,10 +170,7 @@ void base64Test() {
 
   group('error handling', () {
     test('invalid character throws B64ConverterException', () {
-      expect(
-        () => B64Decoder.decode('!!!!'),
-        throwsA(isA<BuError>()),
-      );
+      expect(() => B64Decoder.decode('!!!!'), throwsA(isA<BuError>()));
     });
 
     test('wrong length (not a multiple of 4, validatePadding:true) throws', () {

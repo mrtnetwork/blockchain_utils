@@ -100,8 +100,7 @@ abstract final class HwCatalog {
   static List<CryptoCoins> coinsFor(BuHwKind kind) {
     final out = <CryptoCoins>[];
     for (final coin in CryptoCoins.values) {
-      final rows =
-          rowsFor(coin).where((r) => r.device == kind).toList();
+      final rows = rowsFor(coin).where((r) => r.device == kind).toList();
       if (rows.any((r) => r.readiness != HwReadiness.impossible)) {
         out.add(coin);
       }

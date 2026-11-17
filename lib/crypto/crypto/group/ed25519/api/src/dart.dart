@@ -78,11 +78,7 @@ class DartEd25519CurveApi implements Ed25519CurveApi {
     required List<int> g,
     required List<int> b,
   }) {
-    return EdwardsLimbOps.doubleScalarMultBasePointVar(
-      a: a,
-      gABytes: g,
-      b: b,
-    );
+    return EdwardsLimbOps.doubleScalarMultBasePointVar(a: a, gABytes: g, b: b);
   }
 
   @override

@@ -31,7 +31,7 @@ class Bip32Slip10EcdsaDerivator implements IBip32ChildKeyDerivator {
       case CryptoKeyType.nist256p1:
         return blockchainUtils.api.secp256r1.scAdd(privKeyBytes, newScalar);
       default:
-        throw const BuError(DefaultErrorType.invalidKeyData,"Unknow curve.");
+        throw const BuError(DefaultErrorType.invalidKeyData, "Unknow curve.");
     }
   }
 
@@ -74,7 +74,10 @@ class Bip32Slip10EcdsaDerivator implements IBip32ChildKeyDerivator {
           chainCode: Bip32ChainCode(irBytes),
         );
       default:
-        throw BuError(DefaultErrorType.unsupported,"Unsupported Slip10 Ecdsa key type.");
+        throw BuError(
+          DefaultErrorType.unsupported,
+          "Unsupported Slip10 Ecdsa key type.",
+        );
     }
   }
 
@@ -91,7 +94,10 @@ class Bip32Slip10EcdsaDerivator implements IBip32ChildKeyDerivator {
       case CryptoKeyType.nist256p1:
         break;
       default:
-        throw BuError(DefaultErrorType.unsupported,"Unsupported Slip10 Ecdsa key type.");
+        throw BuError(
+          DefaultErrorType.unsupported,
+          "Unsupported Slip10 Ecdsa key type.",
+        );
     }
     // final privKeyBytes = parent.raw;
     return parent.toBytes().useValue((privKeyBytes) {
@@ -137,7 +143,10 @@ class Bip32Slip10Ed25519Derivator implements IBip32ChildKeyDerivator {
     required Bip32KeyIndex index,
     CryptoKeyType? type,
   }) {
-    throw const BuError(DefaultErrorType.unsupported, 'Public child derivation is not supported');
+    throw const BuError(
+      DefaultErrorType.unsupported,
+      'Public child derivation is not supported',
+    );
   }
 
   @override

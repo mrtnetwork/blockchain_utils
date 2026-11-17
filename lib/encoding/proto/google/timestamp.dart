@@ -40,7 +40,10 @@ class ProtoGoogleTimestamp extends IProtoMessage {
 
   static ProtoGoogleTimestamp fromRfc3339(Object? value) {
     if (value == null) {
-      throw BuError(DefaultErrorType.invalidArgument,"Cannot parse null RFC3339 timestamp.");
+      throw BuError(
+        DefaultErrorType.invalidArgument,
+        "Cannot parse null RFC3339 timestamp.",
+      );
     }
     final parsed = ProtoUtils.timestampFromRfc3339(value as String);
     return ProtoGoogleTimestamp(
@@ -65,8 +68,7 @@ class ProtoGoogleTimestamp extends IProtoMessage {
   }) {
     final seconds = json['seconds'];
     return ProtoGoogleTimestamp(
-      seconds:
-          seconds == null ? null : BigInt.parse(seconds.toString()),
+      seconds: seconds == null ? null : BigInt.parse(seconds.toString()),
       nanos: JsonParser.valueAsInt<int?>(json['nanos']),
     );
   }
@@ -74,9 +76,7 @@ class ProtoGoogleTimestamp extends IProtoMessage {
   /// Parses either the field map or the canonical RFC 3339 string form.
   factory ProtoGoogleTimestamp.fromDynamic(Object? json) {
     if (json is String) return ProtoGoogleTimestamp.fromRfc3339(json);
-    return ProtoGoogleTimestamp.fromJson(
-      (json as Map).cast<String, dynamic>(),
-    );
+    return ProtoGoogleTimestamp.fromJson((json as Map).cast<String, dynamic>());
   }
 
   factory ProtoGoogleTimestamp.deserialize(List<int> bytes) {

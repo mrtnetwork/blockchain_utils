@@ -29,7 +29,10 @@ class DerReader {
     }
     final tag = data[pos++];
     if (pos >= data.length) {
-      throw CoreErrors.cryptoFailed("DerReader", reason: "Truncated DER length");
+      throw CoreErrors.cryptoFailed(
+        "DerReader",
+        reason: "Truncated DER length",
+      );
     }
     int len = data[pos++];
     if (len & 0x80 != 0) {

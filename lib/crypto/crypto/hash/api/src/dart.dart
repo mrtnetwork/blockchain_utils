@@ -159,8 +159,10 @@ class DartHashApi implements HashApi {
 
   @override
   BuBytes poseidonBn254Hash(List<int> inputs) {
-    throw BuError(DefaultErrorType.unsupported, 'NativeHashApi.poseidonBn254Hash: pure-Dart backend has not support; '
-          'use NativeHashApi via blockchainUtils.setRustApi().',
+    throw BuError(
+      DefaultErrorType.unsupported,
+      'NativeHashApi.poseidonBn254Hash: pure-Dart backend has not support; '
+      'use NativeHashApi via blockchainUtils.setRustApi().',
     );
   }
 

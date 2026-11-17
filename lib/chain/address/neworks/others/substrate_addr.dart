@@ -40,8 +40,7 @@ class _SubstrateAddrUtils {
 }
 
 /// Decodes a Substrate Ed25519 address.
-class SubstrateEd25519AddrDecoder
-    implements BlockchainAddressDecoder<BuBytes> {
+class SubstrateEd25519AddrDecoder implements BlockchainAddressDecoder<BuBytes> {
   @override
   BuBytes decodeAddr(String addr, {int? ss58Format}) {
     final pubkeyBytes = _SubstrateAddrUtils.decodeAddr(addr, ss58Format).$1;
@@ -62,8 +61,7 @@ class SubstrateEd25519AddrEncoder implements BlockchainAddressEncoder {
 }
 
 /// Decodes a Substrate sr25519 address.
-class SubstrateSr25519AddrDecoder
-    implements BlockchainAddressDecoder<BuBytes> {
+class SubstrateSr25519AddrDecoder implements BlockchainAddressDecoder<BuBytes> {
   @override
   BuBytes decodeAddr(String addr, {int? ss58Format}) {
     final pubkeyBytes = _SubstrateAddrUtils.decodeAddr(addr, ss58Format).$1;
@@ -135,8 +133,7 @@ class SubstrateGenericAddrEncoder implements BlockchainAddressEncoder {
 }
 
 /// Decodes any Substrate (SS58) address without checking the key's curve.
-class SubstrateGenericAddrDecoder
-    implements BlockchainAddressDecoder<BuBytes> {
+class SubstrateGenericAddrDecoder implements BlockchainAddressDecoder<BuBytes> {
   @override
   BuBytes decodeAddr(String addr, {int? ss58Format}) {
     return _SubstrateAddrUtils.decodeAddr(addr, ss58Format).$1;

@@ -58,7 +58,8 @@ class Bip32KholawEd25519KeyDerivator
     if (addCarry != 0) {
       // Shouldn't happen for well-formed keys (kL's top bits are cleared
       // per the key-gen rules), but don't silently truncate a real overflow.
-      throw const BuError(DefaultErrorType.invalidLength,
+      throw const BuError(
+        DefaultErrorType.invalidLength,
         'Computed child key overflowed 256 bits, invalid parent key',
       );
     }
@@ -84,7 +85,8 @@ class Bip32KholawEd25519KeyDerivator
     final tobytes = khalowLeftPart(zlBytes, klBytes);
     final sc = blockchainUtils.api.ed25519.scReduce(tobytes);
     if (BytesUtils.bytesEqual(sc, List.filled(32, 0))) {
-      throw const BuError(DefaultErrorType.invalidKeyData,
+      throw const BuError(
+        DefaultErrorType.invalidKeyData,
         'Computed child key is not valid, very unlucky index',
       );
     }

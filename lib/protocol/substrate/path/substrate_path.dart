@@ -92,7 +92,8 @@ class SubstratePathElem {
       }
 
       if (scaleEnc == null) {
-        throw BuError(DefaultErrorType.invalidArgument,
+        throw BuError(
+          DefaultErrorType.invalidArgument,
           "Failed to find correct encoder for path element.",
         );
       }

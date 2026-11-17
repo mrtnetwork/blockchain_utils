@@ -134,9 +134,7 @@ class MuSig2AggregatePublicKey extends IMuSig2VerificationKey
   factory MuSig2AggregatePublicKey.fromBytes(List<int> bytes) {
     return layout().deserialize(bytes).value;
   }
-  factory MuSig2AggregatePublicKey.aggPublicKey(
-    Secp256k1Point aggPublicPoint,
-  ) {
+  factory MuSig2AggregatePublicKey.aggPublicKey(Secp256k1Point aggPublicPoint) {
     return MuSig2AggregatePublicKey._from(aggPublicPoint, null);
   }
   factory MuSig2AggregatePublicKey._from(

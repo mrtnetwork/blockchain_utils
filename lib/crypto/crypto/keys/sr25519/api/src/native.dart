@@ -14,13 +14,14 @@ class NativeSr25519SigningApi implements Sr25519SigningApi {
     required List<int> chainCode32,
     List<int>? message,
   }) {
-    final (pk, chainCode) = api
-        .derivePublic(
-          publicKey: publicKey,
-          chainCode32: chainCode32,
-          message: message,
-        )
-        .unwrapOrThrowCryptoError();
+    final (pk, chainCode) =
+        api
+            .derivePublic(
+              publicKey: publicKey,
+              chainCode32: chainCode32,
+              message: message,
+            )
+            .unwrapOrThrowCryptoError();
     return (pk, chainCode);
   }
 
@@ -32,15 +33,16 @@ class NativeSr25519SigningApi implements Sr25519SigningApi {
     bool fromSeed = true,
     bool uniform = false,
   }) {
-    final (sk, chainCode) = api
-        .hardDerive(
-          seedOrSk: seedOrSk,
-          chainCode32: chainCode32,
-          message: message,
-          fromSeed: fromSeed,
-          uniform: uniform,
-        )
-        .unwrapOrThrowCryptoError();
+    final (sk, chainCode) =
+        api
+            .hardDerive(
+              seedOrSk: seedOrSk,
+              chainCode32: chainCode32,
+              message: message,
+              fromSeed: fromSeed,
+              uniform: uniform,
+            )
+            .unwrapOrThrowCryptoError();
     return (sk, chainCode);
   }
 
@@ -56,9 +58,7 @@ class NativeSr25519SigningApi implements Sr25519SigningApi {
 
   @override
   BuBytes publicKeyFromSecret(List<int> sk64) {
-    return api
-        .publicKeyFromSecret(sk64)
-        .unwrapOrThrowCryptoError();
+    return api.publicKeyFromSecret(sk64).unwrapOrThrowCryptoError();
   }
 
   @override
@@ -98,24 +98,23 @@ class NativeSr25519SigningApi implements Sr25519SigningApi {
     bool fromSeed = true,
     bool uniform = false,
   }) {
-    final (sk, chainCode) = api
-        .softDerive(
-          seedOrSk: seedOrSk,
-          chainCode32: chainCode32,
-          message: message,
-          fromSeed: fromSeed,
-          uniform: uniform,
-          newNonce32: newNonce32,
-        )
-        .unwrapOrThrowCryptoError();
+    final (sk, chainCode) =
+        api
+            .softDerive(
+              seedOrSk: seedOrSk,
+              chainCode32: chainCode32,
+              message: message,
+              fromSeed: fromSeed,
+              uniform: uniform,
+              newNonce32: newNonce32,
+            )
+            .unwrapOrThrowCryptoError();
     return (sk, chainCode);
   }
 
   @override
   BuBytes toEd25519Bytes(List<int> sk64) {
-    return api
-        .toEd25519Bytes(sk64)
-        .unwrapOrThrowCryptoError();
+    return api.toEd25519Bytes(sk64).unwrapOrThrowCryptoError();
   }
 
   @override

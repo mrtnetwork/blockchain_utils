@@ -112,13 +112,14 @@ void main() {
           ),
       ];
       for (var k = 0; k < use.length; k++) {
-        final participantPk = k1Engine
-            .serializeElement(
-              k1Engine.scalarBaseMult(
-                k1Engine.deserializeScalar(use[k].share.toList()),
-              ),
-            )
-            .toList();
+        final participantPk =
+            k1Engine
+                .serializeElement(
+                  k1Engine.scalarBaseMult(
+                    k1Engine.deserializeScalar(use[k].share.toList()),
+                  ),
+                )
+                .toList();
         expect(
           api.k1VerifyShare(
             identifier: use[k].id,

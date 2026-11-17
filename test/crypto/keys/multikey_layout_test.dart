@@ -12,10 +12,14 @@ void multikeyLayoutTest() {
         Bls12G1PrivateKey.fromBytes(_scalar(0x11)),
         Bls12G1PrivateKey.fromBytes(_scalar(0x22)),
       ]);
-      expect(
-        List<int>.from(key.toBytes()),
-        [2, 0, 0, 0, ..._scalar(0x11), ..._scalar(0x22)],
-      );
+      expect(List<int>.from(key.toBytes()), [
+        2,
+        0,
+        0,
+        0,
+        ..._scalar(0x11),
+        ..._scalar(0x22),
+      ]);
     });
 
     test('G2 wire format is u32 LE count || scalars', () {
@@ -23,10 +27,14 @@ void multikeyLayoutTest() {
         Bls12G2PrivateKey.fromBytes(_scalar(0x11)),
         Bls12G2PrivateKey.fromBytes(_scalar(0x22)),
       ]);
-      expect(
-        List<int>.from(key.toBytes()),
-        [2, 0, 0, 0, ..._scalar(0x11), ..._scalar(0x22)],
-      );
+      expect(List<int>.from(key.toBytes()), [
+        2,
+        0,
+        0,
+        0,
+        ..._scalar(0x11),
+        ..._scalar(0x22),
+      ]);
     });
 
     test('G1/G2 roundtrip via layout', () {
@@ -68,9 +76,10 @@ void multikeyLayoutTest() {
         expect(Bls12G1AggregatePrivateKey.isValidBytes(bytes), isFalse);
         expect(Bls12G2AggregatePrivateKey.isValidBytes(bytes), isFalse);
       }
-      final good = Bls12G1AggregatePrivateKey.fromSecretKeys([
-        Bls12G1PrivateKey.fromBytes(_scalar(0x11)),
-      ]).toBytes();
+      final good =
+          Bls12G1AggregatePrivateKey.fromSecretKeys([
+            Bls12G1PrivateKey.fromBytes(_scalar(0x11)),
+          ]).toBytes();
       expect(Bls12G1AggregatePrivateKey.isValidBytes(good), isTrue);
     });
   });
@@ -119,21 +128,31 @@ void multikeyLayoutTest() {
     }
 
     FrostEd25519PrivateKey ed() {
-      return FrostEd25519PrivateKey.fromSecretKeys([
-        ED25519PrivateKey.fromBytes(_scalar(0x11)),
-        ED25519PrivateKey.fromBytes(_scalar(0x22)),
-      ], threshold: 2, coefficients: List<int>.filled(64, 0x33));
+      return FrostEd25519PrivateKey.fromSecretKeys(
+        [
+          ED25519PrivateKey.fromBytes(_scalar(0x11)),
+          ED25519PrivateKey.fromBytes(_scalar(0x22)),
+        ],
+        threshold: 2,
+        coefficients: List<int>.filled(64, 0x33),
+      );
     }
 
     test('k1/ed private and public roundtrip', () {
       final a = k1();
-      expect(FrostSecp256k1PrivateKey.fromBytes(a.toBytes()).publicKey, a.publicKey);
+      expect(
+        FrostSecp256k1PrivateKey.fromBytes(a.toBytes()).publicKey,
+        a.publicKey,
+      );
       expect(
         FrostSecp256k1PublicKey.fromBytes(a.publicKey.toBytes()),
         a.publicKey,
       );
       final b = ed();
-      expect(FrostEd25519PrivateKey.fromBytes(b.toBytes()).publicKey, b.publicKey);
+      expect(
+        FrostEd25519PrivateKey.fromBytes(b.toBytes()).publicKey,
+        b.publicKey,
+      );
       expect(
         FrostEd25519PublicKey.fromBytes(b.publicKey.toBytes()),
         b.publicKey,

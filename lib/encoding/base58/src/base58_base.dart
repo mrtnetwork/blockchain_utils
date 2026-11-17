@@ -121,7 +121,9 @@ class Base58Decoder {
     for (var i = 0; i < data.length; i++) {
       final digit = table.indexOf(data[i]);
       if (digit == -1) {
-        throw BuError(DefaultErrorType.badBase58, "Invalid Base58 string.",
+        throw BuError(
+          DefaultErrorType.badBase58,
+          "Invalid Base58 string.",
           details: {
             "reason": 'Invalid Base58 character "${data[i]}" at index $i.',
           },
@@ -157,7 +159,9 @@ class Base58Decoder {
   ]) {
     final decoded = decode(data, alphabet);
     if (decoded.length < Base58Const.checksumByteLen) {
-      throw BuError(DefaultErrorType.invalidChecksum, "Invalid checksum.",
+      throw BuError(
+        DefaultErrorType.invalidChecksum,
+        "Invalid checksum.",
         details: {
           'reason':
               'Decoded data (${decoded.length} bytes) is shorter than the '

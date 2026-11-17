@@ -8,7 +8,6 @@ export 'package:blockchain_utils/protocol/bip/bip/bip44/base/bip44_base.dart';
 /// Export statement for BIP-44 key-related functions and structures.
 export 'package:blockchain_utils/protocol/bip/bip/bip44/base/bip44_keys.dart';
 
-
 /// Export statement for the BIP-44 base implementation, which includes key
 /// derivation and wallet management functions.
 export 'package:blockchain_utils/protocol/bip/bip/bip44/bip44_base.dart';

@@ -10,7 +10,9 @@ class DartSaplingApi implements SaplingApi {
   /// Creates a pure-Dart Sapling backend; every method throws [BuError].
   const DartSaplingApi();
 
-  static BuError _un(String op) => BuError(DefaultErrorType.unsupported, 'DartSaplingApi.$op: pure-Dart backend has no Sapling prover; '
+  static BuError _un(String op) => BuError(
+    DefaultErrorType.unsupported,
+    'DartSaplingApi.$op: pure-Dart backend has no Sapling prover; '
     'use NativeSaplingApi via blockchainUtils.setRustApi().',
   );
 

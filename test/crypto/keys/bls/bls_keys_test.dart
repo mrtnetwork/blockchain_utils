@@ -35,7 +35,10 @@ void blsKeysTest() {
         ),
         isTrue,
       );
-      expect(IPublicKey.isValidBytes(pub.keyBytes, CryptoKeyType.bls12G1), isTrue);
+      expect(
+        IPublicKey.isValidBytes(pub.keyBytes, CryptoKeyType.bls12G1),
+        isTrue,
+      );
       expect(Bls12G1PublicKey.isValidBytes(pub.keyBytes), isTrue);
       expect(IPublicKey.fromBytes(pub.keyBytes, CryptoKeyType.bls12G1), pub);
       expect(Bls12G1PublicKey.fromBytes(pub.keyBytes), pub);
@@ -86,7 +89,10 @@ void blsKeysTest() {
         ),
         isTrue,
       );
-      expect(IPublicKey.isValidBytes(pub.keyBytes, CryptoKeyType.bls12G2), isTrue);
+      expect(
+        IPublicKey.isValidBytes(pub.keyBytes, CryptoKeyType.bls12G2),
+        isTrue,
+      );
       expect(Bls12G2PublicKey.isValidBytes(pub.keyBytes), isTrue);
       expect(IPublicKey.fromBytes(pub.keyBytes, CryptoKeyType.bls12G2), pub);
       expect(Bls12G2PublicKey.fromBytes(pub.keyBytes), pub);

@@ -45,9 +45,7 @@ class NativeHashApi implements HashApi {
 
   @override
   BuSerializableHash<BuHashState> keccak({int digestLength = 64}) {
-    return api
-        .keccack(digestLength: digestLength)
-        .unwrapOrThrowCryptoError();
+    return api.keccack(digestLength: digestLength).unwrapOrThrowCryptoError();
   }
 
   @override
@@ -154,9 +152,7 @@ class NativeHashApi implements HashApi {
       n,
       (i) => inputs.sublist(i * 32, (i + 1) * 32).asBytes,
     );
-    return api
-        .poseidonBn254Hash(inputs: parts)
-        .unwrapOrThrowCryptoError();
+    return api.poseidonBn254Hash(inputs: parts).unwrapOrThrowCryptoError();
   }
 
   @override
@@ -252,9 +248,7 @@ class NativeHashApi implements HashApi {
 
   @override
   BuSerializableHash<BuHashState> sha3({int digestLength = 32}) {
-    return api
-        .sha3(digestLength: digestLength)
-        .unwrapOrThrowCryptoError();
+    return api.sha3(digestLength: digestLength).unwrapOrThrowCryptoError();
   }
 
   @override

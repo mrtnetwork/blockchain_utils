@@ -12,17 +12,13 @@ class NativeSaplingApi implements SaplingApi {
   /// Loads Spend ceremony [params] and returns the params handle; throws [CryptoException] on native failure.
   @override
   Object setSpendParams(List<int> params) {
-    return api
-        .setSpendParams(params: params)
-        .unwrapOrThrowCryptoError();
+    return api.setSpendParams(params: params).unwrapOrThrowCryptoError();
   }
 
   /// Loads Output ceremony [params] and returns the params handle; throws [CryptoException] on native failure.
   @override
   Object setOutputParams(List<int> params) {
-    return api
-        .setOutputParams(params: params)
-        .unwrapOrThrowCryptoError();
+    return api.setOutputParams(params: params).unwrapOrThrowCryptoError();
   }
 
   /// Releases params [handle].

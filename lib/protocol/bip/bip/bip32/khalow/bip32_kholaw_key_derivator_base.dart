@@ -140,7 +140,8 @@ abstract class Bip32KholawEd25519KeyDerivatorBase
 
     /// Check if the new public key point is the identity point (0, 1).
     if (newPubKeyPoint.isIdentity()) {
-      throw const BuError(DefaultErrorType.invalidKeyData,
+      throw const BuError(
+        DefaultErrorType.invalidKeyData,
         'Computed public child key is not valid, very unlucky index',
       );
     }

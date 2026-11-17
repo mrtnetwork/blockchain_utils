@@ -229,7 +229,10 @@ class X25519 {
     final clamped = clampScalar(scalar);
     // BigInt-less canonical check (u < p); public input validation.
     if (!_isLessThanP(uBytes)) {
-      throw CoreErrors.cryptoFailed("scalarMult", reason: "Invalid public key.");
+      throw CoreErrors.cryptoFailed(
+        "scalarMult",
+        reason: "Invalid public key.",
+      );
     }
     return _montgomeryLadder(clamped, Ed25519Fp.fromBytesUnchecked(uBytes));
   }

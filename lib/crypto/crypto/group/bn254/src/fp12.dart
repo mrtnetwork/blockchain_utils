@@ -11,11 +11,7 @@ class Bn254Fp12 with Equality {
   final Bn254Fp6 c1;
   const Bn254Fp12({required this.c0, required this.c1});
 
-  factory Bn254Fp12.conditionalSelect(
-    Bn254Fp12 a,
-    Bn254Fp12 b,
-    bool choice,
-  ) {
+  factory Bn254Fp12.conditionalSelect(Bn254Fp12 a, Bn254Fp12 b, bool choice) {
     return Bn254Fp12(
       c0: Bn254Fp6.conditionalSelect(a.c0, b.c0, choice),
       c1: Bn254Fp6.conditionalSelect(a.c1, b.c1, choice),
@@ -46,10 +42,7 @@ class Bn254Fp12 with Equality {
   Bn254Fp12 square() {
     final ab = c0 * c1;
     return Bn254Fp12(
-      c0:
-          (c1.mulByNonresidue() + c0) * (c0 + c1) -
-          ab -
-          ab.mulByNonresidue(),
+      c0: (c1.mulByNonresidue() + c0) * (c0 + c1) - ab - ab.mulByNonresidue(),
       c1: ab + ab,
     );
   }
@@ -81,8 +74,7 @@ class Bn254Fp12 with Equality {
     // b = f1.mul01(o3, o4)
     final b0m = f1.c0 * o3;
     final b1m = f1.c1 * o4;
-    final bC0 =
-        ((f1.c1 + f1.c2) * o4 - b1m).mulByNonresidue() + b0m;
+    final bC0 = ((f1.c1 + f1.c2) * o4 - b1m).mulByNonresidue() + b0m;
     final bC1 = (o3 + o4) * (f1.c0 + f1.c1) - b0m - b1m;
     final bC2 = (f1.c0 + f1.c2) * o3 - b0m + b1m;
     // e = (f0+f1).mul01(o0+o3, o4)
@@ -258,11 +250,7 @@ class Bn254Fp12 with Equality {
     final f1 = c1.frobeniusMap(p);
     return Bn254Fp12(
       c0: c0.frobeniusMap(p),
-      c1: Bn254Fp6(
-        c0: f1.c0 * h,
-        c1: f1.c1 * h,
-        c2: f1.c2 * h,
-      ),
+      c1: Bn254Fp6(c0: f1.c0 * h, c1: f1.c1 * h, c2: f1.c2 * h),
     );
   }
 

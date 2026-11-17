@@ -145,11 +145,17 @@ void main() {
           FrostEngineHex.decode(p3ShareHex),
         );
         expect(edEngine.polynomialEvaluate(Ed25519Fr.one, [sk, coeff1]), p1);
-        expect(edEngine.polynomialEvaluate(Ed25519Fr.from(Uint64(3)), [sk, coeff1]), p3);
+        expect(
+          edEngine.polynomialEvaluate(Ed25519Fr.from(Uint64(3)), [sk, coeff1]),
+          p3,
+        );
         expect(
           edEngine.secretShareCombine([
             FrostEngineShare(identifier: Ed25519Fr.one, secretShare: p1),
-            FrostEngineShare(identifier: Ed25519Fr.from(Uint64(3)), secretShare: p3),
+            FrostEngineShare(
+              identifier: Ed25519Fr.from(Uint64(3)),
+              secretShare: p3,
+            ),
           ]),
           sk,
         );
@@ -231,10 +237,7 @@ void main() {
           FrostEngineHex.decode(p3HidingRandHex),
           FrostEngineHex.decode(p3BindingRandHex),
         );
-        final commitments = [
-          n1.commitment(1),
-          n3.commitment(3),
-        ];
+        final commitments = [n1.commitment(1), n3.commitment(3)];
 
         final encoded = edEngine.encodeGroupCommitmentList(commitments);
         final manualPrefix = [
@@ -267,28 +270,12 @@ void main() {
           p1FactorHex,
         );
         expect(
-          FrostEngineHex.encode(
-            edEngine.serializeScalar(factors[3]!),
-          ),
+          FrostEngineHex.encode(edEngine.serializeScalar(factors[3]!)),
           p3FactorHex,
         );
 
-        final s1 = edEngine.sign(
-          1,
-          p1sk,
-          groupPk,
-          n1,
-          msg,
-          commitments,
-        );
-        final s3 = edEngine.sign(
-          3,
-          p3sk,
-          groupPk,
-          n3,
-          msg,
-          commitments,
-        );
+        final s1 = edEngine.sign(1, p1sk, groupPk, n1, msg, commitments);
+        final s3 = edEngine.sign(3, p3sk, groupPk, n3, msg, commitments);
         expect(
           FrostEngineHex.encode(edEngine.serializeScalar(s1)),
           p1ShareOutHex,

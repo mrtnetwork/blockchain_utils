@@ -121,7 +121,8 @@ class IntegerLayout extends BaseInteger<int> {
   void validate(int value) {
     if (!sign) {
       if (value.isNegative || value.bitLength > bitlength) {
-        throw BuError(DefaultErrorType.invalidArgument,
+        throw BuError(
+          DefaultErrorType.invalidArgument,
           "Invalid ${value.bitLength}-bit unsigned integer.",
           details: {"property": property, "value": value.toString()},
         );
@@ -130,7 +131,8 @@ class IntegerLayout extends BaseInteger<int> {
     }
     if (bitlength <= 0) {
       if (value != 0) {
-        throw BuError(DefaultErrorType.invalidArgument,
+        throw BuError(
+          DefaultErrorType.invalidArgument,
           "Invalid 0-bit signed integer.",
           details: {"property": property, "value": value.toString()},
         );
@@ -143,7 +145,8 @@ class IntegerLayout extends BaseInteger<int> {
     final max = (BigInt.one << (bitlength - 1)) - BigInt.one;
     final v = BigInt.from(value);
     if (v > max || v < -max - BigInt.one) {
-      throw BuError(DefaultErrorType.invalidArgument,
+      throw BuError(
+        DefaultErrorType.invalidArgument,
         "Invalid ${value.bitLength}-bit signed integer.",
         details: {"property": property, "value": value.toString()},
       );
@@ -235,7 +238,8 @@ class BigIntLayout extends BaseInteger<BigInt> {
   @override
   void validate(BigInt value) {
     if ((value.isNegative && !sign) || value.bitLength > bitlen) {
-      throw BuError(DefaultErrorType.invalidArgument,
+      throw BuError(
+        DefaultErrorType.invalidArgument,
         "Invalid ${value.bitLength}-bit ${sign ? 'signed' : 'unsigned'} integer.",
         details: {"property": property, "value": value.toString()},
       );
@@ -415,7 +419,8 @@ class NatLayout extends Layout<BigInt> {
   @override
   int encode(BigInt source, LayoutByteWriter writer, {int offset = 0}) {
     if (source < BigInt.zero) {
-      throw BuError(DefaultErrorType.invalidArgument,
+      throw BuError(
+        DefaultErrorType.invalidArgument,
         'Nat cannot be negative',
         details: {'value': source.toString()},
       );

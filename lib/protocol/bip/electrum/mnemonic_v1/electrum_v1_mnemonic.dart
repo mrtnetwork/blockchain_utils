@@ -41,7 +41,10 @@ class ElectrumV1Languages implements MnemonicLanguages {
       case ElectrumV1Languages.english:
         return elctrumMnemonicWordsList;
       default:
-        throw BuError(DefaultErrorType.invalidMnemonic,"Unsuported mnemonic language.");
+        throw BuError(
+          DefaultErrorType.invalidMnemonic,
+          "Unsuported mnemonic language.",
+        );
     }
   }
 

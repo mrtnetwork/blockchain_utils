@@ -71,7 +71,12 @@ final class BlockchainUtils {
   /// swapping the crypto backend — e.g. for an exfiltrating fake whose
   /// `sign()` receives raw secret keys. Tests never seal, so backend
   /// switching keeps working there.
-  void seal() => _sealed = true;
+  ///
+  /// Also seals `QuickCrypto` so the random source can no longer be swapped.
+  void seal() {
+    _sealed = true;
+    QuickCrypto.seal();
+  }
 
   void _checkNotSealed(String op) {
     if (_sealed) {
@@ -190,10 +195,11 @@ final class BlockchainUtils {
         merkle: NativeMerkleApi(bu.merkle),
         rng: NativeRngApi(bu.rng),
       ),
-      seal: seal,
     );
     _backend = bu;
+    // Wire the RNG before sealing: once sealed, setupBackendRng throws.
     if (randomFromBackend) QuickCrypto.setupBackendRng();
+    if (seal) this.seal();
   }
 
   DefaultBlockchainUtilsApi dartApi() => DefaultBlockchainUtilsApi(
@@ -241,9 +247,10 @@ final class BlockchainUtils {
     _checkNotSealed('setDartApi');
     // Pure-Dart backend: no Bu.init / native library required.
     _backend = null;
-    setApi(dartApi(), seal: seal);
     // The backend RNG only exists on native: restore the Fortuna default so
     // generateRandom keeps working after switching back from Rust.
+    // Must run before sealing: once sealed, setupRandom throws.
     QuickCrypto.setupRandom(null);
+    setApi(dartApi(), seal: seal);
   }
 }

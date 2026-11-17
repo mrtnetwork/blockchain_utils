@@ -141,21 +141,23 @@ class NativeMuSig2Api implements MuSig2Api {
     required List<int> msg,
     List<int>? rand,
   }) {
-    final result = api
-        .deterministicSign(
-          sk: sk.asBytes,
-          aggotherNonce66: aggotherNonce.asBytes,
-          publicKeys: publicKeys.map((e) => e.asBytes).toList(),
-          msg: msg.asBytes,
-          rand: rand?.asBytes,
-          tweaks:
-              tweaks
-                  .map(
-                    (e) => BuMusig2Tweak(tweak32: e.tweak, isXOnly: e.isXOnly),
-                  )
-                  .toList(),
-        )
-        .unwrapOrThrowCryptoError();
+    final result =
+        api
+            .deterministicSign(
+              sk: sk.asBytes,
+              aggotherNonce66: aggotherNonce.asBytes,
+              publicKeys: publicKeys.map((e) => e.asBytes).toList(),
+              msg: msg.asBytes,
+              rand: rand?.asBytes,
+              tweaks:
+                  tweaks
+                      .map(
+                        (e) =>
+                            BuMusig2Tweak(tweak32: e.tweak, isXOnly: e.isXOnly),
+                      )
+                      .toList(),
+            )
+            .unwrapOrThrowCryptoError();
     return MuSig2DeterministicSignature(
       signature: result.partial,
       pubnonce: result.pubnonce,

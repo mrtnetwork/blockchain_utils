@@ -26,7 +26,8 @@ abstract class Bip32Base<BIP extends Bip32Base<BIP>>
   Bip32PrivateKey get privateKey {
     final key = _privKey;
     if (isPublicOnly || key == null) {
-      throw const BuError(DefaultErrorType.invalidKeyData,
+      throw const BuError(
+        DefaultErrorType.invalidKeyData,
         'Public-only deterministic keys have no private half',
       );
     }
@@ -65,7 +66,7 @@ abstract class Bip32Base<BIP extends Bip32Base<BIP>>
       return bip32PrivateKey.publicKey;
     } else {
       if (pubKey == null) {
-        throw BuError(DefaultErrorType.badPublicKey,'Missing public key.');
+        throw BuError(DefaultErrorType.badPublicKey, 'Missing public key.');
       }
       return Bip32PublicKey.fromBytes(pubKey, keyData, keyNetVer, type);
     }
@@ -91,10 +92,16 @@ abstract class Bip32Base<BIP extends Bip32Base<BIP>>
 
     if (keyData.depth.depth == 0) {
       if (!keyData.fingerPrint.isMasterKey()) {
-        throw BuError(DefaultErrorType.invalidArgument,'Invalid extended master fingerPrint.');
+        throw BuError(
+          DefaultErrorType.invalidArgument,
+          'Invalid extended master fingerPrint.',
+        );
       }
       if (keyData.index.index != 0) {
-        throw BuError(DefaultErrorType.invalidArgument,'Invalid extended master child index.');
+        throw BuError(
+          DefaultErrorType.invalidArgument,
+          'Invalid extended master child index.',
+        );
       }
     }
     _privKey = _initializePrivateKey(
@@ -128,14 +135,23 @@ abstract class Bip32Base<BIP extends Bip32Base<BIP>>
     BuBytes keyBytes = deserKey.toBytes();
     final Bip32KeyData keyData = deserKey.keyData;
     if (deserKey.isPublic) {
-      throw BuError(DefaultErrorType.unsupported,"Unsupported extended public key.");
+      throw BuError(
+        DefaultErrorType.unsupported,
+        "Unsupported extended public key.",
+      );
     }
     if (keyData.depth.depth == 0) {
       if (!keyData.fingerPrint.isMasterKey()) {
-        throw BuError(DefaultErrorType.invalidArgument,'Invalid extended master fingerPrint.');
+        throw BuError(
+          DefaultErrorType.invalidArgument,
+          'Invalid extended master fingerPrint.',
+        );
       }
       if (keyData.index.index != 0) {
-        throw BuError(DefaultErrorType.invalidArgument,'Invalid extended master child index.');
+        throw BuError(
+          DefaultErrorType.invalidArgument,
+          'Invalid extended master child index.',
+        );
       }
     }
     _privKey = _initializePrivateKey(keyBytes, null, keyData, keyNetVer, type);

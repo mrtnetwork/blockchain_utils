@@ -25,17 +25,13 @@ class NativeBlsSigningApi implements BlsSigningApi {
   @override
   BuBytes aggregatePublicKeysG1(List<List<int>> publicKeys) {
     final result = api.aggregatePublicKeysG1(BuBytes.concat(publicKeys));
-    return result
-        .map((e) => e.asBytes)
-        .unwrapOrThrowCryptoError();
+    return result.map((e) => e.asBytes).unwrapOrThrowCryptoError();
   }
 
   @override
   BuBytes aggregatePublicKeysG2(List<List<int>> publicKeys) {
     final result = api.aggregatePublicKeysG2(BuBytes.concat(publicKeys));
-    return result
-        .map((e) => e.asBytes)
-        .unwrapOrThrowCryptoError();
+    return result.map((e) => e.asBytes).unwrapOrThrowCryptoError();
   }
 
   @override
@@ -160,16 +156,12 @@ class NativeBlsSigningApi implements BlsSigningApi {
 
   @override
   BuBytes publicKeyG1(List<int> sk) {
-    return api
-        .publicKeyG1(BuBytes.unsafe(sk))
-        .unwrapOrThrowCryptoError();
+    return api.publicKeyG1(BuBytes.unsafe(sk)).unwrapOrThrowCryptoError();
   }
 
   @override
   BuBytes publicKeyG2(List<int> sk) {
-    return api
-        .publicKeyG2(BuBytes.unsafe(sk))
-        .unwrapOrThrowCryptoError();
+    return api.publicKeyG2(BuBytes.unsafe(sk)).unwrapOrThrowCryptoError();
   }
 
   @override
@@ -181,9 +173,7 @@ class NativeBlsSigningApi implements BlsSigningApi {
     final result = api
         .signMinPk(message: message.asBytes, dst: dst?.asBytes, sk: sk.asBytes)
         .map((e) => e.asBytes);
-    return Bls12G1Signature.fromBytes(
-      result.unwrapOrThrowCryptoError(),
-    );
+    return Bls12G1Signature.fromBytes(result.unwrapOrThrowCryptoError());
   }
 
   @override
@@ -195,9 +185,7 @@ class NativeBlsSigningApi implements BlsSigningApi {
     final result = api
         .signMinSig(message: message.asBytes, dst: dst?.asBytes, sk: sk.asBytes)
         .map((e) => e.asBytes);
-    return Bls12G2Signature.fromBytes(
-      result.unwrapOrThrowCryptoError(),
-    );
+    return Bls12G2Signature.fromBytes(result.unwrapOrThrowCryptoError());
   }
 
   @override

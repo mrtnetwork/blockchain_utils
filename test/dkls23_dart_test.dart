@@ -25,24 +25,12 @@ void _checkIdentifiers<
     <int>[-1, 1],
     <int>[1, 0x100000000],
   ]) {
-    expect(
-      () => engine.lagrangeAtZero(bad, bad.last),
-      throwsA(isA<BuError>()),
-    );
+    expect(() => engine.lagrangeAtZero(bad, bad.last), throwsA(isA<BuError>()));
   }
   // Duplicates, unknown xi, and empty sets rejected.
-  expect(
-    () => engine.lagrangeAtZero([1, 1], 1),
-    throwsA(isA<BuError>()),
-  );
-  expect(
-    () => engine.lagrangeAtZero([1, 2], 3),
-    throwsA(isA<BuError>()),
-  );
-  expect(
-    () => engine.lagrangeAtZero(<int>[], 1),
-    throwsA(isA<BuError>()),
-  );
+  expect(() => engine.lagrangeAtZero([1, 1], 1), throwsA(isA<BuError>()));
+  expect(() => engine.lagrangeAtZero([1, 2], 3), throwsA(isA<BuError>()));
+  expect(() => engine.lagrangeAtZero(<int>[], 1), throwsA(isA<BuError>()));
 }
 
 void main() {

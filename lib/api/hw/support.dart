@@ -22,7 +22,10 @@ HwReadiness hwReadinessFor({
   if (kind == null) return HwReadiness.unknown;
   final rows = HwCatalog.rowsFor(coin).where((r) => r.device == kind);
   if (variant != null) {
-    return hwBest([for (final r in rows) if (r.variant == variant) r]);
+    return hwBest([
+      for (final r in rows)
+        if (r.variant == variant) r,
+    ]);
   }
   return hwBest(rows.toList());
 }

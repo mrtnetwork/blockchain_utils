@@ -97,7 +97,8 @@ class StructLayout extends Layout<Map<String, dynamic>> {
         }
       } else {
         if (span < 0 || field is! PaddingLayout) {
-          throw BuError(DefaultErrorType.notFound,
+          throw BuError(
+            DefaultErrorType.notFound,
             "Struct source not found.",
             details: {
               "key": field.property,

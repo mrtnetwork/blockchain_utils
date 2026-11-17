@@ -56,7 +56,10 @@ abstract mixin class VariantLayoutSerializable implements LayoutSerializable {
     Map<String, dynamic> json,
   ) {
     if (json['key'] is! String || !json.containsKey('value')) {
-      throw const BuError(DefaultErrorType.invalidArgument,"Invalid variant json encoding.");
+      throw const BuError(
+        DefaultErrorType.invalidArgument,
+        "Invalid variant json encoding.",
+      );
     }
     return VariantDeserializeResult(json);
   }
@@ -70,10 +73,16 @@ abstract mixin class VariantLayoutSerializable implements LayoutSerializable {
     try {
       json = layout.deserialize(bytes).value;
     } catch (_) {
-      throw const BuError(DefaultErrorType.invalidArgument,"Invalid variant bytes encoding.");
+      throw const BuError(
+        DefaultErrorType.invalidArgument,
+        "Invalid variant bytes encoding.",
+      );
     }
     if (json['key'] is! String || !json.containsKey('value')) {
-      throw const BuError(DefaultErrorType.invalidArgument,"Invalid variant layout.");
+      throw const BuError(
+        DefaultErrorType.invalidArgument,
+        "Invalid variant layout.",
+      );
     }
     return json;
   }

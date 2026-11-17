@@ -69,4 +69,3 @@ export 'package:blockchain_utils/protocol/bip/bip/bip32/bip32_key_ser.dart';
 export 'package:blockchain_utils/protocol/bip/bip/bip32/bip32_keys.dart';
 
 export 'package:blockchain_utils/protocol/bip/bip/bip32/bip32_key_data.dart';
-

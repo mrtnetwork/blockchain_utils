@@ -10,7 +10,9 @@ class DartMerkleApi implements MerkleApi {
   /// Creates a pure-Dart Merkle backend; every method throws [BuError].
   const DartMerkleApi();
 
-  static BuError _un(String op) => BuError(DefaultErrorType.unsupported, 'DartMerkleApi.$op: pure-Dart backend has no Merkle frontier; '
+  static BuError _un(String op) => BuError(
+    DefaultErrorType.unsupported,
+    'DartMerkleApi.$op: pure-Dart backend has no Merkle frontier; '
     'use NativeMerkleApi via blockchainUtils.setRustApi().',
   );
 

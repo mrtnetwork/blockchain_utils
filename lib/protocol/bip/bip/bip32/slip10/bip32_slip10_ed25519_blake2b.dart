@@ -52,7 +52,10 @@ class Bip32Slip10Ed25519Blake2b extends Bip32Base<Bip32Slip10Ed25519Blake2b> {
 
     if (!isPublic) {
       if (!index.isHardened && !isPublicDerivationSupported) {
-        throw const BuError(DefaultErrorType.unsupported, 'Private child derivation with not-hardened index is not supported');
+        throw const BuError(
+          DefaultErrorType.unsupported,
+          'Private child derivation with not-hardened index is not supported',
+        );
       }
       final result = keyDerivator.deriveFromSecret(
         parent: privateKey,
@@ -73,7 +76,10 @@ class Bip32Slip10Ed25519Blake2b extends Bip32Base<Bip32Slip10Ed25519Blake2b> {
         pubKey: null,
       );
     }
-    throw const BuError(DefaultErrorType.unsupported, 'Public child derivation is not supported');
+    throw const BuError(
+      DefaultErrorType.unsupported,
+      'Public child derivation is not supported',
+    );
   }
 
   /// Returns the default key network versions network.

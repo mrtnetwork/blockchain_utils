@@ -7,7 +7,6 @@ class NativeJubJubCurveApi implements JubJubCurveApi {
   final BuJubjubCurveApi _api;
   const NativeJubJubCurveApi(this._api);
 
-
   @override
   int get pointLen => _api.pointLen;
 
@@ -34,8 +33,7 @@ class NativeJubJubCurveApi implements JubJubCurveApi {
       _api.sub(a, b).unwrapOrThrowCryptoError();
 
   @override
-  BuBytes neg(List<int> point) =>
-      _api.neg(point).unwrapOrThrowCryptoError();
+  BuBytes neg(List<int> point) => _api.neg(point).unwrapOrThrowCryptoError();
 
   @override
   BuBytes scAdd(List<int> a, List<int> b) =>
@@ -50,23 +48,19 @@ class NativeJubJubCurveApi implements JubJubCurveApi {
       _api.scMul(a, b).unwrapOrThrowCryptoError();
 
   @override
-  BuBytes scNeg(List<int> s) =>
-      _api.scNeg(s).unwrapOrThrowCryptoError();
+  BuBytes scNeg(List<int> s) => _api.scNeg(s).unwrapOrThrowCryptoError();
 
   @override
-  BuBytes scReduce(List<int> s) =>
-      _api.scReduce(s).unwrapOrThrowCryptoError();
+  BuBytes scReduce(List<int> s) => _api.scReduce(s).unwrapOrThrowCryptoError();
 
   @override
   BuBytes scReduce64(List<int> s) =>
       _api.scReduce64(s).unwrapOrThrowCryptoError();
   @override
-  BuBytes generator() =>
-      _api.generator().unwrapOrThrowCryptoError();
+  BuBytes generator() => _api.generator().unwrapOrThrowCryptoError();
 
   @override
-  BuBytes identity() =>
-      _api.identity().unwrapOrThrowCryptoError();
+  BuBytes identity() => _api.identity().unwrapOrThrowCryptoError();
 
   @override
   BuBytes mulAdd(List<int> s1, List<int> p1, List<int> s2, List<int> p2) =>
@@ -78,12 +72,8 @@ class NativeJubJubCurveApi implements JubJubCurveApi {
 
   @override
   BuBytes? clearCofactor(List<int> point) {
-    final cleared = _api
-        .mult(_cofactor8, point)
-        .unwrapOrThrowCryptoError();
-    final id = _api
-        .identity()
-        .unwrapOrThrowCryptoError();
+    final cleared = _api.mult(_cofactor8, point).unwrapOrThrowCryptoError();
+    final id = _api.identity().unwrapOrThrowCryptoError();
     if (BytesUtils.bytesEqual(cleared, id)) return null;
     return cleared;
   }

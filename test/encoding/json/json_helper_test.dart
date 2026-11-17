@@ -40,10 +40,7 @@ void jsonHelperTest() {
       expect(testVector.valueAsInt("double", allowDouble: true), 1);
       expect(testVector.valueAsInt("doubleString", allowDouble: true), 1);
       expect(testVector.valueAsInt("bString"), 1);
-      expect(
-        () => testVector.valueAsInt("wBigInt"),
-        throwsA(isA<BuError>()),
-      );
+      expect(() => testVector.valueAsInt("wBigInt"), throwsA(isA<BuError>()));
       expect(
         () => testVector.valueAsInt("bStringHex", allowHex: false),
         throwsA(isA<BuError>()),
@@ -62,10 +59,7 @@ void jsonHelperTest() {
         throwsA(isA<BuError>()),
       );
 
-      expect(
-        () => testVector.valueAsBytes("wBytes"),
-        throwsA(isA<BuError>()),
-      );
+      expect(() => testVector.valueAsBytes("wBytes"), throwsA(isA<BuError>()));
       expect(
         testVector.valueAsBytes(
           "byteAsBase58",

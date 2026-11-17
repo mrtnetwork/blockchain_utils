@@ -44,13 +44,11 @@ void main() {
     final p = Bn254G1AffinePoint.generator;
     final q = Bn254G2AffinePoint.generator;
     expect(
-      Bn254Pairing.pairing(Bn254G1AffinePoint.identity, q) ==
-          Bn254Fp12.one,
+      Bn254Pairing.pairing(Bn254G1AffinePoint.identity, q) == Bn254Fp12.one,
       true,
     );
     expect(
-      Bn254Pairing.pairing(p, Bn254G2AffinePoint.identity) ==
-          Bn254Fp12.one,
+      Bn254Pairing.pairing(p, Bn254G2AffinePoint.identity) == Bn254Fp12.one,
       true,
     );
     final single = Bn254Pairing.pairing(p, q);

@@ -28,10 +28,7 @@ class OrchardKeyUtils {
     return point;
   }
 
-  static PallasPoint kaOrchard({
-    required List<int> base,
-    required VestaFq sk,
-  }) {
+  static PallasPoint kaOrchard({required List<int> base, required VestaFq sk}) {
     final mult = blockchainUtils.api.pallas.mult(sk.toBytes(), base);
     final PallasPoint p = PallasPoint.fromBytes(mult);
     if (p.isIdentity()) {

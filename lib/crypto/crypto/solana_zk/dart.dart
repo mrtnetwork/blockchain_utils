@@ -3,7 +3,9 @@ import 'package:blockchain_utils/crypto/crypto/solana_zk/twisted_elgamal.dart';
 import 'package:blockchain_utils_connector/blockchain_utils_connector.dart';
 
 Never _unsupported(String op) =>
-    throw BuError(DefaultErrorType.unsupported, 'SolanaZk.$op is not implemented in pure Dart; use the Rust native API.',
+    throw BuError(
+      DefaultErrorType.unsupported,
+      'SolanaZk.$op is not implemented in pure Dart; use the Rust native API.',
     );
 
 class DartSolanaZkApi implements SolanaZkApi {

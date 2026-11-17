@@ -204,9 +204,7 @@ class ZcashAddressUtils {
       }
       throw CoreErrors.addressValidationFailed(reason: e.toString());
     } catch (e) {
-      throw CoreErrors.addressValidationFailed(
-        reason: e.toString(),
-      );
+      throw CoreErrors.addressValidationFailed(reason: e.toString());
     }
   }
 

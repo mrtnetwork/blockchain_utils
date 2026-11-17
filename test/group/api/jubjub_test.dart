@@ -34,6 +34,7 @@ class JubJubCurveTest extends CurveTest<JubJubCurveApi> {
       return api.clearCofactor(p) ?? api.identity();
     }).toList();
   }
+
   factory JubJubCurveTest.generate({List<JubJubCurveApi> apis = const []}) {
     assert(apis.isNotEmpty);
 

@@ -31,7 +31,8 @@ abstract class Eip2333Base<EIP extends Eip2333Base<EIP>>
   Eip2333PrivateKey get privateKey {
     final key = _privKey;
     if (isPublicOnly || key == null) {
-      throw const BuError(DefaultErrorType.invalidKeyData,
+      throw const BuError(
+        DefaultErrorType.invalidKeyData,
         'Public-only deterministic keys have no private half',
       );
     }

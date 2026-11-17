@@ -36,7 +36,8 @@ abstract class BaseSecp256k1Signer<
 
 /// Signs messages with a secp256k1 private key.
 class Secp256k1Signer
-    extends BaseSecp256k1Signer<ISecp256k1VerificationKey, ISecp256k1SigningKey> {
+    extends
+        BaseSecp256k1Signer<ISecp256k1VerificationKey, ISecp256k1SigningKey> {
   const Secp256k1Signer(super.signingKey);
   factory Secp256k1Signer.fromBytes(List<int> keyBytes) {
     return Secp256k1Signer(Secp256k1PrivateKey.fromBytes(keyBytes));

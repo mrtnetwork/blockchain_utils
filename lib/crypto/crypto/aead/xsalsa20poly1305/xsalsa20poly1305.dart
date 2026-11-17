@@ -115,7 +115,8 @@ class XSalsa20Poly1305 implements AEAD {
       try {
         for (int i = 0; i < plaintext.length; i++) {
           result[tagLength + i] =
-              (plaintext[i] & BinaryOps.mask8) ^ (stream[32 + i] & BinaryOps.mask8);
+              (plaintext[i] & BinaryOps.mask8) ^
+              (stream[32 + i] & BinaryOps.mask8);
         }
         final cipherText = result.sublist(tagLength, resultLength);
         final h = Poly1305(polyKey);
@@ -178,7 +179,8 @@ class XSalsa20Poly1305 implements AEAD {
         }
         for (int i = 0; i < messageLength; i++) {
           result[i] =
-              (cipherText[i] & BinaryOps.mask8) ^ (stream[32 + i] & BinaryOps.mask8);
+              (cipherText[i] & BinaryOps.mask8) ^
+              (stream[32 + i] & BinaryOps.mask8);
         }
         return result;
       } finally {

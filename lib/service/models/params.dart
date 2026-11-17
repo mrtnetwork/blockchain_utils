@@ -34,7 +34,12 @@ enum RequestMethod {
     return values.firstWhere(
       (e) => e.name == name,
       orElse:
-          () => throw BuError(DefaultErrorType.notFound, "No matching RequestMethod found for the given value. $name", details: {"name": "RequestMethod", "value": name?.toString()}),
+          () =>
+              throw BuError(
+                DefaultErrorType.notFound,
+                "No matching RequestMethod found for the given value. $name",
+                details: {"name": "RequestMethod", "value": name?.toString()},
+              ),
     );
   }
 
@@ -43,7 +48,11 @@ enum RequestMethod {
       (e) => e.value == value,
       orElse:
           () =>
-              throw BuError(DefaultErrorType.notFound, "No matching RequestMethod found for the given value. $value", details: {"name": "RequestMethod", "value": value?.toString()}),
+              throw BuError(
+                DefaultErrorType.notFound,
+                "No matching RequestMethod found for the given value. $value",
+                details: {"name": "RequestMethod", "value": value?.toString()},
+              ),
     );
   }
 }
@@ -62,7 +71,12 @@ enum ServiceResponseType {
   static ServiceResponseType fromValue(int? value) {
     return values.firstWhere(
       (e) => e.value == value,
-      orElse: () => throw BuError(DefaultErrorType.notFound, "No matching ServiceResponseType found for the given value. null"),
+      orElse:
+          () =>
+              throw BuError(
+                DefaultErrorType.notFound,
+                "No matching ServiceResponseType found for the given value. null",
+              ),
     );
   }
 }
@@ -73,7 +87,11 @@ sealed class BaseServiceResponse {
   const BaseServiceResponse({required this.statusCode, required this.type});
   E cast<E extends BaseServiceResponse>() {
     if (this is! E) {
-      throw BuError(DefaultErrorType.castFailed, "Failed to cast value", details: {"expected": "E", "value": runtimeType.toString()});
+      throw BuError(
+        DefaultErrorType.castFailed,
+        "Failed to cast value",
+        details: {"expected": "E", "value": runtimeType.toString()},
+      );
     }
     return this as E;
   }
@@ -292,7 +310,12 @@ enum ServiceReponseEncoding {
   static ServiceReponseEncoding fromValue(int? value) {
     return values.firstWhere(
       (e) => e.value == value,
-      orElse: () => throw BuError(DefaultErrorType.notFound, "No matching ServiceReponseEncoding found for the given value. null"),
+      orElse:
+          () =>
+              throw BuError(
+                DefaultErrorType.notFound,
+                "No matching ServiceReponseEncoding found for the given value. null",
+              ),
     );
   }
 }
@@ -605,7 +628,12 @@ enum ServiceProtocol {
   static ServiceProtocol fromValue(int? value) {
     return values.firstWhere(
       (e) => e.id == value,
-      orElse: () => throw BuError(DefaultErrorType.notFound, "No matching item found for the given value. null"),
+      orElse:
+          () =>
+              throw BuError(
+                DefaultErrorType.notFound,
+                "No matching item found for the given value. null",
+              ),
     );
   }
 

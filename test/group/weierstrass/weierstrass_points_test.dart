@@ -126,8 +126,7 @@ Secp256r1Fr _r1frN(BigInt v) => _r1fr(v % _n2);
 /// 32 random bits from two 16-bit draws: `nextInt(1 << 32)` is invalid on
 /// dart2js (JS bitwise ops truncate to 32 bits), so never use `1 << N`
 /// with N >= 32 on ints in browser-compiled tests.
-int _rand32(Random rng) =>
-    (rng.nextInt(1 << 16) << 16) | rng.nextInt(1 << 16);
+int _rand32(Random rng) => (rng.nextInt(1 << 16) << 16) | rng.nextInt(1 << 16);
 
 List<BigInt> _scalars(BigInt n) {
   final rng = Random(0xC0FFEE);

@@ -257,7 +257,8 @@ class Musig2Const extends Musig2Context {
     s1 = s1 + s2;
 
     if (s1.isZero()) {
-      throw const BuError(DefaultErrorType.invalidSignature,
+      throw const BuError(
+        DefaultErrorType.invalidSignature,
         'Signing failed due to generate signature scalar.',
       );
     }

@@ -44,7 +44,8 @@ class ElectrumV1 with SecretState {
   /// Get the master private key, throwing an exception if it's a public-only key.
   IPrivateKey get masterPrivateKey {
     if (isPublicOnly) {
-      throw const BuError(DefaultErrorType.invalidKeyData,
+      throw const BuError(
+        DefaultErrorType.invalidKeyData,
         'Public-only deterministic keys have no private half',
       );
     }
@@ -59,7 +60,8 @@ class ElectrumV1 with SecretState {
   /// Get a private key for a specific change and address index, throwing an exception if it's a public-only key.
   Secp256k1PrivateKey getPrivateKey(int changeIndex, int addrIndex) {
     if (isPublicOnly) {
-      throw const BuError(DefaultErrorType.invalidKeyData,
+      throw const BuError(
+        DefaultErrorType.invalidKeyData,
         'Public-only deterministic keys have no private half',
       );
     }

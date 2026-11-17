@@ -55,7 +55,8 @@ class Eip2334 extends Eip2334Base<Eip2334> {
   @override
   Eip2334 get purpose {
     if (!isLevel(Eip2334Levels.master)) {
-      throw BuError(DefaultErrorType.invalidArgument,
+      throw BuError(
+        DefaultErrorType.invalidArgument,
         "Current depth (${eip2333.depth.toInt()}) is not suitable for deriving purpose",
       );
     }
@@ -76,7 +77,8 @@ class Eip2334 extends Eip2334Base<Eip2334> {
   @override
   Eip2334 get coin {
     if (!isLevel(Eip2334Levels.purpose)) {
-      throw BuError(DefaultErrorType.invalidArgument,
+      throw BuError(
+        DefaultErrorType.invalidArgument,
         "Current depth (${eip2333.depth.toInt()}) is not suitable for deriving coin",
       );
     }
@@ -88,7 +90,8 @@ class Eip2334 extends Eip2334Base<Eip2334> {
   @override
   Eip2334 account(int accIndex) {
     if (!isLevel(Eip2334Levels.coin)) {
-      throw BuError(DefaultErrorType.invalidArgument,
+      throw BuError(
+        DefaultErrorType.invalidArgument,
         "Current depth (${eip2333.depth.toInt()}) is not suitable for deriving account",
       );
     }
@@ -99,7 +102,8 @@ class Eip2334 extends Eip2334Base<Eip2334> {
   @override
   Eip2334 use(int useIndex) {
     if (!isLevel(Eip2334Levels.account)) {
-      throw BuError(DefaultErrorType.invalidArgument,
+      throw BuError(
+        DefaultErrorType.invalidArgument,
         "Current depth (${eip2333.depth.toInt()}) is not suitable for deriving use",
       );
     }
@@ -110,7 +114,8 @@ class Eip2334 extends Eip2334Base<Eip2334> {
   @override
   Eip2334 get signingKey {
     if (!isLevel(Eip2334Levels.use)) {
-      throw BuError(DefaultErrorType.invalidArgument,
+      throw BuError(
+        DefaultErrorType.invalidArgument,
         "Current depth (${eip2333.depth.toInt()}) is not suitable for deriving signing key",
       );
     }

@@ -90,7 +90,9 @@ class Base58XmrDecoder {
       finalBlockCharLen,
     );
     if (finalBlockByteLen < 0) {
-      throw BuError(DefaultErrorType.invalidLength, "Invalid Monero Base58 string.",
+      throw BuError(
+        DefaultErrorType.invalidLength,
+        "Invalid Monero Base58 string.",
         details: {
           "reason": 'Invalid Monero Base58 length residue $finalBlockCharLen.',
         },

@@ -10,7 +10,9 @@ class DartHwApi implements HwApi {
   /// Creates a pure-Dart hardware-wallet backend; every method throws [BuError].
   const DartHwApi();
 
-  static BuError _un(String op) => BuError(DefaultErrorType.unsupported, 'DartHwApi.$op: pure-Dart backend has no hardware-wallet support; '
+  static BuError _un(String op) => BuError(
+    DefaultErrorType.unsupported,
+    'DartHwApi.$op: pure-Dart backend has no hardware-wallet support; '
     'use NativeHwApi via blockchainUtils.setRustApi().',
   );
 
@@ -86,10 +88,7 @@ class DartHwApi implements HwApi {
 
   /// Parses sign response; pure-Dart stub always throws [BuError].
   @override
-  BuBytes parseSignResponse({
-    required int device,
-    required BuBytes response,
-  }) {
+  BuBytes parseSignResponse({required int device, required BuBytes response}) {
     throw _un('parseSignResponse');
   }
 
@@ -118,19 +117,13 @@ class DartHwApi implements HwApi {
 
   /// Parses one `TxRequest`; pure-Dart stub always throws [BuError].
   @override
-  (int, int) parseTxRequest({
-    required int device,
-    required BuBytes response,
-  }) {
+  (int, int) parseTxRequest({required int device, required BuBytes response}) {
     throw _un('parseTxRequest');
   }
 
   /// `TXFINISHED` signature bytes; pure-Dart stub always throws [BuError].
   @override
-  BuBytes txRequestSignature({
-    required int device,
-    required BuBytes response,
-  }) {
+  BuBytes txRequestSignature({required int device, required BuBytes response}) {
     throw _un('txRequestSignature');
   }
 
@@ -145,10 +138,7 @@ class DartHwApi implements HwApi {
 
   /// `TxRequest` prev-tx hash; pure-Dart stub always throws [BuError].
   @override
-  BuBytes txRequestTxHash({
-    required int device,
-    required BuBytes response,
-  }) {
+  BuBytes txRequestTxHash({required int device, required BuBytes response}) {
     throw _un('txRequestTxHash');
   }
 

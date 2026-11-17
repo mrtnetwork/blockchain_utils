@@ -148,9 +148,7 @@ class FilAddrUtils {
     String addr,
   ) {
     if (addr.isEmpty) {
-      throw CoreErrors.addressValidationFailed(
-        reason: "Empty address",
-      );
+      throw CoreErrors.addressValidationFailed(reason: "Empty address");
     }
     if (addr.length > FilAddrConst.maxAddressStringLength || addr.length < 3) {
       throw CoreErrors.addressValidationFailed(
@@ -193,9 +191,7 @@ class FilAddrUtils {
   static FilDecodedAddress decodeId(String addr) {
     final p = _validatePrefix(addr);
     if (p.type != FilAddrType.id) {
-      throw CoreErrors.addressValidationFailed(
-        reason: "Invalid ID address",
-      );
+      throw CoreErrors.addressValidationFailed(reason: "Invalid ID address");
     }
     final idStr = p.raw;
     final id = BigInt.tryParse(idStr);
@@ -278,9 +274,7 @@ class FilAddrUtils {
         bytes: payload,
       );
     } on BuError {
-      throw CoreErrors.addressValidationFailed(
-        reason: "Invalid address.",
-      );
+      throw CoreErrors.addressValidationFailed(reason: "Invalid address.");
     }
   }
 
@@ -351,9 +345,7 @@ class FilAddrUtils {
     );
 
     if (subaddr.length > FilAddrConst.maxSubaddressLen) {
-      throw CoreErrors.addressValidationFailed(
-        reason: "Subaddress too long",
-      );
+      throw CoreErrors.addressValidationFailed(reason: "Subaddress too long");
     }
 
     final payload = [..._Uvarint.encode(namespace), ...subaddr];
@@ -383,9 +375,7 @@ class FilAddrUtils {
       payload = [..._Uvarint.encode(nameSpace), ...subaddr];
     }
     if (subaddr.length > FilAddrConst.maxSubaddressLen) {
-      throw CoreErrors.addressValidationFailed(
-        reason: "Subaddress too long",
-      );
+      throw CoreErrors.addressValidationFailed(reason: "Subaddress too long");
     }
     if (nameSpace > BinaryOps.maxInt64) {
       throw CoreErrors.addressValidationFailed(
@@ -695,14 +685,10 @@ class FilAddrEncoder implements BlockchainAddressEncoder {
 class FilAddrDecoder implements BlockchainAddressDecoder<BuBytes> {
   FilDecodedAddress decode(String addr, {FilNetwork? network}) {
     if (addr.isEmpty) {
-      throw CoreErrors.addressValidationFailed(
-        reason: "Empty address.",
-      );
+      throw CoreErrors.addressValidationFailed(reason: "Empty address.");
     }
     if (addr.length < 2) {
-      throw CoreErrors.addressValidationFailed(
-        reason: "Address too short",
-      );
+      throw CoreErrors.addressValidationFailed(reason: "Address too short");
     }
     final n = FilNetwork.fromPrefix(addr[0]);
     final type = FilAddrType.fromValue(int.tryParse(addr[1]));

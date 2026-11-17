@@ -34,7 +34,7 @@ class Bn254Fp with ConstantEquality<Bn254Fp> {
   final List<Uint64> limbs;
   const Bn254Fp.unsafe(this.limbs);
   Bn254Fp(List<Uint64> limbs)
-      : limbs = limbs.exc(length: 4, operation: 'Bn254Fp').immutable;
+    : limbs = limbs.exc(length: 4, operation: 'Bn254Fp').immutable;
 
   static const zero = Bn254Fp.unsafe([
     Uint64.zero,
@@ -324,6 +324,5 @@ class Bn254Fp with ConstantEquality<Bn254Fp> {
   bool sgn0() => (toBytes().last & 1) == 1;
 
   @override
-  bool constantEquality(Bn254Fp other) =>
-      Uint64.ctEquals(limbs, other.limbs);
+  bool constantEquality(Bn254Fp other) => Uint64.ctEquals(limbs, other.limbs);
 }

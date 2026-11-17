@@ -71,7 +71,10 @@ class LazyStructLayout<R extends LayoutRepository>
         repository: repository,
       );
       if (layout == null) {
-        throw BuError(DefaultErrorType.invalidArgument,"Missing ${field.property} layout.");
+        throw BuError(
+          DefaultErrorType.invalidArgument,
+          "Missing ${field.property} layout.",
+        );
       }
       final decode = layout.decode(bytes, offset: offset);
       consumed += decode.consumed;
@@ -115,7 +118,8 @@ class LazyStructLayout<R extends LayoutRepository>
         field.onFinalizeEncode(value, source, repository);
       } else {
         if (span < 0 || layout is! PaddingLayout) {
-          throw BuError(DefaultErrorType.notFound,
+          throw BuError(
+            DefaultErrorType.notFound,
             "Struct source not found.",
             details: {
               "key": field.property,

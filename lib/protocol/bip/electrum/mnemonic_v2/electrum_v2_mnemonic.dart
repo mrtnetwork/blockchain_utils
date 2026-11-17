@@ -58,7 +58,10 @@ class ElectrumV2Languages implements Bip39LanguagesBase {
       case ElectrumV2Languages.spanish:
         return Bip32WorList.bip39WordList(Bip39Languages.spanish);
       default:
-        throw BuError(DefaultErrorType.unsupported,"Unsupported mnemonic language.");
+        throw BuError(
+          DefaultErrorType.unsupported,
+          "Unsupported mnemonic language.",
+        );
     }
   }
 

@@ -2,7 +2,6 @@ import 'dart:math';
 import 'package:blockchain_utils/blockchain_utils.dart';
 import 'dart:typed_data' show Endian;
 
-
 import 'package:blockchain_utils/utils/numbers/fixed/src/u64/u64.dart';
 import 'package:test/test.dart';
 
@@ -62,10 +61,7 @@ void u64Test() {
         final lo = v.toUnsigned(32).toInt();
         expect(Uint64.fromParts(hi, lo).toBigInt(), v);
       }
-      expect(
-        () => Uint64.fromBigInt(-BigInt.one),
-        throwsA(isA<BuError>()),
-      );
+      expect(() => Uint64.fromBigInt(-BigInt.one), throwsA(isA<BuError>()));
     });
 
     test('parseHex round-trips with toHexString', () {
@@ -85,14 +81,8 @@ void u64Test() {
         () => Uint64.parseDecimal((maxUnsigned(_bits) + BigInt.one).toString()),
         throwsA(isA<BuError>()),
       );
-      expect(
-        () => Uint64.parseDecimal('-1'),
-        throwsA(isA<BuError>()),
-      );
-      expect(
-        () => Uint64.parseDecimal('12x'),
-        throwsA(isA<BuError>()),
-      );
+      expect(() => Uint64.parseDecimal('-1'), throwsA(isA<BuError>()));
+      expect(() => Uint64.parseDecimal('12x'), throwsA(isA<BuError>()));
     });
   });
 

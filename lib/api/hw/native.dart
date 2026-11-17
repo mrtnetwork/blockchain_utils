@@ -303,17 +303,13 @@ class NativeHwApi implements HwApi {
   /// BitBox02: encrypts one message; throws [CryptoException] on native failure.
   @override
   BuBytes bitboxEncrypt({required BuBytes plaintext}) {
-    return api
-        .bitboxEncrypt(plaintext: plaintext)
-        .unwrapOrThrowCryptoError();
+    return api.bitboxEncrypt(plaintext: plaintext).unwrapOrThrowCryptoError();
   }
 
   /// BitBox02: decrypts one message; throws [CryptoException] on native failure.
   @override
   BuBytes bitboxDecrypt({required BuBytes ciphertext}) {
-    return api
-        .bitboxDecrypt(ciphertext: ciphertext)
-        .unwrapOrThrowCryptoError();
+    return api.bitboxDecrypt(ciphertext: ciphertext).unwrapOrThrowCryptoError();
   }
 
   /// BitBox02: handshake hash; throws [CryptoException] on native failure.
@@ -349,9 +345,7 @@ class NativeHwApi implements HwApi {
   /// BitBox02: parses `Response` to xpub string; throws [CryptoException] on native failure.
   @override
   String bitboxPubParse({required BuBytes response}) {
-    return api
-        .bitboxPubParse(response: response)
-        .unwrapOrThrowCryptoError();
+    return api.bitboxPubParse(response: response).unwrapOrThrowCryptoError();
   }
 
   /// BitBox02: builds `Request{btc_sign_init}`; throws [CryptoException] on native failure.
@@ -582,9 +576,7 @@ class NativeHwApi implements HwApi {
   /// Parses single-part airgap QR [qr] for [device] to payload bytes; throws [CryptoException] on native failure.
   @override
   BuBytes qrParse({required int device, required String qr}) {
-    return api
-        .qrParse(device: device, qr: qr)
-        .unwrapOrThrowCryptoError();
+    return api.qrParse(device: device, qr: qr).unwrapOrThrowCryptoError();
   }
 
   /// Returns `(inputCount, outputCount)` for PSBT [psbt]; throws [CryptoException] on native failure.

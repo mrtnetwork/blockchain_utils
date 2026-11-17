@@ -44,13 +44,15 @@ class CborUtils {
       // surfaces as a RangeError from the underlying list indexing -
       // convert it into the same exception type every other decode
       // failure uses, rather than leaking an unrelated-looking error.
-      throw BuError(DefaultErrorType.badCbor,
+      throw BuError(
+        DefaultErrorType.badCbor,
         "Invalid CBOR bytes: truncated or malformed input.",
         details: {"error": e.toString()},
       );
     }
     if (decoded.consumed != cborBytes.length) {
-      throw BuError(DefaultErrorType.invalidLength,
+      throw BuError(
+        DefaultErrorType.invalidLength,
         "Invalid CBOR bytes: trailing data after a complete value.",
         details: {
           "consumed": decoded.consumed.toString(),
@@ -62,7 +64,8 @@ class CborUtils {
     try {
       return decoded.value.cast<T>();
     } catch (_) {
-      throw BuError(DefaultErrorType.badCbor,
+      throw BuError(
+        DefaultErrorType.badCbor,
         "Decoded CBOR value is not a $T.",
         details: {"actualType": decoded.value.runtimeType.toString()},
       );
@@ -79,13 +82,17 @@ class CborUtils {
       // Split the string into the date and offset parts
       final parts = dateTimeString.split('+');
       if (parts.length != 2) {
-        throw BuError(DefaultErrorType.invalidArgument,"Invalid RFC3339 format: $dateTimeString");
+        throw BuError(
+          DefaultErrorType.invalidArgument,
+          "Invalid RFC3339 format: $dateTimeString",
+        );
       }
       try {
         final datePart = DateTime.parse(parts[0]);
         return datePart;
       } on FormatException catch (e) {
-        throw BuError(DefaultErrorType.invalidArgument,
+        throw BuError(
+          DefaultErrorType.invalidArgument,
           "Invalid RFC3339 format: $dateTimeString",
           details: {"error": e.toString()},
         );
@@ -94,7 +101,8 @@ class CborUtils {
       try {
         return DateTime.parse(dateTimeString).toUtc();
       } on FormatException catch (e) {
-        throw BuError(DefaultErrorType.invalidArgument,
+        throw BuError(
+          DefaultErrorType.invalidArgument,
           "Invalid RFC3339 format: $dateTimeString",
           details: {"error": e.toString()},
         );
@@ -181,12 +189,16 @@ class CborUtils {
             tags: tags,
           ).addConsumed(consumed);
         default:
-          throw BuError(DefaultErrorType.badCbor,
+          throw BuError(
+            DefaultErrorType.badCbor,
             "Invalid or unsupported CBOR tag major: $majorTag ",
           );
       }
     }
-    throw const BuError(DefaultErrorType.badCbor,"Invalid or unsupported CBOR tag.");
+    throw const BuError(
+      DefaultErrorType.badCbor,
+      "Invalid or unsupported CBOR tag.",
+    );
   }
 
   static _DecodeCborResult<List<int>> _parsBytes({
@@ -230,19 +242,26 @@ class CborUtils {
           value = decode.toInt();
         } else {
           if (0 is T) {
-            throw const BuError(DefaultErrorType.invalidLength,'Length is too large for type int.');
+            throw const BuError(
+              DefaultErrorType.invalidLength,
+              'Length is too large for type int.',
+            );
           }
           value = decode;
         }
       } else {
-        throw BuError(DefaultErrorType.invalidArgument,'Invalid additional info for int: $info');
+        throw BuError(
+          DefaultErrorType.invalidArgument,
+          'Invalid additional info for int: $info',
+        );
       }
     }
     if (value is int && BigInt.zero is T) {
       value = BigInt.from(value);
     }
     if (value is! T) {
-      throw BuError(DefaultErrorType.invalidLength,
+      throw BuError(
+        DefaultErrorType.invalidLength,
         "decode length casting failed.",
         details: {"expected": "$T", "value": value.runtimeType.toString()},
       );
@@ -403,7 +422,8 @@ class CborUtils {
       // consumers of the same bytes could disagree on which value "the"
       // key maps to) was accepted without complaint in production.
       if (objects.containsKey(decodeKey.value)) {
-        throw BuError(DefaultErrorType.badCbor,
+        throw BuError(
+          DefaultErrorType.badCbor,
           "Invalid CBOR map: duplicate key.",
           details: {"key": decodeKey.value.toString()},
         );
@@ -439,7 +459,8 @@ class CborUtils {
       // terminator used to run off the end of cborBytes here, surfacing
       // as a raw RangeError instead of a clean parse error.
       if (offset + consumed >= cborBytes.length) {
-        throw const BuError(DefaultErrorType.invalidLength,
+        throw const BuError(
+          DefaultErrorType.invalidLength,
           "Invalid CBOR bytes: unterminated indefinite-length map.",
         );
       }
@@ -452,7 +473,8 @@ class CborUtils {
       // all before (not even an assert) - see the definite-length
       // _decodeMap fix above for why this matters.
       if (objects.containsKey(decodeKey.value)) {
-        throw BuError(DefaultErrorType.badCbor,
+        throw BuError(
+          DefaultErrorType.badCbor,
           "Invalid CBOR map: duplicate key.",
           details: {"key": decodeKey.value.toString()},
         );
@@ -544,7 +566,8 @@ class CborUtils {
       // _decodeDynamicMap for why (truncated input missing the 0xFF
       // terminator used to run off the end of cborBytes here).
       if (consumed + offset >= cborBytes.length) {
-        throw const BuError(DefaultErrorType.invalidLength,
+        throw const BuError(
+          DefaultErrorType.invalidLength,
           "Invalid CBOR bytes: unterminated indefinite-length array.",
         );
       }
@@ -576,7 +599,10 @@ class CborUtils {
   ) {
     objects = objects.whereType<CborNumeric>().toList();
     if (objects.length != 2) {
-      throw const BuError(DefaultErrorType.invalidLength,"Invalid BigFloat array length.");
+      throw const BuError(
+        DefaultErrorType.invalidLength,
+        "Invalid BigFloat array length.",
+      );
     }
     if (BytesUtils.bytesEqual(tags, CborTags.decimalFrac)) {
       tags.clear();
@@ -660,7 +686,10 @@ class CborUtils {
         consumed += 8;
         break;
       default:
-        throw const BuError(DefaultErrorType.invalidLength,"Invalid simple/float tag length.");
+        throw const BuError(
+          DefaultErrorType.invalidLength,
+          "Invalid simple/float tag length.",
+        );
     }
     if (BytesUtils.bytesEqual(tags, CborTags.dateEpoch)) {
       final dt = DateTime.fromMillisecondsSinceEpoch((val * 1000).round());

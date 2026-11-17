@@ -25,6 +25,7 @@ abstract interface class Sr25519SigningApi {
     bool uniform = false,
     List<int>? context,
   });
+
   /// Expands 32-byte [seed] into 64-byte secret (key‖nonce); [uniform] selects ExpandSecretKeys expansion. Throws on invalid seed length.
   BuBytes secretFromSeed(List<int> seed, {bool uniform = false});
 
@@ -35,8 +36,10 @@ abstract interface class Sr25519SigningApi {
     required List<int> signature,
     List<int>? context,
   });
+
   /// Converts 64-byte sr25519 secret [sk64] to 64-byte ed25519-expanded bytes (scalar multiplied by cofactor). Throws on invalid length.
   BuBytes toEd25519Bytes(List<int> sk64);
+
   /// Hard HDKD derive from [seedOrSk] (32-byte seed when [fromSeed] else 64-byte secret) and 32-byte [chainCode32] with optional [message]. Returns (secret64, chainCode32). Throws on invalid lengths.
   (BuBytes, BuBytes) hardDerive({
     required List<int> seedOrSk,

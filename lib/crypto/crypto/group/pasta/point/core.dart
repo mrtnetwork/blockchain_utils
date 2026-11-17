@@ -34,9 +34,7 @@ enum PastaCurveName {
 /// for point arithmetic (no `bool` on secret data).
 Uint64 pastaIsZeroMask(PastaFieldElement e) {
   assert(e.limbs.length == 4);
-  return Uint64.isZeroMask(
-        e.limbs[0] | e.limbs[1] | e.limbs[2] | e.limbs[3],
-      ) &
+  return Uint64.isZeroMask(e.limbs[0] | e.limbs[1] | e.limbs[2] | e.limbs[3]) &
       Uint64.one;
 }
 
@@ -76,8 +74,6 @@ class PastaCurveParams<F extends PastaFieldElement<F>> with Equality {
     ]),
     name: PastaCurveName.vesta,
   );
-
-
 
   static const PastaCurveParams<PallasFp> isoPallas =
       PastaCurveParams<PallasFp>(

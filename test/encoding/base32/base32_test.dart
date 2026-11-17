@@ -113,19 +113,13 @@ void base32Test() {
 
   group('error handling', () {
     test('invalid character throws Base32FormatError', () {
-      expect(
-        () => Base32Decoder.decode('MY0!'),
-        throwsA(isA<BuError>()),
-      );
+      expect(() => Base32Decoder.decode('MY0!'), throwsA(isA<BuError>()));
     });
 
     test('lowercase input (not in the standard alphabet) is rejected', () {
       // The standard RFC 4648 alphabet is uppercase-only; lowercase 'my'
       // isn't valid unless you explicitly pass a lowercase alphabet.
-      expect(
-        () => Base32Decoder.decode('my'),
-        throwsA(isA<BuError>()),
-      );
+      expect(() => Base32Decoder.decode('my'), throwsA(isA<BuError>()));
     });
   });
 }

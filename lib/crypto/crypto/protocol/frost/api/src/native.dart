@@ -82,9 +82,7 @@ class NativeFrostApi implements FrostApi {
   static BuBytes _idsConcat(List<int> ids) {
     final out = <int>[];
     for (final id in ids) {
-      out.addAll(
-        IntUtils.toBytes(id, length: 4, byteOrder: Endian.little),
-      );
+      out.addAll(IntUtils.toBytes(id, length: 4, byteOrder: Endian.little));
     }
     return BuBytes(out);
   }

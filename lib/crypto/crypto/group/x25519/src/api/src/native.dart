@@ -8,9 +8,8 @@ class NativeX25519Api implements X25519Api {
   final BuX25519Api _api;
 
   @override
-  BuBytes x25519({required List<int> scalar, required List<int> u}) => _api
-      .x25519(scalar: scalar, u: u)
-      .unwrapOrThrowCryptoError();
+  BuBytes x25519({required List<int> scalar, required List<int> u}) =>
+      _api.x25519(scalar: scalar, u: u).unwrapOrThrowCryptoError();
 
   @override
   BuBytes publicKey(List<int> privateKey) =>
@@ -20,19 +19,18 @@ class NativeX25519Api implements X25519Api {
   BuBytes diffieHellman({
     required List<int> privateKey,
     required List<int> peerPublic,
-  }) => _api
-      .diffieHellman(privateKey: privateKey, peerPublic: peerPublic)
-      .unwrapOrThrowCryptoError();
+  }) =>
+      _api
+          .diffieHellman(privateKey: privateKey, peerPublic: peerPublic)
+          .unwrapOrThrowCryptoError();
 
   @override
-  BuBytes fromEd25519PublicKey(List<int> ed25519Pk) => _api
-      .fromEd25519PublicKey(ed25519Pk)
-      .unwrapOrThrowCryptoError();
+  BuBytes fromEd25519PublicKey(List<int> ed25519Pk) =>
+      _api.fromEd25519PublicKey(ed25519Pk).unwrapOrThrowCryptoError();
 
   @override
-  BuBytes fromEd25519Seed(List<int> seed) => _api
-      .fromEd25519Seed(seed)
-      .unwrapOrThrowCryptoError();
+  BuBytes fromEd25519Seed(List<int> seed) =>
+      _api.fromEd25519Seed(seed).unwrapOrThrowCryptoError();
 }
 
 /// [X25519Api] wrapper that validates every argument's length before delegating.

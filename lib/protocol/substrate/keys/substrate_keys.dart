@@ -48,7 +48,10 @@ class SubstratePrvKey with SecretState {
     try {
       return IPrivateKey.fromBytes(keyBytes, curve);
     } on BuError {
-      throw const BuError(DefaultErrorType.badPrivateKey,'Invalid private key');
+      throw const BuError(
+        DefaultErrorType.badPrivateKey,
+        'Invalid private key',
+      );
     }
   }
 
@@ -107,7 +110,7 @@ class SubstratePubKey {
     try {
       return IPublicKey.fromBytes(keyBytes, curve);
     } catch (e) {
-      throw const BuError(DefaultErrorType.badPublicKey,'Invalid public key');
+      throw const BuError(DefaultErrorType.badPublicKey, 'Invalid public key');
     }
   }
 }

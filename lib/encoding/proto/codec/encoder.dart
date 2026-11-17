@@ -27,7 +27,8 @@ class ProtoBufferEncoder {
   }) {
     final bufferFields = config.fields;
     if (bufferFields.length != protoValues.length) {
-      throw BuError(DefaultErrorType.invalidLength,
+      throw BuError(
+        DefaultErrorType.invalidLength,
         "The values and field IDs must have the same length.",
         details: {
           "fieldIds": bufferFields.length.toString(),

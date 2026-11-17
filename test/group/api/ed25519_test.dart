@@ -26,6 +26,7 @@ class ED25519CurveTest extends CurveTest<Ed25519CurveApi> {
     required super.randomGenerator,
     required super.name,
   });
+
   /// Ed25519 group order (test-only literal; lib holds limbs only).
   static final BigInt edOrder = BigInt.parse(
     '1000000000000000000000000000000014def9dea2f79cd65812631a5cf5d3ed',

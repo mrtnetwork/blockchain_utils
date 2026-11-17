@@ -56,10 +56,7 @@ void utf8Test() {
     });
 
     test('truncated sequence throws by default', () {
-      expect(
-        () => UTF8Decoder.decode([0xE0, 0x82]),
-        throwsA(isA<BuError>()),
-      );
+      expect(() => UTF8Decoder.decode([0xE0, 0x82]), throwsA(isA<BuError>()));
     });
 
     test('truncated sequence is replaced when allowMalformed', () {
@@ -130,17 +127,11 @@ void utf8Test() {
 
   group('ASCIIEncoder / ASCIIDecoder error handling', () {
     test('encode throws on a non-ASCII character', () {
-      expect(
-        () => ASCIIEncoder.encode('caf\u00e9'),
-        throwsA(isA<BuError>()),
-      );
+      expect(() => ASCIIEncoder.encode('caf\u00e9'), throwsA(isA<BuError>()));
     });
 
     test('decode throws on a non-ASCII byte by default', () {
-      expect(
-        () => ASCIIDecoder.decode([0x41, 0xFF]),
-        throwsA(isA<BuError>()),
-      );
+      expect(() => ASCIIDecoder.decode([0x41, 0xFF]), throwsA(isA<BuError>()));
     });
 
     test(

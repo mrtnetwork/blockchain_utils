@@ -10,7 +10,6 @@ class NativeEd25519CurveApi implements Ed25519CurveApi {
   const NativeEd25519CurveApi(this._api);
   final BuEd25519CurveApi _api;
 
-
   @override
   int get pointLen => _api.pointLen;
 
@@ -37,8 +36,7 @@ class NativeEd25519CurveApi implements Ed25519CurveApi {
       _api.sub(a, b).unwrapOrThrowCryptoError();
 
   @override
-  BuBytes neg(List<int> point) =>
-      _api.neg(point).unwrapOrThrowCryptoError();
+  BuBytes neg(List<int> point) => _api.neg(point).unwrapOrThrowCryptoError();
 
   @override
   BuBytes scAdd(List<int> a, List<int> b) =>
@@ -53,20 +51,16 @@ class NativeEd25519CurveApi implements Ed25519CurveApi {
       _api.scMul(a, b).unwrapOrThrowCryptoError();
 
   @override
-  BuBytes scNeg(List<int> s) =>
-      _api.scNeg(s).unwrapOrThrowCryptoError();
+  BuBytes scNeg(List<int> s) => _api.scNeg(s).unwrapOrThrowCryptoError();
 
   @override
-  BuBytes scReduce(List<int> s) =>
-      _api.scReduce(s).unwrapOrThrowCryptoError();
+  BuBytes scReduce(List<int> s) => _api.scReduce(s).unwrapOrThrowCryptoError();
 
   @override
-  BuBytes generator() =>
-      _api.generator().unwrapOrThrowCryptoError();
+  BuBytes generator() => _api.generator().unwrapOrThrowCryptoError();
 
   @override
-  BuBytes identity() =>
-      _api.identity().unwrapOrThrowCryptoError();
+  BuBytes identity() => _api.identity().unwrapOrThrowCryptoError();
 
   @override
   BuBytes mulAdd(List<int> s1, List<int> p1, List<int> s2, List<int> p2) =>
@@ -86,9 +80,7 @@ class NativeEd25519CurveApi implements Ed25519CurveApi {
   /// Returns [1P, 3P, 5P, 7P, 9P, 11P, 13P, 15P]
   @override
   List<List<int>> geDsmPrecompVar(List<int> p) {
-    final result = _api
-        .geDsmPrecomp(p)
-        .unwrapOrThrowCryptoError();
+    final result = _api.geDsmPrecomp(p).unwrapOrThrowCryptoError();
     return List.generate(8, (i) {
       final start = i * 32;
 
@@ -146,9 +138,7 @@ class NativeEd25519CurveApi implements Ed25519CurveApi {
     required List<int> b,
     List<List<int>>? basePrecomp, // optional cached geBaseDsmPrecompVar(api)
   }) {
-    return _api
-        .geDoubleScalarMultBase(a, g, b)
-        .unwrapOrThrowCryptoError();
+    return _api.geDoubleScalarMultBase(a, g, b).unwrapOrThrowCryptoError();
   }
 
   @override

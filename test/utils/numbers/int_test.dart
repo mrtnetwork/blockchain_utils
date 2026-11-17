@@ -242,22 +242,34 @@ void intTest() {
     test('7-byte value exceeding the safe-int range throws', () {
       final tooLarge = BinaryOps.safeUintBigInt + BigInt.one;
       final bytes = encodeBytes(tooLarge, 7);
-      expect(() => IntUtils.fromBytes(bytes, sign: false), throwsArgumentException);
+      expect(
+        () => IntUtils.fromBytes(bytes, sign: false),
+        throwsArgumentException,
+      );
     });
 
     test('8 bytes, value too large for int64 throws (2^64 - 1)', () {
       final bytes = List<int>.filled(8, 0xFF);
-      expect(() => IntUtils.fromBytes(bytes, sign: false), throwsArgumentException);
+      expect(
+        () => IntUtils.fromBytes(bytes, sign: false),
+        throwsArgumentException,
+      );
     });
 
     test('8 bytes, max signed int64 (2^63 - 1) throws (not a safe int)', () {
       final bytes = [0x7F, ...List<int>.filled(7, 0xFF)];
-      expect(() => IntUtils.fromBytes(bytes, sign: true), throwsArgumentException);
+      expect(
+        () => IntUtils.fromBytes(bytes, sign: true),
+        throwsArgumentException,
+      );
     });
 
     test('8 bytes, min signed int64 (-2^63) throws (not a safe int)', () {
       final bytes = [0x80, ...List<int>.filled(7, 0x00)];
-      expect(() => IntUtils.fromBytes(bytes, sign: true), throwsArgumentException);
+      expect(
+        () => IntUtils.fromBytes(bytes, sign: true),
+        throwsArgumentException,
+      );
     });
   });
 
@@ -271,7 +283,10 @@ void intTest() {
     test('one past safeUintBigInt throws', () {
       final v = BinaryOps.safeUintBigInt + BigInt.one;
       final bytes = encodeBytes(v, 8);
-      expect(() => IntUtils.fromBytes(bytes, sign: false), throwsArgumentException);
+      expect(
+        () => IntUtils.fromBytes(bytes, sign: false),
+        throwsArgumentException,
+      );
     });
 
     test(
@@ -286,7 +301,10 @@ void intTest() {
     test('one past safeIntBigInt (more negative) throws', () {
       final v = BinaryOps.safeIntBigInt - BigInt.one;
       final bytes = encodeBytes(v, 8);
-      expect(() => IntUtils.fromBytes(bytes, sign: true), throwsArgumentException);
+      expect(
+        () => IntUtils.fromBytes(bytes, sign: true),
+        throwsArgumentException,
+      );
     });
 
     test('REGRESSION: this is the exact bug that motivated isSafeInt() — '
@@ -299,7 +317,10 @@ void intTest() {
       expect(tooLargeToBeSafe.isSafeInt(), isFalse);
 
       final bytes = encodeBytes(tooLargeToBeSafe, 8);
-      expect(() => IntUtils.fromBytes(bytes, sign: true), throwsArgumentException);
+      expect(
+        () => IntUtils.fromBytes(bytes, sign: true),
+        throwsArgumentException,
+      );
     });
   });
 }

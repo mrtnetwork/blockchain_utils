@@ -27,4 +27,3 @@ export 'package:blockchain_utils/protocol/bip/electrum/electrum_v1.dart';
 
 /// Export statement for Electrum-style version 2 (v2) address keys and derivation.
 export 'package:blockchain_utils/protocol/bip/electrum/electrum_v2.dart';
-

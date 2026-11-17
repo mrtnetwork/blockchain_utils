@@ -656,11 +656,17 @@ extension ExtProtocolBufferFiled on ProtoBufferDecoderResult {
         final value = v3DefaultValue();
         if (value != null) return value;
       }
-      throw BuError(DefaultErrorType.invalidArgument,"Missing value for fieldNumber $fieldNumber");
+      throw BuError(
+        DefaultErrorType.invalidArgument,
+        "Missing value for fieldNumber $fieldNumber",
+      );
     }
     if (expectedFieldType.isNotEmpty &&
         !expectedFieldType.contains(current.config.fieldType)) {
-      throw BuError(DefaultErrorType.unsupported,"Unsupported field type for conversion as $T.");
+      throw BuError(
+        DefaultErrorType.unsupported,
+        "Unsupported field type for conversion as $T.",
+      );
     }
     final v = current.value;
     if (convert != null) {
@@ -840,7 +846,10 @@ extension ExtProtocolBufferFiled on ProtoBufferDecoderResult {
       if (syntax.isV3) {
         return <K, V>{};
       }
-      throw BuError(DefaultErrorType.invalidArgument,"Missing value for fieldNumber $fieldNumber");
+      throw BuError(
+        DefaultErrorType.invalidArgument,
+        "Missing value for fieldNumber $fieldNumber",
+      );
     }
     return Map<K, V>.fromEntries(
       data.map(
@@ -864,7 +873,10 @@ extension ExtProtocolBufferFiled on ProtoBufferDecoderResult {
       if (syntax.isV3) {
         return <K, V>{};
       }
-      throw BuError(DefaultErrorType.invalidArgument,"Missing value for fieldNumber $fieldNumber");
+      throw BuError(
+        DefaultErrorType.invalidArgument,
+        "Missing value for fieldNumber $fieldNumber",
+      );
     }
     return Map<K, V>.fromEntries(
       data.map((e) => MapEntry<K, V>(keyMapper(e.key), valueMapper(e.value))),
@@ -895,7 +907,8 @@ extension ExtProtocolBufferFiled on ProtoBufferDecoderResult {
     return values.firstWhere(
       (e) => e.value == index || e.value == neg,
       orElse: () {
-        throw BuError(DefaultErrorType.notFound,
+        throw BuError(
+          DefaultErrorType.notFound,
           "No matching ${values.firstOrNull?.runtimeType ?? 'enum'} value found.",
           details: {
             "values": values.map((e) => e.protoName).join(", "),
@@ -921,16 +934,23 @@ extension ExtProtocolBufferFiled on ProtoBufferDecoderResult {
               (e) => e.value == 0,
               orElse:
                   () =>
-                      throw BuError(DefaultErrorType.invalidArgument,
+                      throw BuError(
+                        DefaultErrorType.invalidArgument,
                         "Missing value for fieldNumber $fieldNumber",
                       ),
             )
             as T;
       }
-      throw BuError(DefaultErrorType.invalidArgument,"Missing value for fieldNumber $fieldNumber");
+      throw BuError(
+        DefaultErrorType.invalidArgument,
+        "Missing value for fieldNumber $fieldNumber",
+      );
     }
     if (current.config.fieldType != ProtoFieldType.enumType) {
-      throw BuError(DefaultErrorType.unsupported,"Unsupported field type for conversion as $T.");
+      throw BuError(
+        DefaultErrorType.unsupported,
+        "Unsupported field type for conversion as $T.",
+      );
     }
     return JsonParser.valueAs(_toEnum(defaultValues, current.value));
   }
@@ -946,7 +966,10 @@ extension ExtProtocolBufferFiled on ProtoBufferDecoderResult {
       if (syntax.isV3) {
         return <T>[];
       }
-      throw BuError(DefaultErrorType.invalidArgument,"Missing value for fieldNumber $fieldNumber");
+      throw BuError(
+        DefaultErrorType.invalidArgument,
+        "Missing value for fieldNumber $fieldNumber",
+      );
     }
     return JsonParser.valueEnsureAsList<T>(
       current.map((e) => _toEnum(values, e)).toList(),

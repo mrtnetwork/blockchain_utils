@@ -127,8 +127,7 @@ class Bn254Fp2 with Equality {
     return Bn254Fp2(c0: c0 * t, c1: -c1 * t);
   }
 
-  Bn254Fp2 frobeniusMap([int power = 1]) =>
-      power % 2 == 0 ? this : conjugate();
+  Bn254Fp2 frobeniusMap([int power = 1]) => power % 2 == 0 ? this : conjugate();
 
   Bn254Fp2 powVarTime(List<Uint64> exponent) {
     var res = Bn254Fp2.one;

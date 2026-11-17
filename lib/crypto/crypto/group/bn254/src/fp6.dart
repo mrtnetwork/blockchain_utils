@@ -36,16 +36,10 @@ class Bn254Fp6 with Equality {
 
   bool isZero() => c0.isZero() && c1.isZero() && c2.isZero();
 
-  Bn254Fp6 operator +(Bn254Fp6 rhs) => Bn254Fp6(
-    c0: c0 + rhs.c0,
-    c1: c1 + rhs.c1,
-    c2: c2 + rhs.c2,
-  );
-  Bn254Fp6 operator -(Bn254Fp6 rhs) => Bn254Fp6(
-    c0: c0 - rhs.c0,
-    c1: c1 - rhs.c1,
-    c2: c2 - rhs.c2,
-  );
+  Bn254Fp6 operator +(Bn254Fp6 rhs) =>
+      Bn254Fp6(c0: c0 + rhs.c0, c1: c1 + rhs.c1, c2: c2 + rhs.c2);
+  Bn254Fp6 operator -(Bn254Fp6 rhs) =>
+      Bn254Fp6(c0: c0 - rhs.c0, c1: c1 - rhs.c1, c2: c2 - rhs.c2);
   Bn254Fp6 operator -() => Bn254Fp6(c0: -c0, c1: -c1, c2: -c2);
   Bn254Fp6 operator *(Bn254Fp6 rhs) {
     final t0 = c0 * rhs.c0;
@@ -53,11 +47,7 @@ class Bn254Fp6 with Equality {
     final t2 = c2 * rhs.c2;
     return Bn254Fp6(
       c0: t0 + ((c1 + c2) * (rhs.c1 + rhs.c2) - t1 - t2).mulByNonresidue(),
-      c1:
-          (c0 + c1) * (rhs.c0 + rhs.c1) -
-          t0 -
-          t1 +
-          t2.mulByNonresidue(),
+      c1: (c0 + c1) * (rhs.c0 + rhs.c1) - t0 - t1 + t2.mulByNonresidue(),
       c2: t1 + (c0 + c2) * (rhs.c0 + rhs.c2) - t0 - t2,
     );
   }
@@ -78,8 +68,7 @@ class Bn254Fp6 with Equality {
     final t0 = c0.square() - (c2 * c1).mulByNonresidue();
     final t1 = c2.square().mulByNonresidue() - c0 * c1;
     final t2 = c1.square() - c0 * c2;
-    final tmp =
-        ((c1 * t2) + (c2 * t1)).mulByNonresidue() + (c0 * t0);
+    final tmp = ((c1 * t2) + (c2 * t1)).mulByNonresidue() + (c0 * t0);
     final t = tmp.invert();
     if (t == null) return null;
     return Bn254Fp6(c0: t * t0, c1: t * t1, c2: t * t2);
@@ -93,11 +82,8 @@ class Bn254Fp6 with Equality {
       Bn254Fp6(c0: c0 * rhs, c1: c1 * rhs, c2: c2 * rhs);
 
   /// Sparse mul by (0, b1).
-  Bn254Fp6 mul1(Bn254Fp2 b1) => Bn254Fp6(
-    c0: (c2 * b1).mulByNonresidue(),
-    c1: c0 * b1,
-    c2: c1 * b1,
-  );
+  Bn254Fp6 mul1(Bn254Fp2 b1) =>
+      Bn254Fp6(c0: (c2 * b1).mulByNonresidue(), c1: c0 * b1, c2: c1 * b1);
 
   /// Sparse mul by (b0, b1).
   Bn254Fp6 mul01(Bn254Fp2 b0, Bn254Fp2 b1) {

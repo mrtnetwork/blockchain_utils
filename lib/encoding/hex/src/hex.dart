@@ -5,7 +5,6 @@ library;
 
 import 'package:blockchain_utils_connector/blockchain_utils_connector.dart';
 
-
 const HexCodec hex = HexCodec();
 
 class HexCodec {
@@ -64,7 +63,8 @@ class HexCodec {
     for (var i = 0; i < length; i++) {
       final byte = data[i];
       if (byte < 0 || byte > 0xFF) {
-        throw BuError(DefaultErrorType.invalidArgument,
+        throw BuError(
+          DefaultErrorType.invalidArgument,
           'Invalid bytes.',
           details: {'reason': 'byte value $byte at index $i is outside 0..255'},
         );
@@ -82,7 +82,8 @@ class HexCodec {
   BuBytes decode(String hexStr) {
     if (hexStr.isEmpty) return BuBytes.empty();
     if (!hexStr.length.isEven) {
-      throw BuError(DefaultErrorType.invalidLength,
+      throw BuError(
+        DefaultErrorType.invalidLength,
         'Invalid hex string.',
         details: {'reason': 'odd length (${hexStr.length})'},
       );
@@ -105,7 +106,8 @@ class HexCodec {
     }
 
     if (firstBadIndex != -1) {
-      throw BuError(DefaultErrorType.badHex,
+      throw BuError(
+        DefaultErrorType.badHex,
         'Invalid hex string.',
         details: {
           'reason':

@@ -24,7 +24,8 @@ class CborSafeIntValue extends CborNumeric<BigInt> {
   BuBytes encode() {
     if ((value.isNegative && value < BinaryOps.minInt64) ||
         value > BinaryOps.maxU64) {
-      throw BuError(DefaultErrorType.invalidLength,
+      throw BuError(
+        DefaultErrorType.invalidLength,
         "Invalid integer value.",
         details: {"reason": "Value is too large for type int."},
       );

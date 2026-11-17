@@ -572,15 +572,42 @@ class QuickCrypto {
 
   static Rng get prng => _prng;
 
+  static bool _sealed = false;
+
+  /// Whether [seal] was called on the RNG. Also returns true once
+  /// `blockchainUtils` itself is sealed, so sealing the backend also
+  /// locks the random source.
+  static bool get isSealed => _sealed || blockchainUtils.isSealed;
+
+  /// One-way latch: after [seal], [setupPRNG], [setupRandom] and
+  /// [setupBackendRng] throw. Call once during app startup to prevent
+  /// any later code from swapping the random source (e.g. with a
+  /// deterministic generator that makes keys predictable).
+  /// Tests never seal.
+  static void seal() => _sealed = true;
+
+  static void _checkNotSealed(String op) {
+    if (isSealed) {
+      throw BuError(
+        DefaultErrorType.invalidState,
+        'QuickCrypto is sealed ($op blocked): random source can no longer '
+        'be swapped.',
+      );
+    }
+  }
+
   static CbGenerateRandom _generateRandom = (length) {
     return prng.nextBytes(length);
   };
 
-  static void setupPRNG(Rng prng) {
+  static void setupPRNG(Rng prng, {bool seal = false}) {
+    _checkNotSealed('setupPRNG');
     _prng = prng;
+    if (seal) QuickCrypto.seal();
   }
 
-  static void setupRandom(CbGenerateRandom? random) {
+  static void setupRandom(CbGenerateRandom? random, {bool seal = false}) {
+    _checkNotSealed('setupRandom');
     if (random == null) {
       _generateRandom = (length) {
         return prng.nextBytes(length);
@@ -588,6 +615,7 @@ class QuickCrypto {
     } else {
       _generateRandom = random;
     }
+    if (seal) QuickCrypto.seal();
   }
 
   /// Routes [generateRandom] through the active backend RNG
@@ -598,7 +626,8 @@ class QuickCrypto {
   /// `setRustApi`/`setDartApi` switches. Prefer [BlockchainUtils.setRustApi]
   /// (which calls this) and [BlockchainUtils.setDartApi] (which restores
   /// [setupRandom] `null`) over calling this directly.
-  static void setupBackendRng() {
+  static void setupBackendRng({bool seal = false}) {
+    _checkNotSealed('setupBackendRng');
     final backend = blockchainUtils.api.rng;
     if (backend is NativeRngApi && !backend.isSeeded) {
       // `dart test` runs files in concurrent isolates sharing one process
@@ -617,6 +646,7 @@ class QuickCrypto {
       if (active is NativeRngApi) return active.fill(length: length).asBytes;
       return _prng.nextBytes(length);
     };
+    if (seal) QuickCrypto.seal();
   }
 
   /// This function generates a random `List<int>` of the specified size (default is 32 bytes).

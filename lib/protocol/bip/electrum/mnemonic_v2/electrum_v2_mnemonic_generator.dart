@@ -1,4 +1,3 @@
-
 import 'package:blockchain_utils/protocol/bip/electrum/mnemonic_v2/electrum_v2_entropy_generator.dart';
 import 'package:blockchain_utils/protocol/bip/electrum/mnemonic_v2/electrum_v2_mnemonic.dart';
 import 'package:blockchain_utils/protocol/bip/electrum/mnemonic_v2/electrum_v2_mnemonic_encoder.dart';
@@ -56,12 +55,16 @@ class ElectrumV2MnemonicGenerator {
           return encode;
         } on BuError catch (e) {
           if (e.type != DefaultErrorType.invalidArgument) rethrow;
+
           /// Continue to the next attempt if encoding fails
           continue;
         }
       }
     }
 
-    throw const BuError(DefaultErrorType.invalidMnemonic,'Unable to generate a valid mnemonic.');
+    throw const BuError(
+      DefaultErrorType.invalidMnemonic,
+      'Unable to generate a valid mnemonic.',
+    );
   }
 }

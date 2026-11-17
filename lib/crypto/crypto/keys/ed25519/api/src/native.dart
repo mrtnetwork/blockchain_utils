@@ -36,9 +36,7 @@ class NativeED25519SigningApi implements ED25519SigningApi {
       variant: _toBuKeyType(type),
     );
 
-    return signature
-        .map((s) => s.bytes)
-        .unwrapOrThrowCryptoError();
+    return signature.map((s) => s.bytes).unwrapOrThrowCryptoError();
   }
 
   @override

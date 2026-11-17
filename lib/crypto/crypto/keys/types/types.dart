@@ -97,7 +97,12 @@ enum CryptoKeyType {
     return CryptoKeyType.values.firstWhere(
       (element) => element.name == name,
       orElse:
-          () => throw BuError(DefaultErrorType.notFound, "No matching CryptoKeyType found for the given value. $name", details: {"name": "CryptoKeyType", "value": name.toString()}),
+          () =>
+              throw BuError(
+                DefaultErrorType.notFound,
+                "No matching CryptoKeyType found for the given value. $name",
+                details: {"name": "CryptoKeyType", "value": name.toString()},
+              ),
     );
   }
 
@@ -107,7 +112,11 @@ enum CryptoKeyType {
       (element) => element.value == value,
       orElse:
           () =>
-              throw BuError(DefaultErrorType.notFound, "No matching CryptoKeyType found for the given value. $value", details: {"name": "CryptoKeyType", "value": value.toString()}),
+              throw BuError(
+                DefaultErrorType.notFound,
+                "No matching CryptoKeyType found for the given value. $value",
+                details: {"name": "CryptoKeyType", "value": value.toString()},
+              ),
     );
   }
 
@@ -136,7 +145,10 @@ enum CryptoKeyEncoding {
       (e) => e.value == value,
       orElse: () {
         if (defaultValue != null && value == null) return defaultValue;
-        throw BuError(DefaultErrorType.notFound, "No matching item found for the given value. $value");
+        throw BuError(
+          DefaultErrorType.notFound,
+          "No matching item found for the given value. $value",
+        );
       },
     );
   }
@@ -152,7 +164,12 @@ abstract class ISignature with Equality {
 
   /// Casts this signature to a specific subtype, or throws.
   T cast<T extends ISignature>() {
-    if (this is! T) throw BuError(DefaultErrorType.castFailed, "Failed to cast value", details: {"expected": "T", "value": runtimeType.toString()});
+    if (this is! T)
+      throw BuError(
+        DefaultErrorType.castFailed,
+        "Failed to cast value",
+        details: {"expected": "T", "value": runtimeType.toString()},
+      );
     return this as T;
   }
 }
@@ -248,9 +265,15 @@ class IECDSASignature extends ISignature {
       }
     }
     if (encoding == null) {
-      throw BuError(DefaultErrorType.invalidSignature,"Unknown signature encoding.");
+      throw BuError(
+        DefaultErrorType.invalidSignature,
+        "Unknown signature encoding.",
+      );
     }
-    const invalidLength = BuError(DefaultErrorType.invalidLength,"Invalid signature bytes length.");
+    const invalidLength = BuError(
+      DefaultErrorType.invalidLength,
+      "Invalid signature bytes length.",
+    );
 
     switch (encoding) {
       case ECDSASignatureEncoding.raw:
@@ -272,7 +295,10 @@ class IECDSASignature extends ISignature {
               : bytes.last,
         );
         if (recoveryId == null) {
-          throw BuError(DefaultErrorType.invalidSignature,"Invalid ECDSA signature recovery ID.");
+          throw BuError(
+            DefaultErrorType.invalidSignature,
+            "Invalid ECDSA signature recovery ID.",
+          );
         }
         if (encoding == ECDSASignatureEncoding.prefixRecoveryId) {
           return IECDSASignature(
@@ -291,7 +317,8 @@ class IECDSASignature extends ISignature {
           final (r, s) = DerCodec.decodeEcdsaSignatureDer(bytes);
           return IECDSASignature(r: r, s: s);
         } catch (e) {
-          throw BuError(DefaultErrorType.invalidSignature,
+          throw BuError(
+            DefaultErrorType.invalidSignature,
             "Invalid ECDSA Der signature.",
             details: {"reason": e.toString()},
           );

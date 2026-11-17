@@ -9,16 +9,16 @@ abstract final class CoreErrors {
     required String reason,
     String? name,
     Map<String, String?>? details,
-  }) =>
-      BuError(
-        DefaultErrorType.invalidArgument,
-        "Invalid $operation arguments.",
-        details: {
+  }) => BuError(
+    DefaultErrorType.invalidArgument,
+    "Invalid $operation arguments.",
+    details:
+        {
           "reason": reason,
           if (name != null) "name": name,
           ...details ?? {},
         }.notNullValue,
-      );
+  );
 
   static BuError badState(
     String operation, {
@@ -26,23 +26,21 @@ abstract final class CoreErrors {
     required String reason,
     int? expecteLen,
     Map<String, dynamic>? details,
-  }) =>
-      BuError(
-        DefaultErrorType.invalidState,
-        "$operation not allowed in current state.",
-        details: {"expected": operation, "reason": reason},
-      );
+  }) => BuError(
+    DefaultErrorType.invalidState,
+    "$operation not allowed in current state.",
+    details: {"expected": operation, "reason": reason},
+  );
 
   static BuError cryptoFailed(
     String operation, {
     String? reason,
     Map<String, String>? details,
-  }) =>
-      BuError(
-        DefaultErrorType.crypto,
-        "Crypto operation failed during $operation",
-        details: {"reason": reason, ...details ?? {}},
-      );
+  }) => BuError(
+    DefaultErrorType.crypto,
+    "Crypto operation failed during $operation",
+    details: {"reason": reason, ...details ?? {}},
+  );
 
   static const cryptoOperationNotSupported = BuError(
     DefaultErrorType.unsupported,
@@ -53,88 +51,74 @@ abstract final class CoreErrors {
     String? network,
     String? reason,
     Map<String, String?>? details,
-  }) =>
-      BuError(
-        DefaultErrorType.invalidAddress,
-        network == null
-            ? "Invalid address format."
-            : "Invalid $network address format.",
-        details:
-            {"network": network, ...details ?? {}, "reason": reason}.notNullValue,
-      );
+  }) => BuError(
+    DefaultErrorType.invalidAddress,
+    network == null
+        ? "Invalid address format."
+        : "Invalid $network address format.",
+    details:
+        {"network": network, ...details ?? {}, "reason": reason}.notNullValue,
+  );
 
   static BuError addressKeyValidationFailed({
     String? network,
     String? reason,
     Map<String, String?>? details,
-  }) =>
-      BuError(
-        DefaultErrorType.invalidAddress,
-        network == null
-            ? "Invalid address key format."
-            : "Invalid $network address key format.",
-        details:
-            {
-              "network": network,
-              ...details ?? {},
-              "reason": reason,
-            }.notNullValue,
-      );
+  }) => BuError(
+    DefaultErrorType.invalidAddress,
+    network == null
+        ? "Invalid address key format."
+        : "Invalid $network address key format.",
+    details:
+        {"network": network, ...details ?? {}, "reason": reason}.notNullValue,
+  );
 
   static BuError addressBytesValidationFailed({
     String? network,
     String? reason,
     Map<String, String?>? details,
-  }) =>
-      BuError(
-        DefaultErrorType.invalidAddress,
-        network == null
-            ? "Invalid address encoding."
-            : "Invalid $network address encoding.",
-        details:
-            {"network": network, ...details ?? {}, "reason": reason}.notNullValue,
-      );
+  }) => BuError(
+    DefaultErrorType.invalidAddress,
+    network == null
+        ? "Invalid address encoding."
+        : "Invalid $network address encoding.",
+    details:
+        {"network": network, ...details ?? {}, "reason": reason}.notNullValue,
+  );
 
   static BuError missingOrInvalidAddressArguments({
     String? network,
     String? reason,
     Map<String, String?>? details,
-  }) =>
-      BuError(
-        DefaultErrorType.invalidArgument,
-        "Missing or invalid conversion address arguments.",
-        details:
-            {"network": network, ...details ?? {}, "reason": reason}.notNullValue,
-      );
+  }) => BuError(
+    DefaultErrorType.invalidArgument,
+    "Missing or invalid conversion address arguments.",
+    details:
+        {"network": network, ...details ?? {}, "reason": reason}.notNullValue,
+  );
 
   static BuError signInvalidArguments(
     String operation, {
     String? name,
     String? reason,
     Map<String, String?>? details,
-  }) =>
-      BuError(
-        DefaultErrorType.invalidArgument,
-        "Invalid $operation arguments.",
-        details:
-            {
-              "name": name,
-              ...details ?? {},
-              "reason": reason,
-            }.notNullValue,
-      );
+  }) => BuError(
+    DefaultErrorType.invalidArgument,
+    "Invalid $operation arguments.",
+    details: {"name": name, ...details ?? {}, "reason": reason}.notNullValue,
+  );
 
   static BuError unknownKey([String? type]) => BuError(
-        DefaultErrorType.invalidArgument,
-        "Unknown signing key.",
-        details: {"type": type}.notNullValue,
-      );
+    DefaultErrorType.invalidArgument,
+    "Unknown signing key.",
+    details: {"type": type}.notNullValue,
+  );
 
   static BuError unsupportedKeyType(String type) => BuError(
-        DefaultErrorType.unsupported,
-        "Unsupported key type.",
-        details: {"type": type},
-      );
+    DefaultErrorType.unsupported,
+    "Unsupported key type.",
+    details: {"type": type},
+  );
 
   static const signVerificationFailed = BuError(
     DefaultErrorType.cryptoVerifyFailed,
@@ -145,18 +129,17 @@ abstract final class CoreErrors {
     String operation, {
     Map<String, String>? details,
     String? reason,
-  }) =>
-      BuError(
-        DefaultErrorType.crypto,
-        "Pedersen operation failed during $operation.",
-        details: {...details ?? {}, "reason": reason},
-      );
+  }) => BuError(
+    DefaultErrorType.crypto,
+    "Pedersen operation failed during $operation.",
+    details: {...details ?? {}, "reason": reason},
+  );
 
   static BuError incorrectTagValue({List<int>? tag}) => BuError(
-        DefaultErrorType.castFailed,
-        "Incorrect CBOR tag value.",
-        details: {"tag": tag?.toString()},
-      );
+    DefaultErrorType.castFailed,
+    "Incorrect CBOR tag value.",
+    details: {"tag": tag?.toString()},
+  );
 
   static Never castingFailed<T extends Object?>(
     Object? value, {
@@ -174,74 +157,65 @@ abstract final class CoreErrors {
   }
 
   static BuError jsonFailed(String? reason, {Object? value}) => BuError(
-        DefaultErrorType.unsupported,
-        "Converting object to an encodable object failed.",
-        details: {"reason": reason, "value": value?.toString()}.notNullValue,
-      );
+    DefaultErrorType.unsupported,
+    "Converting object to an encodable object failed.",
+    details: {"reason": reason, "value": value?.toString()}.notNullValue,
+  );
 
   static BuError jsonCycleError(Object? value) => BuError(
-        DefaultErrorType.unsupported,
-        "Converting object to an encodable object failed.",
-        details: {
-          "reason": 'Cyclic reference detected',
-          "value": value?.toString(),
-        },
-      );
+    DefaultErrorType.unsupported,
+    "Converting object to an encodable object failed.",
+    details: {
+      "reason": 'Cyclic reference detected',
+      "value": value?.toString(),
+    },
+  );
 
   /// Known JSON shape error: a required key is absent from the map.
   static BuError jsonKeyNotFound(
     Object? key, {
     Map<String, String?>? details,
-  }) =>
-      BuError(
-        DefaultErrorType.badJson,
-        "Missing key: '$key'.",
-        details: {'key': key?.toString(), ...?details},
-      );
+  }) => BuError(
+    DefaultErrorType.badJson,
+    "Missing key: '$key'.",
+    details: {'key': key?.toString(), ...?details},
+  );
 
   /// Known JSON shape error: a value cannot be coerced to the requested
   /// type. [message] preserves the call-site-specific text.
   static BuError jsonWrongType(
     String message, {
     Map<String, String?>? details,
-  }) =>
-      BuError(
-        DefaultErrorType.badJson,
-        message,
-        details: details,
-      );
+  }) => BuError(DefaultErrorType.badJson, message, details: details);
 
   static BuError saplingFailed(
     String operation, {
     String? reason,
     Map<String, String?>? details,
-  }) =>
-      BuError(
-        DefaultErrorType.invalidKeyData,
-        "Sapling key operation failed during $operation",
-        details: {"reason": reason, ...details ?? {}},
-      );
+  }) => BuError(
+    DefaultErrorType.invalidKeyData,
+    "Sapling key operation failed during $operation",
+    details: {"reason": reason, ...details ?? {}},
+  );
 
   static BuError orchardFailed(
     String operation, {
     Map<String, String?>? details,
     String? reason,
-  }) =>
-      BuError(
-        DefaultErrorType.invalidKeyData,
-        "Orchard key operation failed during $operation",
-        details: {"reason": reason, ...details ?? {}},
-      );
+  }) => BuError(
+    DefaultErrorType.invalidKeyData,
+    "Orchard key operation failed during $operation",
+    details: {"reason": reason, ...details ?? {}},
+  );
 
   static BuError zcashInvalidUnifiedArguments(
     String viewName, {
     String? reason,
-  }) =>
-      BuError(
-        DefaultErrorType.invalidArgument,
-        "Invalid unified $viewName arguments.",
-        details: {"reason": reason},
-      );
+  }) => BuError(
+    DefaultErrorType.invalidArgument,
+    "Invalid unified $viewName arguments.",
+    details: {"reason": reason},
+  );
 
   static BuError zcashInvalidUnifiedBytes(String viewName, {String? reason}) =>
       BuError(
@@ -251,32 +225,30 @@ abstract final class CoreErrors {
       );
 
   static BuError zcashInvalidKeyData(String type, {String? reason}) => BuError(
-        DefaultErrorType.invalidKeyData,
-        "Invalid $type key data.",
-        details: {"reason": reason},
-      );
+    DefaultErrorType.invalidKeyData,
+    "Invalid $type key data.",
+    details: {"reason": reason},
+  );
 
   static BuError zcashInvalidUnifiedObject(
     String viewName, {
     String? reason,
     Map<String, String?>? details,
-  }) =>
-      BuError(
-        DefaultErrorType.invalidArgument,
-        "Invalid unified $viewName.",
-        details: {"reason": reason, ...details ?? {}},
-      );
+  }) => BuError(
+    DefaultErrorType.invalidArgument,
+    "Invalid unified $viewName.",
+    details: {"reason": reason, ...details ?? {}},
+  );
 
   static BuError zcashInvalidUnifiedTypeCode(
     String viewName, {
     String? reason,
     Map<String, String>? details,
-  }) =>
-      BuError(
-        DefaultErrorType.invalidArgument,
-        "Invalid unified $viewName typecode.",
-        details: {"reason": reason, ...details ?? {}},
-      );
+  }) => BuError(
+    DefaultErrorType.invalidArgument,
+    "Invalid unified $viewName typecode.",
+    details: {"reason": reason, ...details ?? {}},
+  );
 
   static const web3UnsupportedBackupContent = BuError(
     DefaultErrorType.unsupported,

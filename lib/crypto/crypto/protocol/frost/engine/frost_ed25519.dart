@@ -747,10 +747,7 @@ class FrostEd25519 implements FrostEngine<EdwardsLimbPoint, Ed25519Fr> {
         b = b + polynomialEvaluate(frIds[i], poly);
       }
       if (b == Ed25519Fr.zero) {
-        throw CoreErrors.cryptoFailed(
-          'reshareAdditive',
-          reason: 'Zero share.',
-        );
+        throw CoreErrors.cryptoFailed('reshareAdditive', reason: 'Zero share.');
       }
       shares.add(b);
     }

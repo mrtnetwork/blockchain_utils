@@ -182,10 +182,7 @@ class SessionCrypto {
   /// Decrypts a base64 bridge payload. Returns `null` on bad base64,
   /// truncation, or authentication failure.
   String? decryptFromBase64(List<int> senderPublicKey, String payload) {
-    final raw = StringUtils.tryEncode(
-      payload,
-      encoding: StringEncoding.base64,
-    );
+    final raw = StringUtils.tryEncode(payload, encoding: StringEncoding.base64);
     if (raw == null) return null;
     return decryptString(senderPublicKey, raw);
   }

@@ -30,10 +30,11 @@ enum ZcashAddressType {
     return values.firstWhere(
       (e) => e.value == value,
       orElse:
-          () => throw CoreErrors.addressValidationFailed(
-            reason: "Invalid Zcash address type.",
-            details: {"got": value?.toString()},
-          ),
+          () =>
+              throw CoreErrors.addressValidationFailed(
+                reason: "Invalid Zcash address type.",
+                details: {"got": value?.toString()},
+              ),
     );
   }
 }

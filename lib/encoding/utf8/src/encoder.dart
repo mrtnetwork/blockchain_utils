@@ -3,7 +3,6 @@ library;
 
 import 'package:blockchain_utils_connector/blockchain_utils_connector.dart';
 
-
 /// Encodes a Dart String (UTF-16) to UTF-8 bytes.
 class UTF8Encoder {
   /// Resolves the UTF-16 code unit(s) at index [i] into a single Unicode
@@ -100,7 +99,8 @@ class ASCIIEncoder {
     for (var i = 0; i < str.length; i++) {
       final codeUnit = str.codeUnitAt(i);
       if (codeUnit > 0x7F) {
-        throw BuError(DefaultErrorType.badUtf8,
+        throw BuError(
+          DefaultErrorType.badUtf8,
           'Invalid ASCII string.',
           details: {
             'reason':

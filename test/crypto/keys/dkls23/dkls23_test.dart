@@ -32,7 +32,10 @@ void main() {
         key.publicKey,
       );
       // x-only is the group key's x-coordinate.
-      expect(key.publicKey.xOnly(), key.publicKey.aggKey.toBytes().sublist(1, 33));
+      expect(
+        key.publicKey.xOnly(),
+        key.publicKey.aggKey.toBytes().sublist(1, 33),
+      );
 
       final msgHash = List<int>.generate(32, (i) => (0xA0 + i) & 0xFF);
       final sig = key.sign(
@@ -53,9 +56,7 @@ void main() {
       // Wrong hash fails.
       final bad = List<int>.generate(32, (i) => (0xB0 + i) & 0xFF);
       expect(
-        key.publicKey.verify(
-          Dkls23VerifyParams(msgHash: bad, signature: sig),
-        ),
+        key.publicKey.verify(Dkls23VerifyParams(msgHash: bad, signature: sig)),
         isFalse,
       );
       key.dispose();
@@ -108,9 +109,17 @@ void main() {
         [0, 2],
         [1, 2],
       ]) {
-        final subSeeds = pair.expand((i) => seeds(3, 0x60).sublist(i * 32, i * 32 + 32)).toList();
+        final subSeeds =
+            pair
+                .expand((i) => seeds(3, 0x60).sublist(i * 32, i * 32 + 32))
+                .toList();
         final sig = key.sign(
-          Dkls23SignParams(sid: sid, msgHash: msgHash, subset: pair, seeds: subSeeds),
+          Dkls23SignParams(
+            sid: sid,
+            msgHash: msgHash,
+            subset: pair,
+            seeds: subSeeds,
+          ),
         );
         expect(
           key.publicKey.verify(
@@ -254,8 +263,12 @@ void main() {
 
     test('DKLs23 aggPublicKeys matches import group key (k1)', () {
       final k1Secrets = [
-        Secp256k1PrivateKey.fromBytes(List<int>.generate(32, (i) => i == 31 ? 0x11 : 0x01)),
-        Secp256k1PrivateKey.fromBytes(List<int>.generate(32, (i) => i == 31 ? 0x22 : 0x02)),
+        Secp256k1PrivateKey.fromBytes(
+          List<int>.generate(32, (i) => i == 31 ? 0x11 : 0x01),
+        ),
+        Secp256k1PrivateKey.fromBytes(
+          List<int>.generate(32, (i) => i == 31 ? 0x22 : 0x02),
+        ),
       ];
       final agg = Dkls23Secp256k1PublicKey.aggPublicKeys(
         k1Secrets.map((e) => e.publicKey).toList(),
@@ -276,8 +289,12 @@ void main() {
 
     test('DKLs23 fromSecretKeys: established keys sign (k1 + r1)', () {
       final k1Secrets = [
-        Secp256k1PrivateKey.fromBytes(List<int>.generate(32, (i) => i == 31 ? 0x11 : 0x01)),
-        Secp256k1PrivateKey.fromBytes(List<int>.generate(32, (i) => i == 31 ? 0x22 : 0x02)),
+        Secp256k1PrivateKey.fromBytes(
+          List<int>.generate(32, (i) => i == 31 ? 0x11 : 0x01),
+        ),
+        Secp256k1PrivateKey.fromBytes(
+          List<int>.generate(32, (i) => i == 31 ? 0x22 : 0x02),
+        ),
       ];
       final k1 = Dkls23Secp256k1PrivateKey.fromSecretKeys(k1Secrets);
       // Group key is the member-point sum (additive quorum).
@@ -304,8 +321,12 @@ void main() {
       k1.dispose();
 
       final r1Secrets = [
-        Secp256r1PrivateKey.fromBytes(List<int>.generate(32, (i) => i == 31 ? 0x33 : 0x03)),
-        Secp256r1PrivateKey.fromBytes(List<int>.generate(32, (i) => i == 31 ? 0x44 : 0x04)),
+        Secp256r1PrivateKey.fromBytes(
+          List<int>.generate(32, (i) => i == 31 ? 0x33 : 0x03),
+        ),
+        Secp256r1PrivateKey.fromBytes(
+          List<int>.generate(32, (i) => i == 31 ? 0x44 : 0x04),
+        ),
       ];
       final r1 = Dkls23Secp256r1PrivateKey.fromSecretKeys(r1Secrets);
       final sigR1 = r1.sign(

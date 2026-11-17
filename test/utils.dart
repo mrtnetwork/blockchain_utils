@@ -223,8 +223,10 @@ class BlockchainUtilsTestApi {
         c.applyTo(blockchainUtils, resolvedFfiPath: path);
       } else {
         // ignore: avoid_print
-        print('[parity] no FFI library built; running Dart-only checks '
-            '(build with BU_BUILD=ffi for the native comparison)');
+        print(
+          '[parity] no FFI library built; running Dart-only checks '
+          '(build with BU_BUILD=ffi for the native comparison)',
+        );
         blockchainUtils.setDartApi();
       }
     } else {

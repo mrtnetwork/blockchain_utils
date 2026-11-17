@@ -63,7 +63,8 @@ class MsgPackConst {
     if (fb == flag32) {
       return (bytes.getU32Be(offset + 1), 5);
     }
-    throw BuError(DefaultErrorType.invalidArgument,
+    throw BuError(
+      DefaultErrorType.invalidArgument,
       'Expected MessagePack $what',
       details: {'property': property, 'byte': fb.toString()},
     );
@@ -114,7 +115,8 @@ class MsgPackNilLayout extends Layout<Null> {
   @override
   LayoutDecodeResult<Null> decode(LayoutByteReader bytes, {int offset = 0}) {
     if (bytes.at(offset) != 0xc0) {
-      throw BuError(DefaultErrorType.invalidArgument,
+      throw BuError(
+        DefaultErrorType.invalidArgument,
         'Expected MessagePack nil (0xc0)',
         details: {'property': property, 'byte': bytes.at(offset).toString()},
       );
@@ -147,7 +149,8 @@ class MsgPackBoolLayout extends Layout<bool> {
     final b = bytes.at(offset);
     if (b == 0xc2) return const LayoutDecodeResult(consumed: 1, value: false);
     if (b == 0xc3) return const LayoutDecodeResult(consumed: 1, value: true);
-    throw BuError(DefaultErrorType.invalidArgument,
+    throw BuError(
+      DefaultErrorType.invalidArgument,
       'Expected MessagePack bool',
       details: {'property': property, 'byte': b.toString()},
     );
@@ -203,7 +206,8 @@ class MsgPackIntLayout extends Layout<int> {
         if (v.isSafeInt()) {
           return LayoutDecodeResult(consumed: 9, value: v.toInt());
         }
-        throw BuError(DefaultErrorType.invalidArgument,
+        throw BuError(
+          DefaultErrorType.invalidArgument,
           'Expected safe dart integer',
           details: {'property': property, 'byte': fb.toString()},
         );
@@ -231,12 +235,14 @@ class MsgPackIntLayout extends Layout<int> {
         if (signed.isSafeInt()) {
           return LayoutDecodeResult(consumed: 9, value: signed.toInt());
         }
-        throw BuError(DefaultErrorType.invalidArgument,
+        throw BuError(
+          DefaultErrorType.invalidArgument,
           'Expected safe dart integer',
           details: {'property': property, 'byte': fb.toString()},
         );
       default:
-        throw BuError(DefaultErrorType.invalidArgument,
+        throw BuError(
+          DefaultErrorType.invalidArgument,
           'Expected MessagePack integer',
           details: {'property': property, 'byte': fb.toString()},
         );
@@ -374,7 +380,8 @@ class MsgPackBigIntLayout extends Layout<BigInt> {
         final signed = v > BinaryOps.maxInt64 ? v - (BigInt.one << 64) : v;
         return LayoutDecodeResult(consumed: 9, value: signed);
       default:
-        throw BuError(DefaultErrorType.invalidArgument,
+        throw BuError(
+          DefaultErrorType.invalidArgument,
           'Expected MessagePack integer',
           details: {'property': property, 'byte': fb.toString()},
         );
@@ -448,7 +455,8 @@ class MsgPackBigIntLayout extends Layout<BigInt> {
         return 9;
       }
     }
-    throw BuError(DefaultErrorType.invalidArgument,
+    throw BuError(
+      DefaultErrorType.invalidArgument,
       'BigInt out of MessagePack int range',
       details: {'value': v.toString()},
     );
@@ -490,7 +498,8 @@ class MsgPackFloatLayout extends Layout<double> {
         value: bd.getFloat64(0, Endian.big),
       );
     }
-    throw BuError(DefaultErrorType.invalidArgument,
+    throw BuError(
+      DefaultErrorType.invalidArgument,
       'Expected MessagePack float',
       details: {'property': property, 'byte': fb.toString()},
     );
@@ -599,7 +608,8 @@ class MsgPackBinaryLayout extends Layout<List<int>> {
     );
     final data = bytes.sublist(offset + header, offset + header + n);
     if (fixedLength != null && data.length != fixedLength) {
-      throw BuError(DefaultErrorType.invalidLength,
+      throw BuError(
+        DefaultErrorType.invalidLength,
         'Invalid decode bytes length.',
         details: {
           'property': property,
@@ -615,7 +625,8 @@ class MsgPackBinaryLayout extends Layout<List<int>> {
   int encode(List<int> source, LayoutByteWriter writer, {int offset = 0}) {
     if (!encodeOption.encode(source, property)) return 0;
     if (fixedLength != null && source.length != fixedLength) {
-      throw BuError(DefaultErrorType.invalidLength,
+      throw BuError(
+        DefaultErrorType.invalidLength,
         'Invalid source bytes length.',
         details: {
           'property': property,
@@ -827,7 +838,8 @@ class MsgPackExtLayout extends Layout<MsgPackExtValue> {
       dataLen = bytes.getU32Be(offset + 1);
       header = 5;
     } else {
-      throw BuError(DefaultErrorType.invalidArgument,
+      throw BuError(
+        DefaultErrorType.invalidArgument,
         'Expected MessagePack ext',
         details: {'property': property, 'byte': fb.toString()},
       );
@@ -898,7 +910,8 @@ class MsgPackTimestampLayout extends Layout<DateTime> {
   }) {
     final ext = const MsgPackExtLayout().decode(bytes, offset: offset);
     if (ext.value.type != -1) {
-      throw BuError(DefaultErrorType.invalidArgument,
+      throw BuError(
+        DefaultErrorType.invalidArgument,
         'Expected MessagePack timestamp (ext type -1)',
         details: {'property': property, 'type': ext.value.type.toString()},
       );
@@ -932,7 +945,8 @@ class MsgPackTimestampLayout extends Layout<DateTime> {
         );
         break;
       default:
-        throw BuError(DefaultErrorType.invalidLength,
+        throw BuError(
+          DefaultErrorType.invalidLength,
           'Invalid timestamp payload length',
           details: {'length': data.length.toString()},
         );
@@ -1029,7 +1043,8 @@ abstract class _MsgPackLazyKeyedMapLayout<K, V, R extends LayoutRepository>
         repository: repository,
       );
       if (layout == null) {
-        throw BuError(DefaultErrorType.invalidArgument,
+        throw BuError(
+          DefaultErrorType.invalidArgument,
           'Missing map value layout.',
           details: {'property': property, 'key': key.value.toString()},
         );
@@ -1214,7 +1229,8 @@ class MsgPackAnyLayout extends Layout<dynamic> {
       return ext;
     }
 
-    throw BuError(DefaultErrorType.invalidArgument,
+    throw BuError(
+      DefaultErrorType.invalidArgument,
       'Unknown MessagePack header format byte: 0x${fb.toRadixString(16)}',
       details: {'property': property, 'byte': fb.toString()},
     );
@@ -1265,7 +1281,8 @@ class MsgPackAnyLayout extends Layout<dynamic> {
       ).encode(source, writer, offset: offset);
     }
 
-    throw BuError(DefaultErrorType.unsupported,
+    throw BuError(
+      DefaultErrorType.unsupported,
       'Unsupported value type for MessagePack encoding: ${source.runtimeType}',
       details: {'property': property, 'value': source.toString()},
     );

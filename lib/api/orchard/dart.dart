@@ -10,7 +10,9 @@ class DartOrchardApi implements OrchardApi {
   /// Creates a pure-Dart Orchard backend; every method throws [BuError].
   const DartOrchardApi();
 
-  static BuError _un(String op) => BuError(DefaultErrorType.unsupported, 'DartOrchardApi.$op: pure-Dart backend has no Orchard prover; '
+  static BuError _un(String op) => BuError(
+    DefaultErrorType.unsupported,
+    'DartOrchardApi.$op: pure-Dart backend has no Orchard prover; '
     'use NativeOrchardApi via blockchainUtils.setRustApi().',
   );
 

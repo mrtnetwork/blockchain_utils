@@ -41,9 +41,7 @@ class ProtoGoogleFieldMask extends IProtoMessage {
     ProtoJsonConfig config = DefaultProtoJsonConfig.defaultConfig,
   }) {
     return ProtoGoogleFieldMask(
-      paths: [
-        for (final e in (json['paths'] as List? ?? [])) e.toString(),
-      ],
+      paths: [for (final e in (json['paths'] as List? ?? [])) e.toString()],
     );
   }
 
@@ -54,9 +52,7 @@ class ProtoGoogleFieldMask extends IProtoMessage {
         paths: json.isEmpty ? const [] : json.split(','),
       );
     }
-    return ProtoGoogleFieldMask.fromJson(
-      (json as Map).cast<String, dynamic>(),
-    );
+    return ProtoGoogleFieldMask.fromJson((json as Map).cast<String, dynamic>());
   }
 
   factory ProtoGoogleFieldMask.deserialize(List<int> bytes) {
@@ -64,8 +60,6 @@ class ProtoGoogleFieldMask extends IProtoMessage {
       bytes: bytes,
       messageConfig: protoConfigStatic(),
     );
-    return ProtoGoogleFieldMask(
-      paths: decode.getListOrEmpty<String>(1),
-    );
+    return ProtoGoogleFieldMask(paths: decode.getListOrEmpty<String>(1));
   }
 }

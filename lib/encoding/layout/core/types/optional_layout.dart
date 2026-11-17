@@ -54,7 +54,8 @@ class OptionalLayout<T> extends Layout<T?> {
 
   void _validateOption({int? value, String? property}) {
     if (value != someFlag && value != noneFlag) {
-      throw BuError(DefaultErrorType.invalidArgument,
+      throw BuError(
+        DefaultErrorType.invalidArgument,
         "Failed to decode data as option flag.",
         details: {"property": property, "value": value.toString()},
       );

@@ -43,10 +43,11 @@ enum ADAAddressType {
     return values.firstWhere(
       (element) => element.header == header,
       orElse:
-          () => throw CoreErrors.addressBytesValidationFailed(
-            reason: "Invalid header value encountered.",
-            details: {"got": header?.toString()},
-          ),
+          () =>
+              throw CoreErrors.addressBytesValidationFailed(
+                reason: "Invalid header value encountered.",
+                details: {"got": header?.toString()},
+              ),
     );
   }
 

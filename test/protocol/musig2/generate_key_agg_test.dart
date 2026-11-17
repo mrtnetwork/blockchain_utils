@@ -47,10 +47,7 @@ void _test() {
               .toBytes(),
     );
     keys = [...keys, List<int>.filled(33, 0)..first = 0x2];
-    expect(
-      () => musigConst.aggPublicKeys(keys),
-      throwsA(isA<BuError>()),
-    );
+    expect(() => musigConst.aggPublicKeys(keys), throwsA(isA<BuError>()));
   });
 }
 

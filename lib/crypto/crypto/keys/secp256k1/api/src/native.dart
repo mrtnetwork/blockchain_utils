@@ -17,17 +17,18 @@ class NativeSecp256k1SigningApi implements Secp256k1SigningApi {
     required List<int> publicKey,
     List<int>? extraEntropy,
   }) {
-    final signature = api
-        .signSchnorr(
-          sk.asBytes,
-          BuSecp256k1SignParams(
-            digest: digest.asBytes,
-            extraEntropy: BuBytes.unsafe(
-              extraEntropy ?? CryptoSignerConst.bchSchnorrRfc6979ExtraData,
-            ),
-          ),
-        )
-        .unwrapOrThrowCryptoError();
+    final signature =
+        api
+            .signSchnorr(
+              sk.asBytes,
+              BuSecp256k1SignParams(
+                digest: digest.asBytes,
+                extraEntropy: BuBytes.unsafe(
+                  extraEntropy ?? CryptoSignerConst.bchSchnorrRfc6979ExtraData,
+                ),
+              ),
+            )
+            .unwrapOrThrowCryptoError();
 
     return IECDSASignature(
       r: signature.r,
@@ -43,15 +44,16 @@ class NativeSecp256k1SigningApi implements Secp256k1SigningApi {
     required List<int> digest,
     List<int>? extraEntropy,
   }) {
-    final signature = api
-        .signEcdsa(
-          sk.asBytes,
-          BuSecp256k1SignParams(
-            digest: digest.asBytes,
-            extraEntropy: extraEntropy?.asBytes,
-          ),
-        )
-        .unwrapOrThrowCryptoError();
+    final signature =
+        api
+            .signEcdsa(
+              sk.asBytes,
+              BuSecp256k1SignParams(
+                digest: digest.asBytes,
+                extraEntropy: extraEntropy?.asBytes,
+              ),
+            )
+            .unwrapOrThrowCryptoError();
     return IECDSASignature(
       r: signature.r,
       s: signature.s,
@@ -67,16 +69,17 @@ class NativeSecp256k1SigningApi implements Secp256k1SigningApi {
     List<int>? aux,
     List<int>? tapTweakHash,
   }) {
-    final signature = api
-        .signBip340(
-          sk.asBytes,
-          BuSecp256k1Bip340Params(
-            digest: digest.asBytes,
-            aux: aux?.asBytes,
-            tapTweakHash: tapTweakHash?.asBytes,
-          ),
-        )
-        .unwrapOrThrowCryptoError();
+    final signature =
+        api
+            .signBip340(
+              sk.asBytes,
+              BuSecp256k1Bip340Params(
+                digest: digest.asBytes,
+                aux: aux?.asBytes,
+                tapTweakHash: tapTweakHash?.asBytes,
+              ),
+            )
+            .unwrapOrThrowCryptoError();
     return IECDSASignature(
       r: signature.r,
       s: signature.s,
@@ -92,22 +95,24 @@ class NativeSecp256k1SigningApi implements Secp256k1SigningApi {
     List<int>? tapTweakHash,
   }) {
     if (tapTweakHash != null) {
-      final tweak = api
-          .tweakPublicXOnly(xOnly.asBytes, tapTweakHash.asBytes)
-          .unwrapOrThrowCryptoError();
+      final tweak =
+          api
+              .tweakPublicXOnly(xOnly.asBytes, tapTweakHash.asBytes)
+              .unwrapOrThrowCryptoError();
       xOnly = BuBytes.unsafe(tweak);
     }
-    final result = api
-        .verifyBip340(
-          xOnlyPk: xOnly.asBytes,
-          messageOrDigest: digest.asBytes,
-          signature: BuEcdsaSignature(
-            r: signature.r,
-            s: signature.s,
-            recoveryId: signature.recoveryId,
-          ),
-        )
-        .unwrapOrThrowCryptoError();
+    final result =
+        api
+            .verifyBip340(
+              xOnlyPk: xOnly.asBytes,
+              messageOrDigest: digest.asBytes,
+              signature: BuEcdsaSignature(
+                r: signature.r,
+                s: signature.s,
+                recoveryId: signature.recoveryId,
+              ),
+            )
+            .unwrapOrThrowCryptoError();
     return result;
   }
 
@@ -117,17 +122,18 @@ class NativeSecp256k1SigningApi implements Secp256k1SigningApi {
     required IECDSASignature signature,
     required List<int> publicKey,
   }) {
-    final result = api
-        .verifySchnorr(
-          pk: publicKey.asBytes,
-          digest: digest.asBytes,
-          signature: BuEcdsaSignature(
-            r: signature.r,
-            s: signature.s,
-            recoveryId: signature.recoveryId,
-          ),
-        )
-        .unwrapOrThrowCryptoError();
+    final result =
+        api
+            .verifySchnorr(
+              pk: publicKey.asBytes,
+              digest: digest.asBytes,
+              signature: BuEcdsaSignature(
+                r: signature.r,
+                s: signature.s,
+                recoveryId: signature.recoveryId,
+              ),
+            )
+            .unwrapOrThrowCryptoError();
     return result;
   }
 
@@ -138,18 +144,19 @@ class NativeSecp256k1SigningApi implements Secp256k1SigningApi {
     required List<int> publicKey,
     required String messagePrefix,
   }) {
-    final result = api
-        .verifyBitcoinMessage(
-          pk: publicKey.asBytes,
-          message: message.asBytes,
-          messagePrefix: messagePrefix,
-          signature: BuEcdsaSignature(
-            r: signature.r,
-            s: signature.s,
-            recoveryId: signature.recoveryId,
-          ),
-        )
-        .unwrapOrThrowCryptoError();
+    final result =
+        api
+            .verifyBitcoinMessage(
+              pk: publicKey.asBytes,
+              message: message.asBytes,
+              messagePrefix: messagePrefix,
+              signature: BuEcdsaSignature(
+                r: signature.r,
+                s: signature.s,
+                recoveryId: signature.recoveryId,
+              ),
+            )
+            .unwrapOrThrowCryptoError();
     return result;
   }
 
@@ -159,17 +166,18 @@ class NativeSecp256k1SigningApi implements Secp256k1SigningApi {
     required IECDSASignature signature,
     required List<int> publicKey,
   }) {
-    final result = api
-        .verifyEcdsa(
-          pk: publicKey.asBytes,
-          signature: BuEcdsaSignature(
-            r: signature.r,
-            s: signature.s,
-            recoveryId: signature.recoveryId,
-          ),
-          digest: digest.asBytes,
-        )
-        .unwrapOrThrowCryptoError();
+    final result =
+        api
+            .verifyEcdsa(
+              pk: publicKey.asBytes,
+              signature: BuEcdsaSignature(
+                r: signature.r,
+                s: signature.s,
+                recoveryId: signature.recoveryId,
+              ),
+              digest: digest.asBytes,
+            )
+            .unwrapOrThrowCryptoError();
     return result;
   }
 

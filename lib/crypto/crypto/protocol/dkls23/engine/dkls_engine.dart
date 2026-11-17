@@ -179,7 +179,8 @@ abstract class DklsEngine<
     }
   }
 
-  void _checkSeeds(List<List<int>> seeds, int n, String op) {    if (seeds.length != n) {
+  void _checkSeeds(List<List<int>> seeds, int n, String op) {
+    if (seeds.length != n) {
       throw CoreErrors.invalidOperationArguments(
         op,
         name: 'seeds',
@@ -439,8 +440,7 @@ abstract class DklsEngine<
         coeffs.add(_sampleScalar(rng));
       }
       rows.add([
-        for (var l = 0; l < n; l++)
-          evalPoly(coeffs, scalarFromInt(l + 1)),
+        for (var l = 0; l < n; l++) evalPoly(coeffs, scalarFromInt(l + 1)),
       ]);
     }
     return [

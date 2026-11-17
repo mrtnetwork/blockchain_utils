@@ -2,6 +2,7 @@ import 'package:blockchain_utils/blockchain_utils.dart';
 import 'package:test/test.dart';
 
 import '../../utils.dart';
+
 void prngTest() {
   test("Prng", () {
     for (int i = 0; i < 100; i++) {
@@ -24,4 +25,3 @@ void prngTest() {
 void main() {
   BlockchainUtilsTestApi.runTest(prngTest, "Prng");
 }
-

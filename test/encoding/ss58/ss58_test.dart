@@ -118,10 +118,7 @@ void ss58Test() {
 
   group('error handling', () {
     test('negative format is rejected', () {
-      expect(
-        () => SS58Encoder.encode([1, 2, 3], -1),
-        throwsA(isA<BuError>()),
-      );
+      expect(() => SS58Encoder.encode([1, 2, 3], -1), throwsA(isA<BuError>()));
     });
 
     test('format above the 14-bit max is rejected', () {
@@ -132,14 +129,8 @@ void ss58Test() {
     });
 
     test('reserved formats (46, 47) are rejected on encode', () {
-      expect(
-        () => SS58Encoder.encode([1, 2, 3], 46),
-        throwsA(isA<BuError>()),
-      );
-      expect(
-        () => SS58Encoder.encode([1, 2, 3], 47),
-        throwsA(isA<BuError>()),
-      );
+      expect(() => SS58Encoder.encode([1, 2, 3], 46), throwsA(isA<BuError>()));
+      expect(() => SS58Encoder.encode([1, 2, 3], 47), throwsA(isA<BuError>()));
     });
 
     test('a corrupted checksum throws SS58ChecksumError', () {
@@ -152,10 +143,7 @@ void ss58Test() {
       final replacement =
           alphabet[(alphabet.indexOf(lastChar) + 1) % alphabet.length];
       final corrupted = encoded.substring(0, encoded.length - 1) + replacement;
-      expect(
-        () => SS58Decoder.decode(corrupted),
-        throwsA(isA<BuError>()),
-      );
+      expect(() => SS58Decoder.decode(corrupted), throwsA(isA<BuError>()));
     });
   });
   group("test vector", () {

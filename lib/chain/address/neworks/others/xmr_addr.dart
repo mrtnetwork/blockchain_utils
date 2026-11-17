@@ -50,10 +50,11 @@ enum XmrAddressType {
     return values.firstWhere(
       (e) => e.value == value,
       orElse:
-          () => throw CoreErrors.addressValidationFailed(
-            reason: "Invalid monero address type.",
-            details: {"got": value?.toString()},
-          ),
+          () =>
+              throw CoreErrors.addressValidationFailed(
+                reason: "Invalid monero address type.",
+                details: {"got": value?.toString()},
+              ),
     );
   }
 

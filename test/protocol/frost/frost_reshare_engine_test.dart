@@ -70,30 +70,17 @@ void main() {
       );
       // Duplicate ids.
       expect(
-        () => k1.reshareAdditive(secrets, coeffs, [
-          1,
-          1,
-          3,
-        ], 2),
+        () => k1.reshareAdditive(secrets, coeffs, [1, 1, 3], 2),
         throwsA(isA<BuError>()),
       );
       // Zero id.
       expect(
-        () => k1.reshareAdditive(secrets, coeffs, [
-          0,
-          2,
-          3,
-        ], 2),
+        () => k1.reshareAdditive(secrets, coeffs, [0, 2, 3], 2),
         throwsA(isA<BuError>()),
       );
       // Wrong coeffs length (need n * (t - 1) = 3).
       expect(
-        () => k1.reshareAdditive(
-          secrets,
-          [k1fr(2), k1fr(3)],
-          ids,
-          2,
-        ),
+        () => k1.reshareAdditive(secrets, [k1fr(2), k1fr(3)], ids, 2),
         throwsA(isA<BuError>()),
       );
       // Zero secret.
@@ -161,19 +148,11 @@ void main() {
         throwsA(isA<BuError>()),
       );
       expect(
-        () => ed.reshareAdditive(secrets, coeffs, [
-          1,
-          1,
-          3,
-        ], 2),
+        () => ed.reshareAdditive(secrets, coeffs, [1, 1, 3], 2),
         throwsA(isA<BuError>()),
       );
       expect(
-        () => ed.reshareAdditive(secrets, coeffs, [
-          0,
-          2,
-          3,
-        ], 2),
+        () => ed.reshareAdditive(secrets, coeffs, [0, 2, 3], 2),
         throwsA(isA<BuError>()),
       );
       expect(

@@ -47,9 +47,10 @@ class NativeSolanaZkApi implements SolanaZkApi {
     const op = 'SolanaZk.pubkeyFromSecret';
     final bytes = ApiValidate.call(
       op,
-      () => api
-          .pubkeyFromSecret(_req(secret, 32, op, 'secret'))
-          .unwrapOrThrowCryptoError(),
+      () =>
+          api
+              .pubkeyFromSecret(_req(secret, 32, op, 'secret'))
+              .unwrapOrThrowCryptoError(),
     );
     return SolanaElGamalPubkey.fromBytes(bytes);
   }
@@ -63,13 +64,14 @@ class NativeSolanaZkApi implements SolanaZkApi {
     const op = 'SolanaZk.encryptWith';
     final bytes = ApiValidate.call(
       op,
-      () => api
-          .encryptWith(
-            pubkey: pubkey.toBytes(),
-            amount: _u64(amount, op, 'amount'),
-            opening: _req(opening, 32, op, 'opening'),
-          )
-          .unwrapOrThrowCryptoError(),
+      () =>
+          api
+              .encryptWith(
+                pubkey: pubkey.toBytes(),
+                amount: _u64(amount, op, 'amount'),
+                opening: _req(opening, 32, op, 'opening'),
+              )
+              .unwrapOrThrowCryptoError(),
     );
     return SolanaElGamalCiphertext.fromBytes(bytes);
   }
@@ -82,12 +84,13 @@ class NativeSolanaZkApi implements SolanaZkApi {
     const op = 'SolanaZk.decryptU32';
     return ApiValidate.call(
       op,
-      () => api
-          .decryptU32(
-            secret: _req(secret, 32, op, 'secret'),
-            ciphertext: ciphertext.toBytes(),
-          )
-          .unwrapOrThrowCryptoError(),
+      () =>
+          api
+              .decryptU32(
+                secret: _req(secret, 32, op, 'secret'),
+                ciphertext: ciphertext.toBytes(),
+              )
+              .unwrapOrThrowCryptoError(),
     );
   }
 
@@ -100,13 +103,14 @@ class NativeSolanaZkApi implements SolanaZkApi {
     const op = 'SolanaZk.aeEncrypt';
     final bytes = ApiValidate.call(
       op,
-      () => api
-          .aeEncrypt(
-            key16: _req(key16, 16, op, 'key16'),
-            amount: _u64(amount, op, 'amount'),
-            nonce12: _req(nonce12, 12, op, 'nonce12'),
-          )
-          .unwrapOrThrowCryptoError(),
+      () =>
+          api
+              .aeEncrypt(
+                key16: _req(key16, 16, op, 'key16'),
+                amount: _u64(amount, op, 'amount'),
+                nonce12: _req(nonce12, 12, op, 'nonce12'),
+              )
+              .unwrapOrThrowCryptoError(),
     );
     return SolanaAeCiphertext.fromBytes(bytes);
   }
@@ -116,12 +120,13 @@ class NativeSolanaZkApi implements SolanaZkApi {
     const op = 'SolanaZk.aeDecrypt';
     final v = ApiValidate.call(
       op,
-      () => api
-          .aeDecrypt(
-            key16: _req(key16, 16, op, 'key16'),
-            ae: _req(ae, 36, op, 'ae'),
-          )
-          .unwrapOrThrowCryptoError(),
+      () =>
+          api
+              .aeDecrypt(
+                key16: _req(key16, 16, op, 'key16'),
+                ae: _req(ae, 36, op, 'ae'),
+              )
+              .unwrapOrThrowCryptoError(),
     );
     return BigInt.from(v);
   }
@@ -150,13 +155,16 @@ class NativeSolanaZkApi implements SolanaZkApi {
     ApiValidate.length(seed, 32, operation: op, name: 'seed');
     final blob = ApiValidate.call(
       op,
-      () => api
-          .proveBatchedRange(
-            amountsLe: [for (final a in amounts) _u64Le(a, op, 'amounts')],
-            openings: [for (final o in openings) _req(o, 32, op, 'openings')],
-            seed32: seed,
-          )
-          .unwrapOrThrowCryptoError(),
+      () =>
+          api
+              .proveBatchedRange(
+                amountsLe: [for (final a in amounts) _u64Le(a, op, 'amounts')],
+                openings: [
+                  for (final o in openings) _req(o, 32, op, 'openings'),
+                ],
+                seed32: seed,
+              )
+              .unwrapOrThrowCryptoError(),
     );
     return SolanaZkProofBytes.fromBytes(SolanaZkProofKind.batchedRange, blob);
   }
@@ -179,13 +187,14 @@ class NativeSolanaZkApi implements SolanaZkApi {
     }
     return ApiValidate.call(
       op,
-      () => api
-          .verifyBatchedRange(
-            proof: proof,
-            commitments: [for (final c in commitments) ...c],
-            n: commitments.length,
-          )
-          .unwrapOrThrowCryptoError(),
+      () =>
+          api
+              .verifyBatchedRange(
+                proof: proof,
+                commitments: [for (final c in commitments) ...c],
+                n: commitments.length,
+              )
+              .unwrapOrThrowCryptoError(),
     );
   }
 
@@ -201,21 +210,22 @@ class NativeSolanaZkApi implements SolanaZkApi {
     const op = 'SolanaZk.proveWithdraw';
     final blob = ApiValidate.call(
       op,
-      () => api
-          .proveWithdraw(
-            sourceSecret: _req(sourceSecret, 32, op, 'sourceSecret'),
-            sourcePubkey: _req(sourcePubkey, 32, op, 'sourcePubkey'),
-            currentCiphertext: _req(
-              currentCiphertext,
-              64,
-              op,
-              'currentCiphertext',
-            ),
-            currentBalance: _u64(currentBalance, op, 'currentBalance'),
-            withdrawAmount: _u64(withdrawAmount, op, 'withdrawAmount'),
-            seed32: _req(seed, 32, op, 'seed'),
-          )
-          .unwrapOrThrowCryptoError(),
+      () =>
+          api
+              .proveWithdraw(
+                sourceSecret: _req(sourceSecret, 32, op, 'sourceSecret'),
+                sourcePubkey: _req(sourcePubkey, 32, op, 'sourcePubkey'),
+                currentCiphertext: _req(
+                  currentCiphertext,
+                  64,
+                  op,
+                  'currentCiphertext',
+                ),
+                currentBalance: _u64(currentBalance, op, 'currentBalance'),
+                withdrawAmount: _u64(withdrawAmount, op, 'withdrawAmount'),
+                seed32: _req(seed, 32, op, 'seed'),
+              )
+              .unwrapOrThrowCryptoError(),
     );
     return SolanaZkProofBytes.fromBytes(SolanaZkProofKind.withdraw, blob);
   }
@@ -234,23 +244,24 @@ class NativeSolanaZkApi implements SolanaZkApi {
     const op = 'SolanaZk.proveTransfer';
     final blob = ApiValidate.call(
       op,
-      () => api
-          .proveTransfer(
-            sourceSecret: _req(sourceSecret, 32, op, 'sourceSecret'),
-            sourcePubkey: _req(sourcePubkey, 32, op, 'sourcePubkey'),
-            destPubkey: _req(destPubkey, 32, op, 'destPubkey'),
-            auditorPubkey: _req(auditorPubkey, 32, op, 'auditorPubkey'),
-            currentCiphertext: _req(
-              currentCiphertext,
-              64,
-              op,
-              'currentCiphertext',
-            ),
-            currentBalance: _u64(currentBalance, op, 'currentBalance'),
-            transferAmount: _u64(transferAmount, op, 'transferAmount'),
-            seed32: _req(seed, 32, op, 'seed'),
-          )
-          .unwrapOrThrowCryptoError(),
+      () =>
+          api
+              .proveTransfer(
+                sourceSecret: _req(sourceSecret, 32, op, 'sourceSecret'),
+                sourcePubkey: _req(sourcePubkey, 32, op, 'sourcePubkey'),
+                destPubkey: _req(destPubkey, 32, op, 'destPubkey'),
+                auditorPubkey: _req(auditorPubkey, 32, op, 'auditorPubkey'),
+                currentCiphertext: _req(
+                  currentCiphertext,
+                  64,
+                  op,
+                  'currentCiphertext',
+                ),
+                currentBalance: _u64(currentBalance, op, 'currentBalance'),
+                transferAmount: _u64(transferAmount, op, 'transferAmount'),
+                seed32: _req(seed, 32, op, 'seed'),
+              )
+              .unwrapOrThrowCryptoError(),
     );
     return SolanaZkProofBytes.fromBytes(SolanaZkProofKind.transfer, blob);
   }
@@ -279,26 +290,32 @@ class NativeSolanaZkApi implements SolanaZkApi {
     }
     final blob = ApiValidate.call(
       op,
-      () => api
-          .proveTransferWithFee(
-            sourceSecret: _req(sourceSecret, 32, op, 'sourceSecret'),
-            sourcePubkey: _req(sourcePubkey, 32, op, 'sourcePubkey'),
-            destPubkey: _req(destPubkey, 32, op, 'destPubkey'),
-            auditorPubkey: _req(auditorPubkey, 32, op, 'auditorPubkey'),
-            authorityPubkey: _req(authorityPubkey, 32, op, 'authorityPubkey'),
-            currentCiphertext: _req(
-              currentCiphertext,
-              64,
-              op,
-              'currentCiphertext',
-            ),
-            currentBalance: _u64(currentBalance, op, 'currentBalance'),
-            transferAmount: _u64(transferAmount, op, 'transferAmount'),
-            feeRateBasisPoints: feeRateBasisPoints,
-            maximumFee: _u64(maximumFee, op, 'maximumFee'),
-            seed32: _req(seed, 32, op, 'seed'),
-          )
-          .unwrapOrThrowCryptoError(),
+      () =>
+          api
+              .proveTransferWithFee(
+                sourceSecret: _req(sourceSecret, 32, op, 'sourceSecret'),
+                sourcePubkey: _req(sourcePubkey, 32, op, 'sourcePubkey'),
+                destPubkey: _req(destPubkey, 32, op, 'destPubkey'),
+                auditorPubkey: _req(auditorPubkey, 32, op, 'auditorPubkey'),
+                authorityPubkey: _req(
+                  authorityPubkey,
+                  32,
+                  op,
+                  'authorityPubkey',
+                ),
+                currentCiphertext: _req(
+                  currentCiphertext,
+                  64,
+                  op,
+                  'currentCiphertext',
+                ),
+                currentBalance: _u64(currentBalance, op, 'currentBalance'),
+                transferAmount: _u64(transferAmount, op, 'transferAmount'),
+                feeRateBasisPoints: feeRateBasisPoints,
+                maximumFee: _u64(maximumFee, op, 'maximumFee'),
+                seed32: _req(seed, 32, op, 'seed'),
+              )
+              .unwrapOrThrowCryptoError(),
     );
     return SolanaZkProofBytes.fromBytes(
       SolanaZkProofKind.transferWithFee,

@@ -37,7 +37,10 @@ class Eip2333Bls extends Eip2333Base<Eip2333Bls> {
   @override
   Eip2333Bls childKey(Eip2333KeyIndex index) {
     if (isPublicOnly) {
-      throw const BuError(DefaultErrorType.unsupported,'Public child derivation is not supported');
+      throw const BuError(
+        DefaultErrorType.unsupported,
+        'Public child derivation is not supported',
+      );
     }
     final result = keyDerivator.deriveFromSecret(
       parent: privateKey,

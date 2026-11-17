@@ -22,8 +22,7 @@ const String bobSecretHex =
     "5dab087e624a8a4b79e17f8b83800ee66f3bb1292618b6fd1c2f8b27ff88e0eb";
 
 /// Fixed 24-byte nonce shared by both golden vectors.
-const String testNonceHex =
-    "69696ee955b62b73cd62bda875fc73d68219e0036b7a0b37";
+const String testNonceHex = "69696ee955b62b73cd62bda875fc73d68219e0036b7a0b37";
 
 /// Alice public key / bridge `client_id` (X25519 of [aliceSecretHex]).
 const String alicePubHex =

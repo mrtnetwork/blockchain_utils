@@ -64,14 +64,19 @@ class Eip2333PathParser {
     elem = elem.trim();
     for (final s in _forbiddenSuffix) {
       if (elem.endsWith(s)) {
-        throw BuError(DefaultErrorType.unsupported,
+        throw BuError(
+          DefaultErrorType.unsupported,
           'Hardened keys are not supported in EIP-2333/EIP-2334.',
           details: {'path': elem},
         );
       }
     }
     if (int.tryParse(elem) == null) {
-      throw BuError(DefaultErrorType.invalidArgument,'Invalid path element.', details: {'path': elem});
+      throw BuError(
+        DefaultErrorType.invalidArgument,
+        'Invalid path element.',
+        details: {'path': elem},
+      );
     }
     return Eip2333KeyIndex(int.parse(elem));
   }

@@ -1,4 +1,5 @@
 import 'package:blockchain_utils/utils/numbers/fixed/src/u64/u64.dart';
+
 class Ed25519FpConst {
   static const int s = 2;
   static const Uint64 inv = Uint64.unsafe(2260509103, 678152731);
@@ -9,6 +10,7 @@ class Ed25519FpConst {
     Uint64.unsafe(2147483647, 4294967295),
   ];
 }
+
 class Ed25519FrConst {
   static const int s = 2;
   static const Uint64 inv = Uint64.unsafe(3535084963, 307527195);

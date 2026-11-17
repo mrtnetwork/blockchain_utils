@@ -12,7 +12,8 @@ class COptionLayout<T> extends Layout<T?> {
 
   static void _validateOption({int? value, String? property}) {
     if (value != 0 && value != 1) {
-      throw BuError(DefaultErrorType.invalidArgument,
+      throw BuError(
+        DefaultErrorType.invalidArgument,
         "Failed to decode data as COption flag.",
         details: {"property": property, "value": value.toString()},
       );

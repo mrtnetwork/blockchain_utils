@@ -62,7 +62,10 @@ class Bip32Slip10Nist256p1 extends Bip32Base<Bip32Slip10Nist256p1> {
 
     if (!isPublic) {
       if (!index.isHardened && !isPublicDerivationSupported) {
-        throw const BuError(DefaultErrorType.unsupported, 'Private child derivation with not-hardened index is not supported');
+        throw const BuError(
+          DefaultErrorType.unsupported,
+          'Private child derivation with not-hardened index is not supported',
+        );
       }
       final result = keyDerivator.deriveFromSecret(
         parent: privateKey,
@@ -84,10 +87,16 @@ class Bip32Slip10Nist256p1 extends Bip32Base<Bip32Slip10Nist256p1> {
       );
     }
     if (!isPublicDerivationSupported) {
-      throw const BuError(DefaultErrorType.unsupported, 'Public child derivation is not supported');
+      throw const BuError(
+        DefaultErrorType.unsupported,
+        'Public child derivation is not supported',
+      );
     }
     if (index.isHardened) {
-      throw const BuError(DefaultErrorType.unsupported, 'Public child derivation with hardened index is not supported');
+      throw const BuError(
+        DefaultErrorType.unsupported,
+        'Public child derivation with hardened index is not supported',
+      );
     }
     final result = keyDerivator.deriveFromPublic(
       parent: publicKey,

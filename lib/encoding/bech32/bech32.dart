@@ -12,4 +12,3 @@ export 'package:blockchain_utils/encoding/bech32/src/bch_bech32.dart';
 
 /// Export statement for Segregated Witness (SegWit) Bech32 encoding.
 export 'package:blockchain_utils/encoding/bech32/src/segwit_bech32.dart';
-

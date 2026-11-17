@@ -230,7 +230,10 @@ class UnifiedFullViewingKey {
   Bip32Slip10Secp256k1 getTransparent() {
     final transparent = this.transparent;
     if (transparent == null) {
-      throw BuError(DefaultErrorType.invalidArgument,"Transparent key missing.");
+      throw BuError(
+        DefaultErrorType.invalidArgument,
+        "Transparent key missing.",
+      );
     }
     return transparent;
   }
@@ -239,7 +242,7 @@ class UnifiedFullViewingKey {
   SaplingDiversifiableFullViewingKey getSapling() {
     final sapling = this.sapling;
     if (sapling == null) {
-      throw BuError(DefaultErrorType.invalidArgument,"Sapling key missing.");
+      throw BuError(DefaultErrorType.invalidArgument, "Sapling key missing.");
     }
     return sapling;
   }
@@ -248,7 +251,7 @@ class UnifiedFullViewingKey {
   OrchardFullViewingKey getOrchard() {
     final orchard = this.orchard;
     if (orchard == null) {
-      throw BuError(DefaultErrorType.invalidArgument,"Orchard key missing.");
+      throw BuError(DefaultErrorType.invalidArgument, "Orchard key missing.");
     }
     return orchard;
   }

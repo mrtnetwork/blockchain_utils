@@ -57,7 +57,8 @@ class Nep649 extends Nep649Base<Nep649> {
   @override
   Nep649 get purpose {
     if (!isLevel(Bip44Levels.master)) {
-      throw BuError(DefaultErrorType.invalidArgument,
+      throw BuError(
+        DefaultErrorType.invalidArgument,
         "Current depth (${slip10.depth.toInt()}) is not suitable for deriving purpose",
       );
     }
@@ -81,7 +82,8 @@ class Nep649 extends Nep649Base<Nep649> {
   @override
   Nep649 get coin {
     if (!isLevel(Bip44Levels.purpose)) {
-      throw BuError(DefaultErrorType.invalidArgument,
+      throw BuError(
+        DefaultErrorType.invalidArgument,
         "Current depth (${slip10.depth.toInt()}) is not suitable for deriving coin",
       );
     }
@@ -96,7 +98,8 @@ class Nep649 extends Nep649Base<Nep649> {
   @override
   Nep649 account(int accIndex) {
     if (!isLevel(Bip44Levels.coin)) {
-      throw BuError(DefaultErrorType.invalidArgument,
+      throw BuError(
+        DefaultErrorType.invalidArgument,
         "Current depth (${slip10.depth.toInt()}) is not suitable for deriving account",
       );
     }
@@ -110,7 +113,8 @@ class Nep649 extends Nep649Base<Nep649> {
   @override
   Nep649 change(Bip44Changes changeType) {
     if (!isLevel(Bip44Levels.account)) {
-      throw BuError(DefaultErrorType.invalidArgument,
+      throw BuError(
+        DefaultErrorType.invalidArgument,
         "Current depth (${slip10.depth.toInt()}) is not suitable for deriving change",
       );
     }
@@ -124,7 +128,8 @@ class Nep649 extends Nep649Base<Nep649> {
   @override
   Nep649 addressIndex(int addressIndex) {
     if (!isLevel(Bip44Levels.change)) {
-      throw BuError(DefaultErrorType.invalidArgument,
+      throw BuError(
+        DefaultErrorType.invalidArgument,
         "Current depth (${slip10.depth.toInt()}) is not suitable for deriving address",
       );
     }

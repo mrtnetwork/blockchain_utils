@@ -25,7 +25,6 @@ void main() {
   BlockchainUtilsTestApi.runTest(fpTest, "Fp");
 }
 
-
 void _testSqrt() {
   // a = 4
   var a = Bls12Fp([

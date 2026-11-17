@@ -30,7 +30,12 @@ enum Bip44Changes {
   static Bip44Changes fromValue(int? value) {
     return values.firstWhere(
       (e) => e.value == value,
-      orElse: () => throw BuError(DefaultErrorType.notFound, "No matching Bip44Changes found for the given value. null"),
+      orElse:
+          () =>
+              throw BuError(
+                DefaultErrorType.notFound,
+                "No matching Bip44Changes found for the given value. null",
+              ),
     );
   }
 }
@@ -312,13 +317,15 @@ abstract class Bip44Base<BIP44 extends Bip44Base<BIP44>> {
     if (bip32Obj.isPublicOnly) {
       if (depth < Bip44Levels.account.value ||
           depth > Bip44Levels.addressIndex.value) {
-        throw BuError(DefaultErrorType.invalidArgument,
+        throw BuError(
+          DefaultErrorType.invalidArgument,
           "Depth of the public-only Bip object ($depth) is below account level or beyond address index level",
         );
       }
     } else {
       if (depth < 0 || depth > Bip44Levels.addressIndex.value) {
-        throw BuError(DefaultErrorType.invalidArgument,
+        throw BuError(
+          DefaultErrorType.invalidArgument,
           "Depth of the Bip object ($depth) is invalid or beyond address index level",
         );
       }
@@ -340,7 +347,10 @@ abstract class Bip44Base<BIP44 extends Bip44Base<BIP44>> {
   /// [Bip44PrivateKey] privatekey
   Bip44PrivateKey get privateKey {
     if (bip32.isPublicOnly) {
-      throw const BuError(DefaultErrorType.invalidKeyData,"The Bip32 object is public-only");
+      throw const BuError(
+        DefaultErrorType.invalidKeyData,
+        "The Bip32 object is public-only",
+      );
     }
     return Bip44PrivateKey(bip32.privateKey, coinConf);
   }

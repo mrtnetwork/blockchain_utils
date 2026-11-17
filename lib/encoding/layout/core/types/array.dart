@@ -79,7 +79,10 @@ class SequenceLayout<T> extends Layout<List<T>> {
         decoded.add(decodeElement.value);
         startOffset += decodeElement.consumed;
         if (decodeElement.consumed <= 0) {
-          throw const BuError(DefaultErrorType.badLayout,"Sequence element consumed no bytes.");
+          throw const BuError(
+            DefaultErrorType.badLayout,
+            "Sequence element consumed no bytes.",
+          );
         }
         if (bytes.isEnd(startOffset)) break;
       }
@@ -147,7 +150,10 @@ class RemainderListLayout<T> extends Layout<List<T>> {
     while (offset + consumed < bytes.length) {
       final r = element.decode(bytes, offset: offset + consumed);
       if (r.consumed <= 0) {
-        throw const BuError(DefaultErrorType.badLayout,"Sequence element consumed no bytes.");
+        throw const BuError(
+          DefaultErrorType.badLayout,
+          "Sequence element consumed no bytes.",
+        );
       }
       items.add(r.value);
       consumed += r.consumed;

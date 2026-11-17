@@ -2,7 +2,6 @@ import 'package:blockchain_utils/protocol/bip/bip/bip32/bip32_key_data.dart';
 import 'package:blockchain_utils/helper/helper.dart';
 import 'package:blockchain_utils_connector/blockchain_utils_connector.dart';
 
-
 /// Constants related to the BIP32 derivation path components.
 class Bip32PathConst {
   /// List of characters representing hardened keys in the path.
@@ -107,7 +106,8 @@ class Bip32PathParser {
     }
     final bool isNumeric = int.tryParse(pathElem) != null;
     if (!isNumeric) {
-      throw BuError(DefaultErrorType.invalidArgument,
+      throw BuError(
+        DefaultErrorType.invalidArgument,
         "Invalid path element.",
         details: {"path": pathElem},
       );

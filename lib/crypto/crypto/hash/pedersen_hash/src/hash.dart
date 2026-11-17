@@ -27,7 +27,8 @@ class PersonalizationMerkleTree implements Personalization {
   }
 }
 
-abstract /// Shared behaviour for Pedersen hash implementations.
+abstract
+/// Shared behaviour for Pedersen hash implementations.
 class BasePedersenHash<
   T extends JubJubScalar<T>,
   E extends BaseJubJubPoint<T, E>
@@ -151,4 +152,3 @@ class PedersenHash extends BasePedersenHash<JubJubFr, JubJubPoint> {
     );
   }
 }
-

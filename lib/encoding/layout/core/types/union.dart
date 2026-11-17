@@ -61,7 +61,8 @@ class Union extends Layout<Map<String, dynamic>> {
         }
       }
     }
-    throw BuError(DefaultErrorType.badLayout,
+    throw BuError(
+      DefaultErrorType.badLayout,
       "Unable to infer source variant",
       details: {
         "property": property,
@@ -81,7 +82,8 @@ class Union extends Layout<Map<String, dynamic>> {
     Map<String, dynamic> result = {};
     int consumed = discr.consumed;
     if (clo == null) {
-      throw BuError(DefaultErrorType.invalidArgument,
+      throw BuError(
+        DefaultErrorType.invalidArgument,
         "Unknown union variant.",
         details: {
           "property": property,
@@ -198,7 +200,8 @@ class VariantLayout extends Layout<Map<String, dynamic>> {
     int offset = 0,
   }) {
     if (!source.containsKey(property)) {
-      throw BuError(DefaultErrorType.invalidArgument,
+      throw BuError(
+        DefaultErrorType.invalidArgument,
         "variant data missing.",
         details: {"property": property},
       );
@@ -266,7 +269,8 @@ class TaggedUnionLayout<T> extends Layout<T> {
       (c) => c.tag == tagRes.value,
       orElse:
           () =>
-              throw BuError(DefaultErrorType.invalidArgument,
+              throw BuError(
+                DefaultErrorType.invalidArgument,
                 'Unknown union tag',
                 details: {'tag': tagRes.value.toString(), 'property': property},
               ),
@@ -288,7 +292,8 @@ class TaggedUnionLayout<T> extends Layout<T> {
       (c) => c.tag == tag,
       orElse:
           () =>
-              throw BuError(DefaultErrorType.invalidArgument,
+              throw BuError(
+                DefaultErrorType.invalidArgument,
                 'Unknown union tag for encode',
                 details: {'tag': tag.toString(), 'property': property},
               ),

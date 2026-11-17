@@ -52,7 +52,6 @@ class SR25519PublicKey extends ISR25519VerificationKey
     return SR25519PublicKey._(normalized);
   }
 
-
   /// Validates [keyBytes] through the backend signing API and returns its
   /// canonical base encoding, or null when invalid. Single source of truth
   /// for key parsing.

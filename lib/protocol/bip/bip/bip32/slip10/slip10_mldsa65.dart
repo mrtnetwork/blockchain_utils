@@ -36,7 +36,8 @@ class Slip10Mldsa65
   Slip10MldsaPrivateKey get privateKey {
     final key = _privKey;
     if (isPublicOnly || key == null) {
-      throw const BuError(DefaultErrorType.invalidKeyData,
+      throw const BuError(
+        DefaultErrorType.invalidKeyData,
         'Public-only deterministic keys have no private half',
       );
     }
@@ -107,7 +108,10 @@ class Slip10Mldsa65
     final isPublic = isPublicOnly;
     if (!isPublic) {
       if (!index.isHardened) {
-        throw const BuError(DefaultErrorType.unsupported, 'Private child derivation with not-hardened index is not supported');
+        throw const BuError(
+          DefaultErrorType.unsupported,
+          'Private child derivation with not-hardened index is not supported',
+        );
       }
       final result = keyDerivator.deriveFromSecret(
         parent: privateKey,
@@ -123,7 +127,10 @@ class Slip10Mldsa65
       final childPriv = Slip10MldsaPrivateKey.fromBytes(result.key, keyData);
       return Slip10Mldsa65._(privKey: childPriv, pubKey: childPriv.publicKey);
     }
-    throw const BuError(DefaultErrorType.unsupported, 'Public child derivation is not supported');
+    throw const BuError(
+      DefaultErrorType.unsupported,
+      'Public child derivation is not supported',
+    );
   }
 
   /// Converts this node to a public-only node.

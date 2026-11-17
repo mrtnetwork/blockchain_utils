@@ -3,8 +3,7 @@ import 'package:test/test.dart';
 
 import '../../../utils.dart';
 
-List<int> _seed(int base) =>
-    List<int>.generate(32, (i) => (base + i) & 0xFF);
+List<int> _seed(int base) => List<int>.generate(32, (i) => (base + i) & 0xFF);
 
 void _checkPubBase(
   BaseMLDSAPublicKey pub,
@@ -42,19 +41,13 @@ void mldsaKeysTest() {
         MLDSA44PublicKey.isValidKeyEncoding,
         CryptoKeyType.mldsa44,
       );
-      expect(
-        MLDSA44PublicKey.fromBytes(priv.publicKey.bytes),
-        priv.publicKey,
-      );
+      expect(MLDSA44PublicKey.fromBytes(priv.publicKey.bytes), priv.publicKey);
       final viaPriv = IPrivateKey.fromBytes(
         priv.toBytes(),
         CryptoKeyType.mldsa44,
       );
       expect(viaPriv, isA<MLDSA44PrivateKey>());
-      expect(
-        (viaPriv as MLDSA44PrivateKey).publicKey,
-        priv.publicKey,
-      );
+      expect((viaPriv as MLDSA44PrivateKey).publicKey, priv.publicKey);
       final back = MLDSA44PrivateKey.fromBytes(priv.toBytes());
       expect(back.publicKey, priv.publicKey);
       // Length dispatch through the base factories.
@@ -78,14 +71,8 @@ void mldsaKeysTest() {
         priv.toBytes(),
         CryptoKeyType.mldsa65,
       );
-      expect(
-        (viaPriv as MLDSA65PrivateKey).publicKey,
-        priv.publicKey,
-      );
-      expect(
-        MLDSA65PublicKey.fromBytes(priv.publicKey.bytes),
-        priv.publicKey,
-      );
+      expect((viaPriv as MLDSA65PrivateKey).publicKey, priv.publicKey);
+      expect(MLDSA65PublicKey.fromBytes(priv.publicKey.bytes), priv.publicKey);
       expect(
         IPrivateKey.isValidBytes(priv.toBytes(), CryptoKeyType.mldsa65),
         isTrue,
@@ -105,14 +92,8 @@ void mldsaKeysTest() {
         priv.toBytes(),
         CryptoKeyType.mldsa87,
       );
-      expect(
-        (viaPriv as MLDSA87PrivateKey).publicKey,
-        priv.publicKey,
-      );
-      expect(
-        MLDSA87PublicKey.fromBytes(priv.publicKey.bytes),
-        priv.publicKey,
-      );
+      expect((viaPriv as MLDSA87PrivateKey).publicKey, priv.publicKey);
+      expect(MLDSA87PublicKey.fromBytes(priv.publicKey.bytes), priv.publicKey);
     });
 
     test('invalid encodings', () {
@@ -140,10 +121,7 @@ void mldsaKeysTest() {
       final priv = MLDSA44PrivateKey.generate(seed: _seed(0x55));
       final message = 'mldsa-44'.codeUnits;
       final sig = priv.sign(MLDSASigningParams(message));
-      expect(
-        priv.publicKey.verify(MLDSAVerifyingParams(message, sig)),
-        isTrue,
-      );
+      expect(priv.publicKey.verify(MLDSAVerifyingParams(message, sig)), isTrue);
       expect(
         priv.publicKey.verify(
           MLDSAVerifyingParams(message, MLDSASignature(sig.toBytes())),
@@ -151,9 +129,7 @@ void mldsaKeysTest() {
         isTrue,
       );
       expect(
-        priv.publicKey.verify(
-          MLDSAVerifyingParams('tampered'.codeUnits, sig),
-        ),
+        priv.publicKey.verify(MLDSAVerifyingParams('tampered'.codeUnits, sig)),
         isFalse,
       );
     });
@@ -162,14 +138,9 @@ void mldsaKeysTest() {
       final priv = MLDSA65PrivateKey.generate(seed: _seed(0x66));
       final message = 'mldsa-65'.codeUnits;
       final sig = priv.sign(MLDSASigningParams(message));
+      expect(priv.publicKey.verify(MLDSAVerifyingParams(message, sig)), isTrue);
       expect(
-        priv.publicKey.verify(MLDSAVerifyingParams(message, sig)),
-        isTrue,
-      );
-      expect(
-        priv.publicKey.verify(
-          MLDSAVerifyingParams('tampered'.codeUnits, sig),
-        ),
+        priv.publicKey.verify(MLDSAVerifyingParams('tampered'.codeUnits, sig)),
         isFalse,
       );
     });

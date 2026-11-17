@@ -179,14 +179,8 @@ void mldsa65Test() {
     expect(Nep649Const.defaultFullPath, "m/44'/397'/0'/0'/1'");
 
     // Non-hardened derivation must fail.
-    expect(
-      () => master.childKey(Bip32KeyIndex(0)),
-      throwsA(isA<BuError>()),
-    );
-    expect(
-      () => master.derivePath('m/44/397/0'),
-      throwsA(isA<BuError>()),
-    );
+    expect(() => master.childKey(Bip32KeyIndex(0)), throwsA(isA<BuError>()));
+    expect(() => master.derivePath('m/44/397/0'), throwsA(isA<BuError>()));
     // Public-only nodes cannot derive.
     final watchOnly = Slip10Mldsa65.fromPublicKey(master.publicKey.toBytes());
     expect(

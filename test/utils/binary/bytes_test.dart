@@ -204,10 +204,7 @@ void bytesTest() {
       expect(() => secret[0], throwsA(isA<BuError>()));
       expect(() => secret[0] = 1, throwsA(isA<BuError>()));
       expect(() => secret.useValue((p) => p), throwsA(isA<BuError>()));
-      expect(
-        () => secret == SecretBytes([1, 2, 3]),
-        throwsA(isA<BuError>()),
-      );
+      expect(() => secret == SecretBytes([1, 2, 3]), throwsA(isA<BuError>()));
     });
 
     test('hashCode always throws', () {

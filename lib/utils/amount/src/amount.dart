@@ -2,7 +2,6 @@ import 'package:blockchain_utils/utils/binary/src/binary_operation.dart';
 import 'package:blockchain_utils/utils/numbers/rational/big_rational.dart';
 import 'package:blockchain_utils_connector/blockchain_utils_connector.dart';
 
-
 class _AmountConverterConstants {
   static final BigRational bigR9 = BigRational(BigInt.from(10).pow(9));
   static final BigRational bigR8 = BigRational(BigInt.from(10).pow(8));
@@ -41,7 +40,8 @@ class AmountConverterUtils {
     final BigRational? bPrice = BigRational.tryParse(baseAmount);
     final BigRational? aPrice = BigRational.tryParse(amount);
     if (bPrice == null || aPrice == null) {
-      throw BuError(DefaultErrorType.invalidArgument,
+      throw BuError(
+        DefaultErrorType.invalidArgument,
         'Invalid amount format: cannot parse the input string.',
       );
     }
@@ -60,13 +60,15 @@ class AmountConverterUtils {
   }) {
     BigRational? dec = BigRational.tryParse(amount);
     if (dec == null) {
-      throw BuError(DefaultErrorType.invalidArgument,
+      throw BuError(
+        DefaultErrorType.invalidArgument,
         'Invalid amount format: cannot parse the input string.',
         details: {"amount": amount},
       );
     }
     if (enforceMaxDecimals && dec.scale > decimals) {
-      throw BuError(DefaultErrorType.invalidArgument,
+      throw BuError(
+        DefaultErrorType.invalidArgument,
         'Invalid amount format: too many decimal places.',
       );
     }
@@ -188,12 +190,14 @@ class AmountConverter {
   /// - [displayPrecision] is negative.
   factory AmountConverter({required int decimals, int? displayPrecision = 8}) {
     if (decimals.isNegative || decimals > BinaryOps.mask8) {
-      throw BuError(DefaultErrorType.invalidArgument,
+      throw BuError(
+        DefaultErrorType.invalidArgument,
         'Invalid decimals value: must be between 0 and ${BinaryOps.mask8}.',
       );
     }
     if (displayPrecision != null && displayPrecision.isNegative) {
-      throw BuError(DefaultErrorType.invalidArgument,
+      throw BuError(
+        DefaultErrorType.invalidArgument,
         "Invalid displayPrecision value: must be non-negative.",
       );
     }

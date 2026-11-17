@@ -16,15 +16,16 @@ class NativeSecp256r1SigningApi implements Secp256r1SigningApi {
     required List<int> digest,
     List<int>? extraEntropy,
   }) {
-    final signature = api
-        .signEcdsa(
-          BuBytes.unsafe(sk),
-          BuSecp256r1SignParams(
-            digest: digest.asBytes,
-            extraEntropy: extraEntropy?.asBytes,
-          ),
-        )
-        .unwrapOrThrowCryptoError();
+    final signature =
+        api
+            .signEcdsa(
+              BuBytes.unsafe(sk),
+              BuSecp256r1SignParams(
+                digest: digest.asBytes,
+                extraEntropy: extraEntropy?.asBytes,
+              ),
+            )
+            .unwrapOrThrowCryptoError();
     return IECDSASignature(
       r: signature.r,
       s: signature.s,
@@ -38,17 +39,18 @@ class NativeSecp256r1SigningApi implements Secp256r1SigningApi {
     required IECDSASignature signature,
     required List<int> publicKey,
   }) {
-    final result = api
-        .verifyEcdsa(
-          pk: publicKey.asBytes,
-          signature: BuEcdsaSignature(
-            r: signature.r,
-            s: signature.s,
-            recoveryId: signature.recoveryId,
-          ),
-          digest: digest.asBytes,
-        )
-        .unwrapOrThrowCryptoError();
+    final result =
+        api
+            .verifyEcdsa(
+              pk: publicKey.asBytes,
+              signature: BuEcdsaSignature(
+                r: signature.r,
+                s: signature.s,
+                recoveryId: signature.recoveryId,
+              ),
+              digest: digest.asBytes,
+            )
+            .unwrapOrThrowCryptoError();
     return result;
   }
 

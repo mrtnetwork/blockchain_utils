@@ -47,9 +47,7 @@ class EthAddrUtils {
   static String toChecksumAddress(String addr) {
     final String withoutPrefix = StringUtils.strip0x(addr);
     if (!StringUtils.isHexBytes(withoutPrefix)) {
-      throw CoreErrors.addressValidationFailed(
-        details: {"address": addr},
-      );
+      throw CoreErrors.addressValidationFailed(details: {"address": addr});
     }
     AddrDecUtils.validateLength(withoutPrefix, EthAddrConst.addrLen);
     return AddrKeyValidator.getConfigArg(

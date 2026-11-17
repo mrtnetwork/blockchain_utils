@@ -13,6 +13,7 @@ int _pack(Uint64 v) => (v.hi << 32) | v.lo;
 @pragma('vm:prefer-inline')
 Uint64 _unpack(int v) => Uint64.fromParts((v >>> 32) & _mask32, v & _mask32);
 int _ucmp(int a, int b) => (a ^ _signMask).compareTo(b ^ _signMask);
+
 /// `a * b` as a 128-bit result split into (high, low) 64-bit halves.
 @pragma('vm:prefer-inline')
 (Uint64 hi, Uint64 lo) widenMulImpl(Uint64 a, Uint64 b) {

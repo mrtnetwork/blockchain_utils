@@ -302,10 +302,7 @@ class MuSig2UtilsConst {
     bytes.addAll(msg);
     bytes.addAll(i.toBeBytes(length: 1));
     return _frUnchecked(
-      P2TRUtils.taggedHash(
-        MuSig2Constants.deterministicNonceDomain,
-        bytes,
-      ),
+      P2TRUtils.taggedHash(MuSig2Constants.deterministicNonceDomain, bytes),
     );
   }
 }

@@ -21,9 +21,7 @@ class DartDkls23KeysApi implements Dkls23KeysApi {
   const DartDkls23KeysApi();
 
   static DklsProtocolCurve _proto(Dkls23Curve c) =>
-      c == Dkls23Curve.secp256k1
-          ? DklsProtocolCurve.k1
-          : DklsProtocolCurve.r1;
+      c == Dkls23Curve.secp256k1 ? DklsProtocolCurve.k1 : DklsProtocolCurve.r1;
 
   static List<List<int>> _chunks(List<int> flat, int size, String op) {
     if (flat.length % size != 0) {
@@ -50,7 +48,11 @@ class DartDkls23KeysApi implements Dkls23KeysApi {
     return [for (final r in raws) DklsUtils.parseKeyshare(r)];
   }
 
-  static void _checkCurve(List<DklsProtocolShare> shares, DklsProtocolCurve curve, String op) {
+  static void _checkCurve(
+    List<DklsProtocolShare> shares,
+    DklsProtocolCurve curve,
+    String op,
+  ) {
     for (final sh in shares) {
       if (sh.curve != curve) {
         throw CoreErrors.invalidOperationArguments(
@@ -112,12 +114,7 @@ class DartDkls23KeysApi implements Dkls23KeysApi {
       );
     }
     return BuBytes(
-      DklsUtils.sign(
-        shares: shares,
-        sid: sid,
-        msgHash: msgHash,
-        seeds: parts,
-      ),
+      DklsUtils.sign(shares: shares, sid: sid, msgHash: msgHash, seeds: parts),
     );
   }
 

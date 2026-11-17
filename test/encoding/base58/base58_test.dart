@@ -307,10 +307,7 @@ void base58Test() {
     test('invalid character throws Base58FormatError', () {
       // '0' (zero) is never in a Base58 alphabet - that's the whole point
       // of Base58 (avoids confusion with 'O').
-      expect(
-        () => Base58Decoder.decode('abc0'),
-        throwsA(isA<BuError>()),
-      );
+      expect(() => Base58Decoder.decode('abc0'), throwsA(isA<BuError>()));
     });
 
     test('a character invalid in both alphabets is rejected either way', () {

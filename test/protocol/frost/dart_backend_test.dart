@@ -30,10 +30,11 @@ void main() {
       expect(api.k1Combine(shard.shares).toList(), secret);
       // Sign with participants 1 and 3, fixed randomness (deterministic).
       final use = [shard.shares[0], shard.shares[2]];
-      final groupPk = k1Engine
-          .scalarBaseMult(k1Engine.deserializeScalar(secret))
-          .toBytes()
-          .toList();
+      final groupPk =
+          k1Engine
+              .scalarBaseMult(k1Engine.deserializeScalar(secret))
+              .toBytes()
+              .toList();
       final msg = 'frost-dart-backend'.codeUnits;
       final nonces = [
         for (final s in use)
@@ -63,10 +64,13 @@ void main() {
           ),
       ];
       for (var k = 0; k < use.length; k++) {
-        final participantPk = k1Engine
-            .scalarBaseMult(k1Engine.deserializeScalar(use[k].share.toList()))
-            .toBytes()
-            .toList();
+        final participantPk =
+            k1Engine
+                .scalarBaseMult(
+                  k1Engine.deserializeScalar(use[k].share.toList()),
+                )
+                .toBytes()
+                .toList();
         expect(
           api.k1VerifyShare(
             identifier: use[k].id,
@@ -110,10 +114,11 @@ void main() {
       expect(shard.shares, hasLength(3));
       expect(api.edCombine(shard.shares).toList(), secret);
       final use = [shard.shares[0], shard.shares[2]];
-      final groupPk = edEngine
-          .scalarBaseMult(edEngine.deserializeScalar(secret))
-          .toBytes()
-          .toList();
+      final groupPk =
+          edEngine
+              .scalarBaseMult(edEngine.deserializeScalar(secret))
+              .toBytes()
+              .toList();
       final msg = 'frost-dart-backend-ed'.codeUnits;
       final nonces = [
         for (final s in use)

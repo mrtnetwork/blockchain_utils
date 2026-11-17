@@ -24,7 +24,8 @@ class TupleLayout extends Layout<List> {
   @override
   int encode(List source, LayoutByteWriter writer, {int offset = 0}) {
     if (source.length != layouts.length) {
-      throw BuError(DefaultErrorType.invalidLength,
+      throw BuError(
+        DefaultErrorType.invalidLength,
         "Source length must match layout length.",
         details: {"property": property},
       );

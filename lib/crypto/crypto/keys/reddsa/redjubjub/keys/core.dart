@@ -36,7 +36,6 @@ abstract class BaseRedJubJubPrivateKey<P extends BaseRedJubJubPublicKey>
     sk.zero();
   }
 
-
   @override
   List<dynamic> get variables => [publicKey];
 

@@ -318,8 +318,7 @@ class AdaShelleyStakingAddrEncoder implements BlockchainAddressEncoder {
 }
 
 /// Decodes an Ada Shelley enterprise (payment-only, no staking) address.
-class AdaShelleyEnterpriseDecoder
-    implements BlockchainAddressDecoder<BuBytes> {
+class AdaShelleyEnterpriseDecoder implements BlockchainAddressDecoder<BuBytes> {
   @override
   BuBytes decodeAddr(String addr, {ADANetwork network = ADANetwork.mainnet}) {
     final addrDecBytes = Bech32Decoder.decode(

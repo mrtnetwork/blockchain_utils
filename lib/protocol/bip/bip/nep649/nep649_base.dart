@@ -56,13 +56,15 @@ abstract class Nep649Base<NEP649 extends Nep649Base<NEP649>> with SecretState {
     if (node.isPublicOnly) {
       if (depth < Bip44Levels.account.value ||
           depth > Bip44Levels.addressIndex.value) {
-        throw BuError(DefaultErrorType.invalidArgument,
+        throw BuError(
+          DefaultErrorType.invalidArgument,
           "Depth of the public-only Nep649 object ($depth) is below account level or beyond address index level",
         );
       }
     } else {
       if (depth < 0 || depth > Bip44Levels.addressIndex.value) {
-        throw BuError(DefaultErrorType.invalidArgument,
+        throw BuError(
+          DefaultErrorType.invalidArgument,
           "Depth of the Nep649 object ($depth) is invalid or beyond address index level",
         );
       }
@@ -85,7 +87,10 @@ abstract class Nep649Base<NEP649 extends Nep649Base<NEP649>> with SecretState {
   /// [Nep649PrivateKey] privatekey
   Nep649PrivateKey get privateKey {
     if (slip10.isPublicOnly) {
-      throw const BuError(DefaultErrorType.invalidArgument,"The Slip10Mldsa65 object is public-only");
+      throw const BuError(
+        DefaultErrorType.invalidArgument,
+        "The Slip10Mldsa65 object is public-only",
+      );
     }
     return Nep649PrivateKey(slip10.privateKey, coinConf);
   }

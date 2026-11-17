@@ -47,16 +47,16 @@ class NativeRedPallasSigningApi implements RedPallasSigningApi {
     // Signing randomness is caller-supplied: fill from the platform RNG
     // when omitted so the native backend never depends on Rust-side
     // generation (which is deterministic unless the host seeded it).
-    final rand =
-        (rand80 ?? QuickCrypto.generateRandom(length: 80)).asBytes;
-    final sig = api
-        .sign(
-          domain: _domain(variant),
-          sk: sk.asBytes,
-          message: message.asBytes,
-          rand80: rand,
-        )
-        .unwrapOrThrowCryptoError();
+    final rand = (rand80 ?? QuickCrypto.generateRandom(length: 80)).asBytes;
+    final sig =
+        api
+            .sign(
+              domain: _domain(variant),
+              sk: sk.asBytes,
+              message: message.asBytes,
+              rand80: rand,
+            )
+            .unwrapOrThrowCryptoError();
     return ReddsaSignature.fromBytes(sig);
   }
 

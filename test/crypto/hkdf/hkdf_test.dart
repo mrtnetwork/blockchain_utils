@@ -34,11 +34,12 @@ final _case3 = {
 
 void hkdfTest() {
   group("HKDF RFC 5869 (SHA-256, backend-routed)", () {
-    for (final entry in {
-      "case1": _case1,
-      "case2_long": _case2,
-      "case3_empty_salt_info": _case3,
-    }.entries) {
+    for (final entry
+        in {
+          "case1": _case1,
+          "case2_long": _case2,
+          "case3_empty_salt_info": _case3,
+        }.entries) {
       test("RFC vector ${entry.key} via QuickCrypto", () {
         final v = entry.value;
         final okm = QuickCrypto.hkdfDeriveSha256(
@@ -71,17 +72,12 @@ void hkdfTest() {
 
     test("length guards fail loudly", () {
       expect(
-        () => QuickCrypto.hkdfDeriveSha256(
-          ikm: [1, 2, 3],
-          length: 0,
-        ),
+        () => QuickCrypto.hkdfDeriveSha256(ikm: [1, 2, 3], length: 0),
         throwsA(anything),
       );
       expect(
-        () => QuickCrypto.hkdfDeriveSha256(
-          ikm: [1, 2, 3],
-          length: 255 * 32 + 1,
-        ),
+        () =>
+            QuickCrypto.hkdfDeriveSha256(ikm: [1, 2, 3], length: 255 * 32 + 1),
         throwsA(anything),
       );
       expect(

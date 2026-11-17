@@ -121,10 +121,7 @@ void eip2333Test() {
       engine.derivePath('m/12381/3600/2/0').privateKey.toBigInt().toString(),
     );
     // Validator keys have no addresses.
-    expect(
-      () => withdrawal.publicKey.toAddress,
-      throwsA(isA<BuError>()),
-    );
+    expect(() => withdrawal.publicKey.toAddress, throwsA(isA<BuError>()));
     // Wrong-level navigation throws.
     expect(() => master.coin, throwsA(isA<BuError>()));
     master.eip2333Object.dispose();

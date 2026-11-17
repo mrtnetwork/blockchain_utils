@@ -35,7 +35,8 @@ class Zip32Orchard
   OrchardExtendedSpendingKey get privateKey {
     final prvKey = _privateKey;
     if (prvKey == null) {
-      throw const BuError(DefaultErrorType.invalidKeyData,
+      throw const BuError(
+        DefaultErrorType.invalidKeyData,
         'Public-only deterministic keys have no private half',
       );
     }
@@ -109,10 +110,14 @@ class Zip32Orchard
     final prvKey = _privateKey;
 
     if (prvKey == null) {
-      throw const BuError(DefaultErrorType.unsupported,'Public child derivation is not supported');
+      throw const BuError(
+        DefaultErrorType.unsupported,
+        'Public child derivation is not supported',
+      );
     }
     if (!index.isHardened) {
-      throw const BuError(DefaultErrorType.unsupported,
+      throw const BuError(
+        DefaultErrorType.unsupported,
         'Private child derivation with not-hardened index is not supported',
       );
     }

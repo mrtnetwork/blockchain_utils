@@ -12,7 +12,6 @@ import 'package:blockchain_utils/utils/binary/src/utils.dart';
 
 import 'package:blockchain_utils_connector/blockchain_utils_connector.dart';
 
-
 /// Constants for the SS58 format, per the Substrate SS58 registry spec.
 class _Ss58Const {
   /// Format values 0..63 ("simple" accounts) fit in a single format byte.
@@ -74,7 +73,8 @@ class SS58Encoder {
     if (ss58Format < 0 ||
         ss58Format > _Ss58Const.formatMaxVal ||
         _Ss58Const.reservedFormats.contains(ss58Format)) {
-      throw BuError(DefaultErrorType.invalidLength,
+      throw BuError(
+        DefaultErrorType.invalidLength,
         'Invalid SS58 format.',
         details: {
           'reason': 'ss58Format $ss58Format is out of range or reserved',
@@ -121,7 +121,8 @@ class SS58Decoder {
     final decBytes = Base58Decoder.decode(ss58Str);
 
     if (decBytes.isEmpty) {
-      throw BuError(DefaultErrorType.badSs58,
+      throw BuError(
+        DefaultErrorType.badSs58,
         'Invalid SS58 address.',
         details: {'reason': 'decoded address is empty'},
       );
@@ -130,7 +131,8 @@ class SS58Decoder {
     int ss58FormatLen;
     if ((decBytes[0] & 0x40) != 0) {
       if (decBytes.length < 2) {
-        throw BuError(DefaultErrorType.badSs58,
+        throw BuError(
+          DefaultErrorType.badSs58,
           'Invalid SS58 address.',
           details: {'reason': 'truncated two-byte format'},
         );
@@ -149,7 +151,8 @@ class SS58Decoder {
     }
 
     if (_Ss58Const.reservedFormats.contains(ss58Format)) {
-      throw BuError(DefaultErrorType.badSs58,
+      throw BuError(
+        DefaultErrorType.badSs58,
         'Invalid SS58 format.',
         details: {'reason': 'decoded ss58Format $ss58Format is reserved'},
       );

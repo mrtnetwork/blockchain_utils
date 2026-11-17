@@ -29,7 +29,8 @@ class LayoutByteReader {
   /// byte utilities underneath.
   void requireAvailable(int offset, int length) {
     if (offset < 0 || length < 0 || offset + length > _bytes.length) {
-      throw BuError(DefaultErrorType.invalidLength,
+      throw BuError(
+        DefaultErrorType.invalidLength,
         "Truncated layout bytes.",
         details: {
           "offset": offset.toString(),
@@ -44,7 +45,10 @@ class LayoutByteReader {
   LayoutDecodeResult<int> decodeScaleAsInteger(int offset) {
     final decode = LayoutSerializationUtils.decodeScale(_bytes, offset: offset);
     if (!decode.value.isSafeInt()) {
-      throw const BuError(DefaultErrorType.invalidLength,"scale number is too large for int.");
+      throw const BuError(
+        DefaultErrorType.invalidLength,
+        "scale number is too large for int.",
+      );
     }
     return LayoutDecodeResult(
       consumed: decode.consumed,
@@ -74,7 +78,10 @@ class LayoutByteReader {
       offset: offset,
     );
     if (!decode.value.isSafeInt()) {
-      throw const BuError(DefaultErrorType.invalidLength,"varint number is too large for int.");
+      throw const BuError(
+        DefaultErrorType.invalidLength,
+        "varint number is too large for int.",
+      );
     }
     return LayoutDecodeResult(
       consumed: decode.consumed,

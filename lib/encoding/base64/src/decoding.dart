@@ -157,7 +157,9 @@ class B64Decoder {
     final code = data.codeUnitAt(index);
     final value = code < 128 ? reverseTable[code] : -1;
     if (value == -1) {
-      throw BuError(DefaultErrorType.badBase64, "Invalid Base64 string.",
+      throw BuError(
+        DefaultErrorType.badBase64,
+        "Invalid Base64 string.",
         details: {"reason": 'Invalid Base64 character at index $index.'},
       );
     }
@@ -180,7 +182,9 @@ class B64Decoder {
         len % 4; // 0, 2, or 3 - a lone leftover char (1) is invalid
 
     if (remainder == 1) {
-      throw const BuError(DefaultErrorType.invalidLength, "Invalid Base64 string.",
+      throw const BuError(
+        DefaultErrorType.invalidLength,
+        "Invalid Base64 string.",
         details: {"reason": 'Truncated Base64 group.'},
       );
     }
@@ -262,7 +266,11 @@ class B64Decoder {
     }
 
     if (validatePadding) {
-      if (!isPadded) throw const BuError(DefaultErrorType.badBase64, "Invalid Base64 string.");
+      if (!isPadded)
+        throw const BuError(
+          DefaultErrorType.badBase64,
+          "Invalid Base64 string.",
+        );
     } else if (!isPadded) {
       final missing = (4 - data.length % 4) % 4;
       data = data.padRight(data.length + missing, '=');

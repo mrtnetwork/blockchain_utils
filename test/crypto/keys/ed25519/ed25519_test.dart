@@ -43,10 +43,7 @@ void _checkSignVerify(
   final message = _bytes(0xA0, 48);
   final sig = sign(message);
   expect(verify(sig, message), isTrue);
-  expect(
-    verify(ED25519Signature.fromBytes(sig.toBytes()), message),
-    isTrue,
-  );
+  expect(verify(ED25519Signature.fromBytes(sig.toBytes()), message), isTrue);
   expect(verify(sig, _bytes(0xB0, 48)), isFalse);
   final badSig = ED25519Signature.fromBytes(List.filled(64, 1));
   expect(verify(badSig, message), isFalse);
@@ -71,10 +68,7 @@ void ed25519KeysTest() {
       );
       final viaIface = IPrivateKey.fromBytes(seed, CryptoKeyType.ed25519);
       expect(viaIface, isA<ED25519PrivateKey>());
-      expect(
-        (viaIface as ED25519PrivateKey).publicKey,
-        priv.publicKey,
-      );
+      expect((viaIface as ED25519PrivateKey).publicKey, priv.publicKey);
       expect(ED25519PrivateKey.isValidBytes(seed), isTrue);
       final back = ED25519PrivateKey.fromBytes(priv.toBytes());
       expect(back.publicKey, priv.publicKey);
@@ -109,10 +103,7 @@ void ed25519KeysTest() {
         CryptoKeyType.ed25519Blake2b,
       );
       expect(viaIface, isA<ED25519Blake2bPrivateKey>());
-      expect(
-        (viaIface as ED25519Blake2bPrivateKey).publicKey,
-        priv.publicKey,
-      );
+      expect((viaIface as ED25519Blake2bPrivateKey).publicKey, priv.publicKey);
       expect(ED25519Blake2bPrivateKey.isValidBytes(seed), isTrue);
       _checkSignVerify(
         priv,
@@ -135,15 +126,9 @@ void ed25519KeysTest() {
         ED25519KholawPublicKey.isValidKeyEncoding,
         CryptoKeyType.ed25519Kholaw,
       );
-      final viaIface = IPrivateKey.fromBytes(
-        seed,
-        CryptoKeyType.ed25519Kholaw,
-      );
+      final viaIface = IPrivateKey.fromBytes(seed, CryptoKeyType.ed25519Kholaw);
       expect(viaIface, isA<ED25519KholawPrivateKey>());
-      expect(
-        (viaIface as ED25519KholawPrivateKey).publicKey,
-        priv.publicKey,
-      );
+      expect((viaIface as ED25519KholawPrivateKey).publicKey, priv.publicKey);
       expect(ED25519KholawPrivateKey.isValidBytes(seed), isTrue);
       expect(ED25519KholawPrivateKey.isValidBytes(_bytes(0x07, 32)), isFalse);
       _checkSignVerify(
@@ -168,15 +153,9 @@ void ed25519KeysTest() {
         ED25519MoneroPublicKey.isValidKeyEncoding,
         CryptoKeyType.ed25519Monero,
       );
-      final viaIface = IPrivateKey.fromBytes(
-        seed,
-        CryptoKeyType.ed25519Monero,
-      );
+      final viaIface = IPrivateKey.fromBytes(seed, CryptoKeyType.ed25519Monero);
       expect(viaIface, isA<ED25519MoneroPrivateKey>());
-      expect(
-        (viaIface as ED25519MoneroPrivateKey).publicKey,
-        priv.publicKey,
-      );
+      expect((viaIface as ED25519MoneroPrivateKey).publicKey, priv.publicKey);
       expect(ED25519MoneroPrivateKey.isValidBytes(seed), isTrue);
       // Zero secret maps to the identity key: strict fromBytes rejects it,
       // the lenient zero() constructor preserves it.

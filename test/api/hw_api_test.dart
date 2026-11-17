@@ -377,8 +377,7 @@ void main() {
     final hw = blockchainUtils.backend?.hw;
     final available =
         hw != null &&
-        (blockchainUtils.backend?.backendInfo.has(BuBuildFeature.hw) ??
-            false);
+        (blockchainUtils.backend?.backendInfo.has(BuBuildFeature.hw) ?? false);
     final native = available ? NativeHwApi(hw) : null;
     const skipReason = 'Native hw backend unavailable (needs hw feature)';
 
