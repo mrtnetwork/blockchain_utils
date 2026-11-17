@@ -1,0 +1,22 @@
+<!doctype html>
+<!-- Harness for tool/check_wasm_word_math.dart (see its doc comment).
+  Served over HTTP next to the compiled check.wasm + check.mjs; headless
+  Chrome dumps the DOM after the init promise resolves. Do NOT inline the
+  module or use file:// — dynamic import() needs an http(s) origin. -->
+<html><body>PENDING</body><script type="module">
+const set = (t) => { try { document.body.textContent = t; } catch (e) {} };
+set('SCRIPT-RUNNING');
+try {
+  const m = await import('./check.mjs');
+  set('MJS-LOADED');
+  const resp = await fetch('./check.wasm');
+  set('FETCHED:' + resp.status);
+  const app = await m.compileStreaming(resp);
+  set('COMPILED');
+  const inst = await app.instantiate({});
+  set('INSTANTIATED');
+  inst.invokeMain();
+} catch (e) {
+  set('LOAD-FAIL: ' + (e && e.message ? e.message : e));
+}
+</script></html>

@@ -107,6 +107,53 @@ jobs:
           dart test -p chrome test/one_shot_browser_dart_test.dart
           --timeout=20m
 
+  dart-web-wasm:
+    name: Dart backend (browser, dart2wasm + native word math)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Dart
+        uses: dart-lang/setup-dart@v1
+
+      - name: Install dependencies
+        run: dart pub get --no-example
+
+      - name: Compile word-math check (native 64-bit math on)
+        run: |
+          mkdir -p /tmp/wasm-math
+          dart compile wasm tool/check_wasm_word_math.dart \
+            -o /tmp/wasm-math/check.wasm \
+            --define=BLOCKCHAIN_UTILS_NATIVE_MATH=true
+          cp tool/check_wasm_word_math.html /tmp/wasm-math/check.html
+
+      - name: Chrome wrapper (no-sandbox)
+        run: |
+          printf '#!/bin/sh\nexec /usr/bin/google-chrome --no-sandbox "$@"\n' \
+            > /tmp/chrome-nosandbox.sh
+          chmod +x /tmp/chrome-nosandbox.sh
+
+      - name: Run word-math check in headless Chrome
+        # Expects `WASM-WORD-MATH-OK` in the dumped DOM. Anything else —
+        # including a missing marker (load/init failure) — fails the job.
+        run: |
+          (python3 -m http.server 8931 --directory /tmp/wasm-math >/dev/null 2>&1 &)
+          for i in 1 2 3 4 5 6 7 8; do
+            OUT=$(google-chrome --headless=new --no-sandbox --disable-gpu \
+              --virtual-time-budget=60000 --dump-dom \
+              http://127.0.0.1:8931/check.html 2>/dev/null \
+              | grep -o '<body>[^<]*' || true)
+            echo "attempt $i: $OUT"
+            case "$OUT" in
+              *WASM-WORD-MATH-OK*) exit 0 ;;
+              *WASM-WORD-MATH-FAIL*) echo "$OUT"; exit 1 ;;
+            esac
+            sleep 3
+          done
+          echo 'word-math check never completed'; exit 1
+
   wasm-web:
     name: Rust WASM backend (browser)
     runs-on: ubuntu-latest

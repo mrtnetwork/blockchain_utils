@@ -10,10 +10,6 @@ void coinsTest() {
           ..sort((a, b) => a.identifier.compareTo(b.identifier));
     List<int> k = [];
     for (final i in coins) {
-      if (k.contains(i.identifier)) {
-        print("exists ${i.coinName}");
-        continue;
-      }
       k.add(i.identifier);
     }
     expect(coins.map((e) => e.identifier).toSet().length, coins.length);

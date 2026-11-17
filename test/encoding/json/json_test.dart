@@ -73,10 +73,7 @@ void jsonTest() {
     });
 
     test('NaN/Infinity rejected on encode', () {
-      expect(
-        () => JsonCodec.jsonEncode(double.nan),
-        throwsA(isA<BuError>()),
-      );
+      expect(() => JsonCodec.jsonEncode(double.nan), throwsA(isA<BuError>()));
       expect(
         () => JsonCodec.jsonEncode(double.infinity),
         throwsA(isA<BuError>()),
@@ -134,35 +131,23 @@ void jsonTest() {
     });
 
     test('non-String map key rejected', () {
-      expect(
-        () => JsonCodec.jsonEncode({1: 'x'}),
-        throwsA(isA<BuError>()),
-      );
+      expect(() => JsonCodec.jsonEncode({1: 'x'}), throwsA(isA<BuError>()));
     });
 
     test('unsupported object without toEncodable throws', () {
-      expect(
-        () => JsonCodec.jsonEncode(Object()),
-        throwsA(isA<BuError>()),
-      );
+      expect(() => JsonCodec.jsonEncode(Object()), throwsA(isA<BuError>()));
     });
 
     test('cyclic list detected', () {
       final list = <dynamic>[1, 2];
       list.add(list);
-      expect(
-        () => JsonCodec.jsonEncode(list),
-        throwsA(isA<BuError>()),
-      );
+      expect(() => JsonCodec.jsonEncode(list), throwsA(isA<BuError>()));
     });
 
     test('cyclic map detected', () {
       final map = <String, dynamic>{'a': 1};
       map['self'] = map;
-      expect(
-        () => JsonCodec.jsonEncode(map),
-        throwsA(isA<BuError>()),
-      );
+      expect(() => JsonCodec.jsonEncode(map), throwsA(isA<BuError>()));
     });
   });
 
@@ -425,9 +410,6 @@ void jsonTest() {
     );
 
     test('small safe value -> raw number', () {
-      print(
-        "data ${JsonCodec.jsonEncode(BigInt.from(42), options: intOrString)}",
-      );
       expect(
         JsonCodec.jsonEncode(BigInt.from(42), options: intOrString),
         equals('42'),
@@ -659,10 +641,7 @@ void jsonTest() {
     });
 
     test('without toEncodable, unknown object throws', () {
-      expect(
-        () => JsonCodec.jsonEncode(Object()),
-        throwsA(isA<BuError>()),
-      );
+      expect(() => JsonCodec.jsonEncode(Object()), throwsA(isA<BuError>()));
     });
   });
 
@@ -887,10 +866,7 @@ void jsonTest() {
     test('cyclic structures rejected on the bytes path too', () {
       final list = <dynamic>[1, 2];
       list.add(list);
-      expect(
-        () => JsonCodec.jsonEncodeBytes(list),
-        throwsA(isA<BuError>()),
-      );
+      expect(() => JsonCodec.jsonEncodeBytes(list), throwsA(isA<BuError>()));
     });
   });
 
@@ -1122,10 +1098,7 @@ void jsonTest() {
     });
 
     test('toJson that throws -> JsonUnsupportedObjectError', () {
-      expect(
-        () => JsonCodec.jsonEncode(_BadToJson()),
-        throwsA(isA<BuError>()),
-      );
+      expect(() => JsonCodec.jsonEncode(_BadToJson()), throwsA(isA<BuError>()));
       expect(
         () => dc.jsonEncode(_BadToJson()),
         throwsA(isA<dc.JsonUnsupportedObjectError>()),

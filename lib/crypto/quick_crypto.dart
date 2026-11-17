@@ -601,7 +601,15 @@ class QuickCrypto {
   static void setupBackendRng() {
     final backend = blockchainUtils.api.rng;
     if (backend is NativeRngApi && !backend.isSeeded) {
-      backend.seed(seed32: generateRandom(length: 32));
+      // `dart test` runs files in concurrent isolates sharing one process
+      // (and one native library): two files can both observe an unseeded
+      // RNG and race to seed it. Losing is fine as long as *someone* won —
+      // re-check the seeded state before treating a failed seed as fatal.
+      try {
+        backend.seed(seed32: generateRandom(length: 32));
+      } on BuError {
+        if (!backend.isSeeded) rethrow;
+      }
     }
     _generateRandom = (length) {
       if (length == 0) return <int>[].asBytes;

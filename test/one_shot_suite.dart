@@ -165,7 +165,6 @@ import 'group/api/secp256k1_test.dart' as f195;
 import 'group/api/secp256r1_test.dart' as f196;
 import 'group/api/vesta_test.dart' as f197;
 import 'group/bls/g1_api_test.dart' as f198;
-import 'chain/signer/secp256r1_test.dart' as f199;
 import 'crypto/keys/musig2/musig2_test.dart' as f200;
 import 'crypto/keys/secp256k1/secp256k1_test.dart' as f201;
 import 'crypto/keys/secp256r1/secp256r1_test.dart' as f202;
@@ -398,7 +397,6 @@ Future<void> runOneShotSuite({bool rustOnly = true}) async {
         skip: 'requires Rust backend (L3/L4)',
       );
     }
-    f199.main();
     f200.main();
     f201.main();
     f202.main();

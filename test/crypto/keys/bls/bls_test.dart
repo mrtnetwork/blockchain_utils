@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-
 import 'package:blockchain_utils/blockchain_utils.dart';
 import 'package:test/test.dart';
 
@@ -259,11 +257,6 @@ void blsTest() {
       final t = _testVector.map((e) => _BLSTestVector.fromJson(e)).toList();
       for (final i in t) {
         final key = Bls12G1PrivateKey.fromBytes(i.privateKey);
-        final e = JubJubFq.fromBytes(i.privateKey, endian: Endian.big);
-        print(
-          BytesUtils.bytesEqual(e.toBytes(endian: Endian.big), key.toBytes()),
-        );
-        // print(key.toBytes());
         expect(
           key.publicKey.toBytes(mode: CryptoKeyEncoding.base),
           i.publicKey,

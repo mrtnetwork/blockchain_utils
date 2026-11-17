@@ -1,6 +1,11 @@
 import 'package:blockchain_utils/utils/numbers/fixed/src/u64/u64.dart';
 import 'package:blockchain_utils/exception/exception/core_errors.dart';
 
+/// Always true here: the VM runs the native 64-bit implementation
+/// unconditionally. Mirrors the opt-in `useNativeWordMath` flag in the
+/// web variant so feature probes read the same symbol on every backend.
+const bool useNativeWordMath = true;
+
 const int _signMask = -0x8000000000000000;
 const int _mask32 = 0xFFFFFFFF;
 @pragma('vm:prefer-inline')
