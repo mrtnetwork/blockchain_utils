@@ -10,10 +10,28 @@ import 'package:blockchain_utils_connector/blockchain_utils_connector.dart';
 /// Internal Zcash address parsing/encoding helpers.
 class ZcashAddressUtils {
   /// Matches a Base58 address prefix to its network + address type.
+  ///
+  /// Testnet and Regtest share every transparent prefix, so when the caller
+  /// passes [expectedNetwork] it wins: otherwise `tm...`/`t2...` would always
+  /// resolve to whichever config is listed first and decoding with the other
+  /// network would fail with a spurious mismatch.
   static (ZIP32CoinConfig, ZcashAddressType)? _findNetworkAndTypeFromB58Prefix(
     List<int> prefix,
-    ZcashConf config,
-  ) {
+    ZcashConf config, {
+    ZcashNetwork? expectedNetwork,
+  }) {
+    if (expectedNetwork != null) {
+      final expected = config.fromNetwork(expectedNetwork);
+      if (_prefixEquals(prefix, expected.b58ScriptAddressPrefix)) {
+        return (expected, ZcashAddressType.p2sh);
+      }
+      if (_prefixEquals(prefix, expected.b58PubkeyAddressPrefix)) {
+        return (expected, ZcashAddressType.p2pkh);
+      }
+      if (_prefixEquals(prefix, expected.b58SproutAddressPrefix)) {
+        return (expected, ZcashAddressType.sprout);
+      }
+    }
     ZIP32CoinConfig? network = config.findFromP2shPrefix(prefix);
     if (network != null) {
       return (network, ZcashAddressType.p2sh);
@@ -29,10 +47,19 @@ class ZcashAddressUtils {
     return null;
   }
 
+  static bool _prefixEquals(List<int> a, List<int> b) {
+    if (a.length != b.length) return false;
+    for (var i = 0; i < a.length; i++) {
+      if (a[i] != b[i]) return false;
+    }
+    return true;
+  }
+
   /// Tries each Zcash address format in turn until one matches.
   static ZcashDecodedAddressResult? _parseAddress(
     String address, {
     ZcashAddressType? expectedType,
+    ZcashNetwork? expectedNetwork,
   }) {
     final configs = ZcashConf();
     if (expectedType == null || expectedType == ZcashAddressType.unified) {
@@ -66,6 +93,11 @@ class ZcashAddressUtils {
         if (b32 != null) {
           final network = configs.findFromSaplingPaymentAddressHrp(b32.$2);
           if (network != null) {
+            if (b32.$1.length != ZcashAddressType.sapling.lengthInBytes) {
+              throw CoreErrors.addressBytesValidationFailed(
+                reason: "Invalid address bytes length.",
+              );
+            }
             return ZcashDecodedAddressResult(
               network: network.network,
               addressBytes: b32.$1,
@@ -82,6 +114,12 @@ class ZcashAddressUtils {
         if (b32 != null) {
           final network = configs.findFromTexHrp(b32.$2);
           if (network != null) {
+            // ZIP 320: a TEX payload must be exactly the 20-byte key hash.
+            if (b32.$1.length != ZcashAddressType.tex.lengthInBytes) {
+              throw CoreErrors.addressBytesValidationFailed(
+                reason: "Invalid address bytes length.",
+              );
+            }
             return ZcashDecodedAddressResult(
               network: network.network,
               addressBytes: b32.$1,
@@ -97,8 +135,17 @@ class ZcashAddressUtils {
         expectedType == ZcashAddressType.p2sh) {
       final b58 = ZcashEncodingUtils.tryDecodeBase58WithCheck(address, 2);
       if (b58 != null) {
-        final network = _findNetworkAndTypeFromB58Prefix(b58.$1, configs);
+        final network = _findNetworkAndTypeFromB58Prefix(
+          b58.$1,
+          configs,
+          expectedNetwork: expectedNetwork,
+        );
         if (network == null) return null;
+        if (b58.$2.length != network.$2.lengthInBytes) {
+          throw CoreErrors.addressBytesValidationFailed(
+            reason: "Invalid address bytes length.",
+          );
+        }
         return ZcashDecodedAddressResult(
           network: network.$1.network,
           addressBytes: b58.$2,
@@ -117,7 +164,11 @@ class ZcashAddressUtils {
     ZcashNetwork? expectedNetwork,
     ZcashAddressType? expectedType,
   }) {
-    final decode = _parseAddress(address, expectedType: expectedType);
+    final decode = _parseAddress(
+      address,
+      expectedType: expectedType,
+      expectedNetwork: expectedNetwork,
+    );
     if (decode == null) return null;
     _validate(
       network: decode.network,

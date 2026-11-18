@@ -182,10 +182,14 @@ class ZcashConf {
     hrpUnifiedIvk: "uivkregtest",
   );
 
+  /// Testnet is listed before Regtest on purpose: the two networks share
+  /// every transparent prefix, so an ambiguous `tm...`/`t2...` address
+  /// defaults to Testnet. Callers that need Regtest pass it explicitly and
+  /// [_parseAddress] honors it (see `_findNetworkAndTypeFromB58Prefix`).
   List<ZIP32CoinConfig> get _configs => [
     zCashMainnetOrchard,
-    zCashRegtestOrchard,
     zCashTestnetSapling,
+    zCashRegtestOrchard,
   ];
   ZIP32CoinConfig fromNetwork(ZcashNetwork network) {
     return _configs.firstWhere(
